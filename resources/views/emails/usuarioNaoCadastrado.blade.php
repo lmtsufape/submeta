@@ -1,0 +1,3 @@
+<div>
+  senha: {{$senhaTemporaria}}
+</div>

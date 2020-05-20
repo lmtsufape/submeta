@@ -1,0 +1,151 @@
+/* 
+color primary: #114048ff
+color secondary: #196572ff
+color dark: #071b1eff
+
+*/
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+}
+#rowCarrousel{
+    margin-top: 15px;
+}
+
+.jumbotron{
+    margin-top: auto;
+    margin-bottom: auto;
+    background: none;
+    text-align: left;
+}
+
+#descSistema{
+    width: auto;
+    height: 70vh;
+    text-align: center;
+    width: auto;
+    height: auto;
+    display: table;
+    padding-left: 7%;
+    padding-right: 7%;
+}
+.floatF{
+    float: left;
+}
+.texto{
+    height: 70vh;
+    display: table-cell;
+    vertical-align: middle;
+}
+.texto h1{
+    margin-bottom: 30px;
+}
+.texto p{
+    font-size: large;
+}
+#divModulo1{
+    height: 70vh;
+    background-color:#ccc;
+    display: table;
+}
+#divModulo2{
+    height: 70vh;
+    background-color:white;
+    display: table;
+}
+#divModulo3{
+    height: 70vh;
+    background-color:#114048ff;
+    color: white;
+    display: table;
+}
+.rowModulo{
+    height: 70vh;
+}
+
+.textoModulo{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left:10px;
+    padding-right:7%;
+    justify-content: center;
+}
+
+.textoModuloR{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left:7%;
+    padding-right:10px;
+}
+.textoModulo p{
+    font-size: large;
+    text-align: justify;
+    text-justify: inter-word;
+}
+.textoModuloR p{
+    font-size: large;
+    text-align: justify;
+    text-justify: inter-word;
+}
+.imagemModulo{
+    margin-top:auto;
+    margin-bottom: auto;
+}
+.imagem{
+    width:300px; 
+    height:300px; 
+    background-color:grey;
+    border-radius: 50%;
+}
+.imagemModuloCelular{
+    margin-top:auto;
+    margin-bottom: auto;
+    display: none;
+}
+#none{
+    display: block;
+}
+@media screen and (max-width:576px){
+    
+    #descSistema p{
+        text-align: justify;
+        text-justify: inter-word;
+        }
+    .rowModulo{
+        height: auto;
+    }
+    .textoModulo{
+        padding-right: 10px;
+        padding-left: 10px;
+        margin: 20px;
+        text-align: center;
+    }
+    .textoModuloR{
+        padding-right: 10px;
+        padding-left: 10px;
+        margin: 20px;
+        text-align: center;
+    }
+    .imagemModulo{
+        margin-top: 20px;
+    }
+    .imagem{
+        width:150px; 
+        height:150px;
+    }
+    #none{
+        display: none;
+    }
+    .imagemModuloCelular{
+        display: block;
+        margin-top: 20px;
+    }
+    .imagemCelular{
+        width:150px; 
+        height:150px;
+        background-color:grey;
+        border-radius: 50%;
+    }
+}

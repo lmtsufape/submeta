@@ -1,0 +1,145 @@
+/*
+color primary: #114048ff
+color secondary: #196572ff
+color dark: #071b1eff
+
+*/
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.curved{
+    background-color: #114048ff;
+    color: #fff;
+    /* text-align: center; */
+    height: 45vh;
+    /* width: 100vw; */
+}
+.curved .text{
+    margin-top: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    position: relative;
+    z-index: 100;
+}
+.curved h1{
+    font-size: 5rem;
+    margin-bottom: 5%;
+}
+.curved p{
+    font-size: 1rem;
+    margin-bottom: 5%;
+}
+.curved svg{
+    display: block;
+    margin-top: -100px;
+}
+.curved img{
+    margin: 20% 10% 10% 0;
+    /* margin-top: 20%;
+    margin-bottom: 10%; */
+    width: 80%;
+    display: flex;
+    float: right;
+    position: relative;
+    z-index: 100;
+}
+.modulos{
+  margin-top: -100px;
+}
+.info-modulo{
+    text-align: center;
+    /* height: 500px; */
+    margin-bottom: 50px;
+    /* width: 450px; */
+    /* border: 1px solid #ccc; */
+    transition: 0.5s;
+}
+
+.info-modulo-head{
+    height: 150px;
+}
+.info-modulo-body{
+    height: 220px;
+    background-color: #ccc ;
+    margin-top: -5%;
+    /* color: #fff; */
+
+}
+
+.info-modulo p{
+    margin: 5% 5% 5% 5%;
+    text-align: justify;
+    font-size: 15px;
+}
+.info-modulo img{
+    margin:10% 0 5% 0;
+    /* width: 100px; */
+    height: 70px;
+}
+.info-modulo:hover{
+    box-shadow: 10px 10px #114048ff;
+    margin-top: -10px;
+    transition: 0.5s;
+}
+.info-modulo-body{
+  height: 260px;
+  overflow-y: auto;
+}
+.footer{
+  background-color:black;
+  /* height: 90vh; */
+  padding:100px;
+  color: white;
+}
+.footer .social{
+  width: 30px;
+  margin: 10px;
+  transition: 0.5s;
+}
+.footer .social:hover{
+  width: 35px;
+  transition: 0.5s;
+}
+.footer .sobre a{
+  margin-bottom: 10px;
+  color: white;
+}
+.footer a{
+  color:white;
+}
+
+.footer .coluna h3{
+  margin-bottom:20px;
+}
+.footer .social-network{
+  margin-top:20px;
+}
+@media screen and (max-width: 576px) {
+  .footer .coluna{
+    margin-bottom:30px;
+  }
+  .footer .social{
+    width:20px;
+  }
+  .curved{
+    height: 100vh;
+  }
+  .curved p{
+      font-size: 1rem;
+      text-align: justify;
+      padding: 10px;
+      /* margin-bottom: 5%; */
+  }
+  .modulos{
+    margin-top: 150px;
+  }
+  .info-modulo-body{
+      height: 260px;
+      overflow-y: auto;
+
+  }
+}
