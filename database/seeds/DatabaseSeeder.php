@@ -11,25 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
-        DB::table('enderecos')->insert([  // 1
-          'rua' => 'a',
-          'numero' => 1,
-          'bairro' => 'b',
-          'cidade' => 'c',
-          'uf'     => 'd',
-          'cep'    => 2,
-        ]);
-
-        DB::table('enderecos')->insert([  // 1
-          'rua' => 'R. Manoel Clemente',
-          'numero' => '161',
-          'bairro' => 'Santo Antônio',
-          'cidade' => 'Garanhuns',
-          'uf'     => 'PE',
-          'cep'    => '55293-040',
-        ]);
-
+       
         DB::table('users')->insert([  //
           'name' => 'coord',
           'email' => 'teste@teste',
@@ -38,7 +20,6 @@ class DatabaseSeeder extends Seeder
           'instituicao'     => 'd',
           'celular'    => 2,
           'especProfissional' => 'e',
-          'enderecoId' => 1,
           'email_verified_at' => '2020-02-15',
         ]);
 
@@ -50,7 +31,6 @@ class DatabaseSeeder extends Seeder
           'instituicao'     => 'UFAPE',
           'celular'    => '(99) 99999-9999',
           'especProfissional' => ' ',
-          'enderecoId' => 1,
           'email_verified_at' => '2020-02-15',
         ]);
 
@@ -61,19 +41,13 @@ class DatabaseSeeder extends Seeder
 O número máximo de autores por trabalho será seis autores;
 Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
           'tipo'=>'teste',
-          'dataInicio'=>'2020-07-01',
-          'dataFim'=>'2020-07-03',
           'inicioSubmissao'=>'2020-03-30',
           'fimSubmissao'=>'2020-04-20',
           'inicioRevisao'=>'2020-04-21',
           'fimRevisao'=>'2020-05-21',
-          'inicioResultado'=>'2020-05-22',
-          'fimResultado'=>'2020-05-23',
+          'resultado'=>'2020-05-22',
           'numMaxTrabalhos' => 2,
           'numMaxCoautores' => 5,
-          // 'possuiTaxa'=>true,
-          // 'valorTaxa'=>10,
-          'enderecoId'=>2,
           'coordenadorId'=>1,
           'hasResumo'=>false,
         ]);
@@ -119,7 +93,6 @@ Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo u
             'instituicao'     => 'd',
             'celular'    => 2,
             'especProfissional' => 'e',
-            'enderecoId' => 1,
           ]);
 
           if($i < 20){
@@ -170,7 +143,6 @@ Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo u
           'celular'    => 2,
           'especProfissional' => 'e',
           'email_verified_at' => '2020-02-15',
-          'enderecoId' => 1,
         ]);
     }
 }
