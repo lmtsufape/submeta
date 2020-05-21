@@ -36,6 +36,8 @@ Auth::routes(['verify' => true]);
 Route::get('/perfil','UserController@perfil')->name('perfil')->middleware(['auth', 'verified']);
 Route::post('/perfil','UserController@editarPerfil')->name('perfil')->middleware(['auth', 'verified']);
 
+// Rotas Administrador
+Route::get('/home-admin', 'AdministradorController@index')->middleware('checkAdministrador')->name('admin.index');
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 

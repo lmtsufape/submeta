@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('cpf')->nullable();
             $table->string('especProfissional')->nullable();
             $table->boolean('usuarioTemp')->nullable();
+            $table->string('tipo')->nullable();
             $table->rememberToken();
             $table->timestamps();
 

@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+
         DB::table('enderecos')->insert([  // 1
           'rua' => 'a',
           'numero' => 1,
@@ -172,5 +173,8 @@ Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo u
           'email_verified_at' => '2020-02-15',
           'enderecoId' => 1,
         ]);
+        $this->call(UsuarioSeeder::class);
+        $this->call(AdministradorSeeder::class);
+        
     }
 }

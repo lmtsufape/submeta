@@ -55,7 +55,37 @@
                                     {{-- <a class="nav-link" data-toggle="modal" data-target="#modalCadastro">{{ __('Cadastro') }}</a> --}}
                                 </li>
                             @endif
-                        @else
+                        @else                            
+                            <!-- Se o usuário for um aluno -->
+                            @if(Auth::user()->tipo == 'administrador')
+                                <!-- carrega o componente contendo Navbar do aluno -->
+                                {{-- @component('componentes.navbarAluno')
+                                @endcomponent --}}
+                            @endif
+
+                            <!-- Se o usuário for um servidor -->
+                            @if(Auth::user()->tipo == 'reitor')
+                                <!-- Carrega component contendo navbar do servidor -->
+                                {{-- @component('componentes.navbarServidor')
+                                @endcomponent --}}
+                            @endif
+
+                            @if(Auth::user()->tipo == 'proReitor')
+                                <!-- Carrega component contendo navbar do administrador -->
+                                {{-- @component('componentes.navbarAdministrador')
+                                @endcomponent --}}
+                            @endif
+                            @if(Auth::user()->tipo == 'proponente')
+                                <!-- Carrega component contendo navbar do administrador -->
+                                {{-- @component('componentes.navbarAdministrador')
+                                @endcomponent --}}
+                            @endif
+                            @if(Auth::user()->tipo == 'coordenadorComite')
+                                <!-- Carrega component contendo navbar do administrador -->
+                                {{-- @component('componentes.navbarAdministrador')
+                                @endcomponent --}}
+                            @endif
+                            
                             <li class="nav-item dropdown">
 
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
