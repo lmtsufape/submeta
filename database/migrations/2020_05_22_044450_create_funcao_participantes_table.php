@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReitorsTable extends Migration
+class CreateFuncaoParticipantesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateReitorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reitors', function (Blueprint $table) {
+        Schema::create('funcao_participantes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('nome');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class CreateReitorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reitors');
+        Schema::dropIfExists('funcao_participantes');
     }
 }

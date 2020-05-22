@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddUsersToReitorsTable extends Migration
+class AddUsersToAdministradorResponsavelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddUsersToReitorsTable extends Migration
      */
     public function up()
     {
-        Schema::table('reitors', function (Blueprint $table) {
+        Schema::table('administrador_responsavels', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
         });
@@ -26,8 +26,8 @@ class AddUsersToReitorsTable extends Migration
      */
     public function down()
     {
-        Schema::table('reitors', function (Blueprint $table) {
-            $table->dropForeign('reitors_user_id_foreign');
+        Schema::table('administrador_responsavels', function (Blueprint $table) {
+            $table->dropForeign('administrador_responsavels_user_id_foreign');
             $table->dropColumn('user_id');
         });
     }

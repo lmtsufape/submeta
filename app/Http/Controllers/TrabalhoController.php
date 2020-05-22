@@ -12,6 +12,9 @@ use App\Revisor;
 use App\Modalidade;
 use App\Atribuicao;
 use App\Arquivo;
+use App\GrandeArea;
+use App\SubArea;
+use App\FuncaoParticipantes;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Http\Request;
@@ -31,31 +34,18 @@ class TrabalhoController extends Controller
      */
     public function index($id)
     {
-        $evento = Evento::find($id);
-        $areas = Area::where('eventoId', $evento->id)->get();
-        $areasId = Area::where('eventoId', $evento->id)->select('id')->get();
-        $revisores = Revisor::where('eventoId', $evento->id)->get();
-        $modalidades = Modalidade::all();        
-        $areaModalidades = AreaModalidade::whereIn('areaId', $areasId)->get();        
-        $areasEnomes = Area::wherein('id', $areasId)->get();
-        $modalidadesIDeNome = [];
-        foreach ($areaModalidades as $key) {
-          array_push($modalidadesIDeNome,['areaId' => $key->area->id,
-                                          'modalidadeId' => $key->modalidade->id,
-                                          'modalidadeNome' => $key->modalidade->nome]);
-        }
-
-        $trabalhos = Trabalho::where('autorId', Auth::user()->id)->whereIn('areaId', $areasId)->get();
-        // dd($evento);
+        $edital = Evento::find($id);
+        $grandeAreas = GrandeArea::all();
+        $areas = Area::all();
+        $subAreas = SubArea::all();
+        $funcaoParticipantes = FuncaoParticipantes::all(); 
         return view('evento.submeterTrabalho',[
-                                              'evento'          => $evento,
-                                              'areas'           => $areas,
-                                              'revisores'       => $revisores,
-                                              'modalidades'     => $modalidades,
-                                              'areaModalidades' => $areaModalidades,
-                                              'trabalhos'       => $trabalhos,
-                                              'areasEnomes'     => $areasEnomes,
-                                              'modalidadesIDeNome'     => $modalidadesIDeNome,
+                                            'edital'             => $edital,
+                                            'grandeAreas'        => $grandeAreas,
+                                            'areas'              => $areas,
+                                            'subAreas'           => $subAreas,
+                                            'funcaoParticipantes'=> $funcaoParticipantes               
+                                              
                                             ]);
     }
 
@@ -76,6 +66,7 @@ class TrabalhoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+      dd($request->all());
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();
       $evento = Evento::find($request->eventoId);

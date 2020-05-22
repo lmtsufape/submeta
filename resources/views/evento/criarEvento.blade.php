@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row titulo">
-        <h1>Novo Evento</h1>
+        <h1>Novo Edital</h1>
     </div>
 
     <form action="{{route('evento.criar')}}" method="POST" enctype="multipart/form-data">

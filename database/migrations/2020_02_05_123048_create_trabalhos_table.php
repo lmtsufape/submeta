@@ -17,6 +17,19 @@ class CreateTrabalhosTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->string('titulo');
+            $table->string('grandeArea');
+            $table->string('area');
+            $table->string('subArea');
+            $table->string('decisaoCONSU');
+            $table->string('anexoDecisaoCONSU');
+            $table->string('autorizacaoComiteEtica');
+            $table->string('anexoAutorizacaoComiteEtica');
+            $table->string('coordenador'); //preencher automaticamente
+            $table->string('anexoLattesCoordenador'); 
+            $table->string('anexoPlanilhaPontuacao');
+            $table->string('pontuacaoPlanilha');
+            $table->string('linkGrupoPesquisa');
+            $table->string('linkLattesEstudante');
             $table->string('autores')->nullable();
             $table->date('data')->nullable();
             $table->text('resumo')->nullable();
@@ -26,6 +39,7 @@ class CreateTrabalhosTable extends Migration
             $table->integer('areaId');
             $table->integer('autorId');
             $table->integer('eventoId');
+            $table->integer('proponente_id');
         });
     }
 

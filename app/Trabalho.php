@@ -50,4 +50,7 @@ class Trabalho extends Model
   public function evento(){
       return $this->belongsTo('App\Evento', 'eventoId');
   }
+  public function planoTrabalho(){
+      return $this->hasMany('App\PlanoTrabalho');
+  }
 }

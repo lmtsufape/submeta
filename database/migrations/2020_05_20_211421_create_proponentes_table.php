@@ -15,6 +15,19 @@ class CreateProponentesTable extends Migration
     {
         Schema::create('proponentes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('CPF');
+            $table->string('SIAPE');
+            $table->string('email')->unique();
+            $table->string('cargo');
+            $table->string('vinculo');
+            $table->string('titulacaoMaxima');
+            $table->string('anoTitulacao');
+            $table->string('grandeArea');
+            $table->string('area');
+            $table->string('subArea');
+            $table->string('bolsistaProdutividade');
+            $table->string('nivel');
+            $table->string('linkLattes');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProReitorsTable extends Migration
+class CreateAdministradorResponsavelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateProReitorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pro_reitors', function (Blueprint $table) {
+        Schema::create('administrador_responsavels', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateProReitorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pro_reitors');
+        Schema::dropIfExists('administrador_responsavels');
     }
 }

@@ -118,21 +118,21 @@
     </div>
     <div class="row margin">
         <div class="col-sm-12 info-evento">
-            <h4>Revisão de Trabalhos</h4>
+            {{-- <h4>Revisão de Trabalhos</h4>
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
                 {{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}
-            </p>
+            </p> --}}
         </div>
     </div>
 
     <div class="row margin">
         <div class="col-sm-12 info-evento">
-            <h4>Endereço</h4>
+            {{-- <h4>Endereço</h4>
             <p>
                 <img class="" src="{{asset('img/icons/map-marker-alt-solid.svg')}}" alt="">
                 {{$evento->endereco->rua}}, {{$evento->endereco->numero}} - {{$evento->endereco->cidade}} / {{$evento->endereco->uf}}.
-            </p>
+            </p> --}}
         </div>
     </div>
     @if($hasFile == true)

@@ -69,22 +69,13 @@
                                 {{-- @component('componentes.navbarServidor')
                                 @endcomponent --}}
                             @endif
-
-                            @if(Auth::user()->tipo == 'proReitor')
-                                <!-- Carrega component contendo navbar do administrador -->
-                                {{-- @component('componentes.navbarAdministrador')
-                                @endcomponent --}}
-                            @endif
+                            
                             @if(Auth::user()->tipo == 'proponente')
                                 <!-- Carrega component contendo navbar do administrador -->
                                 {{-- @component('componentes.navbarAdministrador')
                                 @endcomponent --}}
                             @endif
-                            @if(Auth::user()->tipo == 'coordenadorComite')
-                                <!-- Carrega component contendo navbar do administrador -->
-                                {{-- @component('componentes.navbarAdministrador')
-                                @endcomponent --}}
-                            @endif
+                            
                             
                             <li class="nav-item dropdown">
 
