@@ -57,6 +57,11 @@
             </div>
         </div>
         
+        <div class="row subtitulo">
+            <div class="col-sm-12">
+                <p>Projetos</p>
+            </div>
+        </div>
         {{-- dataInicio | dataFim | inicioSubmissao | fimSubmissao --}}
         <div class="row justify-content-center">
 
@@ -107,7 +112,7 @@
 
         <div class="row justify-content-left">
           <div class="col-sm-6">
-              <label for="resultado" class="col-form-label">{{ __('Data do resultado') }}</label>
+              <label for="resultado" class="col-form-label">{{ __('Data do Resultado') }}</label>
               <input id="resultado" type="date" class="form-control @error('resultado') is-invalid @enderror" name="resultado" value="{{ old('resultado') }}" required autocomplete="resultado" autofocus>
 
               @error('resultado')
@@ -118,9 +123,15 @@
           </div>
         </div>
 
+        <div class="row subtitulo">
+            <div class="col-sm-12">
+                <p>Documentos</p>
+            </div>
+        </div>
+
         {{-- Pdf Edital --}}
         <div class="row justify-content-center" style="margin-top:10px">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <div class="form-group">
                     <label for="pdfEdital">PDF do Edital</label>
                     <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
@@ -131,18 +142,10 @@
                     @enderror
                     </div>
             </div>
-        </div>
-
-
-        <div class="row subtitulo">
-            <div class="col-sm-12">
-                <p>Modelos de Documentos</p>
-            </div>
-        </div>
-        <div class="row justify-content-center" style="margin-top:10px">
-            <div class="col-sm-12">
+        
+            <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="modeloDocumento">Adicione um arquivo zipado com os templates/modelos dos seus documentos</label>
+                    <label for="modeloDocumento">Arquivo zipado com os modelos de documentos do edital</label>
                     <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
                     @error('pdfEdital')
                         <span class="invalid-feedback" role="alert">

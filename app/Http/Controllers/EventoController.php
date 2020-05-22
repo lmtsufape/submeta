@@ -197,9 +197,8 @@ class EventoController extends Controller
     public function edit($id)
     {
         // dd($id);
-        $evento = Evento::find($id);
-        $endereco = Endereco::find($evento->enderecoId);
-        return view('evento.editarEvento',['evento'=>$evento,'endereco'=>$endereco]);
+        $evento = Evento::find($id);       
+        return view('evento.editarEvento',['evento'=>$evento]);
     }
 
     /**
