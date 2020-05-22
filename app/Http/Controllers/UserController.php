@@ -13,6 +13,13 @@ use App\Coautor;
 class UserController extends Controller
 {
     //
+    public function index(){
+        if(Auth::user()){
+          return redirect()->route('home');
+        }
+    }
+
+
     function perfil(){
         $user = User::find(Auth::user()->id);
         $end = $user->endereco;

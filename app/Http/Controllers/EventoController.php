@@ -36,6 +36,17 @@ class EventoController extends Controller
 
     }
 
+    public function listar()
+    {
+        //
+        $eventos = Evento::all();
+        // $comissaoEvento = ComissaoEvento::all();
+        // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
+        
+        return view('evento.listarEvento',['eventos'=>$eventos]);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *

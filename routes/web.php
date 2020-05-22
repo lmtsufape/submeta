@@ -11,6 +11,7 @@
 |
 */
 use App\Evento;
+
 Route::get('/', function () {
     if(Auth::check()){
       return redirect()->route('home');
@@ -60,6 +61,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/evento/criar',          'EventoController@create'                    )->name('evento.criar');
   Route::post(  '/evento/criar',          'EventoController@store'                     )->name('evento.criar');
   Route::get(   '/evento/visualizar/{id}','EventoController@show'                      )->name('evento.visualizar');
+  Route::get(   '/evento/listar',          'EventoController@listar'                      )->name('evento.listar');
   Route::delete('/evento/excluir/{id}',   'EventoController@destroy'                   )->name('evento.deletar');
   Route::get(   '/evento/editar/{id}',    'EventoController@edit'                      )->name('evento.editar');
   Route::post(   '/evento/editar/{id}',    'EventoController@update'                      )->name('evento.update');
@@ -99,3 +101,5 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/area/comissao',         'EventoController@listComissaoTrabalhos'     )->name('area.comissao');
 
 });
+
+Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
