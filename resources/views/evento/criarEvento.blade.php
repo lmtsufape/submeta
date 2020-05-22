@@ -135,6 +135,7 @@
                 <div class="form-group">
                     <label for="pdfEdital">PDF do Edital</label>
                     <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
+                    <small>O arquivo selecionado deve ser no formato PDF de até xmb.</small>
                     @error('pdfEdital')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -145,9 +146,10 @@
         
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="modeloDocumento">Arquivo zipado com os modelos de documentos do edital</label>
+                    <label for="modeloDocumento">Arquivo com os modelos de documentos do edital</label>
                     <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
-                    @error('pdfEdital')
+                    <small>O arquivo selecionado deve ter até xmb.</small>
+                    @error('modeloDocumento')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

@@ -6,7 +6,7 @@
         <h1>{{$evento->nome}}</h1>
     </div>
 
-    <form action="{{route('evento.update',$evento->id)}}" method="POST">
+    <form action="{{route('evento.update',$evento->id)}}" method="POST" enctype="multipart/form-data">
     @csrf
         <div class="row subtitulo">
             <div class="col-sm-12">
@@ -119,7 +119,7 @@
                 <label for="resultado" class="col-form-label">{{ __('Data do Resultado') }}</label>
                 <input value="{{$evento->resultado}}" id="resultado" type="date" class="form-control @error('resultado') is-invalid @enderror" name="resultado" value="{{ old('resultado') }}" required autocomplete="resultado" autofocus>
 
-                @error('inicioResultado')
+                @error('resultado')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -127,12 +127,22 @@
             </div>
         </div>{{-- end inicioRevisao | fimRevisao | inicioResultado | fimResultado--}}
 
+        <div class="row subtitulo">
+            <div class="col-sm-12">
+                <p>Documentos</p>
+            </div>
+        </div>
+        
         {{-- Pdf Edital --}}
         <div class="row justify-content-center" style="margin-top:10px">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <div class="form-group">
                     <label for="pdfEdital">PDF do Edital</label>
+                    <a href="{{route('download', ['file' => $evento->pdfEdital])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                    </a>
                     <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
+                    <small>O arquivo selecionado deve ser no formato PDF de até xmb.</small>
                     @error('pdfEdital')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -140,20 +150,16 @@
                     @enderror
                     </div>
             </div>
-        </div>
-
-
-        <div class="row subtitulo">
-            <div class="col-sm-12">
-                <p>Modelos de Documentos</p>
-            </div>
-        </div>
-        <div class="row justify-content-center" style="margin-top:10px">
-            <div class="col-sm-12">
+       
+            <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="modeloDocumento">Adicione um arquivo zipado com os templates/modelos dos seus documentos</label>
+                    <label for="modeloDocumento">Arquivo com os modelos de documentos do edital</label>
+                    <a href="{{route('download', ['file' => $evento->modeloDocumento])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                    </a>
                     <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
-                    @error('pdfEdital')
+                    <small>O arquivo selecionado deve ter até xmb.</small>
+                    @error('modeloDocumento')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -169,7 +175,7 @@
             </div>
             <div class="col-md-6" style="padding-ridht:0">
                 <button type="submit" class="btn btn-primary botao-form">
-                    {{ __('Salvar Evento') }}
+                    {{ __('Salvar Edital') }}
                 </button>
             </div>
         </div>

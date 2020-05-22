@@ -79,7 +79,9 @@ class EventoController extends Controller
             'fimSubmissao'        => ['required', 'date'],
             'inicioRevisao'       => ['required', 'date'],
             'fimRevisao'          => ['required', 'date'],
-            'resultado'           => ['required', 'date'],       
+            'resultado'           => ['required', 'date'],    
+            'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],  	 
+            'modeloDocumento'     => ['required', 'file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
           ]);
         }
 
@@ -94,6 +96,8 @@ class EventoController extends Controller
           'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
           'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
           'resultado'           => ['required', 'date', 'after:' . $yesterday],
+          'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'modeloDocumento'     => ['required', 'file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
         ]);
 
         $evento = Evento::create([
@@ -105,7 +109,7 @@ class EventoController extends Controller
           'inicioRevisao'       => $request->inicioRevisao,
           'fimRevisao'          => $request->fimRevisao,
           'resultado'           => $request->resultado,
-          'coordenadorId'       => Auth::user()->id,
+          'coordenadorId'       => Auth::user()->id,          
         ]);
 
         // se vou me tornar coordenador do Evento
@@ -116,6 +120,22 @@ class EventoController extends Controller
         // }
 
         $evento->coordenadorId = Auth::user()->id;
+
+        $pdfEdital = $request->pdfEdital;
+        $path = 'pdfEdital/' . $evento->id . '/';
+        $nome = "edital.pdf";
+        Storage::putFileAs($path, $pdfEdital, $nome);  
+        $evento->pdfEdital = $path . $nome;
+         
+        $modeloDocumento = $request->modeloDocumento;
+        $extension = $modeloDocumento->extension();
+        $path = 'modeloDocumento/' . $evento->id . '/';
+        $nome = "modelo" . "." . $extension;
+        Storage::putFileAs($path, $modeloDocumento, $nome);
+  
+        $evento->modeloDocumento = $path . $nome;
+
+
         $evento->save();
 
         $user = Auth::user();
@@ -211,7 +231,7 @@ class EventoController extends Controller
     public function update(Request $request, $id)
     {
         //dd($request);
-        $evento = Evento::find($id);        
+        $evento = Evento::find($id);    
 
         $evento->nome                 = $request->nome;        
         $evento->descricao            = $request->descricao;
@@ -220,7 +240,24 @@ class EventoController extends Controller
         $evento->fimSubmissao         = $request->fimSubmissao;
         $evento->inicioRevisao        = $request->inicioRevisao;
         $evento->fimRevisao           = $request->fimRevisao;
-        $evento->resultado            = $request->resultado;     
+        $evento->resultado            = $request->resultado;  
+        
+        if($request->pdfEdital != null){
+          $pdfEdital = $request->pdfEdital;
+          $path = 'pdfEdital/' . $evento->id . '/';
+          $nome = "edital.pdf";
+          Storage::putFileAs($path, $pdfEdital, $nome);  
+        }
+         
+        if($request->modeloDocumento != null){
+          $modeloDocumento = $request->modeloDocumento;
+          $extension = $modeloDocumento->extension();
+          $path = 'modeloDocumento/' . $evento->id . '/';
+          $nome = "modelo" . "." . $extension;
+          Storage::putFileAs($path, $modeloDocumento, $nome);
+          $evento->modeloDocumento = $path . $nome;
+        }
+
         $evento->save();
 
         $eventos = Evento::all();
@@ -259,8 +296,11 @@ class EventoController extends Controller
           $trabalhos->delete();    
         }
 
+        Storage::deleteDirectory('pdfEdital/' . $evento->id );
+        Storage::deleteDirectory('modeloDocumento/' . $evento->id);
+
         $evento->delete();
-        
+
         return redirect()->back();
     }
 

@@ -240,7 +240,7 @@
         @if($evento->inicioSubmissao <= $mytime)
           @if($mytime < $evento->fimSubmissao)
             <div class="col-md-6 botao-form-right" style="">
-              <a class="btn btn-primary botao-form" href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%">Submeter Trabalho</a>
+              <a class="btn btn-primary botao-form" href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%">Submeter Projeto</a>
             </div>
           @endif
         @endif

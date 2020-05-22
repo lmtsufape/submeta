@@ -29,6 +29,8 @@ class CreateEventosTable extends Migration
             $table->boolean('hasResumo')->nullable();
             $table->integer('coordComissaoId')->nullable();
             $table->integer('coordenadorId')->nullable();
+            $table->string('pdfEdital')->nullable();
+            $table->string('modeloDocumento')->nullable();
         });
     }
 
