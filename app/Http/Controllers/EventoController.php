@@ -210,33 +210,18 @@ class EventoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $evento = Evento::find($id);
-        $endereco = Endereco::find($evento->enderecoId);
+        //dd($request);
+        $evento = Evento::find($id);        
 
-        $evento->nome                 = $request->nome;
-        // $evento->numeroParticipantes  = $request->numeroParticipantes;
+        $evento->nome                 = $request->nome;        
         $evento->descricao            = $request->descricao;
-        $evento->tipo                 = $request->tipo;
-        $evento->dataInicio           = $request->dataInicio;
-        $evento->dataFim              = $request->dataFim;
+        $evento->tipo                 = $request->tipo;       
         $evento->inicioSubmissao      = $request->inicioSubmissao;
         $evento->fimSubmissao         = $request->fimSubmissao;
         $evento->inicioRevisao        = $request->inicioRevisao;
         $evento->fimRevisao           = $request->fimRevisao;
-        $evento->inicioResultado      = $request->inicioResultado;
-        $evento->fimResultado         = $request->fimResultado;
-        // $evento->possuiTaxa           = $request->possuiTaxa;
-        // $evento->valorTaxa            = $request->valorTaxa;
-        $evento->enderecoId           = $endereco->id;
+        $evento->resultado            = $request->resultado;     
         $evento->save();
-
-        $endereco->rua                = $request->rua;
-        $endereco->numero             = $request->numero;
-        $endereco->bairro             = $request->bairro;
-        $endereco->cidade             = $request->cidade;
-        $endereco->uf                 = $request->uf;
-        $endereco->cep                = $request->cep;
-        $endereco->save();
 
         $eventos = Evento::all();
         return view('coordenador.home',['eventos'=>$eventos]);
@@ -251,7 +236,6 @@ class EventoController extends Controller
     public function destroy($id)
     {
         $evento = Evento::find($id);
-        $endereco = Endereco::find($evento->enderecoId);
 
         $areas = Area::where('eventoId', $id);
         $atividades = Atividade::where('eventoId', $id);
@@ -276,8 +260,7 @@ class EventoController extends Controller
         }
 
         $evento->delete();
-        $endereco->delete();
-
+        
         return redirect()->back();
     }
 

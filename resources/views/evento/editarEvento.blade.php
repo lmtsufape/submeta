@@ -30,10 +30,10 @@
             <div class="col-sm-3">
                 <label for="tipo" class="col-form-label">{{ __('Tipo') }}</label>
                 <!-- <input value="{{$evento->tipo}}" id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required autocomplete="tipo" autofocus> -->
-                <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required>
-                    <option value="PIBIC">PIBIC</option>
-                    <option value="PIBIC-EM">PIBIC-EM</option>
-                    <option value="PIBITI">PIBITI</option>
+                <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" required>
+                    <option value="PIBIC" {{ $evento->tipo == "PIBIC" ? 'selected' :'' }}>PIBIC</option>
+                    <option value="PIBIC-EM" {{ $evento->tipo == "PIBIC-EM" ?  'selected' :'' }}>PIBIC-EM</option>
+                    <option value="PIBITI" {{ $evento->tipo == "PIBITI" ?  'selected' :'' }}>PIBITI</option>
                 </select>
                 @error('tipo')
                 <span class="invalid-feedback" role="alert">
@@ -48,7 +48,7 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Descrição</label>
-                    <textarea value="{{$evento->descricao}}" class="form-control @error('descricao') is-invalid @enderror" value="{{ old('descricao') }}" id="descricao" name="descricao" rows="3"></textarea>
+                    <textarea class="form-control @error('descricao') is-invalid @enderror" value="{{ $evento->descricao }}" id="descricao" name="descricao" rows="3">{{$evento->descricao}}</textarea>
                     @error('descricao')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
