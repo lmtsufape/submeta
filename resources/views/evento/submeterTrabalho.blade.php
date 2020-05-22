@@ -351,7 +351,7 @@
                     </p>
                     <div class="row justify-content-center">
                         <div class="col-md-6">
-                            <a href="{{route('edital.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+                            <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
                         </div>
                         <div class="col-md-6">
                             <button type="submit" class="btn btn-primary" style="width:100%">
