@@ -155,6 +155,5 @@ Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo u
           'especProfissional' => 'e',
           'email_verified_at' => '2020-02-15',
         ]);
->>>>>>> 006bbf698ee22e7e9cf1b30c8de36a7e10331f3b
     }
 }
