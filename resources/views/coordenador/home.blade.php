@@ -32,6 +32,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col-sm-12">
                                         {{$evento->nome}}
+                                        @if(Auth::user()->tipo == "administrador")
                                         {{-- @can('isCoordenador', $evento) --}}
                                             <div class="btn-group dropright dropdown-options">
                                                 <a id="options" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,6 +59,7 @@
                                                 </div>
                                             </div>
                                         {{-- @endcan --}}
+                                        @endif
                                     </div>
 
                                 </div>
