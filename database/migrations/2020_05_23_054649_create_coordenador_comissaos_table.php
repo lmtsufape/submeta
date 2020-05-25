@@ -16,6 +16,9 @@ class CreateCoordenadorComissaosTable extends Migration
         Schema::create('coordenador_comissaos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

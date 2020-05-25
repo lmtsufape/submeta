@@ -19,7 +19,7 @@ class AddForeignToTrabalhosTable extends Migration
             $table->foreign('area_id')->references('id')->on('areas');
             $table->foreign('sub_area_id')->references('id')->on('sub_areas');
             $table->foreign('evento_id')->references('id')->on('eventos');
-            $table->foreign('proponente_id')->references('id')->on('proponentes');
+            $table->foreign('coordenador_id')->references('id')->on('coordenador_comissaos');
 
             //$table->foreignId('user_id')->constrained();
             // $table->integer('coordenador');

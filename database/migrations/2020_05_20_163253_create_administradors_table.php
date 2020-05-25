@@ -14,9 +14,13 @@ class CreateAdministradorsTable extends Migration
     public function up()
     {
         Schema::create('administradors', function (Blueprint $table) {
-            $table->bigIncrements('id');/*Igor pediu que as PK das tabelas fossem o id */
+            $table->bigIncrements('id');
+
             $table->string('matricula')->unique(); 
             $table->timestamps();
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

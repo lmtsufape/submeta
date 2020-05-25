@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
           'descricao'=>'Cada autor inscrito poderá submeter até dois (2) resumos;
            O número máximo de autores por trabalho será seis autores;
            Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
-          'tipo'=>'teste',
+          'tipo'=>'PIBIC',
           'inicioSubmissao'=>'2020-03-30',
           'fimSubmissao'=>'2020-09-20',
           'inicioRevisao'=>'2020-04-21',

@@ -17,6 +17,7 @@ class CreateAreasTable extends Migration
             $table->bigIncrements('id');            
             $table->string('nome');
             
+            $table->unsignedBigInteger('grande_area_id');
             $table->timestamps();
             // $table->integer('modalidadeId')->nullable();
             // $table->integer('eventoId');

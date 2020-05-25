@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Trabalho;
 use App\Coautor;
 use App\Evento;
+use App\CoordenadorComissao;
 use App\User;
+use App\Proponente;
 use App\AreaModalidade;
 use App\Area;
 use App\Revisor;
@@ -71,6 +73,8 @@ class TrabalhoController extends Controller
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();
       $evento = Evento::find($request->editalId);
+      $coordenador = CoordenadorComissao::find($evento->coordenadorId);
+      //dd($coordenador->id);
 
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
@@ -83,19 +87,18 @@ class TrabalhoController extends Controller
 
         $validatedData = $request->validate([
           'editalId'                => ['required', 'integer'],
-          'nomeProjeto'             => ['required', 'string',],
+          'nomeProjeto'             => ['required', 'string'],
           'grandeAreaId'            => ['required', 'integer'],
           'areaId'                  => ['required', 'integer'],
           'subAreaId'               => ['required', 'integer'],
           'pontuacaoPlanilha'       => ['required', 'integer'],
           'linkGrupo'               => ['required', 'string'],
           'linkLattesEstudante'     => ['required', 'string'],
-          'nomeCoordenador'         => ['required', 'string'],
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['string'],
           'nomePlanoTrabalho.*'     => ['string'],
           'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          //'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLatterCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
@@ -103,10 +106,10 @@ class TrabalhoController extends Controller
 
         $trabalho = Trabalho::create([
           'titulo'                      => $request->nomeProjeto,
+          'coordenador_id'              => $coordenador->id,
           'grande_area_id'              => $request->grandeAreaId,
           'area_id'                     => $request->areaId,
-          'sub_area_id'                 => $request->subAreaId,        
-          'coordenador'                 => $request->nomeCoordenador,       
+          'sub_area_id'                 => $request->subAreaId,               
           'pontuacaoPlanilha'           => $request->pontuacaoPlanilha,
           'linkGrupoPesquisa'           => $request->linkGrupo,
           'linkLattesEstudante'         => $request->linkLattesEstudante,
@@ -120,6 +123,7 @@ class TrabalhoController extends Controller
           'anexoLattesCoordenador'      => $request->anexoLatterCoordenador,
           'anexoPlanilhaPontuacao'      => $request->anexoPlanilha,
         ]);
+        //dd($request->all());
       }else{
         //Caso em que o anexo da Decisão do CONSU não necessário
         $validatedData = $request->validate([
@@ -143,6 +147,7 @@ class TrabalhoController extends Controller
 
         $trabalho = Trabalho::create([
           'titulo'                      => $request->nomeProjeto,
+          'coordenador_id'              => $coordenador->id,
           'grande_area_id'              => $request->grandeAreaId,
           'area_id'                     => $request->areaId,
           'sub_area_id'                 => $request->subAreaId,        
@@ -163,7 +168,8 @@ class TrabalhoController extends Controller
       }
 
       //Relaciona o projeto criado com o proponente que criou o projeto
-      $trabalho->proponente()->save(Auth()->user()); 
+      $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+      $trabalho->proponentes()->save($proponente);  
 
       //Envia email com senha temp para cada participante do projeto
       if($request->emailParticipante != null){

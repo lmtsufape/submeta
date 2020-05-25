@@ -22,7 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('celular')->nullable();
             $table->string('cpf')->nullable();
             $table->string('tipo')->nullable();
-            $table->boolean('usuarioTemp')->nullable();            
+            $table->boolean('usuarioTemp')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('email_verified_at')->nullable();

@@ -32,7 +32,7 @@ class CreateTrabalhosTable extends Migration
             $table->unsignedBigInteger('area_id');
             $table->unsignedBigInteger('sub_area_id');
             $table->unsignedBigInteger('evento_id');
-            $table->unsignedBigInteger('proponente_id');
+            $table->unsignedBigInteger('coordenador_id');
 
             $table->timestamps();
         });

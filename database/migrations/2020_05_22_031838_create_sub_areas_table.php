@@ -17,6 +17,10 @@ class CreateSubAreasTable extends Migration
             $table->bigIncrements('id');
             $table->string("nome");
             $table->timestamps();
+
+
+            $table->unsignedBigInteger('area_id');
+            $table->foreign('area_id')->references('id')->on('areas');
         });
     }
 

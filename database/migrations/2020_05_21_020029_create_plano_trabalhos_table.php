@@ -18,6 +18,9 @@ class CreatePlanoTrabalhosTable extends Migration
             $table->string('titulo');
             $table->string('anexoPlanoTrabalho');
             $table->timestamps();
+
+            $table->unsignedBigInteger('trabalho_id');
+            $table->foreign('trabalho_id')->references('id')->on('trabalhos');
         });
     }
 

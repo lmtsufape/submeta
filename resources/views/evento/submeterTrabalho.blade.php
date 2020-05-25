@@ -208,7 +208,7 @@
                         </div>
 
                         
-
+                        
                         @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM')
                           {{-- Decisão do CONSU --}}
                           <div class="row justify-content-center">

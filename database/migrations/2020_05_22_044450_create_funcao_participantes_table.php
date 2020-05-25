@@ -17,6 +17,8 @@ class CreateFuncaoParticipantesTable extends Migration
             $table->bigIncrements('id');
             $table->string('nome');
             $table->timestamps();
+
+            
         });
     }
 

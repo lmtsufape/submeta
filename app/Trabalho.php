@@ -31,6 +31,7 @@ class Trabalho extends Model
       'sub_area_id',
       'evento_id', 
       'proponente_id',
+      'coordenador_id',
   ];
 
   public function recurso(){
@@ -76,5 +77,8 @@ class Trabalho extends Model
   }
   public function proponentes(){
       return $this->belongsToMany('App\Proponente', 'trabalho_proponente');
+  }
+  public function coordenador(){
+      return $this->belongsTo('App\CoordenadorComissao');
   }
 }

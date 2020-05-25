@@ -11,6 +11,7 @@ use App\Atribuicao;
 use App\Modalidade;
 use App\ComissaoEvento;
 use App\User;
+use App\Proponente;
 use App\Trabalho;
 use App\AreaModalidade;
 use App\CoordenadorComissao;
@@ -170,19 +171,30 @@ class EventoController extends Controller
     public function show($id)
     {
         $evento = Evento::find($id);
-        $hasTrabalho = false;
-        $hasTrabalhoCoautor = false;
-        $hasFile = false;
-        $trabalhos = Trabalho::where('proponente_id', Auth::user()->id)->get();
-        $trabalhosCount = Trabalho::where('proponente_id', Auth::user()->id)->count();
+        $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+        if($proponente = null){
+          $hasTrabalho = false;
+          $hasFile = false;
+          $trabalhos = $proponente->trabalhos()->get();
+          $trabalhosCount = $proponente->trabalhos()->count();
+
+          if($trabalhosCount != 0){
+            $hasTrabalho = true;
+            $hasFile = true;
+          }
+        }else{
+          $hasTrabalho = false;
+          $hasFile = false;
+          $trabalhos = 0;
+          $trabalhosCount = 0;
+        }
+        
+        
         $trabalhosId = Trabalho::where('evento_id', $evento->id)->select('id')->get();
         //$trabalhosIdCoautor = Proponente::whereIn('trabalhoId', $trabalhosId)->where('proponente_id', Auth::user()->id)->select('trabalhoId')->get();
         //$coautorCount = Coautor::whereIn('trabalhoId', $trabalhosId)->where('proponente_id', Auth::user()->id)->count();
         //$trabalhosCoautor = Trabalho::whereIn('id', $trabalhosIdCoautor)->get();
-        if($trabalhosCount != 0){
-          $hasTrabalho = true;
-          $hasFile = true;
-        }
+        
         // if($coautorCount != 0){
         //   $hasTrabalhoCoautor = true;
         //   $hasFile = true;

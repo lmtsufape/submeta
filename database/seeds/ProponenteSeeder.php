@@ -30,6 +30,7 @@ class ProponenteSeeder extends Seeder
         'bolsistaProdutividade' => '123123123',
         'nivel' => '123123123',
         'linkLattes' => '123123123',
+        'created_at' => '2020-01-01 00:00:00'
 
       ]);
     }
