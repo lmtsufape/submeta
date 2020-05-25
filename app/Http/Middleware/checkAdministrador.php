@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Middleware;
-
+use Auth;
 use Closure;
+use Illuminate\Support\Facades\Log;
 
 class checkAdministrador
 {
@@ -16,7 +17,8 @@ class checkAdministrador
     public function handle($request, Closure $next)
     {
       if(!Auth::check()){
-        return redirect('/')->with('error', 'É necessário estar logado para utilizar esta funcionalidade');
+        Log::debug('checkAdministrador');
+         return redirect('/');
       }
       if(Auth::user()->tipo=='administrador'){
         return $next($request);

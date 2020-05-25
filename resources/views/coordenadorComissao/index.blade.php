@@ -8,7 +8,7 @@
 
        <div class="row justify-content-center d-flex align-items-center">
 	      <div class="col-sm-4 d-flex justify-content-center ">
-	         <a href="{{route('evento.listar')}}" style="text-decoration:none; color: inherit;">
+	         <a href="{{ route('coordenador.editais') }}" style="text-decoration:none; color: inherit;">
 	            <div class="card text-center " style="border-radius: 30px; width: 18rem;">
 	                  <div class="card-body d-flex justify-content-center">
 	                      <h2 style="padding-top:15px">Editais</h2>
@@ -19,16 +19,7 @@
 	      </div>
 
 	      <div class="col-sm-4 d-flex justify-content-center">
-	         <a href="{{ route('admin.naturezas') }}" style="text-decoration:none; color: inherit;">
-	            <div class="card text-center " style="border-radius: 30px; width: 18rem;">
-	             <div class="card-body d-flex justify-content-center">
-	                  <h2 style="padding-top:15px">Natureza</h2>
-	               </div>
-	            </div>
-	         </a>
-	      </div>
-	      <div class="col-sm-4 d-flex justify-content-center">
-	         <a href="{{ route('admin.usuarios') }}" style="text-decoration:none; color: inherit;">
+	         <a href="{{ route('coordenador.usuarios') }}" style="text-decoration:none; color: inherit;">
 	            <div class="card text-center " style="border-radius: 30px; width: 18rem;">
 	             <div class="card-body d-flex justify-content-center">
 	                  <h2 style="padding-top:15px">Usuários</h2>

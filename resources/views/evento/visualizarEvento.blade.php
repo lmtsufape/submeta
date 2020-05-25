@@ -140,7 +140,7 @@
       @if($hasTrabalho)
         <div class="row margin">
             <div class="col-sm-12 info-evento">
-                <h4>Como Autor</h4>
+                <h4>Como Proponente</h4>
             </div>
         </div>
 
@@ -191,7 +191,7 @@
         </div>
       @endif
 
-      @if($hasTrabalhoCoautor)
+{{--       @if($hasTrabalhoCoautor)
         <div class="row margin">
             <div class="col-sm-12 info-evento">
                 <h4>Como Coautor</h4>
@@ -231,13 +231,13 @@
             </table>
           </div>
         </div>
-      @endif
+      @endif --}}
     @endif
 
     <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
         <div class="col-md-6 botao-form-left" style="">
-            <a class="btn btn-secondary botao-form" href="{{route('cancelarCadastro')}}" style="width:100%">Voltar</a>
+            <a class="btn btn-secondary botao-form" href="/" style="width:100%">Voltar</a>
         </div>
 
         @if($evento->inicioSubmissao <= $mytime)

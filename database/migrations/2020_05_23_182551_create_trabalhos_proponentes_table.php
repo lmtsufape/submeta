@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTrabalhosToProponentesTable extends Migration
+class CreateTrabalhosProponentesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class AddTrabalhosToProponentesTable extends Migration
      */
     public function up()
     {
-        Schema::table('proponentes', function (Blueprint $table) {
-            $table->unsignedBigInteger('trabalho_id')->nullable();
+        Schema::create('trabalho_proponente', function (Blueprint $table) {
+            $table->unsignedBigInteger('trabalho_id');
+            $table->unsignedBigInteger('proponente_id');
+
             $table->foreign('trabalho_id')->references('id')->on('trabalhos');
+            $table->foreign('proponente_id')->references('id')->on('proponentes');
         });
     }
 
@@ -26,9 +29,6 @@ class AddTrabalhosToProponentesTable extends Migration
      */
     public function down()
     {
-        Schema::table('proponentes', function (Blueprint $table) {
-            $table->dropForeign('proponentes_trabalho_id_foreign');
-            $table->dropColumn('trabalho_id');
-        });
+        Schema::dropIfExists('trabalho_proponente');
     }
 }

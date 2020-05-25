@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -14,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth','verified']);
+        $this->middleware(['auth']);
     }
 
     /**
@@ -23,13 +24,17 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {        
+    {
+        $eventos = \App\Evento::all();        
         if(Auth::check()){
           if(Auth::user()->tipo == 'administrador'){            
             return view('administrador.index');
           }
           else if (Auth::user()->tipo == 'administradorResponsavel') {
             return view('administradorResponsavel.index');
+          }
+          else if (Auth::user()->tipo == 'coordenador') {
+            return view('coordenadorComissao.index');
           }
           else if (Auth::user()->tipo == 'proponente') {
             return view('proponente.index');
@@ -38,8 +43,8 @@ class HomeController extends Controller
             return view('participante.index');
           }
         }
-      //
-        return view('home');
+        Log::debug('HomeController');
+        return view('index', ['eventos' => $eventos]);
     }
 
     public function downloadArquivo(Request $request){

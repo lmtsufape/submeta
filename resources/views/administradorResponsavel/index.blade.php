@@ -4,7 +4,7 @@
 
 <div class="container">
 
-    <h2 style="margin-top: 100px;">Administrador Responsavel</h2>
+  	<h2 style="margin-top: 100px; ">{{ Auth()->user()->name }}</h2>
 
 </div>
 

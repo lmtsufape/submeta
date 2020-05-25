@@ -56,7 +56,18 @@
                   </div>
             </div>
         </div>
-        
+        <div class="row justify-content-center">
+          <div class="col-sm-12">
+              <label for="coordenador_id" class="col-form-label">{{ __('Coordenador:') }}</label>
+              <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="coordenador_id" name="coordenador_id">
+                  <option value="" disabled selected hidden>-- Coordenador da Comissão Avaliadora --</option>
+                  @foreach($coordenadors as $coordenador)
+                    <option value="{{$coordenador->user->id}}">{{$coordenador->user->name}}</option>
+                  @endforeach
+              </select>
+          </div>
+        </div>
+
         <div class="row subtitulo">
             <div class="col-sm-12">
                 <p>Projetos</p>
@@ -161,7 +172,7 @@
         <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
             <div class="col-md-6" style="padding-left:0">
-                <a class="btn btn-secondary botao-form" href="{{route('coord.home')}}" style="width:100%">Cancelar</a>
+                <a class="btn btn-secondary botao-form" href="{{route('evento.listar')}}" style="width:100%">Cancelar</a>
             </div>
             <div class="col-md-6" style="padding-right:0">
                 <button type="submit" class="btn btn-primary botao-form" style="width:100%">

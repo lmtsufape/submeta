@@ -15,31 +15,26 @@ class CreateTrabalhosTable extends Migration
     {
         Schema::create('trabalhos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
             $table->string('titulo');
-            $table->string('grandeArea');
-            $table->string('area');
-            $table->string('subArea');
-            $table->string('decisaoCONSU');
-            $table->string('anexoDecisaoCONSU');
-            $table->string('autorizacaoComiteEtica');
-            $table->string('anexoAutorizacaoComiteEtica');
-            $table->string('coordenador'); //preencher automaticamente
-            $table->string('anexoLattesCoordenador'); 
-            $table->string('anexoPlanilhaPontuacao');
-            $table->string('pontuacaoPlanilha');
+            $table->boolean('avaliado')->nullable();
             $table->string('linkGrupoPesquisa');
             $table->string('linkLattesEstudante');
-            $table->string('autores')->nullable();
+            $table->string('pontuacaoPlanilha');
             $table->date('data')->nullable();
-            $table->text('resumo')->nullable();
-            $table->text('avaliado')->nullable();
+            //Anexos
+            $table->string('anexoProjeto');
+            $table->string('anexoDecisaoCONSU')->nullable();
+            $table->string('anexoPlanilhaPontuacao');
+            $table->string('anexoLattesCoordenador');
+            $table->string('anexoAutorizacaoComiteEtica');
+            //chaves estrangeiras
+            $table->unsignedBigInteger('grande_area_id');
+            $table->unsignedBigInteger('area_id');
+            $table->unsignedBigInteger('sub_area_id');
+            $table->unsignedBigInteger('evento_id');
+            $table->unsignedBigInteger('proponente_id');
 
-            $table->integer('modalidadeId');
-            $table->integer('areaId');
-            $table->integer('autorId');
-            $table->integer('eventoId');
-            $table->integer('proponente_id');
+            $table->timestamps();
         });
     }
 

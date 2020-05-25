@@ -12,7 +12,25 @@ class Trabalho extends Model
    * @var array
    */
   protected $fillable = [
-      'titulo', 'autores', 'data', 'modalidadeId', 'areaId', 'autorId', 'eventoId', 'resumo', 'avaliado'
+      'titulo',
+      'data', 
+      'avaliado',
+      'decisaoCONSU',      
+      'pontuacaoPlanilha', 
+      'linkGrupoPesquisa',
+      'linkLattesEstudante',      
+
+      'anexoDecisaoCONSU',
+      'anexoAutorizacaoComiteEtica',
+      'anexoLattesCoordenador',
+      'anexoPlanilhaPontuacao',
+      'anexoProjeto',
+
+      'grande_area_id',
+      'area_id',
+      'sub_area_id',
+      'evento_id', 
+      'proponente_id',
   ];
 
   public function recurso(){
@@ -52,5 +70,11 @@ class Trabalho extends Model
   }
   public function planoTrabalho(){
       return $this->hasMany('App\PlanoTrabalho');
+  }
+  public function participantes(){
+      return $this->belongsToMany('App\Participante', 'trabalho_participante');
+  }
+  public function proponentes(){
+      return $this->belongsToMany('App\Proponente', 'trabalho_proponente');
   }
 }

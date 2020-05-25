@@ -39,5 +39,23 @@ class UsuarioSeeder extends Seeder
           'tipo'=>'proponente',
           'email_verified_at'=>'2020-01-01'
         ]);
+
+        DB::table('users')->insert([
+
+          'name'=>'Coordenador1',
+          'email'=>'coordenador1@ufrpe.br',
+          'password'=>Hash::make('12345678'),
+          'tipo'=>'coordenador',
+          'email_verified_at'=>'2020-01-01'
+        ]);
+
+        DB::table('users')->insert([
+
+          'name'=>'Coordenador2',
+          'email'=>'coordenador2@ufrpe.br',
+          'password'=>Hash::make('12345678'),
+          'tipo'=>'coordenador',
+          'email_verified_at'=>'2020-01-01'
+        ]);
     }
 }

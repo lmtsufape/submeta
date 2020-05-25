@@ -10,7 +10,7 @@
         <h3>Editais</h3> 
       </div>
       <div class="col-sm-2">
-        <a href="{{route('evento.criar')}}" class="btn btn-primary">Criar Edital</a>
+        <a href="#" class="btn btn-primary">Criar Edital</a>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($eventos as $evento)
+{{--       @foreach ($eventos as $evento)
         <tr>
           <td>
             <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="visualizarEvento">
@@ -35,7 +35,7 @@
           <td>
             <div class="btn-group dropright dropdown-options">
                 <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
+                    
                 </a>
                 <div class="dropdown-menu">
                     <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item">
@@ -59,15 +59,9 @@
             </div>
           </td>
         </tr>
-      @endforeach
+      @endforeach --}}
     </tbody>
   </table>
 </div>
 
-@endsection
-
-@section('javascript')
-<script>
-  
-</script>
 @endsection

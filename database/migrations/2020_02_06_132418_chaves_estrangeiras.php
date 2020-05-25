@@ -101,18 +101,18 @@ class ChavesEstrangeiras extends Migration
 
       //------------------------------------------------------------------------
 
-      Schema::table('trabalhos', function (Blueprint $table) {
-          $table->foreign('modalidadeId')->references('id')->on('modalidades');
-      });
+      // Schema::table('trabalhos', function (Blueprint $table) {
+      //     $table->foreign('modalidadeId')->references('id')->on('modalidades');
+      // });
       // Schema::table('trabalhos', function (Blueprint $table) {
       //     $table->foreign('areaId')->references('id')->on('areas');
       // });
-      Schema::table('trabalhos', function (Blueprint $table) {
-          $table->foreign('autorId')->references('id')->on('users');
-      });
-      Schema::table('trabalhos', function (Blueprint $table) {
-          $table->foreign('eventoId')->references('id')->on('eventos');
-      });
+      // Schema::table('trabalhos', function (Blueprint $table) {
+      //     $table->foreign('autorId')->references('id')->on('users');
+      // });
+      // Schema::table('trabalhos', function (Blueprint $table) {
+      //     $table->foreign('eventoId')->references('id')->on('eventos');
+      // });
 
       //------------------------------------------------------------------------
 
@@ -122,12 +122,12 @@ class ChavesEstrangeiras extends Migration
 
       //------------------------------------------------------------------------
 
-      Schema::table('revisors', function (Blueprint $table) {
-          $table->foreign('revisorId')->references('id')->on('users');
-      });
-      Schema::table('revisors', function (Blueprint $table) {
-          $table->foreign('eventoId')->references('id')->on('eventos');
-      });
+      // Schema::table('revisors', function (Blueprint $table) {
+      //     $table->foreign('revisorId')->references('id')->on('users');
+      // });
+      // Schema::table('revisors', function (Blueprint $table) {
+      //     $table->foreign('eventoId')->references('id')->on('eventos');
+      // });
       // Schema::table('revisors', function (Blueprint $table) {
       //     $table->foreign('areaId')->references('id')->on('areas');
       // });

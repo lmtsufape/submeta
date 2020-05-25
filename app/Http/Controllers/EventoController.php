@@ -13,6 +13,7 @@ use App\ComissaoEvento;
 use App\User;
 use App\Trabalho;
 use App\AreaModalidade;
+use App\CoordenadorComissao;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -54,8 +55,8 @@ class EventoController extends Controller
      */
     public function create()
     {
-        //
-        return view('evento.criarEvento');
+        $coordenadors = CoordenadorComissao::with('user')->get();
+        return view('evento.criarEvento', ['coordenadors' => $coordenadors]);
     }
 
     /**
@@ -120,8 +121,11 @@ class EventoController extends Controller
           'inicioRevisao'       => $request->inicioRevisao,
           'fimRevisao'          => $request->fimRevisao,
           'resultado'           => $request->resultado,
-          'coordenadorId'       => Auth::user()->id,          
+          'coordenadorId'       => $request->coordenador_id,          
         ]);
+
+        // $user = User::find($request->coordenador_id);
+        // $user->coordenadorComissao()->editais()->save($evento);
 
         // se vou me tornar coordenador do Evento
 
@@ -130,7 +134,7 @@ class EventoController extends Controller
         //   $evento->save();
         // }
 
-        $evento->coordenadorId = Auth::user()->id;
+        //$evento->coordenadorId = Auth::user()->id;
 
         $pdfEdital = $request->pdfEdital;
         $path = 'pdfEdital/' . $evento->id . '/';
@@ -149,10 +153,10 @@ class EventoController extends Controller
 
         $evento->save();
 
-        $user = Auth::user();
-        $subject = "Evento Criado";
-        Mail::to($user->email)
-            ->send(new EventoCriado($user, $subject));
+        // $user = Auth::user();
+        // $subject = "Evento Criado";
+        // Mail::to($user->email)
+        //     ->send(new EventoCriado($user, $subject));
 
         return redirect()->route('coord.home');
     }
@@ -169,29 +173,29 @@ class EventoController extends Controller
         $hasTrabalho = false;
         $hasTrabalhoCoautor = false;
         $hasFile = false;
-        $trabalhos = Trabalho::where('autorId', Auth::user()->id)->get();
-        $trabalhosCount = Trabalho::where('autorId', Auth::user()->id)->count();
-        $trabalhosId = Trabalho::where('eventoId', $evento->id)->select('id')->get();
-        $trabalhosIdCoautor = Coautor::whereIn('trabalhoId', $trabalhosId)->where('autorId', Auth::user()->id)->select('trabalhoId')->get();
-        $coautorCount = Coautor::whereIn('trabalhoId', $trabalhosId)->where('autorId', Auth::user()->id)->count();
-        $trabalhosCoautor = Trabalho::whereIn('id', $trabalhosIdCoautor)->get();
+        $trabalhos = Trabalho::where('proponente_id', Auth::user()->id)->get();
+        $trabalhosCount = Trabalho::where('proponente_id', Auth::user()->id)->count();
+        $trabalhosId = Trabalho::where('evento_id', $evento->id)->select('id')->get();
+        //$trabalhosIdCoautor = Proponente::whereIn('trabalhoId', $trabalhosId)->where('proponente_id', Auth::user()->id)->select('trabalhoId')->get();
+        //$coautorCount = Coautor::whereIn('trabalhoId', $trabalhosId)->where('proponente_id', Auth::user()->id)->count();
+        //$trabalhosCoautor = Trabalho::whereIn('id', $trabalhosIdCoautor)->get();
         if($trabalhosCount != 0){
           $hasTrabalho = true;
           $hasFile = true;
         }
-        if($coautorCount != 0){
-          $hasTrabalhoCoautor = true;
-          $hasFile = true;
-        }
+        // if($coautorCount != 0){
+        //   $hasTrabalhoCoautor = true;
+        //   $hasFile = true;
+        // }
 
         $mytime = Carbon::now('America/Recife');
         // dd(false);
         return view('evento.visualizarEvento', [
                                                 'evento'              => $evento,
                                                 'trabalhos'           => $trabalhos,
-                                                'trabalhosCoautor'    => $trabalhosCoautor,
+                                                // 'trabalhosCoautor'    => $trabalhosCoautor,
                                                 'hasTrabalho'         => $hasTrabalho,
-                                                'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
+                                                // 'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
                                                 'hasFile'             => $hasFile,
                                                 'mytime'              => $mytime
                                                ]);

@@ -28,7 +28,7 @@
         {{-- Navbar --}}
         <nav class="navbar navbar-expand-md navbar-dark  shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{route('cancelarCadastro')}}">
+                <a class="navbar-brand" href="{{route('visualizarEvento')}}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -59,7 +59,7 @@
                             <!-- Se o usuário for um aluno -->
                             @if(Auth::user()->tipo == 'administrador')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Naturezas</a>
+                                    <a class="nav-link" href="{{ route('admin.naturezas') }}">Naturezas</a>
                                     
                                 </li>
                                 <li class="nav-item">
@@ -67,41 +67,115 @@
                                     
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Usuários</a>
+                                    <a class="nav-link" href="{{ route('admin.usuarios') }}">Usuários</a>
                                     
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Meus Dados</a>
-                                    
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
-                                        Sair
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ Auth::user()->name }} <span class="caret"></span>
                                     </a>
 
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
+                                            {{ __('Minha Conta') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
+                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                            {{ __('Participante') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
+                                            {{ __('Sair') }}
+                                        </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>                                    
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
                                 </li>
                                 
                             @endif
 
-                            
+
+
+                            {{-- Pro-reitor --}}
                             @if(Auth::user()->tipo == 'administradorResponsavel')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                        document.getElementById('logout-form').submit();">
-                                        Sair
+                                    <a class="nav-link" href="{{route('evento.listar')}}">Editais</a>
+                                    
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.usuarios') }}">Usuários</a>
+                                    
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ Auth::user()->name }} <span class="caret"></span>
                                     </a>
 
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
+                                            {{ __('Minha Conta') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
+                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                            {{ __('Participante') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
+                                            {{ __('Sair') }}
+                                        </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>                                    
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
+                            @endif
+
+                            @if(Auth::user()->tipo == 'coordenador')
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('coordenador.editais')}}">Meus Editais</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('coordenador.usuarios')}}">Usuários</a>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
+                                            {{ __('Minha Conta') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
+                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                            {{ __('Participante') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
+                                            {{ __('Sair') }}
+                                        </a>
+
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
                                 </li>
                             @endif
                             
@@ -117,6 +191,35 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>                                    
+                                </li>
+                            @endif
+                            @if(Auth::user()->tipo == 'participante')
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
+                                            {{ __('Minha Conta') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
+                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                            {{ __('Participante') }}
+                                        </a>
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
+                                            {{ __('Sair') }}
+                                        </a>
+
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
                                 </li>
                             @endif
                             

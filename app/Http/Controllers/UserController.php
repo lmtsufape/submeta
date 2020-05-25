@@ -9,14 +9,22 @@ use App\User;
 use App\Endereco;
 use App\Trabalho;
 use App\Coautor;
+use App\Evento;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    //
-    public function index(){
-        if(Auth::user()){
-          return redirect()->route('home');
-        }
+
+    public function index()
+    {
+      $eventos = Evento::all();
+      if(Auth::check()){
+        Log::debug('UserController check');
+        return redirect()->route('home');
+      }
+      Log::debug('UserController index');
+      return view('index', ['eventos' => $eventos]);
+      //return view('auth.login');
     }
 
 

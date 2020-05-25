@@ -11,26 +11,30 @@
 |
 */
 use App\Evento;
+use Illuminate\Support\Facades\Log;
 
-Route::get('/', function () {
-    if(Auth::check()){
-      return redirect()->route('home');
-    }
+// Route::get('/', function () {
+//     if(Auth::check()){
+//       return redirect()->route('home');
+//     }
 
-    $eventos = Evento::all();
-    return view('index',['eventos'=>$eventos]);
-});
+//     $eventos = Evento::all();
+//     return view('index',['eventos'=>$eventos]);
+// });
+Log::debug('routes');
+Route::get('/', 'UserController@index')->name('home-user');
+//Route::get('/visualizarEvento', 'UserController@index')->name('visualizarEvento');
+Log::debug('depois de login');
+// Route::get('/#', function () {
+//     if(Auth::check()){
+//       return redirect()->route('home');
+//     }
 
-Route::get('/#', function () {
-    if(Auth::check()){
-      return redirect()->route('home');
-    }
+//     $eventos = Evento::all();
+//     return view('index',['eventos'=>$eventos]);
+// })->name('cancelarCadastro');
 
-    $eventos = Evento::all();
-    return view('index',['eventos'=>$eventos]);
-})->name('cancelarCadastro');
-
-  Route::get('/evento/visualizar/naologado/{id}','EventoController@showNaoLogado')->name('evento.visualizarNaoLogado');
+Route::get('/evento/visualizar/naologado/{id}','EventoController@showNaoLogado')->name('evento.visualizarNaoLogado');
 
 Auth::routes(['verify' => true]);
 
@@ -39,10 +43,21 @@ Route::post('/perfil','UserController@editarPerfil')->name('perfil')->middleware
 
 // Rotas Administrador
 Route::get('/home-admin', 'AdministradorController@index')->middleware('checkAdministrador')->name('admin.index');
+Route::get('/naturezas', 'AdministradorController@naturezas')->middleware('checkAdministrador')->name('admin.naturezas');
+Route::get('/usuarios', 'AdministradorController@usuarios')->middleware('checkAdministrador')->name('admin.usuarios');
+// Rotas Coordenador
+
+Route::get('/coordenador/home', 'CoordenadorComissaoController@index')->name('coordenador.index');
+Route::get('/coordenador/editais', 'CoordenadorComissaoController@editais')->name('coordenador.editais');
+Route::get('/coordenador/usuarios', 'CoordenadorComissaoController@usuarios')->name('coordenador.usuarios');
+Route::get('/coordenador/listarCoord', 'CoordenadorComissaoController@coordenadorComite')->name('coordenador.coord');
+Route::get('/coordenador/listarAvaliador', 'CoordenadorComissaoController@avaliador')->name('coordenador.avaliador');
+Route::get('/coordenador/listarProponente', 'CoordenadorComissaoController@proponente')->name('coordenador.proponente');
+Route::get('/coordenador/listarParticipante', 'CoordenadorComissaoController@participante')->name('coordenador.participante');
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
-  Route::get('/home', 'EventoController@index')->name('home');
+  Route::get('/home/evento', 'EventoController@index')->name('visualizarEvento');
 
   // rotas de teste
   Route::get('/coordenador/home','EventoController@index')->name('coord.home');
@@ -101,5 +116,6 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/area/comissao',         'EventoController@listComissaoTrabalhos'     )->name('area.comissao');
 
 });
-
+Log::debug('antes de home');
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Log::debug('depois de home');
