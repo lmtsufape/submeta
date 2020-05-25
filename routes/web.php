@@ -43,8 +43,16 @@ Route::post('/perfil','UserController@editarPerfil')->name('perfil')->middleware
 
 // Rotas Administrador
 Route::get('/home-admin', 'AdministradorController@index')->middleware('checkAdministrador')->name('admin.index');
-Route::get('/naturezas', 'AdministradorController@naturezas')->middleware('checkAdministrador')->name('admin.naturezas');
 Route::get('/usuarios', 'AdministradorController@usuarios')->middleware('checkAdministrador')->name('admin.usuarios');
+  //Rotas das naturezas
+Route::get('/naturezas', 'AdministradorController@naturezas')->middleware('checkAdministrador')->name('admin.naturezas');
+Route::get('/naturezas/grande-area', 'GrandeAreaController@index')->middleware('checkAdministrador')->name('grandearea.index');
+Route::get('/naturezas/grande-area/nova', 'GrandeAreaController@create')->middleware('checkAdministrador')->name('grandearea.criar');
+Route::post('/naturezas/grande-area/salvar', 'GrandeAreaController@store')->middleware('checkAdministrador')->name('grandearea.salvar');
+Route::get('/naturezas/grande-area/editar/{id}', 'GrandeAreaController@edit')->middleware('checkAdministrador')->name('grandearea.editar');
+Route::post('/naturezas/grande-area/atualizar/{id}', 'GrandeAreaController@update')->middleware('checkAdministrador')->name('grandearea.atualizar');
+Route::post('/naturezas/grande-area/excluir/{id}', 'GrandeAreaController@destroy')->middleware('checkAdministrador')->name('grandearea.deletar');
+
 // Rotas Coordenador
 
 Route::get('/coordenador/home', 'CoordenadorComissaoController@index')->name('coordenador.index');
