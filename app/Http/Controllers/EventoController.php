@@ -172,7 +172,7 @@ class EventoController extends Controller
     {
         $evento = Evento::find($id);
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-        if($proponente = null){
+        if($proponente != null){
           $hasTrabalho = false;
           $hasFile = false;
           $trabalhos = $proponente->trabalhos()->get();
