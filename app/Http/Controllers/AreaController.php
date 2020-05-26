@@ -31,7 +31,7 @@ class AreaController extends Controller
      */
     public function create($grandeAreaid)
     {
-        return view('naturezas.area.nova_area')->with(['grandeAreaid' => $grandeAreaid]);
+        return view('naturezas.area.nova_area')->with(['grandeAreaId' => $grandeAreaid]);
     }
 
     /**
