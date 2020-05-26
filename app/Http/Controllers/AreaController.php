@@ -20,7 +20,8 @@ class AreaController extends Controller
      */
     public function index()
     {
-        //
+        $areas = Area::orderBy('nome')->get();
+        return view('naturezas.area.index')->with(['areas' => $areas]);
     }
 
     /**

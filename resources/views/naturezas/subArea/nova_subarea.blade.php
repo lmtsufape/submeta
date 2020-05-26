@@ -5,11 +5,11 @@
 <div class="container" >
     <div class="row" >
         <div class="col-sm-12">
-            <h2 style="margin-top: 100px; ">{{ __('Criar uma nova área') }}</h2>
+            <h2 style="margin-top: 100px; ">{{ __('Criar uma nova subárea') }}</h2>
         </div>
     </div>  
     <div class="row">
-        <form method="POST" action="{{ route('area.salvar', ['id' => $grandeAreaId])}}">
+        <form method="POST" action="{{ route('subarea.salvar', ['id' => $areaId])}}">
             @csrf
             <div class="col-sm-12">
                 <label for="nome" class="col-form-label">{{ __('Nome') }}</label>

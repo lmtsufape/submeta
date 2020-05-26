@@ -54,7 +54,7 @@ Route::get('/naturezas/grande-area/detalhes/{id}', 'GrandeAreaController@show')-
 Route::get('/naturezas/grande-area/editar/{id}', 'GrandeAreaController@edit')->middleware('checkAdministrador')->name('grandearea.editar');
 Route::post('/naturezas/grande-area/atualizar/{id}', 'GrandeAreaController@update')->middleware('checkAdministrador')->name('grandearea.atualizar');
 Route::post('/naturezas/grande-area/excluir/{id}', 'GrandeAreaController@destroy')->middleware('checkAdministrador')->name('grandearea.deletar');
-    //Rotas das areas
+    //Rotas das areas, id's de nova e salvar são os ids da grande área a qual a nova área pertence
 Route::get('/naturezas/areas', 'AreaController@index')->middleware('checkAdministrador')->name('area.index');
 Route::get('/naturezas/{id}/area/nova', 'AreaController@create')->middleware('checkAdministrador')->name('area.criar');
 Route::post('/naturezas/{id}/area/salvar', 'AreaController@store')->middleware('checkAdministrador')->name('area.salvar');
@@ -62,6 +62,15 @@ Route::get('/naturezas/area/detalhes/{id}', 'AreaController@show')->middleware('
 Route::get('/naturezas/area/editar/{id}', 'AreaController@edit')->middleware('checkAdministrador')->name('area.editar');
 Route::post('/naturezas/area/atualizar/{id}', 'AreaController@update')->middleware('checkAdministrador')->name('area.atualizar');
 Route::post('/naturezas/area/excluir/{id}', 'AreaController@destroy')->middleware('checkAdministrador')->name('area.deletar');
+    //Rotas das subareas, id's de nova e salvar são os ids da área a qual a nova subárea pertence
+Route::get('/naturezas/subareas', 'SubAreaController@index')->middleware('checkAdministrador')->name('subarea.index');
+Route::get('/naturezas/{id}/subarea/nova', 'SubAreaController@create')->middleware('checkAdministrador')->name('subarea.criar');
+Route::post('/naturezas/{id}/subarea/salvar', 'SubAreaController@store')->middleware('checkAdministrador')->name('subarea.salvar');
+Route::get('/naturezas/subarea/detalhes/{id}', 'SubAreaController@show')->middleware('checkAdministrador')->name('subarea.show');
+Route::get('/naturezas/subarea/editar/{id}', 'SubAreaController@edit')->middleware('checkAdministrador')->name('subarea.editar');
+Route::post('/naturezas/subarea/atualizar/{id}', 'SubAreaController@update')->middleware('checkAdministrador')->name('subarea.atualizar');
+Route::post('/naturezas/subarea/excluir/{id}', 'SubAreaController@destroy')->middleware('checkAdministrador')->name('subarea.deletar');
+
 // Rotas Coordenador
 
 Route::get('/coordenador/home', 'CoordenadorComissaoController@index')->name('coordenador.index');
