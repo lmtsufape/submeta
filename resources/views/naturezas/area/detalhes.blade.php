@@ -12,10 +12,10 @@
         </div>
         @endif
         <div class="col-sm-9">
-          <h2 style="margin-top: 100px; ">{{ __('Grandes Áreas') }}</h2>
+          <h2 style="margin-top: 100px; ">{{ __('Subáreas de ') . $area->nome }}</h2>
         </div>
         <div class="col-sm-3">
-          <a href="{{route('grandearea.criar')}}" class="btn btn-primary" style="position:relative;top:100px;">{{ __('Criar Grande Área') }}</a>
+          <a href="{{ route('area.criar', ['id' => $area->id]) }}" class="btn btn-primary" style="position:relative;top:100px;">{{ __('Criar subárea') }}</a>
         </div>
     </div>
 
@@ -28,27 +28,21 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($grandesAreas as $grandeArea)
+      @foreach ($subAreas as $subArea)
         <tr>
           <td>
-            <a href="{{ route('grandearea.show', ['id' => $grandeArea->id ]) }}" class="visualizarEvento">
-                {{ $grandeArea->nome }}
-            </a>
+            {{ $subArea->nome }}
           </td>
           <td>
             <div class="btn-group dropright dropdown-options">
                 <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 </a>
                 <div class="dropdown-menu">
-                    <a href="{{ route('grandearea.show', ['id' => $grandeArea->id ]) }}" class="dropdown-item">
-                      <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
-                      Detalhes
-                    </a>
-                    <a href="{{ route('grandearea.editar', ['id' => $grandeArea->id]) }}" class="dropdown-item">
+                    <a href="{{ route('area.editar', ['id' => $subArea->id]) }}" class="dropdown-item">
                         <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
                         Editar
                     </a>
-                    <form method="POST" action="{{ route('grandearea.deletar', ['id' => $grandeArea->id]) }}">
+                    <form method="POST" action="{{ route('area.deletar', ['id' => $subArea->id]) }}">
                         {{ csrf_field() }}
                         <button type="submit" class="dropdown-item">
                             <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">

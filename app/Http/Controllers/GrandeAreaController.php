@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\GrandeArea;
+use App\Area;
 
 class GrandeAreaController extends Controller
 {
@@ -55,7 +56,10 @@ class GrandeAreaController extends Controller
      */
     public function show($id)
     {
-        //
+        $grandeArea = GrandeArea::find($id);
+        $areas = Area::where('grande_area_id', '=', $id)->orderBy('nome')->get();
+
+        return view('naturezas.grandeArea.detalhes')->with(['grandeArea' => $grandeArea, 'areas' => $areas]);
     }
 
     /**

@@ -21,7 +21,7 @@
                 </span>
                 @enderror
 
-                <button href="{{route('evento.criar')}}" class="btn btn-primary" style="position:relative;top:100px;">{{ __('Salvar') }}</button>
+                <button type="submit" class="btn btn-primary" style="position:relative;top:100px;">{{ __('Salvar') }}</button>
             </div>
         </form>
     </div>
