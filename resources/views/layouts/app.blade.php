@@ -59,7 +59,7 @@
                             <!-- Se o usuário for um aluno -->
                             @if(Auth::user()->tipo == 'administrador') 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.naturezas') }}">Naturezas</a>
+                                    <a class="nav-link" href="{{ route('grandearea.index') }}">Naturezas</a>
                                     
                                 </li>
                                 <li class="nav-item">

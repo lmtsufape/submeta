@@ -45,7 +45,7 @@ class GrandeAreaController extends Controller
         $GrandeArea->nome = $request->nome;
         $GrandeArea->save();
 
-        return redirect( route('grandearea.index') )->with(['mensagem' => 'Grande área cadastrada com sucesso']);
+        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área cadastrada com sucesso']);
     }
 
     /**
@@ -87,7 +87,7 @@ class GrandeAreaController extends Controller
         $grandeArea->nome = $request->nome;
         $grandeArea->update();
 
-        return redirect( route('grandearea.index') )->with(['mensagem' => 'Grande área editada com sucesso']);
+        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área editada com sucesso']);
     }
 
     /**
@@ -101,6 +101,6 @@ class GrandeAreaController extends Controller
         $grandeArea = GrandeArea::find($id);
         $grandeArea->delete();
 
-        return redirect( route('grandearea.index') )->with(['mensagem' => 'Grande área excluida com sucesso']);
+        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área excluida com sucesso']);
     }
 }

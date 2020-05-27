@@ -5,7 +5,7 @@
 <div class="container" >
     <div class="row" >
         <div class="col-sm-12">
-            <h2 style="margin-top: 100px; ">{{ __('Editar uma Grande área') }}</h2>
+            <h2 style="margin-top: 100px; ">{{ __('Editar uma área') }}</h2>
         </div>
     </div>  
     <div class="row">
