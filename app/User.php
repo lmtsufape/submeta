@@ -20,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name', 'email', 'password', 'cpf', 'instituicao', 'celular',
         'especProfissional', 'enderecoId',
-        'usuarioTemp',
+        'usuarioTemp', 'tipo', 'user_id'
     ];
 
     /**
@@ -79,7 +79,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function administradors(){
         return $this->hasMany('App\Administrador');
     }
-    public function Proponentes(){
+    public function proponentes(){
         return $this->hasMany('App\Proponente');
     }
     public function AdministradorResponsavel(){

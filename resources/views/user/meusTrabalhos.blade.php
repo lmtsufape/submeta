@@ -54,16 +54,14 @@
               <div class="col-sm-10">
                 <h1>Meus Trabalhos</h1>
               </div>
-              <div class="col-sm-2">
-                <a href="{{route('home')}}" class="btn btn-primary">Eventos</a>
-              </div>
+              
             </div>
         </div>
     </div>
     
     <div class="row margin">
         <div class="col-sm-12 info-evento">
-            <h4>Como Autor</h4>
+            <h4>Como Proponente</h4>
         </div>
     </div>
 
@@ -82,7 +80,7 @@
             </tr>
             </thead>
             <tbody>
-            {{-- @foreach($trabalhos as $trabalho)
+            @foreach($trabalhos as $trabalho)
                 <tr>
                 <td>{{$trabalho->titulo}}</td>
                 <td style="text-align:center">
@@ -104,7 +102,7 @@
                     </a>
                 </td>
                 </tr>
-            @endforeach --}}
+            @endforeach
             </tbody>
         </table>
         </div>

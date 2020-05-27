@@ -10,6 +10,7 @@ use App\Endereco;
 use App\Trabalho;
 use App\Coautor;
 use App\Evento;
+use App\Proponente;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -108,9 +109,13 @@ class UserController extends Controller
 
     public function meusTrabalhos(){
 
-        $trabalhos = Trabalho::where('autorId', Auth::user()->id)->get();
+        //$trabalhos = Trabalho::where('autorId', Auth::user()->id)->get();
+        $proponente = Proponente::with('user')->where('user_id', Auth::user()->id)->first();
+        $trabalhos = $proponente->trabalhos;
+        //dd($trabalhos);
+
         return view('user.meusTrabalhos',[
-                                            'trabalhos'           => $trabalhos,
+                                           'trabalhos'           => $trabalhos,
                                         ]);
     }
 }

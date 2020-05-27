@@ -17,7 +17,7 @@ class CreateAvaliadorsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
 
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

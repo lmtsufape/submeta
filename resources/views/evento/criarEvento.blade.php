@@ -62,7 +62,7 @@
               <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="coordenador_id" name="coordenador_id">
                   <option value="" disabled selected hidden>-- Coordenador da Comissão Avaliadora --</option>
                   @foreach($coordenadors as $coordenador)
-                    <option value="{{$coordenador->user->id}}">{{$coordenador->user->name}}</option>
+                    <option value="{{$coordenador->id}}">{{$coordenador->user->name}}</option>
                   @endforeach
               </select>
           </div>

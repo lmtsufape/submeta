@@ -81,4 +81,7 @@ class Trabalho extends Model
   public function coordenador(){
       return $this->belongsTo('App\CoordenadorComissao');
   }
+  public function avaliadors(){
+      return $this->belongsToMany('App\Avaliador');
+  }
 }

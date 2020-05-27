@@ -11,7 +11,7 @@ class CoordenadorComissao extends Model
     }
 
     public function editais(){
-        return $this->hasMany('App\Evento', 'coordenadorId');
+        return $this->hasMany('App\Evento');
     }
 
     public function trabalho(){

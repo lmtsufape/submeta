@@ -32,8 +32,8 @@
                                 <div class="row justify-content-center">
                                     <div class="col-sm-12">
                                         {{$evento->nome}}
-                                        @if(Auth::user()->tipo == "administrador")
-                                        {{-- @can('isCoordenador', $evento) --}}
+                                        {{-- @if(Auth::user()->tipo == "administrador" || Auth::user()->tipo == "administradorResponsavel") --}}
+                                        @can('isCoordenador', $evento)
                                             <div class="btn-group dropright dropdown-options">
                                                 <a id="options" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
@@ -58,8 +58,8 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                        {{-- @endcan --}}
-                                        @endif
+                                        @endcan
+                                       {{--  @endif --}}
                                     </div>
 
                                 </div>

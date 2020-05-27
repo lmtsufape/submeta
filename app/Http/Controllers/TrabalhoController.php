@@ -187,6 +187,7 @@ class TrabalhoController extends Controller
               'password' => bcrypt($passwordTemporario),
               'usuarioTemp' => true,
               'name' => $request->nomeParticipante[$key],
+              'tipo' => 'participante',
               'funcao_participante_id' => $request->funcaoParticipante[$key],
             ]);
 
