@@ -11,7 +11,7 @@
 |
 */
 use App\Evento;
-use Illuminate\Support\Facades\Log;
+
 
 // Route::get('/', function () {
 //     if(Auth::check()){
@@ -21,10 +21,9 @@ use Illuminate\Support\Facades\Log;
 //     $eventos = Evento::all();
 //     return view('index',['eventos'=>$eventos]);
 // });
-Log::debug('routes');
+
 Route::get('/', 'UserController@index')->name('home-user');
 //Route::get('/visualizarEvento', 'UserController@index')->name('visualizarEvento');
-Log::debug('depois de login');
 // Route::get('/#', function () {
 //     if(Auth::check()){
 //       return redirect()->route('home');
@@ -44,6 +43,15 @@ Route::post('/perfil','UserController@editarPerfil')->name('perfil')->middleware
 // Rotas Administrador
 Route::get('/home-admin', 'AdministradorController@index')->middleware('checkAdministrador')->name('admin.index');
 Route::get('/usuarios', 'AdministradorController@usuarios')->middleware('checkAdministrador')->name('admin.usuarios');
+Route::get('admin/editais', 'AdministradorController@editais')->middleware('checkAdministrador')->name('admin.editais');
+
+// Rotas de administrador responsavel (Reitor ou pro-reitor)
+Route::get('adminResp/editais', 'AdministradorResponsavelController@editais')->name('adminResp.editais');
+Route::get('adminResp/usuarios', 'AdministradorResponsavelController@usuarios')->name('adminResp.usuarios');
+Route::get('adminResp/atribuir', 'AdministradorResponsavelController@atribuirPermissao')->name('adminResp.atribuir');
+Route::post('adminResp/atribuir', 'AdministradorResponsavelController@atribuirPermissao')->name('adminResp.atribuir');
+Route::post('adminResp/verPermissao', 'AdministradorResponsavelController@verPermissao')->name('adminResp.verPermissao');
+
   //Rotas das naturezas
     //Rotas das grandes areas
 Route::get('/naturezas', 'AdministradorController@naturezas')->middleware('checkAdministrador')->name('admin.naturezas');
@@ -142,6 +150,5 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/area/comissao',         'EventoController@listComissaoTrabalhos'     )->name('area.comissao');
 
 });
-Log::debug('antes de home');
+
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
-Log::debug('depois de home');

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SubAreaSeeder::class);
         $this->call(FuncaoParticipanteSeeder::class);
         $this->call(CoordenadorComissaoSeeder::class);
+        $this->call(ParticipanteSeeder::class);
         // $this->call(UsersTableSeeder::class);
 
 //         DB::table('enderecos')->insert([  // 1
@@ -66,6 +67,24 @@ class DatabaseSeeder extends Seeder
 //         ]);
 
         DB::table('eventos')->insert([
+          'nome'=>'I CONGRESSO REGIONAL DE ZOOTECNIA',
+          // 'numeroParticipantes'=>60,
+          'descricao'=>'Cada autor inscrito poderá submeter até dois (2) resumos;
+           O número máximo de autores por trabalho será seis autores;
+           Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
+          'tipo'=>'PIBIC',
+          'inicioSubmissao'=>'2020-03-30',
+          'fimSubmissao'=>'2020-09-20',
+          'inicioRevisao'=>'2020-04-21',
+          'fimRevisao'=>'2020-05-21',
+          'resultado'=>'2020-05-22',
+          'numMaxTrabalhos' => 2,
+          'numMaxCoautores' => 5,
+          'coordenadorId'=>1,
+          'criador_id'=>1,
+        ]);
+
+        DB::table('eventos')->insert([
           'nome'=>'II CONGRESSO REGIONAL DE ZOOTECNIA',
           // 'numeroParticipantes'=>60,
           'descricao'=>'Cada autor inscrito poderá submeter até dois (2) resumos;
@@ -80,6 +99,25 @@ class DatabaseSeeder extends Seeder
           'numMaxTrabalhos' => 2,
           'numMaxCoautores' => 5,
           'coordenadorId'=>1,
+          'criador_id'=>2,
+        ]);
+
+        DB::table('eventos')->insert([
+          'nome'=>'III CONGRESSO REGIONAL DE ZOOTECNIA',
+          // 'numeroParticipantes'=>60,
+          'descricao'=>'Cada autor inscrito poderá submeter até dois (2) resumos;
+           O número máximo de autores por trabalho será seis autores;
+           Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
+          'tipo'=>'PIBIC',
+          'inicioSubmissao'=>'2020-03-30',
+          'fimSubmissao'=>'2020-09-20',
+          'inicioRevisao'=>'2020-04-21',
+          'fimRevisao'=>'2020-05-21',
+          'resultado'=>'2020-05-22',
+          'numMaxTrabalhos' => 2,
+          'numMaxCoautores' => 5,
+          'coordenadorId'=>1,
+          'criador_id'=>3,
         ]);
 
 //         $areasEventoZoo = [

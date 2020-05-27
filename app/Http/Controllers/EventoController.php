@@ -72,8 +72,10 @@ class EventoController extends Controller
         $mytime = Carbon::now('America/Recife');
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
+        //$admResponsavel = AdministradorResponsavel::with('user')->where('user_id', Auth()->user()->id)->first();
+        $user_id = Auth()->user()->id;
 
-        //dd($request);
+        //dd($user_id);
         // validar datas nulas antes, pois pode gerar um bug
 
         if(
@@ -123,8 +125,9 @@ class EventoController extends Controller
           'fimRevisao'          => $request->fimRevisao,
           'resultado'           => $request->resultado,
           'coordenadorId'       => $request->coordenador_id,          
+          'criador_id'          => $user_id,          
         ]);
-
+        //dd($evento);
         // $user = User::find($request->coordenador_id);
         // $user->coordenadorComissao()->editais()->save($evento);
 
