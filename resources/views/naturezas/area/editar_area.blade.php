@@ -9,11 +9,11 @@
         </div>
     </div>  
     <div class="row">
-        <form method="POST" action="{{ route('grandearea.atualizar', ['id' => $grandeArea->id])}}">
+        <form method="POST" action="{{ route('area.atualizar', ['id' => $area->id])}}">
             @csrf
             <div class="col-sm-12">
                 <label for="nome" class="col-form-label">{{ __('Nome') }}</label>
-                <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ $grandeArea->nome }}" required autocomplete="nome" autofocus>
+                <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ $area->nome }}" required autocomplete="nome" autofocus>
 
                 @error('nome')
                 <span class="invalid-feedback" role="alert">

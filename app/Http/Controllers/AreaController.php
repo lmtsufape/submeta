@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Area;
+use App\GrandeArea;
+use App\SubArea;
 use App\AreaModalidade;
 use App\Pertence;
 use App\Revisor;
@@ -18,7 +20,8 @@ class AreaController extends Controller
      */
     public function index()
     {
-        //
+        $areas = Area::orderBy('nome')->get();
+        return view('naturezas.area.index')->with(['areas' => $areas]);
     }
 
     /**
@@ -26,9 +29,9 @@ class AreaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($grandeAreaid)
     {
-        //
+        return view('naturezas.area.nova_area')->with(['grandeAreaId' => $grandeAreaid]);
     }
 
     /**
@@ -37,18 +40,18 @@ class AreaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $validatedData = $request->validate([
-          'nome'  =>  ['required', 'string'],
+          'nome'  => 'required',
         ]);
 
-        Area::create([
-          'nome'      => $request->nome,
-          'eventoId'  => $request->eventoId,
-        ]);
+        $area = new Area();
+        $area->nome = $request->nome;
+        $area->grande_area_id = $id;
+        $area->save();
 
-        return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
+        return redirect( route('grandearea.show', ['id' => $id]) )->with(['mensagem' => 'Nova área cadastrada com sucesso']);
     }
 
     /**
@@ -57,9 +60,12 @@ class AreaController extends Controller
      * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function show(Area $area)
+    public function show($id)
     {
-        //
+        $area = Area::find($id);
+        $subAreas = SubArea::where('area_id', '=', $id)->orderBy('nome')->get();
+
+        return view('naturezas.area.detalhes')->with(['area' => $area, 'subAreas' => $subAreas]);
     }
 
     /**
@@ -68,9 +74,10 @@ class AreaController extends Controller
      * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function edit(Area $area)
+    public function edit($id)
     {
-        //
+        $area = Area::find($id);
+        return view('naturezas.area.editar_area')->with(['area' => $area]);
     }
 
     /**
@@ -80,9 +87,18 @@ class AreaController extends Controller
      * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'nome' => 'required',
+        ]);
+
+        $area = Area::find($id);
+        $grandeArea = GrandeArea::find($area->grande_area_id);
+        $area->nome = $request->nome;
+        $area->update();
+
+        return redirect( route('grandearea.show', ['id' => $area->grande_area_id]) )->with(['grandeArea' => $grandeArea,'mensagem' => 'Área atualizada com sucesso']);
     }
 
     /**
@@ -94,26 +110,11 @@ class AreaController extends Controller
     public function destroy($id)
     {
         $area = Area::find($id);
-        $area_modalidade = AreaModalidade::where('areaId', $id);
-        $pertence = Pertence::where('areaId', $id);
-        $revisores = Revisor::where('areaId', $id);
-        $trabalhos = Trabalho::where('areaId', $id);
-        
-        if(isset($area_modalidade)){
-            $area_modalidade->delete();
-        }
-        if(isset($pertence)){
-            $pertence->delete();
-        }
-        if(isset($revisores)){
-            $revisores->delete();
-        }
-        if(isset($trabalhos)){
-            $trabalhos->delete();    
-        }
-
+        $id = $area->grande_area_id;
         $area->delete();
+        //ver a questão de chave estrangeira para a tabela sub-áreas
 
-        return redirect()->back();
+        $grandeArea = GrandeArea::find($id);
+        return redirect( route('grandearea.show', ['id' => $id]) )->with(['grandeArea' => $grandeArea,'mensagem' => 'Área deletada com sucesso']);
     }
 }

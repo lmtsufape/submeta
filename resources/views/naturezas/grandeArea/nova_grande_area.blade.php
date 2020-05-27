@@ -5,7 +5,7 @@
 <div class="container" >
     <div class="row" >
         <div class="col-sm-12">
-            <h2 style="margin-top: 100px; ">{{ __('Criar uma nova Grande Área') }}</h2>
+            <h2 style="margin-top: 100px; ">{{ __('Criar uma nova área') }}</h2>
         </div>
     </div>  
     <div class="row">
@@ -21,7 +21,7 @@
                 </span>
                 @enderror
 
-                <button href="{{route('evento.criar')}}" class="btn btn-primary" style="position:relative;top:100px;">{{ __('Salvar') }}</button>
+                <button type="submit" class="btn btn-primary" style="position:relative;top:100px;">{{ __('Salvar') }}</button>
             </div>
         </form>
     </div>
