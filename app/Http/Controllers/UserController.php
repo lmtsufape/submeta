@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\User;
+use App\AdministradorResponsavel;
+use App\Avaliador;
+use App\Proponente;
+use App\Participante;
 use App\Endereco;
 use App\Trabalho;
 use App\Coautor;
 use App\Evento;
-use App\Proponente;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -117,5 +120,21 @@ class UserController extends Controller
         return view('user.meusTrabalhos',[
                                            'trabalhos'           => $trabalhos,
                                         ]);
+    }
+
+    public function minhaConta() {
+        $id = Auth::user()->id;
+        $user = User::find($id);
+        
+        $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
+        $avaliador = Avaliador::where('user_id', '=', $id)->first();
+        $proponente = Proponente::where('user_id', '=', $id)->first();
+        $participante = Participante::where('user_id', '=', $id)->first();
+
+        return view('user.perfilUser')->with(['user' => $user,
+                                              'adminResp' => $adminResp,
+                                              'avaliador' => $avaliador,
+                                              'proponente' => $proponente,
+                                              'participante' => $participante]);
     }
 }
