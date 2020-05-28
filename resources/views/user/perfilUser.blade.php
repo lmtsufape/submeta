@@ -67,14 +67,123 @@
 
         </div>
 
+        <div class="row justify-content-center">
+
+            <div class="col-md-12">
+              <label for="instituicao" class="col-form-label">{{ __('E-mail') }}</label>
+              <input value="{{$user->email}}" id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="instituicao" value="{{ old('email') }}" autocomplete="email" autofocus>
+
+              @error('instituicao')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+              @enderror
+            </div>
+
+        </div>
+
         <div class="row subtitulo" style="margin-top:20px">
             <div class="col-sm-12">
-                <p>Endereço</p>
+                <p>Permissões</p>
             </div>
         </div>
 
-        {{-- Endereço --}}
+        @if (!(is_null($adminResp)))
+            <div class="form-group row justify-content-center">
+                <div class="col-md-12">
+                    Tem pemissão de Administrador Responsável
+                </div>
+            </div>
+        @else 
         <div class="form-group row justify-content-center">
+            <div class="col-md-12">
+                Não tem pemissão de Administrador Responsável
+            </div>
+        </div>
+        @endif
+
+        @if (!(is_null($avaliador)))
+            <div class="form-group row justify-content-center">
+                <div class="col-md-12">
+                    Tem pemissão de Aváliador
+                </div>
+            </div>
+        @else 
+        <div class="form-group row justify-content-center">
+            <div class="col-md-12">
+                Não tem pemissão de Aváliador
+            </div>
+        </div>
+        @endif
+
+        @if (!(is_null($proponente)))
+            <div class="form-group row justify-content-center">
+                <div class="col-md-12">
+                    Tem pemissão de proponente
+                </div>
+            </div>
+            <div class="row subtitulo" style="margin-top:20px">
+                <div class="col-sm-12">
+                    <p>Dados de proponente</p>
+                </div>
+            </div>
+            <label class="col-form-label">{{ __('SIAPE') }}</label>
+            <input value="{{$proponente->SIAPE}}" id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" autocomplete="SIAPE">
+            
+            <label class="col-form-label">{{ __('Cargo') }}</label>
+            <input value="{{$proponente->cargo}}" id="cargo" type="text" class="form-control @error('cargo') is-invalid @enderror" name="cargo" autocomplete="cargo">
+
+            <label class="col-form-label">{{ __('Vinculo') }}</label>
+            <input value="{{$proponente->vinculo}}" id="vinculo" type="text" class="form-control @error('vinculo') is-invalid @enderror" name="vinculo" autocomplete="vinculo">
+
+            <label class="col-form-label">{{ __('Titulação Maxima') }}</label>
+            <input value="{{$proponente->titulacaoMaxima}}" id="titulacaoMaxima" type="text" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" autocomplete="titulacaoMaxima">
+
+            <label class="col-form-label">{{ __('Ano Titulação') }}</label>
+            <input value="{{$proponente->anoTitulacao}}" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
+
+            <label class="col-form-label">{{ __('Área') }}</label>
+            <input value="{{$proponente->grandeArea}}" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
+
+            <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
+            <input value="{{$proponente->bolsistaProdutividade}}" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">
+
+            <label class="col-form-label">{{ __('Nivel') }}</label>
+            <input value="{{$proponente->nivel}}" id="nivel" type="text" class="form-control @error('nivel') is-invalid @enderror" name="nivel" autocomplete="nivel">
+
+            <label class="col-form-label">{{ __('Link do Lattes') }}</label>
+            <input value="{{$proponente->linkLattes}}" id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" autocomplete="linkLattes">
+
+            <br>
+        @else 
+        <div class="form-group row justify-content-center">
+            <div class="col-md-12">
+                Não tem pemissão de proponente
+            </div>
+        </div>
+        @endif
+
+        @if (!(is_null($participante)))
+            <div class="form-group row justify-content-center">
+                <div class="col-md-12">
+                    Tem pemissão de participante
+                </div>
+            </div>
+        @else 
+        <div class="form-group row justify-content-center">
+            <div class="col-md-12">
+                Não tem pemissão de participante
+            </div>
+        </div>
+        @endif
+        {{-- <div class="row subtitulo" style="margin-top:20px">
+            <div class="col-sm-12">
+                <p>Endereço</p>
+            </div>
+        </div> --}}
+
+        {{-- Endereço --}}
+        {{-- <div class="form-group row justify-content-center">
             <div class="col-md-2">
                 <label for="cep" class="col-form-label">{{ __('CEP') }}</label>
                 <input onblur="pesquisacep(this.value);" value="{{$end->cep}}" id="cep" type="text" class="form-control @error('cep') is-invalid @enderror" name="cep" required autocomplete="cep">
@@ -133,7 +242,7 @@
             </div>
             <div class="col-sm-4">
                 <label for="uf" class="col-form-label">{{ __('UF') }}</label>
-                {{-- <input id="uf" type="text" class="form-control @error('uf') is-invalid @enderror" name="uf" value="{{ old('uf') }}" required autocomplete="uf" autofocus> --}}
+                
                 <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf">
                     <option value="" disabled selected hidden>-- UF --</option>
                     <option @if($end->uf == 'AC') selected @endif value="AC">Acre</option>
@@ -183,7 +292,7 @@
                     {{ __('Concluir') }}
                 </button>
             </div>
-        </div>
+        </div> --}}
 
         </form>
     </div>
@@ -256,12 +365,108 @@
 
         <div class="row subtitulo" style="margin-top:20px">
             <div class="col-sm-12">
-                <p>Endereço</p>
+                <p>Permissões</p>
             </div>
         </div>
 
-        {{-- Endereço --}}
+        @if (!(is_null($adminResp)))
+            <div class="form-group row justify-content-center">
+                <div class="col-md-12">
+                    Tem pemissão de Administrador Responsável
+                </div>
+            </div>
+        @else 
         <div class="form-group row justify-content-center">
+            <div class="col-md-12">
+                Não tem pemissão de Administrador Responsável
+            </div>
+        </div>
+        @endif
+
+        @if (!(is_null($avaliador)))
+            <div class="form-group row justify-content-center">
+                <div class="col-md-12">
+                    Tem pemissão de Aváliador
+                </div>
+            </div>
+        @else 
+        <div class="form-group row justify-content-center">
+            <div class="col-md-12">
+                Não tem pemissão de Aváliador
+            </div>
+        </div>
+        @endif
+
+        @if (!(is_null($proponente)))
+            <div class="form-group row justify-content-center">
+                <div class="col-md-12">
+                    Tem pemissão de proponente
+                </div>
+            </div>
+
+            <div class="row subtitulo" style="margin-top:20px">
+                <div class="col-sm-12">
+                    <p>Dados de proponente</p>
+                </div>
+            </div>
+            <label class="col-form-label">{{ __('SIAPE') }}</label>
+            <input value="{{$proponente->SIAPE}}" id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" autocomplete="SIAPE">
+            
+            <label class="col-form-label">{{ __('Cargo') }}</label>
+            <input value="{{$proponente->cargo}}" id="cargo" type="text" class="form-control @error('cargo') is-invalid @enderror" name="cargo" autocomplete="cargo">
+
+            <label class="col-form-label">{{ __('Vinculo') }}</label>
+            <input value="{{$proponente->vinculo}}" id="vinculo" type="text" class="form-control @error('vinculo') is-invalid @enderror" name="vinculo" autocomplete="vinculo">
+
+            <label class="col-form-label">{{ __('Titulação Maxima') }}</label>
+            <input value="{{$proponente->titulacaoMaxima}}" id="titulacaoMaxima" type="text" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" autocomplete="titulacaoMaxima">
+
+            <label class="col-form-label">{{ __('Ano Titulação') }}</label>
+            <input value="{{$proponente->anoTitulacao}}" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
+
+            <label class="col-form-label">{{ __('Área') }}</label>
+            <input value="{{$proponente->grandeArea}}" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
+
+            <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
+            <input value="{{$proponente->bolsistaProdutividade}}" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">
+
+            <label class="col-form-label">{{ __('Nivel') }}</label>
+            <input value="{{$proponente->nivel}}" id="nivel" type="text" class="form-control @error('nivel') is-invalid @enderror" name="nivel" autocomplete="nivel">
+
+            <label class="col-form-label">{{ __('Link do Lattes') }}</label>
+            <input value="{{$proponente->linkLattes}}" id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" autocomplete="linkLattes">
+
+            <br>
+        @else 
+        <div class="form-group row justify-content-center">
+            <div class="col-md-12">
+                Não tem pemissão de proponente
+            </div>
+        </div>
+        @endif
+
+        @if (!(is_null($participante)))
+            <div class="form-group row justify-content-center">
+                <div class="col-md-12">
+                    Tem pemissão de participante
+                </div>
+            </div>
+        @else 
+        <div class="form-group row justify-content-center">
+            <div class="col-md-12">
+                Não tem pemissão de participante
+            </div>
+        </div>
+        @endif
+
+        {{-- <div class="row subtitulo" style="margin-top:20px">
+            <div class="col-sm-12">
+                <p>Endereço</p>
+            </div>
+        </div> --}}
+
+        {{-- Endereço --}}
+        {{-- <div class="form-group row justify-content-center">
             <div class="col-md-2">
                 <label for="cep" class="col-form-label">{{ __('CEP') }}</label>
                 <input onblur="pesquisacep(this.value);" value="{{old('cep')}}" id="cep" type="text" class="form-control @error('cep') is-invalid @enderror" name="cep" required autocomplete="cep">
@@ -320,7 +525,6 @@
             </div>
             <div class="col-sm-4">
                 <label for="uf" class="col-form-label">{{ __('UF') }}</label>
-                {{-- <input id="uf" type="text" class="form-control @error('uf') is-invalid @enderror" name="uf" value="{{ old('uf') }}" required autocomplete="uf" autofocus> --}}
                 <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf">
                     <option value="" disabled selected hidden>-- UF --</option>
                     <option value="AC">Acre</option>
@@ -370,7 +574,7 @@
                     {{ __('Concluir') }}
                 </button>
             </div>
-        </div>
+        </div> --}}
 
         </form>
     </div>

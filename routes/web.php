@@ -43,6 +43,7 @@ Route::post('/perfil','UserController@editarPerfil')->name('perfil')->middleware
 // Rotas Administrador
 Route::get('/home-admin', 'AdministradorController@index')->middleware('checkAdministrador')->name('admin.index');
 Route::get('/usuarios', 'AdministradorController@usuarios')->middleware('checkAdministrador')->name('admin.usuarios');
+Route::get('/perfil-usuario', 'UserController@minhaConta')->middleware('auth')->name('user.perfil');
   //Rotas da administração dos usuários
 Route::get('/usuarios/novo', 'AdministradorController@create')->middleware('checkAdministrador')->name('admin.user.create');
 Route::post('/usuarios/salvar-novo', 'AdministradorController@salvar')->middleware('checkAdministrador')->name('admin.user.store');
