@@ -101,6 +101,8 @@ Route::post('/coordenador/retornoDetalhes', 'CoordenadorComissaoController@retor
 Route::post('/coordenador/atribuirAvaliadorTrabalho', 'TrabalhoController@atribuirAvaliadorTrabalho')->name('coordenador.atribuirAvaliadorTrabalho');
 Route::post('/coordenador/atribuir', 'TrabalhoController@atribuir')->name('coordenador.atribuir');
 
+// Rotas Avaliador
+Route::get('/avaliador/trabalhos', 'AvaliadorController@visualizarTrabalhos')->name('visualizarTrabalho');
 
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
