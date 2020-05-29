@@ -24,8 +24,12 @@ class EventoPolicy
 
     public function isCoordenador(User $user, Evento $evento){
        
+        if(Auth()->user()->coordenadorComissao->first() != null ){
+            return $evento->criador_id == Auth()->user()->coordenadorComissao->first()->id;
+        }else{
+            return false;
+        }
         
-        return $evento->criador_id == Auth()->user()->coordenadorComissao->first()->id;
     
     }
 }
