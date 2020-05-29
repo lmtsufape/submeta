@@ -121,34 +121,98 @@ class AdministradorController extends Controller
 
     public function edit($id) {
         $user = User::find($id);
-        return view ('administrador.editar_user')->with(['user' => $user]);
+
+        $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
+        $avaliador = Avaliador::where('user_id', '=', $id)->first();
+        $proponente = Proponente::where('user_id', '=', $id)->first();
+        $participante = Participante::where('user_id', '=', $id)->first();
+
+        return view ('administrador.editar_user')->with(['user' => $user,
+                                                         'adminResp' => $adminResp,
+                                                         'proponente' => $proponente,
+                                                         'participante' => $participante,]);
     }
 
     public function update(Request $request, $id) {
         $user = User::find($id);
-
-        $validated = $request->validate([
-            'nome' => 'required',
-            'tipo' => 'required',
-            'email' => 'required',
-            'nova_senha' => 'required',
-            'senha_atual' => 'required',
-            'confirmar_senha' => 'required',
-        ]);
-
-        if (!(Hash::check($request->senha_atual, $user->password))) {
-            return redirect()->back()->withErrors(['senha_atual' => 'Senha atual não correspondente']);
+        
+        if ($request->tipo != "proponente") {
+            $validated = $request->validate([
+                'nome' => 'required',
+                'tipo' => 'required',
+                'email' => 'required',
+                // 'senha' => 'required',
+                // 'confirmar_senha' => 'required',
+                'cpf' => 'required|cpf',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'nome' => 'required',
+                'tipo' => 'required',
+                'email' => 'required',
+                // 'senha' => 'required',
+                // 'confirmar_senha' => 'required',
+                'cpf' => 'required|cpf',
+                'cargo' => 'required',
+                'titulacaoMaxima' => 'required',
+                'anoTitulacao' => 'required',
+                'grandeArea' => 'required',
+                'bolsistaProdutividade' => 'required',
+                'nivel' => 'required',
+                'linkLattes' => 'required',
+            ]);
         }
+        
+        // if (!(Hash::check($request->senha_atual, $user->password))) {
+        //     return redirect()->back()->withErrors(['senha_atual' => 'Senha atual não correspondente']);
+        // }
 
-        if (!($request->nova_senha === $request->confirmar_senha)) {
-            return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
+        // if (!($request->nova_senha === $request->confirmar_senha)) {
+        //     return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
+        // }
+
+        switch ($request->tipo) {
+            case "administradorResponsavel": 
+                $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
+                $adminResp->user_id = $user->id;
+                $adminResp->update();
+                break;
+            case "avaliador": 
+                $avaliador = Avaliador::where('user_id', '=', $id)->first();
+                $avaliador->user_id = $user->id;
+                $avaliador->update();
+                break;
+            case "proponente": 
+                $proponente = Proponente::where('user_id', '=', $id)->first();
+                $proponente->SIAPE = $request->SIAPE;
+                $proponente->cargo = $request->cargo;
+                $proponente->vinculo = $request->vinculo;
+                $proponente->titulacaoMaxima = $request->titulacaoMaxima;
+                $proponente->anoTitulacao = $request->anoTitulacao;
+                $proponente->grandeArea = $request->grandeArea;
+                $proponente->area = "teste";
+                $proponente->subArea = "teste";
+                $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
+                $proponente->nivel = $request->nivel;
+                $proponente->linkLattes = $request->linkLattes;
+                $proponente->user_id = $user->id;
+                $proponente->update();
+                break;
+            case "participante":
+                $participante = Participante::where('user_id', '=', $id)->first();
+                $participante->user_id = $user->id;
+                $participante->update();
+                break;
         }
 
         $user->name = $request->nome;
         $user->tipo = $request->tipo;
         $user->email = $request->email;
-        $user->password = bcrypt($request->nova_senha);
+        $user->cpf = $request->cpf;
+        // $user->password = bcrypt($request->nova_senha);
         $user->update();
+
+        
 
         return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário atualizado com sucesso']);
     }

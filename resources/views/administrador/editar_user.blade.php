@@ -24,9 +24,18 @@
                 @enderror
 
                 <label for="email" class="col-form-label">{{ __('Email') }}</label>
-                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" required autocomplete="nome" autofocus>
+                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" required autocomplete="email" autofocus>
 
                 @error('email')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+
+                <label for="cpf" class="col-form-label">{{ __('CPF') }}</label>
+                <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" value="{{ $user->cpf }}" required autocomplete="cpf" autofocus>
+
+                @error('cpf')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -35,18 +44,41 @@
                 <label for="tipo" class="col-form-label">{{ __('Tipo') }}</label>
                 
                 <div>
-                    <select name="tipo" id="">
-                        <option value="{{$user->tipo}}">{{$user->tipo}}<option>
-                        <option value="administrador">administrador</option>
-                        <option value="administradorResponsavel">administradorResponsavel</option>
-                        <option value="coordenador">coordenador</option>
-                        <option value="proponente">proponente</option>
-                        <option value="participante">participante</option>
+                    <select name="tipo" id="tipo" onchange="mudar()">
+                        @can('isAdministrador', auth()->user())
+                            @if ($user->tipo == 'administrador')
+                                <option value="administrador" selected>Administrador</option>
+                            @else 
+                                <option value="administrador">Administrador</option>
+                            @endif
+                            @if ($user->tipo == 'administradorResponsavel')
+                                <option value="administradorResponsavel" selected>Administrador Responsavel</option>
+                            @else 
+                                <option value="administradorResponsavel">Administrador Responsavel</option>
+                            @endif
+                        @endcan
+                        @if ($user->tipo == 'avaliador')
+                            <option value="coordenador" selected>Coordenador</option>
+                        @else 
+                            <option value="coordenador">Coordenador</option>
+                        @endif
+
+                        @if ($user->tipo == 'proponente')
+                            <option value="proponente" selected>Proponente</option>
+                        @else 
+                            <option value="proponente">Proponente</option>
+                        @endif
+
+                        @if ($user->tipo == 'participante')
+                            <option value="participante" selected>Participante</option>
+                        @else 
+                            <option value="participante">Participante</option>
+                        @endif
                     </select> 
                 </div>
                 
-                <label for="passworld" class="col-form-label">{{ __('Senha atual') }}</label>
-                <input id="passworld" type="text" class="form-control @error('senha_atual') is-invalid @enderror" name="senha_atual" value="" required autocomplete="nome" autofocus>
+                {{-- <label for="passworld" class="col-form-label">{{ __('Senha atual') }}</label>
+                <input id="passworld" type="text" class="form-control @error('senha_atual') is-invalid @enderror" name="senha_atual" value="" required autocomplete="senha_atual" autofocus>
 
                 @error('senha_atual')
                 <span class="invalid-feedback" role="alert">
@@ -55,7 +87,7 @@
                 @enderror
 
                 <label for="new_passworld" class="col-form-label">{{ __('Nova senha') }}</label>
-                <input id="new_passworld" type="text" class="form-control @error('nova_senha') is-invalid @enderror" name="nova_senha" value="" required autocomplete="nome" autofocus>
+                <input id="new_passworld" type="text" class="form-control @error('nova_senha') is-invalid @enderror" name="nova_senha" value="" required autocomplete="nova_senha" autofocus>
 
                 @error('nova_senha')
                 <span class="invalid-feedback" role="alert">
@@ -64,13 +96,74 @@
                 @enderror
 
                 <label for="confirm_passworld" class="col-form-label">{{ __('Confirmar nova senha') }}</label>
-                <input id="confirmar_passworld" type="text" class="form-control @error('confirmar_senha') is-invalid @enderror" name="confirmar_senha" value="" required autocomplete="nome" autofocus>
+                <input id="confirmar_passworld" type="text" class="form-control @error('confirmar_senha') is-invalid @enderror" name="confirmar_senha" value="" required autocomplete="confirmar_senha" autofocus>
 
                 @error('confirmar_senha')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
-                @enderror
+                @enderror --}}
+
+                @if ($user->tipo == "proponente") 
+                    <div id="proponente" style="display: none;">
+                        <label class="col-form-label">{{ __('SIAPE') }}</label>
+                        <input value="{{$proponente->SIAPE}}" id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" autocomplete="SIAPE">
+                        
+                        <label class="col-form-label">{{ __('Cargo') }}</label>
+                        <input value="{{$proponente->cargo}}" id="cargo" type="text" class="form-control @error('cargo') is-invalid @enderror" name="cargo" autocomplete="cargo">
+
+                        <label class="col-form-label">{{ __('Vinculo') }}</label>
+                        <input value="{{$proponente->vinculo}}" id="vinculo" type="text" class="form-control @error('vinculo') is-invalid @enderror" name="vinculo" autocomplete="vinculo">
+
+                        <label class="col-form-label">{{ __('Titulação Maxima') }}</label>
+                        <input value="{{$proponente->titulacaoMaxima}}" id="titulacaoMaxima" type="text" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" autocomplete="titulacaoMaxima">
+
+                        <label class="col-form-label">{{ __('Ano Titulação') }}</label>
+                        <input value="{{$proponente->anoTitulacao}}" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
+
+                        <label class="col-form-label">{{ __('Área') }}</label>
+                        <input value="{{$proponente->grandeArea}}" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
+
+                        <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
+                        <input value="{{$proponente->bolsistaProdutividade}}" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">
+
+                        <label class="col-form-label">{{ __('Nivel') }}</label>
+                        <input value="{{$proponente->nivel}}" id="nivel" type="text" class="form-control @error('nivel') is-invalid @enderror" name="nivel" autocomplete="nivel">
+
+                        <label class="col-form-label">{{ __('Link do Lattes') }}</label>
+                        <input value="{{$proponente->linkLattes}}" id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" autocomplete="linkLattes">
+                    </div>
+                @else
+                    <div id="proponente" style="display: none;">
+                        <label class="col-form-label">{{ __('SIAPE') }}</label>
+                        <input value="" id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" autocomplete="SIAPE">
+                        
+                        <label class="col-form-label">{{ __('Cargo') }}</label>
+                        <input value="" id="cargo" type="text" class="form-control @error('cargo') is-invalid @enderror" name="cargo" autocomplete="cargo">
+
+                        <label class="col-form-label">{{ __('Vinculo') }}</label>
+                        <input value="" id="vinculo" type="text" class="form-control @error('vinculo') is-invalid @enderror" name="vinculo" autocomplete="vinculo">
+
+                        <label class="col-form-label">{{ __('Titulação Maxima') }}</label>
+                        <input value="" id="titulacaoMaxima" type="text" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" autocomplete="titulacaoMaxima">
+
+                        <label class="col-form-label">{{ __('Ano Titulação') }}</label>
+                        <input value="" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
+
+                        <label class="col-form-label">{{ __('Área') }}</label>
+                        <input value="" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
+
+                        <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
+                        <input value="" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">
+
+                        <label class="col-form-label">{{ __('Nivel') }}</label>
+                        <input value="" id="nivel" type="text" class="form-control @error('nivel') is-invalid @enderror" name="nivel" autocomplete="nivel">
+
+                        <label class="col-form-label">{{ __('Link do Lattes') }}</label>
+                        <input value="" id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" autocomplete="linkLattes">
+                    </div>
+                @endif
+            <br>
 
                 <button type="submit" class="btn btn-primary" style="position:relative;top:10px;">{{ __('Salvar') }}</button>
             </div>
@@ -78,4 +171,28 @@
     </div>
 </div>
 
+@endsection
+
+@section('javascript')
+<script>
+    var divProponente = document.getElementById('proponente');
+    var comboBoxTipo = document.getElementById('tipo');
+    
+    if (comboBoxTipo.value == "proponente") {
+        divProponente.style.display = "inline";
+    } else {
+        divProponente.style.display = "none";
+    }
+
+    function mudar() {
+        var divProponente = document.getElementById('proponente');
+        var comboBoxTipo = document.getElementById('tipo');
+        
+        if (comboBoxTipo.value == "proponente") {
+            divProponente.style.display = "inline";
+        } else {
+            divProponente.style.display = "none";
+        }
+    }
+</script>
 @endsection

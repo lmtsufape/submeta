@@ -36,34 +36,67 @@
     <tbody>
       @foreach ($users as $user)
         @if (auth()->user()->id != $user->id)
-        <tr>
-          <td>
-            {{ $user->name }}
-          </td>
-          <td>{{ $user->tipo }}</td>
-          <td>{{ $user->creaet_at }}</td>
-          <td>
-            <div class="btn-group dropright dropdown-options">
-                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    
-                </a>
-                <div class="dropdown-menu">
-                    <a href="{{route('admin.user.edit', $user->id)}}" class="dropdown-item">
-                        <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
-                        Editar
+          @can('isAdministrador', auth()->user())
+            <tr>
+              <td>
+                {{ $user->name }}
+              </td>
+              <td>{{ $user->tipo }}</td>
+              <td>{{ $user->creaet_at }}</td>
+              <td>
+                <div class="btn-group dropright dropdown-options">
+                    <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        
                     </a>
-                    <form method="POST" action="{{route('admin.user.destroy', $user->id)}}">
-                        {{ csrf_field() }}
-                        <button type="submit" class="dropdown-item">
-                            <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
-                            Deletar
-                        </button>
+                    <div class="dropdown-menu">
+                        <a href="{{route('admin.user.edit', $user->id)}}" class="dropdown-item">
+                            <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
+                            Editar
+                        </a>
+                        <form method="POST" action="{{route('admin.user.destroy', $user->id)}}">
+                            {{ csrf_field() }}
+                            <button type="submit" class="dropdown-item">
+                                <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
+                                Deletar
+                            </button>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
-          </td>
-        </tr>
+              </td>
+            </tr>
+          @else
+            @if ($user->tipo != "administrador" && $user->tipo != "administradorResponsavel") 
+            <tr>
+              <td>
+                {{ $user->name }}
+              </td>
+              <td>{{ $user->tipo }}</td>
+              <td>{{ $user->creaet_at }}</td>
+              <td>
+                <div class="btn-group dropright dropdown-options">
+                    <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="{{route('admin.user.edit', $user->id)}}" class="dropdown-item">
+                            <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
+                            Editar
+                        </a>
+                        <form method="POST" action="{{route('admin.user.destroy', $user->id)}}">
+                            {{ csrf_field() }}
+                            <button type="submit" class="dropdown-item">
+                                <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
+                                Deletar
+                            </button>
+    
+                        </form>
+                    </div>
+                </div>
+              </td>
+            </tr>
+            @endif
+          @endcan
         @endif
       @endforeach
     </tbody>
