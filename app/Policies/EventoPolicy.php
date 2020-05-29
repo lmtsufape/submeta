@@ -4,6 +4,8 @@ namespace App\Policies;
 
 use App\User;
 use App\Evento;
+use App\CoordenadorComissao;
+use App\AdministradorResponsavel;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class EventoPolicy
@@ -21,6 +23,9 @@ class EventoPolicy
     }
 
     public function isCoordenador(User $user, Evento $evento){
-      return $user->id === $evento->coordenador->id;
+       
+        
+        return $evento->criador_id == Auth()->user()->id;
+    
     }
 }

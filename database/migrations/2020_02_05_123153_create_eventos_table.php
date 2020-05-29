@@ -16,28 +16,21 @@ class CreateEventosTable extends Migration
         Schema::create('eventos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->string('nome')->nullable();
-            // $table->integer('numeroParticipantes');
+            $table->string('nome')->nullable();            
             $table->string('descricao')->nullable();
-            $table->string('tipo')->nullable();
-            $table->date('dataInicio')->nullable();
-            $table->date('dataFim')->nullable();
+            $table->string('tipo')->nullable();            
             $table->date('inicioSubmissao')->nullable();
             $table->date('fimSubmissao')->nullable();
             $table->date('inicioRevisao')->nullable();
             $table->date('fimRevisao')->nullable();
-            $table->date('inicioResultado')->nullable();
-            $table->date('fimResultado')->nullable();
+            $table->date('resultado')->nullable();        
             $table->integer('numMaxTrabalhos')->nullable();
             $table->integer('numMaxCoautores')->nullable();
-            // $table->boolean('possuiTaxa');
-            // $table->double('valorTaxa');
-            $table->string('fotoEvento')->nullable();
             $table->boolean('hasResumo')->nullable();
-
-            $table->integer('coordComissaoId')->nullable();
-            $table->integer('enderecoId')->nullable();
+            $table->integer('criador_id')->nullable();
             $table->integer('coordenadorId')->nullable();
+            $table->string('pdfEdital')->nullable();
+            $table->string('modeloDocumento')->nullable();
         });
     }
 

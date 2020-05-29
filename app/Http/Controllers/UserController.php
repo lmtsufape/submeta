@@ -6,13 +6,32 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\User;
+use App\AdministradorResponsavel;
+use App\Avaliador;
+use App\Proponente;
+use App\Participante;
 use App\Endereco;
 use App\Trabalho;
 use App\Coautor;
+use App\Evento;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    //
+
+    public function index()
+    {
+      $eventos = Evento::all();
+      if(Auth::check()){
+        Log::debug('UserController check');
+        return redirect()->route('home');
+      }
+      Log::debug('UserController index');
+      return view('index', ['eventos' => $eventos]);
+      //return view('auth.login');
+    }
+
+
     function perfil(){
         $user = User::find(Auth::user()->id);
         $end = $user->endereco;
@@ -93,9 +112,29 @@ class UserController extends Controller
 
     public function meusTrabalhos(){
 
-        $trabalhos = Trabalho::where('autorId', Auth::user()->id)->get();
+        //$trabalhos = Trabalho::where('autorId', Auth::user()->id)->get();
+        $proponente = Proponente::with('user')->where('user_id', Auth::user()->id)->first();
+        $trabalhos = $proponente->trabalhos;
+        //dd($trabalhos);
+
         return view('user.meusTrabalhos',[
-                                            'trabalhos'           => $trabalhos,
+                                           'trabalhos'           => $trabalhos,
                                         ]);
+    }
+
+    public function minhaConta() {
+        $id = Auth::user()->id;
+        $user = User::find($id);
+        
+        $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
+        $avaliador = Avaliador::where('user_id', '=', $id)->first();
+        $proponente = Proponente::where('user_id', '=', $id)->first();
+        $participante = Participante::where('user_id', '=', $id)->first();
+
+        return view('user.perfilUser')->with(['user' => $user,
+                                              'adminResp' => $adminResp,
+                                              'avaliador' => $avaliador,
+                                              'proponente' => $proponente,
+                                              'participante' => $participante]);
     }
 }

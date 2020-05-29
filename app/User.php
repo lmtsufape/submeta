@@ -20,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name', 'email', 'password', 'cpf', 'instituicao', 'celular',
         'especProfissional', 'enderecoId',
-        'usuarioTemp',
+        'usuarioTemp', 'tipo', 'user_id'
     ];
 
     /**
@@ -76,8 +76,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public function evento(){
         return $this->hasMany('App\Evento', 'coordenadorId');
     }
-
-
+    public function administradors(){
+        return $this->hasMany('App\Administrador');
+    }
+    public function proponentes(){
+        return $this->hasMany('App\Proponente');
+    }
+    public function AdministradorResponsavel(){
+        return $this->hasMany('App\AdministradorResponsavel');
+    }
+    public function participantes(){
+        return $this->hasMany('App\Participante');
+    }
+    public function avaliadors(){
+        return $this->hasMany('App\Avaliador');
+    }
+    public function coordenadorComissao(){
+        return $this->hasMany('App\CoordenadorComissao');
+    }
+    
     public function sendPasswordResetNotification($token){
         $this->notify(new recuperacaoSenha($token));
     }

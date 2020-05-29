@@ -11,8 +11,10 @@ use App\Atribuicao;
 use App\Modalidade;
 use App\ComissaoEvento;
 use App\User;
+use App\Proponente;
 use App\Trabalho;
 use App\AreaModalidade;
+use App\CoordenadorComissao;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -36,6 +38,17 @@ class EventoController extends Controller
 
     }
 
+    public function listar()
+    {
+        //
+        $eventos = Evento::all();
+        // $comissaoEvento = ComissaoEvento::all();
+        // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
+        
+        return view('evento.listarEvento',['eventos'=>$eventos]);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -43,8 +56,8 @@ class EventoController extends Controller
      */
     public function create()
     {
-        //
-        return view('evento.criarEvento');
+        $coordenadors = CoordenadorComissao::with('user')->get();
+        return view('evento.criarEvento', ['coordenadors' => $coordenadors]);
     }
 
     /**
@@ -59,106 +72,64 @@ class EventoController extends Controller
         $mytime = Carbon::now('America/Recife');
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
+        //$admResponsavel = AdministradorResponsavel::with('user')->where('user_id', Auth()->user()->id)->first();
+        $user_id = Auth()->user()->id;
 
-        // dd($request);
+        //dd($user_id);
         // validar datas nulas antes, pois pode gerar um bug
 
         if(
-          $request->dataInicio == null      ||
-          $request->dataFim == null         ||
           $request->inicioSubmissao == null ||
           $request->fimSubmissao == null    ||
           $request->inicioRevisao == null   ||
           $request->fimRevisao == null      ||
-          $request->inicioResultado == null ||
-          $request->fimResultado == null
+          $request->resultado == null 
+          
         ){
           $validatedData = $request->validate([
             'nome'                => ['required', 'string'],
-            // 'numeroParticipantes' => ['required', 'integer', 'gt:0'],
             'descricao'           => ['required', 'string'],
-            'tipo'                => ['required', 'string'],
-            'dataInicio'          => ['required', 'date','after:'. $yesterday],
-            'dataFim'             => ['required', 'date'],
+            'tipo'                => ['required', 'string'],            
             'inicioSubmissao'     => ['required', 'date'],
             'fimSubmissao'        => ['required', 'date'],
             'inicioRevisao'       => ['required', 'date'],
             'fimRevisao'          => ['required', 'date'],
-            'inicioResultado'     => ['required', 'date'],
-            'fimResultado'        => ['required', 'date'],
-            // 'valorTaxa'           => ['required', 'integer'],
-            'fotoEvento'          => ['file', 'mimes:png'],
+            'resultado'           => ['required', 'date'],    
+            'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],  	 
+            'modeloDocumento'     => ['required', 'file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
           ]);
         }
 
         // validacao normal
 
         $validatedData = $request->validate([
-          'nome'                => ['required', 'string'],
-          // 'numeroParticipantes' => ['required', 'integer', 'gt:0'],
+          'nome'                => ['required', 'string'],        
           'descricao'           => ['required', 'string'],
           'tipo'                => ['required', 'string'],
-          'dataInicio'          => ['required', 'date', 'after:' . $yesterday],
-          'dataFim'             => ['required', 'date', 'after:' . $request->dataInicio],
           'inicioSubmissao'     => ['required', 'date', 'after:' . $yesterday],
           'fimSubmissao'        => ['required', 'date', 'after:' . $request->inicioSubmissao],
           'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
           'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
-          'inicioResultado'     => ['required', 'date', 'after:' . $yesterday],
-          'fimResultado'        => ['required', 'date', 'after:' . $request->inicioResultado],
-          // 'valorTaxa'           => ['required', 'integer'],
-          'fotoEvento'          => ['file', 'mimes:png'],
-        ]);
-
-        // validar endereco
-
-        $validatedData = $request->validate([
-          'rua'                 => ['required', 'string'],
-          'numero'              => ['required', 'string'],
-          'bairro'              => ['required', 'string'],
-          'cidade'              => ['required', 'string'],
-          'uf'                  => ['required', 'string'],
-          'cep'                 => ['required', 'string'],
-        ]);
-
-        $endereco = Endereco::create([
-          'rua'                 => $request->rua,
-          'numero'              => $request->numero,
-          'bairro'              => $request->bairro,
-          'cidade'              => $request->cidade,
-          'uf'                  => $request->uf,
-          'cep'                 => $request->cep,
+          'resultado'           => ['required', 'date', 'after:' . $yesterday],
+          'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'modeloDocumento'     => ['required', 'file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
         ]);
 
         $evento = Evento::create([
           'nome'                => $request->nome,
-          // 'numeroParticipantes' => $request->numeroParticipantes,
           'descricao'           => $request->descricao,
           'tipo'                => $request->tipo,
-          'dataInicio'          => $request->dataInicio,
-          'dataFim'             => $request->dataFim,
           'inicioSubmissao'     => $request->inicioSubmissao,
           'fimSubmissao'        => $request->fimSubmissao,
           'inicioRevisao'       => $request->inicioRevisao,
           'fimRevisao'          => $request->fimRevisao,
-          'inicioResultado'     => $request->inicioResultado,
-          'fimResultado'        => $request->fimResultado,
-          // 'possuiTaxa'          => $request->possuiTaxa,
-          // 'valorTaxa'           => $request->valorTaxa,
-          'enderecoId'          => $endereco->id,
-          'coordenadorId'       => Auth::user()->id,
+          'resultado'           => $request->resultado,
+          'coordenadorId'       => $request->coordenador_id,          
+          'criador_id'          => $user_id,          
         ]);
-
-        // se o evento tem foto
-
-        if($request->fotoEvento != null){
-          $file = $request->fotoEvento;
-          $path = 'public/eventos/' . $evento->id;
-          $nome = '/logo.png';
-          Storage::putFileAs($path, $file, $nome);
-          $evento->fotoEvento = $path . $nome;
-          $evento->save();
-        }
+        //dd($evento);
+        // $user = User::find($request->coordenador_id);
+        // $user->coordenadorComissao()->editais()->save($evento);
 
         // se vou me tornar coordenador do Evento
 
@@ -167,13 +138,29 @@ class EventoController extends Controller
         //   $evento->save();
         // }
 
-        $evento->coordenadorId = Auth::user()->id;
+        //$evento->coordenadorId = Auth::user()->id;
+
+        $pdfEdital = $request->pdfEdital;
+        $path = 'pdfEdital/' . $evento->id . '/';
+        $nome = "edital.pdf";
+        Storage::putFileAs($path, $pdfEdital, $nome);  
+        $evento->pdfEdital = $path . $nome;
+         
+        $modeloDocumento = $request->modeloDocumento;
+        $extension = $modeloDocumento->extension();
+        $path = 'modeloDocumento/' . $evento->id . '/';
+        $nome = "modelo" . "." . $extension;
+        Storage::putFileAs($path, $modeloDocumento, $nome);
+  
+        $evento->modeloDocumento = $path . $nome;
+
+
         $evento->save();
 
-        $user = Auth::user();
-        $subject = "Evento Criado";
-        Mail::to($user->email)
-            ->send(new EventoCriado($user, $subject));
+        // $user = Auth::user();
+        // $subject = "Evento Criado";
+        // Mail::to($user->email)
+        //     ->send(new EventoCriado($user, $subject));
 
         return redirect()->route('coord.home');
     }
@@ -187,32 +174,43 @@ class EventoController extends Controller
     public function show($id)
     {
         $evento = Evento::find($id);
-        $hasTrabalho = false;
-        $hasTrabalhoCoautor = false;
-        $hasFile = false;
-        $trabalhos = Trabalho::where('autorId', Auth::user()->id)->get();
-        $trabalhosCount = Trabalho::where('autorId', Auth::user()->id)->count();
-        $trabalhosId = Trabalho::where('eventoId', $evento->id)->select('id')->get();
-        $trabalhosIdCoautor = Coautor::whereIn('trabalhoId', $trabalhosId)->where('autorId', Auth::user()->id)->select('trabalhoId')->get();
-        $coautorCount = Coautor::whereIn('trabalhoId', $trabalhosId)->where('autorId', Auth::user()->id)->count();
-        $trabalhosCoautor = Trabalho::whereIn('id', $trabalhosIdCoautor)->get();
-        if($trabalhosCount != 0){
-          $hasTrabalho = true;
-          $hasFile = true;
+        $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+        if($proponente != null){
+          $hasTrabalho = false;
+          $hasFile = false;
+          $trabalhos = $proponente->trabalhos()->get();
+          $trabalhosCount = $proponente->trabalhos()->count();
+
+          if($trabalhosCount != 0){
+            $hasTrabalho = true;
+            $hasFile = true;
+          }
+        }else{
+          $hasTrabalho = false;
+          $hasFile = false;
+          $trabalhos = 0;
+          $trabalhosCount = 0;
         }
-        if($coautorCount != 0){
-          $hasTrabalhoCoautor = true;
-          $hasFile = true;
-        }
+        
+        
+        $trabalhosId = Trabalho::where('evento_id', $evento->id)->select('id')->get();
+        //$trabalhosIdCoautor = Proponente::whereIn('trabalhoId', $trabalhosId)->where('proponente_id', Auth::user()->id)->select('trabalhoId')->get();
+        //$coautorCount = Coautor::whereIn('trabalhoId', $trabalhosId)->where('proponente_id', Auth::user()->id)->count();
+        //$trabalhosCoautor = Trabalho::whereIn('id', $trabalhosIdCoautor)->get();
+        
+        // if($coautorCount != 0){
+        //   $hasTrabalhoCoautor = true;
+        //   $hasFile = true;
+        // }
 
         $mytime = Carbon::now('America/Recife');
         // dd(false);
         return view('evento.visualizarEvento', [
                                                 'evento'              => $evento,
                                                 'trabalhos'           => $trabalhos,
-                                                'trabalhosCoautor'    => $trabalhosCoautor,
+                                                // 'trabalhosCoautor'    => $trabalhosCoautor,
                                                 'hasTrabalho'         => $hasTrabalho,
-                                                'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
+                                                // 'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
                                                 'hasFile'             => $hasFile,
                                                 'mytime'              => $mytime
                                                ]);
@@ -249,9 +247,8 @@ class EventoController extends Controller
     public function edit($id)
     {
         // dd($id);
-        $evento = Evento::find($id);
-        $endereco = Endereco::find($evento->enderecoId);
-        return view('evento.editarEvento',['evento'=>$evento,'endereco'=>$endereco]);
+        $evento = Evento::find($id);       
+        return view('evento.editarEvento',['evento'=>$evento]);
     }
 
     /**
@@ -263,33 +260,35 @@ class EventoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $evento = Evento::find($id);
-        $endereco = Endereco::find($evento->enderecoId);
+        //dd($request);
+        $evento = Evento::find($id);    
 
-        $evento->nome                 = $request->nome;
-        // $evento->numeroParticipantes  = $request->numeroParticipantes;
+        $evento->nome                 = $request->nome;        
         $evento->descricao            = $request->descricao;
-        $evento->tipo                 = $request->tipo;
-        $evento->dataInicio           = $request->dataInicio;
-        $evento->dataFim              = $request->dataFim;
+        $evento->tipo                 = $request->tipo;       
         $evento->inicioSubmissao      = $request->inicioSubmissao;
         $evento->fimSubmissao         = $request->fimSubmissao;
         $evento->inicioRevisao        = $request->inicioRevisao;
         $evento->fimRevisao           = $request->fimRevisao;
-        $evento->inicioResultado      = $request->inicioResultado;
-        $evento->fimResultado         = $request->fimResultado;
-        // $evento->possuiTaxa           = $request->possuiTaxa;
-        // $evento->valorTaxa            = $request->valorTaxa;
-        $evento->enderecoId           = $endereco->id;
-        $evento->save();
+        $evento->resultado            = $request->resultado;  
+        
+        if($request->pdfEdital != null){
+          $pdfEdital = $request->pdfEdital;
+          $path = 'pdfEdital/' . $evento->id . '/';
+          $nome = "edital.pdf";
+          Storage::putFileAs($path, $pdfEdital, $nome);  
+        }
+         
+        if($request->modeloDocumento != null){
+          $modeloDocumento = $request->modeloDocumento;
+          $extension = $modeloDocumento->extension();
+          $path = 'modeloDocumento/' . $evento->id . '/';
+          $nome = "modelo" . "." . $extension;
+          Storage::putFileAs($path, $modeloDocumento, $nome);
+          $evento->modeloDocumento = $path . $nome;
+        }
 
-        $endereco->rua                = $request->rua;
-        $endereco->numero             = $request->numero;
-        $endereco->bairro             = $request->bairro;
-        $endereco->cidade             = $request->cidade;
-        $endereco->uf                 = $request->uf;
-        $endereco->cep                = $request->cep;
-        $endereco->save();
+        $evento->save();
 
         $eventos = Evento::all();
         return view('coordenador.home',['eventos'=>$eventos]);
@@ -304,7 +303,6 @@ class EventoController extends Controller
     public function destroy($id)
     {
         $evento = Evento::find($id);
-        $endereco = Endereco::find($evento->enderecoId);
 
         $areas = Area::where('eventoId', $id);
         $atividades = Atividade::where('eventoId', $id);
@@ -328,8 +326,10 @@ class EventoController extends Controller
           $trabalhos->delete();    
         }
 
+        Storage::deleteDirectory('pdfEdital/' . $evento->id );
+        Storage::deleteDirectory('modeloDocumento/' . $evento->id);
+
         $evento->delete();
-        $endereco->delete();
 
         return redirect()->back();
     }

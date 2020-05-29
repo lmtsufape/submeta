@@ -14,12 +14,13 @@ class CreateAreasTable extends Migration
     public function up()
     {
         Schema::create('areas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->bigIncrements('id');            
             $table->string('nome');
-
-            $table->integer('modalidadeId')->nullable();
-            $table->integer('eventoId');
+            
+            $table->unsignedBigInteger('grande_area_id');
+            $table->timestamps();
+            // $table->integer('modalidadeId')->nullable();
+            // $table->integer('eventoId');
         });
     }
 

@@ -12,11 +12,10 @@ class Evento extends Model
    * @var array
    */
   protected $fillable = [
-      'nome', 'descricao', 'tipo', 'dataInicio', 'dataFim',
+      'nome', 'descricao', 'tipo',
       'inicioSubmissao', 'fimSubmissao', 'inicioRevisao', 'fimRevisao',
-      'inicioResultado', 'fimResultado', 'possuiTaxa', 'valorTaxa', 'fotoEvento',
-      'enderecoId', 'coordenadorId',
-      'numMaxTrabalhos', 'numMaxCoautores', 'hasResumo',
+      'resultado', 'coordenadorId',
+      'numMaxTrabalhos', 'numMaxCoautores', 'hasResumo', 'criador_id'
   ];
 
   public function endereco(){
@@ -33,6 +32,10 @@ class Evento extends Model
 
   public function coordenador(){
       return $this->belongsTo('App\User', 'coordenadorId');
+  }
+
+  public function coordenadorComissao(){
+      return $this->belongsTo('App\CoordenadorComissao', 'coordenadorId');
   }
 
 

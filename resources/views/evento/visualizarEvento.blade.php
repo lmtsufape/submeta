@@ -74,7 +74,7 @@
 <div class="container" style="margin-top:20px">
     @if(!Auth::check())
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong> A submissão de um trabalho é possível apenas quando cadastrado no sistema. </strong>
+        <strong> A submissão de um projeto é possível apenas quando cadastrado no sistema. </strong>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -100,16 +100,7 @@
     </div>
     <div class="row margin">
         <div class="col-sm-12 info-evento">
-            <h4>Realização do Evento</h4>
-            <p>
-                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
-                {{date('d/m/Y',strtotime($evento->dataInicio))}} - {{date('d/m/Y',strtotime($evento->dataFim))}}
-            </p>
-        </div>
-    </div>
-    <div class="row margin">
-        <div class="col-sm-12 info-evento">
-            <h4>Submissão de Trabalhos</h4>
+            <h4>Submissão de Projetos</h4>
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
                 {{date('d/m/Y',strtotime($evento->inicioSubmissao))}} - {{date('d/m/Y',strtotime($evento->fimSubmissao))}}
@@ -118,35 +109,38 @@
     </div>
     <div class="row margin">
         <div class="col-sm-12 info-evento">
-            <h4>Revisão de Trabalhos</h4>
+
+            <h4>Revisão de Projetos</h4>
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
                 {{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}
+            </p> --}}
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="col-sm-12 info-evento">
+
+            <h4>Data do resultado</h4>
+            <p>
+                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
+                {{date('d/m/Y',strtotime($evento->resultado))}}
             </p>
+
         </div>
     </div>
 
-    <div class="row margin">
-        <div class="col-sm-12 info-evento">
-            <h4>Endereço</h4>
-            <p>
-                <img class="" src="{{asset('img/icons/map-marker-alt-solid.svg')}}" alt="">
-                {{$evento->endereco->rua}}, {{$evento->endereco->numero}} - {{$evento->endereco->cidade}} / {{$evento->endereco->uf}}.
-            </p>
-        </div>
-    </div>
     @if($hasFile == true)
       <div class="row margin">
           <div class="col-sm-12">
               <h1>
-                  Meus Trabalhos
+                  Meus Projetos
               </h1>
           </div>
       </div>
       @if($hasTrabalho)
         <div class="row margin">
             <div class="col-sm-12 info-evento">
-                <h4>Como Autor</h4>
+                <h4>Como Proponente</h4>
             </div>
         </div>
 
@@ -197,7 +191,7 @@
         </div>
       @endif
 
-      @if($hasTrabalhoCoautor)
+{{--       @if($hasTrabalhoCoautor)
         <div class="row margin">
             <div class="col-sm-12 info-evento">
                 <h4>Como Coautor</h4>
@@ -237,19 +231,19 @@
             </table>
           </div>
         </div>
-      @endif
+      @endif --}}
     @endif
 
     <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
         <div class="col-md-6 botao-form-left" style="">
-            <a class="btn btn-secondary botao-form" href="{{route('cancelarCadastro')}}" style="width:100%">Voltar</a>
+            <a class="btn btn-secondary botao-form" href="/" style="width:100%">Voltar</a>
         </div>
 
         @if($evento->inicioSubmissao <= $mytime)
           @if($mytime < $evento->fimSubmissao)
             <div class="col-md-6 botao-form-right" style="">
-              <a class="btn btn-primary botao-form" href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%">Submeter Trabalho</a>
+              <a class="btn btn-primary botao-form" href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%">Submeter Projeto</a>
             </div>
           @endif
         @endif

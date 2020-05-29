@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 use App\User;
+use App\Participante;
 use App\Endereco;
+
 class RegisterController extends Controller
 {
     /*
@@ -98,9 +100,13 @@ class RegisterController extends Controller
         $user->cpf = $data['cpf'];
         $user->celular = $data['celular'];
         $user->instituicao = $data['instituicao'];
+        $user->tipo = 'participante';
 
         $user->enderecoId = $end->id;
         $user->save();
+
+        $participante = new Participante();
+        $user->participantes()->save($participante);
 
         return $user;
     }

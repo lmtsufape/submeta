@@ -5,13 +5,19 @@ namespace App\Http\Controllers;
 use App\Trabalho;
 use App\Coautor;
 use App\Evento;
+use App\CoordenadorComissao;
 use App\User;
+use App\Proponente;
 use App\AreaModalidade;
 use App\Area;
 use App\Revisor;
 use App\Modalidade;
 use App\Atribuicao;
 use App\Arquivo;
+use App\GrandeArea;
+use App\SubArea;
+use App\FuncaoParticipantes;
+use App\Participante;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Http\Request;
@@ -31,31 +37,18 @@ class TrabalhoController extends Controller
      */
     public function index($id)
     {
-        $evento = Evento::find($id);
-        $areas = Area::where('eventoId', $evento->id)->get();
-        $areasId = Area::where('eventoId', $evento->id)->select('id')->get();
-        $revisores = Revisor::where('eventoId', $evento->id)->get();
-        $modalidades = Modalidade::all();        
-        $areaModalidades = AreaModalidade::whereIn('areaId', $areasId)->get();        
-        $areasEnomes = Area::wherein('id', $areasId)->get();
-        $modalidadesIDeNome = [];
-        foreach ($areaModalidades as $key) {
-          array_push($modalidadesIDeNome,['areaId' => $key->area->id,
-                                          'modalidadeId' => $key->modalidade->id,
-                                          'modalidadeNome' => $key->modalidade->nome]);
-        }
-
-        $trabalhos = Trabalho::where('autorId', Auth::user()->id)->whereIn('areaId', $areasId)->get();
-        // dd($evento);
+        $edital = Evento::find($id);
+        $grandeAreas = GrandeArea::all();
+        $areas = Area::all();
+        $subAreas = SubArea::all();
+        $funcaoParticipantes = FuncaoParticipantes::all(); 
         return view('evento.submeterTrabalho',[
-                                              'evento'          => $evento,
-                                              'areas'           => $areas,
-                                              'revisores'       => $revisores,
-                                              'modalidades'     => $modalidades,
-                                              'areaModalidades' => $areaModalidades,
-                                              'trabalhos'       => $trabalhos,
-                                              'areasEnomes'     => $areasEnomes,
-                                              'modalidadesIDeNome'     => $modalidadesIDeNome,
+                                            'edital'             => $edital,
+                                            'grandeAreas'        => $grandeAreas,
+                                            'areas'              => $areas,
+                                            'subAreas'           => $subAreas,
+                                            'funcaoParticipantes'=> $funcaoParticipantes               
+                                              
                                             ]);
     }
 
@@ -76,104 +69,193 @@ class TrabalhoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+      // dd($request->all());
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();
-      $evento = Evento::find($request->eventoId);
+      $evento = Evento::find($request->editalId);
+      $coordenador = CoordenadorComissao::find($evento->coordenadorId);
+      //dd($coordenador->id);
+
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
             return redirect()->route('home');
         }
       }
-      $validatedData = $request->validate([
-        'nomeTrabalho'      => ['required', 'string',],
-        'areaId'            => ['required', 'integer'],
-        'modalidadeId'      => ['required', 'integer'],
-        'eventoId'          => ['required', 'integer'],
-        'resumo'            => ['nullable','string'],
-        'nomeCoautor.*'     => ['string'],
-        'emailCoautor.*'    => ['string'],
-        'arquivo'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
-      ]);
+      
+      //O anexo de Decisão do CONSU dependo do tipo de edital
+      if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM'){
 
+        $validatedData = $request->validate([
+          'editalId'                => ['required', 'integer'],
+          'nomeProjeto'             => ['required', 'string'],
+          'grandeAreaId'            => ['required', 'integer'],
+          'areaId'                  => ['required', 'integer'],
+          'subAreaId'               => ['required', 'integer'],
+          'pontuacaoPlanilha'       => ['required', 'integer'],
+          'linkGrupo'               => ['required', 'string'],
+          'linkLattesEstudante'     => ['required', 'string'],
+          'nomeParticipante.*'      => ['required', 'string'],
+          'emailParticipante.*'     => ['string'],
+          'nomePlanoTrabalho.*'     => ['string'],
+          'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          //'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoLatterCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+        ]);
 
-      $autor = Auth::user();
-      $trabalhosDoAutor = Trabalho::where('eventoId', $request->eventoId)->where('autorId', Auth::user()->id)->count();
-      $areaModalidade = AreaModalidade::where('areaId', $request->areaId)->where('modalidadeId', $request->modalidadeId)->first();
-      Log::debug('Numero de trabalhos' . $evento);
-      if($trabalhosDoAutor >= $evento->numMaxTrabalhos){
-        return redirect()->back()->withErrors(['numeroMax' => 'Número máximo de trabalhos permitidos atingido.']);
+        $trabalho = Trabalho::create([
+          'titulo'                      => $request->nomeProjeto,
+          'coordenador_id'              => $coordenador->id,
+          'grande_area_id'              => $request->grandeAreaId,
+          'area_id'                     => $request->areaId,
+          'sub_area_id'                 => $request->subAreaId,               
+          'pontuacaoPlanilha'           => $request->pontuacaoPlanilha,
+          'linkGrupoPesquisa'           => $request->linkGrupo,
+          'linkLattesEstudante'         => $request->linkLattesEstudante,
+          'data'                        => $mytime,
+          'evento_id'                   => $request->editalId,
+          'avaliado'                    => 0,
+          //Anexos
+          'anexoDecisaoCONSU'           => $request->anexoCONSU,
+          'anexoProjeto'                => $request->anexoProjeto,
+          'anexoAutorizacaoComiteEtica' => $request->anexoComiteEtica,
+          'anexoLattesCoordenador'      => $request->anexoLatterCoordenador,
+          'anexoPlanilhaPontuacao'      => $request->anexoPlanilha,
+        ]);
+        //dd($request->all());
+      }else{
+        //Caso em que o anexo da Decisão do CONSU não necessário
+        $validatedData = $request->validate([
+          'editalId'                => ['required', 'integer'],
+          'nomeProjeto'             => ['required', 'string',],
+          'grandeAreaId'            => ['required', 'integer'],
+          'areaId'                  => ['required', 'integer'],
+          'subAreaId'               => ['required', 'integer'],
+          'pontuacaoPlanilha'       => ['required', 'integer'],
+          'linkGrupo'               => ['required', 'string'],
+          'linkLattesEstudante'     => ['required', 'string'],
+          'nomeCoordenador'         => ['required', 'string'],
+          'nomeParticipante.*'      => ['required', 'string'],
+          'emailParticipante.*'     => ['string'],
+          'nomePlanoTrabalho.*'     => ['string'],
+          'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoLatterCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+        ]);
+
+        $trabalho = Trabalho::create([
+          'titulo'                      => $request->nomeProjeto,
+          'coordenador_id'              => $coordenador->id,
+          'grande_area_id'              => $request->grandeAreaId,
+          'area_id'                     => $request->areaId,
+          'sub_area_id'                 => $request->subAreaId,        
+          'coordenador'                 => $request->nomeCoordenador,       
+          'pontuacaoPlanilha'           => $request->pontuacaoPlanilha,
+          'linkGrupoPesquisa'           => $request->linkGrupo,
+          'linkLattesEstudante'         => $request->linkLattesEstudante,
+          'data'                        => $mytime,
+          'evento_id'                   => $request->editalId,
+          'avaliado'                    => 0,
+          //Anexos
+          'anexoProjeto'                => $request->anexoProjeto,
+          'anexoAutorizacaoComiteEtica' => $request->anexoComiteEtica,
+          'anexoLattesCoordenador'      => $request->anexoLatterCoordenador,
+          'anexoPlanilhaPontuacao'      => $request->anexoPlanilha,
+        ]);
+
       }
 
-      if($request->emailCoautor != null){
-        $i = 0;
-        foreach ($request->emailCoautor as $key) {
-          $i++;
-        }
-        if($i > $evento->numMaxCoautores){
-          return redirect()->back()->withErrors(['numeroMax' => 'Número de coautores deve ser menor igual a '.$evento->numMaxCoautores]);
-        }
-      }
+      //Relaciona o projeto criado com o proponente que criou o projeto
+      $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+      $trabalho->proponentes()->save($proponente);  
 
-      if($request->emailCoautor != null){
-        $i = 0;
-        foreach ($request->emailCoautor as $key) {
-          $userCoautor = User::where('email', $key)->first();
-          if($userCoautor == null){
+      //Envia email com senha temp para cada participante do projeto
+      if($request->emailParticipante != null){
+        
+        foreach ($request->emailParticipante as $key => $value) {
+
+          $userParticipante = User::where('email', $value)->first();
+
+          if($userParticipante == null){
+
             $passwordTemporario = Str::random(8);
-            Mail::to($key)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, '  ', 'Coautor', $evento->nome, $passwordTemporario));
+            Mail::to($value)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, '  ', 'Participante', $evento->nome, $passwordTemporario));
             $usuario = User::create([
-              'email' => $key,
+              'email' => $value,
               'password' => bcrypt($passwordTemporario),
               'usuarioTemp' => true,
-              'name' => $request->nomeCoautor[$i],
+              'name' => $request->nomeParticipante[$key],
+              'tipo' => 'participante',
+              'funcao_participante_id' => $request->funcaoParticipante[$key],
             ]);
+
+            $participante = $usuario->participantes()->create([
+              'trabalho_id' => $trabalho->id,
+            ]);
+
+            $participante->trabalhos()->save($trabalho);
+          }else{
+
+            $subject = "Participante de Projeto";            
+            $email = $value;
+            Mail::to($email)
+                  ->send(new SubmissaoTrabalho($userParticipante, $subject));
           }
-          $i++;
         }
       }
+      
+      $anexos = array( 
+                      $request->anexoCONSU, 
+                      $request->anexoProjeto, 
+                      $request->anexoComiteEtica,
+                      $request->anexoLatterCoordenador,
+                      $request->anexoPlanilha,
+                    );
 
-      $trabalho = Trabalho::create([
-        'titulo' => $request->nomeTrabalho,
-        'modalidadeId'  => $areaModalidade->modalidade->id,
-        'areaId'  => $areaModalidade->area->id,
-        'autorId' => $autor->id,
-        'eventoId'  => $evento->id,
-        'avaliado' => 'nao'
-      ]);
+      foreach ($anexos as $key => $value) {
 
-      if($request->emailCoautor != null){
-        foreach ($request->emailCoautor as $key) {
-          $userCoautor = User::where('email', $key)->first();
-          Coautor::create([
-            'ordem' => '-',
-            'autorId' => $userCoautor->id,
+        $file = $value;
+        $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+        $nome =  "1.pdf";
+        Storage::putFileAs($path, $file, $nome);
+
+        $arquivo = Arquivo::create([
+          'nome'  => $path . $nome,
+          'trabalhoId'  => $trabalho->id,
+          'data' => $mytime,
+          'versaoFinal' => true,
+        ]);
+      
+      }
+      
+      if($request->anexoPlanoTrabalho != null){        
+        foreach ($request->anexoPlanoTrabalho as $key => $value) {
+
+          $file = $value;
+          $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+          $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+          Storage::putFileAs($path, $file, $nome);
+
+          $arquivo = Arquivo::create([
+            'nome'  => $path . $nome,
             'trabalhoId'  => $trabalho->id,
+            'data' => $mytime,
+            'versaoFinal' => true,
           ]);
+        
         }
       }
 
-      $file = $request->arquivo;
-      $path = 'trabalhos/' . $request->eventoId . '/' . $trabalho->id .'/';
-      $nome = "1.pdf";
-      Storage::putFileAs($path, $file, $nome);
+      //dd($trabalho);
 
-      $arquivo = Arquivo::create([
-        'nome'  => $path . $nome,
-        'trabalhoId'  => $trabalho->id,
-        'versaoFinal' => true,
-      ]);
       $subject = "Submissão de Trabalho";
+      $autor = Auth()->user();
       Mail::to($autor->email)
             ->send(new SubmissaoTrabalho($autor, $subject));
-      if($request->emailCoautor != null){
-        foreach ($request->emailCoautor as $key) {
-          $userCoautor = User::where('email', $key)->first();
-          Mail::to($userCoautor->email)
-            ->send(new SubmissaoTrabalho($userCoautor, $subject));
-        }
-      }
-
-      return redirect()->route('evento.visualizar',['id'=>$request->eventoId]);
+      
+      return redirect()->route('evento.visualizar',['id'=>$request->editalId]);
     }
 
     /**
