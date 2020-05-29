@@ -27,6 +27,7 @@ return [
     ],
     'boolean'              => ':Attribute deve ser verdadeiro ou falso.',
     'confirmed'            => 'A confirmação de :attribute não confere.',
+    'cpf'                  => 'CPF invlálido',
     'date'                 => ':Attribute não é uma data válida.',
     'date_format'          => ':Attribute não confere com o formato :format.',
     'different'            => ':Attribute e :other devem ser diferentes.',

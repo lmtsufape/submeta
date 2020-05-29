@@ -83,14 +83,14 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
                                             <img src="{{asset('img/icons/perfil.svg')}}" alt="">
                                             {{ __('Minha Conta') }}
                                         </a>
-                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
+                                        {{-- <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
                                             <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
                                             {{ __('Participante') }}
-                                        </a>
+                                        </a> --}}
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
@@ -121,7 +121,6 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.usuarios') }}">Usuários</a>
-                                    
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -129,14 +128,14 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
                                             <img src="{{asset('img/icons/perfil.svg')}}" alt="">
                                             {{ __('Minha Conta') }}
-                                        </a>
+                                        {{-- </a>
                                         <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
                                             <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
                                             {{ __('Participante') }}
-                                        </a>
+                                        </a> --}}
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
@@ -171,7 +170,7 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
                                             <img src="{{asset('img/icons/perfil.svg')}}" alt="">
                                             {{ __('Minha Conta') }}
                                         </a>
@@ -207,7 +206,7 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
                                             <img src="{{asset('img/icons/perfil.svg')}}" alt="">
                                             {{ __('Minha Conta') }}
                                         </a>
@@ -239,7 +238,7 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
                                             <img src="{{asset('img/icons/perfil.svg')}}" alt="">
                                             {{ __('Minha Conta') }}
                                         </a>

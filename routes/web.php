@@ -42,7 +42,14 @@ Route::post('/perfil','UserController@editarPerfil')->name('perfil')->middleware
 
 // Rotas Administrador
 Route::get('/home-admin', 'AdministradorController@index')->middleware('checkAdministrador')->name('admin.index');
-Route::get('/usuarios', 'AdministradorController@usuarios')->middleware('checkAdministrador')->name('admin.usuarios');
+Route::get('/usuarios', 'AdministradorController@usuarios')->middleware('checkAdminResp')->name('admin.usuarios');
+Route::get('/perfil-usuario', 'UserController@minhaConta')->middleware('auth')->name('user.perfil');
+  //Rotas da administração dos usuários
+Route::get('/usuarios/novo', 'AdministradorController@create')->middleware('checkAdminResp')->name('admin.user.create');
+Route::post('/usuarios/salvar-novo', 'AdministradorController@salvar')->middleware('checkAdminResp')->name('admin.user.store');
+Route::get('/usuarios/editar/{id}', 'AdministradorController@edit')->middleware('checkAdminResp')->name('admin.user.edit');
+Route::post('/usuarios/editar/atualizar/{id}', 'AdministradorController@update')->middleware('checkAdminResp')->name('admin.user.update');
+Route::post('/usuarios/editar/deletar/{id}', 'AdministradorController@destroy')->middleware('checkAdminResp')->name('admin.user.destroy');
 Route::get('admin/editais', 'AdministradorController@editais')->middleware('checkAdministrador')->name('admin.editais');
 
 // Rotas de administrador responsavel (Reitor ou pro-reitor)
