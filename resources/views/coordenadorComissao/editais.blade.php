@@ -24,7 +24,7 @@
       @foreach ($eventos as $evento)
         <tr>
           <td>
-            <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="visualizarEvento">
+            <a href="{{  route('coordenador.detalhesEdital',['evento_id'=>$evento->id])  }}" class="visualizarEvento">
                 {{ $evento->nome }}
             </a>
           </td>

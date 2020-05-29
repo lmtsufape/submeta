@@ -95,6 +95,13 @@ Route::get('/coordenador/listarCoord', 'CoordenadorComissaoController@coordenado
 Route::get('/coordenador/listarAvaliador', 'CoordenadorComissaoController@avaliador')->name('coordenador.avaliador');
 Route::get('/coordenador/listarProponente', 'CoordenadorComissaoController@proponente')->name('coordenador.proponente');
 Route::get('/coordenador/listarParticipante', 'CoordenadorComissaoController@participante')->name('coordenador.participante');
+Route::get('/coordenador/listarTrabalhos', 'CoordenadorComissaoController@listarTrabalhos')->name('coordenador.listarTrabalhos');
+Route::get('/coordenador/detalhesEdital', 'CoordenadorComissaoController@detalhesEdital')->name('coordenador.detalhesEdital');
+Route::post('/coordenador/retornoDetalhes', 'CoordenadorComissaoController@retornoDetalhes')->name('coordenador.retornoDetalhes');
+Route::post('/coordenador/atribuirAvaliadorTrabalho', 'TrabalhoController@atribuirAvaliadorTrabalho')->name('coordenador.atribuirAvaliadorTrabalho');
+Route::post('/coordenador/atribuir', 'TrabalhoController@atribuir')->name('coordenador.atribuir');
+
+
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 

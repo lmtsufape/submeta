@@ -18,6 +18,7 @@ use App\GrandeArea;
 use App\SubArea;
 use App\FuncaoParticipantes;
 use App\Participante;
+use App\Avaliador;
 use Carbon\Carbon;
 use Auth;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Mail\SubmissaoTrabalho;
+use App\Mail\EventoCriado;
 
 class TrabalhoController extends Controller
 {
@@ -401,5 +403,39 @@ class TrabalhoController extends Controller
                                'revisoresDisponiveis' => $revisoresAux1
                               ], 200);
     }
+    public function atribuirAvaliadorTrabalho(Request $request){
+
+      $request->trabalho_id;
+      $trabalho = Trabalho::find($request->trabalho_id);
+
+      $avaliadores = Avaliador::all();
+
+
+
+      return view('coordenadorComissao.gerenciarEdital.atribuirAvaliadorTrabalho', ['avaliadores'=>$avaliadores, 'trabalho'=>$trabalho, 'evento'=> $trabalho->evento ]);
+
+    }
+
+    public function atribuir(Request $request){
+
+        $trabalho = Trabalho::find($request->trabalho_id);
+
+        $todosAvaliadores = Avaliador::all();
+
+        $avaliadores = Avaliador::whereIn('id', $request->avaliadores)->with('user')->get();  
+
+        $trabalho->avaliadors()->sync($request->avaliadores);
+
+        foreach ($avaliadores as $key => $avaliador) {
+          
+          $user = $avaliador->user;
+          $subject = "Trabalho atribuido";
+          Mail::to($user->email)
+              ->send(new EventoCriado($user, $subject));
+        }
+
+        return view('coordenadorComissao.detalhesEdital', ['evento'=> $trabalho->evento ]);
+    }
+    
 
 }

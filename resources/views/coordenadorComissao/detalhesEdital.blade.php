@@ -15,7 +15,7 @@
                     <img src="{{asset('img/icons/file-alt-regular.svg')}}" alt=""><h5>Trabalhos</h5><img class="arrow" src="{{asset('img/icons/arrow.svg')}}">
                 </li>
                 <ul class="sub-menu collapse" id="ajuda" style="background-color: gray">
-                    <a id="submissoes" class="exibir">
+                    <a id="definirSubmissoes" class="exibir">
                         <li>
                             <img src="{{asset('img/icons/plus-square-solid.svg')}}" alt=""><h5>Definir Submissões</h5>
                         </li>
@@ -32,12 +32,12 @@
                     <img src="{{asset('img/icons/area.svg')}}" alt=""><h5> Áreas</h5><img class="arrow" src="{{asset('img/icons/arrow.svg')}}">
                 </li>
                 <ul class="sub-menu collapse" id="menuAreas" style="background-color: gray">
-                    <a >
+                    <a id="cadastrarAreas" class="exibir">
                         <li>
                             <img src="{{asset('img/icons/plus-square-solid.svg')}}" alt=""><h5> Cadastrar Áreas</h5>
                         </li>
                     </a>
-                    <a>
+                    <a id="listarAreas" class="exibir"> 
                         <li>
                             <img src="{{asset('img/icons/list.svg')}}" alt=""><h5> Listar Áreas</h5>
                         </li>
@@ -49,12 +49,12 @@
                     <img src="{{asset('img/icons/glasses-solid.svg')}}" alt=""><h5>Avaliadores</h5><img class="arrow" src="{{asset('img/icons/arrow.svg')}}">
                 </li>
                 <ul class="sub-menu collapse" id="menuAvaliador" style="background-color: gray">
-                    <a >
+                    <a id="cadastrarRevisores" class="exibir">
                         <li>
                             <img src="{{asset('img/icons/user-plus-solid.svg')}}" alt=""><h5> Cadastrar Revisores</h5>
                         </li>
                     </a>
-                    <a>
+                    <a id="listarRevisores" class="exibir">
                         <li>
                             <img src="{{asset('img/icons/list.svg')}}" alt=""><h5> Listar Revisores</h5>
                         </li>
@@ -67,12 +67,12 @@
                     <img src="{{asset('img/icons/user-tie-solid.svg')}}" alt=""><h5>Comissão</h5><img class="arrow" src="{{asset('img/icons/arrow.svg')}}">
                 </li>
                 <ul class="sub-menu collapse" id="menuComissao" style="background-color: gray">
-                    <a>
+                    <a id="definirCoordenador" class="exibir">
                         <li>
                             <img src="{{asset('img/icons/crown-solid.svg')}}" alt=""><h5> Definir Coordenador</h5>
                         </li>
                     </a>
-                    <a >
+                    <a id="listarComissao" class="exibir">
                         <li>
                             <img src="{{asset('img/icons/list.svg')}}" alt=""><h5> Listar Comissão</h5>
                         </li>
@@ -99,15 +99,10 @@
 @endsection
 @section('javascript')
   <script type="text/javascript" >
-    
-        
-            
-            
-        
-
 
 
    $(document).ready(()=>{
+
         $('.exibir').on('click',(event) => {
                 event.preventDefault();
                 console.log(event.currentTarget.id);
