@@ -37,6 +37,9 @@ class Evento extends Model
   public function coordenadorComissao(){
       return $this->belongsTo('App\CoordenadorComissao', 'coordenadorId');
   }
+  public function trabalhos(){
+      return $this->hasMany('App\Trabalho');
+  }
 
 
 }

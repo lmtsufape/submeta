@@ -178,8 +178,8 @@ class EventoController extends Controller
         if($proponente != null){
           $hasTrabalho = false;
           $hasFile = false;
-          $trabalhos = $proponente->trabalhos()->get();
-          $trabalhosCount = $proponente->trabalhos()->count();
+          $trabalhos = $proponente->trabalhos()->where('evento_id', $evento->id )->get();
+          $trabalhosCount = $proponente->trabalhos()->where('evento_id', $evento->id )->count();
 
           if($trabalhosCount != 0){
             $hasTrabalho = true;

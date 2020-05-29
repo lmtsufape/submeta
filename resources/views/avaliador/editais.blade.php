@@ -9,6 +9,9 @@
       <div class="col-sm-10">
         <h3>Meus Editais</h3> 
       </div>
+      <div class="col-sm-2">
+        <a href="{{route('evento.criar')}}" class="btn btn-primary">Criar Edital</a>
+      </div>
     </div>
   </div>
   <hr>
@@ -24,7 +27,7 @@
       @foreach ($eventos as $evento)
         <tr>
           <td>
-            <a href="{{  route('coordenador.detalhesEdital',['evento_id'=>$evento->id])  }}" class="visualizarEvento">
+            <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="visualizarEvento">
                 {{ $evento->nome }}
             </a>
           </td>

@@ -8,7 +8,7 @@ use App\CoordenadorComissao;
 use App\AdministradorResponsavel;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class EventoPolicy
+class UsuariosPolicy
 {
     use HandlesAuthorization;
 
@@ -19,16 +19,28 @@ class EventoPolicy
      */
     public function __construct()
     {
-        //
+        
     }
 
-    public function isCoordenador(User $user, Evento $evento){
+    public function isUser(User $user){
        
-        if(Auth()->user()->coordenadorComissao->first() != null ){
-            return $evento->criador_id == Auth()->user()->coordenadorComissao->first()->id;
-        }else{
-            return false;
+        if($user->has('')){
+
+        }else if(){
+
+        }else if(){
+            
+        }else if(){
+            
+        }else if(){
+            
+        }else if(){
+            
+        }else if(){
+            
         }
+
+
         
     
     }

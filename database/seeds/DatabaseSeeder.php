@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FuncaoParticipanteSeeder::class);
         $this->call(CoordenadorComissaoSeeder::class);
         $this->call(ParticipanteSeeder::class);
+        
         // $this->call(UsersTableSeeder::class);
 
 //         DB::table('enderecos')->insert([  // 1
@@ -134,6 +135,6 @@ class DatabaseSeeder extends Seeder
 //                           ];
 
 
-
+        $this->call(TrabalhoSeeder::class);
     }
 }

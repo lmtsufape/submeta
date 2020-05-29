@@ -114,7 +114,7 @@
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
                 {{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}
-            </p> --}}
+            </p>
         </div>
     </div>
     <div class="row margin">

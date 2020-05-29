@@ -39,6 +39,9 @@ class HomeController extends Controller
           else if (Auth::user()->tipo == 'proponente') {
             return view('proponente.index');
           }
+          else if (Auth::user()->has('avaliadors')) {
+            return view('avaliador.index');
+          }
           else if (Auth::user()->tipo == 'participante') {
             return view('participante.index');
           }
