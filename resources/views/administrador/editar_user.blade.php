@@ -45,7 +45,7 @@
                 
                 <div>
                     <select name="tipo" id="tipo" onchange="mudar()">
-                        @can('isAdministrador', auth()->user())
+                        @if(auth()->user()->tipo == 'administrador')
                             @if ($user->tipo == 'administrador')
                                 <option value="administrador" selected>Administrador</option>
                             @else 
@@ -56,7 +56,7 @@
                             @else 
                                 <option value="administradorResponsavel">Administrador Responsavel</option>
                             @endif
-                        @endcan
+                        @endif
                         @if ($user->tipo == 'avaliador')
                             <option value="coordenador" selected>Coordenador</option>
                         @else 

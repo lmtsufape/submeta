@@ -48,10 +48,10 @@
                     <div>
                         <label for="tipo" class="col-form-label">{{ __('Tipo') }}</label>
                         <select name="tipo" id="tipo" onchange="mudar()">
-                            @can('isAdministrador', auth()->user())
+                            @if(auth()->user()->tipo == 'administrador')
                                 <option value="administrador">Administrador</option>
                                 <option value="administradorResponsavel">Administrador responsavel</option>
-                            @endcan
+                            @endif
                             <option value="avaliador">Avaliador</option>
                             <option value="proponente">Proponente</option>
                             <option value="participante">Participante</option>
