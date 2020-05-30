@@ -55,7 +55,7 @@ class CoordenadorComissaoController extends Controller
         
         $evento = Evento::where('id',$request->evento_id )->first();
         $trabalhos = $evento->trabalhos;
-
+        dd($trabalhos);
         return view('coordenadorComissao.listarTrabalhos', ['trabalhos' => $trabalhos]);
     }
     public function detalhesEdital(Request $request){
@@ -79,6 +79,7 @@ class CoordenadorComissaoController extends Controller
             $evento = Evento::where('id',$request->evento_id )->first();
             $trabalhos = $evento->trabalhos;
             //dd($trabalhos);
+            //return redirect()->route('coordenador.listarTrabalhos', ['trabalhos' => $trabalhos]);
             return view('coordenadorComissao.gerenciarEdital.listarTrabalhos', ['trabalhos' => $trabalhos]);
 
         }else if($request->item == "cadastrarAreas" ){
@@ -86,7 +87,8 @@ class CoordenadorComissaoController extends Controller
             return view('coordenadorComissao.gerenciarEdital.cadastrarAreas', ['trabalhos' => $trabalhos]);
 
         }else if($request->item == "listarAreas" ){
-
+                $evento = Evento::where('id',$request->evento_id )->first();
+                $trabalhos = $evento->trabalhos;
             return view('coordenadorComissao.gerenciarEdital.listarAreas', ['trabalhos' => $trabalhos]);
 
         }else if($request->item == "cadastrarRevisores" ){

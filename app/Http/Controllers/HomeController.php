@@ -27,22 +27,22 @@ class HomeController extends Controller
     {
         $eventos = \App\Evento::all();        
         if(Auth::check()){
-          if(Auth::user()->tipo == 'administrador'){            
+          if(Auth::user()->administradors != null){            
             return view('administrador.index');
           }
-          else if (Auth::user()->tipo == 'administradorResponsavel') {
+          else if (Auth::user()->AdministradorResponsavel != null) {
             return view('administradorResponsavel.index');
           }
-          else if (Auth::user()->tipo == 'coordenador') {
+          else if (Auth::user()->coordenadorComissao != null) {
             return view('coordenadorComissao.index');
           }
-          else if (Auth::user()->tipo == 'proponente') {
+          else if (Auth::user()->proponentes != null) {
             return view('proponente.index');
           }
-          else if (Auth::user()->has('avaliadors')) {
+          else if (Auth::user()->avaliadors != null) {
             return view('avaliador.index');
           }
-          else if (Auth::user()->tipo == 'participante') {
+          else if (Auth::user()->participantes != null) {
             return view('participante.index');
           }
         }
