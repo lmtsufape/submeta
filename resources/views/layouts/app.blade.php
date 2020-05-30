@@ -28,7 +28,7 @@
         {{-- Navbar --}}
         <nav class="navbar navbar-expand-md navbar-dark  shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{route('visualizarEvento')}}">
+                <a class="navbar-brand" href="{{route('home-user')}}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
