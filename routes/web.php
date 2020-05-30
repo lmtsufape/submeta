@@ -53,6 +53,7 @@ Route::post('/usuarios/editar/deletar/{id}', 'AdministradorController@destroy')-
 Route::get('admin/editais', 'AdministradorController@editais')->middleware('checkAdministrador')->name('admin.editais');
 
 // Rotas de administrador responsavel (Reitor ou pro-reitor)
+Route::get('adminResp/index', 'AdministradorResponsavelController@index')->name('adminResp.index');
 Route::get('adminResp/editais', 'AdministradorResponsavelController@editais')->name('adminResp.editais');
 Route::get('adminResp/usuarios', 'AdministradorResponsavelController@usuarios')->name('adminResp.usuarios');
 Route::get('adminResp/atribuir', 'AdministradorResponsavelController@atribuirPermissao')->name('adminResp.atribuir');
@@ -88,7 +89,7 @@ Route::post('/naturezas/subarea/excluir/{id}', 'SubAreaController@destroy')->mid
 
 // Rotas Coordenador
 
-Route::get('/coordenador/home', 'CoordenadorComissaoController@index')->name('coordenador.index');
+Route::get('/coordenador/index', 'CoordenadorComissaoController@index')->name('coordenador.index');
 Route::get('/coordenador/editais', 'CoordenadorComissaoController@editais')->name('coordenador.editais');
 Route::get('/coordenador/usuarios', 'CoordenadorComissaoController@usuarios')->name('coordenador.usuarios');
 Route::get('/coordenador/listarCoord', 'CoordenadorComissaoController@coordenadorComite')->name('coordenador.coord');
@@ -102,7 +103,14 @@ Route::post('/coordenador/atribuirAvaliadorTrabalho', 'TrabalhoController@atribu
 Route::post('/coordenador/atribuir', 'TrabalhoController@atribuir')->name('coordenador.atribuir');
 
 // Rotas Avaliador
+Route::get('/avaliador/index', 'AvaliadorController@index')->name('avaliador.index');
 Route::get('/avaliador/trabalhos', 'AvaliadorController@visualizarTrabalhos')->name('visualizarTrabalho');
+
+//Proponente
+Route::get('/proponente/index', 'ProponenteController@index')->name('proponente.index');
+
+//Participante
+Route::get('/participante/index', 'ParticipanteController@index')->name('participante.index');
 
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){

@@ -77,22 +77,22 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\Evento', 'coordenadorId');
     }
     public function administradors(){
-        return $this->hasMany('App\Administrador');
+        return $this->hasOne('App\Administrador');
     }
     public function proponentes(){
-        return $this->hasMany('App\Proponente');
+        return $this->hasOne('App\Proponente');
     }
     public function AdministradorResponsavel(){
-        return $this->hasMany('App\AdministradorResponsavel');
+        return $this->hasOne('App\AdministradorResponsavel');
     }
     public function participantes(){
-        return $this->hasMany('App\Participante');
+        return $this->hasOne('App\Participante');
     }
     public function avaliadors(){
-        return $this->hasMany('App\Avaliador');
+        return $this->hasOne('App\Avaliador');
     }
     public function coordenadorComissao(){
-        return $this->hasMany('App\CoordenadorComissao');
+        return $this->hasOne('App\CoordenadorComissao');
     }
     
     public function sendPasswordResetNotification($token){
