@@ -55,12 +55,8 @@
                                     {{-- <a class="nav-link" data-toggle="modal" data-target="#modalCadastro">{{ __('Cadastro') }}</a> --}}
                                 </li>
                             @endif
-                        @else                            
-                            <!-- Se o usuário for um aluno -->
-                            @if(Auth::user()->tipo == 'administrador') 
-                                 
-
-                                <li class="nav-item">
+                        @else
+                            <li class="nav-item">
                                     <a class="nav-link" href="{{route('visualizarEvento')}}">Home</a>
                                     
                                 </li>
@@ -86,11 +82,44 @@
                                         <a class="dropdown-item" href="{{ route('user.perfil') }}">
                                             <img src="{{asset('img/icons/perfil.svg')}}" alt="">
                                             {{ __('Minha Conta') }}
-                                        </a>
-                                        {{-- <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
-                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                            {{ __('Participante') }}
-                                        </a> --}}
+                                        </a>                                        
+                                        @if(Auth::user()->administradors != null)
+                                            <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                                <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                                {{ __('Perfil Administrador') }}
+                                            </a>
+                                        @endif
+                                        @if(Auth::user()->AdministradorResponsavel != null)
+                                            <a class="dropdown-item" href="{{ route('adminResp.index') }}">
+                                                <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                                {{ __('Perfil Pro-reitor') }}
+                                            </a>
+                                        @endif
+                                        @if(Auth::user()->coordenadorComissao != null)
+                                            <a class="dropdown-item" href="{{ route('coordenador.index') }}">
+                                                <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                                {{ __('Perfil Coordenador') }}
+                                            </a>
+                                        @endif
+                                        @if(Auth::user()->avaliadors != null)
+                                            <a class="dropdown-item" href="{{ route('avaliador.index') }}">
+                                                <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                                {{ __('Perfil Avaliador') }}
+                                            </a>
+                                        @endif
+                                        @if(Auth::user()->proponentes != null)
+                                            <a class="dropdown-item" href="{{ route('proponente.index') }}">
+                                                <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                                {{ __('Perfil Proponente') }}
+                                            </a>
+                                        @endif
+                                        @if(Auth::user()->participantes != null)
+                                            <a class="dropdown-item" href="{{ route('participante.index') }}">
+                                                <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                                {{ __('Perfil Participante') }}
+                                            </a>
+                                        @endif
+                                        
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                            onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
@@ -104,223 +133,7 @@
                                         </form>
                                     </div>
                                 </li>
-                                
-                            @endif
 
-
-
-                            {{-- Pro-reitor --}}
-                            @if(Auth::user()->tipo == 'administradorResponsavel')
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('visualizarEvento')}}">Home</a>
-                                    
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('adminResp.editais')}}">Editais</a>
-                                    
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.usuarios') }}">Usuários</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }} <span class="caret"></span>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
-                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
-                                            {{ __('Minha Conta') }}
-                                        {{-- </a>
-                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
-                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                            {{ __('Participante') }}
-                                        </a> --}}
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
-                                            {{ __('Sair') }}
-                                        </a>
-
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endif
-
-                            @if(Auth::user()->tipo == 'coordenador')
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('visualizarEvento')}}">Home</a>
-                                    
-                                </li>
-                                
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('coordenador.editais')}}">Meus Editais</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('coordenador.usuarios')}}">Usuários</a>
-                                </li>
-
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }} <span class="caret"></span>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
-                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
-                                            {{ __('Minha Conta') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
-                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                            {{ __('Participante') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
-                                            {{ __('Sair') }}
-                                        </a>
-
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endif
-                            
-                            @if(Auth::user()->tipo == 'proponente')
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('visualizarEvento')}}">Home</a>                                    
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('user.meusTrabalhos')}}">Meus Trabalhos</a>                                    
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }} <span class="caret"></span>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
-                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
-                                            {{ __('Minha Conta') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
-                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                            {{ __('Participante') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
-                                            {{ __('Sair') }}
-                                        </a>
-
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endif
-                            @if(Auth::user()->tipo == 'participante' )
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('visualizarEvento')}}">Home</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }} <span class="caret"></span>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
-                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
-                                            {{ __('Minha Conta') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
-                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                            {{ __('Participante') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
-                                            {{ __('Sair') }}
-                                        </a>
-
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endif
-                            @if(Auth::user()->has('avaliadors'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('visualizarEvento')}}">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('visualizarTrabalho')}}">Trabalhos</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }} <span class="caret"></span>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('user.perfil') }}">
-                                            <img src="{{asset('img/icons/perfil.svg')}}" alt="">
-                                            {{ __('Minha Conta') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
-                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                            {{ __('Participante') }}
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
-                                            <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
-                                            {{ __('Sair') }}
-                                        </a>
-
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            @csrf
-                                        </form>
-                                    </div>
-                                </li>
-                            @endif
-                            
-                            
-                           {{--  <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('perfil') }}">
-                                        <img src="{{asset('img/icons/perfil.svg')}}" alt="">
-                                        {{ __('Minha Conta') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('user.meusTrabalhos') }}">
-                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                        {{ __('Participante') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
-                                        {{ __('Sair') }}
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li> --}}
                         @endguest
                     </ul>
                 </div>

@@ -7,6 +7,12 @@ use Auth;
 
 class AvaliadorController extends Controller
 {
+	public function index(){
+
+    	return view('avaliador.index');
+    }
+
+
     public function visualizarTrabalhos(Request $request){
 
     	$trabalhos = Auth::user()->avaliadors->first()->trabalhos;
