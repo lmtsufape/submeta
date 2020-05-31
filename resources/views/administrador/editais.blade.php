@@ -40,11 +40,11 @@
                 <div class="dropdown-menu">
                     <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item">
                         <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
-                        Detalhes
+                        Editar Edital
                     </a>
                     <a href="{{route('evento.editar',$evento->id)}}" class="dropdown-item">
                         <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
-                        Editar
+                        Atribuir Avaliadores
                     </a>
                     <form method="POST" action="{{route('evento.deletar',$evento->id)}}">
                         {{ csrf_field() }}
