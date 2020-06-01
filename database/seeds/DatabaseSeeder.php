@@ -140,5 +140,6 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call(TrabalhoSeeder::class);
+        $this->call(AvaliadorSeeder::class);
     }
 }

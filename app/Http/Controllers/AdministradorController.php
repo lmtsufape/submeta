@@ -239,4 +239,39 @@ class AdministradorController extends Controller
         $user->delete();
         return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário deletado com sucesso']);
     }
+
+    public function atribuir(Request $request){
+
+        $evento = Evento::where('id', $request->evento_id)->first();
+        //dd($request->all());
+        return view('administrador.atribuirAvaliadores', ['evento'=> $evento]);
+    }
+    public function selecionar(Request $request){
+
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $avaliadores = Avaliador::all();
+        $avalSelecionados = $evento->avaliadors;
+
+        return view('administrador.selecionarAvaliadores', [
+                                                            'evento'=> $evento,
+                                                            'avaliadores'=>$avaliadores, 
+                                                            'avalSelecionados'=>$avalSelecionados
+                                                           ]);
+    }
+    public function projetos(Request $request){
+
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $trabalhos = $evento->trabalhos;
+        
+        $avaliadores = $evento->avaliadors;
+        //dd($avaliadores);
+
+
+        return view('administrador.selecionarProjetos', [
+                                                         'evento'=> $evento,
+                                                         'trabalhos'=>$trabalhos,
+                                                         'avaliadores'=>$avaliadores,
+                                                        ]);
+    }
+
 }

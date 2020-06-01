@@ -32,6 +32,8 @@ class Trabalho extends Model
       'evento_id', 
       'proponente_id',
       'coordenador_id',
+      'proponente_id',
+      'pivot',
   ];
 
   public function recurso(){
@@ -75,13 +77,13 @@ class Trabalho extends Model
   public function participantes(){
       return $this->belongsToMany('App\Participante', 'trabalho_participante');
   }
-  public function proponentes(){
-      return $this->belongsToMany('App\Proponente', 'trabalho_proponente');
+  public function proponente(){
+      return $this->belongsTo('App\Proponente');
   }
   public function coordenador(){
       return $this->belongsTo('App\CoordenadorComissao');
   }
   public function avaliadors(){
-      return $this->belongsToMany('App\Avaliador');
+      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer');
   }
 }

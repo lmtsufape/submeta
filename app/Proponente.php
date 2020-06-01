@@ -10,6 +10,6 @@ class Proponente extends Model
         return $this->belongsTo('App\User');
     }
     public function trabalhos(){
-      return $this->belongsToMany('App\Trabalho', 'trabalho_proponente');
+      return $this->hasMany('App\Trabalho');
   	}
 }

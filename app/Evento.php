@@ -40,6 +40,9 @@ class Evento extends Model
   public function trabalhos(){
       return $this->hasMany('App\Trabalho');
   }
+  public function avaliadors(){
+      return $this->belongsToMany('App\Avaliador');
+  }
 
 
 }
