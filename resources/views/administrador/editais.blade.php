@@ -42,7 +42,7 @@
                         <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
                         Editar Edital
                     </a>
-                    <a href="{{route('evento.editar',$evento->id)}}" class="dropdown-item">
+                    <a href="{{route('admin.atribuir', ['evento_id' => $evento->id])}}" class="dropdown-item">
                         <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
                         Atribuir Avaliadores
                     </a>

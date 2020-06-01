@@ -45,7 +45,27 @@ class TrabalhoSeeder extends Seeder
         	'sub_area_id'					=>1,
         	'evento_id'						=>1,
         	'coordenador_id'				=>1,
+            'proponente_id'                 =>1,
         
       	]);
+        DB::table('trabalhos')->insert([
+            'titulo'                        =>'Projeto 2',
+            'linkGrupoPesquisa'             =>'link',
+            'linkLattesEstudante'           =>'link',
+            'pontuacaoPlanilha'             =>'link',
+            'data'                          =>'2020-01-01',
+            'anexoProjeto'                  =>'Álgebra',
+            'anexoDecisaoCONSU'             =>'Álgebra',
+            'anexoPlanilhaPontuacao'        =>'Álgebra',
+            'anexoAutorizacaoComiteEtica'   =>'Álgebra',
+            'anexoLattesCoordenador'        =>'Álgebra',
+            'grande_area_id'                =>1,
+            'area_id'                       =>1,
+            'sub_area_id'                   =>1,
+            'evento_id'                     =>1,
+            'coordenador_id'                =>1,
+            'proponente_id'                 =>1,
+        
+        ]);
     }
 }

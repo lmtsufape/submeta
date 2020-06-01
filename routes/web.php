@@ -109,6 +109,9 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/editar/atualizar/{id}',      'AdministradorController@update'     )->name('user.update');
   Route::post('/editar/deletar/{id}',        'AdministradorController@destroy'    )->name('user.destroy');
   Route::get('/editais',                     'AdministradorController@editais'    )->name('editais');
+  Route::get('/atribuir',                    'AdministradorController@atribuir'   )->name('atribuir');
+  Route::get('/selecionarAvaliador',         'AdministradorController@selecionar' )->name('selecionar');
+  Route::get('/selecionarProjetos',          'AdministradorController@projetos'   )->name('projetos');
 
 });
 
