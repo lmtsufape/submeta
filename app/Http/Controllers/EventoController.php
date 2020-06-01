@@ -14,6 +14,7 @@ use App\User;
 use App\Proponente;
 use App\Trabalho;
 use App\AreaModalidade;
+use App\Natureza;
 use App\CoordenadorComissao;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -57,7 +58,8 @@ class EventoController extends Controller
     public function create()
     {
         $coordenadors = CoordenadorComissao::with('user')->get();
-        return view('evento.criarEvento', ['coordenadors' => $coordenadors]);
+        $naturezas = Natureza::orderBy('nome')->get();
+        return view('evento.criarEvento', ['coordenadors' => $coordenadors, 'naturezas' => $naturezas]);
     }
 
     /**
@@ -89,7 +91,8 @@ class EventoController extends Controller
           $validatedData = $request->validate([
             'nome'                => ['required', 'string'],
             'descricao'           => ['required', 'string'],
-            'tipo'                => ['required', 'string'],            
+            'tipo'                => ['required', 'string'],
+            'natureza'            => ['required'],           
             'inicioSubmissao'     => ['required', 'date'],
             'fimSubmissao'        => ['required', 'date'],
             'inicioRevisao'       => ['required', 'date'],
@@ -106,6 +109,7 @@ class EventoController extends Controller
           'nome'                => ['required', 'string'],        
           'descricao'           => ['required', 'string'],
           'tipo'                => ['required', 'string'],
+          'natureza'            => ['required'], 
           'inicioSubmissao'     => ['required', 'date', 'after:' . $yesterday],
           'fimSubmissao'        => ['required', 'date', 'after:' . $request->inicioSubmissao],
           'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
@@ -114,11 +118,12 @@ class EventoController extends Controller
           'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'modeloDocumento'     => ['required', 'file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
         ]);
-
+        
         $evento = Evento::create([
           'nome'                => $request->nome,
           'descricao'           => $request->descricao,
           'tipo'                => $request->tipo,
+          'natureza_id'         => $request->natureza,
           'inicioSubmissao'     => $request->inicioSubmissao,
           'fimSubmissao'        => $request->fimSubmissao,
           'inicioRevisao'       => $request->inicioRevisao,

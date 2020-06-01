@@ -75,6 +75,7 @@ class DatabaseSeeder extends Seeder
            O número máximo de autores por trabalho será seis autores;
            Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
           'tipo'=>'PIBIC',
+          'natureza_id'=>'1',
           'inicioSubmissao'=>'2020-03-30',
           'fimSubmissao'=>'2020-09-20',
           'inicioRevisao'=>'2020-04-21',
@@ -93,6 +94,7 @@ class DatabaseSeeder extends Seeder
            O número máximo de autores por trabalho será seis autores;
            Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
           'tipo'=>'PIBIC',
+          'natureza_id'=>'2',
           'inicioSubmissao'=>'2020-03-30',
           'fimSubmissao'=>'2020-09-20',
           'inicioRevisao'=>'2020-04-21',
@@ -111,6 +113,7 @@ class DatabaseSeeder extends Seeder
            O número máximo de autores por trabalho será seis autores;
            Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
           'tipo'=>'PIBIC',
+          'natureza_id'=>'3',
           'inicioSubmissao'=>'2020-03-30',
           'fimSubmissao'=>'2020-09-20',
           'inicioRevisao'=>'2020-04-21',
