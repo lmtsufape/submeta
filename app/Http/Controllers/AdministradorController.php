@@ -10,6 +10,7 @@ use App\Avaliador;
 use App\AdministradorResponsavel;
 use App\Participante;
 use App\Proponente;
+use App\Natureza;
 use Illuminate\Support\Facades\Hash;
 use App\Evento;
 
@@ -20,8 +21,8 @@ class AdministradorController extends Controller
     	return view('administrador.index');
     }
     public function naturezas(){
-
-    	return view('naturezas.index');
+        $naturezas = Natureza::orderBy('nome')->get();
+    	return view('naturezas.index')->with(['naturezas' => $naturezas]);
     }
     public function usuarios(){
         $users = User::orderBy('name')->get();

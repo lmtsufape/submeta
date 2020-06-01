@@ -304,20 +304,20 @@ class EventoController extends Controller
     {
         $evento = Evento::find($id);
 
-        $areas = Area::where('eventoId', $id);
+        // $areas = Area::where('eventoId', $id);
         $atividades = Atividade::where('eventoId', $id);
         $comissao = ComissaoEvento::where('eventosId', $id);
         $revisores = Revisor::where('eventoId', $id);
-        $trabalhos = Trabalho::where('eventoId', $id);
+        $trabalhos = Trabalho::where('evento_id', $id);
         
-        if(isset($areas)){
-            $areas->delete();
-        }
+        // if(isset($areas)){
+        //     $areas->delete();
+        // }
         if(isset($atividades)){
-            $atividades->delete();
+          $atividades->delete();
         }
         if(isset($comissao)){
-            $comissao->delete();    
+          $comissao->delete();    
         }
         if(isset($revisores)){
           $revisores->delete();    

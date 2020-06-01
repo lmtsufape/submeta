@@ -114,8 +114,17 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
 
 Route::prefix('naturezas')->group(function(){
   //########### Rotas das naturezas     ###############################
+
+  Route::get('/',                             'AdministradorController@naturezas'  )->name('admin.naturezas');
+  Route::get('/index',                        'NaturezaController@index'           )->name('natureza.index');
+  Route::get('/nova',                         'NaturezaController@create'          )->name('natureza.criar');
+  Route::post('/salvar',                      'NaturezaController@store'           )->name('natureza.salvar');
+  Route::get('/detalhes/{id}',                'NaturezaController@show'            )->name('natureza.show');
+  Route::get('/editar/{id}',                  'NaturezaController@edit'            )->name('natureza.editar');
+  Route::get('/atualizar/{id}',              'NaturezaController@update'          )->name('natureza.atualizar');
+  Route::get('/excluir/{id}',                'NaturezaController@destroy'         )->name('natureza.deletar');
+
   //########### Rotas das grandes areas ##############################
-  Route::get('/',                           'AdministradorController@naturezas'    )->name('admin.naturezas');
   Route::get('/grande-area',                'GrandeAreaController@index'           )->name('grandearea.index');
   Route::get('/grande-area/nova',           'GrandeAreaController@create'          )->name('grandearea.criar');
   Route::post('/grande-area/salvar',        'GrandeAreaController@store'           )->name('grandearea.salvar');
