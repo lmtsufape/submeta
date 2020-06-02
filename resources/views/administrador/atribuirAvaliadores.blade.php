@@ -8,7 +8,7 @@
     <div class="container" >
 		<div class="row justify-content-center d-flex align-items-center" >
 		  
-		    <h5>Edital Selecionado: {{ $evento->nome }} </h3> 
+		    <h3>Edital Selecionado: {{ $evento->nome }} </h3> 
 
 		</div>
 	</div>

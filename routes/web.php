@@ -101,17 +101,21 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
 Route::prefix('usuarios')->name('admin.')->group(function(){
   //######### Rotas da administração dos usuários ####################
-  Route::get('/home-admin',                  'AdministradorController@index'      )->name('index');
-  Route::get('/usuarios',                    'AdministradorController@usuarios'   )->name('usuarios');
-  Route::get('/novo',                        'AdministradorController@create'     )->name('user.create');
-  Route::post('/salvar-novo',                'AdministradorController@salvar'     )->name('user.store');
-  Route::get('/editar/{id}',                 'AdministradorController@edit'       )->name('user.edit');
-  Route::post('/editar/atualizar/{id}',      'AdministradorController@update'     )->name('user.update');
-  Route::post('/editar/deletar/{id}',        'AdministradorController@destroy'    )->name('user.destroy');
-  Route::get('/editais',                     'AdministradorController@editais'    )->name('editais');
-  Route::get('/atribuir',                    'AdministradorController@atribuir'   )->name('atribuir');
-  Route::get('/selecionarAvaliador',         'AdministradorController@selecionar' )->name('selecionar');
-  Route::get('/selecionarProjetos',          'AdministradorController@projetos'   )->name('projetos');
+  Route::get('/home-admin',                  'AdministradorController@index'        )->name('index');
+  Route::get('/usuarios',                    'AdministradorController@usuarios'     )->name('usuarios');
+  Route::get('/novo',                        'AdministradorController@create'       )->name('user.create');
+  Route::post('/salvar-novo',                'AdministradorController@salvar'       )->name('user.store');
+  Route::get('/editar/{id}',                 'AdministradorController@edit'         )->name('user.edit');
+  Route::post('/editar/atualizar/{id}',      'AdministradorController@update'       )->name('user.update');
+  Route::post('/editar/deletar/{id}',        'AdministradorController@destroy'      )->name('user.destroy');
+  Route::get('/editais',                     'AdministradorController@editais'      )->name('editais');
+  Route::get('/atribuir',                    'AdministradorController@atribuir'     )->name('atribuir');
+  Route::get('/selecionarAvaliador',         'AdministradorController@selecionar'   )->name('selecionar');
+  Route::get('/selecionarProjetos',          'AdministradorController@projetos'     )->name('projetos');
+  Route::post('/adicionarAvalEvento',        'AdministradorController@adicionar'    )->name('adicionar');
+  Route::post('/removerAvalEvento',          'AdministradorController@remover'      )->name('remover');
+  Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicao'   )->name('atribuicao');
+  Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite')->name('enviarConvite');
 
 });
 

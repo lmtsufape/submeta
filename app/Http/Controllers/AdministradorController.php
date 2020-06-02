@@ -11,8 +11,13 @@ use App\AdministradorResponsavel;
 use App\Participante;
 use App\Proponente;
 use App\Natureza;
+use App\Trabalho;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Evento;
+use App\Mail\EmailParaUsuarioNaoCadastrado;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EventoCriado;
 
 class AdministradorController extends Controller
 {
@@ -249,9 +254,11 @@ class AdministradorController extends Controller
     public function selecionar(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $avaliadores = Avaliador::all();
-        $avalSelecionados = $evento->avaliadors;
 
+        $avalSelecionados = $evento->avaliadors;
+        $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
+        $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
+        //dd($avaliadores);
         return view('administrador.selecionarAvaliadores', [
                                                             'evento'=> $evento,
                                                             'avaliadores'=>$avaliadores, 
@@ -264,14 +271,103 @@ class AdministradorController extends Controller
         $trabalhos = $evento->trabalhos;
         
         $avaliadores = $evento->avaliadors;
-        //dd($avaliadores);
+        foreach ($trabalhos as $key => $trabalho) {
+
+            
+            $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
+            $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
+            $trabalho->aval = $avalProjeto;
+
+        }
+        
+        //dd($avaliadores->teste);
 
 
         return view('administrador.selecionarProjetos', [
                                                          'evento'=> $evento,
                                                          'trabalhos'=>$trabalhos,
-                                                         'avaliadores'=>$avaliadores,
+                                                         'avaliadores'=>$avaliadores
                                                         ]);
+    }
+
+    public function adicionar(Request $request){
+
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $aval = Avaliador::where('id', $request->avaliador_id)->first();
+        $aval->eventos()->attach($evento);
+        $aval->save();
+
+
+        return redirect()->back();
+
+
+    }
+
+    public function remover(Request $request){
+
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $aval = Avaliador::where('id', $request->avaliador_id)->first();
+        $aval->eventos()->detach($evento);
+        $aval->trabalhos()->detach();
+        $aval->save();
+
+
+        return redirect()->back();
+
+
+    }
+    public function buscar(Request $request){
+
+        $trabalho = Trabalho::where('id', $request->item)->first();
+        $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
+        $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
+
+        //dd($avaliadores);
+
+        return response()->json($avalProjeto);
+
+    }
+
+    public function atribuicao(Request $request){
+
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $avaliadores = Avaliador::whereIn('id', $request->avaliadores_id)->get();
+        $trabalho->avaliadors()->attach($avaliadores);
+        $evento->avaliadors()->syncWithoutDetaching($avaliadores);
+        $trabalho->save();
+
+        return redirect()->back();
+
+    }
+
+    public function enviarConvite(Request $request){
+
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $nomeAvaliador = $request->nomeAvaliador;
+        $emailAvaliador = $request->emailAvaliador;
+        $tipo = $request->tipo;
+
+        $passwordTemporario = Str::random(8);
+        Mail::to($emailAvaliador)
+            ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario));
+        $user = User::create([
+          'email' => $emailAvaliador,
+          'password' => bcrypt($passwordTemporario),
+          'usuarioTemp' => true,
+          'name' => $nomeAvaliador,
+          'tipo' => 'avaliador',
+        ]);
+
+        $avaliador = new Avaliador();
+        $avaliador->save();
+        $avaliador->user()->associate($user);        
+        $avaliador->eventos()->attach($evento);
+
+        $user->save();
+        $avaliador->save();
+
+        return redirect()->back();
     }
 
 }

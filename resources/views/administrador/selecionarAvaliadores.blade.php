@@ -8,7 +8,7 @@
   <div class="container" >
     <div class="row justify-content-center d-flex align-items-center" >
       <div class="col-md-10">
-         <h5>Avaliadores </h3>
+         <h3>Avaliadores </h3>
       </div>
       <div class="col-md-2">
         <!-- Button trigger modal -->
@@ -34,7 +34,14 @@
         <tr>
           <td>{{ $avaliador->user->name }}</td>
           <td>{{ $avaliador->user->email }}</td>
-          <td style="text-align:center"><button class="btn btn-primary" >Adicionar</button></td>
+          <td style="text-align:center">
+            <form action="{{ route('admin.adicionar') }}" method="POST">
+              @csrf
+              <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
+              <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
+              <button type="submit" class="btn btn-primary" >Adicionar</button>
+            </form>          
+          </td>
         </tr>
       @endforeach
     </tbody>
@@ -43,7 +50,7 @@
   <div class="container" >
     <div class="row justify-content-center d-flex align-items-center" >
       
-        <h5>Avaliadores Selecionados para o Edital: {{ $evento->nome }} </h3> 
+        <h4>Avaliadores Selecionados para o Edital: {{ $evento->nome }} </h4> 
 
     </div>
   </div>
@@ -63,7 +70,15 @@
           <td>{{ $avaliador->user->name }}</td>
           <td>{{ $avaliador->user->email }}</td>
           <td>Status-Aceito ou Rejeitado</td>
-          <td style="text-align:center"> <button class="btn btn-primary" >Remover</button> </td>
+
+          <td style="text-align:center">
+            <form action="{{ route('admin.remover') }}" method="POST">
+              @csrf
+              <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
+              <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
+              <button type="submit" class="btn btn-primary" >Remover</button>
+            </form>   
+          </td>
         </tr>
       @endforeach
     </tbody>
@@ -85,20 +100,21 @@
       </div>
       <div class="modal-body">
 
-        <form action="#" method="">
+        <form action="{{ route('admin.enviarConvite') }}" method="POST">
           @csrf
+          <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
           <div class="form-group">
             <label for="exampleInputEmail1">Nome Completo</label>
-            <input type="text" class="form-control" name="nome" id="exampleInputNome1">            
+            <input type="text" class="form-control" name="nomeAvaliador" id="exampleInputNome1">            
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Email</label>
-            <input type="email" class="form-control" name="email" id="exampleInputEmail1">            
+            <input type="email" class="form-control" name="emailAvaliador" id="exampleInputEmail1">            
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect1">Tipo</label>
             <select class="form-control" name="tipo" id="exampleFormControlSelect1">
-              <option value="" >Avaliador</option>
+              <option value="avaliador" >Avaliador</option>
             </select>
           </div>
 
