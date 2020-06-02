@@ -34,9 +34,45 @@
           <td>{{ $trabalho->titulo}}</td>
           <td>{{ $trabalho->proponente->user->name }}</td>
           <td style="text-align:center">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+              <button type="button" class="btn btn-primary" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModalCenter{{ $trabalho->id }}">
                 Atribuir
               </button>
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModalCenter{{ $trabalho->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Selecione o avaliador(es)</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+
+                      <form action="{{ route('admin.atribuicao') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
+                        <input type="hidden" name="evento_id" value="{{ $evento->id }}">
+                        <div class="form-group">
+                          <label for="exampleFormControlSelect2">Example multiple select</label>
+                          <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2">              
+                            @foreach ($trabalho->aval as $avaliador)                
+                              <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} </option>
+                            @endforeach     
+                          </select>
+                          <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
+                        </div>
+
+                        <div class="mx-auto" >
+                          <button type="submit" class="btn btn-success mx-auto">Atribuir</button>
+                        </div>
+
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
           </td>
         </tr>
       @endforeach      
@@ -77,40 +113,7 @@
 <!-- Button trigger modal -->
       
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Selecione o avaliador(es)</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
 
-        <form action="#" method="">
-          @csrf
-          <div class="form-group">
-            <label for="exampleFormControlSelect2">Example multiple select</label>
-            <select multiple class="form-control" id="exampleFormControlSelect2">              
-              @foreach ($avaliadores as $avaliador)                
-                <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} </option>
-              @endforeach     
-            </select>
-            <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
-          </div>
-
-          <div class="mx-auto" >
-            <button type="submit" class="btn btn-success mx-auto">Atribuir</button>
-          </div>
-
-        </form>
-
-      </div>
-    </div>
-  </div>
-</div>
 
 @endsection
 
@@ -119,5 +122,6 @@
   $('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
   })
+
 </script>
 @endsection

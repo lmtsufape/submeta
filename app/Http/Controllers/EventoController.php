@@ -196,17 +196,8 @@ class EventoController extends Controller
           $trabalhos = 0;
           $trabalhosCount = 0;
         }
-        
-        
+      
         $trabalhosId = Trabalho::where('evento_id', $evento->id)->select('id')->get();
-        //$trabalhosIdCoautor = Proponente::whereIn('trabalhoId', $trabalhosId)->where('proponente_id', Auth::user()->id)->select('trabalhoId')->get();
-        //$coautorCount = Coautor::whereIn('trabalhoId', $trabalhosId)->where('proponente_id', Auth::user()->id)->count();
-        //$trabalhosCoautor = Trabalho::whereIn('id', $trabalhosIdCoautor)->get();
-        
-        // if($coautorCount != 0){
-        //   $hasTrabalhoCoautor = true;
-        //   $hasFile = true;
-        // }
 
         $mytime = Carbon::now('America/Recife');
         // dd(false);
@@ -472,5 +463,8 @@ class EventoController extends Controller
       return view('user.areaComissao', ['trabalhos' => $trabalhos]);
     }
 
-
+    public function baixarEdital($id) {
+      $evento = Evento::find($id);
+      return Storage::download($evento->pdfEdital);
+    }
 }

@@ -95,6 +95,16 @@
                               <input class="form-control" type="text" id="nomeCoordenador" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
                           </div>
                           <div class="col-sm-6">
+                              <label for="nomeTrabalho" class="col-form-label">Link Lattes do Proponente</label>
+                              <input class="form-control" type="text" name="linkLattesEstudante"
+                                     @if(Auth()->user()->proponentes->linkLattes != null) 
+                                        value="{{ Auth()->user()->proponentes->linkLattes }}"
+                                        disabled="disabled"
+                                      @else
+                                      value=""
+                                      @endif >
+                          </div>
+                          <div class="col-sm-6">
                               <label for="nomeTrabalho" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação :') }}</label>
                               <input class="form-control" type="text" name="pontuacaoPlanilha">
                           </div>
@@ -102,10 +112,7 @@
                               <label for="nomeTrabalho" class="col-form-label">{{ __('Link do grupo de pesquisa:') }}</label>
                               <input class="form-control" type="text" name="linkGrupo">
                           </div>
-                          <div class="col-sm-6">
-                              <label for="nomeTrabalho" class="col-form-label">Link Lattes do Estudante</label>
-                              <input class="form-control" type="text" name="linkLattesEstudante">
-                          </div>
+                          
                         </div>
 
                         
@@ -169,6 +176,11 @@
                             </span>
                             @enderror
                           </div>
+                          <form>
+                            
+                            <input type="radio" name="colors" id="red">Red<br>
+                            <input type="radio" name="colors" id="blue">Blue
+                          </form>
 
                           <div class="col-sm-6" >
                             <label for="nomeTrabalho" class="col-form-label">{{ __('Autorização do Comitê de Ética:') }}</label>

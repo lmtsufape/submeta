@@ -38,8 +38,29 @@ class AvaliadorSeeder extends Seeder
       ]);
       $aval = App\Avaliador::find(2);
       $evento = App\Evento::find(1);
+      $trabalho = App\Trabalho::find(1);
+      $aval->trabalhos()->attach($trabalho);
+      $aval->trabalhos->first()->pivot->status = 1;
 
       $aval->eventos()->attach($evento);
       $aval->save();
+
+      $user_id = DB::table('users')->where('name','Avaliador3')->pluck('id');
+
+      DB::table('avaliadors')->insert([
+        'user_id' => $user_id[0],
+      ]);
+
+      // $aval = App\Avaliador::find(2);
+      // $evento = App\Evento::find(1);
+
+      // $aval->eventos()->attach($evento);
+      // $aval->save();
+
+      $user_id = DB::table('users')->where('name','Avaliador4')->pluck('id');
+
+      DB::table('avaliadors')->insert([
+        'user_id' => $user_id[0],
+      ]);
     }
 }
