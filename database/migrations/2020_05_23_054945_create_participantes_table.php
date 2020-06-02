@@ -15,6 +15,7 @@ class CreateParticipantesTable extends Migration
     {
         Schema::create('participantes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->boolean('confirmacao_convite')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id')->nullable();

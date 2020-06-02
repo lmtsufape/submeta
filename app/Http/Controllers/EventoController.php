@@ -463,5 +463,8 @@ class EventoController extends Controller
       return view('user.areaComissao', ['trabalhos' => $trabalhos]);
     }
 
-
+    public function baixarEdital($id) {
+      $evento = Evento::find($id);
+      return Storage::download($evento->pdfEdital);
+    }
 }

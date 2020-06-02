@@ -437,5 +437,10 @@ class TrabalhoController extends Controller
         return view('coordenadorComissao.detalhesEdital', ['evento'=> $trabalho->evento ]);
     }
     
+    public function projetosDoEdital($id) {
+      $edital = Evento::find($id);
+      $projetos = Trabalho::where('evento_id', '=', $id)->get();
 
+      return view('projeto.index')->with(['edital' => $edital, 'projetos' => $projetos]);
+    }
 }
