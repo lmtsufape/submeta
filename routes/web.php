@@ -83,6 +83,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/trabalho/submeter/{id}','TrabalhoController@index'                      )->name('trabalho.index');
   Route::post(  '/trabalho/novaVersao',   'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
   Route::post(  '/trabalho/criar',        'TrabalhoController@store'                      )->name('trabalho.store');
+  Route::get(   '/edital/{id}/projetos',  'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
@@ -101,13 +102,13 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
 Route::prefix('usuarios')->name('admin.')->group(function(){
   //######### Rotas da administração dos usuários ####################
-  Route::get('/home-admin',                  'AdministradorController@index'      )->name('index');
-  Route::get('/usuarios',                    'AdministradorController@usuarios'   )->name('usuarios');
-  Route::get('/novo',                        'AdministradorController@create'     )->name('user.create');
-  Route::post('/salvar-novo',                'AdministradorController@salvar'     )->name('user.store');
-  Route::get('/editar/{id}',                 'AdministradorController@edit'       )->name('user.edit');
-  Route::post('/editar/atualizar/{id}',      'AdministradorController@update'     )->name('user.update');
-  Route::post('/editar/deletar/{id}',        'AdministradorController@destroy'    )->name('user.destroy');
+  Route::get('/home-admin',                  'AdministradorController@index'      )->name('index')->middleware('checkAdministrador');
+  Route::get('/usuarios',                    'AdministradorController@usuarios'   )->name('usuarios')->middleware('checkAdministrador');
+  Route::get('/novo',                        'AdministradorController@create'     )->name('user.create')->middleware('checkAdministrador');
+  Route::post('/salvar-novo',                'AdministradorController@salvar'     )->name('user.store')->middleware('checkAdministrador');
+  Route::get('/editar/{id}',                 'AdministradorController@edit'       )->name('user.edit')->middleware('checkAdministrador');
+  Route::post('/editar/atualizar/{id}',      'AdministradorController@update'     )->name('user.update')->middleware('checkAdministrador');
+  Route::post('/editar/deletar/{id}',        'AdministradorController@destroy'    )->name('user.destroy')->middleware('checkAdministrador');
   Route::get('/editais',                     'AdministradorController@editais'    )->name('editais');
 
 });
@@ -115,41 +116,41 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
 Route::prefix('naturezas')->group(function(){
   //########### Rotas das naturezas     ###############################
 
-  Route::get('/',                             'AdministradorController@naturezas'  )->name('admin.naturezas');
-  Route::get('/index',                        'NaturezaController@index'           )->name('natureza.index');
-  Route::get('/nova',                         'NaturezaController@create'          )->name('natureza.criar');
-  Route::post('/salvar',                      'NaturezaController@store'           )->name('natureza.salvar');
-  Route::get('/detalhes/{id}',                'NaturezaController@show'            )->name('natureza.show');
-  Route::get('/editar/{id}',                  'NaturezaController@edit'            )->name('natureza.editar');
-  Route::get('/atualizar/{id}',              'NaturezaController@update'          )->name('natureza.atualizar');
-  Route::get('/excluir/{id}',                'NaturezaController@destroy'         )->name('natureza.deletar');
+  Route::get('/',                             'AdministradorController@naturezas'  )->name('admin.naturezas')->middleware('checkAdministrador');
+  Route::get('/index',                        'NaturezaController@index'           )->name('natureza.index')->middleware('checkAdministrador');
+  Route::get('/nova',                         'NaturezaController@create'          )->name('natureza.criar')->middleware('checkAdministrador');
+  Route::post('/salvar',                      'NaturezaController@store'           )->name('natureza.salvar')->middleware('checkAdministrador');
+  Route::get('/detalhes/{id}',                'NaturezaController@show'            )->name('natureza.show')->middleware('checkAdministrador');
+  Route::get('/editar/{id}',                  'NaturezaController@edit'            )->name('natureza.editar')->middleware('checkAdministrador');
+  Route::get('/atualizar/{id}',              'NaturezaController@update'          )->name('natureza.atualizar')->middleware('checkAdministrador');
+  Route::get('/excluir/{id}',                'NaturezaController@destroy'         )->name('natureza.deletar')->middleware('checkAdministrador');
 
   //########### Rotas das grandes areas ##############################
-  Route::get('/grande-area',                'GrandeAreaController@index'           )->name('grandearea.index');
-  Route::get('/grande-area/nova',           'GrandeAreaController@create'          )->name('grandearea.criar');
-  Route::post('/grande-area/salvar',        'GrandeAreaController@store'           )->name('grandearea.salvar');
-  Route::get('/grande-area/detalhes/{id}',  'GrandeAreaController@show'            )->name('grandearea.show');
-  Route::get('/grande-area/editar/{id}',    'GrandeAreaController@edit'            )->name('grandearea.editar');
-  Route::post('/grande-area/atualizar/{id}','GrandeAreaController@update'          )->name('grandearea.atualizar');
-  Route::post('/grande-area/excluir/{id}',  'GrandeAreaController@destroy'         )->name('grandearea.deletar');
+  Route::get('/grande-area',                'GrandeAreaController@index'           )->name('grandearea.index')->middleware('checkAdministrador');
+  Route::get('/grande-area/nova',           'GrandeAreaController@create'          )->name('grandearea.criar')->middleware('checkAdministrador');
+  Route::post('/grande-area/salvar',        'GrandeAreaController@store'           )->name('grandearea.salvar')->middleware('checkAdministrador');
+  Route::get('/grande-area/detalhes/{id}',  'GrandeAreaController@show'            )->name('grandearea.show')->middleware('checkAdministrador');
+  Route::get('/grande-area/editar/{id}',    'GrandeAreaController@edit'            )->name('grandearea.editar')->middleware('checkAdministrador');
+  Route::post('/grande-area/atualizar/{id}','GrandeAreaController@update'          )->name('grandearea.atualizar')->middleware('checkAdministrador');
+  Route::post('/grande-area/excluir/{id}',  'GrandeAreaController@destroy'         )->name('grandearea.deletar')->middleware('checkAdministrador');
   
   //#### Rotas das areas, id's de nova e salvar são os ids da grande área a qual a nova área pertence ####
-  Route::get('/areas',                  'AreaController@index'                      )->name('area.index');
-  Route::get('/{id}/area/nova',         'AreaController@create'                     )->name('area.criar');
-  Route::post('/{id}/area/salvar',      'AreaController@store'                      )->name('area.salvar');
-  Route::get('/area/detalhes/{id}',     'AreaController@show'                       )->name('area.show');
-  Route::get('/area/editar/{id}',       'AreaController@edit'                       )->name('area.editar');
-  Route::post('/area/atualizar/{id}',   'AreaController@update'                     )->name('area.atualizar');
-  Route::post('/area/excluir/{id}',     'AreaController@destroy'                    )->name('area.deletar');
+  Route::get('/areas',                  'AreaController@index'                      )->name('area.index')->middleware('checkAdministrador');
+  Route::get('/{id}/area/nova',         'AreaController@create'                     )->name('area.criar')->middleware('checkAdministrador');
+  Route::post('/{id}/area/salvar',      'AreaController@store'                      )->name('area.salvar')->middleware('checkAdministrador');
+  Route::get('/area/detalhes/{id}',     'AreaController@show'                       )->name('area.show')->middleware('checkAdministrador');
+  Route::get('/area/editar/{id}',       'AreaController@edit'                       )->name('area.editar')->middleware('checkAdministrador');
+  Route::post('/area/atualizar/{id}',   'AreaController@update'                     )->name('area.atualizar')->middleware('checkAdministrador');
+  Route::post('/area/excluir/{id}',     'AreaController@destroy'                    )->name('area.deletar')->middleware('checkAdministrador');
       
   //### Rotas das subareas, id's de nova e salvar são os ids da área a qual a nova subárea pertence #####
-  Route::get('/subareas',                 'SubAreaController@index'                   )->name('subarea.index');
-  Route::get('/{id}/subarea/nova',        'SubAreaController@create'                  )->name('subarea.criar');
-  Route::post('/{id}/subarea/salvar',     'SubAreaController@store'                   )->name('subarea.salvar');
-  Route::get('/subarea/detalhes/{id}',    'SubAreaController@show'                    )->name('subarea.show');
-  Route::get('/subarea/editar/{id}',      'SubAreaController@edit'                    )->name('subarea.editar');
-  Route::post('/subarea/atualizar/{id}',  'SubAreaController@update'                  )->name('subarea.atualizar');
-  Route::post('/subarea/excluir/{id}',    'SubAreaController@destroy'                 )->name('subarea.deletar');
+  Route::get('/subareas',                 'SubAreaController@index'                   )->name('subarea.index')->middleware('checkAdministrador');
+  Route::get('/{id}/subarea/nova',        'SubAreaController@create'                  )->name('subarea.criar')->middleware('checkAdministrador');
+  Route::post('/{id}/subarea/salvar',     'SubAreaController@store'                   )->name('subarea.salvar')->middleware('checkAdministrador');
+  Route::get('/subarea/detalhes/{id}',    'SubAreaController@show'                    )->name('subarea.show')->middleware('checkAdministrador');
+  Route::get('/subarea/editar/{id}',      'SubAreaController@edit'                    )->name('subarea.editar')->middleware('checkAdministrador');
+  Route::post('/subarea/atualizar/{id}',  'SubAreaController@update'                  )->name('subarea.atualizar')->middleware('checkAdministrador');
+  Route::post('/subarea/excluir/{id}',    'SubAreaController@destroy'                 )->name('subarea.deletar')->middleware('checkAdministrador');
 
 });
  
@@ -164,7 +165,10 @@ Route::prefix('evento')->name('evento.')->group(function(){
   Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update');
   Route::post(   '/setResumo',      'EventoController@setResumo'                        )->name('setResumo');
   Route::post(   '/setFoto',        'EventoController@setFotoEvento'                    )->name('setFotoEvento');
+  
 });
+
+Route::get('/baixar/edital/{id}', 'EventoController@baixarEdital'                     )->name('baixar.edital');
 
 //########## Rotas de administrador responsavel (Reitor ou pro-reitor)########
 Route::prefix('adminResp')->name('adminResp.')->group(function(){
