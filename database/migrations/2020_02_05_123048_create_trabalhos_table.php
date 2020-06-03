@@ -16,7 +16,7 @@ class CreateTrabalhosTable extends Migration
         Schema::create('trabalhos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('titulo');
-            $table->boolean('avaliado')->nullable();
+            $table->boolean('aprovado')->nullable();
             $table->string('linkGrupoPesquisa');
             $table->string('linkLattesEstudante');
             $table->string('pontuacaoPlanilha');
@@ -26,7 +26,8 @@ class CreateTrabalhosTable extends Migration
             $table->string('anexoDecisaoCONSU')->nullable();
             $table->string('anexoPlanilhaPontuacao');
             $table->string('anexoLattesCoordenador');
-            $table->string('anexoAutorizacaoComiteEtica');
+            $table->string('anexoAutorizacaoComiteEtica')->nullable();;
+            $table->string('JustificativaAutorizacaoEtica')->nullable();;
             //chaves estrangeiras
             $table->unsignedBigInteger('grande_area_id');
             $table->unsignedBigInteger('area_id');

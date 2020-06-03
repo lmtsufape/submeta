@@ -19,7 +19,7 @@
 	      </div>
 
 	      <div class="col-sm-4 d-flex justify-content-center">
-	         <a href="{{ route('visualizarTrabalho') }}" style="text-decoration:none; color: inherit;">
+	         <a href="{{ route('avaliador.visualizarTrabalho') }}" style="text-decoration:none; color: inherit;">
 	            <div class="card text-center " style="border-radius: 30px; width: 18rem;">
 	             <div class="card-body d-flex justify-content-center">
 	                  <h2 style="padding-top:15px">Trabalhos</h2>

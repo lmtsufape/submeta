@@ -76,6 +76,9 @@ class TrabalhoController extends Controller
       $mytime = $mytime->toDateString();
       $evento = Evento::find($request->editalId);
       $coordenador = CoordenadorComissao::find($evento->coordenadorId);
+      //Relaciona o projeto criado com o proponente que criou o projeto
+      $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+      //$trabalho->proponentes()->save($proponente);  
       //dd($coordenador->id);
 
       if($evento->inicioSubmissao > $mytime){
@@ -105,27 +108,30 @@ class TrabalhoController extends Controller
           'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
+        //dd($request->all());
 
         $trabalho = Trabalho::create([
-          'titulo'                      => $request->nomeProjeto,
-          'coordenador_id'              => $coordenador->id,
-          'grande_area_id'              => $request->grandeAreaId,
-          'area_id'                     => $request->areaId,
-          'sub_area_id'                 => $request->subAreaId,               
-          'pontuacaoPlanilha'           => $request->pontuacaoPlanilha,
-          'linkGrupoPesquisa'           => $request->linkGrupo,
-          'linkLattesEstudante'         => $request->linkLattesEstudante,
-          'data'                        => $mytime,
-          'evento_id'                   => $request->editalId,
-          'avaliado'                    => 0,
+          'titulo'                        => $request->nomeProjeto,
+          'coordenador_id'                => $coordenador->id,
+          'grande_area_id'                => $request->grandeAreaId,
+          'area_id'                       => $request->areaId,
+          'sub_area_id'                   => $request->subAreaId,               
+          'pontuacaoPlanilha'             => $request->pontuacaoPlanilha,
+          'linkGrupoPesquisa'             => $request->linkGrupo,
+          'linkLattesEstudante'           => $request->linkLattesEstudante,
+          'data'                          => $mytime,
+          'evento_id'                     => $request->editalId,
+          'avaliado'                      => 0,
+          'proponente_id'                 => $proponente->id,
           //Anexos
-          'anexoDecisaoCONSU'           => $request->anexoCONSU,
-          'anexoProjeto'                => $request->anexoProjeto,
-          'anexoAutorizacaoComiteEtica' => $request->anexoComiteEtica,
-          'anexoLattesCoordenador'      => $request->anexoLatterCoordenador,
-          'anexoPlanilhaPontuacao'      => $request->anexoPlanilha,
+          'anexoDecisaoCONSU'             => $request->anexoCONSU,
+          'anexoProjeto'                  => $request->anexoProjeto,
+          'anexoAutorizacaoComiteEtica'   => $request->anexoComiteEtica,
+          'JustificativaAutorizacaoEtica' => $request->JustificativaAutorizacaoEtica,
+          'anexoLattesCoordenador'        => $request->anexoLatterCoordenador,
+          'anexoPlanilhaPontuacao'        => $request->anexoPlanilha,
         ]);
-        //dd($request->all());
+        //dd($trabalho);
       }else{
         //Caso em que o anexo da Decisão do CONSU não necessário
         $validatedData = $request->validate([
@@ -148,30 +154,30 @@ class TrabalhoController extends Controller
         ]);
 
         $trabalho = Trabalho::create([
-          'titulo'                      => $request->nomeProjeto,
-          'coordenador_id'              => $coordenador->id,
-          'grande_area_id'              => $request->grandeAreaId,
-          'area_id'                     => $request->areaId,
-          'sub_area_id'                 => $request->subAreaId,        
-          'coordenador'                 => $request->nomeCoordenador,       
-          'pontuacaoPlanilha'           => $request->pontuacaoPlanilha,
-          'linkGrupoPesquisa'           => $request->linkGrupo,
-          'linkLattesEstudante'         => $request->linkLattesEstudante,
-          'data'                        => $mytime,
-          'evento_id'                   => $request->editalId,
-          'avaliado'                    => 0,
+          'titulo'                        => $request->nomeProjeto,
+          'coordenador_id'                => $coordenador->id,
+          'grande_area_id'                => $request->grandeAreaId,
+          'area_id'                       => $request->areaId,
+          'sub_area_id'                   => $request->subAreaId,        
+          'coordenador'                   => $request->nomeCoordenador,       
+          'pontuacaoPlanilha'             => $request->pontuacaoPlanilha,
+          'linkGrupoPesquisa'             => $request->linkGrupo,
+          'linkLattesEstudante'           => $request->linkLattesEstudante,
+          'data'                          => $mytime,
+          'evento_id'                     => $request->editalId,
+          'avaliado'                      => 0,
+          'proponente_id'                 => $proponente->id,
           //Anexos
-          'anexoProjeto'                => $request->anexoProjeto,
-          'anexoAutorizacaoComiteEtica' => $request->anexoComiteEtica,
-          'anexoLattesCoordenador'      => $request->anexoLatterCoordenador,
-          'anexoPlanilhaPontuacao'      => $request->anexoPlanilha,
+          'anexoProjeto'                  => $request->anexoProjeto,
+          'anexoAutorizacaoComiteEtica'   => $request->anexoComiteEtica,
+          'JustificativaAutorizacaoEtica' => $request->JustificativaAutorizacaoEtica,
+          'anexoLattesCoordenador'        => $request->anexoLatterCoordenador,
+          'anexoPlanilhaPontuacao'        => $request->anexoPlanilha,
         ]);
 
       }
 
-      //Relaciona o projeto criado com o proponente que criou o projeto
-      $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-      $trabalho->proponentes()->save($proponente);  
+      
 
       //Envia email com senha temp para cada participante do projeto
       if($request->emailParticipante != null){

@@ -99,7 +99,7 @@
                               <input class="form-control" type="text" name="linkLattesEstudante"
                                      @if(Auth()->user()->proponentes->linkLattes != null) 
                                         value="{{ Auth()->user()->proponentes->linkLattes }}"
-                                        disabled="disabled"
+                                        
                                       @else
                                       value=""
                                       @endif >
@@ -112,26 +112,6 @@
                               <label for="nomeTrabalho" class="col-form-label">{{ __('Link do grupo de pesquisa:') }}</label>
                               <input class="form-control" type="text" name="linkGrupo">
                           </div>
-                          
-                        </div>
-
-                        
-
-                        {{-- Pontuação da Planilha de Pontuação  --}}
-                        <div class="row justify-content-center mt-2">
-                            {{-- Nome Trabalho  --}}
-                          
-                        </div>
-
-                        
-
-                        {{-- Link do grupo de pesquisa  --}}
-                        <div class="row justify-content-center mb-3">                            
-                          
-                        </div>
-
-                        {{-- Link do grupo de pesquisa  --}}
-                        <div class="row justify-content-center mb-3">                            
                           
                         </div>
 
@@ -176,19 +156,20 @@
                             </span>
                             @enderror
                           </div>
-                          <form>
+                       
                             
-                            <input type="radio" name="colors" id="red">Red<br>
-                            <input type="radio" name="colors" id="blue">Blue
-                          </form>
+                            
+                          
 
                           <div class="col-sm-6" >
-                            <label for="nomeTrabalho" class="col-form-label">{{ __('Autorização do Comitê de Ética:') }}</label>
-
+                            <label for="nomeTrabalho" class="col-form-label">{{ __('Possui autorização do Comitê de Ética:') }}</label>
+                          <button id="buttonSim" class="btn btn-primary mt-2 mb-2">Sim</button>
+                          <button id="buttonNao" class="btn btn-primary mt-2 mb-2">Não</button>
                             <div class="input-group">
                               
-                              <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile01"
+                              
+                              <div class="custom-file">                                
+                                <input type="file" class="custom-file-input" id="inputEtica"
                                   aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica">
                                 <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                               </div>
@@ -200,7 +181,7 @@
                             @enderror
                           </div>
 
-                          <div class="col-sm-6" >
+                          <div class="col-sm-6 mt-3" >
                             <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo do Planilha de Pontuação :') }}</label>
 
                             <div class="input-group">
@@ -217,15 +198,29 @@
                             </span>
                             @enderror
                           </div>
-                        </div>
 
-                        
-                        
-                        @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM')
+                          <div class="col-sm-6" >
+                            <label for="nomeTrabalho" class="col-form-label">{{ __('Justificativa:') }}</label>
+                          
+                            <div class="input-group">
+                              
+                              
+                              <div class="custom-file">                                
+                                <input type="file" class="custom-file-input" id="inputJustificativa"
+                                  aria-describedby="inputGroupFileAddon01" disabled="disabled" name="JustificativaAutorizacaoEtica">
+                                <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                              </div>
+                            </div>
+                            @error('arquivo')
+                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                          </div>
+
+                          @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM')
                           {{-- Decisão do CONSU --}}
-                          <div class="row justify-content-center">
-                            {{-- Arquivo  --}}
-                            <div class="col-sm-12" >
+                          <div class="col-sm-6" >
                               <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU:') }}</label>
 
                               <div class="input-group">
@@ -242,9 +237,9 @@
                               </span>
                               @enderror
                             </div>
-                          </div>
-                        @endif
-
+                          @endif
+                          
+                        </div>
 
                         <hr>
                         <h4>Participantes</h4>
@@ -425,6 +420,20 @@
         //replace the "Choose a file" label
         $(this).next('#custom-file-label').html(fileName);
     })
+
+    // F
+
+    $('#buttonSim').on('click',function(e){
+        e.preventDefault();
+        $('#inputEtica').prop('disabled', false);
+        $('#inputJustificativa').prop('disabled', true);
+    });
+    $('#buttonNao').on('click',function(e){
+        e.preventDefault();
+        $('#inputEtica').prop('disabled', true);
+        $('#inputJustificativa').prop('disabled', false);
+        console.log('button nao');
+    });
 
 
   });
