@@ -80,6 +80,7 @@
           <th scope="col">Nome do Edital</th>
           <th scope="col">Status</th>
           <th scope="col">Data de Criação</th>
+          <th scope="col">Baixar edital</th>
           <th scope="col">Opção</th>
         </tr>
       </thead>
@@ -93,22 +94,24 @@
             </td>
             <td></td>
             <td>{{ $evento->created_at }}</td>
+            <td style="text-align: center">
+              <a href="{{ route('baixar.edital', ['id' => $evento->id]) }}">
+                <img src="{{asset('img/icons/file-download-solid.svg')}}" width="15px">
+              </a>
+            </td>
             <td>
               <div class="btn-group dropright dropdown-options">
                   <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
                   </a>
                   <div class="dropdown-menu">
-                      <a href="{{ route('baixar.edital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center;">
-                          Baixar edital
-                      </a>
                       <a href="{{ route('projetos.edital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center">
-                          Submeter projeto
+                        Projetos submetidos
                       </a>
                       <a href="" class="dropdown-item" style="text-align: center">
                         Visualizar resultado
                       </a>
-                      <a href="" class="dropdown-item" style="text-align: center">
+                      {{-- <a href="" class="dropdown-item" style="text-align: center">
                         Recurso ao resultado
                       </a>
                       <a href="" class="dropdown-item" style="text-align: center">
@@ -116,7 +119,7 @@
                       </a>
                       <a href="" class="dropdown-item" style="text-align: center">
                         Resultado final
-                      </a>
+                      </a> --}}
                   </div>
               </div>
             </td>

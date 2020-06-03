@@ -43,11 +43,11 @@
                     </a>
                     <div class="dropdown-menu">
                         <a href="" class="dropdown-item" style="text-align: center;">
-                            Editar projeto
+                          Editar projeto
                         </a>
-                        <a href="" class="dropdown-item" style="text-align: center">
+                        {{-- <a href="" class="dropdown-item" style="text-align: center">
                           Adicionar participantes
-                        </a>
+                        </a> --}}
                         <a href="" class="dropdown-item" style="text-align: center">
                           Recorrer
                         </a>
