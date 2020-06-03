@@ -84,6 +84,7 @@ class DatabaseSeeder extends Seeder
           'numMaxTrabalhos' => 2,
           'numMaxCoautores' => 5,
           'coordenadorId'=>1,
+          'created_at'=>'2020-03-30',
           'criador_id'=>1,
         ]);
 

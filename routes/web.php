@@ -20,8 +20,12 @@ Route::get('/evento/visualizar/naologado/{id}','EventoController@showNaoLogado' 
 Auth::routes(['verify' => true]);
 
 //######## Rotas Avaliador  ####################################
-Route::get('/avaliador/index', 'AvaliadorController@index'                        )->name('avaliador.index');
-Route::get('/avaliador/trabalhos', 'AvaliadorController@visualizarTrabalhos'      )->name('visualizarTrabalho');
+Route::prefix('avaliador')->name('avaliador.')->group(function(){
+  Route::get('/index',        'AvaliadorController@index'                       )->name('index');
+  Route::get('/trabalhos',    'AvaliadorController@visualizarTrabalhos'         )->name('visualizarTrabalho');
+  Route::post('/parecer',     'AvaliadorController@parecer'                     )->name('parecer');
+  Route::post('/Enviarparecer',     'AvaliadorController@enviarParecer'         )->name('enviarParecer');
+});
 
 //######### Proponente  ########################################
 Route::get('/proponente/index', 'ProponenteController@index'                      )->name('proponente.index');

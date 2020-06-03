@@ -38,8 +38,9 @@
                   {{ $evento->nome }}
               </a>
             </td>
-            <td>10/05/2020</td>
+            <td>{{ $evento->created_at }}</td>
             <td>
+              @if(auth()->user()->id == $evento->criador_id)              
               <div class="btn-group dropright dropdown-options">
                   <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
@@ -64,6 +65,7 @@
                       </form>
                   </div>
               </div>
+              @endif
             </td>
           </tr>
         @endforeach
@@ -90,7 +92,7 @@
               </a>
             </td>
             <td></td>
-            <td>10/05/2020</td>
+            <td>{{ $evento->created_at }}</td>
             <td>
               <div class="btn-group dropright dropdown-options">
                   <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
