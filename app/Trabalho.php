@@ -14,7 +14,7 @@ class Trabalho extends Model
   protected $fillable = [
       'titulo',
       'data', 
-      'avaliado',
+      'aprovado',
       'decisaoCONSU',      
       'pontuacaoPlanilha', 
       'linkGrupoPesquisa',
@@ -22,6 +22,7 @@ class Trabalho extends Model
 
       'anexoDecisaoCONSU',
       'anexoAutorizacaoComiteEtica',
+      'JustificativaAutorizacaoEtica',
       'anexoLattesCoordenador',
       'anexoPlanilhaPontuacao',
       'anexoProjeto',
