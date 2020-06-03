@@ -248,7 +248,7 @@
                         <div class="row" style="margin-top:20px">
                           <div class="col-sm-12">
                             <div id="participantes">
-
+                              <br><h5>Dados do participante</h5>
                               <div class="row">
                                 <div class="col-sm-5">
                                     <label>Nome Completo</label>
@@ -258,91 +258,55 @@
                                     <label>E-mail</label>
                                     <input type="email" style="margin-bottom:10px" class="form-control emailCoautor" name="emailParticipante[]" placeholder="E-mail" required>
                                 </div>
-                                <div class="col-sm-2">
-                                    <label for="funcaoParticipante" class="col-form-label">{{ __('Função:') }}</label>
-                                <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="funcaoParticipante" name="funcaoParticipante[]">
-                                    <option value="" disabled selected hidden>-- Função --</option>
-                                    @foreach($funcaoParticipantes as $funcaoParticipante)
-                                      <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
-                                    @endforeach
-                                </select>
+                                <div class="col-sm-3">
+                                  <label>Função:</label>
+                                  <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="funcaoParticipante" name="funcaoParticipante[]">
+                                      <option value="" disabled selected hidden>-- Função --</option>
+                                      @foreach($funcaoParticipantes as $funcaoParticipante)
+                                        <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
+                                      @endforeach
+                                  </select>
                                 </div>
-                                <div class="col-sm-1">
-                                    <a  class="delete">
-                                      <img src="/img/icons/user-times-solid.svg" style="width:25px;margin-top:35px">
-                                    </a>
+                              </div>
+                              <h5>Dados do plano de trabalho</h5>
+                              <div  class="row">
+                                <div class="col-sm-12">
+                                  <div id="planoTrabalho">    
+                                      <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>Titulo </label>
+                                            <input type="text" style="margin-bottom:10px" class="form-control emailCoautor" name="nomePlanoTrabalho[]" placeholder="Nome" required>
+                                        </div> 
+                                          {{-- Arquivo  --}}
+                                          <div class="col-sm-7">
+                                            <label for="nomeTrabalho" >Anexo</label>
+                                            <div class="input-group"  >
+                                              <div class="input-group-prepend">
+                                                <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
+                                              </div>
+                                              <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="anexoPlanoTrabalho"
+                                                  aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                                <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                                              </div>
+                                            </div>
+                                            @error('anexoPlanoTrabalho')
+                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                              <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                          </div>
+                                          <div class="col-sm-1">
+                                            <a class="delete">
+                                              <img src="/img/icons/user-times-solid.svg" style="width:25px;margin-top:35px">
+                                            </a>
+                                        </div>
+                                      </div>                              
+                                    </div>
+                                  </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <label>Nome Completo</label>
-                                    <input type="text" style="margin-bottom:10px" class="form-control emailCoautor" name="nomeParticipante[]" placeholder="Nome" required>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label>E-mail</label>
-                                    <input type="email" style="margin-bottom:10px" class="form-control emailCoautor" name="emailParticipante[]" placeholder="E-mail" required>
-                                </div>
-                                <div class="col-sm-2">
-                                    <label for="funcaoParticipante" class="col-form-label">{{ __('Função:') }}</label>
-                                <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="funcaoParticipante" name="funcaoParticipante[]">
-                                    <option value="" disabled selected hidden>-- Função --</option>
-                                    @foreach($funcaoParticipantes as $funcaoParticipante)
-                                      <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
-                                    @endforeach
-                                </select>
-                                </div>
-                                <div class="col-sm-1">
-                                    <a  class="delete">
-                                      <img src="/img/icons/user-times-solid.svg" style="width:25px;margin-top:35px">
-                                    </a>
-                                </div>
-                            </div>
-
                             </div>
                             <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
-                          </div>
-                        </div>
-
-                        {{-- Plano de Trabalho  --}}
-                        <h4 class="mt-3" >Plano de Trabalho</h4>
-                        <div class="row" style="margin-top:20px">
-                          <div class="col-sm-12">
-                            <div id="planoTrabalho">  
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                      <label>Titulo </label>
-                                      <input type="text" style="margin-bottom:10px" class="form-control emailCoautor" name="nomePlanoTrabalho[]" placeholder="Nome" required>
-                                  </div> 
-                                    {{-- Arquivo  --}}
-                                    <div class="col-sm-7">
-                                      <label for="nomeTrabalho" >Anexo</label>
-                                      <div class="input-group"  >
-                                        <div class="input-group-prepend">
-                                          <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
-                                        </div>
-                                        <div class="custom-file">
-                                          <input type="file" class="custom-file-input" id="anexoPlanoTrabalho"
-                                            aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
-                                          <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
-                                        </div>
-                                      </div>
-                                      @error('anexoPlanoTrabalho')
-                                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                        <strong>{{ $message }}</strong>
-                                      </span>
-                                      @enderror
-                                    </div>
-                                    <div class="col-sm-1">
-                                      <a  class="deletePlano">
-                                        <img src="/img/icons/user-times-solid.svg" style="width:25px;margin-top:35px">
-                                      </a>
-                                  </div>
-                              
-                                  
-                                </div>                              
-                            </div>
-                            <a href="#" class="btn btn-primary" id="addPlanoTrabalho" style="width:100%;margin-top:10px">Plano de Trabalho +</a>
                           </div>
                         </div>
 
@@ -370,12 +334,11 @@
 <script type="text/javascript">
 
   
-  $(function(){
+$(function(){
     var qtdLinhas = 1;
     var qtdParticipantes = 2;
     // Coautores
     $('#addCoautor').click(function(e){
-
       if(qtdParticipantes < 100){
         e.preventDefault();
         linha = montarLinhaInput();
@@ -384,7 +347,6 @@
       }
       
     });
-
     $('#addPlanoTrabalho').click(function(e){
       e.preventDefault();
       if(qtdLinhas < 4){
@@ -394,7 +356,6 @@
       }
       
     });
-
     // Exibir modalidade de acordo com a área
     $("#area").change(function(){
       console.log($(this).val());
@@ -420,9 +381,7 @@
         //replace the "Choose a file" label
         $(this).next('#custom-file-label').html(fileName);
     })
-
     // F
-
     $('#buttonSim').on('click',function(e){
         e.preventDefault();
         $('#inputEtica').prop('disabled', false);
@@ -434,12 +393,9 @@
         $('#inputJustificativa').prop('disabled', false);
         console.log('button nao');
     });
-
-
   });
   // Remover Coautor
   
-
   function addModalidade(areaId){
     console.log(modalidades)
     $("#modalidade").empty();
@@ -452,7 +408,8 @@
   }
   function montarLinhaInput(){
 
-    return  "<div class="+"row"+">"+
+    return    "<br><h5>Dados do participante</h5>" +
+              "<div class="+"row"+">"+
                 "<div class="+"col-sm-5"+">"+
                     "<label>Nome Completo</label>"+
                     "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control emailCoautor'+" name="+'nomeParticipante[]'+" placeholder="+"Nome"+" required>"+
@@ -461,27 +418,20 @@
                     "<label>E-mail</label>"+
                     "<input"+" type="+'email'+" style="+"margin-bottom:10px"+" class="+'form-control emailCoautor'+" name="+'emailParticipante[]'+" placeholder="+"E-mail"+" required>"+
                 "</div>"+
-                "<div class='col-sm-2'>"+
-                  "<label for='funcaoParticipante' class='col-form-label'>Função:</label>"+
-                "<select class="+"form-control @error('funcaoParticipante') is-invalid @enderror"+" id="+"funcaoParticipante"+"name="+"funcaoParticipante[]"+">"+
-                    "<option value='' disabled selected hidden> Função </option>"+
-                    "@foreach($funcaoParticipantes as $funcaoParticipante)"+
-                      "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+
-                    "@endforeach"+
-                "</select>"+
+                "<div class='col-sm-3'>"+
+                  "<label>Função:</label>"+
+                  "<select class="+"form-control @error('funcaoParticipante') is-invalid @enderror"+" id="+"funcaoParticipante"+"name="+"funcaoParticipante[]"+">"+
+                      "<option value='' disabled selected hidden> Função </option>"+
+                      "@foreach($funcaoParticipantes as $funcaoParticipante)"+
+                        "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+
+                      "@endforeach"+
+                  "</select>"+
                 "</div>"+
-                "<div class="+"col-sm-1"+">"+
-                    "<a  class="+"delete"+">"+
-                      "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
-                    "</a>"+
-                "</div>"+
-            "</div>";
-  }
-  function montarLinhaInputPlanoTrabalho(){
-
-    return  "<div class="+"row"+">"+
+            "</div>" +
+            "<h5>Dados do plano de trabalho</h5>" +
+            "<div class="+"row"+">"+
                 "<div class="+"col-sm-4"+">"+
-                    "<label>Nome Completo</label>"+
+                    "<label>Titulo</label>"+
                     "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control emailCoautor'+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
                 "</div>"+
                 "<div class="+"col-sm-7" +">"+
@@ -502,14 +452,47 @@
                     "<strong>{{ $message }}</strong>"+
                   "</span>"+
                   "@enderror"+
-                "</div>"+                 
+                "</div>"+
                 "<div class="+"col-sm-1"+">"+
-                    "<a class="+"deletePlano"+">"+
+                    "<a  class="+"delete"+">"+
                       "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
                     "</a>"+
                 "</div>"+
             "</div>";
   }
+  // function montarLinhaInputPlanoTrabalho(){
+
+  //   return  "<div class="+"row"+">"+
+  //               "<div class="+"col-sm-4"+">"+
+  //                   "<label>Nome Completo</label>"+
+  //                   "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control emailCoautor'+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
+  //               "</div>"+
+  //               "<div class="+"col-sm-7" +">"+
+  //                 "<label for="+"nomeTrabalho"+">Anexo </label>"+
+
+  //                 "<div class="+"input-group"+">"+
+  //                   "<div class='input-group-prepend'>"+
+  //                     "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
+  //                   "</div>"+
+  //                   "<div class='custom-file'>"+
+  //                     "<input type='file' class='custom-file-input' id='inputGroupFile01'"+
+  //                       "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
+  //                     "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
+  //                   "</div>"+
+  //                 "</div>"+
+  //                 "@error('arquivo')"+
+  //                 "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
+  //                   "<strong>{{ $message }}</strong>"+
+  //                 "</span>"+
+  //                 "@enderror"+
+  //                 "</div>"+                 
+  //                 "<div class="+"col-sm-1"+">"+
+  //                     "<a class="+"deletePlano"+">"+
+  //                       "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
+  //                     "</a>"+
+  //                 "</div>"+
+  //           "</div>";
+  // }
 
 </script>
 @endsection
