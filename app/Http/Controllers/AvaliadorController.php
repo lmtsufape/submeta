@@ -36,11 +36,20 @@ class AvaliadorController extends Controller
 
     	$trabalhos = Auth::user()->avaliadors->first()->trabalhos;
     	$avaliador = Auth::user()->avaliadors->first();
-    	$trabalho = $avaliador->trabalhos->find(1);
-    	$avaliador->trabalhos()->updateExistingPivot($trabalho->id, 
-    															['status'=> 1,
-    															 'parecer'=>$request->textParecer,
-    															 'AnexoParecer'=> $request->anexoParecer]);
+    	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+    	if($request->anexoParecer == ''){
+					$avaliador
+                ->trabalhos()
+                ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer]);
+    	}else{
+					$avaliador
+                  ->trabalhos()
+                  ->updateExistingPivot($trabalho->id,['status'=> 1,
+																    									'parecer'=>$request->textParecer,
+																    									'AnexoParecer'=> $request->anexoParecer
+																    									]);
+    	}
+    	
   
     	//	dd($trabalho);
 

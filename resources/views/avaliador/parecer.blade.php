@@ -23,14 +23,14 @@
 											    	<input type="file" class="form-control-file" id="exampleFormControlFile1" name="anexoParecer">
 
 											  	@else
-														<label for="exampleFormControlFile1">Atualizar arquivo do Parecer?</label> <br>
-														<label for="exampleFormControlFile1">Arquivo:{{ $trabalho->pivot->AnexoParecer }}</label>
+														<label for="exampleFormControlFile1">Já existe um arquivo, quer atualizar?</label> <br>
+														
 											    	<input type="file" class="form-control-file" id="exampleFormControlFile1" name="anexoParecer">
 											  	@endif
 											    
 											  </div>
 												<button type="submit" class="btn btn-primary">Enviar</button>
-												<a href="{{url()->previous()}}"  class="btn btn-danger" >Cancelar</a>
+												<a href="{{ route('avaliador.visualizarTrabalho') }}"  class="btn btn-danger" >Cancelar</a>
                     </form>
 
                 </div>
