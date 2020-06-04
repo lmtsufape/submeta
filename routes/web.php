@@ -88,6 +88,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/trabalho/novaVersao',   'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
   Route::post(  '/trabalho/criar',        'TrabalhoController@store'                      )->name('trabalho.store');
   Route::get(   '/edital/{id}/projetos',  'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
+  Route::get(   '/projeto/{id}/editar',   'TrabalhoController@edit'                       )->name('trabalho.editar');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
@@ -101,7 +102,13 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/revisor/email',         'RevisorController@enviarEmailRevisor'          )->name('revisor.email');
   Route::post(  '/revisor/emailTodos',    'RevisorController@enviarEmailTodosRevisores'   )->name('revisor.emailTodos');
 
-  
+  //########## Rotas de download  de documentos ###########################
+  Route::get('/baixar/edital/{id}',           'EventoController@baixarEdital'             )->name('baixar.edital');
+  Route::get('/baixar/anexo-projeto/{id}', 'TrabalhoController@baixarAnexoProjeto'        )->name('baixar.anexo.projeto');
+  Route::get('/baixar/anexo-consu/{id}',   'TrabalhoController@baixarAnexoConsu'          )->name('baixar.anexo.consu');
+  Route::get('/baixar/anexo-comite/{id}',  'TrabalhoController@baixarAnexoComite'         )->name('baixar.anexo.comite');
+  Route::get('/baixar/anexo-lattes/{id}',  'TrabalhoController@baixarAnexoLattes'         )->name('baixar.anexo.lattes');
+  Route::get('/baixar/anexo-planilha/{id}','TrabalhoController@baixarAnexoPlanilha'       )->name('baixar.anexo.planilha');
 });
 
 Route::prefix('usuarios')->name('admin.')->group(function(){
@@ -179,8 +186,6 @@ Route::prefix('evento')->name('evento.')->group(function(){
   Route::post(   '/setFoto',        'EventoController@setFotoEvento'                    )->name('setFotoEvento');
   
 });
-
-Route::get('/baixar/edital/{id}', 'EventoController@baixarEdital'                     )->name('baixar.edital');
 
 //########## Rotas de administrador responsavel (Reitor ou pro-reitor)########
 Route::prefix('adminResp')->name('adminResp.')->group(function(){

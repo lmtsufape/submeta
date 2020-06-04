@@ -35,14 +35,14 @@
               @else
                 <td style="color: rgb(0, 0, 0)">Submetido</td>
               @endif
-              <td>{{$projeto->update}}</td>   
+              <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
               <td>
                 <div class="btn-group dropright dropdown-options">
                     <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
                     </a>
                     <div class="dropdown-menu">
-                        <a href="" class="dropdown-item" style="text-align: center;">
+                        <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                           Editar projeto
                         </a>
                         {{-- <a href="" class="dropdown-item" style="text-align: center">

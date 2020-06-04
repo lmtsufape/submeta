@@ -80,7 +80,7 @@ class TrabalhoController extends Controller
       $proponente = Proponente::where('user_id', Auth::user()->id)->first();
       //$trabalho->proponentes()->save($proponente);  
       //dd($coordenador->id);
-
+      $trabalho = "trabalho";
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
             return redirect()->route('home');
@@ -179,8 +179,6 @@ class TrabalhoController extends Controller
 
       }
 
-      
-
       //Envia email com senha temp para cada participante do projeto
       if($request->emailParticipante != null){
         
@@ -198,11 +196,10 @@ class TrabalhoController extends Controller
               'usuarioTemp' => true,
               'name' => $request->nomeParticipante[$key],
               'tipo' => 'participante',
-              'funcao_participante_id' => $request->funcaoParticipante[$key],
             ]);
-
             $participante = $usuario->participantes()->create([
               'trabalho_id' => $trabalho->id,
+              'funcao_participante_id' => $request->funcaoParticipante[$key],
             ]);
 
             $participante->trabalhos()->save($trabalho);
@@ -216,30 +213,15 @@ class TrabalhoController extends Controller
         }
       }
       
-      $anexos = array( 
-                      $request->anexoCONSU, 
-                      $request->anexoProjeto, 
-                      $request->anexoComiteEtica,
-                      $request->anexoLatterCoordenador,
-                      $request->anexoPlanilha,
-                    );
+      $pasta = 'trabalhos/' . $request->editalId . '/' . $trabalho->id;
 
-      foreach ($anexos as $key => $value) {
+      $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoCONSU,  "CONSU.pdf");
+      $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");
+      $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
+      $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLatterCoordenador,  "Latter_Coordenador.pdf");
+      $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha,  "Planilha.pdf");
+      $trabalho->update();
 
-        $file = $value;
-        $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
-        $nome =  "1.pdf";
-        Storage::putFileAs($path, $file, $nome);
-
-        $arquivo = Arquivo::create([
-          'nome'  => $path . $nome,
-          'trabalhoId'  => $trabalho->id,
-          'data' => $mytime,
-          'versaoFinal' => true,
-        ]);
-      
-      }
-      
       if($request->anexoPlanoTrabalho != null){        
         foreach ($request->anexoPlanoTrabalho as $key => $value) {
 
@@ -285,9 +267,23 @@ class TrabalhoController extends Controller
      * @param  \App\Trabalho  $trabalho
      * @return \Illuminate\Http\Response
      */
-    public function edit(Trabalho $trabalho)
+    public function edit($id)
     {
-        //
+      $projeto = Trabalho::find($id);
+      $edital = Evento::find($projeto->evento_id);
+      $grandeAreas = GrandeArea::all();
+      $areas = Area::all();
+      $subareas = Subarea::all();
+      $funcaoParticipantes = FuncaoParticipantes::all();
+      $participantes = Participante::where('trabalho_id', $id)->get();
+
+      return view('projeto.editar')->with(['projeto' => $projeto,
+                                           'grandeAreas' => $grandeAreas,
+                                           'areas' => $areas,
+                                           'subAreas' => $subareas,
+                                           'edital' => $edital,
+                                           'funcaoParticipantes' => $funcaoParticipantes,
+                                           'participantes' => $participantes]);
     }
 
     /**
@@ -450,5 +446,30 @@ class TrabalhoController extends Controller
       $projetos = Trabalho::where('evento_id', '=', $id)->get();
 
       return view('projeto.index')->with(['edital' => $edital, 'projetos' => $projetos]);
+    }
+
+    public function baixarAnexoProjeto($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoProjeto);
+    }
+
+    public function baixarAnexoConsu($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoDecisaoCONSU);
+    }
+
+    public function baixarAnexoComite($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoAutorizacaoComiteEtica);
+    }
+
+    public function baixarAnexoLattes($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoLattesCoordenador);
+    }
+
+    public function baixarAnexoPlanilha($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoPlanilhaPontuacao);
     }
 }
