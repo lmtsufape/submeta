@@ -6,11 +6,8 @@
 
   <div class="container" >
     <div class="row" >
-      <div class="col-sm-10">
+      <div class="col-sm-12">
         <h3>Meus Editais</h3> 
-      </div>
-      <div class="col-sm-2">
-        <a href="{{route('evento.criar')}}" class="btn btn-primary">Criar Edital</a>
       </div>
     </div>
   </div>
@@ -26,10 +23,8 @@
     <tbody>
       @foreach ($eventos as $evento)
         <tr>
-          <td>
-            <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="visualizarEvento">
-                {{ $evento->nome }}
-            </a>
+          <td>            
+              {{ $evento->nome }}
           </td>
           <td>10/05/2020</td>
           <td>
@@ -38,23 +33,11 @@
                     {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
                 </a>
                 <div class="dropdown-menu">
-                    <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item">
+                    <a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]) }}" class="dropdown-item">
                         <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
-                        Detalhes
+                        Projetos para avaliar
                     </a>
-                    <a href="{{route('evento.editar',$evento->id)}}" class="dropdown-item">
-                        <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
-                        Editar
-                    </a>
-                    <form method="POST" action="{{route('evento.deletar',$evento->id)}}">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                        <button type="submit" class="dropdown-item">
-                            <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
-                            Deletar
-                        </button>
-
-                    </form>
+                    
                 </div>
             </div>
           </td>

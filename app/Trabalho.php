@@ -85,6 +85,6 @@ class Trabalho extends Model
       return $this->belongsTo('App\CoordenadorComissao');
   }
   public function avaliadors(){
-      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer');
+      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao_id');
   }
 }

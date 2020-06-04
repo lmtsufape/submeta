@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAvaliadorsTable extends Migration
+class CreateRecomendacaosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateAvaliadorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('avaliadors', function (Blueprint $table) {
+        Schema::create('recomendacaos', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('nome');
             $table->timestamps();
 
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
-
-            $table->unsignedBigInteger('area_id')->nullable();
-            $table->foreign('area_id')->references('id')->on('areas');
         });
     }
 
@@ -32,6 +28,6 @@ class CreateAvaliadorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avaliadors');
+        Schema::dropIfExists('recomendacaos');
     }
 }

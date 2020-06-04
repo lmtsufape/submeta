@@ -13,10 +13,20 @@
                     <form method="POST" action="{{route('avaliador.enviarParecer')}}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
+                        <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
 												<div class="form-group">
 											    <label for="exampleFormControlTextarea1">Parecer:</label>
 											    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer">{{ $trabalho->pivot->parecer }}</textarea>
 											  </div>
+											  <select class="custom-select" name="recomendacao_id" >
+											  	@foreach($recomendacaos as $recomendacao)
+											  		@if($trabalho->pivot->recomendacao_id == $recomendacao->id)
+											  			<option selected value="{{ $recomendacao->id }}" >{{ $recomendacao->nome }}</option>
+														@else
+															<option value="{{ $recomendacao->id }}">{{ $recomendacao->nome }}</option>
+											  		@endif													  
+												  @endforeach												  
+												</select>
 											  <div class="form-group">
 											  	@if($trabalho->pivot->AnexoParecer == null)
 														<label for="exampleFormControlFile1">Anexo do Parecer:</label>
@@ -30,7 +40,7 @@
 											    
 											  </div>
 												<button type="submit" class="btn btn-primary">Enviar</button>
-												<a href="{{ route('avaliador.visualizarTrabalho') }}"  class="btn btn-danger" >Cancelar</a>
+												<a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id])}}"  class="btn btn-danger" >Cancelar</a>
                     </form>
 
                 </div>

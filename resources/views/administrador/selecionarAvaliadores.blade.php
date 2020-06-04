@@ -26,6 +26,7 @@
       <tr>   
         <th scope="col">Nome do Usuário</th>
         <th scope="col">Email</th>
+        <th scope="col">Área</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
     </thead>
@@ -34,6 +35,7 @@
         <tr>
           <td>{{ $avaliador->user->name }}</td>
           <td>{{ $avaliador->user->email }}</td>
+          <td>{{ $avaliador->area->nome }}</td>
           <td style="text-align:center">
             <form action="{{ route('admin.adicionar') }}" method="POST">
               @csrf

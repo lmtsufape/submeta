@@ -24,6 +24,7 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::get('/index',        'AvaliadorController@index'                       )->name('index');
   Route::get('/trabalhos',    'AvaliadorController@visualizarTrabalhos'         )->name('visualizarTrabalho');
   Route::post('/parecer',     'AvaliadorController@parecer'                     )->name('parecer');
+  Route::get('/editais',     'AvaliadorController@editais'                     )->name('editais');
   Route::post('/Enviarparecer',     'AvaliadorController@enviarParecer'         )->name('enviarParecer');
 });
 

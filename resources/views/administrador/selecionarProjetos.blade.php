@@ -57,7 +57,7 @@
                           <label for="exampleFormControlSelect2">Example multiple select</label>
                           <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2">              
                             @foreach ($trabalho->aval as $avaliador)                
-                              <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} </option>
+                              <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{ $avaliador->area->nome }}) </option>
                             @endforeach     
                           </select>
                           <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
