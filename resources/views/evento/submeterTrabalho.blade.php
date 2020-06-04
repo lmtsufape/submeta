@@ -31,14 +31,14 @@
               <div class="row justify-content-center">
                 <div class="col-sm-4">
                   <label for="grandeArea" class="col-form-label">{{ __('Grande Área:') }}</label>
-                  <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeAreaId">
+                  <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea">
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
                     <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
                     @endforeach
                   </select>
 
-                  @error('grandeAreaId')
+                  @error('grandeArea')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -46,14 +46,14 @@
                 </div>
                 <div class="col-sm-4">
                   <label for="area" class="col-form-label">{{ __('Área:') }}</label>
-                  <select class="form-control @error('area') is-invalid @enderror" id="area" name="areaId">
+                  <select class="form-control @error('area') is-invalid @enderror" id="area" name="area">
                     <option value="" disabled selected hidden>-- Área --</option>
                     @foreach($areas as $area)
                     <option value="{{$area->id}}">{{$area->nome}}</option>
                     @endforeach
                   </select>
 
-                  @error('areaId')
+                  @error('area')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -61,14 +61,14 @@
                 </div>
                 <div class="col-sm-4">
                   <label for="subArea" class="col-form-label">{{ __('Sub Área:') }}</label>
-                  <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subAreaId">
+                  <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">
                     <option value="" disabled selected hidden>-- Sub Área --</option>
                     @foreach($subAreas as $subArea)
                     <option value="{{$subArea->id}}">{{$subArea->nome}}</option>
                     @endforeach
                   </select>
 
-                  @error('subAreaId')
+                  @error('subArea')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -96,20 +96,38 @@
                 </div>
                 <div class="col-sm-6">
                   <label for="nomeTrabalho" class="col-form-label">Link Lattes do Proponente</label>
-                  <input class="form-control" type="text" name="linkLattesEstudante" @if(Auth()->user()->proponentes->linkLattes != null)
-                  value="{{ Auth()->user()->proponentes->linkLattes }}"
-
+                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
+                  @if(Auth()->user()->proponentes->linkLattes != null)
+                    value="{{ Auth()->user()->proponentes->linkLattes }}"
                   @else
-                  value=""
+                    value=""
                   @endif >
+
+                  @error('linkLattesEstudante')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
                 </div>
                 <div class="col-sm-6">
                   <label for="nomeTrabalho" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação :') }}</label>
-                  <input class="form-control" type="text" name="pontuacaoPlanilha">
+                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha">
+
+                  @error('pontuacaoPlanilha')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
                 </div>
                 <div class="col-sm-6">
                   <label for="nomeTrabalho" class="col-form-label">{{ __('Link do grupo de pesquisa:') }}</label>
-                  <input class="form-control" type="text" name="linkGrupo">
+                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo">
+
+                  @error('linkGrupo')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
                 </div>
 
               </div>
@@ -126,7 +144,7 @@
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto">
+                      <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto">
                       <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
@@ -143,11 +161,11 @@
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="anexoLatterCoordenador" name="anexoLatterCoordenador">
+                      <input type="file" class="custom-file-input @error('anexoLatterCoordenador') is-invalid @enderror" id="inputGroupFile01" aria-describedby="anexoLatterCoordenador" name="anexoLatterCoordenador">
                       <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
-                  @error('arquivo')
+                  @error('anexoLatterCoordenador')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -166,11 +184,11 @@
 
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica">
+                      <input type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica">
                       <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
-                  @error('arquivo')
+                  @error('anexoComiteEtica')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -183,11 +201,11 @@
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha">
+                      <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha">
                       <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
-                  @error('arquivo')
+                  @error('anexoPlanilha')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -201,11 +219,11 @@
 
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled="disabled" name="JustificativaAutorizacaoEtica">
+                      <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled="disabled" name="justificativaAutorizacaoEtica">
                       <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
-                  @error('arquivo')
+                  @error('justificativaAutorizacaoEtica')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -220,11 +238,11 @@
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU">
+                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU">
                       <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
-                  @error('arquivo')
+                  @error('anexoCONSU')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -247,19 +265,35 @@
                       <div class="row">
                         <div class="col-sm-5">
                           <label>Nome Completo</label>
-                          <input type="text" style="margin-bottom:10px" class="form-control emailCoautor" name="nomeParticipante[]" placeholder="Nome" required>
+                          <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" required>
+                          @error('nomeParticipante')
+                          <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                            <strong>{{ $message }}</strong>
+                          </span>
+                          @enderror
                         </div>
                         <div class="col-sm-4">
                           <label>E-mail</label>
-                          <input type="email" style="margin-bottom:10px" class="form-control emailCoautor" name="emailParticipante[]" placeholder="E-mail" required>
+                          <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="E-mail" required>
+                          @error('emailParticipante')
+                          <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                            <strong>{{ $message }}</strong>
+                          </span>
+                          @enderror
                         </div>
                         <div class="col-sm-3">
                           <label>Função:</label>
                           <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="funcaoParticipante" name="funcaoParticipante[]">
                             <option value="" disabled selected hidden>-- Função --</option>
                             @foreach($funcaoParticipantes as $funcaoParticipante)
-                            <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
+                              <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
                             @endforeach
+
+                            @error('funcaoParticipante')
+                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                           </select>
                         </div>
                       </div>
@@ -270,7 +304,13 @@
                             <div class="row">
                               <div class="col-sm-4">
                                 <label>Titulo </label>
-                                <input type="text" style="margin-bottom:10px" class="form-control emailCoautor" name="nomePlanoTrabalho[]" placeholder="Nome" required>
+                                <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required>
+                                
+                                @error('nomePlanoTrabalho')
+                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                  <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                               </div>
                               {{-- Arquivo  --}}
                               <div class="col-sm-7">
@@ -280,7 +320,7 @@
                                     <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
                                   </div>
                                   <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                    <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
                                     <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                                   </div>
                                 </div>
@@ -407,11 +447,21 @@
               "<div class="+"row"+">"+
                 "<div class="+"col-sm-5"+">"+
                     "<label>Nome Completo</label>"+
-                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control emailCoautor'+" name="+'nomeParticipante[]'+" placeholder="+"Nome"+" required>"+
+                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('nomeParticipante') is-invalid @enderror" + "name=" +'nomeParticipante[]'+" placeholder="+"Nome"+" required>"+
+                    "@error('nomeParticipante')" +
+                    "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                      "<strong>{{ $message }}</strong>" +
+                    "</span>" +
+                    "@enderror" +
                 "</div>"+
                 "<div class="+"col-sm-4"+">"+
                     "<label>E-mail</label>"+
-                    "<input"+" type="+'email'+" style="+"margin-bottom:10px"+" class="+'form-control emailCoautor'+" name="+'emailParticipante[]'+" placeholder="+"E-mail"+" required>"+
+                    "<input"+" type="+'email'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('emailParticipante') is-invalid @enderror'" + "name="+'emailParticipante[]'+" placeholder="+"E-mail"+" required>"+
+                    "@error('emailParticipante')" +
+                    "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                      "<strong>{{ $message }}</strong>" +
+                    "</span>" +
+                    "@enderror" +
                 "</div>"+
                 "<div class='col-sm-3'>"+
                   "<label>Função:</label>"+
@@ -420,6 +470,11 @@
                       "@foreach($funcaoParticipantes as $funcaoParticipante)"+
                         "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+
                       "@endforeach"+
+                      "@error('funcaoParticipante')" +
+                      "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                        "<strong>{{ $message }}</strong>" +
+                      "</span>" +
+                      "@enderror" +
                   "</select>"+
                 "</div>"+
             "</div>" +
@@ -427,7 +482,12 @@
             "<div class="+"row"+">"+
                 "<div class="+"col-sm-4"+">"+
                     "<label>Titulo</label>"+
-                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control emailCoautor'+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
+                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
+                    "@error('nomePlanoTrabalho')" +
+                      "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                        "<strong>{{ $message }}</strong>" +
+                      "</span>" +
+                    "@enderror" +
                 "</div>"+
                 "<div class="+"col-sm-7" +">"+
                   "<label for="+"nomeTrabalho"+">Anexo </label>"+
@@ -437,12 +497,12 @@
                       "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
                     "</div>"+
                     "<div class='custom-file'>"+
-                      "<input type='file' class='custom-file-input' id='inputGroupFile01'"+
+                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
                         "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
                       "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
                     "</div>"+
                   "</div>"+
-                  "@error('arquivo')"+
+                  "@error('anexoPlanoTrabalho')"+
                   "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
                     "<strong>{{ $message }}</strong>"+
                   "</span>"+
