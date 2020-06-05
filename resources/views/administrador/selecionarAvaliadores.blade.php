@@ -78,7 +78,7 @@
               @csrf
               <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
               <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
-              <button type="submit" class="btn btn-primary" >Remover</button>
+              <button type="submit" class="btn btn-primary" @if($avaliador->trabalhos->count() != 0) disabled="disabled" @endif >Remover</button>
             </form>   
           </td>
         </tr>

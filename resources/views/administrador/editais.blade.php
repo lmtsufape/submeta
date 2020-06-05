@@ -46,19 +46,23 @@
                       {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
                   </a>
                   <div class="dropdown-menu">
-                      <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item">
-                          <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                      <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item text-center">
+                         
                           Editar Edital
                       </a>
-                      <a href="{{route('admin.atribuir', ['evento_id' => $evento->id])}}" class="dropdown-item">
-                          <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
+                      <a href="{{route('admin.atribuir', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
+                          
                           Atribuir Avaliadores
                       </a>
-                      <form method="POST" action="{{route('evento.deletar',$evento->id)}}">
+                      <a href="{{route('admin.pareceres', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
+                          
+                          Visualizar Pareceres
+                      </a>
+                      <form method="POST" action="{{route('evento.deletar',$evento->id)}}" class="text-center">
                           {{ csrf_field() }}
                           {{ method_field('DELETE') }}
                           <button type="submit" class="dropdown-item">
-                              <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
+                              
                               Deletar
                           </button>
 

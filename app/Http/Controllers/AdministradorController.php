@@ -42,6 +42,24 @@ class AdministradorController extends Controller
     	return view('administrador.editais', ['eventos'=> $eventos]);
     }
 
+    public function pareceres(Request $request){
+        
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $trabalhos = $evento->trabalhos;
+
+        return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
+    }
+
+    public function visualizarParecer(Request $request){
+        
+        $avaliador = Avaliador::find($request->avaliador_id);
+        $trabalho = $avaliador->trabalhos->where('id', $request->trabalho_id)->first();
+        $parecer = $avaliador->trabalhos->where('id', $request->trabalho_id)->first()->pivot;
+
+        //dd($parecer);
+        return view('administrador.visualizarParecer')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador]);
+    }
+
     public function create() {
         $grandesAreas = GrandeArea::orderBy('nome')->get();
         return view('administrador.novo_user')->with(['grandeAreas' => $grandesAreas]);

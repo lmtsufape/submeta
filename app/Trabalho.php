@@ -50,7 +50,7 @@ class Trabalho extends Model
   }
 
   public function area(){
-      return $this->belongsTo('App\Area', 'areaId');
+      return $this->belongsTo('App\Area');
   }
 
   public function autor(){
@@ -85,6 +85,6 @@ class Trabalho extends Model
       return $this->belongsTo('App\CoordenadorComissao');
   }
   public function avaliadors(){
-      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao_id');
+      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao');
   }
 }

@@ -114,16 +114,16 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/editar/{id}',                 'AdministradorController@edit'       )->name('user.edit')->middleware('checkAdministrador');
   Route::post('/editar/atualizar/{id}',      'AdministradorController@update'     )->name('user.update')->middleware('checkAdministrador');
   Route::post('/editar/deletar/{id}',        'AdministradorController@destroy'    )->name('user.destroy')->middleware('checkAdministrador');
-  Route::get('/editais',                     'AdministradorController@editais'      )->name('editais');
-  Route::get('/atribuir',                    'AdministradorController@atribuir'     )->name('atribuir');
-  Route::get('/selecionarAvaliador',         'AdministradorController@selecionar'   )->name('selecionar');
-  Route::get('/selecionarProjetos',          'AdministradorController@projetos'     )->name('projetos');
-  Route::post('/adicionarAvalEvento',        'AdministradorController@adicionar'    )->name('adicionar');
-  Route::post('/removerAvalEvento',          'AdministradorController@remover'      )->name('remover');
-  Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicao'   )->name('atribuicao');
-  Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite')->name('enviarConvite');
-
-
+  Route::get('/editais',                     'AdministradorController@editais'          )->name('editais');
+  Route::get('/atribuir',                    'AdministradorController@atribuir'         )->name('atribuir');
+  Route::get('/selecionarAvaliador',         'AdministradorController@selecionar'       )->name('selecionar');
+  Route::get('/selecionarProjetos',          'AdministradorController@projetos'         )->name('projetos');
+  Route::post('/adicionarAvalEvento',        'AdministradorController@adicionar'        )->name('adicionar');
+  Route::post('/removerAvalEvento',          'AdministradorController@remover'          )->name('remover');
+  Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicao'       )->name('atribuicao');
+  Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
+  Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
+  Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
 });
 
 Route::prefix('naturezas')->group(function(){

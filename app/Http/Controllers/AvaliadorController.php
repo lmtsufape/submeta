@@ -7,6 +7,7 @@ use Auth;
 use App\Trabalho;
 use App\Evento;
 use App\Recomendacao;
+use App\User;
 
 class AvaliadorController extends Controller
 {
@@ -25,11 +26,11 @@ class AvaliadorController extends Controller
 
     public function visualizarTrabalhos(Request $request){
 
-    	$trabalhos_id = Auth::user()->avaliadors->first()->trabalhos->pluck('id');;
+        $user = User::find(Auth::user()->id);
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos->whereIn('id', $trabalhos_id);
+        $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos;
 
-    	//dd($trabalhos);
+    	//dd();
 
     	return view('avaliador.listarTrabalhos', ['trabalhos'=>$trabalhos, 'evento'=>$evento]);
 
@@ -47,18 +48,21 @@ class AvaliadorController extends Controller
     }
     public function enviarParecer(Request $request){
 
+        $user = User::find(Auth::user()->id);
+        
+
         $evento = Evento::find($request->evento_id);
-    	$trabalhos = Auth::user()->avaliadors->first()->trabalhos;
-    	$avaliador = Auth::user()->avaliadors->first();
+    	$trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos;
+    	$avaliador = $user->avaliadors->where('user_id',$user->id)->first();
     	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
     	if($request->anexoParecer == ''){
 					$avaliador
                 ->trabalhos()
-                ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao_id'=>$request->recomendacao_id]);
+                ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao'=>$request->recomendacao]);
     	}else{
 					$avaliador
                   ->trabalhos()
-                  ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $request->anexoParecer, 'recomendacao_id'=>$request->recomendacao_id]);
+                  ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $request->anexoParecer, 'recomendacao'=>$request->recomendacao]);
     	}
     	
   

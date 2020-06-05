@@ -18,12 +18,12 @@
 											    <label for="exampleFormControlTextarea1">Parecer:</label>
 											    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer">{{ $trabalho->pivot->parecer }}</textarea>
 											  </div>
-											  <select class="custom-select" name="recomendacao_id" >
+											  <select class="custom-select" name="recomendacao" >
 											  	@foreach($recomendacaos as $recomendacao)
-											  		@if($trabalho->pivot->recomendacao_id == $recomendacao->id)
-											  			<option selected value="{{ $recomendacao->id }}" >{{ $recomendacao->nome }}</option>
+											  		@if($trabalho->pivot->recomendacao == $recomendacao->nome)
+											  			<option selected value="{{ $recomendacao->nome  }}" >{{ $recomendacao->nome }}</option>
 														@else
-															<option value="{{ $recomendacao->id }}">{{ $recomendacao->nome }}</option>
+															<option value="{{ $recomendacao->nome }}">{{ $recomendacao->nome }}</option>
 											  		@endif													  
 												  @endforeach												  
 												</select>
