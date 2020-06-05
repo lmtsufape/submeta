@@ -8,6 +8,7 @@ use App\Trabalho;
 use App\Evento;
 use App\Recomendacao;
 use App\User;
+use App\Avaliador;
 
 class AvaliadorController extends Controller
 {
@@ -18,7 +19,8 @@ class AvaliadorController extends Controller
 
     public function editais(){
 
-        $eventos = Auth()->user()->avaliadors->eventos;
+        $user = User::find(Auth::user()->id);
+        $eventos = $user->avaliadors->where('user_id',$user->id)->first()->eventos;
 
         return view('avaliador.editais', ["eventos"=>$eventos]);
     }
@@ -39,7 +41,8 @@ class AvaliadorController extends Controller
     public function parecer(Request $request){
 
     	//$trabalho = Trabalho::find($request->trabalho_id);
-    	$avaliador = Auth::user()->avaliadors->first();
+        $user = User::find(Auth::user()->id);
+    	$avaliador = $user->avaliadors->where('user_id',$user->id)->first();
     	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
 		$evento = Evento::find($request->evento);
         $recomendacaos = Recomendacao::all();
