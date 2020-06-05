@@ -90,6 +90,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/trabalho/criar',        'TrabalhoController@store'                      )->name('trabalho.store');
   Route::get(   '/edital/{id}/projetos',  'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
   Route::get(   '/projeto/{id}/editar',   'TrabalhoController@edit'                       )->name('trabalho.editar');
+  Route::post(   '/projeto/{id}/atualizar',   'TrabalhoController@update'                 )->name('trabalho.update');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
@@ -110,6 +111,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get('/baixar/anexo-comite/{id}',  'TrabalhoController@baixarAnexoComite'         )->name('baixar.anexo.comite');
   Route::get('/baixar/anexo-lattes/{id}',  'TrabalhoController@baixarAnexoLattes'         )->name('baixar.anexo.lattes');
   Route::get('/baixar/anexo-planilha/{id}','TrabalhoController@baixarAnexoPlanilha'       )->name('baixar.anexo.planilha');
+  Route::get('/baixar/plano-de-trabalho/{id}', 'ArquivoController@baixarPlano'            )->name('baixar.plano');
 });
 
 Route::prefix('usuarios')->name('admin.')->group(function(){

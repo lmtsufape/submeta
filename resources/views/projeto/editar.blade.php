@@ -9,9 +9,9 @@
         <div class="card-body">
           <h5 class="card-title">Editar Projeto</h5>
           <p class="card-text">
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('trabalho.update', ['id' => $projeto->id]) }}" enctype="multipart/form-data">
               @csrf
-              <input type="hidden" name="editalId" value="">
+              <input type="hidden" name="editalId" value="{{ $edital->id }}">
 
               {{-- Nome do Projeto  --}}
               <div class="row justify-content-center">
@@ -288,7 +288,7 @@
                           </div>
                           <div class="col-sm-4">
                             <label>E-mail</label>
-                            <input value="{{ $participante->user->name }}" type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="E-mail" required>
+                            <input value="{{ $participante->user->email }}" type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" required>
                             @error('emailParticipante')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
@@ -297,10 +297,14 @@
                           </div>
                           <div class="col-sm-3">
                             <label>Função:</label>
-                            <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="funcaoParticipante" name="funcaoParticipante[]">
+                            <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
                               <option value="" disabled selected hidden>-- Função --</option>
                               @foreach($funcaoParticipantes as $funcaoParticipante)
-                                <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
+                                @if($funcaoParticipante->id === $participante->funcao_participante_id)
+                                  <option value="{{$funcaoParticipante->id}}" selected>{{$funcaoParticipante->nome}}</option>
+                                @else
+                                  <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
+                                @endif
                               @endforeach
 
                               @error('funcaoParticipante')
@@ -312,13 +316,18 @@
                           </div>
                         </div>
                         <h5>Dados do plano de trabalho</h5>
+                        @foreach ($arquivos as $arquivo)
+                        @if($arquivo->participanteId === $participante->id)
+                          <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">Plano de trabalho atual</a>
+                        @endif
+                        @endforeach
                         <div class="row">
                           <div class="col-sm-12">
                             <div id="planoTrabalho">
                               <div class="row">
                                 <div class="col-sm-4">
                                   <label>Titulo </label>
-                                  <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required>
+                                  <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome">
                                   
                                   @error('nomePlanoTrabalho')
                                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -384,7 +393,7 @@
 <script type="text/javascript">
   $(function() {
     var qtdLinhas = 1;
-    var qtdParticipantes = 2;
+    var qtdParticipantes = 1;
     // Coautores
     $('#addCoautor').click(function(e) {
       if (qtdParticipantes < 100) {
@@ -471,7 +480,7 @@
                 "</div>"+
                 "<div class="+"col-sm-4"+">"+
                     "<label>E-mail</label>"+
-                    "<input"+" type="+'email'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('emailParticipante') is-invalid @enderror'" + "name="+'emailParticipante[]'+" placeholder="+"E-mail"+" required>"+
+                    "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' required>" +
                     "@error('emailParticipante')" +
                     "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
                       "<strong>{{ $message }}</strong>" +
@@ -480,7 +489,7 @@
                 "</div>"+
                 "<div class='col-sm-3'>"+
                   "<label>Função:</label>"+
-                  "<select class="+"form-control @error('funcaoParticipante') is-invalid @enderror"+" id="+"funcaoParticipante"+"name="+"funcaoParticipante[]"+">"+
+                  "<select class=" + "form-control @error('funcaoParticipante') is-invalid @enderror" + "name='funcaoParticipante[]'" + "id='funcaoParticipante'> " +
                       "<option value='' disabled selected hidden> Função </option>"+
                       "@foreach($funcaoParticipantes as $funcaoParticipante)"+
                         "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+
@@ -512,8 +521,8 @@
                       "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
                     "</div>"+
                     "<div class='custom-file'>"+
-                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
-                        "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
+                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='anexoPlanoTrabalho'" + "aria-describedby='anexoPlanoTrabalho'" + "name='anexoPlanoTrabalho[]' required"+
+                        "aria-describedby='inputGroupFileAddon01'>"+
                       "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
                     "</div>"+
                   "</div>"+

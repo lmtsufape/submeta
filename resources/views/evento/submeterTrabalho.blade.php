@@ -274,7 +274,7 @@
                         </div>
                         <div class="col-sm-4">
                           <label>E-mail</label>
-                          <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="E-mail" required>
+                          <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" required>
                           @error('emailParticipante')
                           <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                             <strong>{{ $message }}</strong>
@@ -283,7 +283,7 @@
                         </div>
                         <div class="col-sm-3">
                           <label>Função:</label>
-                          <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="funcaoParticipante" name="funcaoParticipante[]">
+                          <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
                             <option value="" disabled selected hidden>-- Função --</option>
                             @foreach($funcaoParticipantes as $funcaoParticipante)
                               <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
@@ -456,7 +456,7 @@
                 "</div>"+
                 "<div class="+"col-sm-4"+">"+
                     "<label>E-mail</label>"+
-                    "<input"+" type="+'email'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('emailParticipante') is-invalid @enderror'" + "name="+'emailParticipante[]'+" placeholder="+"E-mail"+" required>"+
+                    "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' required>" +
                     "@error('emailParticipante')" +
                     "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
                       "<strong>{{ $message }}</strong>" +
@@ -465,7 +465,7 @@
                 "</div>"+
                 "<div class='col-sm-3'>"+
                   "<label>Função:</label>"+
-                  "<select class="+"form-control @error('funcaoParticipante') is-invalid @enderror"+" id="+"funcaoParticipante"+"name="+"funcaoParticipante[]"+">"+
+                  "<select class=" + "form-control @error('funcaoParticipante') is-invalid @enderror" + "name='funcaoParticipante[]'" + "id='funcaoParticipante'> " +
                       "<option value='' disabled selected hidden> Função </option>"+
                       "@foreach($funcaoParticipantes as $funcaoParticipante)"+
                         "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+

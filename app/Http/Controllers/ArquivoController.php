@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Arquivo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class ArquivoController extends Controller
@@ -81,5 +82,10 @@ class ArquivoController extends Controller
     public function destroy(Arquivo $arquivo)
     {
         //
+    }
+
+    public function baixarPlano($id) {
+        $arquivo = Arquivo::find($id);
+        return Storage::download($arquivo->nome);
     }
 }
