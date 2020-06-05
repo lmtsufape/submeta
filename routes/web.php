@@ -30,6 +30,8 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
 
 //######### Proponente  ########################################
 Route::get('/proponente/index', 'ProponenteController@index'                      )->name('proponente.index');
+Route::get('/proponente/cadastro', 'ProponenteController@create'                      )->name('proponente.create');
+Route::post('/proponente/cadastro', 'ProponenteController@store'                      )->name('proponente.store');
 
 //######### Participante ########################################
 Route::get('/participante/index', 'ParticipanteController@index'                  )->name('participante.index');

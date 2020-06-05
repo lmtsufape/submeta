@@ -61,14 +61,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'cpf' => ['required', 'cpf'],
             'celular' => ['required','string'],
-            'instituicao' => ['required','string','max:255'],
-            // 'especProfissional' => [],
-            'rua' => ['required','string','max:255'],
-            'numero' => ['nullable','string'],
-            'bairro' => ['required','string','max:255'],
-            'cidade' => ['required','string','max:255'],
-            'uf' => ['required','string'],
-            'cep' => ['required','string'],
+            'instituicao' => ['required','string','max:255'],            
         ]);
     }
 
@@ -81,18 +74,6 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        // endereço
-        $end = new Endereco();
-        $end->rua = $data['rua'];
-        $end->numero = $data['numero'];
-        $end->bairro = $data['bairro'];
-        $end->cidade = $data['cidade'];
-        $end->uf = $data['uf'];
-        $end->cep = $data['cep'];
-
-        $end->save();
-        // dd($end)
-
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -102,7 +83,6 @@ class RegisterController extends Controller
         $user->instituicao = $data['instituicao'];
         $user->tipo = 'participante';
 
-        $user->enderecoId = $end->id;
         $user->save();
 
         $participante = new Participante();

@@ -5,74 +5,16 @@
 <div class="container" >
     <div class="row" >
         <div class="col-sm-12">
-            <h2 style="margin-top: 100px; ">{{ __('Criar um usuário') }}</h2>
+            <h2 style="margin-top: 100px; ">{{ __('Criar perfil de proponente') }}</h2>
         </div>
         
     </div>  
     <br>
-    <form method="POST" action="{{ route('admin.user.store') }}">
+    <form method="POST" action="{{ route('proponente.store') }}">
         @csrf
         <div class="col-sm-11">
-            <div>
-                <div>
-                    <h4>Dados do usuário</h4>
-                </div>
-                <div>
-                    <label for="nome" class="col-form-label">{{ __('Nome') }}</label>
-                    <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value=""  autocomplete="nome" autofocus>
-
-                    @error('nome')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-
-                    <label for="email" class="col-form-label">{{ __('Email') }}</label>
-                    <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value=""   autocomplete="nome">
-
-                    @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-
-                    <label for="cpf" class="col-form-label">{{ __('CPF') }}</label>
-                    <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" value=""  autocomplete="nome">
-
-                    @error('cpf')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-
-                    <div>
-                        <label for="tipo" class="col-form-label">{{ __('Tipo') }}</label>
-                        <select name="tipo" id="tipo" onchange="mudar()">
-                            @if(auth()->user()->tipo == 'administrador')
-                                <option value="administrador">Administrador</option>
-                                <option value="administradorResponsavel">Administrador responsavel</option>
-                            @endif
-                            <option value="avaliador">Avaliador</option>
-                            <option value="proponente">Proponente</option>
-                            <option value="participante">Participante</option>
-                        </select>
-                    </div>
-
-                    <label for="passworld" class="col-form-label">{{ __('Senha') }}</label>
-                    <input id="passworld" type="text" class="form-control @error('senha') is-invalid @enderror" name="senha" value=""  autocomplete="nome">
-
-                    @error('senha')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-
-                    <label for="passworld" class="col-form-label">{{ __('Confirmar senha') }}</label>
-                    <input id="passworld" type="text" class="form-control @error('confirmar_senha') is-invalid @enderror" name="confirmar_senha" value=""  autocomplete="nome">
-                </div>
-            </div>
-            <br>
-            <div id="proponente" style="display: none;">
+           
+            <div id="proponente" >
                 <div>
                     <h4>Dados do proponente</h4>
                 </div>
@@ -170,6 +112,16 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
+
+                    <label for="passworld" class="col-form-label">{{ __('Senha') }}</label>
+                    <input id="passworld" type="text" class="form-control @error('senha') is-invalid @enderror" name="senha" value=""  autocomplete="nome">
+
+                    @error('senha')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+
                 </div>
 
             </div>
@@ -180,17 +132,3 @@
 
 @endsection
 
-@section('javascript')
-<script>
-    function mudar() {
-        var divProponente = document.getElementById('proponente');
-        var comboBoxTipo = document.getElementById('tipo');
-        
-        if (comboBoxTipo.value == "proponente") {
-            divProponente.style.display = "inline";
-        } else {
-            divProponente.style.display = "none";
-        }
-    }
-</script>
-@endsection

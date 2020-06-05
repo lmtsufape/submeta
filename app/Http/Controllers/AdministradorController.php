@@ -86,6 +86,7 @@ class AdministradorController extends Controller
                 'cargo' => 'required',
                 'titulacaoMaxima' => 'required',
                 'anoTitulacao' => 'required',
+                'areaFormacao' => 'required',
                 'area' => 'required',
                 'bolsistaProdutividade' => 'required',
                 'nivel' => 'required',
@@ -124,6 +125,7 @@ class AdministradorController extends Controller
                 $proponente->vinculo = $request->vinculo;
                 $proponente->titulacaoMaxima = $request->titulacaoMaxima;
                 $proponente->anoTitulacao = $request->anoTitulacao;
+                $proponente->areaFormacao = $request->areaFormacao;
                 $proponente->grandeArea = $request->area;
                 $proponente->area = "teste";
                 $proponente->subArea = "teste";
@@ -180,6 +182,7 @@ class AdministradorController extends Controller
                 'cargo' => 'required',
                 'titulacaoMaxima' => 'required',
                 'anoTitulacao' => 'required',
+                'areaFormacao' => 'required',
                 'grandeArea' => 'required',
                 'bolsistaProdutividade' => 'required',
                 'nivel' => 'required',
@@ -213,6 +216,7 @@ class AdministradorController extends Controller
                 $proponente->vinculo = $request->vinculo;
                 $proponente->titulacaoMaxima = $request->titulacaoMaxima;
                 $proponente->anoTitulacao = $request->anoTitulacao;
+                $proponente->areaFormacao = $request->areaFormacao;
                 $proponente->grandeArea = $request->grandeArea;
                 $proponente->area = "teste";
                 $proponente->subArea = "teste";

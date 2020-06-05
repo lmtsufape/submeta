@@ -121,6 +121,9 @@
                         <label class="col-form-label">{{ __('Ano Titulação') }}</label>
                         <input value="{{$proponente->anoTitulacao}}" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
 
+                        <label class="col-form-label">{{ __('Area Formação') }}</label>
+                        <input value="{{$proponente->areaFormacao}}" id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" autocomplete="areaFormacao">
+
                         <label class="col-form-label">{{ __('Área') }}</label>
                         <input value="{{$proponente->grandeArea}}" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
 
@@ -149,6 +152,9 @@
 
                         <label class="col-form-label">{{ __('Ano Titulação') }}</label>
                         <input value="" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
+
+                        <label class="col-form-label">{{ __('Area Formação') }}</label>
+                        <input value="{{$proponente->areaFormacao}}" id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" autocomplete="areaFormacao">
 
                         <label class="col-form-label">{{ __('Área') }}</label>
                         <input value="" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
