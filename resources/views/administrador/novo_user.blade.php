@@ -123,6 +123,14 @@
                     </span>
                     @enderror
 
+                    <label for="areaFormacao" class="col-form-label">{{ __('Area de Formação') }}</label>
+                    <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="" autocomplete="nome">
+
+                    @error('areaFormacao')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                     
                     <div>
                         <label for="area" class="col-form-label">{{ __('Área') }}</label>

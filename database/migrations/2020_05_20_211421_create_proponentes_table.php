@@ -22,6 +22,7 @@ class CreateProponentesTable extends Migration
             $table->string('vinculo');
             $table->string('titulacaoMaxima');
             $table->string('anoTitulacao');
+            $table->string('areaFormacao');
             $table->string('grandeArea');
             $table->string('area');
             $table->string('subArea');
