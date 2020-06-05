@@ -24,6 +24,7 @@
     <thead>
       <tr>   
         <th scope="col">Nome do Projeto</th>
+        <th scope="col">Área</th>
         <th scope="col">Proponente</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
@@ -32,6 +33,7 @@
       @foreach ($trabalhos as $trabalho)
         <tr>
           <td>{{ $trabalho->titulo}}</td>
+          <td>{{ $trabalho->area->nome}}</td>
           <td>{{ $trabalho->proponente->user->name }}</td>
           <td style="text-align:center">
               <button type="button" class="btn btn-primary" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModalCenter{{ $trabalho->id }}">
@@ -57,7 +59,7 @@
                           <label for="exampleFormControlSelect2">Example multiple select</label>
                           <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2">              
                             @foreach ($trabalho->aval as $avaliador)                
-                              <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} </option>
+                              <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{ $avaliador->area->nome }}) </option>
                             @endforeach     
                           </select>
                           <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
@@ -91,17 +93,23 @@
     <thead>
       <tr>   
         <th scope="col">Nome do Usuário</th>
+        <th scope="col">E-mail</th>
         <th scope="col">Status</th>
-        <th scope="col">Total</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
     </thead>
     <tbody>
       @foreach ($avaliadores as $avaliador)
+        @php $contador = 0;  @endphp
+        @foreach($avaliador->trabalhos as $trabalho)
+          @if($trabalho->pivot->status == true)
+            @php $contador++;  @endphp
+          @endif
+        @endforeach
         <tr>
           <td>{{ $avaliador->user->name }}</td>
-          <td>{{ $avaliador->trabalhos->count() }} / {{ $avaliador->trabalhos->count() }}</td>
-          <td>{{ $avaliador->trabalhos->count() }}</td>
+          <td>{{ $avaliador->user->email }}</td>
+          <td>{{ $contador }} / {{ $avaliador->trabalhos->count() }}</td>
           <td style="text-align:center"> ...</td>
         </tr>
       @endforeach      

@@ -16,6 +16,7 @@ class AvaliadorSeeder extends Seeder
 
       DB::table('avaliadors')->insert([
         'user_id' => $user_id[0],
+        'area_id' => 1,
       ]);
       
       $aval = App\Avaliador::find(1);
@@ -35,6 +36,7 @@ class AvaliadorSeeder extends Seeder
 
       DB::table('avaliadors')->insert([
         'user_id' => $user_id[0],
+        'area_id' => 1,
       ]);
       $aval = App\Avaliador::find(2);
       $evento = App\Evento::find(1);
@@ -49,6 +51,7 @@ class AvaliadorSeeder extends Seeder
 
       DB::table('avaliadors')->insert([
         'user_id' => $user_id[0],
+        'area_id' => 1,
       ]);
 
       // $aval = App\Avaliador::find(2);
@@ -61,6 +64,7 @@ class AvaliadorSeeder extends Seeder
 
       DB::table('avaliadors')->insert([
         'user_id' => $user_id[0],
+        'area_id' => 1,
       ]);
     }
 }

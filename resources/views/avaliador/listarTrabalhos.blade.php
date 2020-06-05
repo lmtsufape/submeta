@@ -7,7 +7,7 @@
   <div class="container" >
     <div class="row" >
       <div class="col-sm-10">
-        <h3>Trabalhos</h3> 
+        <h3>Trabalhos do Edital: {{ $evento->nome }}</h3> 
       </div>
     </div>
   </div>
@@ -34,7 +34,7 @@
           </td>
           <td>
             <div class="row">
-              <form action="{{ route('avaliador.parecer') }}" method="POST">
+              <form action="{{ route('avaliador.parecer', ['evento' => $evento]) }}" method="POST">
                 @csrf
                 <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
                 <button type="submit" class="btn btn-primary mr-2 ml-2" >
