@@ -22,6 +22,7 @@ class CreateArquivosTable extends Migration
             $table->date('data')->nullable();
 
             $table->integer('trabalhoId');
+            $table->integer('participanteId');
         });
     }
 

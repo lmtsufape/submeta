@@ -84,5 +84,41 @@ class UsuarioSeeder extends Seeder
           'email_verified_at'=>'2020-01-01'
         ]);
 
+        DB::table('users')->insert([
+
+          'name'=>'Avaliador1',
+          'email'=>'aval1@ufrpe.br',
+          'password'=>Hash::make('12345678'),
+          'tipo'=>'avaliador',
+          'email_verified_at'=>'2020-01-01'
+        ]);
+
+        DB::table('users')->insert([
+
+          'name'=>'Avaliador2',
+          'email'=>'aval2@ufrpe.br',
+          'password'=>Hash::make('12345678'),
+          'tipo'=>'avaliador',
+          'email_verified_at'=>'2020-01-01'
+        ]);
+
+        DB::table('users')->insert([
+
+          'name'=>'Avaliador3',
+          'email'=>'aval3@ufrpe.br',
+          'password'=>Hash::make('12345678'),
+          'tipo'=>'avaliador',
+          'email_verified_at'=>'2020-01-01'
+        ]);
+
+        DB::table('users')->insert([
+
+          'name'=>'Avaliador4',
+          'email'=>'aval4@ufrpe.br',
+          'password'=>Hash::make('12345678'),
+          'tipo'=>'avaliador',
+          'email_verified_at'=>'2020-01-01'
+        ]);
+
     }
 }

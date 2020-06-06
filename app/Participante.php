@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Participante extends Model
 {
-	protected $fillable = ['name', 'user_id', 'trabalho_id'];
+	protected $fillable = ['name', 'user_id', 'trabalho_id', 'participante_id'];
 
     public function user(){
         return $this->belongsTo('App\User');

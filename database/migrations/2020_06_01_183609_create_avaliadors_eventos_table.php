@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAvaliadorsTrabalhosTable extends Migration
+class CreateAvaliadorsEventosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,15 @@ class CreateAvaliadorsTrabalhosTable extends Migration
      */
     public function up()
     {
-        Schema::create('avaliador_trabalho', function (Blueprint $table) {
+        Schema::create('avaliador_evento', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
 
-            $table->text('parecer')->nullable();
-            $table->string('AnexoParecer')->nullable();
-            $table->boolean('status')->nullable();
-            $table->string('recomendacao')->nullable();
-
-            $table->unsignedBigInteger('trabalho_id');
             $table->unsignedBigInteger('avaliador_id');
+            $table->unsignedBigInteger('evento_id');
 
-            $table->foreign('trabalho_id')->references('id')->on('trabalhos');
             $table->foreign('avaliador_id')->references('id')->on('avaliadors');
+            $table->foreign('evento_id')->references('id')->on('eventos');
         });
     }
 
@@ -37,6 +32,6 @@ class CreateAvaliadorsTrabalhosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avaliador_trabalho');
+        Schema::dropIfExists('avaliador_evento');
     }
 }

@@ -76,8 +76,11 @@ class TrabalhoController extends Controller
       $mytime = $mytime->toDateString();
       $evento = Evento::find($request->editalId);
       $coordenador = CoordenadorComissao::find($evento->coordenadorId);
+      //Relaciona o projeto criado com o proponente que criou o projeto
+      $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+      //$trabalho->proponentes()->save($proponente);  
       //dd($coordenador->id);
-
+      $trabalho = "trabalho";
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
             return redirect()->route('home');
@@ -88,59 +91,64 @@ class TrabalhoController extends Controller
       if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM'){
 
         $validatedData = $request->validate([
-          'editalId'                => ['required', 'integer'],
+          'editalId'                => ['required', 'string'],
           'nomeProjeto'             => ['required', 'string'],
-          'grandeAreaId'            => ['required', 'integer'],
-          'areaId'                  => ['required', 'integer'],
-          'subAreaId'               => ['required', 'integer'],
-          'pontuacaoPlanilha'       => ['required', 'integer'],
+          'grandeArea'              => ['required', 'string'],
+          'area'                    => ['required', 'string'],
+          'subArea'                 => ['required', 'string'],
+          'pontuacaoPlanilha'       => ['required', 'string'],
           'linkGrupo'               => ['required', 'string'],
           'linkLattesEstudante'     => ['required', 'string'],
           'nomeParticipante.*'      => ['required', 'string'],
-          'emailParticipante.*'     => ['string'],
-          'nomePlanoTrabalho.*'     => ['string'],
+          'emailParticipante.*'     => ['required', 'string'],
+          'funcaoParticipante.*'    => ['required', 'string'],
+          'nomePlanoTrabalho.*'     => ['required', 'string'],
           'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           //'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLatterCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
+        //dd($request->all());
 
         $trabalho = Trabalho::create([
-          'titulo'                      => $request->nomeProjeto,
-          'coordenador_id'              => $coordenador->id,
-          'grande_area_id'              => $request->grandeAreaId,
-          'area_id'                     => $request->areaId,
-          'sub_area_id'                 => $request->subAreaId,               
-          'pontuacaoPlanilha'           => $request->pontuacaoPlanilha,
-          'linkGrupoPesquisa'           => $request->linkGrupo,
-          'linkLattesEstudante'         => $request->linkLattesEstudante,
-          'data'                        => $mytime,
-          'evento_id'                   => $request->editalId,
-          'avaliado'                    => 0,
+          'titulo'                        => $request->nomeProjeto,
+          'coordenador_id'                => $coordenador->id,
+          'grande_area_id'                => $request->grandeArea,
+          'area_id'                       => $request->area,
+          'sub_area_id'                   => $request->subArea,               
+          'pontuacaoPlanilha'             => $request->pontuacaoPlanilha,
+          'linkGrupoPesquisa'             => $request->linkGrupo,
+          'linkLattesEstudante'           => $request->linkLattesEstudante,
+          'data'                          => $mytime,
+          'evento_id'                     => $request->editalId,
+          'avaliado'                      => 0,
+          'proponente_id'                 => $proponente->id,
           //Anexos
-          'anexoDecisaoCONSU'           => $request->anexoCONSU,
-          'anexoProjeto'                => $request->anexoProjeto,
-          'anexoAutorizacaoComiteEtica' => $request->anexoComiteEtica,
-          'anexoLattesCoordenador'      => $request->anexoLatterCoordenador,
-          'anexoPlanilhaPontuacao'      => $request->anexoPlanilha,
+          'anexoDecisaoCONSU'             => $request->anexoCONSU,
+          'anexoProjeto'                  => $request->anexoProjeto,
+          'anexoAutorizacaoComiteEtica'   => $request->anexoComiteEtica,
+          'justificativaAutorizacaoEtica' => $request->justificativaAutorizacaoEtica,
+          'anexoLattesCoordenador'        => $request->anexoLatterCoordenador,
+          'anexoPlanilhaPontuacao'        => $request->anexoPlanilha,
         ]);
-        //dd($request->all());
+        //dd($trabalho);
       }else{
         //Caso em que o anexo da Decisão do CONSU não necessário
         $validatedData = $request->validate([
-          'editalId'                => ['required', 'integer'],
+          'editalId'                => ['required', 'string'],
           'nomeProjeto'             => ['required', 'string',],
-          'grandeAreaId'            => ['required', 'integer'],
-          'areaId'                  => ['required', 'integer'],
-          'subAreaId'               => ['required', 'integer'],
-          'pontuacaoPlanilha'       => ['required', 'integer'],
+          'grandeArea'              => ['required', 'string'],
+          'area'                    => ['required', 'string'],
+          'subArea'                 => ['required', 'string'],
+          'pontuacaoPlanilha'       => ['required', 'string'],
           'linkGrupo'               => ['required', 'string'],
           'linkLattesEstudante'     => ['required', 'string'],
           'nomeCoordenador'         => ['required', 'string'],
           'nomeParticipante.*'      => ['required', 'string'],
-          'emailParticipante.*'     => ['string'],
-          'nomePlanoTrabalho.*'     => ['string'],
+          'emailParticipante.*'     => ['required', 'string'],
+          'funcaoParticipante.*'    => ['required', 'string'],
+          'nomePlanoTrabalho.*'     => ['required', 'string'],
           'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLatterCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
@@ -148,30 +156,28 @@ class TrabalhoController extends Controller
         ]);
 
         $trabalho = Trabalho::create([
-          'titulo'                      => $request->nomeProjeto,
-          'coordenador_id'              => $coordenador->id,
-          'grande_area_id'              => $request->grandeAreaId,
-          'area_id'                     => $request->areaId,
-          'sub_area_id'                 => $request->subAreaId,        
-          'coordenador'                 => $request->nomeCoordenador,       
-          'pontuacaoPlanilha'           => $request->pontuacaoPlanilha,
-          'linkGrupoPesquisa'           => $request->linkGrupo,
-          'linkLattesEstudante'         => $request->linkLattesEstudante,
-          'data'                        => $mytime,
-          'evento_id'                   => $request->editalId,
-          'avaliado'                    => 0,
+          'titulo'                        => $request->nomeProjeto,
+          'coordenador_id'                => $coordenador->id,
+          'grande_area_id'                => $request->grandeArea,
+          'area_id'                       => $request->area,
+          'sub_area_id'                   => $request->subArea,        
+          'coordenador'                   => $request->nomeCoordenador,       
+          'pontuacaoPlanilha'             => $request->pontuacaoPlanilha,
+          'linkGrupoPesquisa'             => $request->linkGrupo,
+          'linkLattesEstudante'           => $request->linkLattesEstudante,
+          'data'                          => $mytime,
+          'evento_id'                     => $request->editalId,
+          'avaliado'                      => 0,
+          'proponente_id'                 => $proponente->id,
           //Anexos
-          'anexoProjeto'                => $request->anexoProjeto,
-          'anexoAutorizacaoComiteEtica' => $request->anexoComiteEtica,
-          'anexoLattesCoordenador'      => $request->anexoLatterCoordenador,
-          'anexoPlanilhaPontuacao'      => $request->anexoPlanilha,
+          'anexoProjeto'                  => $request->anexoProjeto,
+          'anexoAutorizacaoComiteEtica'   => $request->anexoComiteEtica,
+          'justificativaAutorizacaoEtica' => $request->justificativaAutorizacaoEtica,
+          'anexoLattesCoordenador'        => $request->anexoLatterCoordenador,
+          'anexoPlanilhaPontuacao'        => $request->anexoPlanilha,
         ]);
 
       }
-
-      //Relaciona o projeto criado com o proponente que criou o projeto
-      $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-      $trabalho->proponentes()->save($proponente);  
 
       //Envia email com senha temp para cada participante do projeto
       if($request->emailParticipante != null){
@@ -179,7 +185,7 @@ class TrabalhoController extends Controller
         foreach ($request->emailParticipante as $key => $value) {
 
           $userParticipante = User::where('email', $value)->first();
-
+          $participante = new Participante();
           if($userParticipante == null){
 
             $passwordTemporario = Str::random(8);
@@ -190,65 +196,46 @@ class TrabalhoController extends Controller
               'usuarioTemp' => true,
               'name' => $request->nomeParticipante[$key],
               'tipo' => 'participante',
-              'funcao_participante_id' => $request->funcaoParticipante[$key],
             ]);
 
-            $participante = $usuario->participantes()->create([
-              'trabalho_id' => $trabalho->id,
-            ]);
+            $participante->user_id = $usuario->id;
+            $participante->trabalho_id = $trabalho->id;
+            $participante->funcao_participante_id = $request->funcaoParticipante[$key];
+            $participante->save();
 
             $participante->trabalhos()->save($trabalho);
           }else{
-
             $subject = "Participante de Projeto";            
             $email = $value;
             Mail::to($email)
                   ->send(new SubmissaoTrabalho($userParticipante, $subject));
           }
-        }
-      }
-      
-      $anexos = array( 
-                      $request->anexoCONSU, 
-                      $request->anexoProjeto, 
-                      $request->anexoComiteEtica,
-                      $request->anexoLatterCoordenador,
-                      $request->anexoPlanilha,
-                    );
 
-      foreach ($anexos as $key => $value) {
-
-        $file = $value;
-        $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
-        $nome =  "1.pdf";
-        Storage::putFileAs($path, $file, $nome);
-
-        $arquivo = Arquivo::create([
-          'nome'  => $path . $nome,
-          'trabalhoId'  => $trabalho->id,
-          'data' => $mytime,
-          'versaoFinal' => true,
-        ]);
-      
-      }
-      
-      if($request->anexoPlanoTrabalho != null){        
-        foreach ($request->anexoPlanoTrabalho as $key => $value) {
-
-          $file = $value;
+          $usuario = User::where('email', $value)->first();
+          $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $trabalho->id]])->first();
           $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
           $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+          $file = $request->anexoPlanoTrabalho[$key];
           Storage::putFileAs($path, $file, $nome);
 
-          $arquivo = Arquivo::create([
-            'nome'  => $path . $nome,
-            'trabalhoId'  => $trabalho->id,
-            'data' => $mytime,
-            'versaoFinal' => true,
-          ]);
-        
+          $arquivo = new Arquivo();
+          $arquivo->nome = $path . $nome;
+          $arquivo->trabalhoId = $trabalho->id;
+          $arquivo->data = $mytime;
+          $arquivo->participanteId = $participante->id;
+          $arquivo->versaoFinal = true;
+          $arquivo->save();
         }
       }
+      
+      $pasta = 'trabalhos/' . $request->editalId . '/' . $trabalho->id;
+
+      $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoCONSU,  "CONSU.pdf");
+      $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");
+      $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
+      $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLatterCoordenador,  "Latter_Coordenador.pdf");
+      $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha,  "Planilha.pdf");
+      $trabalho->update();
 
       //dd($trabalho);
 
@@ -277,9 +264,25 @@ class TrabalhoController extends Controller
      * @param  \App\Trabalho  $trabalho
      * @return \Illuminate\Http\Response
      */
-    public function edit(Trabalho $trabalho)
+    public function edit($id)
     {
-        //
+      $projeto = Trabalho::find($id);
+      $edital = Evento::find($projeto->evento_id);
+      $grandeAreas = GrandeArea::all();
+      $areas = Area::all();
+      $subareas = Subarea::all();
+      $funcaoParticipantes = FuncaoParticipantes::all();
+      $participantes = Participante::where('trabalho_id', $id)->get();
+      $arquivos = Arquivo::where('trabalhoId', $id)->get();
+
+      return view('projeto.editar')->with(['projeto' => $projeto,
+                                           'grandeAreas' => $grandeAreas,
+                                           'areas' => $areas,
+                                           'subAreas' => $subareas,
+                                           'edital' => $edital,
+                                           'funcaoParticipantes' => $funcaoParticipantes,
+                                           'participantes' => $participantes,
+                                           'arquivos' => $arquivos,]);
     }
 
     /**
@@ -289,9 +292,187 @@ class TrabalhoController extends Controller
      * @param  \App\Trabalho  $trabalho
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Trabalho $trabalho)
+    public function update(Request $request, $id)
     {
-        //
+      $mytime = Carbon::now('America/Recife');
+      $mytime = $mytime->toDateString();
+      $evento = Evento::find($request->editalId);
+      $coordenador = CoordenadorComissao::find($evento->coordenadorId);
+      //Relaciona o projeto criado com o proponente que criou o projeto
+      $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+      //$trabalho->proponentes()->save($proponente);  
+      //dd($coordenador->id);
+      $trabalho = "trabalho";
+      if($evento->inicioSubmissao > $mytime){
+        if($mytime >= $evento->fimSubmissao){
+            return redirect()->route('home');
+        }
+      }
+
+      //O anexo de Decisão do CONSU dependo do tipo de edital
+      if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM'){
+
+        $validatedData = $request->validate([
+          'editalId'                => ['required', 'string'],
+          'nomeProjeto'             => ['required', 'string'],
+          'grandeArea'              => ['required', 'string'],
+          'area'                    => ['required', 'string'],
+          'subArea'                 => ['required', 'string'],
+          'pontuacaoPlanilha'       => ['required', 'string'],
+          'linkGrupo'               => ['required', 'string'],
+          'linkLattesEstudante'     => ['required', 'string'],
+          'nomeParticipante.*'      => ['required', 'string'],
+          'emailParticipante.*'     => ['required', 'string'],
+          'funcaoParticipante.*'    => ['required', 'string'],
+        ]);
+
+      }else{
+        //Caso em que o anexo da Decisão do CONSU não necessário
+        $validatedData = $request->validate([
+          'editalId'                => ['required', 'string'],
+          'nomeProjeto'             => ['required', 'string',],
+          'grandeArea'              => ['required', 'string'],
+          'area'                    => ['required', 'string'],
+          'subArea'                 => ['required', 'string'],
+          'pontuacaoPlanilha'       => ['required', 'string'],
+          'linkGrupo'               => ['required', 'string'],
+          'linkLattesEstudante'     => ['required', 'string'],
+          'nomeCoordenador'         => ['required', 'string'],
+          'nomeParticipante.*'      => ['required', 'string'],
+          'emailParticipante.*'     => ['required', 'string'],
+          'funcaoParticipante.*'    => ['required', 'string'],
+        ]);
+      }
+
+      $trabalho = Trabalho::find($id);
+      $trabalho->titulo = $request->nomeProjeto;
+      $trabalho->coordenador_id = $coordenador->id;
+      $trabalho->grande_area_id = $request->grandeArea;
+      $trabalho->area_id = $request->area;
+      $trabalho->sub_area_id = $request->subArea;           
+      $trabalho->pontuacaoPlanilha = $request->pontuacaoPlanilha;
+      $trabalho->linkGrupoPesquisa = $request->linkGrupo;
+      $trabalho->linkLattesEstudante = $request->linkLattesEstudante;
+      $trabalho->data = $mytime;
+      $trabalho->evento_id = $request->editalId;
+      $trabalho->proponente_id = $proponente->id;
+        
+      $pasta = 'trabalhos/' . $request->editalId . '/' . $trabalho->id;
+
+      if (!(is_null($request->anexoCONSU))) {
+        Storage::delete($trabalho->anexoDecisaoCONSU);
+        $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoCONSU,  "CONSU.pdf");
+      }
+
+      if (!(is_null($request->anexoProjeto))) {
+        Storage::delete($trabalho->anexoProjeto);
+        $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");
+      }
+      
+      if (!(is_null($request->anexoComiteEtica))) {
+        Storage::delete($trabalho->anexoComiteEtica);
+        $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
+      }
+      
+      if (!(is_null($request->anexoLatterCoordenador))) {
+        Storage::delete($trabalho->anexoLattesCoordenador);
+        $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLatterCoordenador,  "Latter_Coordenador.pdf");
+      }
+      
+      if (!(is_null($request->anexoPlanilha))) {
+        Storage::delete($trabalho->anexoLattesCoordenador);
+        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha,  "Planilha.pdf");
+      }
+      //atualizando projeto
+      $trabalho->update();
+
+      // criando novos participantes que podem ter sido adicionados
+      $participantes = Participante::where('trabalho_id', $trabalho->id)->get();
+      $emailParticipantes = [];
+      foreach ($participantes as $participante) {
+        array_push($emailParticipantes, $participante->user->email);
+      }
+
+      foreach ($request->emailParticipante as $key => $value) {
+        // criando novos participantes que podem ter sido adicionados
+        if (!(in_array($request->emailParticipante[$key], $emailParticipantes, false))) {
+          $passwordTemporario = Str::random(8);
+          Mail::to($value)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, '  ', 'Participante', $evento->nome, $passwordTemporario));
+          $usuario = User::create([
+            'email' => $value,
+            'password' => bcrypt($passwordTemporario),
+            'usuarioTemp' => true,
+            'name' => $request->nomeParticipante[$key],
+            'tipo' => 'participante',
+          ]);
+
+          $participante = new Participante();
+          $participante->user_id = $usuario->id;
+          $participante->trabalho_id = $trabalho->id;
+          $participante->funcao_participante_id = $request->funcaoParticipante[$key];
+          $participante->save();
+
+          $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+          $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+          $file = $request->anexoPlanoTrabalho[$key];
+          Storage::putFileAs($path, $file, $nome);
+
+          $arquivo = new Arquivo();
+          $arquivo->nome = $path . $nome;
+          $arquivo->trabalhoId = $trabalho->id;
+          $arquivo->data = $mytime;
+          $arquivo->participanteId = $participante->id;
+          $arquivo->versaoFinal = true;
+          $arquivo->save();
+        }
+
+        //atualizando os participantes que já estão no projeto e planos de trabalho se enviados
+        if (in_array($request->emailParticipante[$key], $emailParticipantes, false)) {
+          $user = User::where('email', $request->emailParticipante[$key])->first();
+          $participante::where([['user_id', '=', $user->id], ['trabalho_id', '=', $trabalho->id]]);
+
+          $user->name = $request->nomeParticipante[$key];
+          $user->update();
+
+          $participante->funcao_participante_id = $request->funcaoParticipante[$key];
+          $participante->update();
+
+          // //atualizando planos de trabalho incompleto
+          // dd($request);
+          // if (!(is_null($request->anexoPlanoTrabalho[1]))) {
+          //   $arquivo = Arquivo::where('participanteId', $participante->id)->first();
+          //   Storage::delete($arquivo->nome);
+          //   $arquivo->delete();
+
+          //   $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+          //   $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+          //   $file = $request->anexoPlanoTrabalho[$key];
+          //   Storage::putFileAs($path, $file, $nome);
+
+          //   $arquivo = new Arquivo();
+          //   $arquivo->nome = $path . $nome;
+          //   $arquivo->trabalhoId = $trabalho->id;
+          //   $arquivo->data = $mytime;
+          //   $arquivo->participanteId = $participante->id;
+          //   $arquivo->versaoFinal = true;
+          //   $arquivo->save();
+          // }
+        }
+      }
+      
+      // Atualizando possiveis usuários removidos
+      $participantes = Participante::where('trabalho_id', $trabalho->id)->get();
+
+      foreach ($participantes as $participante) {
+        if (!(in_array($participante->user->email, $request->emailParticipante, false))) {
+          $arquivo = Arquivo::where('participanteId', $participante->id);
+          Storage::delete($arquivo->nome);
+          $arquivo->delete();
+          $participante->delete();
+        }
+      }
+
+      return redirect()->route('evento.visualizar',['id'=>$request->editalId]);
     }
 
     /**
@@ -437,5 +618,35 @@ class TrabalhoController extends Controller
         return view('coordenadorComissao.detalhesEdital', ['evento'=> $trabalho->evento ]);
     }
     
+    public function projetosDoEdital($id) {
+      $edital = Evento::find($id);
+      $projetos = Trabalho::where('evento_id', '=', $id)->get();
 
+      return view('projeto.index')->with(['edital' => $edital, 'projetos' => $projetos]);
+    }
+
+    public function baixarAnexoProjeto($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoProjeto);
+    }
+
+    public function baixarAnexoConsu($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoDecisaoCONSU);
+    }
+
+    public function baixarAnexoComite($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoAutorizacaoComiteEtica);
+    }
+
+    public function baixarAnexoLattes($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoLattesCoordenador);
+    }
+
+    public function baixarAnexoPlanilha($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->anexoPlanilhaPontuacao);
+    }
 }

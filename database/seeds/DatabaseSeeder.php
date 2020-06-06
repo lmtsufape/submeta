@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(FuncaoParticipanteSeeder::class);
         $this->call(CoordenadorComissaoSeeder::class);
         $this->call(ParticipanteSeeder::class);
+        $this->call(NaturezaSeeder::class);
+        $this->call(RecomendacaoSeeder::class);
         
         // $this->call(UsersTableSeeder::class);
 
@@ -74,6 +76,7 @@ class DatabaseSeeder extends Seeder
            O número máximo de autores por trabalho será seis autores;
            Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
           'tipo'=>'PIBIC',
+          'natureza_id'=>'1',
           'inicioSubmissao'=>'2020-03-30',
           'fimSubmissao'=>'2020-09-20',
           'inicioRevisao'=>'2020-04-21',
@@ -82,6 +85,7 @@ class DatabaseSeeder extends Seeder
           'numMaxTrabalhos' => 2,
           'numMaxCoautores' => 5,
           'coordenadorId'=>1,
+          'created_at'=>'2020-03-30',
           'criador_id'=>1,
         ]);
 
@@ -92,6 +96,7 @@ class DatabaseSeeder extends Seeder
            O número máximo de autores por trabalho será seis autores;
            Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
           'tipo'=>'PIBIC',
+          'natureza_id'=>'2',
           'inicioSubmissao'=>'2020-03-30',
           'fimSubmissao'=>'2020-09-20',
           'inicioRevisao'=>'2020-04-21',
@@ -110,6 +115,7 @@ class DatabaseSeeder extends Seeder
            O número máximo de autores por trabalho será seis autores;
            Os trabalhos deverão ser submetidos na forma de resumo simples com no máximo uma (01) página, no formato PDF;',
           'tipo'=>'PIBIC',
+          'natureza_id'=>'3',
           'inicioSubmissao'=>'2020-03-30',
           'fimSubmissao'=>'2020-09-20',
           'inicioRevisao'=>'2020-04-21',
@@ -136,5 +142,6 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call(TrabalhoSeeder::class);
+        $this->call(AvaliadorSeeder::class);
     }
 }

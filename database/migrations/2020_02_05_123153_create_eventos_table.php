@@ -18,7 +18,8 @@ class CreateEventosTable extends Migration
             $table->timestamps();
             $table->string('nome')->nullable();            
             $table->string('descricao')->nullable();
-            $table->string('tipo')->nullable();            
+            $table->string('tipo')->nullable(); 
+            $table->unsignedBigInteger('natureza_id')->nullable();           
             $table->date('inicioSubmissao')->nullable();
             $table->date('fimSubmissao')->nullable();
             $table->date('inicioRevisao')->nullable();
@@ -31,6 +32,7 @@ class CreateEventosTable extends Migration
             $table->integer('coordenadorId')->nullable();
             $table->string('pdfEdital')->nullable();
             $table->string('modeloDocumento')->nullable();
+            
         });
     }
 

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Arquivo;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Natureza;
 
-class ArquivoController extends Controller
+class NaturezaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,16 +35,24 @@ class ArquivoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nome' => 'required'
+        ]);
+
+        $natureza = new Natureza();
+        $natureza->nome = $request->nome;
+        $natureza->save();
+
+        return redirect( route('admin.naturezas') )->with(['mensagem' => 'Natureza salva com sucesso']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Arquivo  $arquivo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Arquivo $arquivo)
+    public function show($id)
     {
         //
     }
@@ -53,10 +60,10 @@ class ArquivoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Arquivo  $arquivo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Arquivo $arquivo)
+    public function edit($id)
     {
         //
     }
@@ -65,27 +72,33 @@ class ArquivoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Arquivo  $arquivo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Arquivo $arquivo)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'nomeEditavel' => 'required',
+        ]);
+
+        $natureza = Natureza::find($id);
+        $natureza->nome = $request->nomeEditavel;
+        $natureza->update();
+
+        return redirect( route('admin.naturezas') )->with(['mensagem' => "Natureza editada com sucesso"]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Arquivo  $arquivo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Arquivo $arquivo)
+    public function destroy($id)
     {
-        //
-    }
+        $natureza = Natureza::find($id);
+        $natureza->delete();
 
-    public function baixarPlano($id) {
-        $arquivo = Arquivo::find($id);
-        return Storage::download($arquivo->nome);
+        return redirect( route('admin.naturezas') )->with(['mensagem' => "Natureza deletada com sucesso"]);
     }
 }
