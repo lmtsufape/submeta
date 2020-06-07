@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 use App\User;
 use App\Participante;
-use App\Endereco;
+use App\Proponente;
+use App\GrandeArea;
 
 class RegisterController extends Controller
 {
@@ -61,7 +62,19 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'cpf' => ['required', 'cpf'],
             'celular' => ['required','string'],
-            'instituicao' => ['required','string','max:255'],            
+            'instituicao' => ['required','string','max:255'],     
+            'cargo' => ['required'],
+            'vinculo' => ['required'],
+
+            'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
+            'anoTitulacao'=> ['required_with:titulacaoMaxima,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
+            'areaFormacao'=> ['required_with:titulacaoMaxima,anoTitulacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
+            'grandeArea'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,area,subarea,bolsistaProdutividade,linkLattes'],
+            'area'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,subarea,bolsistaProdutividade,linkLattes'],
+            'subarea'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,bolsistaProdutividade,linkLattes'],
+            'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,subarea,linkLattes'],            
+            'linkLattes'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade'],
+
         ]);
     }
 
@@ -73,7 +86,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
+        //dd($data);
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -81,13 +94,40 @@ class RegisterController extends Controller
         $user->cpf = $data['cpf'];
         $user->celular = $data['celular'];
         $user->instituicao = $data['instituicao'];
-        $user->tipo = 'participante';
 
-        $user->save();
+        if($data['cargo'] === "Estudante" && $data['vinculo'] !== "Pós-doutorando"){
+            $user->tipo = 'participante';
+            $user->save();
 
-        $participante = new Participante();
-        $user->participantes()->save($participante);
+            $participante = new Participante();
+            $user->participantes()->save($participante);
+        }else{
+            $user->tipo = 'proponente';
+            $user->save();
+
+            $proponente = new Proponente();
+            $proponente->SIAPE = $data['SIAPE'];
+            $proponente->cargo = $data['cargo'];
+            $proponente->vinculo = $data['vinculo'];
+            $proponente->titulacaoMaxima = $data['titulacaoMaxima'];
+            $proponente->anoTitulacao = $data['anoTitulacao'];
+            $proponente->areaFormacao = $data['areaFormacao'];
+            $proponente->grandeArea = $data['grandeArea'];
+            $proponente->area = $data['area'];
+            $proponente->subArea = $data['subarea'];
+            $proponente->bolsistaProdutividade = $data['bolsistaProdutividade'];
+            $proponente->nivel = $data['nivel'];
+            $proponente->linkLattes = $data['linkLattes'];            
+            
+            $user->proponentes()->save($proponente);
+        }
+        
 
         return $user;
+    }
+
+    public function showRegistrationForm(){        
+        $grandesAreas = GrandeArea::orderBy('nome')->get();
+        return view('auth.register')->with(['grandeAreas' => $grandesAreas]);
     }
 }
