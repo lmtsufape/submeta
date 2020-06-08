@@ -24,7 +24,7 @@ color dark: #071b1eff
     height: 22px;
     width: 10px;
     /* background-color: blue; */
-    background-image: url('/img/icons/ellipsis-v-solid.svg');
+    /* background-image: url('/img/icons/ellipsis-v-solid.svg'); */
     background-position: center;
     background-repeat: no-repeat;
     /* background-size: cover; */
@@ -33,10 +33,10 @@ color dark: #071b1eff
 #options::after{
     display:none;
 }
-#options:hover{
+/* #options:hover{
     background-image: url('/img/icons/ellipsis-v-solid-hover.svg');
     transition: 0.2s;
-}
+} */
 .dropdown-options{
     float:right;
     margin-right:-5px;
