@@ -43,7 +43,7 @@
               @if(auth()->user()->id == $evento->criador_id)              
               <div class="btn-group dropright dropdown-options">
                   <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
+                       <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                   </a>
                   <div class="dropdown-menu">
                       <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item text-center">
@@ -106,7 +106,7 @@
             <td>
               <div class="btn-group dropright dropdown-options">
                   <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
+                       <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                   </a>
                   <div class="dropdown-menu">
                       <a href="{{ route('projetos.edital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center">
@@ -162,7 +162,7 @@
             <td>
               <div class="btn-group dropright dropdown-options">
                   <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      {{-- <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> --}}
+                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                   </a>
                   <div class="dropdown-menu">
                       <a href="{{ route('projetos.edital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center">
