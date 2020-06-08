@@ -25,7 +25,7 @@
             </h2>
           </div>
 
-          <div id="collapseOne{{ $trabalho->id }}" class="collapse " aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div id="collapseOne{{ $trabalho->id }}" class="collapse @if($trabalhos->first() == $trabalho) show @endif" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
               <table class="table table-bordered">
                 <thead>

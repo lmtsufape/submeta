@@ -101,7 +101,7 @@
     <tbody>
       @foreach ($avaliadores as $avaliador)
         @php $contador = 0;  @endphp
-        @foreach($avaliador->trabalhos as $trabalho)
+        @foreach($avaliador->trabalhos->where('evento_id', $evento->id) as $trabalho)
           @if($trabalho->pivot->status == true)
             @php $contador++;  @endphp
           @endif
@@ -109,7 +109,7 @@
         <tr>
           <td>{{ $avaliador->user->name }}</td>
           <td>{{ $avaliador->user->email }}</td>
-          <td>{{ $contador }} / {{ $avaliador->trabalhos->count() }}</td>
+          <td>{{ $contador }} / {{ $avaliador->trabalhos->where('evento_id', $evento->id)->count() }}</td>
           <td style="text-align:center"> ...</td>
         </tr>
       @endforeach      

@@ -79,7 +79,7 @@ class TrabalhoController extends Controller
       //Relaciona o projeto criado com o proponente que criou o projeto
       $proponente = Proponente::where('user_id', Auth::user()->id)->first();
       //$trabalho->proponentes()->save($proponente);  
-      //dd($coordenador->id);
+      //dd($coordenador);
       $trabalho = "trabalho";
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
