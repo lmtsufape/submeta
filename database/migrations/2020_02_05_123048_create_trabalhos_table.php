@@ -26,8 +26,8 @@ class CreateTrabalhosTable extends Migration
             $table->string('anexoDecisaoCONSU')->nullable();
             $table->string('anexoPlanilhaPontuacao');
             $table->string('anexoLattesCoordenador');
-            $table->string('anexoAutorizacaoComiteEtica')->nullable();;
-            $table->string('JustificativaAutorizacaoEtica')->nullable();;
+            $table->string('anexoAutorizacaoComiteEtica')->nullable(); 
+            $table->string('justificativaAutorizacaoEtica')->nullable();
             //chaves estrangeiras
             $table->unsignedBigInteger('grande_area_id');
             $table->unsignedBigInteger('area_id');

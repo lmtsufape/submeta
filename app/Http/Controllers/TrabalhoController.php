@@ -133,7 +133,7 @@ class TrabalhoController extends Controller
           'anexoPlanilhaPontuacao'        => $request->anexoPlanilha,
         ]);
         //dd($trabalho);
-      }else{
+      } else {
         //Caso em que o anexo da Decisão do CONSU não necessário
         $validatedData = $request->validate([
           'editalId'                => ['required', 'string'],
@@ -144,7 +144,6 @@ class TrabalhoController extends Controller
           'pontuacaoPlanilha'       => ['required', 'string'],
           'linkGrupo'               => ['required', 'string'],
           'linkLattesEstudante'     => ['required', 'string'],
-          'nomeCoordenador'         => ['required', 'string'],
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
           'funcaoParticipante.*'    => ['required', 'string'],
@@ -160,8 +159,7 @@ class TrabalhoController extends Controller
           'coordenador_id'                => $coordenador->id,
           'grande_area_id'                => $request->grandeArea,
           'area_id'                       => $request->area,
-          'sub_area_id'                   => $request->subArea,        
-          'coordenador'                   => $request->nomeCoordenador,       
+          'sub_area_id'                   => $request->subArea,       
           'pontuacaoPlanilha'             => $request->pontuacaoPlanilha,
           'linkGrupoPesquisa'             => $request->linkGrupo,
           'linkLattesEstudante'           => $request->linkLattesEstudante,
@@ -238,9 +236,17 @@ class TrabalhoController extends Controller
       
       $pasta = 'trabalhos/' . $request->editalId . '/' . $trabalho->id;
 
-      $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoCONSU,  "CONSU.pdf");
+      if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
+        $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoCONSU,  "CONSU.pdf");
+      }
+
+      if (!(is_null($request->anexoComiteEtica))) {
+        $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
+      } else {
+        $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica,  "Justificativa.pdf");
+      }
+
       $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");
-      $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
       $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLatterCoordenador,  "Latter_Coordenador.pdf");
       $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha,  "Planilha.pdf");
       $trabalho->update();
