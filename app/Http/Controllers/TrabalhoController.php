@@ -79,7 +79,7 @@ class TrabalhoController extends Controller
       //Relaciona o projeto criado com o proponente que criou o projeto
       $proponente = Proponente::where('user_id', Auth::user()->id)->first();
       //$trabalho->proponentes()->save($proponente);  
-      //dd($coordenador);
+      //dd($coordenador->id);
       $trabalho = "trabalho";
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
@@ -287,6 +287,8 @@ class TrabalhoController extends Controller
       $subareas = Subarea::all();
       $funcaoParticipantes = FuncaoParticipantes::all();
       $participantes = Participante::where('trabalho_id', $id)->get();
+      $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
+      $users = User::whereIn('id', $participantesUsersIds)->get();
       $arquivos = Arquivo::where('trabalhoId', $id)->get();
 
       return view('projeto.editar')->with(['projeto' => $projeto,
@@ -294,6 +296,7 @@ class TrabalhoController extends Controller
                                            'areas' => $areas,
                                            'subAreas' => $subareas,
                                            'edital' => $edital,
+                                           'users' => $users,
                                            'funcaoParticipantes' => $funcaoParticipantes,
                                            'participantes' => $participantes,
                                            'arquivos' => $arquivos,]);
@@ -401,10 +404,11 @@ class TrabalhoController extends Controller
       $trabalho->update();
 
       // criando novos participantes que podem ter sido adicionados
-      $participantes = Participante::where('trabalho_id', $trabalho->id)->get();
+      $participantesUsersIds = Participante::where('trabalho_id', '=', $trabalho->id)->select('user_id')->get();
+      $users = User::whereIn('id', $participantesUsersIds)->get();
       $emailParticipantes = [];
-      foreach ($participantes as $participante) {
-        array_push($emailParticipantes, $participante->user->email);
+      foreach ($users as $user) {
+        array_push($emailParticipantes, $user->email);
       }
 
       foreach ($request->emailParticipante as $key => $value) {
@@ -443,7 +447,7 @@ class TrabalhoController extends Controller
         //atualizando os participantes que já estão no projeto e planos de trabalho se enviados
         if (in_array($request->emailParticipante[$key], $emailParticipantes, false)) {
           $user = User::where('email', $request->emailParticipante[$key])->first();
-          $participante::where([['user_id', '=', $user->id], ['trabalho_id', '=', $trabalho->id]]);
+          $participante = Participante::where([['user_id', '=', $user->id], ['trabalho_id', '=', $trabalho->id]])->first();
 
           $user->name = $request->nomeParticipante[$key];
           $user->update();
@@ -451,34 +455,37 @@ class TrabalhoController extends Controller
           $participante->funcao_participante_id = $request->funcaoParticipante[$key];
           $participante->update();
 
-          // //atualizando planos de trabalho incompleto
-          // dd($request);
-          // if (!(is_null($request->anexoPlanoTrabalho[1]))) {
-          //   $arquivo = Arquivo::where('participanteId', $participante->id)->first();
-          //   Storage::delete($arquivo->nome);
-          //   $arquivo->delete();
-
-          //   $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
-          //   $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
-          //   $file = $request->anexoPlanoTrabalho[$key];
-          //   Storage::putFileAs($path, $file, $nome);
-
-          //   $arquivo = new Arquivo();
-          //   $arquivo->nome = $path . $nome;
-          //   $arquivo->trabalhoId = $trabalho->id;
-          //   $arquivo->data = $mytime;
-          //   $arquivo->participanteId = $participante->id;
-          //   $arquivo->versaoFinal = true;
-          //   $arquivo->save();
-          // }
+          //atualizando planos de trabalho
+          if (array_key_exists($key, $request->anexoPlanoTrabalho)) {
+            if (!(is_null($request->anexoPlanoTrabalho[$key]))) {
+              $arquivo = Arquivo::where('participanteId', $participante->id)->first();
+              Storage::delete($arquivo->nome);
+              $arquivo->delete();
+  
+              $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+              $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+              $file = $request->anexoPlanoTrabalho[$key];
+              Storage::putFileAs($path, $file, $nome);
+  
+              $arquivo = new Arquivo();
+              $arquivo->nome = $path . $nome;
+              $arquivo->trabalhoId = $trabalho->id;
+              $arquivo->data = $mytime;
+              $arquivo->participanteId = $participante->id;
+              $arquivo->versaoFinal = true;
+              $arquivo->save();
+            }
+          }
         }
       }
       
       // Atualizando possiveis usuários removidos
-      $participantes = Participante::where('trabalho_id', $trabalho->id)->get();
+      $participantesUsersIds = Participante::where('trabalho_id', '=', $trabalho->id)->select('user_id')->get();
+      $users = User::whereIn('id', $participantesUsersIds)->get();
 
-      foreach ($participantes as $participante) {
-        if (!(in_array($participante->user->email, $request->emailParticipante, false))) {
+      foreach ($users as $user) {
+        if (!(in_array($user->email, $request->emailParticipante, false))) {
+          $participante = Participante::where([['user_id', '=', $user->id], ['trabalho_id', '=', $trabalho->id]])->first();
           $arquivo = Arquivo::where('participanteId', $participante->id);
           Storage::delete($arquivo->nome);
           $arquivo->delete();
