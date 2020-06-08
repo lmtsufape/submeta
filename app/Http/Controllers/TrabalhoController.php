@@ -205,6 +205,14 @@ class TrabalhoController extends Controller
 
             $participante->trabalhos()->save($trabalho);
           }else{
+
+            $participante->user_id = $userParticipante->id;
+            $participante->trabalho_id = $trabalho->id;
+            $participante->funcao_participante_id = $request->funcaoParticipante[$key];
+            $participante->save();
+
+            $participante->trabalhos()->save($trabalho);
+
             $subject = "Participante de Projeto";            
             $email = $value;
             Mail::to($email)

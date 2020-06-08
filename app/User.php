@@ -86,7 +86,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne('App\AdministradorResponsavel');
     }
     public function participantes(){
-        return $this->hasOne('App\Participante');
+        return $this->hasMany('App\Participante');
     }
     public function avaliadors(){
         return $this->hasOne('App\Avaliador');
