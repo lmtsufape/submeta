@@ -19,6 +19,9 @@
 									  </div>
 									  <div class="form-group">
 									    <label for="exampleFormControlSelect1">Anexo:  </label>
+                      <a href="{{route('download', ['file' => $parecer->AnexoParecer])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                    </a>
 									  </div>
 										<a href="{{url()->previous()}}" class="btn btn-primary"> Voltar</a>
 

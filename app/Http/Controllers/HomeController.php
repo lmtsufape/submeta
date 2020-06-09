@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -51,6 +52,6 @@ class HomeController extends Controller
     }
 
     public function downloadArquivo(Request $request){
-      return response()->download(storage_path('app/'.$request->file));
+      return Storage::download($request->file);
   	}
 }

@@ -7,7 +7,12 @@
   <div class="container" >
     <div class="row" >
       <div class="col-sm-10">
-        <h3>Trabalhos do Edital: {{ $evento->nome }}</h3> 
+        <h3>Trabalhos do Edital:  {{ $evento->nome }}</h3> 
+        {{-- <h6>Data inicioSubmissao: {{ date('d/m/Y', strtotime($evento->inicioSubmissao)) }}</h6>  --}}
+        <h6>Data fim da submissao:  {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</h6> 
+        {{-- <h6>Data inicioRevisao:   {{ date('d/m/Y', strtotime($evento->inicioRevisao)) }}</h6> 
+        <h6>Data fimRevisao:      {{ date('d/m/Y', strtotime($evento->fimRevisao)) }}</h6> 
+        <h6>Data resultado:       {{ date('d/m/Y', strtotime($evento->resultado)) }}</h6>  --}}
       </div>
     </div>
   </div>
@@ -32,6 +37,8 @@
                   <tr>
                     <th scope="col">Avaliador</th>
                     <th scope="col">E-mail</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Recomendação</th>
                     <th scope="col">Parecer</th>
                   </tr>
                 </thead>
@@ -41,13 +48,35 @@
                       <td>{{ $avaliador->user->name }}</td>
                       <td>{{ $avaliador->user->email }}</td>
                       <td>
+                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                          Indisponível
+                        @else
+                          {{ date('d/m/Y', strtotime($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->created_at)) }}
+                        @endif
+                        
+                      </td>
+                      <td>
+                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                          Indisponível
+                        @else
+                          {{ $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->recomendacao }}
+                        @endif
+                        
+                      </td>
+                      <td>
                         <form action="{{ route('admin.visualizarParecer') }}" method="post">
                           @csrf
                           <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                           <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}">
-                          <button class="btn btn-primary" @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null) disabled="disabled" @endif >
-                            Visualizar
-                          </button>
+                          @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                            <button class="btn btn-danger"  disabled="disabled"  >
+                              Indisponível
+                            </button>
+                          @else
+                            <button class="btn btn-primary"  >
+                              Visualizar
+                            </button>
+                          @endif
                         </form>
                         
                       </td>

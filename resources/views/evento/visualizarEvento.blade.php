@@ -237,7 +237,7 @@
     <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
         <div class="col-md-6 botao-form-left" style="">
-            <a class="btn btn-secondary botao-form" href="/" style="width:100%">Voltar</a>
+            <a class="btn btn-secondary botao-form" href="{{ route('home') }}" style="width:100%">Voltar</a>
         </div>
 
         @if($evento->inicioSubmissao <= $mytime)

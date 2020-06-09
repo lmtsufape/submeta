@@ -27,14 +27,18 @@
 											  		@endif													  
 												  @endforeach												  
 												</select>
-											  <div class="form-group">
+											  <div class="form-group  mt-3 md-3">
 											  	@if($trabalho->pivot->AnexoParecer == null)
 														<label for="exampleFormControlFile1">Anexo do Parecer:</label>
 											    	<input type="file" class="form-control-file" id="exampleFormControlFile1" name="anexoParecer">
 
 											  	@else
-														<label for="exampleFormControlFile1">Já existe um arquivo, quer atualizar?</label> <br>
-														
+													<label for="exampleFormControlFile1">Já existe um arquivo, quer atualizar?</label>
+													<br> <label for="exampleFormControlFile1"> Arquivo atual:</label> 
+																<a href="{{route('download', ['file' => $trabalho->pivot->AnexoParecer])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+										                <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+										            </a><br>
+																							
 											    	<input type="file" class="form-control-file" id="exampleFormControlFile1" name="anexoParecer">
 											  	@endif
 											    
