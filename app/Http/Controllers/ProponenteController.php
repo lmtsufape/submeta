@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Auth;
 use App\User;
 use App\Proponente;
-use App\GrandeArea;
 use App\Evento;
 
 class ProponenteController extends Controller

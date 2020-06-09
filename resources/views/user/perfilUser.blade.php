@@ -144,10 +144,7 @@
 
             <label class="col-form-label">{{ __('Area de Formação') }}</label>
             <input value="{{$proponente->areaFormacao}}" id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" autocomplete="areaFormacao">
-
-            <label class="col-form-label">{{ __('Área') }}</label>
-            <input value="{{$proponente->grandeArea}}" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
-
+            
             <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
             <input value="{{$proponente->bolsistaProdutividade}}" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">
 
@@ -429,9 +426,6 @@
 
             <label class="col-form-label">{{ __('Area de Formação') }}</label>
             <input value="{{$proponente->areaFormacao}}" id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" autocomplete="areaFormacao">
-
-            <label class="col-form-label">{{ __('Área') }}</label>
-            <input value="{{$proponente->grandeArea}}" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
 
             <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
             <input value="{{$proponente->bolsistaProdutividade}}" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">

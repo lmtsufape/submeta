@@ -96,41 +96,7 @@
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="grandeArea" class="col-form-label">{{ __('Grande Área*') }}</label>
-                        <select name="grandeArea" id="" class="form-control">
-                            @foreach ($grandeAreas as $area)
-                            <option @if(old('grandeArea')==$area->nome) selected @endif value="{{$area->nome}}">{{$area->nome}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label for="area" class="col-form-label">{{ __('Área*') }}</label>
-                        <input id="area" type="text" class="form-control @error('area') is-invalid @enderror" name="area" value="{{ old('area') }}">
-
-                        @error('area')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-md-4">
-                        <label for="subarea" class="col-form-label">{{ __('Subárea*') }}</label>
-                        <input id="subarea" type="text" class="form-control @error('subarea') is-invalid @enderror" name="subarea" value="{{ old('subarea') }}">
-
-                        @error('subarea')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
+                    </div>                  
 
                     <div class="col-md-4">
                         <label for="linkLattes" class="col-form-label">{{ __('Link do curriculum lattes*') }}</label>
@@ -146,13 +112,13 @@
                     <div class="col-md-3">
                         <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade*') }}</label><br>
                         <select name="bolsistaProdutividade" id="bolsistaProdutividade" class="form-control" onchange="mudarNivel()">
-                            <option value="sim">Sim</option>
                             <option value="nao">Não</option>
+                            <option value="sim">Sim</option>
                         </select>
                     </div>
 
-                    <div class="col-md-1" id="nivelInput" style="display: block;">
-                        <label for="nivel" class="col-form-label">{{ __('Nivel') }}</label>
+                    <div class="col-md-1" id="nivelInput" style="display: none;">
+                        <label for="nivel" class="col-form-label">{{ __('Nivel*') }}</label>
                         <select name="nivel" id="nivel" class="form-control">
                             <option value="2">2</option>
                             <option value="1D">1D</option>

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Participante;
 use App\Proponente;
-use App\GrandeArea;
 
 class RegisterController extends Controller
 {

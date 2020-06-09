@@ -96,7 +96,7 @@
                     @enderror
                     
                     <div>
-                        <label for="vinculo" class="col-form-label">{{ __('Vinculo') }}</label>
+                        <label for="vinculo" class="col-form-label">{{ __('Vínculo') }}</label>
                         <select name="vinculo" id="">
                             <option value="Servidor na ativa">Servidor na ativa</option>
                             <option value="Servidor aposentado">Servidor aposentado</option>
@@ -105,7 +105,7 @@
                         </select> 
                     </div>
                     
-                    <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Maxima') }}</label>
+                    <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima') }}</label>
                     <input id="titulacaoMaxima" type="text" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="" autocomplete="nome">
 
                     @error('titulacaoMaxima')
@@ -123,33 +123,22 @@
                     </span>
                     @enderror
 
-                    <label for="areaFormacao" class="col-form-label">{{ __('Area de Formação') }}</label>
+                    <label for="areaFormacao" class="col-form-label">{{ __('Área de Formação') }}</label>
                     <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="" autocomplete="nome">
 
                     @error('areaFormacao')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
-                    @enderror
-                    
-                    <div>
-                        <label for="area" class="col-form-label">{{ __('Área') }}</label>
-                        <select name="area" id="">
-                            @foreach ($grandeAreas as $area)
-                                <option value="{{$area->nome}}">{{$area->nome}}</option>
-                            @endforeach
-                        </select> 
-                    </div>
-
+                    @enderror                
                     
                     <div>
                         <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade') }}</label><br>
                         <select name="bolsistaProdutividade" id="">
-                            <option value="sim">Sim</option>
                             <option value="nao">Não</option>
+                            <option value="sim">Sim</option>
                         </select> 
                     </div>
-
                     
                     <div>
                         <label for="nivel" class="col-form-label">{{ __('Nivel') }}</label>
