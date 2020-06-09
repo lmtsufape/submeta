@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trabalho extends Model
 {
+
+  use SoftDeletes;
   /**
    * The attributes that are mass assignable.
    *
@@ -37,6 +40,8 @@ class Trabalho extends Model
       'proponente_id',
       'pivot',
   ];
+
+
 
   public function recurso(){
       return $this->hasMany('App\Recurso', 'trabalhoId');

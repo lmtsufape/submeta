@@ -505,9 +505,12 @@ class TrabalhoController extends Controller
      * @param  \App\Trabalho  $trabalho
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Trabalho $trabalho)
+    public function destroy(Request $request)
     {
-        //
+        $trabalho = Trabalho::find($request->id);
+        //dd($trabalho);
+        $trabalho->delete();
+        return redirect()->back();
     }
 
     public function novaVersao(Request $request){

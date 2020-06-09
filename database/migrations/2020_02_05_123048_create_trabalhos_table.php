@@ -36,6 +36,7 @@ class CreateTrabalhosTable extends Migration
             $table->unsignedBigInteger('evento_id');
             $table->unsignedBigInteger('coordenador_id');
             $table->unsignedBigInteger('proponente_id');
+            $table->softDeletes();
 
             $table->timestamps();
         });

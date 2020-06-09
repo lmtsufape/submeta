@@ -59,6 +59,12 @@
                         <a href="" class="dropdown-item" style="text-align: center">
                           Resultado
                         </a>
+                        @if($projeto->status == 'Submetido')
+                          <a href="{{ route('trabalho.destroy', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                            Excluir projeto
+                          </a>
+                        @endif
+                        
                     </div>
                 </div>
               </td>
