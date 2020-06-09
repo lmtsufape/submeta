@@ -16,10 +16,10 @@
               {{-- Nome do Projeto  --}}
               <div class="row justify-content-center">
                 <div class="col-sm-12">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Nome do Projeto:') }}</label>
-                  <input id="nomeTrabalho" type="text" class="form-control @error('nomeTrabalho') is-invalid @enderror" name="nomeProjeto" value="{{ old('nomeTrabalho') }}" required autocomplete="nomeTrabalho" autofocus>
+                  <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto:') }}</label>
+                  <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" value="{{ old('nomeProjeto') }}" required autocomplete="nomeProjeto" autofocus>
 
-                  @error('nomeTrabalho')
+                  @error('nomeProjeto')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -140,7 +140,7 @@
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
                   <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto:') }}</label>
-
+                  
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -408,11 +408,16 @@
         return false;
       }
     });
-    $('#anexoProjeto').on('change', function() {
-      //get the file name
-      var fileName = $(this).val();
-      //replace the "Choose a file" label
-      $(this).next('#custom-file-label').html(fileName);
+    $('.custom-file-input').on('change', function() {
+        var fieldVal = $(this).val();
+
+        // Change the node's value by removing the fake path (Chrome)
+        fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+
+        if (fieldVal != undefined || fieldVal != "") {
+            $(this).next(".custom-file-label").attr('data-content', fieldVal);
+            $(this).next(".custom-file-label").text(fieldVal);
+        }
     })
     // F
     $('#buttonSim').on('click', function(e) {

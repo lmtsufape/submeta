@@ -104,7 +104,8 @@ class TrabalhoController extends Controller
           'funcaoParticipante.*'    => ['required', 'string'],
           'nomePlanoTrabalho.*'     => ['required', 'string'],
           'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
-          //'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoComiteEtica'        => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLatterCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
@@ -125,7 +126,7 @@ class TrabalhoController extends Controller
           'avaliado'                      => 0,
           'proponente_id'                 => $proponente->id,
           //Anexos
-          'anexoDecisaoCONSU'             => $request->anexoCONSU,
+          'anexoCONSU'                    => $request->anexoCONSU,
           'anexoProjeto'                  => $request->anexoProjeto,
           'anexoAutorizacaoComiteEtica'   => $request->anexoComiteEtica,
           'justificativaAutorizacaoEtica' => $request->justificativaAutorizacaoEtica,
