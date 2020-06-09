@@ -17,23 +17,19 @@ class ProponenteController extends Controller
     }
 
     public function create(){
-
-        $grandesAreas = GrandeArea::orderBy('nome')->get();
-        return view('proponente.cadastro')->with(['grandeAreas' => $grandesAreas]);;
+        return view('proponente.cadastro');
     }
 
     public function store(Request $request){
         if (Auth::user()->proponentes == null) {
             
-            $validated = $request->validate([               
-                'senha' => 'required',              
+            $validated = $request->validate([                   
                 'cargo' => 'required',
+                'vinculo' => 'required',
                 'titulacaoMaxima' => 'required',
                 'anoTitulacao' => 'required',
-                'areaFormacao' => 'required',
-                'area' => 'required',
+                'areaFormacao' => 'required',                
                 'bolsistaProdutividade' => 'required',
-                'nivel' => 'required',
                 'linkLattes' => 'required',
             ]);
 
@@ -43,10 +39,7 @@ class ProponenteController extends Controller
             $proponente->vinculo = $request->vinculo;
             $proponente->titulacaoMaxima = $request->titulacaoMaxima;
             $proponente->anoTitulacao = $request->anoTitulacao;
-            $proponente->areaFormacao = $request->areaFormacao;
-            $proponente->grandeArea = $request->area;
-            $proponente->area = "teste";
-            $proponente->subArea = "teste";
+            $proponente->areaFormacao = $request->areaFormacao;            
             $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
             $proponente->nivel = $request->nivel;
             $proponente->linkLattes = $request->linkLattes;

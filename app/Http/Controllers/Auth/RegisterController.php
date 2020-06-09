@@ -66,14 +66,11 @@ class RegisterController extends Controller
             'cargo' => ['required'],
             'vinculo' => ['required'],
 
-            'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
-            'anoTitulacao'=> ['required_with:titulacaoMaxima,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
-            'areaFormacao'=> ['required_with:titulacaoMaxima,anoTitulacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
-            'grandeArea'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,area,subarea,bolsistaProdutividade,linkLattes'],
-            'area'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,subarea,bolsistaProdutividade,linkLattes'],
-            'subarea'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,bolsistaProdutividade,linkLattes'],
-            'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,subarea,linkLattes'],            
-            'linkLattes'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade'],
+            'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade,linkLattes'],
+            'anoTitulacao'=> ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
+            'areaFormacao'=> ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
+            'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],            
+            'linkLattes'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
 
         ]);
     }
@@ -111,10 +108,7 @@ class RegisterController extends Controller
             $proponente->vinculo = $data['vinculo'];
             $proponente->titulacaoMaxima = $data['titulacaoMaxima'];
             $proponente->anoTitulacao = $data['anoTitulacao'];
-            $proponente->areaFormacao = $data['areaFormacao'];
-            $proponente->grandeArea = $data['grandeArea'];
-            $proponente->area = $data['area'];
-            $proponente->subArea = $data['subarea'];
+            $proponente->areaFormacao = $data['areaFormacao'];            
             $proponente->bolsistaProdutividade = $data['bolsistaProdutividade'];
             $proponente->nivel = $data['nivel'];
             $proponente->linkLattes = $data['linkLattes'];            
@@ -126,8 +120,7 @@ class RegisterController extends Controller
         return $user;
     }
 
-    public function showRegistrationForm(){        
-        $grandesAreas = GrandeArea::orderBy('nome')->get();
-        return view('auth.register')->with(['grandeAreas' => $grandesAreas]);
+    public function showRegistrationForm(){      
+        return view('auth.register');
     }
 }
