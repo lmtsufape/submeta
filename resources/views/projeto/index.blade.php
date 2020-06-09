@@ -35,9 +35,9 @@
               <td>
                 {{ $projeto->titulo }}
               </td>
-              @if($projeto->avaliado)
+              @if($projeto->status == 'Avaliado')
                 <td style="color: rgb(6, 85, 6)">Avaliado</td>
-              @else
+              @elseif($projeto->status == 'Submetido')
                 <td style="color: rgb(0, 0, 0)">Submetido</td>
               @endif
               <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   

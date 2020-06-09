@@ -15,6 +15,7 @@ class Trabalho extends Model
       'titulo',
       'data', 
       'aprovado',
+      'status',
       'decisaoCONSU',      
       'pontuacaoPlanilha', 
       'linkGrupoPesquisa',

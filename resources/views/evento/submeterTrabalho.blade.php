@@ -16,7 +16,7 @@
               {{-- Nome do Projeto  --}}
               <div class="row justify-content-center">
                 <div class="col-sm-12">
-                  <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto:') }}</label>
+                  <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto*:') }}</label>
                   <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" value="{{ old('nomeProjeto') }}" required autocomplete="nomeProjeto" autofocus>
 
                   @error('nomeProjeto')
@@ -30,7 +30,7 @@
               {{-- Grande Area --}}
               <div class="row justify-content-center">
                 <div class="col-sm-4">
-                  <label for="grandeArea" class="col-form-label">{{ __('Grande Área:') }}</label>
+                  <label for="grandeArea" class="col-form-label">{{ __('Grande Área*:') }}</label>
                   <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea">
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
@@ -45,7 +45,7 @@
                   @enderror
                 </div>
                 <div class="col-sm-4">
-                  <label for="area" class="col-form-label">{{ __('Área:') }}</label>
+                  <label for="area" class="col-form-label">{{ __('Área*:') }}</label>
                   <select class="form-control @error('area') is-invalid @enderror" id="area" name="area">
                     <option value="" disabled selected hidden>-- Área --</option>
                     @foreach($areas as $area)
@@ -60,7 +60,7 @@
                   @enderror
                 </div>
                 <div class="col-sm-4">
-                  <label for="subArea" class="col-form-label">{{ __('Sub Área:') }}</label>
+                  <label for="subArea" class="col-form-label">{{ __('Sub Área*:') }}</label>
                   <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">
                     <option value="" disabled selected hidden>-- Sub Área --</option>
                     @foreach($subAreas as $subArea)
@@ -95,7 +95,7 @@
                   <input class="form-control" type="text" id="nomeCoordenador" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
                 </div>
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">Link Lattes do Proponente</label>
+                  <label for="nomeTrabalho" class="col-form-label">Link Lattes do Proponente*</label>
                   <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
                   @if(Auth()->user()->proponentes->linkLattes != null)
                     value="{{ Auth()->user()->proponentes->linkLattes }}"
@@ -110,7 +110,7 @@
                   @enderror
                 </div>
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação :') }}</label>
+                  <label for="nomeTrabalho" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação*:') }}</label>
                   <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha">
 
                   @error('pontuacaoPlanilha')
@@ -120,7 +120,7 @@
                   @enderror
                 </div>
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Link do grupo de pesquisa:') }}</label>
+                  <label for="nomeTrabalho" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
                   <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo">
 
                   @error('linkGrupo')
@@ -139,7 +139,7 @@
               <div class="row justify-content-center">
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
-                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto:') }}</label>
+                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>
                   
                   <div class="input-group">
 
@@ -156,7 +156,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="anexoLatterCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador:') }}</label>
+                  <label for="anexoLatterCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador*:') }}</label>
 
                   <div class="input-group">
 
@@ -177,7 +177,7 @@
 
 
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Possui autorização do Comitê de Ética:') }}</label>
+                  <label for="nomeTrabalho" class="col-form-label">{{ __('Possui autorização do Comitê de Ética*:') }}</label>
                   <button id="buttonSim" class="btn btn-primary mt-2 mb-2">Sim</button>
                   <button id="buttonNao" class="btn btn-primary mt-2 mb-2">Não</button>
                   <div class="input-group">
@@ -196,7 +196,7 @@
                 </div>
 
                 <div class="col-sm-6 mt-3">
-                  <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo do Planilha de Pontuação :') }}</label>
+                  <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo do Planilha de Pontuação*:') }}</label>
 
                   <div class="input-group">
 
@@ -213,7 +213,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Justificativa:') }}</label>
+                  <label for="nomeTrabalho" class="col-form-label">{{ __('Justificativa*:') }}</label>
 
                   <div class="input-group">
 
@@ -233,7 +233,7 @@
                 @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM')
                 {{-- Decisão do CONSU --}}
                 <div class="col-sm-6">
-                  <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU:') }}</label>
+                  <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU*:') }}</label>
 
                   <div class="input-group">
 
@@ -264,7 +264,7 @@
                       <h5>Dados do participante</h5>
                       <div class="row">
                         <div class="col-sm-5">
-                          <label>Nome Completo</label>
+                          <label>Nome Completo*</label>
                           <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" required>
                           @error('nomeParticipante')
                           <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -273,7 +273,7 @@
                           @enderror
                         </div>
                         <div class="col-sm-4">
-                          <label>E-mail</label>
+                          <label>E-mail*</label>
                           <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" required>
                           @error('emailParticipante')
                           <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -282,7 +282,7 @@
                           @enderror
                         </div>
                         <div class="col-sm-3">
-                          <label>Função:</label>
+                          <label>Função*:</label>
                           <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
                             <option value="" disabled selected hidden>-- Função --</option>
                             @foreach($funcaoParticipantes as $funcaoParticipante)
@@ -303,7 +303,7 @@
                           <div id="planoTrabalho">
                             <div class="row">
                               <div class="col-sm-4">
-                                <label>Titulo </label>
+                                <label>Titulo* </label>
                                 <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required>
                                 
                                 @error('nomePlanoTrabalho')
@@ -314,7 +314,7 @@
                               </div>
                               {{-- Arquivo  --}}
                               <div class="col-sm-7">
-                                <label for="nomeTrabalho">Anexo</label>
+                                <label for="nomeTrabalho">Anexo*</label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
@@ -451,7 +451,7 @@
               "<br><h5>Dados do participante</h5>" +
               "<div class="+"row"+">"+
                 "<div class="+"col-sm-5"+">"+
-                    "<label>Nome Completo</label>"+
+                    "<label>Nome Completo*</label>"+
                     "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('nomeParticipante') is-invalid @enderror" + "name=" +'nomeParticipante[]'+" placeholder="+"Nome"+" required>"+
                     "@error('nomeParticipante')" +
                     "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
@@ -460,7 +460,7 @@
                     "@enderror" +
                 "</div>"+
                 "<div class="+"col-sm-4"+">"+
-                    "<label>E-mail</label>"+
+                    "<label>E-mail*</label>"+
                     "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' required>" +
                     "@error('emailParticipante')" +
                     "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
@@ -469,7 +469,7 @@
                     "@enderror" +
                 "</div>"+
                 "<div class='col-sm-3'>"+
-                  "<label>Função:</label>"+
+                  "<label>Função*:</label>"+
                   "<select class=" + "form-control @error('funcaoParticipante') is-invalid @enderror" + "name='funcaoParticipante[]'" + "id='funcaoParticipante'> " +
                       "<option value='' disabled selected hidden> Função </option>"+
                       "@foreach($funcaoParticipantes as $funcaoParticipante)"+
@@ -486,7 +486,7 @@
             "<h5>Dados do plano de trabalho</h5>" +
             "<div class="+"row"+">"+
                 "<div class="+"col-sm-4"+">"+
-                    "<label>Titulo</label>"+
+                    "<label>Titulo*</label>"+
                     "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
                     "@error('nomePlanoTrabalho')" +
                       "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
@@ -495,7 +495,7 @@
                     "@enderror" +
                 "</div>"+
                 "<div class="+"col-sm-7" +">"+
-                  "<label for="+"nomeTrabalho"+">Anexo </label>"+
+                  "<label for="+"nomeTrabalho"+">Anexo* </label>"+
 
                   "<div class="+"input-group"+">"+
                     "<div class='input-group-prepend'>"+

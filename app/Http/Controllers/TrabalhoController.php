@@ -124,6 +124,7 @@ class TrabalhoController extends Controller
           'data'                          => $mytime,
           'evento_id'                     => $request->editalId,
           'avaliado'                      => 0,
+          'status'                        => 'Submetido' ,
           'proponente_id'                 => $proponente->id,
           //Anexos
           'anexoCONSU'                    => $request->anexoCONSU,
@@ -167,6 +168,7 @@ class TrabalhoController extends Controller
           'data'                          => $mytime,
           'evento_id'                     => $request->editalId,
           'avaliado'                      => 0,
+          'status'                        => 'Submetido' ,
           'proponente_id'                 => $proponente->id,
           //Anexos
           'anexoProjeto'                  => $request->anexoProjeto,

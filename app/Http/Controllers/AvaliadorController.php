@@ -60,11 +60,12 @@ class AvaliadorController extends Controller
         $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
       	$avaliador = $user->avaliadors->where('user_id',$user->id)->first();
       	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $trabalho->status = 'Avaliado';
+        $trabalho->save();
         $data = Carbon::now('America/Recife');
     	if($request->anexoParecer == ''){
 
-					$avaliador
-                ->trabalhos()
+					$avaliador->trabalhos()
                 ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
     	}else{
           $anexoParecer = $request->anexoParecer;
@@ -73,8 +74,7 @@ class AvaliadorController extends Controller
           Storage::putFileAs($path, $anexoParecer, $nome);  
           $anexoParecer = $path . $nome;   
 
-					$avaliador
-                  ->trabalhos()
+					$avaliador->trabalhos()
                   ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $anexoParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
     	}
     	

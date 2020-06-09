@@ -16,7 +16,8 @@ class CreateTrabalhosTable extends Migration
         Schema::create('trabalhos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('titulo');
-            $table->boolean('aprovado')->nullable();
+            $table->string('status')->nullable();
+            $table->string('aprovado')->nullable();
             $table->string('linkGrupoPesquisa');
             $table->string('linkLattesEstudante');
             $table->string('pontuacaoPlanilha');
