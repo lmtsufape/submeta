@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trabalho extends Model
 {
+
+  use SoftDeletes;
   /**
    * The attributes that are mass assignable.
    *
@@ -15,6 +18,7 @@ class Trabalho extends Model
       'titulo',
       'data', 
       'aprovado',
+      'status',
       'decisaoCONSU',      
       'pontuacaoPlanilha', 
       'linkGrupoPesquisa',
@@ -36,6 +40,8 @@ class Trabalho extends Model
       'proponente_id',
       'pivot',
   ];
+
+
 
   public function recurso(){
       return $this->hasMany('App\Recurso', 'trabalhoId');
@@ -85,6 +91,6 @@ class Trabalho extends Model
       return $this->belongsTo('App\CoordenadorComissao');
   }
   public function avaliadors(){
-      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao');
+      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
   }
 }

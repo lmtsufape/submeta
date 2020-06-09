@@ -9,6 +9,8 @@ use App\Evento;
 use App\Recomendacao;
 use App\User;
 use App\Avaliador;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class AvaliadorController extends Controller
 {
@@ -17,7 +19,7 @@ class AvaliadorController extends Controller
     	return view('avaliador.index');
     }
 
-    public function editais(){
+    public function editais(Request $request){
 
         $user = User::find(Auth::user()->id);
         $eventos = $user->avaliadors->where('user_id',$user->id)->first()->eventos;
@@ -30,7 +32,7 @@ class AvaliadorController extends Controller
 
         $user = User::find(Auth::user()->id);
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos;
+        $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
 
     	//dd();
 
@@ -55,17 +57,25 @@ class AvaliadorController extends Controller
         
 
         $evento = Evento::find($request->evento_id);
-    	$trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos;
-    	$avaliador = $user->avaliadors->where('user_id',$user->id)->first();
-    	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
+      	$avaliador = $user->avaliadors->where('user_id',$user->id)->first();
+      	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $trabalho->status = 'Avaliado';
+        $trabalho->save();
+        $data = Carbon::now('America/Recife');
     	if($request->anexoParecer == ''){
-					$avaliador
-                ->trabalhos()
-                ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao'=>$request->recomendacao]);
+
+					$avaliador->trabalhos()
+                ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
     	}else{
-					$avaliador
-                  ->trabalhos()
-                  ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $request->anexoParecer, 'recomendacao'=>$request->recomendacao]);
+          $anexoParecer = $request->anexoParecer;
+          $path = 'anexoParecer/' . $avaliador->id . $trabalho->id . '/';
+          $nome = "parecer.pdf";
+          Storage::putFileAs($path, $anexoParecer, $nome);  
+          $anexoParecer = $path . $nome;   
+
+					$avaliador->trabalhos()
+                  ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $anexoParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
     	}
     	
   

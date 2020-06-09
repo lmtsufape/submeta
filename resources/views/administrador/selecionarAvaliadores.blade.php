@@ -7,8 +7,13 @@
 
   <div class="container" >
     <div class="row justify-content-center d-flex align-items-center" >
-      <div class="col-md-10">
+      <div class="col-md-9">
          <h3>Avaliadores </h3>
+      </div>
+      <div class="col-md-1">
+        <a href="{{ route('admin.atribuir', ['evento_id' => $evento->id]) }}" class="btn btn-primary">
+          Voltar
+        </a>
       </div>
       <div class="col-md-2">
         <!-- Button trigger modal -->
@@ -20,6 +25,7 @@
 
     </div>
   </div>
+  
   <hr>
   <table class="table table-bordered">
     <thead>
@@ -78,7 +84,7 @@
               @csrf
               <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
               <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
-              <button type="submit" class="btn btn-primary" @if($avaliador->trabalhos->count() != 0) disabled="disabled" @endif >Remover</button>
+              <button type="submit" class="btn btn-primary" @if($avaliador->trabalhos->where('evento_id', $evento->id)->count()  != 0) disabled="disabled" @endif >Remover</button>
             </form>   
           </td>
         </tr>

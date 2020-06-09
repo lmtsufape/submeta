@@ -35,9 +35,9 @@
               <td>
                 {{ $projeto->titulo }}
               </td>
-              @if($projeto->avaliado)
+              @if($projeto->status == 'Avaliado')
                 <td style="color: rgb(6, 85, 6)">Avaliado</td>
-              @else
+              @elseif($projeto->status == 'Submetido')
                 <td style="color: rgb(0, 0, 0)">Submetido</td>
               @endif
               <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
@@ -59,6 +59,12 @@
                         <a href="" class="dropdown-item" style="text-align: center">
                           Resultado
                         </a>
+                        @if($projeto->status == 'Submetido')
+                          <a href="{{ route('trabalho.destroy', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                            Excluir projeto
+                          </a>
+                        @endif
+                        
                     </div>
                 </div>
               </td>

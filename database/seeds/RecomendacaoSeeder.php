@@ -12,13 +12,19 @@ class RecomendacaoSeeder extends Seeder
     public function run()
     {
         DB::table('recomendacaos')->insert([
-            'nome' => 'Aceitacao Forte',
+            'nome' => 'Recomendação Forte',
         ]);
         DB::table('recomendacaos')->insert([
-            'nome' => 'Aceitacao Média',
+            'nome' => 'Recomendação Fraca',
         ]);
         DB::table('recomendacaos')->insert([
-            'nome' => 'Aceitacao Fraca',
+            'nome' => 'Neutro',
+        ]);
+        DB::table('recomendacaos')->insert([
+            'nome' => 'Rejeição Fraca',
+        ]);
+        DB::table('recomendacaos')->insert([
+            'nome' => 'Rejeição Forte',
         ]);
     }
 }

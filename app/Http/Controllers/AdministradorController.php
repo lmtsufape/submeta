@@ -392,4 +392,8 @@ class AdministradorController extends Controller
         return redirect()->back();
     }
 
+    // public function baixarAnexo(Request $request) {
+    //   return Storage::download($request->anexo);
+    // }
+
 }

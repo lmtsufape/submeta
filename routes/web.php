@@ -21,11 +21,11 @@ Auth::routes(['verify' => true]);
 
 //######## Rotas Avaliador  ####################################
 Route::prefix('avaliador')->name('avaliador.')->group(function(){
-  Route::get('/index',        'AvaliadorController@index'                       )->name('index');
-  Route::get('/trabalhos',    'AvaliadorController@visualizarTrabalhos'         )->name('visualizarTrabalho');
-  Route::post('/parecer',     'AvaliadorController@parecer'                     )->name('parecer');
-  Route::get('/editais',     'AvaliadorController@editais'                     )->name('editais');
-  Route::post('/Enviarparecer',     'AvaliadorController@enviarParecer'         )->name('enviarParecer');
+  Route::get('/index',          'AvaliadorController@index'                      )->name('index');
+  Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'        )->name('visualizarTrabalho');
+  Route::post('/parecer',       'AvaliadorController@parecer'                    )->name('parecer');
+  Route::get('/editais',        'AvaliadorController@editais'                    )->name('editais');
+  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'              )->name('enviarParecer');
 });
 
 //######### Proponente  ########################################
@@ -87,12 +87,13 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/areaModalidade/criar',  'AreaModalidadeController@store'                )->name('areaModalidade.store');
 
   //#########  Trabalho  ########################################
-  Route::get(   '/trabalho/submeter/{id}','TrabalhoController@index'                      )->name('trabalho.index');
-  Route::post(  '/trabalho/novaVersao',   'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
-  Route::post(  '/trabalho/criar',        'TrabalhoController@store'                      )->name('trabalho.store');
-  Route::get(   '/edital/{id}/projetos',  'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
-  Route::get(   '/projeto/{id}/editar',   'TrabalhoController@edit'                       )->name('trabalho.editar');
-  Route::post(   '/projeto/{id}/atualizar',   'TrabalhoController@update'                 )->name('trabalho.update');
+  Route::get(   '/trabalho/submeter/{id}',  'TrabalhoController@index'                      )->name('trabalho.index');
+  Route::post(  '/trabalho/novaVersao',     'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
+  Route::post(  '/trabalho/criar',          'TrabalhoController@store'                      )->name('trabalho.store');
+  Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
+  Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
+  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                     )->name('trabalho.update');
+  Route::get(   '/projeto/{id}/excluir',   'TrabalhoController@destroy'                    )->name('trabalho.destroy');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');

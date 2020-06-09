@@ -26,7 +26,18 @@
 	               </div>
 	            </div>
 	         </a>
-	      </div>
+		  </div>
+
+		  <div class="col-sm-3 d-flex justify-content-center">
+			<a href="{{ route('grandearea.index') }}" style="text-decoration:none; color: inherit;">
+			   <div class="card text-center " style="border-radius: 30px; width: 13rem;height: 15rem;">
+				<div class="card-body d-flex justify-content-center">
+					 <h2 style="padding-top:15px">Áreas</h2>
+				  </div>
+			   </div>
+			</a>
+		 </div>
+
 	      <div class="col-sm-3 d-flex justify-content-center">
 	         <a href="{{ route('admin.usuarios') }}" style="text-decoration:none; color: inherit;">
 	            <div class="card text-center " style="border-radius: 30px; width: 13rem;height: 15rem;">

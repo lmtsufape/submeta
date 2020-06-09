@@ -27,8 +27,8 @@
           <td>{{ $trabalho->titulo }}</td>
           <td>{{ $trabalho->created_at }}</td>
           <td>
-            {{-- {{route('download', ['file' => $arquivo])}} --}}
-            <a  target="_new" style="font-size: 20px; color: #114048ff;" >
+            {{--  --}}
+            <a href="{{route('download', ['file' => $trabalho->anexoProjeto])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                 <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
             </a>
           </td>

@@ -19,6 +19,10 @@
 
     </div>
   </div>
+  <a href="{{ route('admin.atribuir', ['evento_id' => $evento->id]) }}" class="btn btn-primary">
+    Voltar
+  </a>
+
   <hr>
   <table class="table table-bordered">
     <thead>
@@ -115,6 +119,7 @@
       @endforeach      
     </tbody>
   </table>
+  
 </div>
 
 

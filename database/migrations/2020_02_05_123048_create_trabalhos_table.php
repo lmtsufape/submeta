@@ -16,7 +16,8 @@ class CreateTrabalhosTable extends Migration
         Schema::create('trabalhos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('titulo');
-            $table->boolean('aprovado')->nullable();
+            $table->string('status')->nullable();
+            $table->string('aprovado')->nullable();
             $table->string('linkGrupoPesquisa');
             $table->string('linkLattesEstudante');
             $table->string('pontuacaoPlanilha');
@@ -35,6 +36,7 @@ class CreateTrabalhosTable extends Migration
             $table->unsignedBigInteger('evento_id');
             $table->unsignedBigInteger('coordenador_id');
             $table->unsignedBigInteger('proponente_id');
+            $table->softDeletes();
 
             $table->timestamps();
         });
