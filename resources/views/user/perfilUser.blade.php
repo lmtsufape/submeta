@@ -91,13 +91,13 @@
         @if (!(is_null($adminResp)))
             <div class="form-group row justify-content-center">
                 <div class="col-md-12">
-                    Tem pemissão de Administrador Responsável
+                    Tem permissão de Administrador Responsável
                 </div>
             </div>
         @else 
         <div class="form-group row justify-content-center">
             <div class="col-md-12">
-                Não tem pemissão de Administrador Responsável
+                Não tem permissão de Administrador Responsável
             </div>
         </div>
         @endif
@@ -105,13 +105,13 @@
         @if (!(is_null($avaliador)))
             <div class="form-group row justify-content-center">
                 <div class="col-md-12">
-                    Tem pemissão de Aváliador
+                    Tem permissão de Avaliador
                 </div>
             </div>
         @else 
         <div class="form-group row justify-content-center">
             <div class="col-md-12">
-                Não tem pemissão de Aváliador
+                Não tem permissão de Avaliador
             </div>
         </div>
         @endif
@@ -119,7 +119,7 @@
         @if (!(is_null($proponente)))
             <div class="form-group row justify-content-center">
                 <div class="col-md-12">
-                    Tem pemissão de proponente
+                    Tem permissão de proponente
                 </div>
             </div>
             <div class="row subtitulo" style="margin-top:20px">
@@ -133,25 +133,29 @@
             <label class="col-form-label">{{ __('Cargo') }}</label>
             <input value="{{$proponente->cargo}}" id="cargo" type="text" class="form-control @error('cargo') is-invalid @enderror" name="cargo" autocomplete="cargo">
 
-            <label class="col-form-label">{{ __('Vinculo') }}</label>
+            <label class="col-form-label">{{ __('Vínculo') }}</label>
             <input value="{{$proponente->vinculo}}" id="vinculo" type="text" class="form-control @error('vinculo') is-invalid @enderror" name="vinculo" autocomplete="vinculo">
 
-            <label class="col-form-label">{{ __('Titulação Maxima') }}</label>
-            <input value="{{$proponente->titulacaoMaxima}}" id="titulacaoMaxima" type="text" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" autocomplete="titulacaoMaxima">
+            <label class="col-form-label">{{ __('Titulação Máxima') }}</label>
+            <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima">
+                <option value="" disabled selected hidden>-- Titulação --</option>
+                <option @if ($proponente->titulacaoMaxima == "Doutorado") selected @endif value="Doutorado">Doutorado</option>
+                <option @if ($proponente->titulacaoMaxima == "Mestrado") selected @endif value="Mestrado">Mestrado</option>
+                <option @if ($proponente->titulacaoMaxima == "Especialização") selected @endif value="Especialização">Especialização</option>
+                <option @if ($proponente->titulacaoMaxima == "Graduação") selected @endif value="Graduação">Graduação</option>
+                <option @if ($proponente->titulacaoMaxima == "Técnico") selected @endif value="Técnico">Técnico</option>                        
+            </select>
 
             <label class="col-form-label">{{ __('Ano Titulação') }}</label>
             <input value="{{$proponente->anoTitulacao}}" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
 
-            <label class="col-form-label">{{ __('Area de Formação') }}</label>
+            <label class="col-form-label">{{ __('Área de Formação') }}</label>
             <input value="{{$proponente->areaFormacao}}" id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" autocomplete="areaFormacao">
-
-            <label class="col-form-label">{{ __('Área') }}</label>
-            <input value="{{$proponente->grandeArea}}" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
-
+            
             <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
             <input value="{{$proponente->bolsistaProdutividade}}" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">
 
-            <label class="col-form-label">{{ __('Nivel') }}</label>
+            <label class="col-form-label">{{ __('Nível') }}</label>
             <input value="{{$proponente->nivel}}" id="nivel" type="text" class="form-control @error('nivel') is-invalid @enderror" name="nivel" autocomplete="nivel">
 
             <label class="col-form-label">{{ __('Link do Lattes') }}</label>
@@ -161,7 +165,7 @@
         @else 
         <div class="form-group row justify-content-center">
             <div class="col-md-12">
-                Não tem pemissão de proponente
+                Não tem permissão de proponente
             </div>
         </div>
         @endif
@@ -169,13 +173,13 @@
         @if (!(is_null($participante)))
             <div class="form-group row justify-content-center">
                 <div class="col-md-12">
-                    Tem pemissão de participante
+                    Tem permissão de participante
                 </div>
             </div>
         @else 
         <div class="form-group row justify-content-center">
             <div class="col-md-12">
-                Não tem pemissão de participante
+                Não tem permissão de participante
             </div>
         </div>
         @endif
@@ -375,13 +379,13 @@
         @if (!(is_null($adminResp)))
             <div class="form-group row justify-content-center">
                 <div class="col-md-12">
-                    Tem pemissão de Administrador Responsável
+                    Tem permissão de Administrador Responsável
                 </div>
             </div>
         @else 
         <div class="form-group row justify-content-center">
             <div class="col-md-12">
-                Não tem pemissão de Administrador Responsável
+                Não tem permissão de Administrador Responsável
             </div>
         </div>
         @endif
@@ -389,13 +393,13 @@
         @if (!(is_null($avaliador)))
             <div class="form-group row justify-content-center">
                 <div class="col-md-12">
-                    Tem pemissão de Aváliador
+                    Tem permissão de Avaliador
                 </div>
             </div>
         @else 
         <div class="form-group row justify-content-center">
             <div class="col-md-12">
-                Não tem pemissão de Aváliador
+                Não tem permissão de Avaliador
             </div>
         </div>
         @endif
@@ -403,7 +407,7 @@
         @if (!(is_null($proponente)))
             <div class="form-group row justify-content-center">
                 <div class="col-md-12">
-                    Tem pemissão de proponente
+                    Tem permissão de proponente
                 </div>
             </div>
 
@@ -418,25 +422,22 @@
             <label class="col-form-label">{{ __('Cargo') }}</label>
             <input value="{{$proponente->cargo}}" id="cargo" type="text" class="form-control @error('cargo') is-invalid @enderror" name="cargo" autocomplete="cargo">
 
-            <label class="col-form-label">{{ __('Vinculo') }}</label>
+            <label class="col-form-label">{{ __('Vínculo') }}</label>
             <input value="{{$proponente->vinculo}}" id="vinculo" type="text" class="form-control @error('vinculo') is-invalid @enderror" name="vinculo" autocomplete="vinculo">
 
-            <label class="col-form-label">{{ __('Titulação Maxima') }}</label>
+            <label class="col-form-label">{{ __('Titulação Máxima') }}</label>
             <input value="{{$proponente->titulacaoMaxima}}" id="titulacaoMaxima" type="text" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" autocomplete="titulacaoMaxima">
 
             <label class="col-form-label">{{ __('Ano Titulação') }}</label>
             <input value="{{$proponente->anoTitulacao}}" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
 
-            <label class="col-form-label">{{ __('Area de Formação') }}</label>
+            <label class="col-form-label">{{ __('Área de Formação') }}</label>
             <input value="{{$proponente->areaFormacao}}" id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" autocomplete="areaFormacao">
-
-            <label class="col-form-label">{{ __('Área') }}</label>
-            <input value="{{$proponente->grandeArea}}" id="grandeArea" type="text" class="form-control @error('grandeArea') is-invalid @enderror" name="grandeArea" autocomplete="grandeArea">
 
             <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
             <input value="{{$proponente->bolsistaProdutividade}}" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">
 
-            <label class="col-form-label">{{ __('Nivel') }}</label>
+            <label class="col-form-label">{{ __('Nível') }}</label>
             <input value="{{$proponente->nivel}}" id="nivel" type="text" class="form-control @error('nivel') is-invalid @enderror" name="nivel" autocomplete="nivel">
 
             <label class="col-form-label">{{ __('Link do Lattes') }}</label>
@@ -446,7 +447,7 @@
         @else 
         <div class="form-group row justify-content-center">
             <div class="col-md-12">
-                Não tem pemissão de proponente
+                Não tem permissão de proponente
             </div>
         </div>
         @endif
@@ -454,13 +455,13 @@
         @if (!(is_null($participante)))
             <div class="form-group row justify-content-center">
                 <div class="col-md-12">
-                    Tem pemissão de participante
+                    Tem permissão de participante
                 </div>
             </div>
         @else 
         <div class="form-group row justify-content-center">
             <div class="col-md-12">
-                Não tem pemissão de participante
+                Não tem permissão de participante
             </div>
         </div>
         @endif
