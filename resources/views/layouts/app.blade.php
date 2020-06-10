@@ -101,6 +101,7 @@
                                         <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
                                         {{ __('Perfil Administrador') }}
                                     </a>
+
                                 @endif
                                 @if(Auth::user()->AdministradorResponsavel != null)
                                     <a class="dropdown-item" href="{{ route('adminResp.index') }}">

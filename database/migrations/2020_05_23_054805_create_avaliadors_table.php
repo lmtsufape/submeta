@@ -16,6 +16,7 @@ class CreateAvaliadorsTable extends Migration
         Schema::create('avaliadors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');

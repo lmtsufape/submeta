@@ -7,11 +7,11 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 use App\User;
 use App\Participante;
 use App\Proponente;
-use App\GrandeArea;
 
 class RegisterController extends Controller
 {
@@ -65,16 +65,19 @@ class RegisterController extends Controller
             'instituicao' => ['required','string','max:255'],     
             'cargo' => ['required'],
             'vinculo' => ['required'],
-
-            'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
-            'anoTitulacao'=> ['required_with:titulacaoMaxima,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
-            'areaFormacao'=> ['required_with:titulacaoMaxima,anoTitulacao,grandeArea,area,subarea,bolsistaProdutividade,linkLattes'],
-            'grandeArea'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,area,subarea,bolsistaProdutividade,linkLattes'],
-            'area'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,subarea,bolsistaProdutividade,linkLattes'],
-            'subarea'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,bolsistaProdutividade,linkLattes'],
-            'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,subarea,linkLattes'],            
-            'linkLattes'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,grandeArea,area,subarea,bolsistaProdutividade'],
-
+            'outro' => ['required_if:vinculo,Outro'],
+            'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade,linkLattes'],
+            'titulacaoMaxima' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo']=== 'Pós-doutorando')),
+            'anoTitulacao'=> ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
+            'anoTitulacao' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+            'areaFormacao'=> ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
+            'areaFormacao' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+            'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],            
+            'bolsistaProdutividade' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+            'nivel' => ['required_if:bolsistaProdutividade,sim'],
+            'linkLattes'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
+            'linkLattes' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+            
         ]);
     }
 
@@ -106,17 +109,24 @@ class RegisterController extends Controller
             $user->save();
 
             $proponente = new Proponente();
-            $proponente->SIAPE = $data['SIAPE'];
+            if($data['SIAPE'] != null){
+                $proponente->SIAPE = $data['SIAPE'];
+            }
             $proponente->cargo = $data['cargo'];
-            $proponente->vinculo = $data['vinculo'];
+
+            if($data['vinculo'] != 'Outro'){
+                $proponente->vinculo = $data['vinculo'];
+            }else{
+                $proponente->vinculo = $data['outro'];
+            }
+
             $proponente->titulacaoMaxima = $data['titulacaoMaxima'];
             $proponente->anoTitulacao = $data['anoTitulacao'];
-            $proponente->areaFormacao = $data['areaFormacao'];
-            $proponente->grandeArea = $data['grandeArea'];
-            $proponente->area = $data['area'];
-            $proponente->subArea = $data['subarea'];
+            $proponente->areaFormacao = $data['areaFormacao'];            
             $proponente->bolsistaProdutividade = $data['bolsistaProdutividade'];
-            $proponente->nivel = $data['nivel'];
+            if($data['bolsistaProdutividade'] == 'sim'){
+                $proponente->nivel = $data['nivel'];
+            }
             $proponente->linkLattes = $data['linkLattes'];            
             
             $user->proponentes()->save($proponente);
@@ -126,8 +136,7 @@ class RegisterController extends Controller
         return $user;
     }
 
-    public function showRegistrationForm(){        
-        $grandesAreas = GrandeArea::orderBy('nome')->get();
-        return view('auth.register')->with(['grandeAreas' => $grandesAreas]);
+    public function showRegistrationForm(){      
+        return view('auth.register');
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Administrador;
 use App\User;
-use App\GrandeArea;
 use App\Avaliador;
 use App\AdministradorResponsavel;
 use App\Participante;
@@ -60,9 +59,8 @@ class AdministradorController extends Controller
         return view('administrador.visualizarParecer')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador]);
     }
 
-    public function create() {
-        $grandesAreas = GrandeArea::orderBy('nome')->get();
-        return view('administrador.novo_user')->with(['grandeAreas' => $grandesAreas]);
+    public function create() {    
+        return view('administrador.novo_user');
     }
 
     public function salvar(Request $request) {
@@ -125,10 +123,7 @@ class AdministradorController extends Controller
                 $proponente->vinculo = $request->vinculo;
                 $proponente->titulacaoMaxima = $request->titulacaoMaxima;
                 $proponente->anoTitulacao = $request->anoTitulacao;
-                $proponente->areaFormacao = $request->areaFormacao;
-                $proponente->grandeArea = $request->area;
-                $proponente->area = "teste";
-                $proponente->subArea = "teste";
+                $proponente->areaFormacao = $request->areaFormacao;                
                 $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
                 $proponente->nivel = $request->nivel;
                 $proponente->linkLattes = $request->linkLattes;
@@ -182,8 +177,7 @@ class AdministradorController extends Controller
                 'cargo' => 'required',
                 'titulacaoMaxima' => 'required',
                 'anoTitulacao' => 'required',
-                'areaFormacao' => 'required',
-                'grandeArea' => 'required',
+                'areaFormacao' => 'required',                
                 'bolsistaProdutividade' => 'required',
                 'nivel' => 'required',
                 'linkLattes' => 'required',
@@ -216,10 +210,7 @@ class AdministradorController extends Controller
                 $proponente->vinculo = $request->vinculo;
                 $proponente->titulacaoMaxima = $request->titulacaoMaxima;
                 $proponente->anoTitulacao = $request->anoTitulacao;
-                $proponente->areaFormacao = $request->areaFormacao;
-                $proponente->grandeArea = $request->grandeArea;
-                $proponente->area = "teste";
-                $proponente->subArea = "teste";
+                $proponente->areaFormacao = $request->areaFormacao;                
                 $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
                 $proponente->nivel = $request->nivel;
                 $proponente->linkLattes = $request->linkLattes;

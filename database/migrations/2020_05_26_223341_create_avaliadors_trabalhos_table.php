@@ -21,6 +21,7 @@ class CreateAvaliadorsTrabalhosTable extends Migration
             $table->string('AnexoParecer')->nullable();
             $table->boolean('status')->nullable();
             $table->string('recomendacao')->nullable();
+            $table->softDeletes();
 
             $table->unsignedBigInteger('trabalho_id');
             $table->unsignedBigInteger('avaliador_id');

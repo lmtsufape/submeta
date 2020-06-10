@@ -87,12 +87,13 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/areaModalidade/criar',  'AreaModalidadeController@store'                )->name('areaModalidade.store');
 
   //#########  Trabalho  ########################################
-  Route::get(   '/trabalho/submeter/{id}','TrabalhoController@index'                      )->name('trabalho.index');
-  Route::post(  '/trabalho/novaVersao',   'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
-  Route::post(  '/trabalho/criar',        'TrabalhoController@store'                      )->name('trabalho.store');
-  Route::get(   '/edital/{id}/projetos',  'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
-  Route::get(   '/projeto/{id}/editar',   'TrabalhoController@edit'                       )->name('trabalho.editar');
-  Route::post(   '/projeto/{id}/atualizar',   'TrabalhoController@update'                 )->name('trabalho.update');
+  Route::get(   '/trabalho/submeter/{id}',  'TrabalhoController@index'                      )->name('trabalho.index');
+  Route::post(  '/trabalho/novaVersao',     'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
+  Route::post(  '/trabalho/criar',          'TrabalhoController@store'                      )->name('trabalho.store');
+  Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
+  Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
+  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                     )->name('trabalho.update');
+  Route::get(   '/projeto/{id}/excluir',   'TrabalhoController@destroy'                    )->name('trabalho.destroy');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
