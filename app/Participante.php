@@ -9,7 +9,7 @@ class Participante extends Model
 	protected $fillable = ['name', 'user_id', 'trabalho_id', 'participante_id'];
 
     public function user(){
-        return $this->belongsToMany('App\User');
+        return $this->belongsTo('App\User');
     }
     public function trabalhos(){
       return $this->belongsToMany('App\Trabalho', 'trabalho_participante');
