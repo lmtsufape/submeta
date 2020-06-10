@@ -101,7 +101,7 @@
                                                 {{ __('Perfil Proponente') }}
                                             </a>
                                         @endif
-                                        @if(Auth::user()->participantes != null)
+                                        @if(Auth::user()->participantes->where('user_id', Auth::user()->id)->count() != 0)
                                             <a class="dropdown-item" href="{{ route('participante.index') }}">
                                                 <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
                                                 {{ __('Perfil Participante') }}

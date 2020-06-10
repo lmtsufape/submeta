@@ -38,7 +38,7 @@
                   {{ $evento->nome }}
               </a>
             </td>
-            <td>{{ $evento->created_at }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
             <td>
               @if(auth()->user()->id == $evento->criador_id)              
               <div class="btn-group dropright dropdown-options">
@@ -82,7 +82,6 @@
       <thead>
         <tr>   
           <th scope="col">Nome do Edital</th>
-          <th scope="col">Status</th>
           <th scope="col">Data de Criação</th>
           <th scope="col">Baixar edital</th>
           <th scope="col">Opção</th>
@@ -96,8 +95,7 @@
                   {{ $evento->nome }}
               </a>
             </td>
-            <td></td>
-            <td>{{ $evento->created_at }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
             <td style="text-align: center">
               <a href="{{ route('baixar.edital', ['id' => $evento->id]) }}">
                 <img src="{{asset('img/icons/file-download-solid.svg')}}" width="15px">

@@ -18,6 +18,12 @@ class ParticipanteSeeder extends Seeder
 
 	    ]);
 
+        // $participante = App\Participante::find(1);
+        // $user = App\User::where('name','Participante1')->first();
+        // $user->participantes()->save($participante);
+
+        // $user->save();
+
 	    $user_id = DB::table('users')->where('name','Participante2')->pluck('id');
 
     	DB::table('participantes')->insert([
