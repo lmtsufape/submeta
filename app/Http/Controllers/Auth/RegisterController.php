@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 use App\User;
 use App\Participante;
@@ -64,13 +65,19 @@ class RegisterController extends Controller
             'instituicao' => ['required','string','max:255'],     
             'cargo' => ['required'],
             'vinculo' => ['required'],
-
+            'outro' => ['required_if:vinculo,Outro'],
             'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade,linkLattes'],
+            'titulacaoMaxima' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
             'anoTitulacao'=> ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
+            'anoTitulacao' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
             'areaFormacao'=> ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
+            'areaFormacao' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
             'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],            
+            'bolsistaProdutividade' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
+            'nivel' => ['required_if:bolsistaProdutividade,sim'],
             'linkLattes'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
-
+            'linkLattes' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
+            
         ]);
     }
 
@@ -102,14 +109,24 @@ class RegisterController extends Controller
             $user->save();
 
             $proponente = new Proponente();
-            $proponente->SIAPE = $data['SIAPE'];
+            if($data['SIAPE'] != null){
+                $proponente->SIAPE = $data['SIAPE'];
+            }
             $proponente->cargo = $data['cargo'];
-            $proponente->vinculo = $data['vinculo'];
+
+            if($data['vinculo'] != 'Outro'){
+                $proponente->vinculo = $data['vinculo'];
+            }else{
+                $proponente->vinculo = $data['outro'];
+            }
+
             $proponente->titulacaoMaxima = $data['titulacaoMaxima'];
             $proponente->anoTitulacao = $data['anoTitulacao'];
             $proponente->areaFormacao = $data['areaFormacao'];            
             $proponente->bolsistaProdutividade = $data['bolsistaProdutividade'];
-            $proponente->nivel = $data['nivel'];
+            if($data['bolsistaProdutividade'] == 'sim'){
+                $proponente->nivel = $data['nivel'];
+            }
             $proponente->linkLattes = $data['linkLattes'];            
             
             $user->proponentes()->save($proponente);

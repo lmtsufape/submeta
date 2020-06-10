@@ -22,7 +22,7 @@ class ProponenteSeeder extends Seeder
         //'email' => '123123123',
         'cargo' => '123123123',
         'vinculo' => '123123123',
-        'titulacaoMaxima' => '123123123',
+        'titulacaoMaxima' => 'Mestrado',
         'anoTitulacao' => '123123123',
         'areaFormacao' => '123123123',        
         'bolsistaProdutividade' => '123123123',

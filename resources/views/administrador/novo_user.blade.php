@@ -47,10 +47,10 @@
 
                     <div>
                         <label for="tipo" class="col-form-label">{{ __('Tipo') }}</label>
-                        <select name="tipo" id="tipo" onchange="mudar()">
+                        <select name="tipo" id="tipo" onchange="mudar()" class="form-control">
                             @if(auth()->user()->tipo == 'administrador')
                                 <option value="administrador">Administrador</option>
-                                <option value="administradorResponsavel">Administrador responsavel</option>
+                                <option value="administradorResponsavel">Administrador responsável</option>
                             @endif
                             <option value="avaliador">Avaliador</option>
                             <option value="proponente">Proponente</option>
@@ -97,7 +97,8 @@
                     
                     <div>
                         <label for="vinculo" class="col-form-label">{{ __('Vínculo') }}</label>
-                        <select name="vinculo" id="">
+                        <select name="vinculo" id="" class="form-control">
+                            <option value="" disabled selected hidden>-- Vínculo --</option>
                             <option value="Servidor na ativa">Servidor na ativa</option>
                             <option value="Servidor aposentado">Servidor aposentado</option>
                             <option value="Professor visitante">Professor visitante</option>
@@ -106,7 +107,14 @@
                     </div>
                     
                     <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima') }}</label>
-                    <input id="titulacaoMaxima" type="text" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="" autocomplete="nome">
+                    <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima">
+                        <option value="" disabled selected hidden>-- Titulação --</option>
+                        <option value="Doutorado">Doutorado</option>
+                        <option value="Mestrado">Mestrado</option>
+                        <option value="Especialização">Especialização</option>
+                        <option value="Graduação">Graduação</option>
+                        <option value="Técnico">Técnico</option>                        
+                    </select>
 
                     @error('titulacaoMaxima')
                     <span class="invalid-feedback" role="alert">
@@ -134,15 +142,17 @@
                     
                     <div>
                         <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade') }}</label><br>
-                        <select name="bolsistaProdutividade" id="">
+                        <select name="bolsistaProdutividade" id="" class="form-control">
+                            <option value="" disabled selected hidden>-- Bolsista --</option>
                             <option value="nao">Não</option>
                             <option value="sim">Sim</option>
                         </select> 
                     </div>
                     
                     <div>
-                        <label for="nivel" class="col-form-label">{{ __('Nivel') }}</label>
-                        <select name="nivel" id="">
+                        <label for="nivel" class="col-form-label">{{ __('Nível') }}</label>
+                        <select name="nivel" id="" class="form-control">
+                            <option value="" disabled selected hidden>-- Nível --</option>
                             <option value="2">2</option>
                             <option value="1D">1D</option>
                             <option value="1D">1B</option>
@@ -151,7 +161,7 @@
                         </select> 
                     </div>
 
-                    <label for="linkLattes" class="col-form-label">{{ __('Link do curriculum lattes') }}</label>
+                    <label for="linkLattes" class="col-form-label">{{ __('Link do currículo Lattes') }}</label>
                     <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="" autocomplete="nome">
 
                     @error('linkLattes')
