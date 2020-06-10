@@ -7,14 +7,20 @@
         <div class="col-sm-12">
             <h2 style="margin-top: 100px; ">{{ __('Criar perfil de proponente') }}</h2>
         </div>
-
+        @if(session('mensagem'))
+        <div class="col-sm-12">
+            <br>
+            <div class="alert alert-danger">
+                <p>{{session('mensagem')}}</p>
+            </div>
+        </div>
+        @endif
     </div>
     <br>
     <form method="POST" action="{{ route('proponente.store') }}">
         @csrf
         <div class="col-sm-11">
 
-            
             <div>
                 <h4>Dados do proponente</h4>
             </div>
@@ -52,34 +58,29 @@
                     @enderror
                 </div>
 
-                <div class="col-md-4" style="display: none;" id="divOutro">
+                <div class="col-md-4" style="display: block;" id="divOutro">
                     <label for="outro" class="col-form-label">{{ __('Qual?') }}</label>
                     <input id="outro" type="text" class="form-control @error('outro') is-invalid @enderror" name="outro">
+
+                    @error('outro')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                 </div>
             </div>
             <div id="proponente" style="display: block;">
                 <div class="form-group row">
 
                     <div class="col-md-4">
-                        <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
-                        <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="{{ old('SIAPE') }}" autocomplete="nome">
-
-                        @error('SIAPE')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-4">
                         <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima*') }}</label>
                         <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}">
                             <option value="" disabled selected hidden>-- Titulação --</option>
-                            <option value="Doutorado">Doutorado</option>
-                            <option value="Mestrado">Mestrado</option>
-                            <option value="Especialização">Especialização</option>
-                            <option value="Graduação">Graduação</option>
-                            <option value="Técnico">Técnico</option>
+                            <option @if(old('titulacaoMaxima')=='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
+                            <option @if(old('titulacaoMaxima')=='Mestrado' ) selected @endif value="Mestrado">Mestrado</option>
+                            <option @if(old('titulacaoMaxima')=='Especialização' ) selected @endif value="Especialização">Especialização</option>
+                            <option @if(old('titulacaoMaxima')=='Graduação' ) selected @endif value="Graduação">Graduação</option>
+                            <option @if(old('titulacaoMaxima')=='Técnico' ) selected @endif value="Técnico">Técnico</option>
                         </select>
 
                         @error('titulacaoMaxima')
@@ -99,9 +100,6 @@
                         </span>
                         @enderror
                     </div>
-                </div>
-
-                <div class="form-group row">
                     <div class="col-md-4">
                         <label for="areaFormacao" class="col-form-label">{{ __('Área de Formação*') }}</label>
                         <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="{{ old('areaFormacao') }}" autocomplete="nome">
@@ -111,7 +109,21 @@
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
-                    </div>                  
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-md-4">
+                        <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
+                        <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="{{ old('SIAPE') }}" autocomplete="nome">
+
+                        @error('SIAPE')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
 
                     <div class="col-md-4">
                         <label for="linkLattes" class="col-form-label">{{ __('Link do currículo Lattes*') }}</label>
@@ -128,8 +140,8 @@
                         <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade*') }}</label><br>
                         <select name="bolsistaProdutividade" id="bolsistaProdutividade" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" onchange="mudarNivel()">
                             <option value="" disabled selected hidden>-- Bolsista --</option>
-                            <option value="nao">Não</option>
-                            <option value="sim">Sim</option>
+                            <option @if(old('bolsistaProdutividade')=='nao' ) selected @endif value="nao">Não</option>
+                            <option @if(old('bolsistaProdutividade')=='sim' ) selected @endif value="sim">Sim</option>
                         </select>
                         @error('bolsistaProdutividade')
                         <span class="invalid-feedback" role="alert">
@@ -138,7 +150,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-1" id="nivelInput" style="display: none;">
+                    <div class="col-md-1" id="nivelInput" style="display: block;">
                         <label for="nivel" class="col-form-label">{{ __('Nível*') }}</label>
                         <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
                             <option value="" disabled selected hidden></option>
@@ -167,7 +179,7 @@
                     </button>
                 </div>
             </div>
-          
+
         </div>
     </form>
 </div>
@@ -226,5 +238,8 @@
         }
         console.log("a");
     }
+
+    window.onload = mudarNivel();
+    window.onload = outroVinculo();
 </script>
 @endsection

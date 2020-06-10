@@ -61,7 +61,7 @@
                 </span>
                 @enderror
             </div>
-                        
+
         </div>
 
         {{-- Email | Senha | Confirmar Senha --}}
@@ -76,7 +76,7 @@
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-            </div>    
+            </div>
 
             <div class="col-md-4">
                 <label for="password" class="col-form-label">{{ __('Senha*') }}</label>
@@ -93,7 +93,7 @@
                 <label for="password-confirm" class="col-form-label">{{ __('Confirme a Senha*') }}</label>
                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
             </div>
-            
+
         </div>
 
         <div class="form-group row">
@@ -101,9 +101,9 @@
                 <label for="cargo" class="col-form-label">{{ __('Cargo*') }}</label>
                 <select id="cargo" name="cargo" class="form-control @error('cargo') is-invalid @enderror" onchange="mudar()">
                     <option value="" disabled selected hidden>-- Cargo --</option>
-                    <option @if(old('cargo') == 'Professor') selected @endif value="Professor">Professor</option>
-                    <option @if(old('cargo') == 'Técnico') selected @endif value="Técnico">Técnico</option>
-                    <option @if(old('cargo') == 'Estudante') selected @endif value="Estudante">Estudante</option>
+                    <option @if(old('cargo')=='Professor' ) selected @endif value="Professor">Professor</option>
+                    <option @if(old('cargo')=='Técnico' ) selected @endif value="Técnico">Técnico</option>
+                    <option @if(old('cargo')=='Estudante' ) selected @endif value="Estudante">Estudante</option>
                 </select>
 
                 @error('cargo')
@@ -117,11 +117,11 @@
                 <label for="vinculo" class="col-form-label">{{ __('Vínculo*') }}</label>
                 <select name="vinculo" id="vinculo" class="form-control @error('vinculo') is-invalid @enderror" onchange="mudar()">
                     <option value="" disabled selected hidden>-- Vínculo --</option>
-                    <option @if(old('vinculo') == 'Servidor na ativa') selected @endif value="Servidor na ativa">Servidor na ativa</option>
-                    <option @if(old('vinculo') == 'Servidor aposentado') selected @endif value="Servidor aposentado">Servidor aposentado</option>
-                    <option @if(old('vinculo') == 'Professor visitante') selected @endif value="Professor visitante">Professor visitante</option>
-                    <option @if(old('vinculo') == 'Pós-doutorando') selected @endif value="Pós-doutorando">Pós-doutorando</option>
-                    <option value="Outro">Outro</option>
+                    <option @if(old('vinculo')=='Servidor na ativa' ) selected @endif value="Servidor na ativa">Servidor na ativa</option>
+                    <option @if(old('vinculo')=='Servidor aposentado' ) selected @endif value="Servidor aposentado">Servidor aposentado</option>
+                    <option @if(old('vinculo')=='Professor visitante' ) selected @endif value="Professor visitante">Professor visitante</option>
+                    <option @if(old('vinculo')=='Pós-doutorando' ) selected @endif value="Pós-doutorando">Pós-doutorando</option>
+                    <option @if(old('vinculo')=='Outro' ) selected @endif value="Outro">Outro</option>
                 </select>
 
                 @error('vinculo')
@@ -131,36 +131,29 @@
                 @enderror
             </div>
 
-            <div class="col-md-4" style="display: none;" id="divOutro">
-                <label for="outro" class="col-form-label">{{ __('Qual?') }}</label>
-                <input id="outro" type="text" class="form-control @error('outro') is-invalid @enderror" name="outro">
+            <div class="col-md-4" style="display: block;" id="divOutro">
+                <label for="outro" class="col-form-label">{{ __('Qual?*') }}</label>
+                <input id="outro" type="text" class="form-control @error('outro') is-invalid @enderror" name="outro" value="{{ old('outro') }}">
+
+                @error('outro')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
         </div>
 
-        
         <div id="proponente" style="display: block;">
             <div class="form-group row">
-                            
-                <div class="col-md-4">
-                    <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
-                    <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="{{ old('SIAPE') }}" autocomplete="nome">
-
-                    @error('SIAPE')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>            
-
                 <div class="col-md-4">
                     <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima*') }}</label>
                     <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome">
                         <option value="" disabled selected hidden>-- Titulação --</option>
-                        <option @if(old('titulacaoMaxima') == 'Doutorado') selected @endif value="Doutorado">Doutorado</option>
-                        <option @if(old('titulacaoMaxima') == 'Mestrado') selected @endif value="Mestrado">Mestrado</option>
-                        <option @if(old('titulacaoMaxima') == 'Especialização') selected @endif value="Especialização">Especialização</option>
-                        <option @if(old('titulacaoMaxima') == 'Graduação') selected @endif value="Graduação">Graduação</option>
-                        <option @if(old('titulacaoMaxima') == 'Técnico') selected @endif value="Técnico">Técnico</option>                        
+                        <option @if(old('titulacaoMaxima')=='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
+                        <option @if(old('titulacaoMaxima')=='Mestrado' ) selected @endif value="Mestrado">Mestrado</option>
+                        <option @if(old('titulacaoMaxima')=='Especialização' ) selected @endif value="Especialização">Especialização</option>
+                        <option @if(old('titulacaoMaxima')=='Graduação' ) selected @endif value="Graduação">Graduação</option>
+                        <option @if(old('titulacaoMaxima')=='Técnico' ) selected @endif value="Técnico">Técnico</option>
                     </select>
 
                     @error('titulacaoMaxima')
@@ -180,9 +173,6 @@
                     </span>
                     @enderror
                 </div>
-            </div>
-
-            <div class="form-group row">
                 <div class="col-md-4">
                     <label for="areaFormacao" class="col-form-label">{{ __('Área de Formação*') }}</label>
                     <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="{{ old('areaFormacao') }}" autocomplete="nome">
@@ -192,7 +182,21 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                </div>                
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                <div class="col-md-4">
+                    <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
+                    <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="{{ old('SIAPE') }}" autocomplete="nome">
+
+                    @error('SIAPE')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
 
                 <div class="col-md-4">
                     <label for="linkLattes" class="col-form-label">{{ __('Link do currículo Lattes*') }}</label>
@@ -209,8 +213,8 @@
                     <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade*') }}</label><br>
                     <select name="bolsistaProdutividade" id="bolsistaProdutividade" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" onchange="mudarNivel()">
                         <option value="" disabled selected hidden>-- Bolsista --</option>
-                        <option value="nao">Não</option>
-                        <option value="sim">Sim</option>
+                        <option @if(old('bolsistaProdutividade')=='nao' ) selected @endif value="nao">Não</option>
+                        <option @if(old('bolsistaProdutividade')=='sim' ) selected @endif value="sim">Sim</option>
                     </select>
                     @error('bolsistaProdutividade')
                     <span class="invalid-feedback" role="alert">
@@ -219,7 +223,7 @@
                     @enderror
                 </div>
 
-                <div class="col-md-1" id="nivelInput" style="display: none;">
+                <div class="col-md-1" id="nivelInput" style="display: block;">
                     <label for="nivel" class="col-form-label">{{ __('Nível*') }}</label>
                     <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
                         <option value="" disabled selected hidden></option>
@@ -234,10 +238,10 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                </div>                
+                </div>
             </div>
         </div>
-    
+
         <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
             <div class="col-md-6" style="padding-left:0">
@@ -284,27 +288,30 @@
         outroVinculo();
     }
 
-    function outroVinculo(){
+    function outroVinculo() {
         var comboBoxVinculo = document.getElementById('vinculo');
         var divOutro = document.getElementById('divOutro');
 
-        if(comboBoxVinculo.value === "Outro"){
+        if (comboBoxVinculo.value === "Outro") {
             divOutro.style.display = "block";
-        }else{
+        } else {
             divOutro.style.display = "none";
         }
     }
 
-    function mudarNivel(){
+    window.onload = mudarNivel();
+    window.onload = outroVinculo();
+    window.onload = mudar();
+
+    function mudarNivel() {
         var bolsista = document.getElementById('bolsistaProdutividade');
         var nivel = document.getElementById('nivelInput');
 
-        if(bolsista.value === "sim"){
+        if (bolsista.value === "sim") {
             nivel.style.display = "block";
-        }else{
+        } else {
             nivel.style.display = "none";
         }
-        console.log("a");
     }
 </script>
 @endsection

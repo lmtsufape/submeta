@@ -67,16 +67,16 @@ class RegisterController extends Controller
             'vinculo' => ['required'],
             'outro' => ['required_if:vinculo,Outro'],
             'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade,linkLattes'],
-            'titulacaoMaxima' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
+            'titulacaoMaxima' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo']=== 'Pós-doutorando')),
             'anoTitulacao'=> ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
-            'anoTitulacao' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
+            'anoTitulacao' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'areaFormacao'=> ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
-            'areaFormacao' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
+            'areaFormacao' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],            
-            'bolsistaProdutividade' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
+            'bolsistaProdutividade' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'nivel' => ['required_if:bolsistaProdutividade,sim'],
             'linkLattes'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
-            'linkLattes' => Rule::requiredIf($data['cargo'] !== 'Estudante' || ($data['cargo'] === 'Estudante' && $data['vinculo'] === 'Pós-doutorando')),
+            'linkLattes' => Rule::requiredIf( (isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             
         ]);
     }
