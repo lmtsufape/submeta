@@ -22,141 +22,144 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 </head>
+
 <body>
-    <header>
-        {{-- Navbar --}}
-        <nav class="navbar navbar-light backgroud-color-default shadow">
-            <div class="container">
-                <div class="links-menu">
-                    <a class="navbar-brand" href="{{route('home-user')}}">
-                        <img id="logo-menu" src="{{ asset('img/icons/logo_submeta_pemenor.png') }}" alt="">
-                    </a>
-                </div>
-                <div class="navbar-text">
-                    @guest
-                        <a href="#" class="btn navbar-text negrito" style="color: rgb(0, 140, 255);">Editais</a>
-                        <a href="#" class="btn dropdown-toggle negrito" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 140, 255);">Login</a>
-                        <div class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: 380px;">
-                            <form method="POST" action="{{ route('login') }}">
-                                @csrf
-                                <div style="padding: 20px;">
-                                    <div style="color: rgb(0, 140, 255); position: relative; top: 5px; text-align: center; font-size: 20px;">
-                                        Entrar
-                                    </div>
-                                    <div style="position: relative; top: 30px; left: 1px;">
-                                        
-                                        <label for="email" class="col-form-label negrito"  style="color: rgb(0, 140, 255);">{{ __('Endereço de E-mail') }}</label>
-                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-
-                                        <label for="password" class="col-form-label negrito" style="color: rgb(0, 140, 255);">{{ __('Senha') }}</label>
-                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div style="position: relative; top: 40px;">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-        
-                                            <label class="form-check-label" for="remember">
-                                                {{ __('Lembrar Senha') }}
-                                            </label>
+    <div id="app">
+        <header>
+            {{-- Navbar --}}
+            <nav class="navbar navbar-light backgroud-color-default shadow">
+                <div class="container">
+                    <div class="links-menu">
+                        <a class="navbar-brand" href="{{route('home-user')}}">
+                            <img id="logo-menu" src="{{ asset('img/icons/logo_submeta_pemenor.png') }}" alt="">
+                        </a>
+                    </div>
+                    <div class="navbar-text">
+                        @guest
+                            <a href="#" class="btn navbar-text negrito" style="color: rgb(0, 140, 255);">Editais</a>
+                            <a href="#" class="btn dropdown-toggle negrito" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 140, 255);">Login</a>
+                            <div class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: 380px;">
+                                <form method="POST" action="{{ route('login') }}">
+                                    @csrf
+                                    <div style="padding: 20px;">
+                                        <div style="color: rgb(0, 140, 255); position: relative; top: 5px; text-align: center; font-size: 20px;">
+                                            Entrar
+                                        </div>
+                                        <div style="position: relative; top: 30px; left: 1px;">
+                                            
+                                            <label for="email" class="col-form-label negrito"  style="color: rgb(0, 140, 255);">{{ __('Endereço de E-mail') }}</label>
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+    
+                                            @error('email')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+    
+                                            <label for="password" class="col-form-label negrito" style="color: rgb(0, 140, 255);">{{ __('Senha') }}</label>
+                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+    
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div style="position: relative; top: 40px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+            
+                                                <label class="form-check-label" for="remember">
+                                                    {{ __('Lembrar Senha') }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div style="position: relative; top: 50px;">
+                                            <button class="btn botao-entrar" style="color: white;">
+                                                {{__('Entrar')}}
+                                            </button>
+                                            <a href="{{ route('password.request') }}" style="font-weight: normal; color: rgb(44, 96, 209);">{{ __('Esqueseu sua senha?')}}</a>
                                         </div>
                                     </div>
-                                    <div style="position: relative; top: 50px;">
-                                        <button class="btn botao-entrar" style="color: white;">
-                                            {{__('Entrar')}}
-                                        </button>
-                                        <a href="{{ route('password.request') }}" style="font-weight: normal; color: rgb(44, 96, 209);">{{ __('Esqueseu sua senha?')}}</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <a href="{{ route('register') }}" class="btn navbar-text btn-azul-destaque negrito" style="color:  rgb(0, 140, 255);">{{ __('Cadastre-se') }}</a>
-                    @else
-                        <a href="{{route('visualizarEvento')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Home</a>
-                        
-                        <a id="navbarDropdown" class="btn navbar-text negrito dropdown-toggle" style="color: rgb(0, 140, 255);" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }} <span class="caret"></span>
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right" style="right: 5%;" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('user.perfil') }}">
-                                <img src="{{asset('img/icons/perfil.svg')}}" alt="">
-                                {{ __('Minha Conta') }}
-                            </a>                                        
-                            @if(Auth::user()->administradors != null)
-                                <a class="dropdown-item" href="{{ route('admin.index') }}">
-                                    <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                    {{ __('Perfil Administrador') }}
-                                </a>
-                            @endif
-                            @if(Auth::user()->AdministradorResponsavel != null)
-                                <a class="dropdown-item" href="{{ route('adminResp.index') }}">
-                                    <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                    {{ __('Perfil Pro-reitor') }}
-                                </a>
-                            @endif
-                            @if(Auth::user()->coordenadorComissao != null)
-                                <a class="dropdown-item" href="{{ route('coordenador.index') }}">
-                                    <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                    {{ __('Perfil Coordenador') }}
-                                </a>
-                            @endif
-                            @if(Auth::user()->avaliadors != null)
-                                <a class="dropdown-item" href="{{ route('avaliador.index') }}">
-                                    <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                    {{ __('Perfil Avaliador') }}
-                                </a>
-                            @endif
-                            @if(Auth::user()->proponentes != null)
-                                <a class="dropdown-item" href="{{ route('proponente.index') }}">
-                                    <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                    {{ __('Perfil Proponente') }}
-                                </a>
-                            @endif
-                            @if(Auth::user()->participantes != null)
-                                <a class="dropdown-item" href="{{ route('participante.index') }}">
-                                    <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                    {{ __('Perfil Participante') }}
-                                </a>
-                            @endif
+                                </form>
+                            </div>
+                            <a href="{{ route('register') }}" class="btn navbar-text btn-azul-destaque negrito" style="color:  rgb(0, 140, 255);">{{ __('Cadastre-se') }}</a>
+                        @else
+                            <a href="{{route('visualizarEvento')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Home</a>
                             
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
-                                {{ __('Sair') }}
+                            <a id="navbarDropdown" class="btn navbar-text negrito dropdown-toggle" style="color: rgb(0, 140, 255);" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
-
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </div>
-                    @endguest
-                </div>                 
-            </div>
-        </nav>
-    </header>
+    
+                            <div class="dropdown-menu dropdown-menu-right" style="right: 5%;" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('user.perfil') }}">
+                                    <img src="{{asset('img/icons/perfil.svg')}}" alt="">
+                                    {{ __('Minha Conta') }}
+                                </a>                                        
+                                @if(Auth::user()->administradors != null)
+                                    <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                        {{ __('Perfil Administrador') }}
+                                    </a>
+                                @endif
+                                @if(Auth::user()->AdministradorResponsavel != null)
+                                    <a class="dropdown-item" href="{{ route('adminResp.index') }}">
+                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                        {{ __('Perfil Pro-reitor') }}
+                                    </a>
+                                @endif
+                                @if(Auth::user()->coordenadorComissao != null)
+                                    <a class="dropdown-item" href="{{ route('coordenador.index') }}">
+                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                        {{ __('Perfil Coordenador') }}
+                                    </a>
+                                @endif
+                                @if(Auth::user()->avaliadors != null)
+                                    <a class="dropdown-item" href="{{ route('avaliador.index') }}">
+                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                        {{ __('Perfil Avaliador') }}
+                                    </a>
+                                @endif
+                                @if(Auth::user()->proponentes != null)
+                                    <a class="dropdown-item" href="{{ route('proponente.index') }}">
+                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                        {{ __('Perfil Proponente') }}
+                                    </a>
+                                @endif
+                                @if(Auth::user()->participantes != null)
+                                    <a class="dropdown-item" href="{{ route('participante.index') }}">
+                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                        {{ __('Perfil Participante') }}
+                                    </a>
+                                @endif
+                                
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    <img src="{{asset('img/icons/sign-out-alt-solid.svg')}}" alt="">
+                                    {{ __('Sair') }}
+                                </a>
+    
+    
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        @endguest
+                    </div>                 
+                </div>
+            </nav>
+        </header>
     <section>
         @hasSection ('sidebar')
-        @yield('sidebar')
-    @endif
+            @yield('sidebar')
+        @endif
 
-    {{-- <main class="container-fluid"> --}}
-    @yield('content')
-    {{-- </main> --}}
+        {{-- <main class="container-fluid"> --}}
+        @yield('content')
+        {{-- </main> --}}
     </section>
+    </div>
     @hasSection ('javascript')
     @yield('javascript')
     @else
