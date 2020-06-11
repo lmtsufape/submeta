@@ -1,7 +1,7 @@
 /*
-color primary: #114048ff
-color secondary: #196572ff
-color dark: #071b1eff
+color primary: rgb(0, 140, 255);
+color secondary: rgb(12, 45, 136);
+color dark: rgb(172, 172, 172);
 
 */
 
@@ -12,7 +12,7 @@ body{
 }
 
 .curved{
-    background-color: #114048ff;
+    background-color: rgb(0, 140, 255);
     color: #fff;
     /* text-align: center; */
     height: 45vh;
@@ -81,7 +81,7 @@ body{
     height: 70px;
 }
 .info-modulo:hover{
-    box-shadow: 10px 10px #114048ff;
+    box-shadow: 10px 10px rgb(0, 140, 255);
     margin-top: -10px;
     transition: 0.5s;
 }
