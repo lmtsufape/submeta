@@ -564,6 +564,8 @@
             $.each(dados, function(i, obj){
                 option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
             }) 
+          } else {
+            var option = "<option>-- Área --</option>";
           }
           $('#area').html(option).show(); 
         })
@@ -578,6 +580,8 @@
             $.each(dados, function(i, obj){
                 option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
             }) 
+          } else {
+            var option = "<option>-- Sub Área --</option>";
           }
           $('#subArea').html(option).show(); 
         })

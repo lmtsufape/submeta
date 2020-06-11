@@ -91,9 +91,10 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/trabalho/novaVersao',     'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
   Route::post(  '/trabalho/criar',          'TrabalhoController@store'                      )->name('trabalho.store');
   Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
+  Route::get(   '/projeto/{id}/visualizar', 'TrabalhoController@show'                       )->name('trabalho.show');
   Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
   Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                     )->name('trabalho.update');
-  Route::get(   '/projeto/{id}/excluir',   'TrabalhoController@destroy'                    )->name('trabalho.destroy');
+  Route::get(   '/projeto/{id}/excluir',   'TrabalhoController@destroy'                     )->name('trabalho.destroy');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
