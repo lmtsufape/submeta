@@ -114,9 +114,9 @@
         data: dados, //x-www-form-urlencoded
         dataType: 'json',
         success: dados => {
-
+          //console.log(dados);
           checkBox.checked = dados[0];
-          console.log(checkBox.checked)
+          //console.log(checkBox.checked)
 
         },
         error: erro => { console.log(erro) }

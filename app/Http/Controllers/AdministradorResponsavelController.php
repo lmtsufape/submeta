@@ -32,6 +32,7 @@ class AdministradorResponsavelController extends Controller
         $user = User::where('id', $request->user_id)->first();
         $isAvaliador = Avaliador::where('user_id', $request->user_id )->count();
         $avaliador = new Avaliador();
+        $avaliador->area_id = 1;
         $avaliador->save();
         if($isAvaliador == 0){            
             
