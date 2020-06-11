@@ -51,7 +51,7 @@
                           Visualizar projeto
                         </a>                      
                         @if($projeto->status == 'Submetido')
-                          <a href="{{ route('trabalho.destroy', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                          <a href="{{ route('trabalho.excluirParticipante', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Sair do projeto
                           </a>
                         @endif                        

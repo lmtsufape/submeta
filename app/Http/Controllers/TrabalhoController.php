@@ -539,6 +539,16 @@ class TrabalhoController extends Controller
         return redirect()->back();
     }
 
+    public function excluirParticipante($id){      
+      $participante = Participante::where('user_id', Auth()->user()->id)
+                                  ->where('trabalho_id', $id)->first();                          
+
+      $participante->trabalhos()->detach($id);      
+      $participante->delete();
+
+      return redirect()->back();
+    }
+
     public function novaVersao(Request $request){
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();

@@ -96,6 +96,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
   Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                     )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',   'TrabalhoController@destroy'                    )->name('trabalho.destroy');
+  Route::get(   '/projeto/{id}/excluirParticipante',   'TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
