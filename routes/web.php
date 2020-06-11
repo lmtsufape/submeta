@@ -167,6 +167,7 @@ Route::prefix('naturezas')->group(function(){
   Route::get('/area/editar/{id}',       'AreaController@edit'                       )->name('area.editar')->middleware('checkAdministrador');
   Route::post('/area/atualizar/{id}',   'AreaController@update'                     )->name('area.atualizar')->middleware('checkAdministrador');
   Route::post('/area/excluir/{id}',     'AreaController@destroy'                    )->name('area.deletar')->middleware('checkAdministrador');
+  Route::get('/areas/{id}',            'AreaController@consulta'                   )->name('area.consulta');
       
   //### Rotas das subareas, id's de nova e salvar são os ids da área a qual a nova subárea pertence #####
   Route::get('/subareas',                 'SubAreaController@index'                   )->name('subarea.index')->middleware('checkAdministrador');
@@ -176,6 +177,7 @@ Route::prefix('naturezas')->group(function(){
   Route::get('/subarea/editar/{id}',      'SubAreaController@edit'                    )->name('subarea.editar')->middleware('checkAdministrador');
   Route::post('/subarea/atualizar/{id}',  'SubAreaController@update'                  )->name('subarea.atualizar')->middleware('checkAdministrador');
   Route::post('/subarea/excluir/{id}',    'SubAreaController@destroy'                 )->name('subarea.deletar')->middleware('checkAdministrador');
+  Route::get('/subarea/{id}',            'SubAreaController@consulta'                )->name('subarea.consulta');
 
 });
  

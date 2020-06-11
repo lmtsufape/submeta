@@ -40,15 +40,11 @@ class TrabalhoController extends Controller
     public function index($id)
     {
         $edital = Evento::find($id);
-        $grandeAreas = GrandeArea::all();
-        $areas = Area::all();
-        $subAreas = SubArea::all();
+        $grandeAreas = GrandeArea::orderBy('nome')->get();
         $funcaoParticipantes = FuncaoParticipantes::all(); 
         return view('evento.submeterTrabalho',[
                                             'edital'             => $edital,
                                             'grandeAreas'        => $grandeAreas,
-                                            'areas'              => $areas,
-                                            'subAreas'           => $subAreas,
                                             'funcaoParticipantes'=> $funcaoParticipantes               
                                               
                                             ]);
