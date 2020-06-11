@@ -8,10 +8,10 @@
     <div class="row" >
       <div class="col-sm-10">
         <h3>Trabalhos do Edital:  {{ $evento->nome }}</h3> 
-        {{-- <h6>Data inicioSubmissao: {{ date('d/m/Y', strtotime($evento->inicioSubmissao)) }}</h6>  --}}
-        <h6>Data fim da submissao:  {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</h6> 
-{{--         <h6>Data inicioRevisao:   {{ date('d/m/Y', strtotime($evento->inicioRevisao)) }}</h6> 
-        <h6>Data fimRevisao:      {{ date('d/m/Y', strtotime($evento->fimRevisao)) }}</h6>  --}}
+        {{-- <h6>Data inicioSubmissao: {{ date('d/m/Y', strtotime($evento->inicioSubmissao)) }}</h6> 
+        <h6>Data fim da submissao:  {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</h6>  --}}
+        <h6>Data inicioRevisao:   {{ date('d/m/Y', strtotime($evento->inicioRevisao)) }}</h6> 
+        <h6>Data fimRevisao:      {{ date('d/m/Y', strtotime($evento->fimRevisao)) }}</h6> 
         <h6>Data do resultado:       {{ date('d/m/Y', strtotime($evento->resultado)) }}</h6> 
       </div>
     </div>

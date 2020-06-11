@@ -16,7 +16,8 @@
     <thead>
       <tr>   
         <th scope="col">Nome do Edital</th>
-        <th scope="col">Data de Criação</th>
+        <th scope="col">Data de Inicio da Revisão</th>
+        <th scope="col">Data de Fim da Revisão</th>
         <th scope="col">Opção</th>
       </tr>
     </thead>
@@ -26,7 +27,8 @@
           <td>            
               {{ $evento->nome }}
           </td>
-          <td>10/05/2020</td>
+          <td>{{ date('d/m/Y', strtotime($evento->inicioRevisao)) }}</td>
+          <td>{{ date('d/m/Y', strtotime($evento->fimRevisao)) }}</td>
           <td>
             <div class="btn-group dropright dropdown-options">
                 <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
