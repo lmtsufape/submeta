@@ -35,6 +35,7 @@ Route::post('/proponente/cadastro', 'ProponenteController@store'                
 
 //######### Participante ########################################
 Route::get('/participante/index', 'ParticipanteController@index'                  )->name('participante.index');
+Route::get('/participante/edital/{id}',          'ParticipanteController@edital'  )->name('participante.edital');
 
 //######### Rotas Administrador #################################
 Route::get('/perfil-usuario', 'UserController@minhaConta')->middleware('auth'     )->name('user.perfil');
