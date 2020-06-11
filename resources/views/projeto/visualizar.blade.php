@@ -255,12 +255,9 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <h5>Dados do plano de trabalho</h5>
-                                        @foreach ($arquivos as $arquivo)
-                                                                @if($arquivo->participanteId === $participante->id)
-                                                                    <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">Plano de trabalho atual</a>
-                                                                @endif
-                                                            @endforeach
+                                        <h5>Dados do plano de trabalho</h5>   
+                                        @foreach($arquivos as $arquivo)                                            
+                                        @if($arquivo->participanteId === $participante->id)  
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div id="planoTrabalho">
@@ -279,32 +276,31 @@
                                                         </div>
                                                         {{-- Arquivo  --}}
                                                         <div class="col-sm-7">
-                                                            <label for="nomeTrabalho">Anexo</label>
-                                                            
+                                                            <label for="nomeTrabalho">Anexo</label>                                                            
+                                                                <p>
+                                                                    <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">Plano de trabalho atual</a>
+</p>                                                               
                                                         </div>                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        @endif
+                                        @endforeach
                                     </div>
                                     @endif
                                     @endforeach
                                     @endforeach
-                                </div>
-                                <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
+                                </div>                               
                             </div>
                         </div>
 
                     </p>
                     <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+                        <div class="col-md-12">
+                            <a href="{{route('participante.edital',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Voltar</a>
                         </div>
-                        <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary" style="width:100%">
-                                {{ __('Enviar') }}
-                            </button>
-                        </div>
+                        
                     </div>
 
                 </div>

@@ -277,10 +277,8 @@ class TrabalhoController extends Controller
     {
         //
       $projeto = Trabalho::find($id);
-      $edital = Evento::find($projeto->evento_id);
-      //dd($projeto);
-      $grandeArea = GrandeArea::where('id', $projeto->grande_area_id)->select('nome')->first();
-      //dd($grandeArea->nome);
+      $edital = Evento::find($projeto->evento_id);     
+      $grandeArea = GrandeArea::where('id', $projeto->grande_area_id)->select('nome')->first();   
       $area = Area::where('id', $projeto->area_id)->select('nome')->first();
       $subarea = Subarea::where('id', $projeto->sub_area_id)->select('nome')->first();
       $proponente = Proponente::find($projeto->proponente_id);
@@ -289,7 +287,6 @@ class TrabalhoController extends Controller
       $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
       $users = User::whereIn('id', $participantesUsersIds)->get();
       $arquivos = Arquivo::where('trabalhoId', $id)->get();
-
       return view('projeto.visualizar')->with(['projeto' => $projeto,
                                            'grandeArea' => $grandeArea,
                                            'area' => $area,
