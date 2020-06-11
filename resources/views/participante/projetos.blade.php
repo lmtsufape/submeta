@@ -47,7 +47,7 @@
                          <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
+                        <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                           Visualizar projeto
                         </a>                      
                         @if($projeto->status == 'Submetido')
