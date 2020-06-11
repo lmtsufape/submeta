@@ -59,15 +59,9 @@
 <div class="container-fluid content">
     <div class="row">
         @if(isset($evento->fotoEvento))
-        <div class="banner-evento">
-            <img src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" alt="">
-        </div>
-        <img class="front-image-evento" src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" alt="">
+          <img class="front-image-evento" src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" alt="">
         @else
-        <div class="banner-evento">
-            <img src="{{asset('img/colorscheme.png')}}" alt="">
-        </div>
-        <img class="front-image-evento" src="{{asset('img/colorscheme.png')}}" alt="">
+          <img class="front-image-evento" src="{{asset('img/colorscheme.png')}}" alt="">
         @endif
     </div>
 </div>
