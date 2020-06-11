@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Participante extends Model
 {
+    use SoftDeletes;
+
 	protected $fillable = ['name', 'user_id', 'trabalho_id', 'participante_id'];
 
     public function user(){

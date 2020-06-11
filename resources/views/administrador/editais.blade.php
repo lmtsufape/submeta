@@ -167,8 +167,8 @@
                       <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                   </a>
                   <div class="dropdown-menu">
-                      <a href="{{ route('projetos.edital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center">
-                        Projetos submetidos
+                      <a href="{{ route('participante.edital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center">
+                        Meus projetos
                       </a>
                       <a href="" class="dropdown-item" style="text-align: center">
                         Visualizar resultado

@@ -177,19 +177,26 @@
 
 
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Possui autorização do Comitê de Ética*:') }}</label>
+                  <label for="botao" class="col-form-label @error('botao') is-invalid @enderror">{{ __('Possui autorização do Comitê de Ética*:') }}</label>
                   <button id="buttonSim" class="btn btn-primary mt-2 mb-2">Sim</button>
-                  <button id="buttonNao" class="btn btn-primary mt-2 mb-2">Não</button>
+                  <button id="buttonNao" class="btn btn-primary mt-2 mb-2">Não</button> 
+                  <input type="hidden" id="botao" name="botao" value=""> 
+
+                  @error('botao')
+                  <span id="botao" class="invalid-feedback" role="alert" style="overflow: visible; display:inline">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                  
                   <div class="input-group">
 
-
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica">
+                      <input disabled type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica">
                       <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
                   @error('anexoComiteEtica')
-                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                  <span id="comiteErro" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
                     <strong>{{ $message }}</strong>
                   </span>
                   @enderror
@@ -219,12 +226,12 @@
 
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled="disabled" name="justificativaAutorizacaoEtica">
+                      <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled name="justificativaAutorizacaoEtica">
                       <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
                   @error('justificativaAutorizacaoEtica')
-                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                  <span id="justificativaErro" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
                     <strong>{{ $message }}</strong>
                   </span>
                   @enderror
@@ -424,14 +431,32 @@
       e.preventDefault();
       $('#inputEtica').prop('disabled', false);
       $('#inputJustificativa').prop('disabled', true);
+      exibirErro('comite');
     });
     $('#buttonNao').on('click', function(e) {
       e.preventDefault();
       $('#inputEtica').prop('disabled', true);
       $('#inputJustificativa').prop('disabled', false);
       console.log('button nao');
+      exibirErro('justificativa');
     });
   });
+
+  function exibirErro(campo){
+    console.log("o campo " + campo);
+    var botao = document.getElementById('botao');
+    botao.value = "sim";
+    var comiteErro = document.getElementById('comiteErro');
+    var justificativaErro = document.getElementById('justificativaErro');
+
+    if(campo === 'comite'){
+      comiteErro.style.display = "block";
+      justificativaErro.style.display = "none";
+    }else if(campo === 'justificativa'){
+      comiteErro.style.display = "none";
+      justificativaErro.style.display = "block";
+    }
+  }
   // Remover Coautor
 
   function addModalidade(areaId) {
