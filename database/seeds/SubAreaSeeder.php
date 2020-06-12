@@ -46,15 +46,7 @@ class SubAreaSeeder extends Seeder
         DB::table('sub_areas')->insert([
         	'nome'=>'Teoria da Computação',
         	'area_id' => '1'
-      	]);
-        DB::table('sub_areas')->insert([
-        	'nome'=>'Matemática Aplicada',
-        	'area_id' => '1'
-      	]);
-        DB::table('sub_areas')->insert([
-        	'nome'=>'Matemática Aplicada',
-        	'area_id' => '1'
-      	]);
+      	]);        
         DB::table('sub_areas')->insert([
         	'nome'=>'Matemática da Computação',
         	'area_id' => '1'
@@ -195,11 +187,7 @@ class SubAreaSeeder extends Seeder
       	DB::table('sub_areas')->insert([
         	'nome'=>'Morfologia Vegetal',
         	'area_id' => '2'
-      	]);
-      	DB::table('sub_areas')->insert([
-        	'nome'=>'Morfologia Vegetal',
-        	'area_id' => '2'
-      	]);
+      	]);      
       	DB::table('sub_areas')->insert([
         	'nome'=>'Fisiologia Vegetal',
         	'area_id' => '2'
@@ -333,11 +321,7 @@ class SubAreaSeeder extends Seeder
       	DB::table('sub_areas')->insert([
         	'nome'=>'Neuropsicofarmacologia',
         	'area_id' => '2'
-      	]);
-      	DB::table('sub_areas')->insert([
-        	'nome'=>'Farmacologia Cardiorenal',
-        	'area_id' => '2'
-      	]);
+      	]);      
       	DB::table('sub_areas')->insert([
         	'nome'=>'Farmacologia Cardiorenal',
         	'area_id' => '2'
@@ -434,11 +418,7 @@ class SubAreaSeeder extends Seeder
       	DB::table('sub_areas')->insert([
         	'nome'=>'Instalações e Equipamentos Metalúrgicos',
         	'area_id' => '3'
-      	]);
-      	DB::table('sub_areas')->insert([
-        	'nome'=>'Instalações e Equipamentos Metalúrgicos',
-        	'area_id' => '3'
-      	]);
+      	]);      
       	DB::table('sub_areas')->insert([
         	'nome'=>'Metalurgia de Transformação',
         	'area_id' => '3'
@@ -1357,11 +1337,7 @@ class SubAreaSeeder extends Seeder
 	DB::table('sub_areas')->insert([
         	'nome'=>'Literaturas Estrangeiras Modernas',
         	'area_id' => '8'
-      	]);
-	DB::table('sub_areas')->insert([
-        	'nome'=>'Literaturas Estrangeiras Modernas',
-        	'area_id' => '8'
-      	]);
+      	]);	
 	DB::table('sub_areas')->insert([
         	'nome'=>'Literaturas Clássicas',
         	'area_id' => '8'
