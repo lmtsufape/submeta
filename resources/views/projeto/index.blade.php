@@ -50,9 +50,9 @@
                         <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                           Editar projeto
                         </a>
-                        {{-- <a href="" class="dropdown-item" style="text-align: center">
-                          Adicionar participantes
-                        </a> --}}
+                        <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                          Visualizar projeto
+                        </a>
                         <a href="" class="dropdown-item" style="text-align: center">
                           Recorrer
                         </a>

@@ -31,7 +31,7 @@
               <div class="row justify-content-center">
                 <div class="col-sm-4">
                   <label for="grandeArea" class="col-form-label">{{ __('Grande Área:') }}</label>
-                  <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea">
+                  <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()">
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
                       @if($grandeArea->id === $projeto->grande_area_id)
@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-sm-4">
                   <label for="area" class="col-form-label">{{ __('Área:') }}</label>
-                  <select class="form-control @error('area') is-invalid @enderror" id="area" name="area">
+                  <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">
                     <option value="" disabled selected hidden>-- Área --</option>
                     @foreach($areas as $area)
                       @if($area->id === $projeto->area_id)
@@ -418,10 +418,10 @@
 
     });
     // Exibir modalidade de acordo com a área
-    $("#area").change(function() {
-      console.log($(this).val());
-      addModalidade($(this).val());
-    });
+    // $("#area").change(function() {
+    //   console.log($(this).val());
+    //   addModalidade($(this).val());
+    // });
     $(document).on('click', '.delete', function() {
       if (qtdParticipantes > 1) {
         qtdParticipantes--;
@@ -457,16 +457,16 @@
   });
   // Remover Coautor
 
-  function addModalidade(areaId) {
-    console.log(modalidades)
-    $("#modalidade").empty();
-    for (let i = 0; i < modalidades.length; i++) {
-      if (modalidades[i].areaId == areaId) {
-        console.log(modalidades[i]);
-        $("#modalidade").append("<option value=" + modalidades[i].modalidadeId + ">" + modalidades[i].modalidadeNome + "</option>")
-      }
-    }
-  }
+  // function addModalidade(areaId) {
+  //   console.log(modalidades)
+  //   $("#modalidade").empty();
+  //   for (let i = 0; i < modalidades.length; i++) {
+  //     if (modalidades[i].areaId == areaId) {
+  //       console.log(modalidades[i]);
+  //       $("#modalidade").append("<option value=" + modalidades[i].modalidadeId + ">" + modalidades[i].modalidadeNome + "</option>")
+  //     }
+  //   }
+  // }
 
   function montarLinhaInput() {
 
@@ -577,5 +577,37 @@
   //                 "</div>"+
   //           "</div>";
   // }
+
+  function areas() {
+        var grandeArea = $('#grandeArea').val();
+        $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
+        function (dados){
+          if (dados.length > 0){    
+            var option = "<option>-- Área --</option>";
+            $.each(dados, function(i, obj){
+                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
+            }) 
+          } else {
+            var option = "<option>-- Área --</option>";
+          }
+          $('#area').html(option).show(); 
+        })
+  }
+
+  function subareas() {
+        var area = $('#area').val();
+        $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
+        function (dados){
+          if (dados.length > 0){    
+            var option = "<option>-- Sub Área --</option>";
+            $.each(dados, function(i, obj){
+                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
+            }) 
+          } else {
+            var option = "<option>-- Sub Área --</option>";
+          }
+          $('#subArea').html(option).show(); 
+        })
+  }
 </script>
 @endsection
