@@ -34,7 +34,7 @@
                   <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()">
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
-                      <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                      <option @if(old('grandeArea')==$grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
                     @endforeach
                   </select>
 
@@ -49,7 +49,7 @@
                   <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">
                     <option value="" disabled selected hidden>-- Área --</option>
                     {{-- @foreach($areas as $area)
-                      <option value="{{$area->id}}">{{$area->nome}}</option>
+                      <option @if(old('area')==$area->id ) selected @endif value="{{$area->id}}">{{$area->nome}}</option>
                     @endforeach --}}
                   </select>
 
@@ -64,7 +64,7 @@
                   <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">
                     <option value="" disabled selected hidden>-- Sub Área --</option>
                     {{-- @foreach($subAreas as $subArea)
-                      <option value="{{$subArea->id}}">{{$subArea->nome}}</option>
+                      <option @if(old('subArea')==$subArea->id ) selected @endif value="{{$subArea->id}}">{{$subArea->nome}}</option>
                     @endforeach --}}
                   </select>
 
@@ -95,7 +95,7 @@
                   <input class="form-control" type="text" id="nomeCoordenador" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
                 </div>
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">Link Lattes do Proponente*</label>
+                  <label for="linkLattesEstudante" class="col-form-label">Link Lattes do Proponente*</label>
                   <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
                   @if(Auth()->user()->proponentes->linkLattes != null)
                     value="{{ Auth()->user()->proponentes->linkLattes }}"
@@ -110,8 +110,8 @@
                   @enderror
                 </div>
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação*:') }}</label>
-                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha">
+                  <label for="pontuacaoPlanilha" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação*:') }}</label>
+                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha" value="{{old('pontuacaoPlanilha')}}">
 
                   @error('pontuacaoPlanilha')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -120,8 +120,8 @@
                   @enderror
                 </div>
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
-                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo">
+                  <label for="linkGrupo" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
+                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo" value="{{old('linkGrupo')}}">
 
                   @error('linkGrupo')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -269,10 +269,13 @@
                     <div id="novoParticipante">
                       <br>
                       <h5>Dados do participante</h5>
+                      @php
+                        $i = 0;                        
+                      @endphp
                       <div class="row">
                         <div class="col-sm-5">
                           <label>Nome Completo*</label>
-                          <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" required>
+                          <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" required value="{{old('nomeParticipante.'.$i)}}">
                           @error('nomeParticipante')
                           <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                             <strong>{{ $message }}</strong>
@@ -281,7 +284,7 @@
                         </div>
                         <div class="col-sm-4">
                           <label>E-mail*</label>
-                          <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" required>
+                          <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" required value="{{old('emailParticipante.'.$i)}}">
                           @error('emailParticipante')
                           <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                             <strong>{{ $message }}</strong>
@@ -293,7 +296,7 @@
                           <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
                             <option value="" disabled selected hidden>-- Função --</option>
                             @foreach($funcaoParticipantes as $funcaoParticipante)
-                              <option value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
+                              <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
                             @endforeach
 
                             @error('funcaoParticipante')
@@ -311,7 +314,7 @@
                             <div class="row">
                               <div class="col-sm-4">
                                 <label>Titulo* </label>
-                                <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required>
+                                <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required value="{{old('nomePlanoTrabalho.'.$i)}}">
                                 
                                 @error('nomePlanoTrabalho')
                                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -611,5 +614,7 @@
           $('#subArea').html(option).show(); 
         })
   }
+
+  window.onload = areas();
 </script>
 @endsection
