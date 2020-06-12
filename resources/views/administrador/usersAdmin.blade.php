@@ -7,7 +7,7 @@
   <div class="container" >
     <div class="row" >
       <div class="col-sm-10">
-        <h3>Editais</h3> 
+        <h3>Usuários</h3> 
       </div>
       <div class="col-sm-2">
         <a href="{{route('admin.user.create')}}" class="btn btn-primary">{{ __('Criar usuário') }}</a>

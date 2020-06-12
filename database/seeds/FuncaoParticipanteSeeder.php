@@ -32,10 +32,6 @@ class FuncaoParticipanteSeeder extends Seeder
       	]);
 
       	DB::table('funcao_participantes')->insert([
-        	'nome'=>'Estudante',
-        	
-      	]);
-      	DB::table('funcao_participantes')->insert([
         	'nome'=>'Voluntário',
         	
       	]);
