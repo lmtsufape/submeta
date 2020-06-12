@@ -82,7 +82,7 @@
               </select>
           </div>
         </div>
-
+        <hr>
         <div class="row subtitulo">
             <div class="col-sm-12">
                 <p>Projetos</p>
@@ -148,7 +148,7 @@
               @enderror
           </div>
         </div>
-
+        <hr>
         <div class="row subtitulo">
             <div class="col-sm-12">
                 <p>Documentos</p>
@@ -159,9 +159,9 @@
         <div class="row justify-content-center" style="margin-top:10px">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">PDF do Edital</label>
+                    <label for="pdfEdital">Anexar edital</label>
                     <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
-                    <small>O arquivo selecionado deve ser no formato PDF de até xmb.</small>
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfEdital')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -174,7 +174,7 @@
                 <div class="form-group">
                     <label for="modeloDocumento">Arquivo com os modelos de documentos do edital</label>
                     <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
-                    <small>O arquivo selecionado deve ter até xmb.</small>
+                    <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('modeloDocumento')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
