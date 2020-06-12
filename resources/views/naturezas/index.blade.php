@@ -43,7 +43,7 @@
           <h2 style="margin-top: 100px; ">{{ __('Naturezas') }}</h2>
         </div>
         <div class="col-sm-3">
-          <a href="" class="btn btn-primary" style="position:relative;top:100px;" data-toggle="modal" data-target="#modalNewCenter">{{ __('Criar natureza') }}</a>
+          <a href="" class="btn btn-primary" style="position:relative;top:100px; float: right;" data-toggle="modal" data-target="#modalNewCenter">{{ __('Criar natureza') }}</a>
         </div>
     </div>
 
