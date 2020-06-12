@@ -320,50 +320,50 @@
                             <h5>Dados do plano de trabalho</h5>
                             @foreach ($arquivos as $arquivo)
                             @if($arquivo->participanteId === $participante->id)
-                              <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">Plano de trabalho atual</a>
-                            @endif
-                            @endforeach
-                            <div class="row">
-                              <div class="col-sm-12">
-                                <div id="planoTrabalho">
-                                  <div class="row">
-                                    <div class="col-sm-4">
-                                      <label>Titulo </label>
-                                      <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome">
-                                      
-                                      @error('nomePlanoTrabalho')
-                                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                        <strong>{{ $message }}</strong>
-                                      </span>
-                                      @enderror
-                                    </div>
-                                    {{-- Arquivo  --}}
-                                    <div class="col-sm-7">
-                                      <label for="nomeTrabalho">Anexo</label>
-                                      <div class="input-group">
-                                        <div class="input-group-prepend">
-                                          <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
-                                        </div>
-                                        <div class="custom-file">
-                                          <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
-                                          <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
-                                        </div>
+                              <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">Plano de trabalho atual</a>                              
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <div id="planoTrabalho">
+                                    <div class="row">
+                                      <div class="col-sm-4">
+                                        <label>Titulo </label>
+                                        <input type="text" value="{{$arquivo->titulo}}" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome">
+                                        
+                                        @error('nomePlanoTrabalho')
+                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                          <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                       </div>
-                                      @error('anexoPlanoTrabalho')
-                                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                        <strong>{{ $message }}</strong>
-                                      </span>
-                                      @enderror
-                                    </div>
-                                    <div class="col-sm-1">
-                                      <a class="delete">
-                                        <img src="/img/icons/user-times-solid.svg" style="width:25px;margin-top:35px">
-                                      </a>
+                                      {{-- Arquivo  --}}
+                                      <div class="col-sm-7">
+                                        <label for="nomeTrabalho">Anexo</label>
+                                        <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
+                                          </div>
+                                          <div class="custom-file">
+                                            <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                            <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                                          </div>
+                                        </div>
+                                        @error('anexoPlanoTrabalho')
+                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                          <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                      </div>
+                                      <div class="col-sm-1">
+                                        <a class="delete">
+                                          <img src="/img/icons/user-times-solid.svg" style="width:25px;margin-top:35px">
+                                        </a>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                              @endif
+                              @endforeach
                           </div>
                         @endif
                       @endforeach

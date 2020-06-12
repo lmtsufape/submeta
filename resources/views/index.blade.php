@@ -46,67 +46,6 @@
                         </div>
                     </li>
                 @endforeach
-                @foreach ($eventos as $evento)
-                    <li class="li-editais">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-1">
-                                        <img class="img-arquivo" src="{{ asset('img/icons/logo_arquivo.png') }}" alt="">
-                                </div>
-                                <div class="col-sm-8">
-                                        <div>{{$evento->nome}}</div>
-                                        <div class="color-subtitle-edital">Submissão até o dia {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <button class="btn btn-opcoes-edital" style="margin-left: 15px;">
-                                        Opções
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-                @foreach ($eventos as $evento)
-                    <li class="li-editais">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-1">
-                                        <img class="img-arquivo" src="{{ asset('img/icons/logo_arquivo.png') }}" alt="">
-                                </div>
-                                <div class="col-sm-8">
-                                        <div>{{$evento->nome}}</div>
-                                        <div class="color-subtitle-edital">Submissão até o dia {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <button class="btn btn-opcoes-edital" style="margin-left: 15px;">
-                                        Opções
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-                @foreach ($eventos as $evento)
-                    <li class="li-editais">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-1">
-                                        <img class="img-arquivo" src="{{ asset('img/icons/logo_arquivo.png') }}" alt="">
-                                </div>
-                                <div class="col-sm-8">
-                                        <div>{{$evento->nome}}</div>
-                                        <div class="color-subtitle-edital">Submissão até o dia {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <button class="btn btn-opcoes-edital" style="margin-left: 15px;">
-                                        Opções
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-                </ul>
           </div>
       </div>
   </div>

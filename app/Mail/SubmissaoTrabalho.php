@@ -35,7 +35,7 @@ class SubmissaoTrabalho extends Mailable
     public function build()
     {
         
-        return $this->from('lmtsteste@gmail.com', 'Eventos - LMTS')
+        return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
                     ->subject($this->subject)
                     ->view('emails.submissaoTrabalho');
     }

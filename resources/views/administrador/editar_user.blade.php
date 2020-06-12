@@ -104,7 +104,7 @@
                 </span>
                 @enderror --}}
 
-                @if ($user->tipo == "proponente") 
+                @if ($user->tipo == "proponente" && !(is_null($proponente))) 
                     <div id="proponente" style="display: none;">
                         <label class="col-form-label">{{ __('SIAPE') }}</label>
                         <input value="{{$proponente->SIAPE}}" id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" autocomplete="SIAPE">
@@ -158,7 +158,7 @@
                         <input value="" id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" autocomplete="anoTitulacao">
 
                         <label class="col-form-label">{{ __('Área Formação') }}</label>
-                        <input value="{{$proponente->areaFormacao}}" id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" autocomplete="areaFormacao">
+                        <input value="" id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" autocomplete="areaFormacao">
                         
                         <label class="col-form-label">{{ __('Bolsista Produtividade') }}</label>
                         <input value="" id="bolsistaProdutividade" type="text" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" name="bolsistaProdutividade" autocomplete="bolsistaProdutividade">

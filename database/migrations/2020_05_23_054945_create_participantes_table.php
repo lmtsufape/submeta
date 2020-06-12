@@ -24,7 +24,7 @@ class CreateParticipantesTable extends Migration
             $table->foreign('trabalho_id')->references('id')->on('trabalhos');
 
             $table->unsignedBigInteger('funcao_participante_id')->nullable();
-            $table->foreign('funcao_participante_id')->references('id')->on('funcao_participantes');
+            $table->foreign('funcao_participante_id')->references('id')->on('funcao_participantes')->onDelete('cascade');
 
             $table->softDeletes();
         });
