@@ -487,8 +487,7 @@ class TrabalhoController extends Controller
 
         //atualizando os participantes que já estão no projeto e planos de trabalho se enviados
         if (in_array($request->emailParticipante[$key], $emailParticipantes, false)) {
-          $userParticipante = User::where('email', $value)->first();
-          //dd($userParticipante);
+          $userParticipante = User::where('email', $value)->first();          
           if($userParticipante != null){
             $user = User::where('email', $request->emailParticipante[$key])->first();
             $participante = Participante::where([['user_id', '=', $user->id], ['trabalho_id', '=', $trabalho->id]])->first();
