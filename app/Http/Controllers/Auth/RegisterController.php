@@ -62,7 +62,8 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'cpf' => ['required', 'cpf'],
             'celular' => ['required','string'],
-            'instituicao' => ['required','string','max:255'],     
+            'instituicao' => ['required_if:instituicaoSelect,Outra','max:255'],
+            'instituicaoSelect' => ['required_without:instituicao'],     
             'cargo' => ['required'],
             'vinculo' => ['required'],
             'outro' => ['required_if:vinculo,Outro'],
@@ -96,7 +97,11 @@ class RegisterController extends Controller
         $user->password = bcrypt($data['password']);
         $user->cpf = $data['cpf'];
         $user->celular = $data['celular'];
-        $user->instituicao = $data['instituicao'];
+        if($data['instituicao'] != null){
+            $user->instituicao = $data['instituicao'];
+        }else if (isset($data['instituicaoSelect']) && $data['instituicaoSelect'] != "Outra"){
+            $user->instituicao = $data['instituicaoSelect'];
+        }
 
         if($data['cargo'] === "Estudante" && $data['vinculo'] !== "Pós-doutorando"){
             $user->tipo = 'participante';
