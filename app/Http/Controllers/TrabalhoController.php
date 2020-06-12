@@ -101,7 +101,9 @@ class TrabalhoController extends Controller
           'nomePlanoTrabalho.*'     => ['required', 'string'],
           'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoComiteEtica'        => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'botao'                   => ['required'],
+          'anexoComiteEtica'        => ['required_without:justificativaAutorizacaoEtica', 'file', 'mimes:pdf', 'max:2000000'],
+          'justificativaAutorizacaoEtica' => ['required_without:anexoComiteEtica', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLatterCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
@@ -224,6 +226,7 @@ class TrabalhoController extends Controller
           Storage::putFileAs($path, $file, $nome);
 
           $arquivo = new Arquivo();
+          $arquivo->titulo = $request->nomePlanoTrabalho[$key];
           $arquivo->nome = $path . $nome;
           $arquivo->trabalhoId = $trabalho->id;
           $arquivo->data = $mytime;
@@ -268,21 +271,23 @@ class TrabalhoController extends Controller
      */
     public function show($id)
     {
+        //
       $projeto = Trabalho::find($id);
-      $edital = Evento::find($projeto->evento_id);
-      $grandeAreas = GrandeArea::orderBy('nome')->get();
-      $areas = Area::orderBy('nome')->get();
-      $subareas = Subarea::orderBy('nome')->get();
+      $edital = Evento::find($projeto->evento_id);     
+      $grandeArea = GrandeArea::where('id', $projeto->grande_area_id)->select('nome')->first();   
+      $area = Area::where('id', $projeto->area_id)->select('nome')->first();
+      $subarea = Subarea::where('id', $projeto->sub_area_id)->select('nome')->first();
+      $proponente = Proponente::find($projeto->proponente_id);
       $funcaoParticipantes = FuncaoParticipantes::all();
       $participantes = Participante::where('trabalho_id', $id)->get();
       $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
       $users = User::whereIn('id', $participantesUsersIds)->get();
       $arquivos = Arquivo::where('trabalhoId', $id)->get();
-
       return view('projeto.visualizar')->with(['projeto' => $projeto,
-                                           'grandeAreas' => $grandeAreas,
-                                           'areas' => $areas,
-                                           'subAreas' => $subareas,
+                                           'grandeArea' => $grandeArea,
+                                           'area' => $area,
+                                           'subArea' => $subarea,
+                                           'proponente' => $proponente,
                                            'edital' => $edital,
                                            'users' => $users,
                                            'funcaoParticipantes' => $funcaoParticipantes,
@@ -454,6 +459,7 @@ class TrabalhoController extends Controller
           Storage::putFileAs($path, $file, $nome);
 
           $arquivo = new Arquivo();
+          $arquivo->titulo = $request->nomePlanoTrabalho[$key];
           $arquivo->nome = $path . $nome;
           $arquivo->trabalhoId = $trabalho->id;
           $arquivo->data = $mytime;
@@ -486,6 +492,7 @@ class TrabalhoController extends Controller
               Storage::putFileAs($path, $file, $nome);
   
               $arquivo = new Arquivo();
+              $arquivo->titulo = $request->nomePlanoTrabalho[$key];
               $arquivo->nome = $path . $nome;
               $arquivo->trabalhoId = $trabalho->id;
               $arquivo->data = $mytime;
@@ -526,6 +533,16 @@ class TrabalhoController extends Controller
         //dd($trabalho);
         $trabalho->delete();
         return redirect()->back();
+    }
+
+    public function excluirParticipante($id){      
+      $participante = Participante::where('user_id', Auth()->user()->id)
+                                  ->where('trabalho_id', $id)->first();                          
+
+      $participante->trabalhos()->detach($id);      
+      $participante->delete();
+
+      return redirect()->back();
     }
 
     public function novaVersao(Request $request){
@@ -709,5 +726,10 @@ class TrabalhoController extends Controller
         return Storage::download($projeto->anexoPlanilhaPontuacao);
       }
       return abort(404);
+    }
+    
+    public function baixarAnexoJustificativa($id) {
+      $projeto = Trabalho::find($id);
+      return Storage::download($projeto->justificativaAutorizacaoEtica);
     }
 }

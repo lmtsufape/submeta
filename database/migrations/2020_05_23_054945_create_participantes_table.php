@@ -25,6 +25,8 @@ class CreateParticipantesTable extends Migration
 
             $table->unsignedBigInteger('funcao_participante_id')->nullable();
             $table->foreign('funcao_participante_id')->references('id')->on('funcao_participantes');
+
+            $table->softDeletes();
         });
     }
 
