@@ -40,15 +40,11 @@ class TrabalhoController extends Controller
     public function index($id)
     {
         $edital = Evento::find($id);
-        $grandeAreas = GrandeArea::all();
-        $areas = Area::all();
-        $subAreas = SubArea::all();
+        $grandeAreas = GrandeArea::orderBy('nome')->get();
         $funcaoParticipantes = FuncaoParticipantes::all(); 
         return view('evento.submeterTrabalho',[
                                             'edital'             => $edital,
                                             'grandeAreas'        => $grandeAreas,
-                                            'areas'              => $areas,
-                                            'subAreas'           => $subAreas,
                                             'funcaoParticipantes'=> $funcaoParticipantes               
                                               
                                             ]);
@@ -712,27 +708,46 @@ class TrabalhoController extends Controller
 
     public function baixarAnexoProjeto($id) {
       $projeto = Trabalho::find($id);
-      return Storage::download($projeto->anexoProjeto);
+      if (Storage::disk()->exists($projeto->anexoProjeto)) {
+        return Storage::download($projeto->anexoProjeto);
+      }
+      return abort(404);
     }
 
     public function baixarAnexoConsu($id) {
       $projeto = Trabalho::find($id);
-      return Storage::download($projeto->anexoDecisaoCONSU);
+      
+      if (Storage::disk()->exists($projeto->anexoDecisaoCONSU)) {
+        return Storage::download($projeto->anexoDecisaoCONSU);
+      }
+      return abort(404);
     }
 
     public function baixarAnexoComite($id) {
       $projeto = Trabalho::find($id);
-      return Storage::download($projeto->anexoAutorizacaoComiteEtica);
+      
+      if (Storage::disk()->exists($projeto->anexoAutorizacaoComiteEtica)) {
+        return Storage::download($projeto->anexoAutorizacaoComiteEtica);
+      }
+      return abort(404);
     }
 
     public function baixarAnexoLattes($id) {
       $projeto = Trabalho::find($id);
-      return Storage::download($projeto->anexoLattesCoordenador);
+
+      if (Storage::disk()->exists($projeto->anexoLattesCoordenador)) {
+        return Storage::download($projeto->anexoLattesCoordenador);
+      }
+      return abort(404);
     }
 
     public function baixarAnexoPlanilha($id) {
       $projeto = Trabalho::find($id);
-      return Storage::download($projeto->anexoPlanilhaPontuacao);
+
+      if (Storage::disk()->exists($projeto->anexoPlanilhaPontuacao)) {
+        return Storage::download($projeto->anexoPlanilhaPontuacao);
+      }
+      return abort(404);
     }
     
     public function baixarAnexoJustificativa($id) {

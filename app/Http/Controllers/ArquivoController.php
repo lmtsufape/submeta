@@ -86,6 +86,10 @@ class ArquivoController extends Controller
 
     public function baixarPlano($id) {
         $arquivo = Arquivo::find($id);
-        return Storage::download($arquivo->nome);
+
+        if (Storage::disk()->exists($arquivo->nome)) {
+            return Storage::download($arquivo->nome);
+        }
+        return abort(404);
     }
 }

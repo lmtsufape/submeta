@@ -15,7 +15,7 @@
           <h2 style="margin-top: 100px; ">{{ __('Grandes áreas') }}</h2>
         </div>
         <div class="col-sm-3">
-          <a href="{{route('grandearea.criar')}}" class="btn btn-primary" style="position:relative;top:100px;">{{ __('Criar grande área') }}</a>
+          <a href="{{route('grandearea.criar')}}" class="btn btn-primary" style="position:relative;top:100px; float: right;">{{ __('Criar grande área') }}</a>
         </div>
     </div>
 

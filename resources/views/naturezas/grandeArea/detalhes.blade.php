@@ -15,7 +15,7 @@
           <h2 style="margin-top: 100px; ">{{ __('Áreas de ') . $grandeArea->nome }}</h2>
         </div>
         <div class="col-sm-3">
-          <a href="{{route('area.criar', ['id' => $grandeArea->id] )}}" class="btn btn-primary" style="position:relative;top:100px;">{{ __('Criar Área') }}</a>
+          <a href="{{route('area.criar', ['id' => $grandeArea->id] )}}" class="btn btn-primary" style="position:relative;top:100px; float: right;">{{ __('Criar Área') }}</a>
         </div>
     </div>
 
