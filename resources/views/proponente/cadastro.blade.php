@@ -154,11 +154,11 @@
                         <label for="nivel" class="col-form-label">{{ __('Nível*') }}</label>
                         <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
                             <option value="" disabled selected hidden></option>
-                            <option value="2">2</option>
-                            <option value="1D">1D</option>
+                            <option value="1A">1A</option>
                             <option value="1B">1B</option>
                             <option value="1C">1C</option>
-                            <option value="1A">1A</option>
+                            <option value="1D">1D</option>
+                            <option value="2">2</option>
                         </select>
                         @error('nivel')
                         <span class="invalid-feedback" role="alert">
@@ -235,11 +235,14 @@
             nivel.style.display = "block";
         } else {
             nivel.style.display = "none";
-        }
-        console.log("a");
+        }        
     }
 
-    window.onload = mudarNivel();
-    window.onload = outroVinculo();
+    function onload(){
+        mudarNivel();
+        outroVinculo();       
+    }
+
+    window.onload = onload();
 </script>
 @endsection
