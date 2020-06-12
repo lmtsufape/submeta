@@ -115,8 +115,7 @@
                                         {{ __('Perfil Coordenador') }}
                                     </a>
                                 @endif
-
-                                @if(Auth::user()->email_verified_at != null)
+                                
                                     @if(Auth::user()->avaliadors != null)
                                         <a class="dropdown-item" href="{{ route('avaliador.index') }}">
                                             <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
@@ -134,8 +133,7 @@
                                             <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
                                             {{ __('Perfil Participante') }}
                                         </a>
-                                    @endif
-                                @endif
+                                    @endif                             
                                 
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
