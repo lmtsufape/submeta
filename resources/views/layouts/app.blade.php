@@ -115,24 +115,25 @@
                                         {{ __('Perfil Coordenador') }}
                                     </a>
                                 @endif
-                                @if(Auth::user()->avaliadors != null)
-                                    <a class="dropdown-item" href="{{ route('avaliador.index') }}">
-                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                        {{ __('Perfil Avaliador') }}
-                                    </a>
-                                @endif
-                                @if(Auth::user()->proponentes != null)
-                                    <a class="dropdown-item" href="{{ route('proponente.index') }}">
-                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                        {{ __('Perfil Proponente') }}
-                                    </a>
-                                @endif
-                                @if(Auth::user()->participantes->where('user_id', Auth::user()->id)->count() != 0)
-                                    <a class="dropdown-item" href="{{ route('participante.index') }}">
-                                        <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
-                                        {{ __('Perfil Participante') }}
-                                    </a>
-                                @endif
+                                
+                                    @if(Auth::user()->avaliadors != null)
+                                        <a class="dropdown-item" href="{{ route('avaliador.index') }}">
+                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                            {{ __('Perfil Avaliador') }}
+                                        </a>
+                                    @endif
+                                    @if(Auth::user()->proponentes != null)
+                                        <a class="dropdown-item" href="{{ route('proponente.index') }}">
+                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                            {{ __('Perfil Proponente') }}
+                                        </a>
+                                    @endif
+                                    @if(Auth::user()->participantes->where('user_id', Auth::user()->id)->count() != 0)
+                                        <a class="dropdown-item" href="{{ route('participante.index') }}">
+                                            <img src="{{asset('img/icons/file-alt-regular-black.svg')}}" alt="">
+                                            {{ __('Perfil Participante') }}
+                                        </a>
+                                    @endif                             
                                 
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();

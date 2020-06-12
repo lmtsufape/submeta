@@ -43,14 +43,24 @@
         <div class="form-group row">
             <div class="col-md-8">
                 <label for="instituicao" class="col-form-label">{{ __('Instituição de Vínculo*') }}</label>
-                <input id="instituicao" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="instituicao" value="{{ old('instituicao') }}" required autocomplete="instituicao" autofocus>
+                <input style="display: none;" id="instituicao" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="instituicao" value="{{ old('instituicao') }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
+                <select style="display: inline" onchange="showInstituicao()" class="form-control @error('instituicaoSelect') is-invalid @enderror" name="instituicaoSelect" id="instituicaoSelect">
+                    <option value="" disabled selected hidden>-- Instituição --</option>
+                    <option value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
+                    <option>Outra</option>
+                </select>
 
                 @error('instituicao')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-            </div>
+                @error('instituicaoSelect')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>           
             <div class="col-md-4">
                 <label for="celular" class="col-form-label">{{ __('Celular*') }}</label>
                 <input id="celular" type="text" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ old('celular') }}" required autocomplete="celular" autofocus>
@@ -226,12 +236,12 @@
                 <div class="col-md-1" id="nivelInput" style="display: block;">
                     <label for="nivel" class="col-form-label">{{ __('Nível*') }}</label>
                     <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
-                        <option value="" disabled selected hidden></option>
-                        <option value="2">2</option>
-                        <option value="1D">1D</option>
+                        <option value="" disabled selected hidden></option>                     
+                        <option value="1A">1A</option>
                         <option value="1B">1B</option>
                         <option value="1C">1C</option>
-                        <option value="1A">1A</option>
+                        <option value="1D">1D</option>
+                        <option value="2">2</option>
                     </select>
                     @error('nivel')
                     <span class="invalid-feedback" role="alert">
@@ -299,10 +309,6 @@
         }
     }
 
-    window.onload = mudarNivel();
-    window.onload = outroVinculo();
-    window.onload = mudar();
-
     function mudarNivel() {
         var bolsista = document.getElementById('bolsistaProdutividade');
         var nivel = document.getElementById('nivelInput');
@@ -313,5 +319,24 @@
             nivel.style.display = "none";
         }
     }
+
+    function showInstituicao(){
+        var instituicao = document.getElementById('instituicao');
+        var instituicaoSelect = document.getElementById('instituicaoSelect');
+
+        if(instituicaoSelect.value === "Outra"){
+            instituicaoSelect.style.display = "none";
+            instituicao.style.display = "inline";
+        }
+    }
+
+    function onload(){
+        mudarNivel();
+        outroVinculo();
+        mudar();
+        showInstituicao();
+    }
+
+    window.onload = onload();
 </script>
 @endsection
