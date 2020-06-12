@@ -236,12 +236,12 @@
                 <div class="col-md-1" id="nivelInput" style="display: block;">
                     <label for="nivel" class="col-form-label">{{ __('Nível*') }}</label>
                     <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
-                        <option value="" disabled selected hidden></option>
-                        <option value="2">2</option>
-                        <option value="1D">1D</option>
+                        <option value="" disabled selected hidden></option>                     
+                        <option value="1A">1A</option>
                         <option value="1B">1B</option>
                         <option value="1C">1C</option>
-                        <option value="1A">1A</option>
+                        <option value="1D">1D</option>
+                        <option value="2">2</option>
                     </select>
                     @error('nivel')
                     <span class="invalid-feedback" role="alert">

@@ -59,7 +59,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'cpf' => ['required', 'cpf'],
+            'cpf' => ['required', 'cpf', 'unique:users'],
             'celular' => ['required', 'string'],
             'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
             'instituicaoSelect' => ['required_without:instituicao'],
@@ -76,7 +76,8 @@ class RegisterController extends Controller
             'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'nivel' => ['required_if:bolsistaProdutividade,sim'],
             'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
-            'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':'','link_lattes'],
+            'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+            'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
 
         ]);
     }
