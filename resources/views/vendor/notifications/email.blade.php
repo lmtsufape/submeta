@@ -44,7 +44,7 @@
 {{ $salutation }}
 @else
 @lang('Atenciosamente'),<br>
-{{ config('app.name') }}
+Equipe do {{ config('app.name') }}
 @endif
 
 {{-- Subcopy --}}
