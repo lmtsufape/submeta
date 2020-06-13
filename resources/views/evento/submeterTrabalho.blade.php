@@ -266,7 +266,8 @@
               <div class="row" style="margin-top:20px">
                 <div class="col-sm-12">
                   <div id="participantes">
-                    <div id="novoParticipante">
+                    @if(old('divParticipante') == null)
+                    <div id="novoParticipante" style="display: block;">
                       <br>
                       <h5>Dados do participante</h5>
                       @php
@@ -350,7 +351,11 @@
                         </div>
                       </div>
                     </div>
+                    @else
+                      <div id="novoParticipante" style="display: none;">{{old('divParticipante')}}</div>                      
+                    @endif
                   </div>
+                  <input type="hidden" name="divParticipante" id="divParticipante" value="{{old('divParticipante')}}"></input>
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
                 </div>
               </div>
@@ -361,7 +366,7 @@
               <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
             </div>
             <div class="col-md-6">
-              <button type="submit" class="btn btn-primary" style="width:100%">
+              <button type="submit" class="btn btn-primary" style="width:100%" onclick="setParticipanteDiv()">
                 {{ __('Enviar') }}
               </button>
             </div>
@@ -386,10 +391,42 @@
         e.preventDefault();
         linha = montarLinhaInput();
         $('#participantes').append(linha);
-        qtdParticipantes++
+        qtdParticipantes++;
+        setParticipanteDiv();
       }
 
     });
+
+    function setParticipanteDiv(){
+      var participantes = document.getElementById('participantes');
+      var novoParticipante = document.getElementById('novoParticipante');
+      var divParticipante = document.getElementById('divParticipante');
+      //console.log(participantes.innerHTML);
+      if(novoParticipante.style.display == 'block'){
+        console.log('block');
+        divParticipante.value = participantes.innerHTML;
+      }else{
+        console.log('none');
+        participantes.innerHTML = divParticipante.value;
+      }
+      
+    }
+
+    function getParticipanteDiv(){
+      var oldNovoParticipante = document.getElementById('oldNovoParticipante');
+      var participantes = document.getElementById('participantes');
+      var divParticipante = document.getElementById('divParticipante');
+     // console.log(participantes.innerHTML);
+     if(novoParticipante.style.display == 'none'){
+        console.log('none');
+        participantes.innerHTML = divParticipante.value;
+     }else{
+      console.log('block');
+     }
+    }
+
+    //window.onload = setParticipanteDiv();
+    window.onload = getParticipanteDiv();
     $('#addPlanoTrabalho').click(function(e) {
       e.preventDefault();
       if (qtdLinhas < 4) {
