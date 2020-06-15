@@ -97,7 +97,7 @@
 
                 @error('inicioSubmissao')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem)) . '.' }}</strong>
                 </span>
                 @enderror
             </div>
@@ -107,7 +107,7 @@
 
                 @error('fimSubmissao')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                    <strong>{{ $message . date('d/m/Y', strtotime(old('inicioSubmissao'))) . '.'  }}</strong>
                 </span>
                 @enderror
             </div>
@@ -120,7 +120,7 @@
 
               @error('inicioRevisao')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
+                  <strong>{{ $message . date('d/m/Y', strtotime($ontem)) . '.' }}</strong>
               </span>
               @enderror
           </div>
@@ -130,7 +130,7 @@
 
               @error('fimRevisao')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
+                  <strong>{{ $message . date('d/m/Y', strtotime( old('inicioRevisao') )) . '.' }}</strong>
               </span>
               @enderror
           </div>
@@ -143,7 +143,7 @@
 
               @error('resultado')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
+                  <strong>{{ $message . date('d/m/Y', strtotime($ontem)) . '.' }}</strong>
               </span>
               @enderror
           </div>

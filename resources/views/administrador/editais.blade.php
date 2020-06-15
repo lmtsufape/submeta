@@ -6,7 +6,7 @@
 
   <div class="container" >
     <div class="row" >
-      <div class="col-sm-10">
+      <div class="col-sm-9">
         @if(auth()->user()->tipo === "administrador")
           <h3>Meus Editais</h3> 
         @else
@@ -14,8 +14,8 @@
         @endif
       </div>
       @if(auth()->user()->tipo === "administrador")
-        <div class="col-sm-2">
-          <a href="{{route('evento.criar')}}" class="btn btn-primary">Criar Edital</a>
+        <div class="col-sm-3">
+          <a href="{{route('evento.criar')}}" class="btn btn-primary" style="float: right;">Criar Edital</a>
         </div>
       @endif
     </div>
