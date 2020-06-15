@@ -30,7 +30,7 @@
               <div class="row justify-content-center">
                 <div class="col-sm-4">
                   <label for="grandeArea" class="col-form-label">{{ __('Grande Área*:') }}</label>
-                  <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()">
+                  <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()" onload="areas()">
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
                     <option @if(old('grandeArea')==$grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
@@ -46,6 +46,7 @@
                 <div class="col-sm-4">
                   <label for="area" class="col-form-label">{{ __('Área*:') }}</label>
                   <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">
+                    <input type="hidden" id="oldArea" value="{{ old('area') }}"></input>
                     <option value="" disabled selected hidden>-- Área --</option>
                     {{-- @foreach($areas as $area)
                       <option @if(old('area')==$area->id ) selected @endif value="{{$area->id}}">{{$area->nome}}</option>
@@ -61,6 +62,7 @@
                 <div class="col-sm-4">
                   <label for="subArea" class="col-form-label">{{ __('Sub Área*:') }}</label>
                   <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">
+                    <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}"></input>
                     <option value="" disabled selected hidden>-- Sub Área --</option>
                     {{-- @foreach($subAreas as $subArea)
                       <option @if(old('subArea')==$subArea->id ) selected @endif value="{{$subArea->id}}">{{$subArea->nome}}</option>
@@ -259,7 +261,8 @@
                     @endif
 
                     @if ($countParticipante != null && $countParticipante > 0)
-                      @for ($i = 0; $i < $countParticipante; $i++) <div id="novoParticipante" style="display: block;">
+                      @for ($i = 0; $i < $countParticipante; $i++) 
+                      <div id="novoParticipante" style="display: block;">
                         <br>
                         <h5>Dados do participante</h5>
                         <div class="row">
@@ -339,7 +342,7 @@
                             </div>
                           </div>
                         </div>
-                    </div>
+                      </div>
                       @endfor
                     @endif
                   </div>
@@ -436,14 +439,12 @@
     $('#buttonNao').on('click', function(e) {
       e.preventDefault();
       $('#inputEtica').prop('disabled', true);
-      $('#inputJustificativa').prop('disabled', false);
-      console.log('button nao');
+      $('#inputJustificativa').prop('disabled', false);      
       exibirErro('justificativa');
     });
   });
 
-  function exibirErro(campo) {
-    console.log("o campo " + campo);
+  function exibirErro(campo) {    
     var botao = document.getElementById('botao');
     botao.value = "sim";
     var comiteErro = document.getElementById('comiteErro');
@@ -582,18 +583,27 @@
   // }
 
   function areas() {
+    console.log('aqui D');
     var grandeArea = $('#grandeArea').val();
     $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
       function(dados) {
         if (dados.length > 0) {
+          console.log('aqui A');
           var option = '<option>-- Área --</option>';
-          $.each(dados, function(i, obj) {
-            option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+          $.each(dados, function(i, obj) {            
+            if($('#oldArea').val() != null && $('#oldArea').val() == obj.id){              
+              console.log('aqui B');
+              option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+            }else{
+              option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+            }
           })
         } else {
+          console.log('aqui C');
           var option = "<option>-- Área --</option>";
         }
-        $('#area').html(option).show();
+        $('#area').html(option).show(); 
+        //subareas();       
       })
   }
 
@@ -604,7 +614,13 @@
         if (dados.length > 0) {
           var option = '<option>-- Sub Área --</option>';
           $.each(dados, function(i, obj) {
-            option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+            console.log($('#oldSubArea').val());
+            console.log(obj.id);
+            if($('#oldSubArea').val() != null && $('#oldSubArea').val() == obj.id){
+              option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+            }else{
+              option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+            }
           })
         } else {
           var option = "<option>-- Sub Área --</option>";
