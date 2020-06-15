@@ -45,10 +45,10 @@ Route::post('/perfil','UserController@editarPerfil'                             
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
-  Route::get('/home/evento',                        'EventoController@index'              )->name('visualizarEvento');
+  Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
 
   // ######## rotas de teste #####################################
-  Route::get('/coordenador/home',                   'EventoController@index'              )->name('coord.home');
+  Route::get('/editais/home',                        'EventoController@index'             )->name('coord.home');
   Route::get('/coordenador/evento/detalhes',         'EventoController@detalhes'          )->name('coord.detalhesEvento');
 
   //####### Visualizar trabalhos do usuário ######################
