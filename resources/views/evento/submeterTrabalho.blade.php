@@ -265,14 +265,19 @@
               {{-- Participantes  --}}
               <div class="row" style="margin-top:20px">
                 <div class="col-sm-12">
-                  <div id="participantes">
-                    @if(old('divParticipante') == null)
+                  <div id="participantes">                    
+
+                    @php $countParticipante = 1; @endphp
+                    @if(old('countParticipante') != null)
+                      @php $countParticipante = old('countParticipante') @endphp
+                    @endif
+                    {{$countParticipante}}
+                   
+                    @if ($countParticipante != null && $countParticipante > 0)
+                    @for ($i = 0; $i < $countParticipante; $i++)                     
                     <div id="novoParticipante" style="display: block;">
                       <br>
-                      <h5>Dados do participante</h5>
-                      @php
-                        $i = 0;                        
-                      @endphp
+                      <h5>Dados do participante</h5>                     
                       <div class="row">
                         <div class="col-sm-5">
                           <label>Nome Completo*</label>
@@ -350,12 +355,11 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                    @else
-                      <div id="novoParticipante" style="display: none;">{{old('divParticipante')}}</div>                      
-                    @endif
+                    </div> 
+                    @endfor  
+                    @endif                
                   </div>
-                  <input type="hidden" name="divParticipante" id="divParticipante" value="{{old('divParticipante')}}"></input>
+                  <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}"></input>
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
                 </div>
               </div>
@@ -390,43 +394,18 @@
       if (qtdParticipantes < 100) {
         e.preventDefault();
         linha = montarLinhaInput();
-        $('#participantes').append(linha);
+        $('#participantes').append(linha);       
+        setParticipanteDiv(qtdParticipantes);
         qtdParticipantes++;
-        setParticipanteDiv();
       }
 
     });
 
-    function setParticipanteDiv(){
-      var participantes = document.getElementById('participantes');
-      var novoParticipante = document.getElementById('novoParticipante');
-      var divParticipante = document.getElementById('divParticipante');
-      //console.log(participantes.innerHTML);
-      if(novoParticipante.style.display == 'block'){
-        console.log('block');
-        divParticipante.value = participantes.innerHTML;
-      }else{
-        console.log('none');
-        participantes.innerHTML = divParticipante.value;
-      }
-      
+    function setParticipanteDiv(qtdParticipante){
+      var countParticipante = document.getElementById('countParticipante');      
+      countParticipante.value = qtdParticipante;      
     }
-
-    function getParticipanteDiv(){
-      var oldNovoParticipante = document.getElementById('oldNovoParticipante');
-      var participantes = document.getElementById('participantes');
-      var divParticipante = document.getElementById('divParticipante');
-     // console.log(participantes.innerHTML);
-     if(novoParticipante.style.display == 'none'){
-        console.log('none');
-        participantes.innerHTML = divParticipante.value;
-     }else{
-      console.log('block');
-     }
-    }
-
-    //window.onload = setParticipanteDiv();
-    window.onload = getParticipanteDiv();
+   
     $('#addPlanoTrabalho').click(function(e) {
       e.preventDefault();
       if (qtdLinhas < 4) {
@@ -444,6 +423,7 @@
     $(document).on('click', '.delete', function() {
       if (qtdParticipantes > 2) {
         qtdParticipantes--;
+        setParticipanteDiv(qtdParticipantes-1);
         $(this).closest('#novoParticipante').remove();
         return false;
       }
