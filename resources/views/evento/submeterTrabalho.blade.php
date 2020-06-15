@@ -307,6 +307,10 @@
                           </select>
                         </div>
                       </div>
+                      <h6 class="mb-1">Possui plano de trabalho?</h6>
+                      <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
+                      <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
+                      <div id="planoHabilitado" >
                       <h5>Dados do plano de trabalho</h5>
                       <div class="row">
                         <div class="col-sm-12">
@@ -349,6 +353,7 @@
                           </div>
                         </div>
                       </div>
+                      </div> 
                     </div>
                   </div>
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
@@ -394,7 +399,7 @@
       e.preventDefault();
       if (qtdLinhas < 4) {
         linha = montarLinhaInputPlanoTrabalho();
-        $('#planoTrabalho').append(linha);
+        //$('#planoTrabalho').append(linha);
         qtdLinhas++;
       }
 
@@ -443,6 +448,23 @@
       console.log('button nao');
       exibirErro('justificativa');
     });
+    // document.getElementsByClassName('.simPlano .naoPlano').addEventListener("click", function(event){
+    //   event.preventDefault()
+    // });
+
+    $(document).on('click', '.simPlano', function(e) {
+        e.preventDefault();
+        var plano = $(this).next().next()[0];
+        plano.style.display = 'block';       
+        console.log('button sim');
+    });
+    $(document).on('click', '.naoPlano', function(e) {
+      e.preventDefault();
+        var plano = $(this).next()[0];
+        plano.style.display = 'none';
+        console.log('button nao');
+    });
+   
   });
 
   function exibirErro(campo){
@@ -511,6 +533,10 @@
                   "</select>"+
                 "</div>"+
             "</div>" +
+            "<h6 class='mb-1'>Possui plano de trabalho?</h6>"+
+            "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 simPlano'"+">Sim</button>"+
+            "<button  class="+"'btn btn-primary mt-2 mb-2 naoPlano'"+">Não</button>"+
+            "<div id="+"planoHabilitado"+">" +
             "<h5>Dados do plano de trabalho</h5>" +
             "<div class="+"row"+">"+
                 "<div class="+"col-sm-4"+">"+
@@ -546,6 +572,7 @@
                       "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
                     "</a>"+
                 "</div>"+
+              "</div>"+
               "</div>"+
             "</div>";
   }
@@ -583,38 +610,38 @@
   //           "</div>";
   // }
 
-  function areas() {
-        var grandeArea = $('#grandeArea').val();
-        $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
-        function (dados){
-          if (dados.length > 0){    
-            var option = '<option>-- Área --</option>';
-            $.each(dados, function(i, obj){
-                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
-            }) 
-          } else {
-            var option = "<option>-- Área --</option>";
-          }
-          $('#area').html(option).show(); 
-        })
-  }
+  // function areas() {
+  //       var grandeArea = $('#grandeArea').val();
+  //       $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
+  //       function (dados){
+  //         if (dados.length > 0){    
+  //           var option = '<option>-- Área --</option>';
+  //           $.each(dados, function(i, obj){
+  //               option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
+  //           }) 
+  //         } else {
+  //           var option = "<option>-- Área --</option>";
+  //         }
+  //         $('#area').html(option).show(); 
+  //       })
+  // }
 
-  function subareas() {
-        var area = $('#area').val();
-        $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
-        function (dados){
-          if (dados.length > 0){    
-            var option = '<option>-- Sub Área --</option>';
-            $.each(dados, function(i, obj){
-                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
-            }) 
-          } else {
-            var option = "<option>-- Sub Área --</option>";
-          }
-          $('#subArea').html(option).show(); 
-        })
-  }
+  // function subareas() {
+  //       var area = $('#area').val();
+  //       $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
+  //       function (dados){
+  //         if (dados.length > 0){    
+  //           var option = '<option>-- Sub Área --</option>';
+  //           $.each(dados, function(i, obj){
+  //               option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
+  //           }) 
+  //         } else {
+  //           var option = "<option>-- Sub Área --</option>";
+  //         }
+  //         $('#subArea').html(option).show(); 
+  //       })
+  // }
 
-  window.onload = areas();
+  // window.onload = areas();
 </script>
 @endsection
