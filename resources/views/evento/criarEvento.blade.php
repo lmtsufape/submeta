@@ -62,7 +62,7 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Descrição</label>
-                    <textarea class="form-control @error('descricao') is-invalid @enderror" value="{{ old('descricao') }}" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="3"></textarea>
+                    <textarea class="form-control @error('descricao') is-invalid @enderror" value="" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="3">{{ old('descricao') }}</textarea>
                     @error('descricao')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -97,7 +97,7 @@
 
                 @error('inicioSubmissao')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message . date('d/m/Y', strtotime($ontem)) . '.' }}</strong>
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
                 </span>
                 @enderror
             </div>
@@ -120,7 +120,7 @@
 
               @error('inicioRevisao')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem)) . '.' }}</strong>
+                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
               </span>
               @enderror
           </div>
@@ -143,7 +143,7 @@
 
               @error('resultado')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem)) . '.' }}</strong>
+                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
               </span>
               @enderror
           </div>
