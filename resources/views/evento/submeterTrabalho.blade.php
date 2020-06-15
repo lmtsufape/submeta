@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container content">
-
   <div class="row justify-content-center">
     <div class="col-sm-12">
       <div class="card" style="margin-top:50px">
@@ -34,7 +33,7 @@
                   <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()">
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
-                      <option @if(old('grandeArea')==$grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                    <option @if(old('grandeArea')==$grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
                     @endforeach
                   </select>
 
@@ -76,14 +75,6 @@
                 </div>
               </div>
 
-
-
-
-
-
-
-
-
               <hr>
               <h3>Coordenador</h3>
 
@@ -96,11 +87,10 @@
                 </div>
                 <div class="col-sm-6">
                   <label for="linkLattesEstudante" class="col-form-label">Link Lattes do Proponente*</label>
-                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
-                  @if(Auth()->user()->proponentes->linkLattes != null)
-                    value="{{ Auth()->user()->proponentes->linkLattes }}"
+                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante" @if(Auth()->user()->proponentes->linkLattes != null)
+                  value="{{ Auth()->user()->proponentes->linkLattes }}"
                   @else
-                    value=""
+                  value=""
                   @endif >
 
                   @error('linkLattesEstudante')
@@ -140,7 +130,7 @@
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
                   <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>
-                  
+
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -172,22 +162,18 @@
                   @enderror
                 </div>
 
-
-
-
-
                 <div class="col-sm-6">
                   <label for="botao" class="col-form-label @error('botao') is-invalid @enderror">{{ __('Possui autorização do Comitê de Ética*:') }}</label>
                   <button id="buttonSim" class="btn btn-primary mt-2 mb-2">Sim</button>
-                  <button id="buttonNao" class="btn btn-primary mt-2 mb-2">Não</button> 
-                  <input type="hidden" id="botao" name="botao" value=""> 
+                  <button id="buttonNao" class="btn btn-primary mt-2 mb-2">Não</button>
+                  <input type="hidden" id="botao" name="botao" value="">
 
                   @error('botao')
                   <span id="botao" class="invalid-feedback" role="alert" style="overflow: visible; display:inline">
                     <strong>{{ $message }}</strong>
                   </span>
                   @enderror
-                  
+
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -265,147 +251,142 @@
               {{-- Participantes  --}}
               <div class="row" style="margin-top:20px">
                 <div class="col-sm-12">
-                  <div id="participantes">                    
+                  <div id="participantes">
 
                     @php $countParticipante = 1; @endphp
                     @if(old('countParticipante') != null)
                       @php $countParticipante = old('countParticipante') @endphp
                     @endif
-                    {{$countParticipante}}
-                   
-                    @if ($countParticipante != null && $countParticipante > 0)
-                    @for ($i = 0; $i < $countParticipante; $i++)                     
-                    <div id="novoParticipante" style="display: block;">
-                      <br>
-                      <h5>Dados do participante</h5>                     
-                      <div class="row">
-                        <div class="col-sm-5">
-                          <label>Nome Completo*</label>
-                          <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" required value="{{old('nomeParticipante.'.$i)}}">
-                          @error('nomeParticipante')
-                          <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                            <strong>{{ $message }}</strong>
-                          </span>
-                          @enderror
-                        </div>
-                        <div class="col-sm-4">
-                          <label>E-mail*</label>
-                          <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" required value="{{old('emailParticipante.'.$i)}}">
-                          @error('emailParticipante')
-                          <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                            <strong>{{ $message }}</strong>
-                          </span>
-                          @enderror
-                        </div>
-                        <div class="col-sm-3">
-                          <label>Função*:</label>
-                          <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
-                            <option value="" disabled selected hidden>-- Função --</option>
-                            @foreach($funcaoParticipantes as $funcaoParticipante)
-                              <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
-                            @endforeach
 
-                            @error('funcaoParticipante')
+                    @if ($countParticipante != null && $countParticipante > 0)
+                      @for ($i = 0; $i < $countParticipante; $i++) <div id="novoParticipante" style="display: block;">
+                        <br>
+                        <h5>Dados do participante</h5>
+                        <div class="row">
+                          <div class="col-sm-5">
+                            <label>Nome Completo*</label>
+                            <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" required value="{{old('nomeParticipante.'.$i)}}">
+                            @error('nomeParticipante')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                          </select>
+                          </div>
+                          <div class="col-sm-4">
+                            <label>E-mail*</label>
+                            <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" required value="{{old('emailParticipante.'.$i)}}">
+                            @error('emailParticipante')
+                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                          </div>
+                          <div class="col-sm-3">
+                            <label>Função*:</label>
+                            <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
+                              <option value="" disabled selected hidden>-- Função --</option>
+                              @foreach($funcaoParticipantes as $funcaoParticipante)
+                              <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
+                              @endforeach
+
+                              @error('funcaoParticipante')
+                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                <strong>{{ $message }}</strong>
+                              </span>
+                              @enderror
+                            </select>
+                          </div>
                         </div>
-                      </div>
-                      <h5>Dados do plano de trabalho</h5>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div id="planoTrabalho">
-                            <div class="row">
-                              <div class="col-sm-4">
-                                <label>Titulo* </label>
-                                <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required value="{{old('nomePlanoTrabalho.'.$i)}}">
-                                
-                                @error('nomePlanoTrabalho')
-                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                  <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                              </div>
-                              {{-- Arquivo  --}}
-                              <div class="col-sm-7">
-                                <label for="nomeTrabalho">Anexo*</label>
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
-                                  </div>
-                                  <div class="custom-file">
-                                    <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
-                                    <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
-                                  </div>
+                        <h5>Dados do plano de trabalho</h5>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div id="planoTrabalho">
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <label>Titulo* </label>
+                                  <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required value="{{old('nomePlanoTrabalho.'.$i)}}">
+
+                                  @error('nomePlanoTrabalho')
+                                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                    <strong>{{ $message }}</strong>
+                                  </span>
+                                  @enderror
                                 </div>
-                                @error('anexoPlanoTrabalho')
-                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                  <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                              </div>
-                              <div class="col-sm-1">
-                                <a class="delete">
-                                  <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
-                                </a>
+                                {{-- Arquivo  --}}
+                                <div class="col-sm-7">
+                                  <label for="nomeTrabalho">Anexo*</label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
+                                    </div>
+                                    <div class="custom-file">
+                                      <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                      <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                                    </div>
+                                  </div>
+                                  @error('anexoPlanoTrabalho')
+                                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                    <strong>{{ $message }}</strong>
+                                  </span>
+                                  @enderror
+                                </div>
+                                <div class="col-sm-1">
+                                  <a class="delete">
+                                    <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
+                                  </a>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div> 
-                    @endfor  
-                    @endif                
+                    </div>
+                      @endfor
+                    @endif
                   </div>
                   <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}"></input>
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
                 </div>
               </div>
 
-          </p>
-          <div class="row justify-content-center">
-            <div class="col-md-6">
-              <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
-            </div>
-            <div class="col-md-6">
-              <button type="submit" class="btn btn-primary" style="width:100%" onclick="setParticipanteDiv()">
-                {{ __('Enviar') }}
-              </button>
-            </div>
+              </p>
+              <div class="row justify-content-center">
+                <div class="col-md-6">
+                  <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+                </div>
+                <div class="col-md-6">
+                  <button type="submit" class="btn btn-primary" style="width:100%" onclick="setParticipanteDiv()">
+                    {{ __('Enviar') }}
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
-          </form>
         </div>
       </div>
     </div>
-  </div>
-
 </div>
 @endsection
 
 @section('javascript')
 <script type="text/javascript">
   $(function() {
-    var qtdLinhas = 1;
-    var qtdParticipantes = 2;
+    var qtdLinhas = 1;   
     // Coautores
     $('#addCoautor').click(function(e) {
-      if (qtdParticipantes < 100) {
+      var countParticipante = document.getElementById('countParticipante');
+      if (countParticipante.value < 100) {
         e.preventDefault();
         linha = montarLinhaInput();
-        $('#participantes').append(linha);       
-        setParticipanteDiv(qtdParticipantes);
-        qtdParticipantes++;
+        $('#participantes').append(linha);
+        setParticipanteDiv(parseInt(countParticipante.value) + 1);        
       }
-
     });
 
-    function setParticipanteDiv(qtdParticipante){
-      var countParticipante = document.getElementById('countParticipante');      
-      countParticipante.value = qtdParticipante;      
+    function setParticipanteDiv(qtdParticipante) {
+      var countParticipante = document.getElementById('countParticipante');
+      countParticipante.value = qtdParticipante;
     }
-   
+
     $('#addPlanoTrabalho').click(function(e) {
       e.preventDefault();
       if (qtdLinhas < 4) {
@@ -413,7 +394,6 @@
         $('#planoTrabalho').append(linha);
         qtdLinhas++;
       }
-
     });
     // // Exibir modalidade de acordo com a área
     // $("#area").change(function() {
@@ -421,12 +401,12 @@
     //   addModalidade($(this).val());
     // });
     $(document).on('click', '.delete', function() {
-      if (qtdParticipantes > 2) {
-        qtdParticipantes--;
-        setParticipanteDiv(qtdParticipantes-1);
+      var countParticipante = document.getElementById('countParticipante');
+      if (countParticipante.value >= 2) {        
+        setParticipanteDiv(parseInt(countParticipante.value) - 1);
         $(this).closest('#novoParticipante').remove();
         return false;
-      }
+      } 
     });
     $(document).on('click', '.deletePlano', function() {
       if (qtdLinhas > 1) {
@@ -436,15 +416,15 @@
       }
     });
     $('.custom-file-input').on('change', function() {
-        var fieldVal = $(this).val();
+      var fieldVal = $(this).val();
 
-        // Change the node's value by removing the fake path (Chrome)
-        fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+      // Change the node's value by removing the fake path (Chrome)
+      fieldVal = fieldVal.replace("C:\\fakepath\\", "");
 
-        if (fieldVal != undefined || fieldVal != "") {
-            $(this).next(".custom-file-label").attr('data-content', fieldVal);
-            $(this).next(".custom-file-label").text(fieldVal);
-        }
+      if (fieldVal != undefined || fieldVal != "") {
+        $(this).next(".custom-file-label").attr('data-content', fieldVal);
+        $(this).next(".custom-file-label").text(fieldVal);
+      }
     })
     // F
     $('#buttonSim').on('click', function(e) {
@@ -462,17 +442,17 @@
     });
   });
 
-  function exibirErro(campo){
+  function exibirErro(campo) {
     console.log("o campo " + campo);
     var botao = document.getElementById('botao');
     botao.value = "sim";
     var comiteErro = document.getElementById('comiteErro');
     var justificativaErro = document.getElementById('justificativaErro');
 
-    if(campo === 'comite'){
+    if (campo === 'comite') {
       comiteErro.style.display = "block";
       justificativaErro.style.display = "none";
-    }else if(campo === 'justificativa'){
+    } else if (campo === 'justificativa') {
       comiteErro.style.display = "none";
       justificativaErro.style.display = "block";
     }
@@ -493,79 +473,80 @@
   function montarLinhaInput() {
 
     return    "<div id="+"novoParticipante"+">" +
-              "<br><h5>Dados do participante</h5>" +
-              "<div class="+"row"+">"+
-                "<div class="+"col-sm-5"+">"+
-                    "<label>Nome Completo*</label>"+
-                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('nomeParticipante') is-invalid @enderror" + "name=" +'nomeParticipante[]'+" placeholder="+"Nome"+" required>"+
-                    "@error('nomeParticipante')" +
-                    "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
-                      "<strong>{{ $message }}</strong>" +
-                    "</span>" +
-                    "@enderror" +
-                "</div>"+
-                "<div class="+"col-sm-4"+">"+
-                    "<label>E-mail*</label>"+
-                    "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' required>" +
-                    "@error('emailParticipante')" +
-                    "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
-                      "<strong>{{ $message }}</strong>" +
-                    "</span>" +
-                    "@enderror" +
-                "</div>"+
-                "<div class='col-sm-3'>"+
-                  "<label>Função*:</label>"+
-                  "<select class=" + "form-control @error('funcaoParticipante') is-invalid @enderror" + "name='funcaoParticipante[]'" + "id='funcaoParticipante'> " +
-                      "<option value='' disabled selected hidden> Função </option>"+
-                      "@foreach($funcaoParticipantes as $funcaoParticipante)"+
-                        "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+
-                      "@endforeach"+
-                      "@error('funcaoParticipante')" +
-                      "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
-                        "<strong>{{ $message }}</strong>" +
-                      "</span>" +
-                      "@enderror" +
-                  "</select>"+
-                "</div>"+
-            "</div>" +
-            "<h5>Dados do plano de trabalho</h5>" +
-            "<div class="+"row"+">"+
-                "<div class="+"col-sm-4"+">"+
-                    "<label>Titulo*</label>"+
-                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
-                    "@error('nomePlanoTrabalho')" +
-                      "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
-                        "<strong>{{ $message }}</strong>" +
-                      "</span>" +
-                    "@enderror" +
-                "</div>"+
-                "<div class="+"col-sm-7" +">"+
-                  "<label for="+"nomeTrabalho"+">Anexo* </label>"+
+          "<br><h5>Dados do participante</h5>" +
+          "<div class="+"row"+">"+
+            "<div class="+"col-sm-5"+">"+
+                "<label>Nome Completo*</label>"+
+                "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('nomeParticipante') is-invalid @enderror" + "name=" +'nomeParticipante[]'+" placeholder="+"Nome"+" required>"+
+                "@error('nomeParticipante')" +
+                "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                  "<strong>{{ $message }}</strong>" +
+                "</span>" +
+                "@enderror" +
+            "</div>"+
+            "<div class="+"col-sm-4"+">"+
+                "<label>E-mail*</label>"+
+                "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' required>" +
+                "@error('emailParticipante')" +
+                "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                  "<strong>{{ $message }}</strong>" +
+                "</span>" +
+                "@enderror" +
+            "</div>"+
+            "<div class='col-sm-3'>"+
+              "<label>Função*:</label>"+
+              "<select class=" + "form-control @error('funcaoParticipante') is-invalid @enderror" + "name='funcaoParticipante[]'" + "id='funcaoParticipante'> " +
+                  "<option value='' disabled selected hidden> Função </option>"+
+                  "@foreach($funcaoParticipantes as $funcaoParticipante)"+
+                    "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+
+                  "@endforeach"+
+                  "@error('funcaoParticipante')" +
+                  "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                    "<strong>{{ $message }}</strong>" +
+                  "</span>" +
+                  "@enderror" +
+              "</select>"+
+            "</div>"+
+        "</div>" +
+        "<h5>Dados do plano de trabalho</h5>" +
+        "<div class="+"row"+">"+
+            "<div class="+"col-sm-4"+">"+
+                "<label>Titulo*</label>"+
+                "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
+                "@error('nomePlanoTrabalho')" +
+                  "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                    "<strong>{{ $message }}</strong>" +
+                  "</span>" +
+                "@enderror" +
+            "</div>"+
+            "<div class="+"col-sm-7" +">"+
+              "<label for="+"nomeTrabalho"+">Anexo* </label>"+
 
-                  "<div class="+"input-group"+">"+
-                    "<div class='input-group-prepend'>"+
-                      "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
-                    "</div>"+
-                    "<div class='custom-file'>"+
-                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
-                        "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
-                      "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
-                    "</div>"+
-                  "</div>"+
-                  "@error('anexoPlanoTrabalho')"+
-                  "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
-                    "<strong>{{ $message }}</strong>"+
-                  "</span>"+
-                  "@enderror"+
+              "<div class="+"input-group"+">"+
+                "<div class='input-group-prepend'>"+
+                  "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
                 "</div>"+
-                "<div class="+"col-sm-1"+">"+
-                    "<a  class="+"delete"+">"+
-                      "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
-                    "</a>"+
+                "<div class='custom-file'>"+
+                  "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
+                    "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
+                  "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
                 "</div>"+
               "</div>"+
-            "</div>";
+              "@error('anexoPlanoTrabalho')"+
+              "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
+                "<strong>{{ $message }}</strong>"+
+              "</span>"+
+              "@enderror"+
+            "</div>"+
+            "<div class="+"col-sm-1"+">"+
+                "<a  class="+"delete"+">"+
+                  "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
+                "</a>"+
+            "</div>"+
+          "</div>"+
+        "</div>";
   }
+
   // function montarLinhaInputPlanoTrabalho(){
 
   //   return  "<div class="+"row"+">"+
@@ -601,35 +582,35 @@
   // }
 
   function areas() {
-        var grandeArea = $('#grandeArea').val();
-        $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
-        function (dados){
-          if (dados.length > 0){    
-            var option = '<option>-- Área --</option>';
-            $.each(dados, function(i, obj){
-                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
-            }) 
-          } else {
-            var option = "<option>-- Área --</option>";
-          }
-          $('#area').html(option).show(); 
-        })
+    var grandeArea = $('#grandeArea').val();
+    $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
+      function(dados) {
+        if (dados.length > 0) {
+          var option = '<option>-- Área --</option>';
+          $.each(dados, function(i, obj) {
+            option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+          })
+        } else {
+          var option = "<option>-- Área --</option>";
+        }
+        $('#area').html(option).show();
+      })
   }
 
   function subareas() {
-        var area = $('#area').val();
-        $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
-        function (dados){
-          if (dados.length > 0){    
-            var option = '<option>-- Sub Área --</option>';
-            $.each(dados, function(i, obj){
-                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
-            }) 
-          } else {
-            var option = "<option>-- Sub Área --</option>";
-          }
-          $('#subArea').html(option).show(); 
-        })
+    var area = $('#area').val();
+    $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
+      function(dados) {
+        if (dados.length > 0) {
+          var option = '<option>-- Sub Área --</option>';
+          $.each(dados, function(i, obj) {
+            option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+          })
+        } else {
+          var option = "<option>-- Sub Área --</option>";
+        }
+        $('#subArea').html(option).show();
+      })
   }
 
   window.onload = areas();
