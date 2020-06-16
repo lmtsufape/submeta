@@ -612,7 +612,7 @@
 
   function areas() {
         var grandeArea = $('#grandeArea').val();
-        $.getJSON("http://submeta.test/naturezas/areas/" + grandeArea,
+        $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
         function (dados){
           if (dados.length > 0){    
             var option = '<option>-- Área --</option>';
@@ -628,7 +628,7 @@
 
   function subareas() {
         var area = $('#area').val();
-        $.getJSON("http://submeta.test/naturezas/subarea/" + area,
+        $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
         function (dados){
           if (dados.length > 0){    
             var option = '<option>-- Sub Área --</option>';
