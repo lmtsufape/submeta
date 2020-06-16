@@ -75,7 +75,7 @@ class TrabalhoController extends Controller
       //Relaciona o projeto criado com o proponente que criou o projeto
       $proponente = Proponente::where('user_id', Auth::user()->id)->first();
       //$trabalho->proponentes()->save($proponente);  
-      //dd($coordenador->id);
+      //dd($request->all());
       $trabalho = "trabalho";
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
@@ -98,7 +98,7 @@ class TrabalhoController extends Controller
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
           'funcaoParticipante.*'    => ['required', 'string'],
-          'nomePlanoTrabalho.*'     => ['required', 'string'],
+          'nomePlanoTrabalho.*'     => ['nullable', 'string'],
           'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'botao'                   => ['required'],
@@ -147,11 +147,11 @@ class TrabalhoController extends Controller
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
           'funcaoParticipante.*'    => ['required', 'string'],
-          'nomePlanoTrabalho.*'     => ['required', 'string'],
+          'nomePlanoTrabalho.*'     => ['nullable', 'string'],
           'anexoProjeto'            => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLatterCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
 
         $trabalho = Trabalho::create([
@@ -218,21 +218,23 @@ class TrabalhoController extends Controller
                   ->send(new SubmissaoTrabalho($userParticipante, $subject, $evento, $trabalho));
           }
 
-          $usuario = User::where('email', $value)->first();
-          $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $trabalho->id]])->first();
-          $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
-          $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
-          $file = $request->anexoPlanoTrabalho[$key];
-          Storage::putFileAs($path, $file, $nome);
+          if($request->nomePlanoTrabalho[$key] != null){
+            $usuario = User::where('email', $value)->first();
+            $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $trabalho->id]])->first();
+            $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+            $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+            $file = $request->anexoPlanoTrabalho[$key];
+            Storage::putFileAs($path, $file, $nome);
 
-          $arquivo = new Arquivo();
-          $arquivo->titulo = $request->nomePlanoTrabalho[$key];
-          $arquivo->nome = $path . $nome;
-          $arquivo->trabalhoId = $trabalho->id;
-          $arquivo->data = $mytime;
-          $arquivo->participanteId = $participante->id;
-          $arquivo->versaoFinal = true;
-          $arquivo->save();
+            $arquivo = new Arquivo();
+            $arquivo->titulo = $request->nomePlanoTrabalho[$key];
+            $arquivo->nome = $path . $nome;
+            $arquivo->trabalhoId = $trabalho->id;
+            $arquivo->data = $mytime;
+            $arquivo->participanteId = $participante->id;
+            $arquivo->versaoFinal = true;
+            $arquivo->save();
+          }          
         }
       }
       

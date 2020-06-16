@@ -318,7 +318,7 @@
                             <div class="row">
                               <div class="col-sm-4">
                                 <label>Titulo* </label>
-                                <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required value="{{old('nomePlanoTrabalho.'.$i)}}">
+                                <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" value="{{old('nomePlanoTrabalho.'.$i)}}">
                                 
                                 @error('nomePlanoTrabalho')
                                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
