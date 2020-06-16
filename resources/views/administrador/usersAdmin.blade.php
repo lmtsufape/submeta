@@ -36,7 +36,7 @@
     <tbody>
       @foreach ($users as $user)
         @if (auth()->user()->id != $user->id)
-          @can('isAdministrador', auth()->user())
+          @if(auth()->user()->id != "administrador")
             <tr>
               <td>
                 {{ $user->name }}
@@ -96,7 +96,7 @@
               </td>
             </tr>
             @endif
-          @endcan
+          @endif
         @endif
       @endforeach
     </tbody>
