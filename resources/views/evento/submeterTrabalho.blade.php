@@ -153,12 +153,17 @@
 
                 <div class="col-sm-6">
                   <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador*:') }}</label>
+                  @if(old('anexoLattesPreenchido') != null)
+                  <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                          'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
+                  @endif
+                  <input type="hidden" id="anexoLattesPreenchido" name="anexoLattesPreenchido" value="{{ old('anexoLattesPreenchido') }}" >
 
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="inputGroupFile01" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador">
-                      <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="anexoLattesCoordenador" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador" onchange="exibirAnexoTemp(this)">
+                      <label class="custom-file-label" id="custom-file-label" for="anexoLattesCoordenador">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
                   @error('anexoLattesCoordenador')
@@ -179,12 +184,17 @@
                     <strong>{{ $message }}</strong>
                   </span>
                   @enderror
-
+                  <br/>
+                  @if(old('anexoComitePreenchido') != null)
+                  <a id="anexoComiteTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                          'nomeAnexo' => 'anexoAutorizacaoComiteEtica' ])}}">Arquivo atual</a>
+                  @endif
+                  <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido" value="{{ old('anexoComitePreenchido') }}" >
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input disabled type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica">
-                      <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <input disabled type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="exibirAnexoTemp(this)">
+                      <label class="custom-file-label" id="custom-file-label" for="inputEtica">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
                   @error('anexoComiteEtica')
@@ -196,11 +206,15 @@
 
                 <div class="col-sm-6 mt-3">
                   <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo do Planilha de Pontuação*:') }}</label>
-
+                  @if(old('anexoPlanilhaPreenchido') != null)
+                  <a id="anexoPlanilhaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                          'nomeAnexo' => 'anexoPlanilhaPontuacao' ])}}">Arquivo atual</a>
+                  @endif
+                  <input type="hidden" id="anexoPlanilhaPreenchido" name="anexoPlanilhaPreenchido" value="{{ old('anexoPlanilhaPreenchido') }}" >
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha">
+                      <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="exibirAnexoTemp(this)">
                       <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
@@ -213,13 +227,17 @@
 
                 <div class="col-sm-6">
                   <label for="nomeTrabalho" class="col-form-label">{{ __('Justificativa*:') }}</label>
-
+                  @if(old('anexoJustificativaPreenchido') != null)
+                  <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                          'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
+                  @endif
+                  <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido" value="{{ old('anexoJustificativaPreenchido') }}" >
                   <div class="input-group">
 
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled name="justificativaAutorizacaoEtica">
-                      <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled name="justificativaAutorizacaoEtica" onchange="exibirAnexoTemp(this)">
+                      <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
                   @error('justificativaAutorizacaoEtica')
@@ -233,12 +251,17 @@
                 {{-- Decisão do CONSU --}}
                 <div class="col-sm-6">
                   <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU*:') }}</label>
+                  @if(old('anexoConsuPreenchido') != null)
+                  <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                          'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
+                  @endif
+                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido" value="{{ old('anexoConsuPreenchido') }}" >
 
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU">
-                      <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="exibirAnexoTemp(this)">
+                      <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
                   @error('anexoCONSU')
@@ -361,7 +384,7 @@
                   <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
                 </div>
                 <div class="col-md-6">
-                  <button type="submit" class="btn btn-primary" style="width:100%" onclick="setParticipanteDiv()">
+                  <button type="submit" class="btn btn-primary" style="width:100%">
                     {{ __('Enviar') }}
                   </button>
                 </div>
@@ -439,12 +462,14 @@
       $('#inputEtica').prop('disabled', false);
       $('#inputJustificativa').prop('disabled', true);
       exibirErro('comite');
+     // $('#anexoJustificativaPreenchido').val("");
     });
     $('#buttonNao').on('click', function(e) {
       e.preventDefault();
       $('#inputEtica').prop('disabled', true);
       $('#inputJustificativa').prop('disabled', false);      
       exibirErro('justificativa');
+      //$('#anexoComitePreenchido').val("");
     });
   });
 
@@ -454,12 +479,29 @@
     var comiteErro = document.getElementById('comiteErro');
     var justificativaErro = document.getElementById('justificativaErro');
 
-    if (campo === 'comite') {
-      comiteErro.style.display = "block";
-      justificativaErro.style.display = "none";
-    } else if (campo === 'justificativa') {
-      comiteErro.style.display = "none";
-      justificativaErro.style.display = "block";
+    if(comiteErro != null || justificativaErro != null){
+      if (campo === 'comite') {
+        comiteErro.style.display = "block";
+        justificativaErro.style.display = "none";
+      } else if (campo === 'justificativa') {
+        comiteErro.style.display = "none";
+        justificativaErro.style.display = "block";
+      }
+    }
+  }
+
+  function habilitarBotao(){
+    var anexoComitePreenchido = document.getElementById('anexoComitePreenchido');
+    var anexoJustificativaPreenchido = document.getElementById('anexoJustificativaPreenchido');
+
+    if(anexoComitePreenchido.value == "sim"){
+      $('#inputEtica').prop('disabled', false);
+      $('#inputJustificativa').prop('disabled', true);      
+      exibirErro('comite');
+    } else if(anexoJustificativaPreenchido.value == "sim"){
+      $('#inputEtica').prop('disabled', true);
+      $('#inputJustificativa').prop('disabled', false);      
+      exibirErro('justificativa');
     }
   }
   // Remover Coautor
@@ -637,7 +679,32 @@
       var anexoProjetoPreenchido = document.getElementById('anexoProjetoPreenchido');
       anexoProjetoPreenchido.value = "sim";
     }
+    if(file.id === "anexoLattesCoordenador"){
+      var anexoLattesPreenchido = document.getElementById('anexoLattesPreenchido');
+      anexoLattesPreenchido.value = "sim";
+    }
+    if(file.id === "inputEtica"){
+      var anexoComitePreenchido = document.getElementById('anexoComitePreenchido');
+      var anexoJustificativaPreenchido = document.getElementById('anexoJustificativaPreenchido');
+      anexoComitePreenchido.value = "sim";
+      anexoJustificativaPreenchido.value = "";
+    }
+    if(file.id === "inputJustificativa"){
+      var anexoComitePreenchido = document.getElementById('anexoComitePreenchido');
+      var anexoJustificativaPreenchido = document.getElementById('anexoJustificativaPreenchido');
+      anexoJustificativaPreenchido.value = "sim";
+      anexoComitePreenchido.value = "";
+    }
+    if(file.id === "anexoCONSU"){
+      var anexoConsuPreenchido = document.getElementById('anexoConsuPreenchido');
+      anexoConsuPreenchido.value = "sim";
+    }
+    if(file.id === "anexoPlanilha"){
+      var anexoPlanilhaPreenchido = document.getElementById('anexoPlanilhaPreenchido');
+      anexoPlanilhaPreenchido.value = "sim";
+    }
   }
   window.onload = areas();
+  window.onload = habilitarBotao();
 </script>
 @endsection

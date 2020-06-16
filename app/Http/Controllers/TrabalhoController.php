@@ -106,12 +106,12 @@ class TrabalhoController extends Controller
           'nomePlanoTrabalho.*'     => ['required', 'string'],
           //--Verificando se anexos já foram submetidos
           'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoCONSU'              => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoCONSU'              => [($request->anexoConsuPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'botao'                   => ['required'],
-          'anexoComiteEtica'        => ['required_without:justificativaAutorizacaoEtica', 'file', 'mimes:pdf', 'max:2000000'],
-          'justificativaAutorizacaoEtica' => ['required_without:anexoComiteEtica', 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoLattesCoordenador'  => ['required', 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoPlanilha'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoComiteEtica'        => [($request->anexoComitePreenchido!=='sim'&&$request->anexoJustificativaPreenchido!=='sim'?'required_without:justificativaAutorizacaoEtica':''), 'file', 'mimes:pdf', 'max:2000000'],
+          'justificativaAutorizacaoEtica' => [($request->anexoJustificativaPreenchido!=='sim'&&$request->anexoComitePreenchido!=='sim'?'required_without:anexoComiteEtica':''), 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
         //dd($request->all());
@@ -131,12 +131,12 @@ class TrabalhoController extends Controller
           'status'                        => 'Submetido' ,
           'proponente_id'                 => $proponente->id,
           //Anexos
-          'anexoCONSU'                    => $request->anexoCONSU,
+          'anexoCONSU'                    => $request->anexoCONSU != null ? $request->anexoCONSU : "",
           'anexoProjeto'                  => $request->anexoProjeto != null ? $request->anexoProjeto : "",
-          'anexoAutorizacaoComiteEtica'   => $request->anexoComiteEtica,
-          'justificativaAutorizacaoEtica' => $request->justificativaAutorizacaoEtica,
-          'anexoLattesCoordenador'        => $request->anexoLattesCoordenador,
-          'anexoPlanilhaPontuacao'        => $request->anexoPlanilha,
+          'anexoAutorizacaoComiteEtica'   => $request->anexoComiteEtica != null ? $request->anexoComiteEtica : "",
+          'justificativaAutorizacaoEtica' => $request->justificativaAutorizacaoEtica != null ? $request->justificativaAutorizacaoEtica : "",
+          'anexoLattesCoordenador'        => $request->anexoLattesCoordenador != null ? $request->anexoLattesCoordenador : "",
+          'anexoPlanilhaPontuacao'        => $request->anexoPlanilha != null ? $request->anexoPlanilha : "",
         ]);
         //dd($trabalho);
       } else {
@@ -242,33 +242,38 @@ class TrabalhoController extends Controller
         }
       }
       
+      //-- Salvando anexos no storage ---//
+
       $pasta = 'trabalhos/' . $request->editalId . '/' . $trabalho->id;
 
-      if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
-        $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoCONSU,  "CONSU.pdf");
-      }
+      //-- Se existem anexos temporários, utilizá-los
+      $anexosTemp = AnexosTemp::where('eventoId', $request->editalId)->where('proponenteId', Auth::user()->id)
+        ->orderByDesc('updated_at')->first();     
 
-      if (!(is_null($request->anexoComiteEtica))) {
-        $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
-      } else {
-        $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica,  "Justificativa.pdf");
-      }
-
-      if(!isset($request->anexoProjeto) && $request->anexoProjetoPreenchido == 'sim'){
-        $anexosTemp = AnexosTemp::where('eventoId', $request->editalId)->where('proponenteId', Auth::user()->id)
-        ->orderByDesc('updated_at')->first();
-        Storage::move($anexosTemp->anexoProjeto, $pasta . '/Projeto.pdf');
-        $trabalho->anexoProjeto = $pasta . '/Projeto.pdf';
+      if($anexosTemp != null){
+        $this->armazenarAnexosFinais($anexosTemp, $request, $pasta, $trabalho, $evento);
       }else{
-        $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");
+
+        if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
+          $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoCONSU,  "CONSU.pdf");
+        }
+  
+        if (!(is_null($request->anexoComiteEtica))) {
+          $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
+        } else {
+          $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica,  "Justificativa.pdf");
+        }  
+        
+        $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");        
+        $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador,  "Latter_Coordenador.pdf");
+        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha,  "Planilha.pdf");
       }
-      $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador,  "Latter_Coordenador.pdf");
-      $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha,  "Planilha.pdf");
+      
       $trabalho->update();
 
       //Deletando arquivos temporários
       Storage::deleteDirectory('anexosTemp/' . $request->editalId . '/' . Auth::user()->id);
-
+      $anexosTemp->delete();
       //dd($trabalho);
 
       $subject = "Submissão de Trabalho";
@@ -285,13 +290,15 @@ class TrabalhoController extends Controller
       //---Anexos do Projeto  
       $anexosTemp = AnexosTemp::where('eventoId', $request->editalId)->where('proponenteId', $proponenteId)
                                 ->orderByDesc('updated_at')->first();
-           
+      //dd($anexosTemp);
       if($anexosTemp == null){
         $anexosTemp = new AnexosTemp();
         $jaExiste = false;
       }else{
         $jaExiste = true;
       }
+
+      //dd($jaExiste);
       
       $pasta = 'anexosTemp/' . $request->editalId . '/' . $proponenteId;
 
@@ -327,6 +334,45 @@ class TrabalhoController extends Controller
      
     }
 
+    public function armazenarAnexosFinais($anexosTemp, $request, $pasta, $trabalho, $evento){
+      //dd($anexosTemp);
+      // Anexo Projeto
+      if(!isset($request->anexoProjeto) && $request->anexoProjetoPreenchido == 'sim'){        
+        Storage::move($anexosTemp->anexoProjeto, $pasta . '/Projeto.pdf');
+        $trabalho->anexoProjeto = $pasta . '/Projeto.pdf';
+      }
+
+      //Anexo Decisão CONSU
+      if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
+        if(!isset($request->anexoCONSU) && $request->anexoConsuPreenchido == 'sim'){        
+          Storage::move($anexosTemp->anexoDecisaoCONSU, $pasta . '/CONSU.pdf');
+          $trabalho->anexoDecisaoCONSU = $pasta . '/CONSU.pdf';
+        }
+      }
+
+      //Autorização ou Justificativa
+      
+      if(!isset($request->anexoComiteEtica) && $request->anexoComitePreenchido == 'sim'){        
+        Storage::move($anexosTemp->anexoAutorizacaoComiteEtica, $pasta . '/Comite_de_etica.pdf');
+        $trabalho->anexoAutorizacaoComiteEtica = $pasta . '/Comite_de_etica.pdf';
+
+      } elseif(!isset($request->justificativaAutorizacaoEtica) && $request->anexoJustificativaPreenchido == 'sim'){        
+        Storage::move($anexosTemp->justificativaAutorizacaoEtica, $pasta . '/Justificativa.pdf');
+        $trabalho->justificativaAutorizacaoEtica = $pasta . '/Justificativa.pdf';
+      }     
+
+     //Anexo Lattes
+      if(!isset($request->anexoLattesCoordenador) && $request->anexoLattesPreenchido == 'sim'){        
+        Storage::move($anexosTemp->anexoLattesCoordenador, $pasta . '/Latter_Coordenador.pdf');
+        $trabalho->anexoLattesCoordenador = $pasta . '/Latter_Coordenador.pdf';
+      }
+
+      //Anexo Planilha
+      if(!isset($request->anexoPlanilha) && $request->anexoPlanilhaPreenchido == 'sim'){        
+        Storage::move($anexosTemp->anexoPlanilhaPontuacao, $pasta . '/Planilha.pdf');
+        $trabalho->anexoPlanilhaPontuacao = $pasta . '/Planilha.pdf';
+      }
+    }
     /**
      * Display the specified resource.
      *
