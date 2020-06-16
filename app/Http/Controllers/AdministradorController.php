@@ -369,7 +369,6 @@ class AdministradorController extends Controller
 
         return redirect()->back();
 
-
     }
 
     public function remover(Request $request){
