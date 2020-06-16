@@ -21,34 +21,34 @@ Auth::routes(['verify' => true]);
 
 //######## Rotas Avaliador  ####################################
 Route::prefix('avaliador')->name('avaliador.')->group(function(){
-  Route::get('/index',          'AvaliadorController@index'                      )->name('index');
-  Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'        )->name('visualizarTrabalho');
-  Route::post('/parecer',       'AvaliadorController@parecer'                    )->name('parecer');
-  Route::get('/editais',        'AvaliadorController@editais'                    )->name('editais');
-  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'              )->name('enviarParecer');
+  Route::get('/index',          'AvaliadorController@index'                      )->name('index')->middleware('auth');
+  Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'         )->name('visualizarTrabalho')->middleware('auth');
+  Route::post('/parecer',       'AvaliadorController@parecer'                    )->name('parecer')->middleware('auth');
+  Route::get('/editais',        'AvaliadorController@editais'                    )->name('editais')->middleware('auth');
+  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'              )->name('enviarParecer')->middleware('auth');
 });
 
 //######### Proponente  ########################################
-Route::get('/proponente/index', 'ProponenteController@index'                      )->name('proponente.index');
-Route::get('/proponente/cadastro', 'ProponenteController@create'                      )->name('proponente.create');
-Route::post('/proponente/cadastro', 'ProponenteController@store'                      )->name('proponente.store');
+Route::get('/proponente/index', 'ProponenteController@index'                      )->name('proponente.index')->middleware('auth');
+Route::get('/proponente/cadastro', 'ProponenteController@create'                      )->name('proponente.create')->middleware('auth');
+Route::post('/proponente/cadastro', 'ProponenteController@store'                      )->name('proponente.store')->middleware('auth');
 
 //######### Participante ########################################
-Route::get('/participante/index', 'ParticipanteController@index'                  )->name('participante.index');
-Route::get('/participante/edital/{id}',          'ParticipanteController@edital'  )->name('participante.edital');
+Route::get('/participante/index', 'ParticipanteController@index'                  )->name('participante.index')->middleware('auth');
+Route::get('/participante/edital/{id}',          'ParticipanteController@edital'  )->name('participante.edital')->middleware('auth');
 
 //######### Rotas Administrador #################################
-Route::get('/perfil-usuario', 'UserController@minhaConta')->middleware('auth'     )->name('user.perfil');
+Route::get('/perfil-usuario', 'UserController@minhaConta')->middleware('auth'     )->name('user.perfil')->middleware(['auth', 'verified']);
 Route::get('/perfil','UserController@perfil'                                      )->name('perfil')->middleware(['auth', 'verified']);
 Route::post('/perfil','UserController@editarPerfil'                               )->name('perfil')->middleware(['auth', 'verified']);
 
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
-  Route::get('/home/evento',                        'EventoController@index'              )->name('visualizarEvento');
+  Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
 
   // ######## rotas de teste #####################################
-  Route::get('/coordenador/home',                   'EventoController@index'              )->name('coord.home');
+  Route::get('/editais/home',                        'EventoController@index'             )->name('coord.home');
   Route::get('/coordenador/evento/detalhes',         'EventoController@detalhes'          )->name('coord.detalhesEvento');
 
   //####### Visualizar trabalhos do usuário ######################
@@ -189,15 +189,15 @@ Route::prefix('naturezas')->group(function(){
  
 //############ Evento ##############################################
 Route::prefix('evento')->name('evento.')->group(function(){
-  Route::get(    '/criar',          'EventoController@create'                           )->name('criar');
-  Route::post(   '/criar',          'EventoController@store'                            )->name('criar');
-  Route::get(    '/visualizar/{id}','EventoController@show'                             )->name('visualizar');
-  Route::get(    '/listar',         'EventoController@listar'                           )->name('listar');
-  Route::delete( '/excluir/{id}',   'EventoController@destroy'                          )->name('deletar');
-  Route::get(    '/editar/{id}',    'EventoController@edit'                             )->name('editar');
-  Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update');
-  Route::post(   '/setResumo',      'EventoController@setResumo'                        )->name('setResumo');
-  Route::post(   '/setFoto',        'EventoController@setFotoEvento'                    )->name('setFotoEvento');
+  Route::get(    '/criar',          'EventoController@create'                           )->name('criar')->middleware('checkAdministrador');
+  Route::post(   '/criar',          'EventoController@store'                            )->name('criar')->middleware('checkAdministrador');
+  Route::get(    '/visualizar/{id}','EventoController@show'                             )->name('visualizar')->middleware('auth');
+  Route::get(    '/listar',         'EventoController@listar'                           )->name('listar')->middleware('auth');
+  Route::delete( '/excluir/{id}',   'EventoController@destroy'                          )->name('deletar')->middleware('checkAdministrador');
+  Route::get(    '/editar/{id}',    'EventoController@edit'                             )->name('editar')->middleware('checkAdministrador');
+  Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update')->middleware('checkAdministrador');
+  Route::post(   '/setResumo',      'EventoController@setResumo'                        )->name('setResumo')->middleware('checkAdministrador');
+  Route::post(   '/setFoto',        'EventoController@setFotoEvento'                    )->name('setFotoEvento')->middleware('checkAdministrador');
   
 });
 

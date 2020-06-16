@@ -111,24 +111,31 @@
             {{ $natureza->nome }}
           </td>
           <td>
-            {{$natureza->creat_at}}
+            {{ $natureza->creat_at }}
           </td>
           <td>
-            <div class="btn-group dropright dropdown-options">
-                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
-                </a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" data-toggle="modal" data-target="#modalEditCenter{{$natureza->id}}" class="dropdown-item">
-                        <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
-                        {{__('Editar')}}
-                  </a>
-                  <a class="dropdown-item" data-toggle="modal" data-target="#modalDelCenter{{$natureza->id}}" class="dropdown-item">
-                     <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
-                      {{__('Deletar')}}
-                  </a>
-                </div>
-            </div>
+            @if (is_null($natureza->projetos->first()))
+                  <div class="btn-group dropright dropdown-options">
+                     <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                     </a>
+                     <div class="dropdown-menu">
+                     
+                        <a class="dropdown-item" data-toggle="modal" data-target="#modalEditCenter{{$natureza->id}}" class="dropdown-item">
+                              <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
+                              {{__('Editar')}}
+                        </a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#modalDelCenter{{$natureza->id}}" class="dropdown-item">
+                           <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
+                           {{__('Deletar')}}
+                        </a>
+                     </div>
+                  </div>
+            @else
+               <div style="float: right;">
+                  Fixada em um edital
+               </div>
+            @endif
           </td>
         </tr>
       @endforeach

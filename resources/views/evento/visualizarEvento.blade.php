@@ -104,7 +104,7 @@
     <div class="row margin">
         <div class="col-sm-12 info-evento">
 
-            <h4>Revisão de Projetos</h4>
+            <h4>Avaliação de Projetos</h4>
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
                 {{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}
