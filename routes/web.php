@@ -30,12 +30,13 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
 
 //######### Proponente  ########################################
 Route::get('/proponente/index', 'ProponenteController@index'                      )->name('proponente.index');
-Route::get('/proponente/cadastro', 'ProponenteController@create'                      )->name('proponente.create');
-Route::post('/proponente/cadastro', 'ProponenteController@store'                      )->name('proponente.store');
+Route::get('/proponente/cadastro', 'ProponenteController@create'                  )->name('proponente.create');
+Route::post('/proponente/cadastro', 'ProponenteController@store'                  )->name('proponente.store');
+Route::get( '/proponente/editais',   'ProponenteController@editais'                )->name('proponente.editais');
 
 //######### Participante ########################################
-Route::get('/participante/index', 'ParticipanteController@index'                  )->name('participante.index');
-Route::get('/participante/edital/{id}',          'ParticipanteController@edital'  )->name('participante.edital');
+Route::get('/participante/index',         'ParticipanteController@index'          )->name('participante.index');
+Route::get('/participante/edital/{id}',    'ParticipanteController@edital'        )->name('participante.edital');
 
 //######### Rotas Administrador #################################
 Route::get('/perfil-usuario', 'UserController@minhaConta')->middleware('auth'     )->name('user.perfil');
@@ -63,6 +64,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //#########  Area do participante ###############################
   Route::get(   '/participante',          'EventoController@areaParticipante'             )->name('area.participante');
+  Route::get(   'participante/editais',   'ParticipanteController@editais'                )->name('participante.editais');
 
   //########## Area da comissao  ###################################
   Route::get(   '/comissoes',             'EventoController@listComissao'                 )->name('comissoes');

@@ -41,7 +41,13 @@ class TrabalhoController extends Controller
     {
         $edital = Evento::find($id);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
-        $funcaoParticipantes = FuncaoParticipantes::all(); 
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+
+        if($proponente == null){
+          return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
+        }
+        
         return view('evento.submeterTrabalho',[
                                             'edital'             => $edital,
                                             'grandeAreas'        => $grandeAreas,
@@ -74,8 +80,11 @@ class TrabalhoController extends Controller
       $coordenador = CoordenadorComissao::find($evento->coordenadorId);
       //Relaciona o projeto criado com o proponente que criou o projeto
       $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+      // if($proponente == null){
+      //   return view('proponente.cadastro');
+      // }
       //$trabalho->proponentes()->save($proponente);  
-      //dd($request->all());
+      //dd($proponente);
       $trabalho = "trabalho";
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){

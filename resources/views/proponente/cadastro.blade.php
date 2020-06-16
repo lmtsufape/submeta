@@ -15,6 +15,14 @@
             </div>
         </div>
         @endif
+        @if(isset($mensagem))
+        <div class="col-sm-12">
+            <br>
+            <div class="alert alert-danger">
+                <p>{{ $mensagem }}</p>
+            </div>
+        </div>
+        @endif
     </div>
     <br>
     <form method="POST" action="{{ route('proponente.store') }}">

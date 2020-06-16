@@ -13,6 +13,11 @@ class ParticipanteController extends Controller
 
     	return view('participante.index');
     }
+    public function editais(){
+
+        $eventos = Evento::all();
+        return view('participante.editais', ['eventos'=> $eventos] );
+    }
 
     public function edital($id){
         $edital = Evento::find($id);
