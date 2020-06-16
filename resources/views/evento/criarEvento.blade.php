@@ -16,7 +16,7 @@
         {{-- nome | Participantes | Tipo--}}
         <div class="row justify-content-center">
             <div class="col-sm-6">
-                <label for="nome" class="col-form-label">{{ __('Nome') }}</label>
+                <label for="nome" class="col-form-label">{{ __('Nome*:') }}</label>
                 <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome') }}" required autocomplete="nome" autofocus>
 
                 @error('nome')
@@ -27,7 +27,7 @@
             </div>
          
             <div class="col-sm-3">
-                <label for="tipo" class="col-form-label">{{ __('Tipo') }}</label>
+                <label for="tipo" class="col-form-label">{{ __('Tipo*:') }}</label>
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required>
                   <option value="PIBIC">PIBIC</option>
                   <option value="PIBIC-EM">PIBIC-EM</option>
@@ -42,7 +42,7 @@
             </div>
 
             <div class="col-sm-3">
-                <label for="natureza" class="col-form-label">{{ __('Natureza') }}</label>
+                <label for="natureza" class="col-form-label">{{ __('Natureza*:') }}</label>
                 <select id="natureza" type="text" class="form-control @error('natureza') is-invalid @enderror" name="natureza" value="{{ old('natureza') }}" required>
                   @foreach ($naturezas as $natureza)
                     <option value="{{ $natureza->id }}">{{ $natureza->nome }}</option>  
@@ -61,7 +61,7 @@
         <div class="row justify-content-center">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Descrição</label>
+                    <label for="exampleFormControlTextarea1">Descrição*:</label>
                     <textarea class="form-control @error('descricao') is-invalid @enderror" value="{{ old('descricao') }}" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="3"></textarea>
                     @error('descricao')
                     <span class="invalid-feedback" role="alert">
@@ -73,7 +73,7 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-sm-12">
-              <label for="coordenador_id" class="col-form-label">{{ __('Coordenador:') }}</label>
+              <label for="coordenador_id" class="col-form-label">{{ __('Coordenador*:') }}</label>
               <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="coordenador_id" name="coordenador_id">
                   <option value="" disabled selected hidden>-- Coordenador da Comissão Avaliadora --</option>
                   @foreach($coordenadors as $coordenador)
@@ -92,7 +92,7 @@
         <div class="row justify-content-center">
 
             <div class="col-sm-6">
-                <label for="inicioSubmissao" class="col-form-label">{{ __('Início da Submissão') }}</label>
+                <label for="inicioSubmissao" class="col-form-label">{{ __('Início da Submissão*:') }}</label>
                 <input id="inicioSubmissao" type="date" class="form-control @error('inicioSubmissao') is-invalid @enderror" name="inicioSubmissao" value="{{ old('inicioSubmissao') }}" required autocomplete="inicioSubmissao" autofocus>
 
                 @error('inicioSubmissao')
@@ -102,7 +102,7 @@
                 @enderror
             </div>
             <div class="col-sm-6">
-                <label for="fimSubmissao" class="col-form-label">{{ __('Fim da Submissão') }}</label>
+                <label for="fimSubmissao" class="col-form-label">{{ __('Fim da Submissão*:') }}</label>
                 <input id="fimSubmissao" type="date" class="form-control @error('fimSubmissao') is-invalid @enderror" name="fimSubmissao" value="{{ old('fimSubmissao') }}" required autocomplete="fimSubmissao" autofocus>
 
                 @error('fimSubmissao')
@@ -115,7 +115,7 @@
 
         <div class="row justify-content-center">
           <div class="col-sm-6">
-              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação') }}</label>
+              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação*:') }}</label>
               <input id="inicioRevisao" type="date" class="form-control @error('inicioRevisao') is-invalid @enderror" name="inicioRevisao" value="{{ old('inicioRevisao') }}" required autocomplete="inicioRevisao" autofocus>
 
               @error('inicioRevisao')
@@ -125,7 +125,7 @@
               @enderror
           </div>
           <div class="col-sm-6">
-              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação') }}</label>
+              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação*:') }}</label>
               <input id="fimRevisao" type="date" class="form-control @error('fimRevisao') is-invalid @enderror" name="fimRevisao" value="{{ old('fimRevisao') }}" required autocomplete="fimRevisao" autofocus>
 
               @error('fimRevisao')
@@ -138,7 +138,7 @@
 
         <div class="row justify-content-left">
           <div class="col-sm-6">
-              <label for="resultado" class="col-form-label">{{ __('Data do Resultado') }}</label>
+              <label for="resultado" class="col-form-label">{{ __('Data do Resultado*:') }}</label>
               <input id="resultado" type="date" class="form-control @error('resultado') is-invalid @enderror" name="resultado" value="{{ old('resultado') }}" required autocomplete="resultado" autofocus>
 
               @error('resultado')
@@ -159,7 +159,7 @@
         <div class="row justify-content-center" style="margin-top:10px">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">Anexar edital</label>
+                    <label for="pdfEdital">Anexar edital*:</label>
                     <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfEdital')
@@ -172,7 +172,7 @@
         
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="modeloDocumento">Arquivo com os modelos de documentos do edital</label>
+                    <label for="modeloDocumento">Anexar arquivo com os modelos de documentos do edital:</label>
                     <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
                     <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('modeloDocumento')

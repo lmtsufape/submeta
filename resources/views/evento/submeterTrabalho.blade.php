@@ -610,38 +610,38 @@
   //           "</div>";
   // }
 
-  // function areas() {
-  //       var grandeArea = $('#grandeArea').val();
-  //       $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
-  //       function (dados){
-  //         if (dados.length > 0){    
-  //           var option = '<option>-- Área --</option>';
-  //           $.each(dados, function(i, obj){
-  //               option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
-  //           }) 
-  //         } else {
-  //           var option = "<option>-- Área --</option>";
-  //         }
-  //         $('#area').html(option).show(); 
-  //       })
-  // }
+  function areas() {
+        var grandeArea = $('#grandeArea').val();
+        $.getJSON("http://submeta.test/naturezas/areas/" + grandeArea,
+        function (dados){
+          if (dados.length > 0){    
+            var option = '<option>-- Área --</option>';
+            $.each(dados, function(i, obj){
+                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
+            }) 
+          } else {
+            var option = "<option>-- Área --</option>";
+          }
+          $('#area').html(option).show(); 
+        })
+  }
 
-  // function subareas() {
-  //       var area = $('#area').val();
-  //       $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
-  //       function (dados){
-  //         if (dados.length > 0){    
-  //           var option = '<option>-- Sub Área --</option>';
-  //           $.each(dados, function(i, obj){
-  //               option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
-  //           }) 
-  //         } else {
-  //           var option = "<option>-- Sub Área --</option>";
-  //         }
-  //         $('#subArea').html(option).show(); 
-  //       })
-  // }
+  function subareas() {
+        var area = $('#area').val();
+        $.getJSON("http://submeta.test/naturezas/subarea/" + area,
+        function (dados){
+          if (dados.length > 0){    
+            var option = '<option>-- Sub Área --</option>';
+            $.each(dados, function(i, obj){
+                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
+            }) 
+          } else {
+            var option = "<option>-- Sub Área --</option>";
+          }
+          $('#subArea').html(option).show(); 
+        })
+  }
 
-  // window.onload = areas();
+  window.onload = areas();
 </script>
 @endsection

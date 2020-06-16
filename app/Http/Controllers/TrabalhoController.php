@@ -215,7 +215,7 @@ class TrabalhoController extends Controller
             $subject = "Participante de Projeto";            
             $email = $value;
             Mail::to($email)
-                  ->send(new SubmissaoTrabalho($userParticipante, $subject));
+                  ->send(new SubmissaoTrabalho($userParticipante, $subject, $evento, $trabalho));
           }
 
           $usuario = User::where('email', $value)->first();
@@ -257,8 +257,10 @@ class TrabalhoController extends Controller
 
       $subject = "Submissão de Trabalho";
       $autor = Auth()->user();
+      $evento = $evento;
+      $trabalho = $trabalho;
       Mail::to($autor->email)
-            ->send(new SubmissaoTrabalho($autor, $subject));
+            ->send(new SubmissaoTrabalho($autor, $subject, $evento, $trabalho));
       
       return redirect()->route('evento.visualizar',['id'=>$request->editalId]);
     }
