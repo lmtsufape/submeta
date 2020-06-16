@@ -203,7 +203,7 @@
                 </div>
 
                 <div class="col-sm-6 mt-3">
-                  <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo do Planilha de Pontuação*:') }}</label>
+                  <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo da Planilha de Pontuação*:') }}</label>
 
                   <div class="input-group">
 
