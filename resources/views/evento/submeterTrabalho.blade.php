@@ -132,11 +132,15 @@
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
                   <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>
-
+                  @if(old('anexoProjetoPreenchido') != null)
+                  <a id="anexoProjetoTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                          'nomeAnexo' => 'anexoProjeto' ])}}">Arquivo atual</a>
+                  @endif
+                  <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido" value="{{ old('anexoProjetoPreenchido') }}" >
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto">
+                      <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto" onchange="exibirAnexoTemp(this)">                      
                       <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
@@ -148,16 +152,16 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="anexoLatterCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador*:') }}</label>
+                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador*:') }}</label>
 
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoLatterCoordenador') is-invalid @enderror" id="inputGroupFile01" aria-describedby="anexoLatterCoordenador" name="anexoLatterCoordenador">
+                      <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="inputGroupFile01" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador">
                       <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
-                  @error('anexoLatterCoordenador')
+                  @error('anexoLattesCoordenador')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -627,6 +631,13 @@
       })
   }
 
+  function exibirAnexoTemp(file){
+    console.log(file.id);
+    if(file.id === "anexoProjeto"){
+      var anexoProjetoPreenchido = document.getElementById('anexoProjetoPreenchido');
+      anexoProjetoPreenchido.value = "sim";
+    }
+  }
   window.onload = areas();
 </script>
 @endsection

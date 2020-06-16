@@ -120,6 +120,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get('/baixar/anexo-lattes/{id}',  'TrabalhoController@baixarAnexoLattes'         )->name('baixar.anexo.lattes');
   Route::get('/baixar/anexo-planilha/{id}','TrabalhoController@baixarAnexoPlanilha'       )->name('baixar.anexo.planilha');
   Route::get('/baixar/plano-de-trabalho/{id}', 'ArquivoController@baixarPlano'            )->name('baixar.plano');
+  Route::get('/baixar/anexo-temp/{eventoId}/{nomeAnexo}', 'TrabalhoController@baixarAnexoTemp'            )->name('baixar.anexo.temp');
 });
 
 Route::prefix('usuarios')->name('admin.')->group(function(){
