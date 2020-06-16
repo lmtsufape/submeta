@@ -97,7 +97,7 @@
                 <div class="col-sm-6">
                   <label for="linkLattesEstudante" class="col-form-label">Link Lattes do Proponente*</label>
                   <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
-                  @if(Auth()->user()->proponentes->linkLattes != null)
+                  @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
                     value="{{ Auth()->user()->proponentes->linkLattes }}"
                   @else
                     value=""
