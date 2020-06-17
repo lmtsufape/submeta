@@ -537,7 +537,6 @@ class TrabalhoController extends Controller
       foreach ($users as $user) {
         array_push($emailParticipantes, $user->email);
       }
-      
       foreach ($request->emailParticipante as $key => $value) {        
         // criando novos participantes que podem ter sido adicionados        
         if (!(in_array($request->emailParticipante[$key], $emailParticipantes, false))) {
@@ -603,25 +602,27 @@ class TrabalhoController extends Controller
             $participante->update();
 
             //atualizando planos de trabalho
-            if (array_key_exists($key, $request->anexoPlanoTrabalho)) {
-              if (!(is_null($request->anexoPlanoTrabalho[$key]))) {
-                $arquivo = Arquivo::where('participanteId', $participante->id)->first();
-                Storage::delete($arquivo->nome);
-                $arquivo->delete();
-    
-                $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
-                $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
-                $file = $request->anexoPlanoTrabalho[$key];
-                Storage::putFileAs($path, $file, $nome);
-    
-                $arquivo = new Arquivo();
-                $arquivo->titulo = $request->nomePlanoTrabalho[$key];
-                $arquivo->nome = $path . $nome;
-                $arquivo->trabalhoId = $trabalho->id;
-                $arquivo->data = $mytime;
-                $arquivo->participanteId = $participante->id;
-                $arquivo->versaoFinal = true;
-                $arquivo->save();
+            if ($request->anexoPlanoTrabalho != null) {
+              if (array_key_exists($key, $request->anexoPlanoTrabalho)) {
+                if (!(is_null($request->anexoPlanoTrabalho[$key]))) {
+                  $arquivo = Arquivo::where('participanteId', $participante->id)->first();
+                  Storage::delete($arquivo->nome);
+                  $arquivo->delete();
+      
+                  $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+                  $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+                  $file = $request->anexoPlanoTrabalho[$key];
+                  Storage::putFileAs($path, $file, $nome);
+      
+                  $arquivo = new Arquivo();
+                  $arquivo->titulo = $request->nomePlanoTrabalho[$key];
+                  $arquivo->nome = $path . $nome;
+                  $arquivo->trabalhoId = $trabalho->id;
+                  $arquivo->data = $mytime;
+                  $arquivo->participanteId = $participante->id;
+                  $arquivo->versaoFinal = true;
+                  $arquivo->save();
+                }
               }
             }
           }
