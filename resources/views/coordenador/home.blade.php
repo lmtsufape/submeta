@@ -75,7 +75,11 @@
                     </p>
                     
                     <p>
-                        <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
+                        @if (Auth::check())
+                            <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
+                        @else
+                            <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
+                        @endif
                     </p>
                 </div>
 

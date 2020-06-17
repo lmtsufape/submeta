@@ -14,6 +14,7 @@ use App\Endereco;
 use App\Trabalho;
 use App\Coautor;
 use App\Evento;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -27,7 +28,9 @@ class UserController extends Controller
         return redirect()->route('home');
       }
       Log::debug('UserController index');
-      return view('index', ['eventos' => $eventos]);
+      $hoje = Carbon::today('America/Recife');
+      $hoje = $hoje->toDateString();
+      return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);
       //return view('auth.login');
     }
 

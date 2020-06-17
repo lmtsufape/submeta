@@ -16,6 +16,7 @@ Route::get('/', 'UserController@index'                                          
 Route::get('/home', 'HomeController@index'                                        )->name('home')->middleware('verified');
 
 Route::get('/evento/visualizar/naologado/{id}','EventoController@showNaoLogado'   )->name('evento.visualizarNaoLogado');
+Route::get('/editais/home'                    ,'EventoController@index'           )->name('coord.home');
 
 Auth::routes(['verify' => true]);
 
@@ -49,7 +50,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
 
   // ######## rotas de teste #####################################
-  Route::get('/editais/home',                        'EventoController@index'             )->name('coord.home');
+  
   Route::get('/coordenador/evento/detalhes',         'EventoController@detalhes'          )->name('coord.detalhesEvento');
 
   //####### Visualizar trabalhos do usuário ######################
