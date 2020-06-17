@@ -9,18 +9,26 @@ class LattesValidation
 
     function isValidUrl($url)
     {
+        
         // first do some quick sanity checks:
         if (!$url || !is_string($url)) {
             return false;
         }
-
+        
         $url = filter_var($url, FILTER_SANITIZE_URL);
-
+        
         // Validate url
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            return false;
-        } 
+        // if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        //     dd('1');
+        //     return false;
+        // } 
 
+        //If url doesn't have a protocol
+        if(substr($url, 0, 4) != 'http'){
+            $url = 'http://' . $url;
+        }
+        
+       //dd(parse_url($url)['host'] != 'lattes.cnpq.br');
         if(parse_url($url)['host'] != 'buscatextual.cnpq.br' && parse_url($url)['host'] != 'lattes.cnpq.br'){
              return false;
         }

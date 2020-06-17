@@ -16,10 +16,15 @@ class GrupoPesquisaValidation
 
         $url = filter_var($url, FILTER_SANITIZE_URL);
 
-        // Validate url
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            return false;
-        } 
+        // // Validate url
+        // if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        //     return false;
+        // } 
+
+        //If url doesn't have a protocol
+        if(substr($url, 0, 4) != 'http'){
+            $url = 'http://' . $url;
+        }
 
         if(parse_url($url)['host'] != 'dgp.cnpq.br'){
              return false;
