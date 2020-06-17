@@ -21,9 +21,9 @@ class GrupoPesquisaValidation
             return false;
         } 
 
-        // if(parse_url($url)['host'] != 'dgp.cnpq.br'){
-        //      return false;
-        // }
+        if(parse_url($url)['host'] != 'dgp.cnpq.br'){
+             return false;
+        }
         
         if($this->getHttpResponseCode_using_getheaders($url) != 200){ 
             return false;
