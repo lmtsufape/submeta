@@ -317,9 +317,14 @@
                                 </select>
                               </div>
                             </div>
-                            <h5>Dados do plano de trabalho</h5>
+                            <h6 class="mb-1">Possui plano de trabalho?</h6>
+                            <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
+                            <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>                      
+                            <div id="planoHabilitado" >                            
                             @foreach ($arquivos as $arquivo)
                             @if($arquivo->participanteId === $participante->id)
+                              <input type="hidden" class="exibirPlano">
+                              <h5>Dados do plano de trabalho</h5>
                               <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">Plano de trabalho atual</a>                              
                               <div class="row">
                                 <div class="col-sm-12">
@@ -368,7 +373,7 @@
                         @endif
                       @endforeach
                     @endforeach
-                  </div>
+                  </div>                  
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
                 </div>
               </div>
@@ -453,6 +458,34 @@
       $('#inputEtica').prop('disabled', true);
       $('#inputJustificativa').prop('disabled', false);
       console.log('button nao');
+    });
+    $(document).on('click', '.simPlano', function(e) {
+        e.preventDefault();
+        var plano = $(this).next().next()[0];
+        plano.style.display = 'block';  
+        $(this).next()[0].className = 'btn btn-primary mt-2 mb-2 naoPlano';     
+        console.log('button sim');
+    });
+    $(document).on('click', '.naoPlano', function(e) {
+      e.preventDefault();
+        var plano = $(this).next()[0];
+        plano.style.display = 'none';  
+        $(this).prev()[0].className = 'btn btn-primary mt-2 mb-2 simPlano';      
+        console.log('button nao');       
+    });
+    
+    $(function() {           
+      var simPlano = document.getElementsByClassName('simPlano');
+      for(var i=0; i< simPlano.length;i++){
+        var planoHabilitado = simPlano[i].nextElementSibling.nextElementSibling;
+        //se há plano de trabalho
+        if(planoHabilitado.firstElementChild != null && planoHabilitado.firstElementChild.className == 'exibirPlano'){
+          simPlano[i].nextElementSibling.className = 'btn btn-primary mt-2 mb-2 naoPlano';
+          simPlano[i].className = 'btn btn-primary focus mt-2 mb-2 simPlano';
+        }else{
+          simPlano[i].nextElementSibling.className = 'btn btn-primary focus mt-2 mb-2 naoPlano';
+        }      
+      }               
     });
   });
   // Remover Coautor
