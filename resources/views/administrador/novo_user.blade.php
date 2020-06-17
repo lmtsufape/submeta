@@ -12,108 +12,176 @@
     <br>
     <form method="POST" action="{{ route('admin.user.store') }}">
         @csrf
-        <div class="col-sm-11">
-            <div>
-                <div>
-                    <h4>Dados do usuário</h4>
-                </div>
-                <div>
-                    <label for="nome" class="col-form-label">{{ __('Nome') }}</label>
-                    <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value=""  autocomplete="nome" autofocus>
+        {{-- Nome | CPF --}}
+        <div class="form-group row">
 
-                    @error('nome')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
+            <div class="col-md-8">
+                <label for="name" class="col-form-label">{{ __('Nome Completo*') }}</label>
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                    <label for="email" class="col-form-label">{{ __('Email') }}</label>
-                    <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value=""   autocomplete="nome">
-
-                    @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-
-                    <label for="cpf" class="col-form-label">{{ __('CPF') }}</label>
-                    <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" value=""  autocomplete="nome">
-
-                    @error('cpf')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-
-                    <div>
-                        <label for="tipo" class="col-form-label">{{ __('Tipo') }}</label>
-                        <select name="tipo" id="tipo" onchange="mudar()" class="form-control">
-                            @if(auth()->user()->tipo == 'administrador')
-                                <option value="administrador">Administrador</option>
-                                <option value="administradorResponsavel">Administrador responsável</option>
-                            @endif
-                            <option value="avaliador">Avaliador</option>
-                            <option value="proponente">Proponente</option>
-                            <option value="participante">Participante</option>
-                        </select>
-                    </div>
-
-                    <label for="passworld" class="col-form-label">{{ __('Senha') }}</label>
-                    <input id="passworld" type="text" class="form-control @error('senha') is-invalid @enderror" name="senha" value=""  autocomplete="nome">
-
-                    @error('senha')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-
-                    <label for="passworld" class="col-form-label">{{ __('Confirmar senha') }}</label>
-                    <input id="passworld" type="text" class="form-control @error('confirmar_senha') is-invalid @enderror" name="confirmar_senha" value=""  autocomplete="nome">
-                </div>
+                @error('name')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
-            <br>
-            <div id="proponente" style="display: none;">
-                <div>
-                    <h4>Dados do proponente</h4>
-                </div>
-                <div>
-                    <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
-                    <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="" autocomplete="nome">
 
-                    @error('SIAPE')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
+            <div class="col-md-4">
+                <label for="cpf" class="col-form-label">{{ __('CPF*') }}</label>
+                <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" value="{{ old('cpf') }}" required autocomplete="cpf" autofocus>
 
-                    <label for="cargo" class="col-form-label">{{ __('Cargo') }}</label>
-                    <input id="cargo" type="text" class="form-control @error('cargo') is-invalid @enderror" name="cargo" value="" autocomplete="nome">
+                @error('cpf')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
+        {{-- Instituição de Ensino e Celular --}}
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label class="col-form-label">{{ __('Instituição de Vínculo*') }}</label>
+                <input style="display: none;" id="instituicao" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="instituicao" value="{{ old('instituicao') }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
+                <select style="display: inline" onchange="showInstituicao()" class="form-control @error('instituicaoSelect') is-invalid @enderror" name="instituicaoSelect" id="instituicaoSelect">
+                    <option value="" disabled selected hidden>-- Instituição --</option>
+                    <option value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
+                    <option>Outra</option>
+                </select>
 
-                    @error('cargo')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                    
-                    <div>
-                        <label for="vinculo" class="col-form-label">{{ __('Vínculo') }}</label>
-                        <select name="vinculo" id="" class="form-control">
-                            <option value="" disabled selected hidden>-- Vínculo --</option>
-                            <option value="Servidor na ativa">Servidor na ativa</option>
-                            <option value="Servidor aposentado">Servidor aposentado</option>
-                            <option value="Professor visitante">Professor visitante</option>
-                            <option value="Pós-doutorando">Pós-doutorando</option>
-                        </select> 
-                    </div>
-                    
-                    <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima') }}</label>
-                    <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima">
+                @error('instituicao')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                @error('instituicaoSelect')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="col-md-4">
+                <label for="tipo" class="col-form-label">{{ __('Tipo*') }}</label>
+                <select name="tipo" id="tipo" onchange="mudar()" class="form-control">
+                    @if(auth()->user()->tipo == 'administrador')
+                        <option value="administradorResponsavel">Administrador responsável</option>
+                    @endif
+                    <option value="avaliador">Avaliador</option>
+                    <option value="proponente">Proponente</option>
+                    <option value="participante">Participante</option>
+                </select>
+            </div>        
+            <div class="col-md-4">
+                <label for="celular" class="col-form-label">{{ __('Celular*') }}</label>
+                <input id="celular" type="text" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ old('celular') }}" required autocomplete="celular" autofocus>
+
+                @error('celular')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+        </div>
+
+        {{-- Email | Senha | Confirmar Senha --}}
+        <div class="form-group row">
+
+            <div class="col-md-4">
+                <label for="email" class="col-form-label">{{ __('E-Mail*') }}</label>
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                @error('email')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="col-md-4">
+                <label for="password" class="col-form-label">{{ __('Senha*') }}</label>
+                <input id="password" type="password" class="form-control @error('senha') is-invalid @enderror" name="senha" required autocomplete="new-password">
+
+                @error('senha')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="col-md-4">
+                <label for="password-confirm" class="col-form-label">{{ __('Confirme a Senha*') }}</label>
+                <input id="password-confirm" type="password" class="form-control @error('confirmar_senha') is-invalid @enderror" name="confirmar_senha" required autocomplete="new-password">
+            </div>
+
+            @error('confirmar_senha')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
+        <div id="proponente" style="display: none;">
+
+        <div>
+            <h4>Dados do proponente</h4>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label for="cargo" class="col-form-label">{{ __('Cargo*') }}</label>
+                <select id="cargo" name="cargo" class="form-control @error('cargo') is-invalid @enderror" onchange="">
+                    <option value="" disabled selected hidden>-- Cargo --</option>
+                    <option @if(old('cargo')=='Professor' ) selected @endif value="Professor">Professor</option>
+                    <option @if(old('cargo')=='Técnico' ) selected @endif value="Técnico">Técnico</option>
+                    <option @if(old('cargo')=='Estudante' ) selected @endif value="Estudante">Estudante</option>
+                </select>
+
+                @error('cargo')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="col-md-4">
+                <label for="vinculo" class="col-form-label">{{ __('Vínculo*') }}</label>
+                <select name="vinculo" id="vinculo" class="form-control @error('vinculo') is-invalid @enderror" onchange="outroVinculo()">
+                    <option value="" disabled selected hidden>-- Vínculo --</option>
+                    <option @if(old('vinculo')=='Servidor na ativa' ) selected @endif value="Servidor na ativa">Servidor na ativa</option>
+                    <option @if(old('vinculo')=='Servidor aposentado' ) selected @endif value="Servidor aposentado">Servidor aposentado</option>
+                    <option @if(old('vinculo')=='Professor visitante' ) selected @endif value="Professor visitante">Professor visitante</option>
+                    <option @if(old('vinculo')=='Pós-doutorando' ) selected @endif value="Pós-doutorando">Pós-doutorando</option>
+                    <option @if(old('vinculo')=='Outro' ) selected @endif value="Outro">Outro</option>
+                </select>
+
+                @error('vinculo')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="col-md-4" style="display: none;" id="divOutro">
+                <label for="outro" class="col-form-label">{{ __('Qual?*') }}</label>
+                <input id="outro" type="text" class="form-control @error('outro') is-invalid @enderror" name="outro" value="{{ old('outro') }}">
+
+                @error('outro')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
+
+        <div style="display: block;">
+            <div class="form-group row">
+                <div class="col-md-4">
+                    <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima*') }}</label>
+                    <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome">
                         <option value="" disabled selected hidden>-- Titulação --</option>
-                        <option value="Doutorado">Doutorado</option>
-                        <option value="Mestrado">Mestrado</option>
-                        <option value="Especialização">Especialização</option>
-                        <option value="Graduação">Graduação</option>
-                        <option value="Técnico">Técnico</option>                        
+                        <option @if(old('titulacaoMaxima')=='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
+                        <option @if(old('titulacaoMaxima')=='Mestrado' ) selected @endif value="Mestrado">Mestrado</option>
+                        <option @if(old('titulacaoMaxima')=='Especialização' ) selected @endif value="Especialização">Especialização</option>
+                        <option @if(old('titulacaoMaxima')=='Graduação' ) selected @endif value="Graduação">Graduação</option>
+                        <option @if(old('titulacaoMaxima')=='Técnico' ) selected @endif value="Técnico">Técnico</option>
                     </select>
 
                     @error('titulacaoMaxima')
@@ -121,48 +189,46 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
+                </div>
 
-                    <label for="anoTitulacao" class="col-form-label">{{ __('Ano da Titulação') }}</label>
-                    <input id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" value="" autocomplete="nome">
+                <div class="col-md-4">
+                    <label for="anoTitulacao" class="col-form-label">{{ __('Ano da Titulação*') }}</label>
+                    <input id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" value="{{ old('anoTitulacao') }}" autocomplete="nome">
 
                     @error('anoTitulacao')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-
-                    <label for="areaFormacao" class="col-form-label">{{ __('Área de Formação') }}</label>
-                    <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="" autocomplete="nome">
+                </div>
+                <div class="col-md-4">
+                    <label for="areaFormacao" class="col-form-label">{{ __('Área de Formação*') }}</label>
+                    <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="{{ old('areaFormacao') }}" autocomplete="nome">
 
                     @error('areaFormacao')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
-                    @enderror                
-                    
-                    <div>
-                        <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade') }}</label><br>
-                        <select name="bolsistaProdutividade" id="" class="form-control">
-                            <option value="" disabled selected hidden>-- Bolsista --</option>
-                            <option value="nao">Não</option>
-                            <option value="sim">Sim</option>
-                        </select> 
-                    </div>
-                    
-                    <div>
-                        <label for="nivel" class="col-form-label">{{ __('Nível') }}</label>
-                        <select name="nivel" id="" class="form-control">
-                            <option value="" disabled selected hidden>-- Nível --</option>
-                            <option value="2">2</option>
-                            <option value="1D">1D</option>
-                            <option value="1D">1B</option>
-                            <option value="1D">1C</option>
-                            <option value="1D">1A</option>
-                        </select> 
-                    </div>
+                    @enderror
+                </div>
+            </div>
 
-                    <label for="linkLattes" class="col-form-label">{{ __('Link do currículo Lattes') }}</label>
-                    <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="" autocomplete="nome">
+            <div class="form-group row">
+
+                <div class="col-md-4">
+                    <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
+                    <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="{{ old('SIAPE') }}" autocomplete="nome">
+
+                    @error('SIAPE')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="col-md-4">
+                    <label for="linkLattes" class="col-form-label">{{ __('Link do currículo Lattes*') }}</label>
+                    <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="{{ old('linkLattes') }}" autocomplete="nome">
 
                     @error('linkLattes')
                     <span class="invalid-feedback" role="alert">
@@ -171,8 +237,49 @@
                     @enderror
                 </div>
 
+                <div class="col-md-3">
+                    <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade*') }}</label><br>
+                    <select name="bolsistaProdutividade" id="bolsistaProdutividade" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" onchange="mudarNivel()">
+                        <option value="" disabled selected hidden>-- Bolsista --</option>
+                        <option @if(old('bolsistaProdutividade')=='nao' ) selected @endif value="nao">Não</option>
+                        <option @if(old('bolsistaProdutividade')=='sim' ) selected @endif value="sim">Sim</option>
+                    </select>
+                    @error('bolsistaProdutividade')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="col-md-1" id="nivelInput" style="display: none;">
+                    <label for="nivel" class="col-form-label">{{ __('Nível*') }}</label>
+                    <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
+                        <option value="" disabled selected hidden></option>                     
+                        <option value="1A">1A</option>
+                        <option value="1B">1B</option>
+                        <option value="1C">1C</option>
+                        <option value="1D">1D</option>
+                        <option value="2">2</option>
+                    </select>
+                    @error('nivel')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="position:relative;top:10px;">{{ __('Salvar') }}</button>
+        </div>
+        </div>
+        <div class="row justify-content-center" style="margin: 20px 0 20px 0">
+
+            <div class="col-md-6" style="padding-left:0">
+                <a class="btn btn-secondary botao-form" href="/" style="width:100%">Cancelar Cadastro</a>
+            </div>
+            <div class="col-md-6" style="padding-right:0">
+                <button type="submit" class="btn btn-primary botao-form" style="width:100%">
+                    {{ __('Finalizar Cadastro') }}
+                </button>
+            </div>
         </div>
     </form>
 </div>
@@ -189,6 +296,39 @@
             divProponente.style.display = "inline";
         } else {
             divProponente.style.display = "none";
+        }
+    }
+    
+
+    function outroVinculo() {
+        var comboBoxVinculo = document.getElementById('vinculo');
+        var divOutro = document.getElementById('divOutro');
+
+        if (comboBoxVinculo.value === "Outro") {
+            divOutro.style.display = "block";
+        } else {
+            divOutro.style.display = "none";
+        }
+    }
+
+    function mudarNivel() {
+        var bolsista = document.getElementById('bolsistaProdutividade');
+        var nivel = document.getElementById('nivelInput');
+
+        if (bolsista.value === "sim") {
+            nivel.style.display = "block";
+        } else {
+            nivel.style.display = "none";
+        }
+    }
+
+    function showInstituicao(){
+        var instituicao = document.getElementById('instituicao');
+        var instituicaoSelect = document.getElementById('instituicaoSelect');
+
+        if(instituicaoSelect.value === "Outra"){
+            instituicaoSelect.style.display = "none";
+            instituicao.style.display = "inline";
         }
     }
 </script>

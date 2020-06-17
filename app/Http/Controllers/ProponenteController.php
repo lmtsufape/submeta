@@ -20,6 +20,11 @@ class ProponenteController extends Controller
     public function create(){
         return view('proponente.cadastro');
     }
+    public function editais(){
+
+        $eventos = Evento::all();
+        return view('proponente.editais', ['eventos'=> $eventos] );
+    }
 
     public function store(Request $request){
         if (Auth()->user()->proponentes == null) {
@@ -60,7 +65,7 @@ class ProponenteController extends Controller
                 $proponente->save();
                 
                 $user = User::find(Auth()->user()->id); 
-                $user->tipo = "proponente";
+                //$user->tipo = "proponente";
                 $user->save();
         
                 $eventos = Evento::all();

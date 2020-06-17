@@ -13,18 +13,20 @@ class SubmissaoTrabalho extends Mailable
 
     public $user;
     public $subject;
-
+    public $evento;
+    public $trabalho;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $subject)
+    public function __construct($user, $subject, $evento, $trabalho)
     {
         $this->user = $user;
         $this->subject = $subject;
-
+        $this->evento = $evento;
+        $this->trabalho = $trabalho;
     }
 
     /**
@@ -37,6 +39,12 @@ class SubmissaoTrabalho extends Mailable
         
         return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
                     ->subject($this->subject)
-                    ->view('emails.submissaoTrabalho');
+                    ->view('emails.submissaoTrabalho')
+                    ->with([
+                        'user' => $this->user,
+                        'evento' => $this->evento,
+                        'trabalho' => $this->trabalho,
+                        
+                    ]);
     }
 }

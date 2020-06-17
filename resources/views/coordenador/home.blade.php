@@ -75,7 +75,7 @@
                     </p>
                     
                     <p>
-                        <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="visualizarEvento">Visualizar Evento</a>
+                        <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
                     </p>
                 </div>
 
