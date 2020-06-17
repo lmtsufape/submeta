@@ -330,7 +330,7 @@
                         </div>                      
                       <h6 class="mb-1">Possui plano de trabalho?</h6>
                       <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
-                      <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
+                      <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>                      
                       <div id="planoHabilitado" >
                       <h5>Dados do plano de trabalho</h5>
                       <div class="row">
@@ -491,7 +491,7 @@
     $(document).on('click', '.naoPlano', function(e) {
       e.preventDefault();
         var plano = $(this).next()[0];
-        plano.style.display = 'none';
+        plano.style.display = 'none';        
         console.log('button nao');
     });
    
@@ -587,7 +587,7 @@
             "<div class="+"row"+">"+
                 "<div class="+"col-sm-4"+">"+
                     "<label>Titulo*</label>"+
-                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
+                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+">"+
                     "@error('nomePlanoTrabalho')" +
                       "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
                         "<strong>{{ $message }}</strong>" +
