@@ -14,6 +14,7 @@ use App\Trabalho;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Evento;
+use Illuminate\Validation\Rule;
 use App\Mail\EmailParaUsuarioNaoCadastrado;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EventoCriado;
@@ -66,29 +67,42 @@ class AdministradorController extends Controller
     public function salvar(Request $request) {
         if ($request->tipo != "proponente") {
             $validated = $request->validate([
-                'nome' => 'required',
+                'name' => 'required',
                 'tipo' => 'required',
                 'email' => 'required|unique:users',
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'celular' => 'required',
                 'senha' => 'required',
                 'confirmar_senha' => 'required',
                 'cpf' => 'required|cpf|unique:users',
             ]);
         } else {
             $validated = $request->validate([
-                'nome' => 'required',
-                'tipo' => 'required',
-                'email' => 'required|unique:users',
-                'senha' => 'required',
-                'confirmar_senha' => 'required',
-                'cpf' => 'required|cpf|unique:users',
-                'cargo' => 'required',
-                'titulacaoMaxima' => 'required',
-                'anoTitulacao' => 'required',
-                'areaFormacao' => 'required',
-                'area' => 'required',
-                'bolsistaProdutividade' => 'required',
-                'nivel' => 'required',
-                'linkLattes' => 'required',
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'senha' => ['required', 'string', 'min:8'],
+                'confirmar_senha' => ['required'],
+                'cpf' => ['required', 'cpf', 'unique:users'],
+                'celular' => ['required', 'string'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'cargo' => ['required'],
+                'vinculo' => ['required'],
+                'outro' => ['required_if:vinculo,Outro'],
+                'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade'],
+                'titulacaoMaxima' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'anoTitulacao' => ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
+                'anoTitulacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'areaFormacao' => ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
+                'areaFormacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'bolsistaProdutividade' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],
+                'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'nivel' => ['required_if:bolsistaProdutividade,sim'],
+                'nivel' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
+                'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
             ]);
         }
 
@@ -97,11 +111,17 @@ class AdministradorController extends Controller
         }
         
         $user = new User();
-        $user->name = $request->nome;
+        $user->name = $request->name;
         $user->tipo = $request->tipo;
         $user->cpf = $request->cpf;
+        $user->celular = $request->celular;
         $user->email = $request->email;
         $user->password = bcrypt($request->senha);
+        if ($request->instituicao != null) {
+            $user->instituicao = $request->instituicao;
+        } else if (isset($request->instituicaoSelect) && $request->instituicaoSelect != "Outra") {
+            $user->instituicao = $request->instituicaoSelect;
+        }
         $user->save();
         
 
@@ -118,18 +138,29 @@ class AdministradorController extends Controller
                 break;
             case "proponente": 
                 $proponente = new Proponente();
-                $proponente->SIAPE = $request->SIAPE;
+                if ($request->SIAPE != null) {
+                    $proponente->SIAPE = $request->SIAPE;
+                }
                 $proponente->cargo = $request->cargo;
-                $proponente->vinculo = $request->vinculo;
+
+                if ($request->vinculo != 'Outro') {
+                    $proponente->vinculo = $request->vinculo;
+                } else {
+                    $proponente->vinculo = $request->outro;
+                }
+
                 $proponente->titulacaoMaxima = $request->titulacaoMaxima;
                 $proponente->anoTitulacao = $request->anoTitulacao;
-                $proponente->areaFormacao = $request->areaFormacao;                
+                $proponente->areaFormacao = $request->areaFormacao;
                 $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
-                $proponente->nivel = $request->nivel;
+                if ($request->bolsistaProdutividade == 'sim') {
+                    $proponente->nivel = $request->nivel;
+                }
                 $proponente->linkLattes = $request->linkLattes;
+
                 $proponente->user_id = $user->id;
                 $proponente->save();
-                break;
+                break;               
             case "participante":
                 $participante = new Participante();
                 $participante->user_id = $user->id;
@@ -159,28 +190,38 @@ class AdministradorController extends Controller
         
         if ($request->tipo != "proponente") {
             $validated = $request->validate([
-                'nome' => 'required',
+                'name' => 'required',
                 'tipo' => 'required',
                 'email' => 'required',
-                // 'senha' => 'required',
-                // 'confirmar_senha' => 'required',
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'celular' => 'required',
                 'cpf' => 'required|cpf',
             ]);
         } else {
             $validated = $request->validate([
-                'nome' => 'required',
-                'tipo' => 'required',
-                'email' => 'required',
-                // 'senha' => 'required',
-                // 'confirmar_senha' => 'required',
-                'cpf' => 'required|cpf',
-                'cargo' => 'required',
-                'titulacaoMaxima' => 'required',
-                'anoTitulacao' => 'required',
-                'areaFormacao' => 'required',                
-                'bolsistaProdutividade' => 'required',
-                'nivel' => 'required',
-                'linkLattes' => 'required',
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'cpf' => ['required', 'cpf'],
+                'celular' => ['required', 'string'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'cargo' => ['required'],
+                'vinculo' => ['required'],
+                'outro' => ['required_if:vinculo,Outro'],
+                'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade'],
+                'titulacaoMaxima' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'anoTitulacao' => ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
+                'anoTitulacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'areaFormacao' => ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
+                'areaFormacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'bolsistaProdutividade' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],
+                'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'nivel' => ['required_if:bolsistaProdutividade,sim'],
+                'nivel' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
+                'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
             ]);
         }
         
@@ -205,15 +246,26 @@ class AdministradorController extends Controller
                 break;
             case "proponente": 
                 $proponente = Proponente::where('user_id', '=', $id)->first();
-                $proponente->SIAPE = $request->SIAPE;
+                if ($request->SIAPE != null) {
+                    $proponente->SIAPE = $request->SIAPE;
+                }
                 $proponente->cargo = $request->cargo;
-                $proponente->vinculo = $request->vinculo;
+
+                if ($request->vinculo != 'Outro') {
+                    $proponente->vinculo = $request->vinculo;
+                } else {
+                    $proponente->vinculo = $request->outro;
+                }
+
                 $proponente->titulacaoMaxima = $request->titulacaoMaxima;
                 $proponente->anoTitulacao = $request->anoTitulacao;
-                $proponente->areaFormacao = $request->areaFormacao;                
+                $proponente->areaFormacao = $request->areaFormacao;
                 $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
-                $proponente->nivel = $request->nivel;
+                if ($request->bolsistaProdutividade == 'sim') {
+                    $proponente->nivel = $request->nivel;
+                }
                 $proponente->linkLattes = $request->linkLattes;
+
                 $proponente->user_id = $user->id;
                 $proponente->update();
                 break;
@@ -224,14 +276,18 @@ class AdministradorController extends Controller
                 break;
         }
 
-        $user->name = $request->nome;
+        $user->name = $request->name;
         $user->tipo = $request->tipo;
         $user->email = $request->email;
         $user->cpf = $request->cpf;
+        $user->celular = $request->celular;
+        if ($request->instituicao != null) {
+            $user->instituicao = $request->instituicao;
+        } else if (isset($request->instituicaoSelect) && $request->instituicaoSelect != "Outra") {
+            $user->instituicao = $request->instituicaoSelect;
+        }
         // $user->password = bcrypt($request->nova_senha);
         $user->update();
-
-        
 
         return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário atualizado com sucesso']);
     }
@@ -312,7 +368,6 @@ class AdministradorController extends Controller
 
 
         return redirect()->back();
-
 
     }
 

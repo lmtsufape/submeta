@@ -29,9 +29,9 @@
             <div class="col-sm-3">
                 <label for="tipo" class="col-form-label">{{ __('Tipo*:') }}</label>
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required>
-                  <option value="PIBIC">PIBIC</option>
-                  <option value="PIBIC-EM">PIBIC-EM</option>
-                  <option value="PIBITI">PIBITI</option>                  
+                  <option @if(old('tipo')=='PIBIC' ) selected @endif value="PIBIC">PIBIC</option>
+                  <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
+                  <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>                  
                 </select>
 
                 @error('tipo')
@@ -45,7 +45,7 @@
                 <label for="natureza" class="col-form-label">{{ __('Natureza*:') }}</label>
                 <select id="natureza" type="text" class="form-control @error('natureza') is-invalid @enderror" name="natureza" value="{{ old('natureza') }}" required>
                   @foreach ($naturezas as $natureza)
-                    <option value="{{ $natureza->id }}">{{ $natureza->nome }}</option>  
+                    <option @if(old('natureza')==$natureza->id ) selected @endif value="{{ $natureza->id }}">{{ $natureza->nome }}</option>  
                   @endforeach              
                 </select>
 
@@ -62,7 +62,7 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Descrição*:</label>
-                    <textarea class="form-control @error('descricao') is-invalid @enderror" value="{{ old('descricao') }}" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="3"></textarea>
+                    <textarea class="form-control @error('descricao') is-invalid @enderror" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="3">{{ old('descricao') }}</textarea>
                     @error('descricao')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -77,7 +77,7 @@
               <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="coordenador_id" name="coordenador_id">
                   <option value="" disabled selected hidden>-- Coordenador da Comissão Avaliadora --</option>
                   @foreach($coordenadors as $coordenador)
-                    <option value="{{$coordenador->id}}">{{$coordenador->user->name}}</option>
+                    <option @if(old('coordenador_id')==$coordenador->id ) selected @endif value="{{$coordenador->id}}">{{$coordenador->user->name}}</option>
                   @endforeach
               </select>
           </div>
@@ -97,7 +97,7 @@
 
                 @error('inicioSubmissao')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
                 </span>
                 @enderror
             </div>
@@ -107,7 +107,7 @@
 
                 @error('fimSubmissao')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                    <strong>{{ $message . date('d/m/Y', strtotime(old('inicioSubmissao'))) . '.'  }}</strong>
                 </span>
                 @enderror
             </div>
@@ -120,7 +120,7 @@
 
               @error('inicioRevisao')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
+                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
               </span>
               @enderror
           </div>
@@ -130,7 +130,7 @@
 
               @error('fimRevisao')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
+                  <strong>{{ $message . date('d/m/Y', strtotime( old('inicioRevisao') )) . '.' }}</strong>
               </span>
               @enderror
           </div>
@@ -143,7 +143,7 @@
 
               @error('resultado')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
+                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
               </span>
               @enderror
           </div>
@@ -159,7 +159,7 @@
         <div class="row justify-content-center" style="margin-top:10px">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">Anexar edital*:</label>
+                    <label for="pdfEdital">Anexar edital*:</label>                   
                     <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfEdital')

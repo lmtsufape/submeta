@@ -27,7 +27,7 @@ class ProponenteSeeder extends Seeder
         'areaFormacao' => '123123123',        
         'bolsistaProdutividade' => '123123123',
         'nivel' => '123123123',
-        'linkLattes' => '123123123',
+        'linkLattes' => 'http://lattes.cnpq.br/8363536830656923',
         'created_at' => '2020-01-01 00:00:00'
 
       ]);
@@ -46,7 +46,7 @@ class ProponenteSeeder extends Seeder
         'areaFormacao' => '123123123',        
         'bolsistaProdutividade' => '123123123',
         'nivel' => '123123123',
-        'linkLattes' => '123123123',
+        'linkLattes' => 'http://lattes.cnpq.br/8363536830656923',
         'created_at' => '2020-01-01 00:00:00'
 
       ]);
