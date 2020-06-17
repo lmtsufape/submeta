@@ -656,6 +656,8 @@ class TrabalhoController extends Controller
     {
         $trabalho = Trabalho::find($request->id);
         //dd($trabalho);
+        Storage::deleteDirectory('trabalhos/' . $trabalho->evento->id . '/' . $trabalho->id );
+       
         $trabalho->delete();
         return redirect()->back();
     }
