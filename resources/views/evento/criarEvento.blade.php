@@ -74,12 +74,17 @@
         <div class="row justify-content-center">
           <div class="col-sm-12">
               <label for="coordenador_id" class="col-form-label">{{ __('Coordenador*:') }}</label>
-              <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="coordenador_id" name="coordenador_id">
+              <select class="form-control @error('coordenador_id') is-invalid @enderror" id="coordenador_id" name="coordenador_id">
                   <option value="" disabled selected hidden>-- Coordenador da Comissão Avaliadora --</option>
                   @foreach($coordenadors as $coordenador)
                     <option @if(old('coordenador_id')==$coordenador->id ) selected @endif value="{{$coordenador->id}}">{{$coordenador->user->name}}</option>
                   @endforeach
               </select>
+              @error('coordenador_id')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+              @enderror
           </div>
         </div>
         <hr>
@@ -159,8 +164,12 @@
         <div class="row justify-content-center" style="margin-top:10px">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">Anexar edital*:</label>                   
-                    <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
+                    <label for="pdfEdital">Anexar edital*:</label>    
+                    @if(old('pdfEditalPreenchido') != null)
+                        <a id="pdfEditalTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'pdfEdital' ])}}">Arquivo atual</a>
+                    @endif
+                    <input type="hidden" id="pdfEditalPreenchido" name="pdfEditalPreenchido" value="{{ old('pdfEditalPreenchido') }}" >               
+                    <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfEdital')
                         <span class="invalid-feedback" role="alert">
@@ -173,7 +182,11 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="modeloDocumento">Anexar arquivo com os modelos de documentos do edital:</label>
-                    <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
+                    @if(old('modeloDocumentoPreenchido') != null)
+                    <a id="modeloDocumentoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'modeloDocumento' ])}}">Arquivo atual</a>
+                    @endif
+                    <input type="hidden" id="modeloDocumentoPreenchido" name="modeloDocumentoPreenchido" value="{{ old('modeloDocumentoPreenchido') }}" >
+                    <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('modeloDocumento')
                         <span class="invalid-feedback" role="alert">
@@ -198,4 +211,20 @@
     </form>
 </div>
 
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+    function exibirAnexoTemp(file){
+        console.log(file.id);
+        if(file.id === "pdfEdital"){
+        var pdfEditalPreenchido = document.getElementById('pdfEditalPreenchido');
+        pdfEditalPreenchido.value = "sim";
+        }
+        if(file.id === "modeloDocumento"){
+        var modeloDocumentoPreenchido = document.getElementById('modeloDocumentoPreenchido');
+        modeloDocumentoPreenchido.value = "sim";
+        }
+    }
+</script>
 @endsection

@@ -32,6 +32,7 @@ class CreateEventosTable extends Migration
             $table->integer('coordenadorId')->nullable();
             $table->string('pdfEdital')->nullable();
             $table->string('modeloDocumento')->nullable();
+            $table->string('anexosStatus')->nullable();
             
         });
     }

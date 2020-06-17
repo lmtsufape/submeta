@@ -80,8 +80,11 @@ class EventoController extends Controller
         $user_id = Auth()->user()->id;
 
         //dd($user_id);
-        // validar datas nulas antes, pois pode gerar um bug
 
+        //--Salvando os anexos da submissão temporariamente
+        $evento = $this->armazenarAnexosTemp($request);
+
+        // validar datas nulas antes, pois pode gerar um bug
         if(
           $request->inicioSubmissao == null ||
           $request->fimSubmissao == null    ||
@@ -94,13 +97,15 @@ class EventoController extends Controller
             'nome'                => ['required', 'string'],
             'descricao'           => ['required', 'string'],
             'tipo'                => ['required', 'string'],
-            'natureza'            => ['required'],           
+            'natureza'            => ['required'],  
+            'descricao'           => ['required'],  
+            'coordenador_id'      => ['required'],        
             'inicioSubmissao'     => ['required', 'date'],
             'fimSubmissao'        => ['required', 'date'],
             'inicioRevisao'       => ['required', 'date'],
             'fimRevisao'          => ['required', 'date'],
             'resultado'           => ['required', 'date'],    
-            'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],  	 
+            'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],  	 
             'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
           ]);
         }
@@ -112,28 +117,31 @@ class EventoController extends Controller
           'descricao'           => ['required', 'string'],
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'], 
+          'descricao'           => ['required'],    
+          'coordenador_id'      => ['required'],
           'inicioSubmissao'     => ['required', 'date', 'after:' . $yesterday],
           'fimSubmissao'        => ['required', 'date', 'after:' . $request->inicioSubmissao],
           'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
           'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
           'resultado'           => ['required', 'date', 'after:' . $yesterday],
-          'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
         ]);
         
-        $evento = Evento::create([
-          'nome'                => $request->nome,
-          'descricao'           => $request->descricao,
-          'tipo'                => $request->tipo,
-          'natureza_id'         => $request->natureza,
-          'inicioSubmissao'     => $request->inicioSubmissao,
-          'fimSubmissao'        => $request->fimSubmissao,
-          'inicioRevisao'       => $request->inicioRevisao,
-          'fimRevisao'          => $request->fimRevisao,
-          'resultado'           => $request->resultado,
-          'coordenadorId'       => $request->coordenador_id,          
-          'criador_id'          => $user_id,          
-        ]);
+        //$evento = Evento::create([
+        $evento['nome']                = $request->nome;
+        $evento['descricao']           = $request->descricao;
+        $evento['tipo']                = $request->tipo;
+        $evento['natureza_id']         = $request->natureza;
+        $evento['inicioSubmissao']     = $request->inicioSubmissao;
+        $evento['fimSubmissao']        = $request->fimSubmissao;
+        $evento['inicioRevisao']       = $request->inicioRevisao;
+        $evento['fimRevisao']          = $request->fimRevisao;
+        $evento['resultado']           = $request->resultado;
+        $evento['coordenadorId']       = $request->coordenador_id;          
+        $evento['criador_id']          = $user_id;  
+        $evento['anexosStatus']        = 'final';         
+       
         //dd($evento);
         // $user = User::find($request->coordenador_id);
         // $user->coordenadorComissao()->editais()->save($evento);
@@ -147,12 +155,16 @@ class EventoController extends Controller
 
         //$evento->coordenadorId = Auth::user()->id;
 
-        $pdfEdital = $request->pdfEdital;
-        $path = 'pdfEdital/' . $evento->id . '/';
-        $nome = "edital.pdf";
-        Storage::putFileAs($path, $pdfEdital, $nome);  
-        $evento->pdfEdital = $path . $nome;
+        //-- Salvando anexos finais
         
+        if(isset($request->pdfEdital)){        
+          $pdfEdital = $request->pdfEdital;
+          $path = 'pdfEdital/' . $evento->id . '/';
+          $nome = "edital.pdf";
+          Storage::putFileAs($path, $pdfEdital, $nome);  
+          $evento->pdfEdital = $path . $nome;
+        }
+
         if(isset($request->modeloDocumento)){
           $modeloDocumento = $request->modeloDocumento;
           $extension = $modeloDocumento->extension();
@@ -162,9 +174,7 @@ class EventoController extends Controller
     
           $evento->modeloDocumento = $path . $nome;
         } 
-        
-
-
+     
         $evento->save();
 
         // $user = Auth::user();
@@ -173,6 +183,35 @@ class EventoController extends Controller
         //     ->send(new EventoCriado($user, $subject));
 
         return redirect()->route('coord.home');
+    }
+
+    public function armazenarAnexosTemp(Request $request){
+
+      //---Anexos do Projeto  
+      $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
+                                ->orderByDesc('updated_at')->first();
+      
+      if($eventoTemp == null){
+        $eventoTemp = new Evento();
+        $eventoTemp->criador_id = Auth::user()->id;
+        $eventoTemp->anexosStatus = 'temporario';
+        $eventoTemp->save();       
+      }
+      
+      if(!(is_null($request->pdfEdital)) ) {  
+        $pasta = 'pdfEdital/' . $eventoTemp->id;        
+        $eventoTemp->pdfEdital = Storage::putFileAs($pasta, $request->pdfEdital, 'edital.pdf');  
+      }
+      if (!(is_null($request->modeloDocumento))) {      
+        $extension = $request->modeloDocumento->extension();
+        $path = 'modeloDocumento/' . $eventoTemp->id;
+        $nome = "modelo" . "." . $extension;       
+        $eventoTemp->modeloDocumento = Storage::putFileAs($path, $request->modeloDocumento, $nome);        
+      }       
+      
+      $eventoTemp->update();
+     
+      return $eventoTemp;
     }
 
     /**

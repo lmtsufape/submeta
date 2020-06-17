@@ -859,11 +859,17 @@ class TrabalhoController extends Controller
     }
 
     public function baixarAnexoTemp($eventoId, $nomeAnexo) {      
-      $proponenteId = Auth::user()->id;
-
-      $anexosTemp = AnexosTemp::where('eventoId', $eventoId)->where('proponenteId', $proponenteId)
+      
+      $anexosTemp = AnexosTemp::where('eventoId', $eventoId)->where('proponenteId', Auth::user()->id)
                                 ->orderByDesc('updated_at')->first();
 
       return Storage::download($anexosTemp->$nomeAnexo);
+    }
+    
+    public function baixarEventoTemp($nomeAnexo){
+      $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
+                            ->orderByDesc('updated_at')->first();
+
+      return Storage::download($eventoTemp->$nomeAnexo);
     }
 }
