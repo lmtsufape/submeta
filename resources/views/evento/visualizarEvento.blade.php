@@ -123,6 +123,34 @@
         </div>
     </div>
 
+    <div class="row justify-content-center">
+      <div class="col-sm-12">
+
+        <table class="table table-responsive-lg table-hover">
+          <thead>
+            <tr>
+              <th style="text-align:center">Edital</th>
+              <th style="text-align:center">Modelos</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td style="text-align:center">
+                  <a href="{{route('baixar.edital', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                    <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                  </a>
+                </td>
+                <td style="text-align:center">
+                  <a href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                      <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                  </a>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     @if($hasFile == true)
       <div class="row margin">
           <div class="col-sm-12">

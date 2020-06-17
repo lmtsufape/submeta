@@ -856,7 +856,12 @@ class TrabalhoController extends Controller
     
     public function baixarAnexoJustificativa($id) {
       $projeto = Trabalho::find($id);
-      return Storage::download($projeto->justificativaAutorizacaoEtica);
+
+      if (Storage::disk()->exists($projeto->justificativaAutorizacaoEtica)) {
+        return Storage::download($projeto->justificativaAutorizacaoEtica);
+      }
+      
+      return abort(404);
     }
 
     public function baixarAnexoTemp($eventoId, $nomeAnexo) {      

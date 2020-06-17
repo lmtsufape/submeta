@@ -470,6 +470,21 @@ class EventoController extends Controller
 
     public function baixarEdital($id) {
       $evento = Evento::find($id);
-      return Storage::download($evento->pdfEdital);
+
+      if (Storage::disk()->exists($evento->pdfEdital)) {
+        return Storage::download($evento->pdfEdital);
+      }
+
+      return abort(404);
+    }
+
+    public function baixarModelos($id) {
+      $evento = Evento::find($id);
+
+      if (Storage::disk()->exists($evento->modeloDocumento)) {
+        return Storage::download($evento->modeloDocumento);
+      }
+      
+      return abort(404);
     }
 }
