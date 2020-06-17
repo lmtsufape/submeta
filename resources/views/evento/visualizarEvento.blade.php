@@ -148,7 +148,7 @@
                 <tr>
                   <th>Título</th>
                   <th style="text-align:center">Baixar</th>
-                  <th style="text-align:center">Nova Versão</th>
+                  {{-- <th style="text-align:center">Nova Versão</th> --}}
                 </tr>
               </thead>
               <tbody>
@@ -164,11 +164,11 @@
                           }
                         @endphp
                       @endforeach
-                      <a href="{{route('download', ['file' => $arquivo])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                      <a href="{{route('baixar.anexo.projeto', ['id' => $trabalho->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                           <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                       </a>
                     </td>
-                    <td style="text-align:center">
+                    {{-- <td style="text-align:center">
                       @if($evento->inicioSubmissao <= $mytime)
                         @if($mytime < $evento->fimSubmissao)
                           <a href="#" onclick="changeTrabalho({{$trabalho->id}})" data-toggle="modal" data-target="#modalTrabalho" style="color:#114048ff">
@@ -176,7 +176,7 @@
                           </a>
                         @endif
                       @endif
-                    </td>
+                    </td> --}}
                   </tr>
                 @endforeach
               </tbody>
