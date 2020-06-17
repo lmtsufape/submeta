@@ -43,7 +43,13 @@ class TrabalhoController extends Controller
     {
         $edital = Evento::find($id);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
-        $funcaoParticipantes = FuncaoParticipantes::all(); 
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+
+        if($proponente == null){
+          return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
+        }
+        
         return view('evento.submeterTrabalho',[
                                             'edital'             => $edital,
                                             'grandeAreas'        => $grandeAreas,
@@ -76,8 +82,11 @@ class TrabalhoController extends Controller
       $coordenador = CoordenadorComissao::find($evento->coordenadorId);
       //Relaciona o projeto criado com o proponente que criou o projeto
       $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+      // if($proponente == null){
+      //   return view('proponente.cadastro');
+      // }
       //$trabalho->proponentes()->save($proponente);  
-      //dd($coordenador->id);
+      //dd($proponente);
       $trabalho = "trabalho";
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
@@ -103,7 +112,7 @@ class TrabalhoController extends Controller
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
           'funcaoParticipante.*'    => ['required', 'string'],
-          'nomePlanoTrabalho.*'     => ['required', 'string'],
+          'nomePlanoTrabalho.*'     => ['nullable', 'string'],
           //--Verificando se anexos já foram submetidos
           'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoCONSU'              => [($request->anexoConsuPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
@@ -153,11 +162,11 @@ class TrabalhoController extends Controller
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
           'funcaoParticipante.*'    => ['required', 'string'],
-          'nomePlanoTrabalho.*'     => ['required', 'string'],
+          'nomePlanoTrabalho.*'     => ['nullable', 'string'],
           'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoPlanoTrabalho.*'    => ['required', 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
 
         $trabalho = Trabalho::create([
@@ -221,24 +230,26 @@ class TrabalhoController extends Controller
             $subject = "Participante de Projeto";            
             $email = $value;
             Mail::to($email)
-                  ->send(new SubmissaoTrabalho($userParticipante, $subject));
+                  ->send(new SubmissaoTrabalho($userParticipante, $subject, $evento, $trabalho));
           }
 
-          $usuario = User::where('email', $value)->first();
-          $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $trabalho->id]])->first();
-          $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
-          $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
-          $file = $request->anexoPlanoTrabalho[$key];
-          Storage::putFileAs($path, $file, $nome);
+          if($request->nomePlanoTrabalho[$key] != null){
+            $usuario = User::where('email', $value)->first();
+            $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $trabalho->id]])->first();
+            $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+            $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+            $file = $request->anexoPlanoTrabalho[$key];
+            Storage::putFileAs($path, $file, $nome);
 
-          $arquivo = new Arquivo();
-          $arquivo->titulo = $request->nomePlanoTrabalho[$key];
-          $arquivo->nome = $path . $nome;
-          $arquivo->trabalhoId = $trabalho->id;
-          $arquivo->data = $mytime;
-          $arquivo->participanteId = $participante->id;
-          $arquivo->versaoFinal = true;
-          $arquivo->save();
+            $arquivo = new Arquivo();
+            $arquivo->titulo = $request->nomePlanoTrabalho[$key];
+            $arquivo->nome = $path . $nome;
+            $arquivo->trabalhoId = $trabalho->id;
+            $arquivo->data = $mytime;
+            $arquivo->participanteId = $participante->id;
+            $arquivo->versaoFinal = true;
+            $arquivo->save();
+          }          
         }
       }
       
@@ -262,8 +273,10 @@ class TrabalhoController extends Controller
 
       $subject = "Submissão de Trabalho";
       $autor = Auth()->user();
+      $evento = $evento;
+      $trabalho = $trabalho;
       Mail::to($autor->email)
-            ->send(new SubmissaoTrabalho($autor, $subject));
+            ->send(new SubmissaoTrabalho($autor, $subject, $evento, $trabalho));
       
       return redirect()->route('evento.visualizar',['id'=>$request->editalId]);
     }

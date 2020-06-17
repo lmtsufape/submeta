@@ -101,7 +101,7 @@ class EventoController extends Controller
             'fimRevisao'          => ['required', 'date'],
             'resultado'           => ['required', 'date'],    
             'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],  	 
-            'modeloDocumento'     => ['required', 'file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
+            'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
           ]);
         }
 
@@ -118,7 +118,7 @@ class EventoController extends Controller
           'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
           'resultado'           => ['required', 'date', 'after:' . $yesterday],
           'pdfEdital'           => ['required', 'file', 'mimes:pdf', 'max:2000000'],
-          'modeloDocumento'     => ['required', 'file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
+          'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
         ]);
         
         $evento = Evento::create([
@@ -152,14 +152,17 @@ class EventoController extends Controller
         $nome = "edital.pdf";
         Storage::putFileAs($path, $pdfEdital, $nome);  
         $evento->pdfEdital = $path . $nome;
-         
-        $modeloDocumento = $request->modeloDocumento;
-        $extension = $modeloDocumento->extension();
-        $path = 'modeloDocumento/' . $evento->id . '/';
-        $nome = "modelo" . "." . $extension;
-        Storage::putFileAs($path, $modeloDocumento, $nome);
-  
-        $evento->modeloDocumento = $path . $nome;
+        
+        if(isset($request->modeloDocumento)){
+          $modeloDocumento = $request->modeloDocumento;
+          $extension = $modeloDocumento->extension();
+          $path = 'modeloDocumento/' . $evento->id . '/';
+          $nome = "modelo" . "." . $extension;
+          Storage::putFileAs($path, $modeloDocumento, $nome);
+    
+          $evento->modeloDocumento = $path . $nome;
+        } 
+        
 
 
         $evento->save();

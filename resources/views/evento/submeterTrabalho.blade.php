@@ -89,8 +89,9 @@
                 </div>
                 <div class="col-sm-6">
                   <label for="linkLattesEstudante" class="col-form-label">Link Lattes do Proponente*</label>
-                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante" @if(Auth()->user()->proponentes->linkLattes != null)
-                  value="{{ Auth()->user()->proponentes->linkLattes }}"
+                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
+                  @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
+                    value="{{ Auth()->user()->proponentes->linkLattes }}"
                   @else
                   value=""
                   @endif >
@@ -326,58 +327,64 @@
                               @enderror
                             </select>
                           </div>
-                        </div>
-                        <h5>Dados do plano de trabalho</h5>
-                        <div class="row">
-                          <div class="col-sm-12">
-                            <div id="planoTrabalho">
-                              <div class="row">
-                                <div class="col-sm-4">
-                                  <label>Titulo* </label>
-                                  <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" required value="{{old('nomePlanoTrabalho.'.$i)}}">
-
-                                  @error('nomePlanoTrabalho')
-                                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                    <strong>{{ $message }}</strong>
-                                  </span>
-                                  @enderror
-                                </div>
-                                {{-- Arquivo  --}}
-                                <div class="col-sm-7">
-                                  <label for="nomeTrabalho">Anexo*</label>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
-                                    </div>
-                                    <div class="custom-file">
-                                      <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
-                                      <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
-                                    </div>
-                                  </div>
-                                  @error('anexoPlanoTrabalho')
-                                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                    <strong>{{ $message }}</strong>
-                                  </span>
-                                  @enderror
-                                </div>
-                                <div class="col-sm-1">
-                                  <a class="delete">
-                                    <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
-                                  </a>
-                                </div>
+                        </div>                      
+                      <h6 class="mb-1">Possui plano de trabalho?</h6>
+                      <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
+                      <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
+                      <div id="planoHabilitado" >
+                      <h5>Dados do plano de trabalho</h5>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div id="planoTrabalho">
+                            <div class="row">
+                              <div class="col-sm-4">
+                                <label>Titulo* </label>
+                                <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" value="{{old('nomePlanoTrabalho.'.$i)}}">
+                                
+                                @error('nomePlanoTrabalho')
+                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                  <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                               </div>
+                              {{-- Arquivo  --}}
+                              <div class="col-sm-7">
+                                <label for="nomeTrabalho">Anexo*</label>
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
+                                  </div>
+                                  <div class="custom-file">
+                                    <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                    <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                                  </div>
+                                </div>
+                                @error('anexoPlanoTrabalho')
+                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                  <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror                               
+                              </div>
+                              <div class="col-sm-1">
+                                <a class="delete">
+                                  <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
+                                </a>
+                              </div>                              
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      @endfor
+                        </div>                  
+                      </div> 
+                      
+                  </div>         
+                </div>         
+                @endfor
                     @endif
                   </div>
                   <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}"></input>
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
                 </div>
               </div>
-
+    
               </p>
               <div class="row justify-content-center">
                 <div class="col-md-6">
@@ -421,7 +428,7 @@
       e.preventDefault();
       if (qtdLinhas < 4) {
         linha = montarLinhaInputPlanoTrabalho();
-        $('#planoTrabalho').append(linha);
+        //$('#planoTrabalho').append(linha);
         qtdLinhas++;
       }
     });
@@ -471,6 +478,23 @@
       exibirErro('justificativa');
       //$('#anexoComitePreenchido').val("");
     });
+    // document.getElementsByClassName('.simPlano .naoPlano').addEventListener("click", function(event){
+    //   event.preventDefault()
+    // });
+
+    $(document).on('click', '.simPlano', function(e) {
+        e.preventDefault();
+        var plano = $(this).next().next()[0];
+        plano.style.display = 'block';       
+        console.log('button sim');
+    });
+    $(document).on('click', '.naoPlano', function(e) {
+      e.preventDefault();
+        var plano = $(this).next()[0];
+        plano.style.display = 'none';
+        console.log('button nao');
+    });
+   
   });
 
   function exibirErro(campo) {    
@@ -554,44 +578,49 @@
                   "@enderror" +
               "</select>"+
             "</div>"+
-        "</div>" +
-        "<h5>Dados do plano de trabalho</h5>" +
-        "<div class="+"row"+">"+
-            "<div class="+"col-sm-4"+">"+
-                "<label>Titulo*</label>"+
-                "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
-                "@error('nomePlanoTrabalho')" +
-                  "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
-                    "<strong>{{ $message }}</strong>" +
-                  "</span>" +
-                "@enderror" +
-            "</div>"+
-            "<div class="+"col-sm-7" +">"+
-              "<label for="+"nomeTrabalho"+">Anexo* </label>"+
-
-              "<div class="+"input-group"+">"+
-                "<div class='input-group-prepend'>"+
-                  "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
+        "</div>" +        
+            "<h6 class='mb-1'>Possui plano de trabalho?</h6>"+
+            "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 simPlano'"+">Sim</button>"+
+            "<button  class="+"'btn btn-primary mt-2 mb-2 naoPlano'"+">Não</button>"+
+            "<div id="+"planoHabilitado"+">" +
+            "<h5>Dados do plano de trabalho</h5>" +
+            "<div class="+"row"+">"+
+                "<div class="+"col-sm-4"+">"+
+                    "<label>Titulo*</label>"+
+                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
+                    "@error('nomePlanoTrabalho')" +
+                      "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                        "<strong>{{ $message }}</strong>" +
+                      "</span>" +
+                    "@enderror" +
                 "</div>"+
-                "<div class='custom-file'>"+
-                  "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
-                    "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
-                  "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
+                "<div class="+"col-sm-7" +">"+
+                  "<label for="+"nomeTrabalho"+">Anexo* </label>"+
+
+                  "<div class="+"input-group"+">"+
+                    "<div class='input-group-prepend'>"+
+                      "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
+                    "</div>"+
+                    "<div class='custom-file'>"+
+                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
+                        "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
+                      "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
+                  "</div>"+
+                  "</div>"+
+                  "@error('anexoPlanoTrabalho')"+
+                  "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
+                    "<strong>{{ $message }}</strong>"+
+                  "</span>"+
+                  "@enderror"+                
+                "</div>"+
+                "<div class="+"col-sm-1"+">"+
+                    "<a  class="+"delete"+">"+
+                      "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
+                    "</a>"+
                 "</div>"+
               "</div>"+
-              "@error('anexoPlanoTrabalho')"+
-              "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
-                "<strong>{{ $message }}</strong>"+
-              "</span>"+
-              "@enderror"+
-            "</div>"+
-            "<div class="+"col-sm-1"+">"+
-                "<a  class="+"delete"+">"+
-                  "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
-                "</a>"+
-            "</div>"+
-          "</div>"+
-        "</div>";
+              "</div>"+
+            "</div>";
   }
 
   // function montarLinhaInputPlanoTrabalho(){
