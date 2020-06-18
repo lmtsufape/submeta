@@ -276,7 +276,7 @@
               </div>
 
               <hr>
-              <h4>Participantes</h4>
+              <h3>Participantes</h3>
 
               {{-- Participantes  --}}
               <div class="row" style="margin-top:20px">
@@ -292,7 +292,7 @@
                       @for ($i = 0; $i < $countParticipante; $i++) 
                       <div id="novoParticipante" style="display: block;">
                         <br>
-                        <h5>Dados do participante</h5>
+                        <h4>Dados do participante</h4>
                         <div class="row">
                           <div class="col-sm-5">
                             <label>Nome Completo*</label>
@@ -544,7 +544,7 @@
   function montarLinhaInput() {
 
     return    "<div id="+"novoParticipante"+">" +
-          "<br><h5>Dados do participante</h5>" +
+          "<br><h4>Dados do participante</h4>" +
           "<div class="+"row"+">"+
             "<div class="+"col-sm-5"+">"+
                 "<label>Nome Completo*</label>"+

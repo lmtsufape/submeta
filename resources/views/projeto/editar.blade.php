@@ -266,7 +266,7 @@
               </div>
 
               <hr>
-              <h4>Participantes</h4>
+              <h3>Participantes</h3>
 
               {{-- Participantes  --}}
               <div class="row" style="margin-top:20px">
@@ -277,7 +277,7 @@
                         @if($participante->user_id === $user->id)
                           <div id="novoParticipante">
                             <br>
-                            <h5>Dados do participante</h5>
+                            <h4>Dados do participante</h4>
                             <div class="row">
                               <div class="col-sm-5">
                                 <label>Nome Completo</label>
@@ -316,10 +316,19 @@
                                   @enderror
                                 </select>
                               </div>
+                            </div>    
+                            <div class="row">   
+                              <div class='col-sm-11'>                    
+                                <h6 class="mb-1">Possui plano de trabalho?</h6>
+                                <button  class="btn btn-primary mt-2 mb-2 simPlano" id="simPlano">Sim</button>
+                                <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>                               
+                              </div>
+                              <div class="col-sm-1 deletarSemPlano" >
+                                <a  class="delete">
+                                  <img src="/img/icons/user-times-solid.svg" style="width:25px;margin-top:35px">
+                                </a>
+                              </div>
                             </div>
-                            <h6 class="mb-1">Possui plano de trabalho?</h6>
-                            <button  class="btn btn-primary mt-2 mb-2 simPlano" id="simPlano">Sim</button>
-                            <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>                      
                             <div id="planoHabilitado" >                            
                             @foreach ($arquivos as $arquivo)
                             @if($arquivo->participanteId === $participante->id)
@@ -414,12 +423,17 @@
 
     });
     $('.simPlano').click(function(e) {      
-      var possuiPlano = $(this).next().next()[0].firstElementChild;
-      if(possuiPlano == null){
+      var possuiPlano = $(this).parent().parent().next();
+      
+      if(possuiPlano[0].firstElementChild == null){
         e.preventDefault();            
-        linha = linhaPlanoTrabalho();         
-        $(this).next().next().append(linha);            
+        linha = linhaPlanoTrabalho();                
+        possuiPlano.append(linha);            
+      }else if(possuiPlano[0].firstElementChild.className == 'exibirPlano'){
+        possuiPlano[0].style.display = 'block';
       }
+      deletar = $(this).parent().next()[0];
+      deletar.style.display = "none";
     });
 
     // $('#addPlanoTrabalho').click(function(e) {
@@ -436,7 +450,7 @@
     //   console.log($(this).val());
     //   addModalidade($(this).val());
     // });
-    
+
     $(document).on('click', '.delete', function() {
       if (qtdParticipantes > 1) {
         qtdParticipantes--;
@@ -470,26 +484,28 @@
       console.log('button nao');
     });
     $(document).on('click', '.simPlano', function(e) {
-        e.preventDefault();
-        //var plano = $(this).next().next()[0];
-        //plano.style.display = 'block';  
+        e.preventDefault();         
         $(this).next()[0].className = 'btn btn-primary mt-2 mb-2 naoPlano';             
         console.log('button sim');
     });
     $(document).on('click', '.naoPlano', function(e) {
       e.preventDefault();
-        var plano = $(this).next()[0];
+        var plano = $(this).parent().parent().next()[0];
         plano.style.display = 'none';  
-        $(this).prev()[0].className = 'btn btn-primary mt-2 mb-2 simPlano';      
+        $(this).prev()[0].className = 'btn btn-primary mt-2 mb-2 simPlano';  
+       
+        deletar = $(this).parent().next()[0]
+        deletar.style.display = "block";
         console.log('button nao');       
     });
     
     $(function() {           
       var simPlano = document.getElementsByClassName('simPlano');
       for(var i=0; i< simPlano.length;i++){
-        var planoHabilitado = simPlano[i].nextElementSibling.nextElementSibling;
+        var planoHabilitado = simPlano[i].parentElement.parentElement.nextElementSibling;
         //se há plano de trabalho
         if(planoHabilitado.firstElementChild != null && planoHabilitado.firstElementChild.className == 'exibirPlano'){
+          simPlano[i].parentElement.nextElementSibling.style.display = "none";
           simPlano[i].nextElementSibling.className = 'btn btn-primary mt-2 mb-2 naoPlano';
           simPlano[i].className = 'btn btn-primary focus mt-2 mb-2 simPlano';
         }else{
@@ -514,7 +530,7 @@
   function montarLinhaInput() {
 
     return    "<div id="+"novoParticipante"+">" +
-              "<br><h5>Dados do participante</h5>" +
+              "<br><h4>Dados do participante</h4>" +
               "<div class="+"row"+">"+
                 "<div class="+"col-sm-5"+">"+
                     "<label>Nome Completo</label>"+
@@ -659,6 +675,14 @@
                 "</div>"+
               //"</div>"+
               "</div>";   
+  }
+
+  function addDeletar(){
+    return "<div class="+"col-sm-1"+" style="+"display:inline;"+">"+
+                "<a  class="+"delete"+">"+
+                  "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
+                "</a>"+
+            "</div>";
   }
 
   function areas() {
