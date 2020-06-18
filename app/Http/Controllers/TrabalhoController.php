@@ -603,11 +603,14 @@ class TrabalhoController extends Controller
             $participante->update();
 
             //atualizando planos de trabalho
-            if (array_key_exists($key, $request->anexoPlanoTrabalho)) {
+            if ($request->anexoPlanoTrabalho != null && array_key_exists($key, $request->anexoPlanoTrabalho)) {
               if (!(is_null($request->anexoPlanoTrabalho[$key]))) {
                 $arquivo = Arquivo::where('participanteId', $participante->id)->first();
-                Storage::delete($arquivo->nome);
-                $arquivo->delete();
+                //se plano já existir, deletar
+                if($arquivo != null){
+                  Storage::delete($arquivo->nome);
+                  $arquivo->delete();
+                }
     
                 $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
                 $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
