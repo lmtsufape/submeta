@@ -81,7 +81,6 @@ class EventoController extends Controller
 
         //dd($user_id);
         // validar datas nulas antes, pois pode gerar um bug
-
         if(
           $request->inicioSubmissao == null ||
           $request->fimSubmissao == null    ||
@@ -121,19 +120,19 @@ class EventoController extends Controller
           'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
         ]);
         
-        $evento = Evento::create([
-          'nome'                => $request->nome,
-          'descricao'           => $request->descricao,
-          'tipo'                => $request->tipo,
-          'natureza_id'         => $request->natureza,
-          'inicioSubmissao'     => $request->inicioSubmissao,
-          'fimSubmissao'        => $request->fimSubmissao,
-          'inicioRevisao'       => $request->inicioRevisao,
-          'fimRevisao'          => $request->fimRevisao,
-          'resultado'           => $request->resultado,
-          'coordenadorId'       => $request->coordenador_id,          
-          'criador_id'          => $user_id,          
-        ]);
+        $evento = new Evento();
+        $evento->nome = $request->nome;
+        $evento->descricao = $request->descricao;
+        $evento->tipo = $request->tipo;
+        $evento->natureza_id = $request->natureza;
+        $evento->inicioSubmissao = $request->inicioSubmissao;
+        $evento->fimSubmissao = $request->fimSubmissao;
+        $evento->inicioRevisao = $request->inicioRevisao;
+        $evento->fimRevisao = $request->fimRevisao;
+        $evento->resultado = $request->resultado;
+        $evento->coordenadorId = $request->coordenador_id;          
+        $evento->criador_id = $user_id;
+        $evento->save();
         //dd($evento);
         // $user = User::find($request->coordenador_id);
         // $user->coordenadorComissao()->editais()->save($evento);
@@ -165,7 +164,7 @@ class EventoController extends Controller
         
 
 
-        $evento->save();
+        $evento->update();
 
         // $user = Auth::user();
         // $subject = "Evento Criado";
@@ -248,8 +247,15 @@ class EventoController extends Controller
     public function edit($id)
     {
         // dd($id);
-        $evento = Evento::find($id);       
-        return view('evento.editarEvento',['evento'=>$evento]);
+        $evento = Evento::find($id);  
+        $coordenadors = CoordenadorComissao::with('user')->get();
+        $naturezas = Natureza::orderBy('nome')->get();
+        $yesterday = Carbon::yesterday('America/Recife');
+        $yesterday = $yesterday->toDateString(); 
+        return view('evento.editarEvento',['evento'=>$evento,
+                                           'coordenadores'=>$coordenadors,
+                                           'naturezas'=>$naturezas,
+                                           'ontem'=>$yesterday]);
     }
 
     /**
@@ -263,15 +269,55 @@ class EventoController extends Controller
     {
         //dd($request);
         $evento = Evento::find($id);    
+        $yesterday = Carbon::yesterday('America/Recife');
+        $yesterday = $yesterday->toDateString(); 
+        if(
+          $request->inicioSubmissao == null ||
+          $request->fimSubmissao == null    ||
+          $request->inicioRevisao == null   ||
+          $request->fimRevisao == null      ||
+          $request->resultado == null 
+          
+        ){
+          $validatedData = $request->validate([
+            'nome'                => ['required', 'string'],
+            'descricao'           => ['required', 'string'],
+            'tipo'                => ['required', 'string'],
+            'natureza'            => ['required'],           
+            'inicioSubmissao'     => ['required', 'date'],
+            'fimSubmissao'        => ['required', 'date'],
+            'inicioRevisao'       => ['required', 'date'],
+            'fimRevisao'          => ['required', 'date'],
+            'resultado'           => ['required', 'date'],    
+            'pdfEdital'           => ['file', 'mimes:pdf', 'max:2000000'],  	 
+            'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
+          ]);
+        }
+
+        $validated = $request->validate([
+          'nome'                => ['required', 'string'],        
+          'descricao'           => ['required', 'string'],
+          'tipo'                => ['required', 'string'],
+          'natureza'            => ['required'], 
+          'inicioSubmissao'     => ['required', 'date', 'after:' . $yesterday],
+          'fimSubmissao'        => ['required', 'date', 'after:' . $request->inicioSubmissao],
+          'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
+          'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
+          'resultado'           => ['required', 'date', 'after:' . $yesterday],
+          'pdfEdital'           => ['file', 'mimes:pdf', 'max:2000000'],
+          'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
+        ]);
 
         $evento->nome                 = $request->nome;        
         $evento->descricao            = $request->descricao;
-        $evento->tipo                 = $request->tipo;       
+        $evento->tipo                 = $request->tipo;
+        $evento->natureza_id          = $request->natureza;   
         $evento->inicioSubmissao      = $request->inicioSubmissao;
         $evento->fimSubmissao         = $request->fimSubmissao;
         $evento->inicioRevisao        = $request->inicioRevisao;
         $evento->fimRevisao           = $request->fimRevisao;
-        $evento->resultado            = $request->resultado;  
+        $evento->resultado            = $request->resultado;
+        $evento->coordenadorId        = $request->coordenador_id; 
         
         if($request->pdfEdital != null){
           $pdfEdital = $request->pdfEdital;
@@ -289,7 +335,7 @@ class EventoController extends Controller
           $evento->modeloDocumento = $path . $nome;
         }
 
-        $evento->save();
+        $evento->update();
 
         $eventos = Evento::all();
         return view('coordenador.home',['eventos'=>$eventos]);

@@ -37,7 +37,7 @@
                        <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                   </a>
                   <div class="dropdown-menu">
-                      <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item text-center">
+                      <a href="{{ route('evento.editar', ['id' => $evento->id]) }}" class="dropdown-item text-center">
                          
                           Editar Edital
                       </a>
