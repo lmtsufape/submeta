@@ -141,9 +141,13 @@
                   </a>
                 </td>
                 <td style="text-align:center">
-                  <a href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                  @if($evento->modeloDocumento != null)
+                    <a href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                       <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                  </a>
+                    </a>
+                  @else
+                    O criador do edital não disponibilizou modelos
+                  @endif
                 </td>
               </tr>
           </tbody>
