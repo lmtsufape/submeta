@@ -416,7 +416,7 @@ class TrabalhoController extends Controller
       $participantes = Participante::where('trabalho_id', $id)->get();
       $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
       $users = User::whereIn('id', $participantesUsersIds)->get();
-      $arquivos = Arquivo::where('trabalhoId', $id)->get();
+      $arquivos = Arquivo::where('trabalhoId', $id)->get();      
 
       return view('projeto.editar')->with(['projeto' => $projeto,
                                            'grandeAreas' => $grandeAreas,
@@ -593,6 +593,7 @@ class TrabalhoController extends Controller
         if (in_array($request->emailParticipante[$key], $emailParticipantes, false)) {
           $userParticipante = User::where('email', $value)->first();          
           if($userParticipante != null){
+            
             $user = User::where('email', $request->emailParticipante[$key])->first();
             $participante = Participante::where([['user_id', '=', $user->id], ['trabalho_id', '=', $trabalho->id]])->first();
 
@@ -603,28 +604,42 @@ class TrabalhoController extends Controller
             $participante->update();
 
             //atualizando planos de trabalho
-            if ($request->anexoPlanoTrabalho != null && array_key_exists($key, $request->anexoPlanoTrabalho)) {
-              if (!(is_null($request->anexoPlanoTrabalho[$key]))) {
+            if ($request->anexoPlanoTrabalho != null && array_key_exists($key, $request->anexoPlanoTrabalho)) {              
+              if (!(is_null($request->anexoPlanoTrabalho[$key]))) {                
                 $arquivo = Arquivo::where('participanteId', $participante->id)->first();
                 //se plano já existir, deletar
-                if($arquivo != null){
+                if($arquivo != null){                  
                   Storage::delete($arquivo->nome);
                   $arquivo->delete();
                 }
-    
-                $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
-                $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
-                $file = $request->anexoPlanoTrabalho[$key];
-                Storage::putFileAs($path, $file, $nome);
-    
-                $arquivo = new Arquivo();
-                $arquivo->titulo = $request->nomePlanoTrabalho[$key];
-                $arquivo->nome = $path . $nome;
-                $arquivo->trabalhoId = $trabalho->id;
-                $arquivo->data = $mytime;
-                $arquivo->participanteId = $participante->id;
-                $arquivo->versaoFinal = true;
-                $arquivo->save();
+
+                //atualizar plano
+                if($request->semPlano[$key] == null){ 
+                  $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+                  $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+                  $file = $request->anexoPlanoTrabalho[$key];
+                  Storage::putFileAs($path, $file, $nome);
+      
+                  $arquivo = new Arquivo();
+                  $arquivo->titulo = $request->nomePlanoTrabalho[$key];
+                  $arquivo->nome = $path . $nome;
+                  $arquivo->trabalhoId = $trabalho->id;
+                  $arquivo->data = $mytime;
+                  $arquivo->participanteId = $participante->id;
+                  $arquivo->versaoFinal = true;
+                  $arquivo->save();
+                }
+              }
+            }
+            //removendo planos de trabalho
+            if($request->nomePlanoTrabalho != null && array_key_exists($key, $request->nomePlanoTrabalho)){
+              if($request->semPlano[$key] == 'sim'){
+                $arquivo = Arquivo::where('participanteId', $participante->id)->first();
+                //se plano já existir, deletar
+                if($arquivo != null){ 
+                  Storage::delete($arquivo->nome);
+                  $arquivo->delete();
+                }
               }
             }
           }
@@ -635,13 +650,14 @@ class TrabalhoController extends Controller
       $participantesUsersIds = Participante::where('trabalho_id', '=', $trabalho->id)->select('user_id')->get();
       $users = User::whereIn('id', $participantesUsersIds)->get();
 
-      foreach ($users as $user) {
-        //dd($user);
-        if (!(in_array($user->email, $request->emailParticipante, false))) {
-          $participante = Participante::where([['user_id', '=', $user->id], ['trabalho_id', '=', $trabalho->id]])->first();
-          $arquivo = Arquivo::where('participanteId', $participante->id);
-          Storage::delete($arquivo->nome);
-          $arquivo->delete();
+      foreach ($users as $user) {        
+        if (!(in_array($user->email, $request->emailParticipante, false))) {         
+          $participante = Participante::where([['user_id', '=', $user->id], ['trabalho_id', '=', $trabalho->id]])->first();         
+          $arquivo = Arquivo::where('participanteId', $participante->id)->first();         
+          if($arquivo != null){
+            Storage::delete($arquivo->nome);
+            $arquivo->delete();
+          }
           $participante->delete();
         }
       }

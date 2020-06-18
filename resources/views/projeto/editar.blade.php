@@ -267,6 +267,7 @@
 
               <hr>
               <h3>Participantes</h3>
+              <input type="hidden" value="{{sizeof($participantes)}}" id="qtdParticipantes">
 
               {{-- Participantes  --}}
               <div class="row" style="margin-top:20px">
@@ -321,7 +322,8 @@
                               <div class='col-sm-11'>                    
                                 <h6 class="mb-1">Possui plano de trabalho?</h6>
                                 <button  class="btn btn-primary mt-2 mb-2 simPlano" id="simPlano">Sim</button>
-                                <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>                               
+                                <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>   
+                                <input type="hidden" name="semPlano[]" value="">                            
                               </div>
                               <div class="col-sm-1 deletarSemPlano" >
                                 <a  class="delete">
@@ -379,6 +381,7 @@
                               @endif
                               @endforeach
                           </div>
+                        </div>
                         @endif
                       @endforeach
                     @endforeach
@@ -411,7 +414,7 @@
 <script type="text/javascript">
   $(function() {
     var qtdLinhas = 1;
-    var qtdParticipantes = 1;
+    var qtdParticipantes = $('#qtdParticipantes').val();
     // Coautores
     $('#addCoautor').click(function(e) {
       if (qtdParticipantes < 100) {
@@ -422,20 +425,7 @@
       }
 
     });
-    $('.simPlano').click(function(e) {      
-      var possuiPlano = $(this).parent().parent().next();
-      
-      if(possuiPlano[0].firstElementChild == null){
-        e.preventDefault();            
-        linha = linhaPlanoTrabalho();                
-        possuiPlano.append(linha);            
-      }else if(possuiPlano[0].firstElementChild.className == 'exibirPlano'){
-        possuiPlano[0].style.display = 'block';
-      }
-      deletar = $(this).parent().next()[0];
-      deletar.style.display = "none";
-    });
-
+    
     // $('#addPlanoTrabalho').click(function(e) {
     //   e.preventDefault();
     //   if (qtdLinhas < 4) {
@@ -471,7 +461,7 @@
       //replace the "Choose a file" label
       $(this).next('#custom-file-label').html(fileName);
     })
-    // F
+    
     $('#buttonSim').on('click', function(e) {
       e.preventDefault();
       $('#inputEtica').prop('disabled', false);
@@ -480,37 +470,51 @@
     $('#buttonNao').on('click', function(e) {
       e.preventDefault();
       $('#inputEtica').prop('disabled', true);
-      $('#inputJustificativa').prop('disabled', false);
-      console.log('button nao');
+      $('#inputJustificativa').prop('disabled', false);      
     });
-    $(document).on('click', '.simPlano', function(e) {
-        e.preventDefault();         
-        $(this).next()[0].className = 'btn btn-primary mt-2 mb-2 naoPlano';             
-        console.log('button sim');
+
+    // Habilitando / desabilitando plano de trabalho    
+    $('.simPlano').click(function(e) { 
+      e.preventDefault();     
+      var possuiPlano = $(this).parent().parent().next();
+          
+      //se o participante não tem plano, adicionar; se ele já tem, apenas exibir
+      if(possuiPlano[0].firstElementChild == null){      
+        linha = linhaPlanoTrabalho();                
+        possuiPlano.append(linha);   
+        possuiPlano[0].style.display = 'block';         
+      }else if(possuiPlano[0].firstElementChild.className == 'exibirPlano'){
+        possuiPlano[0].style.display = 'block';
+      }
+
+      //esconder a imagem de deletar
+      deletar = $(this).parent().next()[0];
+      deletar.style.display = "none";
+
     });
+
+    // se não há plano de trabalho, esconder a div planoHabilitado e exibir imagem de deletar
     $(document).on('click', '.naoPlano', function(e) {
       e.preventDefault();
-        var plano = $(this).parent().parent().next()[0];
-        plano.style.display = 'none';  
-        $(this).prev()[0].className = 'btn btn-primary mt-2 mb-2 simPlano';  
-       
-        deletar = $(this).parent().next()[0]
-        deletar.style.display = "block";
-        console.log('button nao');       
+      var plano = $(this).parent().parent().next()[0];
+      plano.style.display = 'none';  
+     
+      deletar = $(this).parent().next()[0]
+      deletar.style.display = "block";
+
+      //comunicar ao controller para deletar somente o plano
+      $(this).next().val('sim'); 
+           
     });
     
+    //se há plano de trabalho, esconder a imagem de deletar
     $(function() {           
       var simPlano = document.getElementsByClassName('simPlano');
       for(var i=0; i< simPlano.length;i++){
-        var planoHabilitado = simPlano[i].parentElement.parentElement.nextElementSibling;
-        //se há plano de trabalho
+        var planoHabilitado = simPlano[i].parentElement.parentElement.nextElementSibling;        
         if(planoHabilitado.firstElementChild != null && planoHabilitado.firstElementChild.className == 'exibirPlano'){
-          simPlano[i].parentElement.nextElementSibling.style.display = "none";
-          simPlano[i].nextElementSibling.className = 'btn btn-primary mt-2 mb-2 naoPlano';
-          simPlano[i].className = 'btn btn-primary focus mt-2 mb-2 simPlano';
-        }else{
-          simPlano[i].nextElementSibling.className = 'btn btn-primary focus mt-2 mb-2 naoPlano';
-        }      
+          simPlano[i].parentElement.nextElementSibling.style.display = "none";          
+        }    
       }               
     });
   });
@@ -638,7 +642,8 @@
   // }
 
   function linhaPlanoTrabalho(){
-    return       "<h5>Dados do plano de trabalho</h5>" +
+    return "<input"+" type="+"hidden"+" class="+"exibirPlano"+">"+     
+           "<h5>Dados do plano de trabalho</h5>" +
             "<div class="+"row"+">"+
                 "<div class="+"col-sm-4"+">"+
                     "<label>Titulo*</label>"+
@@ -672,17 +677,8 @@
                     "<a  class="+"delete"+">"+
                       "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
                     "</a>"+
-                "</div>"+
-              //"</div>"+
+                "</div>"+             
               "</div>";   
-  }
-
-  function addDeletar(){
-    return "<div class="+"col-sm-1"+" style="+"display:inline;"+">"+
-                "<a  class="+"delete"+">"+
-                  "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
-                "</a>"+
-            "</div>";
   }
 
   function areas() {
