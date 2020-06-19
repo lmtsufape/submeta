@@ -40,9 +40,8 @@ Route::get('/participante/index',         'ParticipanteController@index'        
 Route::get('/participante/edital/{id}',    'ParticipanteController@edital'        )->name('participante.edital');
 
 //######### Rotas Administrador #################################
-Route::get('/perfil-usuario', 'UserController@minhaConta')->middleware('auth'     )->name('user.perfil')->middleware(['auth', 'verified']);
-Route::get('/perfil','UserController@perfil'                                      )->name('perfil')->middleware(['auth', 'verified']);
-Route::post('/perfil','UserController@editarPerfil'                               )->name('perfil')->middleware(['auth', 'verified']);
+Route::get('/perfil-usuario',                  'UserController@minhaConta'        )->name('user.perfil')->middleware(['auth', 'verified']);
+Route::post('/perfil-usuario',                 'UserController@editarPerfil'      )->name('perfil.edit')->middleware(['auth', 'verified']);
 
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
