@@ -488,14 +488,12 @@
     $(document).on('click', '.simPlano', function(e) {
         e.preventDefault();
         var plano = $(this).next().next()[0];
-        plano.style.display = 'block';       
-        console.log('button sim');
+        plano.style.display = 'block';   
     });
     $(document).on('click', '.naoPlano', function(e) {
       e.preventDefault();
         var plano = $(this).next()[0];
         plano.style.display = 'none';        
-        console.log('button nao');
     });
    
   });
@@ -705,8 +703,7 @@
       })
   }
 
-  function exibirAnexoTemp(file){
-    console.log(file.id);
+  function exibirAnexoTemp(file){  
     if(file.id === "anexoProjeto"){
       var anexoProjetoPreenchido = document.getElementById('anexoProjetoPreenchido');
       anexoProjetoPreenchido.value = "sim";

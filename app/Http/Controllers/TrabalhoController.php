@@ -136,11 +136,10 @@ class TrabalhoController extends Controller
         $trabalho['linkLattesEstudante']           = $request->linkLattesEstudante;
         $trabalho['data']                          = $mytime;
         $trabalho['evento_id']                     = $request->editalId;
-        $trabalho['avaliado']                      = 0;
         $trabalho['status']                        = 'Submetido';
         $trabalho['proponente_id']                 = $proponente->id;
         //Anexos
-        $trabalho['anexoCONSU']                    = $request->anexoCONSU != null ? $request->anexoCONSU : "";
+        $trabalho['anexoDecisaoCONSU']                    = $request->anexoCONSU != null ? $request->anexoCONSU : "";
         $trabalho['anexoProjeto']                  = $request->anexoProjeto != null ? $request->anexoProjeto : "";
         $trabalho['anexoAutorizacaoComiteEtica']   = $request->anexoComiteEtica != null ? $request->anexoComiteEtica : "";
         $trabalho['justificativaAutorizacaoEtica'] = $request->justificativaAutorizacaoEtica != null ? $request->justificativaAutorizacaoEtica : "";
@@ -180,7 +179,6 @@ class TrabalhoController extends Controller
           $trabalho['linkLattesEstudante']           = $request->linkLattesEstudante;
           $trabalho['data']                          = $mytime;
           $trabalho['evento_id']                     = $request->editalId;
-          $trabalho['avaliado']                      = 0;
           $trabalho['status']                        = 'Submetido';
           $trabalho['proponente_id']                 = $proponente->id;
           //Anexos
@@ -292,7 +290,6 @@ class TrabalhoController extends Controller
         'linkLattesEstudante'           => $request->linkLattesEstudante != null ? $request->linkLattesEstudante : "",
         'data'                          => $mytime,
         'evento_id'                     => $request->editalId != null ? $request->editalId : "",
-        'avaliado'                      => 0,
         'status'                        => 'Rascunho',
         'proponente_id'                 => $proponente->id != null ? $request->nomeProjeto : "",
         //Anexos
@@ -418,35 +415,38 @@ class TrabalhoController extends Controller
     public function armazenarAnexosFinais($request, $pasta, $trabalho, $evento){
      
       // Anexo Projeto
-      if( (!isset($request->anexoProjeto) && $request->anexoProjetoPreenchido == 'sim') || isset($request->anexoProjeto)){        
-        $trabalho->anexoProjetoStorage::putFileAs($pasta, $request->anexoProjeto, 'Projeto.pdf');         
+      if( (!isset($request->anexoProjeto) && $request->anexoProjetoPreenchido == 'sim') || isset($request->anexoProjeto)){    
+       // dd(!isset($request->anexoProjeto))   ;
+        // dd($request->anexoProjetoPreenchido) ;
+        // dd(isset($request->anexoProjeto));
+        $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto, 'Projeto.pdf');         
       }
-
+     
       //Anexo Decisão CONSU
       if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
         if( (!isset($request->anexoCONSU) && $request->anexoConsuPreenchido == 'sim') || isset($request->anexoCONSU)){        
-          $trabalho->anexoDecisaoCONSUStorage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'CONSU.pdf');           
+          $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoCONSU, 'CONSU.pdf');           
         }
       }
-
+     
       //Autorização ou Justificativa      
       if( (!isset($request->anexoComiteEtica) && $request->anexoComitePreenchido == 'sim') || isset($request->anexoComiteEtica)){        
-        $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoAutorizacaoComiteEtica, 'Comite_de_etica.pdf');
+        $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica, 'Comite_de_etica.pdf');
 
       } elseif( (!isset($request->justificativaAutorizacaoEtica) && $request->anexoJustificativaPreenchido == 'sim') || isset($request->justificativaAutorizacaoEtica)){        
         $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica, 'Justificativa.pdf');
       }     
-
+     
      //Anexo Lattes
       if( (!isset($request->anexoLattesCoordenador) && $request->anexoLattesPreenchido == 'sim') || isset($request->anexoLattesCoordenador)){        
-        $trabalho->anexoLattesCoordenadorStorage::putFileAs($pasta, $request->anexoLattesCoordenador, 'Latter_Coordenador.pdf');
+        $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador, 'Latter_Coordenador.pdf');
       }
-
+      
       //Anexo Planilha
       if( (!isset($request->anexoPlanilha) && $request->anexoPlanilhaPreenchido == 'sim') || isset($request->anexoPlanilha)){        
-        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao, 'Planilha.pdf');
+        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha, 'Planilha.pdf');
       }
-
+      
       $trabalho->update();
       return $trabalho;
     }
