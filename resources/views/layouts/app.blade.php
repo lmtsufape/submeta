@@ -36,7 +36,7 @@
                     </div>
                     <div class="navbar-text">
                         @guest
-                            <a href="#" class="btn navbar-text negrito" style="color: rgb(0, 140, 255);">Editais</a>
+                            <a href="{{ route('coord.home') }}" class="btn navbar-text negrito" style="color: rgb(0, 140, 255);">Editais</a>
                             <a href="#" class="btn dropdown-toggle negrito" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 140, 255);">Login</a>
                             <div class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: 380px;">
                                 <form method="POST" action="{{ route('login') }}">

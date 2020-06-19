@@ -123,6 +123,38 @@
         </div>
     </div>
 
+    <div class="row justify-content-center">
+      <div class="col-sm-12">
+
+        <table class="table table-responsive-lg table-hover">
+          <thead>
+            <tr>
+              <th style="text-align:center">Edital</th>
+              <th style="text-align:center">Modelos</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td style="text-align:center">
+                  <a href="{{route('baixar.edital', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                    <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                  </a>
+                </td>
+                <td style="text-align:center">
+                  @if($evento->modeloDocumento != null)
+                    <a href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                      <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                    </a>
+                  @else
+                    O criador do edital não disponibilizou modelos
+                  @endif
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     @if($hasFile == true)
       <div class="row margin">
           <div class="col-sm-12">
@@ -148,7 +180,7 @@
                 <tr>
                   <th>Título</th>
                   <th style="text-align:center">Baixar</th>
-                  <th style="text-align:center">Nova Versão</th>
+                  {{-- <th style="text-align:center">Nova Versão</th> --}}
                 </tr>
               </thead>
               <tbody>
@@ -164,11 +196,11 @@
                           }
                         @endphp
                       @endforeach
-                      <a href="{{route('download', ['file' => $arquivo])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                      <a href="{{route('baixar.anexo.projeto', ['id' => $trabalho->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                           <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                       </a>
                     </td>
-                    <td style="text-align:center">
+                    {{-- <td style="text-align:center">
                       @if($evento->inicioSubmissao <= $mytime)
                         @if($mytime < $evento->fimSubmissao)
                           <a href="#" onclick="changeTrabalho({{$trabalho->id}})" data-toggle="modal" data-target="#modalTrabalho" style="color:#114048ff">
@@ -176,7 +208,7 @@
                           </a>
                         @endif
                       @endif
-                    </td>
+                    </td> --}}
                   </tr>
                 @endforeach
               </tbody>

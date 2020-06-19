@@ -369,9 +369,6 @@ class TrabalhoController extends Controller
      
       // Anexo Projeto
       if( (!isset($request->anexoProjeto) && $request->anexoProjetoPreenchido == 'sim') || isset($request->anexoProjeto)){    
-       // dd(!isset($request->anexoProjeto))   ;
-        // dd($request->anexoProjetoPreenchido) ;
-        // dd(isset($request->anexoProjeto));
         $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto, 'Projeto.pdf');         
       }
      
@@ -573,7 +570,6 @@ class TrabalhoController extends Controller
       foreach ($users as $user) {
         array_push($emailParticipantes, $user->email);
       }
-      
       foreach ($request->emailParticipante as $key => $value) {        
         // criando novos participantes que podem ter sido adicionados        
         if (!(in_array($request->emailParticipante[$key], $emailParticipantes, false))) {
@@ -912,7 +908,12 @@ class TrabalhoController extends Controller
     
     public function baixarAnexoJustificativa($id) {
       $projeto = Trabalho::find($id);
-      return Storage::download($projeto->justificativaAutorizacaoEtica);
+
+      if (Storage::disk()->exists($projeto->justificativaAutorizacaoEtica)) {
+        return Storage::download($projeto->justificativaAutorizacaoEtica);
+      }
+      
+      return abort(404);
     }
 
     public function baixarAnexoTemp($eventoId, $nomeAnexo) {      
