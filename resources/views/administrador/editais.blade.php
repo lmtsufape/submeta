@@ -8,8 +8,9 @@
     <div class="row" >
       <div class="col-sm-10">        
           <h3>Meus Editais</h3>         
-      </div>      
-          <a href="{{route('evento.criar')}}" class="btn btn-primary">Criar Edital</a>
+      </div>
+      <div class="col-sm-2">
+          <a href="{{route('evento.criar')}}" class="btn btn-primary" style="float: right;">Criar Edital</a>
       </div>
   </div>
   <hr>
@@ -37,7 +38,7 @@
                        <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                   </a>
                   <div class="dropdown-menu">
-                      <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item text-center">
+                      <a href="{{ route('evento.editar', ['id' => $evento->id]) }}" class="dropdown-item text-center">
                          
                           Editar Edital
                       </a>

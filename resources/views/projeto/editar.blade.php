@@ -266,7 +266,8 @@
               </div>
 
               <hr>
-              <h4>Participantes</h4>
+              <h3>Participantes</h3>
+              <input type="hidden" value="{{sizeof($participantes)}}" id="qtdParticipantes">
 
               {{-- Participantes  --}}
               <div class="row" style="margin-top:20px">
@@ -277,7 +278,7 @@
                         @if($participante->user_id === $user->id)
                           <div id="novoParticipante">
                             <br>
-                            <h5>Dados do participante</h5>
+                            <h4>Dados do participante</h4>
                             <div class="row">
                               <div class="col-sm-5">
                                 <label>Nome Completo</label>
@@ -316,10 +317,25 @@
                                   @enderror
                                 </select>
                               </div>
+                            </div>    
+                            <div class="row">   
+                              <div class='col-sm-11'>                    
+                                <h6 class="mb-1">Possui plano de trabalho?</h6>
+                                <button  class="btn btn-primary mt-2 mb-2 simPlano" id="simPlano">Sim</button>
+                                <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>   
+                                <input type="hidden" name="semPlano[]" value="">                            
+                              </div>
+                              <div class="col-sm-1 deletarSemPlano" >
+                                <a  class="delete">
+                                  <img src="/img/icons/user-times-solid.svg" style="width:25px;margin-top:35px">
+                                </a>
+                              </div>
                             </div>
-                            <h5>Dados do plano de trabalho</h5>
+                            <div id="planoHabilitado" >                            
                             @foreach ($arquivos as $arquivo)
                             @if($arquivo->participanteId === $participante->id)
+                              <input type="hidden" class="exibirPlano">
+                              <h5>Dados do plano de trabalho</h5>
                               <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">Plano de trabalho atual</a>                              
                               <div class="row">
                                 <div class="col-sm-12">
@@ -365,10 +381,11 @@
                               @endif
                               @endforeach
                           </div>
+                        </div>
                         @endif
                       @endforeach
                     @endforeach
-                  </div>
+                  </div>                  
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
                 </div>
               </div>
@@ -397,7 +414,7 @@
 <script type="text/javascript">
   $(function() {
     var qtdLinhas = 1;
-    var qtdParticipantes = 1;
+    var qtdParticipantes = $('#qtdParticipantes').val();
     // Coautores
     $('#addCoautor').click(function(e) {
       if (qtdParticipantes < 100) {
@@ -408,20 +425,22 @@
       }
 
     });
-    $('#addPlanoTrabalho').click(function(e) {
-      e.preventDefault();
-      if (qtdLinhas < 4) {
-        linha = montarLinhaInputPlanoTrabalho();
-        $('#planoTrabalho').append(linha);
-        qtdLinhas++;
-      }
+    
+    // $('#addPlanoTrabalho').click(function(e) {
+    //   e.preventDefault();
+    //   if (qtdLinhas < 4) {
+    //     linha = montarLinhaInputPlanoTrabalho();
+    //     $('#planoTrabalho').append(linha);
+    //     qtdLinhas++;
+    //   }
 
-    });
+    // });
     // Exibir modalidade de acordo com a área
     // $("#area").change(function() {
     //   console.log($(this).val());
     //   addModalidade($(this).val());
     // });
+
     $(document).on('click', '.delete', function() {
       if (qtdParticipantes > 1) {
         qtdParticipantes--;
@@ -442,7 +461,7 @@
       //replace the "Choose a file" label
       $(this).next('#custom-file-label').html(fileName);
     })
-    // F
+    
     $('#buttonSim').on('click', function(e) {
       e.preventDefault();
       $('#inputEtica').prop('disabled', false);
@@ -451,8 +470,52 @@
     $('#buttonNao').on('click', function(e) {
       e.preventDefault();
       $('#inputEtica').prop('disabled', true);
-      $('#inputJustificativa').prop('disabled', false);
-      console.log('button nao');
+      $('#inputJustificativa').prop('disabled', false);      
+    });
+
+    // Habilitando / desabilitando plano de trabalho    
+    $('.simPlano').click(function(e) { 
+      e.preventDefault();     
+      var possuiPlano = $(this).parent().parent().next();
+          
+      //se o participante não tem plano, adicionar; se ele já tem, apenas exibir
+      if(possuiPlano[0].firstElementChild == null){      
+        linha = linhaPlanoTrabalho();                
+        possuiPlano.append(linha);   
+        possuiPlano[0].style.display = 'block';         
+      }else if(possuiPlano[0].firstElementChild.className == 'exibirPlano'){
+        possuiPlano[0].style.display = 'block';
+      }
+
+      //esconder a imagem de deletar
+      deletar = $(this).parent().next()[0];
+      deletar.style.display = "none";
+
+    });
+
+    // se não há plano de trabalho, esconder a div planoHabilitado e exibir imagem de deletar
+    $(document).on('click', '.naoPlano', function(e) {
+      e.preventDefault();
+      var plano = $(this).parent().parent().next()[0];
+      plano.style.display = 'none';  
+     
+      deletar = $(this).parent().next()[0]
+      deletar.style.display = "block";
+
+      //comunicar ao controller para deletar somente o plano
+      $(this).next().val('sim'); 
+           
+    });
+    
+    //se há plano de trabalho, esconder a imagem de deletar
+    $(function() {           
+      var simPlano = document.getElementsByClassName('simPlano');
+      for(var i=0; i< simPlano.length;i++){
+        var planoHabilitado = simPlano[i].parentElement.parentElement.nextElementSibling;        
+        if(planoHabilitado.firstElementChild != null && planoHabilitado.firstElementChild.className == 'exibirPlano'){
+          simPlano[i].parentElement.nextElementSibling.style.display = "none";          
+        }    
+      }               
     });
   });
   // Remover Coautor
@@ -471,7 +534,7 @@
   function montarLinhaInput() {
 
     return    "<div id="+"novoParticipante"+">" +
-              "<br><h5>Dados do participante</h5>" +
+              "<br><h4>Dados do participante</h4>" +
               "<div class="+"row"+">"+
                 "<div class="+"col-sm-5"+">"+
                     "<label>Nome Completo</label>"+
@@ -577,6 +640,46 @@
   //                 "</div>"+
   //           "</div>";
   // }
+
+  function linhaPlanoTrabalho(){
+    return "<input"+" type="+"hidden"+" class="+"exibirPlano"+">"+     
+           "<h5>Dados do plano de trabalho</h5>" +
+            "<div class="+"row"+">"+
+                "<div class="+"col-sm-4"+">"+
+                    "<label>Titulo*</label>"+
+                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+">"+
+                    "@error('nomePlanoTrabalho')" +
+                      "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                        "<strong>{{ $message }}</strong>" +
+                      "</span>" +
+                    "@enderror" +
+                "</div>"+
+                "<div class="+"col-sm-7" +">"+
+                  "<label for="+"nomeTrabalho"+">Anexo* </label>"+
+
+                  "<div class="+"input-group"+">"+
+                    "<div class='input-group-prepend'>"+
+                      "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
+                    "</div>"+
+                    "<div class='custom-file'>"+
+                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
+                        "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
+                      "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
+                  "</div>"+
+                  "</div>"+
+                  "@error('anexoPlanoTrabalho')"+
+                  "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
+                    "<strong>{{ $message }}</strong>"+
+                  "</span>"+
+                  "@enderror"+                
+                "</div>"+
+                "<div class="+"col-sm-1"+">"+
+                    "<a  class="+"delete"+">"+
+                      "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
+                    "</a>"+
+                "</div>"+             
+              "</div>";   
+  }
 
   function areas() {
         var grandeArea = $('#grandeArea').val();

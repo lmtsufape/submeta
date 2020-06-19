@@ -16,6 +16,7 @@ Route::get('/', 'UserController@index'                                          
 Route::get('/home', 'HomeController@index'                                        )->name('home')->middleware('verified');
 
 Route::get('/evento/visualizar/naologado/{id}','EventoController@showNaoLogado'   )->name('evento.visualizarNaoLogado');
+Route::get('/editais/home'                    ,'EventoController@index'           )->name('coord.home');
 
 Auth::routes(['verify' => true]);
 
@@ -49,7 +50,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
 
   // ######## rotas de teste #####################################
-  Route::get('/editais/home',                        'EventoController@index'             )->name('coord.home');
+  
   Route::get('/coordenador/evento/detalhes',         'EventoController@detalhes'          )->name('coord.detalhesEvento');
 
   //####### Visualizar trabalhos do usuário ######################
@@ -94,12 +95,14 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/trabalho/visualizar/{id}','TrabalhoController@show'                       )->name('trabalho.show');
   Route::post(  '/trabalho/novaVersao',     'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
   Route::post(  '/trabalho/criar',          'TrabalhoController@store'                      )->name('trabalho.store');
+  Route::post(  '/trabalho/criarRascunho',  'TrabalhoController@storeParcial'               )->name('trabalho.storeParcial');
   Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
   Route::get(   '/projeto/{id}/visualizar', 'TrabalhoController@show'                       )->name('trabalho.show');
   Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
   Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                     )->name('trabalho.update');
-  Route::get(   '/projeto/{id}/excluir',   'TrabalhoController@destroy'                    )->name('trabalho.destroy');
-  Route::get(   '/projeto/{id}/excluirParticipante',   'TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
+  Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
+  Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
+  Route::get(   '/projetos-submetidos',     'ProponenteController@projetosDoProponente'     )->name('proponente.projetos');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
@@ -115,6 +118,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //########## Rotas de download  de documentos ###########################
   Route::get('/baixar/edital/{id}',           'EventoController@baixarEdital'             )->name('baixar.edital');
+  Route::get('/baixar/modelos/{id}',          'EventoController@baixarModelos'            )->name('baixar.modelos');
   Route::get('/baixar/anexo-projeto/{id}', 'TrabalhoController@baixarAnexoProjeto'        )->name('baixar.anexo.projeto');
   Route::get('/baixar/anexo-consu/{id}',   'TrabalhoController@baixarAnexoConsu'          )->name('baixar.anexo.consu');
   Route::get('/baixar/anexo-comite/{id}',  'TrabalhoController@baixarAnexoComite'         )->name('baixar.anexo.comite');
@@ -123,6 +127,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get('/baixar/anexo-planilha/{id}','TrabalhoController@baixarAnexoPlanilha'       )->name('baixar.anexo.planilha');
   Route::get('/baixar/plano-de-trabalho/{id}', 'ArquivoController@baixarPlano'            )->name('baixar.plano');
   Route::get('/baixar/anexo-temp/{eventoId}/{nomeAnexo}', 'TrabalhoController@baixarAnexoTemp'            )->name('baixar.anexo.temp');
+  Route::get('/baixar/evento-temp/{nomeAnexo}', 'TrabalhoController@baixarEventoTemp'            )->name('baixar.evento.temp');
 });
 
 Route::prefix('usuarios')->name('admin.')->group(function(){

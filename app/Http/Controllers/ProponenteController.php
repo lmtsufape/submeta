@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Auth;
 use App\User;
+use App\Trabalho;
 use App\Proponente;
 use App\Evento;
 
@@ -76,5 +77,13 @@ class ProponenteController extends Controller
         }
 
         
+    }
+
+    public function projetosDoProponente() {
+        $proponente = Proponente::where('user_id', Auth()->user()->id)->first();
+
+        $projetos = Trabalho::where('proponente_id', $proponente->id)->get();
+        
+        return view('proponente.projetos')->with(['projetos' => $projetos]);
     }
 }
