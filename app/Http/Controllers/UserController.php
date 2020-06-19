@@ -15,6 +15,8 @@ use App\Trabalho;
 use App\Coautor;
 use App\Evento;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -41,75 +43,116 @@ class UserController extends Controller
         return view('user.perfilUser',['user'=>$user,'end'=>$end]);
     }
     function editarPerfil(Request $request){
+        $id = Auth()->user()->id;
+        $user = User::find($id);
+        if ($request->tipo != "proponente") {
+            $validated = $request->validate([
+                'name' => 'required',
+                'tipo' => 'required',
+                'email' => 'required',
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'celular' => 'required',
+                'cpf' => 'required|cpf',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'cpf' => ['required', 'cpf'],
+                'celular' => ['required', 'string'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'cargo' => ['required'],
+                'vinculo' => ['required'],
+                'outro' => ['required_if:vinculo,Outro'],
+                'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade'],
+                'titulacaoMaxima' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'anoTitulacao' => ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
+                'anoTitulacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'areaFormacao' => ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
+                'areaFormacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'bolsistaProdutividade' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],
+                'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'nivel' => ['required_if:bolsistaProdutividade,sim'],
+                'nivel' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
+                'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
+            ]);
+        }
         
-        $validator = $request->validate([
-            'name' => 'required|string|max:255',
-            'cpf' => 'required',
-            'celular' => 'required|string',
-            'instituicao' => 'required|string| max:255',
-            // 'especProfissional' => 'nullable|string',
-            'rua' => 'required|string|max:255',
-            'numero' => 'required|string',
-            'bairro' => 'required|string|max:255',
-            'cidade' => 'required|string|max:255',
-            'uf' => 'required|string',
-            'cep' => 'required|integer',
-        ]);
-
-        if(Auth()->user()->usuarioTemp == true){
-            
-            // criar endereço
-            $end = new Endereco();
-            $end->rua = $request->input('rua');
-            $end->numero = $request->input('numero');
-            $end->bairro = $request->input('bairro');
-            $end->cidade = $request->input('cidade');
-            $end->uf = $request->input('uf');
-            $end->cep = $request->input('cep');
-
-            $end->save();
-
-            // Atualizar dados não preenchidos de User
-            $user = User::find($request->id);
-            $user->name = $request->input('name');
-            $user->cpf = $request->input('cpf');
-            $user->celular = $request->input('celular');
-            $user->instituicao = $request->input('instituicao');
-            // $user->especProfissional = $request->input('especProfissional');
-            $user->usuarioTemp = null;
-            $user->enderecoId = $end->id;
-            $user->save();
-
-            return redirect(route('home'));
-            
+        if ($request->alterarSenhaCheckBox != null) {
+            if (!(Hash::check($request->senha_atual, $user->password))) {
+                return redirect()->back()->withErrors(['senha_atual' => 'Senha atual não correspondente']);
+            }
+    
+            if (!($request->nova_senha === $request->confirmar_senha)) {
+                return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
+            }
         }
 
-        else {
-            
-            // User
-            $user = User::find($request->id);
-            $user->name = $request->input('name');
-            $user->cpf = $request->input('cpf');
-            $user->celular = $request->input('celular');
-            $user->instituicao = $request->input('instituicao');
-            // $user->especProfissional = $request->input('especProfissional');
-            $user->usuarioTemp = null;
-            $user->save();
+        switch ($request->tipo) {
+            case "administradorResponsavel": 
+                $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
+                $adminResp->user_id = $user->id;
+                $adminResp->update();
+                break;
+            case "avaliador": 
+                $avaliador = Avaliador::where('user_id', '=', $id)->first();
+                $avaliador->user_id = $user->id;
+                $avaliador->update();
+                break;
+            case "proponente": 
+                $proponente = Proponente::where('user_id', '=', $id)->first();
+                if ($request->SIAPE != null) {
+                    $proponente->SIAPE = $request->SIAPE;
+                }
+                $proponente->cargo = $request->cargo;
 
-            // endereço
-            $end = Endereco::find($user->enderecoId);
-            $end->rua = $request->input('rua');
-            $end->numero = $request->input('numero');
-            $end->bairro = $request->input('bairro');
-            $end->cidade = $request->input('cidade');
-            $end->uf = $request->input('uf');
-            $end->cep = $request->input('cep');
+                if ($request->vinculo != 'Outro') {
+                    $proponente->vinculo = $request->vinculo;
+                } else {
+                    $proponente->vinculo = $request->outro;
+                }
 
-            $end->save();
-            // dd([$user,$end]);
-            return redirect(route('home'));
+                $proponente->titulacaoMaxima = $request->titulacaoMaxima;
+                $proponente->anoTitulacao = $request->anoTitulacao;
+                $proponente->areaFormacao = $request->areaFormacao;
+                $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
+                if ($request->bolsistaProdutividade == 'sim') {
+                    $proponente->nivel = $request->nivel;
+                }
+                $proponente->linkLattes = $request->linkLattes;
 
+                $proponente->user_id = $user->id;
+                $proponente->update();
+                break;
+            case "participante":
+                $participante = Participante::where('user_id', '=', $id)->first();
+                $participante->user_id = $user->id;
+                $participante->update();
+                break;
         }
+
+        $user->name = $request->name;
+        $user->tipo = $request->tipo;
+        $user->email = $request->email;
+        $user->cpf = $request->cpf;
+        $user->celular = $request->celular;
+        if ($request->instituicao != null) {
+            $user->instituicao = $request->instituicao;
+        } else if (isset($request->instituicaoSelect) && $request->instituicaoSelect != "Outra") {
+            $user->instituicao = $request->instituicaoSelect;
+        }
+
+        if ($request->alterarSenhaCheckBox != null) {
+            $user->password = bcrypt($request->nova_senha);
+        }
+
+        $user->update();
+
+        return redirect( route('user.perfil') )->with(['mensagem' => 'Dados atualizados com sucesso.']);
     }
 
 
