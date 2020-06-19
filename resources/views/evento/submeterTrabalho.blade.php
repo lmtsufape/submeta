@@ -388,14 +388,17 @@
               </p>
               <div class="row justify-content-center">
                 <div class="col-md-6">
-                  <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
-                </div>
-                <div class="col-md-6">
+                  <button type="submit" formaction="{{route('trabalho.storeParcial')}}" class="btn btn-primary" style="width:100%;margin-bottom:10px">
+                    {{ __('Salvar como Rascunho') }}
+                  </button>                  
+                </div>                
+                <div class="col-md-6">                  
                   <button type="submit" class="btn btn-primary" style="width:100%">
-                    {{ __('Enviar') }}
+                    {{ __('Enviar Projeto') }}
                   </button>
-                </div>
+                </div>                
               </div>
+              <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
             </form>
           </div>
         </div>
