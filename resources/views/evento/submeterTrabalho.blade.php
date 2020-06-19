@@ -16,7 +16,7 @@
               <div class="row justify-content-center">
                 <div class="col-sm-12">
                   <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto*:') }}</label>
-                  <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" value="{{ old('nomeProjeto') }}" required autocomplete="nomeProjeto" autofocus>
+                  <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" autofocus>
 
                   @error('nomeProjeto')
                   <span class="invalid-feedback" role="alert">
@@ -33,7 +33,8 @@
                   <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()">
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
-                    <option @if(old('grandeArea')==$grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                    <option @if(old('grandeArea') !== null ? old('grandeArea') : (isset($rascunho) ? $rascunho->grande_area_id : '') 
+                            == $grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
                     @endforeach
                   </select>
 
@@ -49,7 +50,8 @@
                   <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">                    
                     <option value="" disabled selected hidden>-- Área --</option>
                     {{-- @foreach($areas as $area)
-                      <option @if(old('area')==$area->id ) selected @endif value="{{$area->id}}">{{$area->nome}}</option>
+                      <option @if(old('area') !== null ? old('area') : (isset($rascunho) ? $rascunho->area_id : '')
+                              ==$area->id ) selected @endif value="{{$area->id}}">{{$area->nome}}</option>
                     @endforeach --}}
                   </select>
 
@@ -65,7 +67,8 @@
                   <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">                    
                     <option value="" disabled selected hidden>-- Sub Área --</option>
                     {{-- @foreach($subAreas as $subArea)
-                      <option @if(old('subArea')==$subArea->id ) selected @endif value="{{$subArea->id}}">{{$subArea->nome}}</option>
+                      <option @if(old('subArea') !== null ? old('subArea') : (isset($rascunho) ? $rascunho->sub_area_id : '')
+                              ==$subArea->id ) selected @endif value="{{$subArea->id}}">{{$subArea->nome}}</option>
                     @endforeach --}}
                   </select>
 
@@ -104,7 +107,8 @@
                 </div>
                 <div class="col-sm-6">
                   <label for="pontuacaoPlanilha" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação*:') }}</label>
-                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha" value="{{old('pontuacaoPlanilha')}}">
+                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha" 
+                          value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}">
 
                   @error('pontuacaoPlanilha')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -114,7 +118,8 @@
                 </div>
                 <div class="col-sm-6">
                   <label for="linkGrupo" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
-                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo" value="{{old('linkGrupo')}}">
+                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo" 
+                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}">
 
                   @error('linkGrupo')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -133,7 +138,7 @@
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
                   <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>
-                  @if(old('anexoProjetoPreenchido') != null)
+                  @if(old('anexoProjetoPreenchido') != null || (isset($rascunho) && $rascunho->anexoProjeto != ""))
                   <a id="anexoProjetoTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoProjeto' ])}}">Arquivo atual</a>
                   @endif
@@ -154,7 +159,7 @@
 
                 <div class="col-sm-6">
                   <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador*:') }}</label>
-                  @if(old('anexoLattesPreenchido') != null)
+                  @if(old('anexoLattesPreenchido') != null || (isset($rascunho) && $rascunho->anexoLattesCoordenador != ""))
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
                   @endif
@@ -186,7 +191,7 @@
                   </span>
                   @enderror
                   <br/>
-                  @if(old('anexoComitePreenchido') != null)
+                  @if(old('anexoComitePreenchido') != null || (isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "" && $rascunho->anexoAutorizacaoComiteEtica != null))
                   <a id="anexoComiteTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoAutorizacaoComiteEtica' ])}}">Arquivo atual</a>
                   @endif
@@ -207,7 +212,7 @@
 
                 <div class="col-sm-6 mt-3">
                   <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo do Planilha de Pontuação*:') }}</label>
-                  @if(old('anexoPlanilhaPreenchido') != null)
+                  @if(old('anexoPlanilhaPreenchido') != null || (isset($rascunho) && $rascunho->anexoPlanilhaPontuacao != ""))
                   <a id="anexoPlanilhaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoPlanilhaPontuacao' ])}}">Arquivo atual</a>
                   @endif
@@ -228,7 +233,7 @@
 
                 <div class="col-sm-6">
                   <label for="nomeTrabalho" class="col-form-label">{{ __('Justificativa*:') }}</label>
-                  @if(old('anexoJustificativaPreenchido') != null)
+                  @if(old('anexoJustificativaPreenchido') != null || (isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "" && $rascunho->justificativaAutorizacaoEtica != null))
                   <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
                   @endif
@@ -252,7 +257,7 @@
                 {{-- Decisão do CONSU --}}
                 <div class="col-sm-6">
                   <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU*:') }}</label>
-                  @if(old('anexoConsuPreenchido') != null)
+                  @if(old('anexoConsuPreenchido') != null || (isset($rascunho) && $rascunho->anexoDecisaoCONSU != "" && $rascunho->anexoDecisaoCONSU != null))
                   <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
                   @endif
@@ -296,7 +301,7 @@
                         <div class="row">
                           <div class="col-sm-5">
                             <label>Nome Completo*</label>
-                            <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" required value="{{old('nomeParticipante.'.$i)}}">
+                            <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}">
                             @error('nomeParticipante')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
@@ -305,7 +310,7 @@
                           </div>
                           <div class="col-sm-4">
                             <label>E-mail*</label>
-                            <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" required value="{{old('emailParticipante.'.$i)}}">
+                            <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}">
                             @error('emailParticipante')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
@@ -549,7 +554,7 @@
           "<div class="+"row"+">"+
             "<div class="+"col-sm-5"+">"+
                 "<label>Nome Completo*</label>"+
-                "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('nomeParticipante') is-invalid @enderror" + "name=" +'nomeParticipante[]'+" placeholder="+"Nome"+" required>"+
+                "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('nomeParticipante') is-invalid @enderror" + "name=" +'nomeParticipante[]'+" placeholder="+"Nome"+">"+
                 "@error('nomeParticipante')" +
                 "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
                   "<strong>{{ $message }}</strong>" +
@@ -558,7 +563,7 @@
             "</div>"+
             "<div class="+"col-sm-4"+">"+
                 "<label>E-mail*</label>"+
-                "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' required>" +
+                "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' >" +
                 "@error('emailParticipante')" +
                 "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
                   "<strong>{{ $message }}</strong>" +
