@@ -78,7 +78,7 @@
                                             <button class="btn botao-entrar" style="color: white;">
                                                 {{__('Entrar')}}
                                             </button>
-                                            <a href="{{ route('password.request') }}" style="font-weight: normal; color: rgb(44, 96, 209);">{{ __('Esqueseu sua senha?')}}</a>
+                                            <a href="{{ route('password.request') }}" style="font-weight: normal; color: rgb(44, 96, 209);">{{ __('Esqueceu sua senha?')}}</a>
                                         </div>
                                     </div>
                                 </form>
