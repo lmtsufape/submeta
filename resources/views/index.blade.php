@@ -9,7 +9,7 @@
           </div>
           <div class="row position-text">
               <p style="text-indent: 0.5cm;">
-                O Submeta é um sistema de submissão de projetos acadêmicos, que pode ser adotado para os diferentes propósitos de Ensino, Pesquisa e Extensão. O sistema abrange todas as principais etapas relacionadas à submissão de projetos, permitindo o lançamento e configuração de editais, além de gerenciar os pareceres técnicos dos avaliadores e visualizar os projetos submetidos pelos proponentes.
+                O Submeta é um sistema de submissão de projetos acadêmicos, que pode ser adotado para os diferentes propósitos de Ensino, Pesquisa e Extensão. O sistema abrange todas as principais etapas relacionadas à submissão de projetos, permitindo o lançamento e configuração de editais, além de gerenciar a distribuição das avaliações e os pareceres técnicos dos avaliadores, como também, visualizar os projetos submetidos pelos proponentes.
               </p>
           </div>
           <div class="row position-text">
