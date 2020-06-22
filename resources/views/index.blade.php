@@ -8,11 +8,8 @@
               <img class="position-image" src="{{ asset('img/icons/logo_submeta_grande.png') }}" alt="">
           </div>
           <div class="row position-text">
-              <p>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </p>
-              <p>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              <p style="text-indent: 0.5cm;">
+                O Submeta é um sistema de submissão de projetos acadêmicos, que pode ser adotado para os diferentes propósitos de Ensino, Pesquisa e Extensão. O sistema abrange todas as principais etapas relacionadas à submissão de projetos, permitindo o lançamento e configuração de editais, além de gerenciar os pareceres técnicos dos avaliadores e visualizar os projetos submetidos pelos proponentes.
               </p>
           </div>
           <div class="row position-text">
