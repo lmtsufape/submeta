@@ -142,7 +142,8 @@
                   <a id="anexoProjetoTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoProjeto' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido" value="{{ old('anexoProjetoPreenchido') }}" >
+                  <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido" 
+                    @if( isset($rascunho) && $rascunho->anexoProjeto != "") value="sim" @else value="old('anexoProjetoPreenchido')" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -163,7 +164,8 @@
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoLattesPreenchido" name="anexoLattesPreenchido" value="{{ old('anexoLattesPreenchido') }}" >
+                  <input type="hidden" id="anexoLattesPreenchido" name="anexoLattesPreenchido" 
+                    @if( isset($rascunho) && $rascunho->anexoLattesCoordenador != "") value="sim" @else value="old('anexoLattesPreenchido')" @endif >
 
                   <div class="input-group">
 
@@ -195,7 +197,9 @@
                   <a id="anexoComiteTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoAutorizacaoComiteEtica' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido" value="{{ old('anexoComitePreenchido') }}" >
+                  <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido"                 
+                    @if( isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "") value="sim" @else value="old('anexoComitePreenchido')" @endif >
+
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -216,7 +220,8 @@
                   <a id="anexoPlanilhaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoPlanilhaPontuacao' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoPlanilhaPreenchido" name="anexoPlanilhaPreenchido" value="{{ old('anexoPlanilhaPreenchido') }}" >
+                  <input type="hidden" id="anexoPlanilhaPreenchido" name="anexoPlanilhaPreenchido"
+                    @if( isset($rascunho) && $rascunho->anexoPlanilhaPontuacao != "") value="sim" @else value="old('anexoPlanilhaPreenchido')" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -237,7 +242,8 @@
                   <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido" value="{{ old('anexoJustificativaPreenchido') }}" >
+                  <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido" 
+                    @if( isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "") value="sim" @else value="old('anexoJustificativaPreenchido')" @endif >
                   <div class="input-group">
 
 
@@ -261,8 +267,8 @@
                   <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido" value="{{ old('anexoConsuPreenchido') }}" >
-
+                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido" 
+                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="old('anexoConsuPreenchido')" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -605,11 +611,11 @@
 
                   "<div class="+"input-group"+">"+
                     "<div class='input-group-prepend'>"+
-                      "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
+                      "<span class='input-group-text' id='anexoPlanoTrabalho'>Selecione um arquivo:</span>"+
                     "</div>"+
                     "<div class='custom-file'>"+
-                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
-                        "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
+                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='anexoPlanoTrabalho'"+
+                        " aria-describedby='anexoPlanoTrabalho' name='anexoPlanoTrabalho[]'>"+
                       "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
                   "</div>"+
                   "</div>"+
