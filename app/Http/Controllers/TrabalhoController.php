@@ -112,7 +112,7 @@ class TrabalhoController extends Controller
           'area'                    => ['required', 'string'],
           'subArea'                 => ['required', 'string'],
           'pontuacaoPlanilha'       => ['required', 'string'],
-          'linkGrupo'               => ['required', 'string', 'link_grupo'],
+          'linkGrupo'               => ['required', 'string'],
           'linkLattesEstudante'     => ['required', 'string', 'link_lattes'],
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
@@ -125,7 +125,7 @@ class TrabalhoController extends Controller
           'anexoComiteEtica'        => [($request->anexoComitePreenchido!=='sim'&&$request->anexoJustificativaPreenchido!=='sim'?'required_without:justificativaAutorizacaoEtica':''), 'file', 'mimes:pdf', 'max:2000000'],
           'justificativaAutorizacaoEtica' => [($request->anexoJustificativaPreenchido!=='sim'&&$request->anexoComitePreenchido!=='sim'?'required_without:anexoComiteEtica':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
         //dd($request->all());
@@ -161,7 +161,7 @@ class TrabalhoController extends Controller
           'area'                    => ['required', 'string'],
           'subArea'                 => ['required', 'string'],
           'pontuacaoPlanilha'       => ['required', 'string'],
-          'linkGrupo'               => ['required', 'string', 'link_grupo'],
+          'linkGrupo'               => ['required', 'string'],
           'linkLattesEstudante'     => ['required', 'string', 'link_lattes'],
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
@@ -169,7 +169,7 @@ class TrabalhoController extends Controller
           'nomePlanoTrabalho.*'     => ['nullable', 'string'],
           'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
 
@@ -218,6 +218,8 @@ class TrabalhoController extends Controller
             $participante->trabalho_id = $trabalho->id;
             $participante->funcao_participante_id = $request->funcaoParticipante[$key];
             $participante->save();
+            $usuario->participantes()->save($participante);
+            $usuario->save();
 
             $participante->trabalhos()->save($trabalho);
           }else{
@@ -226,6 +228,8 @@ class TrabalhoController extends Controller
             $participante->trabalho_id = $trabalho->id;
             $participante->funcao_participante_id = $request->funcaoParticipante[$key];
             $participante->save();
+            $userParticipante->participantes()->save($participante);
+            $userParticipante->save();
 
             $participante->trabalhos()->save($trabalho);
 
@@ -352,10 +356,10 @@ class TrabalhoController extends Controller
         $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");
       }
       if (!(is_null($request->anexoLattesCoordenador))) {
-        $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador,  "Latter_Coordenador.pdf");
+        $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador,  "Lattes_Coordenador.pdf");
       }
       if (!(is_null($request->anexoPlanilha))) {
-        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha,  "Planilha.pdf");
+        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha,  "Planilha.". $request->file('anexoPlanilha')->extension());
       }
 
       $trabalho->update();
@@ -389,12 +393,12 @@ class TrabalhoController extends Controller
      
      //Anexo Lattes
       if( (!isset($request->anexoLattesCoordenador) && $request->anexoLattesPreenchido == 'sim') || isset($request->anexoLattesCoordenador)){        
-        $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador, 'Latter_Coordenador.pdf');
+        $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador, 'Lattes_Coordenador.pdf');
       }
       
       //Anexo Planilha
       if( (!isset($request->anexoPlanilha) && $request->anexoPlanilhaPreenchido == 'sim') || isset($request->anexoPlanilha)){        
-        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha, 'Planilha.pdf');
+        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha, "Planilha.". $request->file('anexoPlanilha')->extension());
       }
       
       $trabalho->update();
@@ -450,7 +454,7 @@ class TrabalhoController extends Controller
       $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
       $users = User::whereIn('id', $participantesUsersIds)->get();
       $arquivos = Arquivo::where('trabalhoId', $id)->get();      
-
+      //dd(Participante::all());
       return view('projeto.editar')->with(['projeto' => $projeto,
                                            'grandeAreas' => $grandeAreas,
                                            'areas' => $areas,

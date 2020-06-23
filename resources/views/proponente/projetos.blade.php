@@ -30,6 +30,8 @@
                 <td style="color: rgb(6, 85, 6)">Avaliado</td>
               @elseif($projeto->status == 'Submetido')
                 <td style="color: rgb(0, 0, 0)">Submetido</td>
+              @elseif($projeto->status == 'Rascunho')
+                <td style="color: rgb(0, 0, 0)">Rascunho</td>
               @endif
               <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
               <td>
@@ -44,12 +46,12 @@
                         <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                           Visualizar projeto
                         </a>
-                        <a href="" class="dropdown-item" style="text-align: center">
+                       {{--  <a href="" class="dropdown-item" style="text-align: center">
                           Recorrer
                         </a>
                         <a href="" class="dropdown-item" style="text-align: center">
                           Resultado
-                        </a>
+                        </a> --}}
                         @if($projeto->status == 'Submetido')
                           <a href="{{ route('trabalho.destroy', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Excluir projeto

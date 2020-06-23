@@ -12,9 +12,9 @@
           <div class="col-sm-2">
             <!-- Se usuário não é proponente, redirecionar para view de cadastro -->
             @if(Auth::user()->proponentes == null)
-              <a href="{{ route('proponente.create' )}}" class="btn btn-primary">Submeter projeto</a>
+              <a href="{{ route('proponente.create' )}}" class="btn btn-primary">Criar projeto</a>
             @else
-              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary">Submeter projeto</a>
+              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary">Criar projeto</a>
             @endif
           </div>
       </div>
@@ -54,12 +54,12 @@
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Visualizar projeto
                           </a>
-                          <a href="" class="dropdown-item" style="text-align: center">
+                          {{-- <a href="" class="dropdown-item" style="text-align: center">
                             Recorrer
                           </a>
                           <a href="" class="dropdown-item" style="text-align: center">
                             Resultado
-                          </a>
+                          </a> --}}
                           @if($projeto->status == 'Submetido')
                             <a href="{{ route('trabalho.destroy', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                               Excluir projeto

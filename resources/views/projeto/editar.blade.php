@@ -713,4 +713,33 @@
         })
   }
 </script>
+@endsection                                                                                                                                                                                                                                               ders: 
+        {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (dados)=> {
+        if (dados.length > 0) {
+          if($('#oldSubArea').val() == null || $('#oldSubArea').val() == ""){
+            var option = '<option selected disabled>-- Sub Área --</option>';
+          }
+          $.each(dados, function(i, obj) {            
+            if($('#oldSubArea').val() != null && $('#oldSubArea').val() == obj.id){
+              option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+            }else{
+              option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+            }
+          })
+        } else {
+          var option = "<option selected disabled>-- Sub Área --</option>";
+        }
+        $('#subArea').html(option).show();
+      },
+        error: (dados) => {
+            console.log(dados);
+        }
+
+    })
+
+  }
+</script>
 @endsection

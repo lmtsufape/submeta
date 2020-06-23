@@ -107,8 +107,11 @@ class SubAreaController extends Controller
         return redirect( route('area.show', ['id' => $areaId]) )->with(['mensagem' => 'Subárea deletada com sucesso']);
     }
 
-    public function consulta($id) {
+    public function consulta(Request $request) {
+
+        $id = json_decode($request->id) ;
         $subAreas = SubArea::where('area_id', $id)->orderBy('nome')->get();
+        return response()->json($subAreas);
         return $subAreas->toJson();
     }
 }

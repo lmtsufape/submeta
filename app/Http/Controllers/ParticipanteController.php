@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Evento;
 use App\Trabalho;
 use App\Participante;
+use Auth;
 
 class ParticipanteController extends Controller
 {
@@ -25,6 +26,8 @@ class ParticipanteController extends Controller
         $meusTrabalhosId = Participante::where('user_id', '=', Auth()->user()->id)
             ->whereIn('trabalho_id', $trabalhosId)->select('trabalho_id')->get();
         $projetos = Trabalho::whereIn('id', $meusTrabalhosId)->get();
+        //$projetos = Auth::user()->participantes->where('user_id', Auth::user()->id)->first()->trabalhos;
+
 
         //dd($projetos);
 
