@@ -681,39 +681,49 @@
               "</div>";   
   }
 
-  function areas() {
-        var grandeArea = $('#grandeArea').val();
-        $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
-        function (dados){
-          if (dados.length > 0){    
-            var option = "<option>-- Área --</option>";
-            $.each(dados, function(i, obj){
-                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
-            }) 
-          } else {
-            var option = "<option>-- Área --</option>";
+  function areas() {    
+    var grandeArea = $('#grandeArea').val();
+    $.ajax({
+        type: 'POST',
+        url: '{{ route('area.consulta') }}',
+        data: 'id='+grandeArea ,
+        headers: 
+        {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (dados) => {
+            
+        if (dados.length > 0) {  
+          if($('#oldArea').val() == null || $('#oldArea').val() == ""){        
+            var option = '<option selected disabled>-- Área --</option>';
           }
-          $('#area').html(option).show(); 
-        })
+          $.each(dados, function(i, obj) {            
+            if($('#oldArea').val() != null && $('#oldArea').val() == obj.id){                
+              option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+            }else{
+              option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+            }
+          })
+        } else {          
+          var option = "<option selected disabled>-- Área --</option>";
+        }
+        $('#area').html(option).show(); 
+        subareas();       
+      },
+        error: (data) => {
+            console.log(data);
+        }
+
+    })
   }
 
   function subareas() {
-        var area = $('#area').val();
-        $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
-        function (dados){
-          if (dados.length > 0){    
-            var option = "<option>-- Sub Área --</option>";
-            $.each(dados, function(i, obj){
-                option += '<option value="'+obj.id+'">'+obj.nome+'</option>';
-            }) 
-          } else {
-            var option = "<option>-- Sub Área --</option>";
-          }
-          $('#subArea').html(option).show(); 
-        })
-  }
-</script>
-@endsection                                                                                                                                                                                                                                               ders: 
+    var area = $('#area').val();
+    $.ajax({
+        type: 'POST',
+        url: '{{ route('subarea.consulta') }}',
+        data: 'id='+area ,
+        headers: 
         {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
