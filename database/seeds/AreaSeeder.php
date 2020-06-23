@@ -345,7 +345,7 @@ class AreaSeeder extends Seeder
       	//Lingüística, Letras e Artes-----------
 
       	DB::table('areas')->insert([
-        	'nome'=>'Lingüística',
+        	'nome'=>'Linguística',
         	'grande_area_id' => '8'
       	]);
       	DB::table('areas')->insert([
