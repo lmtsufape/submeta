@@ -17,7 +17,7 @@ Route::get('/home', 'HomeController@index'                                      
 
 Route::get('/evento/visualizar/naologado/{id}','EventoController@showNaoLogado'   )->name('evento.visualizarNaoLogado');
 Route::get('/editais/home'                    ,'EventoController@index'           )->name('coord.home');
-
+Route::get('/perfil','UserController@perfil')->name('perfil');
 Auth::routes(['verify' => true]);
 
 //######## Rotas Avaliador  ####################################
@@ -35,9 +35,6 @@ Route::get('/proponente/cadastro', 'ProponenteController@create'                
 Route::post('/proponente/cadastro', 'ProponenteController@store'                  )->name('proponente.store');
 Route::get( '/proponente/editais',   'ProponenteController@editais'                )->name('proponente.editais');
 
-//######### Participante ########################################
-Route::get('/participante/index',         'ParticipanteController@index'          )->name('participante.index');
-Route::get('/participante/edital/{id}',    'ParticipanteController@edital'        )->name('participante.edital');
 
 //######### Rotas Administrador #################################
 Route::get('/perfil-usuario',                  'UserController@minhaConta'        )->name('user.perfil')->middleware(['auth', 'verified']);
@@ -45,6 +42,7 @@ Route::post('/perfil-usuario',                 'UserController@editarPerfil'    
 
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
+  
 
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
 
@@ -65,6 +63,9 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   //#########  Area do participante ###############################
   Route::get(   '/participante',          'EventoController@areaParticipante'             )->name('area.participante');
   Route::get(   'participante/editais',   'ParticipanteController@editais'                )->name('participante.editais');
+  //######### Participante ########################################
+  Route::get('/participante/index',         'ParticipanteController@index'          )->name('participante.index');
+  Route::get('/participante/edital/{id}',    'ParticipanteController@edital'        )->name('participante.edital');
 
   //########## Area da comissao  ###################################
   Route::get(   '/comissoes',             'EventoController@listComissao'                 )->name('comissoes');
@@ -73,9 +74,6 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   //###########  Deletar Comissão ###################################
   Route::delete('/evento/apagar-comissao/','ComissaoController@destroy'                   )->name('delete.comissao'); 
   Route::post(  '/evento/numTrabalhos',   'EventoController@numTrabalhos'                 )->name('trabalho.numTrabalhos');
-
-  //########## Modalidade  #######################################
-  Route::post(  '/modalidade/criar',      'ModalidadeController@store'                    )->name('modalidade.store');
 
   //##########  Area  ###########################################
   Route::post(  '/area/criar',            'AreaController@store'                          )->name('area.store');
@@ -179,7 +177,7 @@ Route::prefix('naturezas')->group(function(){
   Route::get('/area/editar/{id}',       'AreaController@edit'                       )->name('area.editar')->middleware('checkAdministrador');
   Route::post('/area/atualizar/{id}',   'AreaController@update'                     )->name('area.atualizar')->middleware('checkAdministrador');
   Route::post('/area/excluir/{id}',     'AreaController@destroy'                    )->name('area.deletar')->middleware('checkAdministrador');
-  Route::get('/areas/{id}',            'AreaController@consulta'                   )->name('area.consulta');
+  Route::post('/areas/',                 'AreaController@consulta'                   )->name('area.consulta');
       
   //### Rotas das subareas, id's de nova e salvar são os ids da área a qual a nova subárea pertence #####
   Route::get('/subareas',                 'SubAreaController@index'                   )->name('subarea.index')->middleware('checkAdministrador');
@@ -189,7 +187,7 @@ Route::prefix('naturezas')->group(function(){
   Route::get('/subarea/editar/{id}',      'SubAreaController@edit'                    )->name('subarea.editar')->middleware('checkAdministrador');
   Route::post('/subarea/atualizar/{id}',  'SubAreaController@update'                  )->name('subarea.atualizar')->middleware('checkAdministrador');
   Route::post('/subarea/excluir/{id}',    'SubAreaController@destroy'                 )->name('subarea.deletar')->middleware('checkAdministrador');
-  Route::get('/subarea/{id}',            'SubAreaController@consulta'                )->name('subarea.consulta');
+  Route::post('/subarea/',                 'SubAreaController@consulta'                )->name('subarea.consulta');
 
 });
  

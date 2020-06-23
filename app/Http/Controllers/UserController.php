@@ -39,8 +39,8 @@ class UserController extends Controller
 
     function perfil(){
         $user = User::find(Auth::user()->id);
-        $end = $user->endereco;
-        return view('user.perfilUser',['user'=>$user,'end'=>$end]);
+        
+        return view('user.perfilUser',['user'=>$user]);
     }
     function editarPerfil(Request $request){
         $id = Auth()->user()->id;
@@ -129,9 +129,16 @@ class UserController extends Controller
                 $proponente->update();
                 break;
             case "participante":
-                $participante = Participante::where('user_id', '=', $id)->first();
+                $participante = Participante::where('user_id', '=', $id)->first();                
+                //$participante = $user->participantes->where('user_id', Auth::user()->id)->first();                
                 $participante->user_id = $user->id;
+                //dd($participante);
+                if($user->usuarioTemp == true){
+                    $user->usuarioTemp = false;
+                }
+
                 $participante->update();
+
                 break;
         }
 

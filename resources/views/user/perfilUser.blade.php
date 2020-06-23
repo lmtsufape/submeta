@@ -81,7 +81,7 @@
                 @enderror
             </div>
             <div class="col-md-4">
-                <label for="email" class="col-form-label">{{ __('E-Mail*') }}</label>
+                <label for="email" class="col-form-label">{{ __('E-mail*') }}</label>
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" disabled>
 
                 @error('email')
@@ -133,7 +133,7 @@
             </div>
         </div>
         
-        @if(!(is_null($proponente)))
+        @if(isset($proponente))
         <div id="proponente" style="display: block;">
 
             <div>

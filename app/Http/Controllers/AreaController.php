@@ -118,8 +118,10 @@ class AreaController extends Controller
         return redirect( route('grandearea.show', ['id' => $id]) )->with(['grandeArea' => $grandeArea,'mensagem' => 'Área deletada com sucesso']);
     }
 
-    public function consulta($id) {
+    public function consulta(Request $request) {
+        $id = json_decode($request->id) ;
         $areas = Area::where('grande_area_id', $id)->orderBy('nome')->get();
+        return response()->json($areas);
         return $areas->toJson();
     }
 }

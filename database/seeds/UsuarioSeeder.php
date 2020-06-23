@@ -48,14 +48,14 @@ class UsuarioSeeder extends Seeder
           'email_verified_at'=>'2020-01-01'
         ]);
 
-        DB::table('users')->insert([
+        // DB::table('users')->insert([
 
-          'name'=>'Gabriel',
-          'email'=>'gabriel.uag.ufrpe@gmail.com',
-          'password'=>Hash::make('12345678'),
-          'tipo'=>'proponente',
-          'email_verified_at'=>'2020-01-01'
-        ]);
+        //   'name'=>'Gabriel',
+        //   'email'=>'gabriel.uag.ufrpe@gmail.com',
+        //   'password'=>Hash::make('12345678'),
+        //   'tipo'=>'proponente',
+        //   'email_verified_at'=>'2020-01-01'
+        // ]);
 
         DB::table('users')->insert([
 

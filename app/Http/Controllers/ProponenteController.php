@@ -70,7 +70,7 @@ class ProponenteController extends Controller
                 $user->save();
         
                 $eventos = Evento::all();
-                return redirect( route('admin.editais', ['eventos'=> $eventos]))->with(['mensagem' => 'Cadastro feito com sucesso! Você já pode criar projetos']);
+                return redirect( route('home'))->with(['mensagem' => 'Cadastro feito com sucesso! Você já pode criar projetos']);
             }
         }else{
             return redirect( route('proponente.create'))->with(['mensagem' => 'Você já é proponente!']);

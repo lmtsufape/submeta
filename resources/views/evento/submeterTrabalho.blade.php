@@ -221,7 +221,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF ou XLS de até 2mb.</label>
                     </div>
                   </div>
                   @error('anexoPlanilha')
@@ -665,8 +665,16 @@
 
   function areas() {    
     var grandeArea = $('#grandeArea').val();
-    $.getJSON("{{ config('app.url') }}/naturezas/areas/" + grandeArea,
-      function(dados) {
+    $.ajax({
+        type: 'POST',
+        url: '{{ route('area.consulta') }}',
+        data: 'id='+grandeArea ,
+        headers: 
+        {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (dados) => {
+            
         if (dados.length > 0) {  
           if($('#oldArea').val() == null || $('#oldArea').val() == ""){        
             var option = '<option selected disabled>-- Área --</option>';
@@ -683,13 +691,25 @@
         }
         $('#area').html(option).show(); 
         subareas();       
-      })
+      },
+        error: (data) => {
+            console.log(data);
+        }
+
+    })
   }
 
   function subareas() {
     var area = $('#area').val();
-    $.getJSON("{{ config('app.url') }}/naturezas/subarea/" + area,
-      function(dados) {
+    $.ajax({
+        type: 'POST',
+        url: '{{ route('subarea.consulta') }}',
+        data: 'id='+area ,
+        headers: 
+        {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: (dados)=> {
         if (dados.length > 0) {
           if($('#oldSubArea').val() == null || $('#oldSubArea').val() == ""){
             var option = '<option selected disabled>-- Sub Área --</option>';
@@ -705,7 +725,13 @@
           var option = "<option selected disabled>-- Sub Área --</option>";
         }
         $('#subArea').html(option).show();
-      })
+      },
+        error: (dados) => {
+            console.log(dados);
+        }
+
+    })
+
   }
 
   function exibirAnexoTemp(file){  
