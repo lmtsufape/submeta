@@ -112,8 +112,7 @@ class TrabalhoController extends Controller
           'area'                    => ['required', 'string'],
           'subArea'                 => ['required', 'string'],
           'pontuacaoPlanilha'       => ['required', 'string'],
-          'linkGrupo'               => ['required', 'string'],
-          // 'linkGrupo'               => ['required', 'string', 'link_grupo'],
+          'linkGrupo'               => ['required', 'string', 'link_grupo'],
           'linkLattesEstudante'     => ['required', 'string', 'link_lattes'],
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
@@ -162,8 +161,7 @@ class TrabalhoController extends Controller
           'area'                    => ['required', 'string'],
           'subArea'                 => ['required', 'string'],
           'pontuacaoPlanilha'       => ['required', 'string'],
-          'linkGrupo'               => ['required', 'string'],
-          // 'linkGrupo'               => ['required', 'string', 'link_grupo'],
+          'linkGrupo'               => ['required', 'string', 'link_grupo'],
           'linkLattesEstudante'     => ['required', 'string', 'link_lattes'],
           'nomeParticipante.*'      => ['required', 'string'],
           'emailParticipante.*'     => ['required', 'string'],
@@ -368,6 +366,8 @@ class TrabalhoController extends Controller
       
       //---Anexos planos de trabalho
 
+
+
       return $trabalho;     
     }
 
@@ -404,6 +404,77 @@ class TrabalhoController extends Controller
       }
       
       $trabalho->update();
+
+      //Planos de trabalho
+
+       //Envia email com senha temp para cada participante do projeto
+       if($request->emailParticipante != null){
+        
+        foreach ($request->emailParticipante as $key => $value) {
+
+          $userParticipante = User::where('email', $value)->first();
+          $participante = new Participante();
+
+          // Se participante ainda não existe
+          if($userParticipante == null){
+
+            $passwordTemporario = Str::random(8);
+           // Mail::to($value)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, '  ', 'Participante', $evento->nome, $passwordTemporario));
+            $usuario = User::create([
+              'email' => $value,
+              'password' => bcrypt($passwordTemporario),
+              'usuarioTemp' => true,
+              'name' => $request->nomeParticipante[$key],
+              'tipo' => 'participante',
+            ]);
+
+            $participante->user_id = $usuario->id;
+            $participante->trabalho_id = $trabalho->id;
+            $participante->funcao_participante_id = $request->funcaoParticipante[$key];
+            $participante->save();
+            $usuario->participantes()->save($participante);
+            $usuario->save();
+
+            $participante->trabalhos()->save($trabalho);
+          }else{
+
+            $participante->user_id = $userParticipante->id;
+            $participante->trabalho_id = $trabalho->id;
+            $participante->funcao_participante_id = $request->funcaoParticipante[$key];
+            $participante->save();
+            $userParticipante->participantes()->save($participante);
+            $userParticipante->save();
+
+            $participante->trabalhos()->save($trabalho);
+
+            $subject = "Participante de Projeto";            
+            $email = $value;
+            Mail::to($email)
+                  ->send(new SubmissaoTrabalho($userParticipante, $subject, $evento, $trabalho));
+          }
+
+          if($request->nomePlanoTrabalho[$key] != null){
+            $usuario = User::where('email', $value)->first();
+            $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $trabalho->id]])->first();
+            $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
+            $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+            $file = $request->anexoPlanoTrabalho[$key];
+            Storage::putFileAs($path, $file, $nome);
+
+            $arquivo = new Arquivo();
+            $arquivo->titulo = $request->nomePlanoTrabalho[$key];
+            $arquivo->nome = $path . $nome;
+            $arquivo->trabalhoId = $trabalho->id;
+            $arquivo->data = $mytime;
+            $arquivo->participanteId = $participante->id;
+            $arquivo->versaoFinal = true;
+            $arquivo->save();
+          }          
+        }
+      }
+
+
+
       return $trabalho;
     }
     /**
