@@ -54,12 +54,12 @@
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Visualizar projeto
                           </a>
-                          <a href="" class="dropdown-item" style="text-align: center">
+                          {{-- <a href="" class="dropdown-item" style="text-align: center">
                             Recorrer
                           </a>
                           <a href="" class="dropdown-item" style="text-align: center">
                             Resultado
-                          </a>
+                          </a> --}}
                           @if($projeto->status == 'Submetido')
                             <a href="{{ route('trabalho.destroy', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                               Excluir projeto
