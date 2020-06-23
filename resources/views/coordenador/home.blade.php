@@ -77,6 +77,11 @@
                     <p>
                         @if (Auth::check())
                             <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
+                            @if(Auth::user()->proponentes == null)
+                              <br><a href="{{ route('proponente.create' )}}" class="visualizarEvento">Criar projeto</a>
+                            @else
+                              <br><a href="{{ route('trabalho.index', ['id' => $evento->id] )}}" class="visualizarEvento">Criar projeto</a>
+                            @endif
                         @else
                             <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
                         @endif

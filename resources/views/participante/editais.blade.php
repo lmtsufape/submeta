@@ -17,7 +17,7 @@
       <thead>
         <tr>   
           <th scope="col">Nome do Edital</th>
-          <th scope="col">Status</th>
+          {{-- <th scope="col">Status</th> --}}
           <th scope="col">Data de Criação</th>
           <th scope="col">Baixar edital</th>
           <th scope="col">Opção</th>
@@ -31,7 +31,7 @@
                   {{ $evento->nome }}
               </a>
             </td>
-            <td></td>
+            {{-- <td></td> --}}
             <td>{{ $evento->created_at }}</td>
             <td style="text-align: center">
               <a href="{{ route('baixar.edital', ['id' => $evento->id]) }}">
@@ -45,11 +45,11 @@
                   </a>
                   <div class="dropdown-menu">
                       <a href="{{ route('participante.edital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center">
-                        Meus projetos
+                        Projetos vinculados
                       </a>
-                      <a href="" class="dropdown-item" style="text-align: center">
+                      {{-- <a href="" class="dropdown-item" style="text-align: center">
                         Visualizar resultado
-                      </a>
+                      </a> --}}
                       {{-- 
                       <a href="" class="dropdown-item" style="text-align: center">
                         Resultado preeliminar

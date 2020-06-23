@@ -49,9 +49,9 @@
                       <a href="{{ route('projetos.edital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center">
                         Projetos submetidos
                       </a>
-                      <a href="" class="dropdown-item" style="text-align: center">
+                      {{-- <a href="" class="dropdown-item" style="text-align: center">
                         Visualizar resultado
-                      </a>
+                      </a> --}}
                       {{-- <a href="" class="dropdown-item" style="text-align: center">
                         Recurso ao resultado
                       </a>
