@@ -787,7 +787,7 @@ class TrabalhoController extends Controller
         Storage::deleteDirectory('trabalhos/' . $trabalho->evento->id . '/' . $trabalho->id );
        
         $trabalho->delete();
-        return redirect()->back();
+        return redirect()->back()->with(['mensagem' => 'Projeto deletado com sucesso!']);
     }
 
     public function excluirParticipante($id){      

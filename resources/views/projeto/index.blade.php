@@ -2,7 +2,23 @@
 
 @section('content')
 <div class="container" style="margin-top: 100px;">
-
+    
+    @if(isset($mensagem))
+    <div class="col-sm-12">
+        <br>
+        <div class="alert alert-success">
+            <p>{{ $mensagem }}</p>
+        </div>
+    </div>
+    @endif
+    @if(session('mensagem'))
+    <div class="col-sm-12">
+        <br>
+        <div class="alert alert-success">
+            <p>{{session('mensagem')}}</p>
+        </div>
+    </div>
+    @endif
     <div class="container" >
       <div class="row" >
         <div class="col-sm-10">

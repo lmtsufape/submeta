@@ -182,7 +182,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="botao" class="col-form-label @error('botao') is-invalid @enderror">{{ __('Possui autorização do Comitê de Ética*:') }}</label>
+                  <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf.">{{ __('Possui autorizações especiais?*:') }}</label>
                   <button id="buttonSim" class="btn btn-primary mt-2 mb-2">Sim</button>
                   <button id="buttonNao" class="btn btn-primary mt-2 mb-2">Não</button>
                   <input type="hidden" id="botao" name="botao" value="">
