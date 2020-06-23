@@ -621,7 +621,7 @@
                 "</div>"+
                 "<div class="+"col-sm-1"+">"+
                     "<a  class="+"delete"+">"+
-                      "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
+                      "<img src="+"{{ asset('/img/icons/user-times-solid.svg') }}"+" style="+"width:25px;margin-top:35px"+">"+
                     "</a>"+
                 "</div>"+
               "</div>"+
