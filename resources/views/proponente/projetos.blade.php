@@ -52,16 +52,39 @@
                         <a href="" class="dropdown-item" style="text-align: center">
                           Resultado
                         </a> --}}
-                        @if($projeto->status == 'Submetido')
-                          <a href="{{ route('trabalho.destroy', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                        @if($projeto->status == 'Submetido')                          
+                          <!-- Button trigger modal -->
+                          <button type="button"  class="dropdown-item" style="text-align: center" data-toggle="modal" data-target="#modal{{$projeto->id}}">
                             Excluir projeto
-                          </a>
+                          </button>
                         @endif
                         
                     </div>
                 </div>
               </td>
             </tr>
+            <!-- Modal -->
+            <div class="modal fade" id="modal{{$projeto->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Deletar o projeto: {{ $projeto->titulo }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Você tem certeza que deseja deletar o projeto: {{ $projeto->titulo }}?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <a href="{{ route('trabalho.destroy', ['id' => $projeto->id]) }}" class="btn btn-primary">
+                      Deletar
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           @endforeach
         </tbody>
     </table>
