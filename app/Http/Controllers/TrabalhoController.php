@@ -130,6 +130,19 @@ class TrabalhoController extends Controller
         ]);
         //dd($request->all());
 
+        // $extensions = array("xls","xlsx");
+        // if(isset($request->anexoPlanilha )){
+        //   $result = array($request->file('anexoPlanilha')->getClientOriginalExtension());
+        //   if(in_array($result[0], $extensions)){
+          
+        //   }else{
+        //     $validatedData = $request->validate([
+        //       'anexoPlanilha' => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2000000']
+        //     ]);
+        //   }
+        // }
+        
+
         //$trabalho = Trabalho::create([
         $trabalho['titulo']                        = $request->nomeProjeto;
         $trabalho['coordenador_id']                = $coordenador->id;
