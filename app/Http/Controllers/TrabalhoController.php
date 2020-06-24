@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Mail\SubmissaoTrabalho;
 use App\Mail\EventoCriado;
+use Illuminate\Support\Facades\Validator;
 
 class TrabalhoController extends Controller
 {
@@ -125,24 +126,14 @@ class TrabalhoController extends Controller
           'anexoComiteEtica'        => [($request->anexoComitePreenchido!=='sim'&&$request->anexoJustificativaPreenchido!=='sim'?'required_without:justificativaAutorizacaoEtica':''), 'file', 'mimes:pdf', 'max:2000000'],
           'justificativaAutorizacaoEtica' => [($request->anexoJustificativaPreenchido!=='sim'&&$request->anexoComitePreenchido!=='sim'?'required_without:anexoComiteEtica':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required': ''), 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls', 'max:2000000'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
-        //dd($request->all());
-
-        // $extensions = array("xls","xlsx");
-        // if(isset($request->anexoPlanilha )){
-        //   $result = array($request->file('anexoPlanilha')->getClientOriginalExtension());
-        //   if(in_array($result[0], $extensions)){
-          
-        //   }else{
-        //     $validatedData = $request->validate([
-        //       'anexoPlanilha' => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2000000']
-        //     ]);
-        //   }
-        // }
-        
-
+      
+        if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
+          return $this->validarAnexosRascunho($request, $trabalho);
+        }
+     
         //$trabalho = Trabalho::create([
         $trabalho['titulo']                        = $request->nomeProjeto;
         $trabalho['coordenador_id']                = $coordenador->id;
@@ -182,10 +173,13 @@ class TrabalhoController extends Controller
           'nomePlanoTrabalho.*'     => ['nullable', 'string'],
           'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls', 'max:2000000'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
 
+        if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
+          return $this->validarAnexosRascunho($request, $trabalho);
+        }
         //$trabalho = Trabalho::create([
           $trabalho['titulo']                        = $request->nomeProjeto;
           $trabalho['coordenador_id']                = $coordenador->id;
@@ -316,8 +310,8 @@ class TrabalhoController extends Controller
       //---Dados do Projeto  
       $trabalho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$request->editalId)->where('status', 'Rascunho')
                                 ->orderByDesc('updated_at')->first();
-      // dd($trabalho);
-      if($trabalho == null){
+      //dd($trabalho);
+      if($trabalho == null){        
         $trabalho = new Trabalho();
         $trabalho->proponente_id = $proponente->id;
         $trabalho->evento_id = $request->editalId;
@@ -330,7 +324,7 @@ class TrabalhoController extends Controller
         $trabalho->fill(
           array_fill_keys($stringKeys, "") + array_fill_keys($intKeys, 1)
         )->save();
-       // dd($trabalho);
+        //dd($trabalho);
       }
 
       if(!(is_null($request->nomeProjeto)) ) {
@@ -379,9 +373,22 @@ class TrabalhoController extends Controller
       
       //---Anexos planos de trabalho
 
-
+      //dd($trabalho);
 
       return $trabalho;     
+    }
+
+    public function validarAnexosRascunho(Request $request, $trabalho){
+      //dd($trabalho->getAttributes());
+      $validator = Validator::make($trabalho->getAttributes(),[      
+         'anexoPlanilhaPontuacao'           => $request->anexoPlanilha==null?['planilha']:[],
+      ]);     
+
+      if ($validator->fails()) {
+        dd('asdf');
+        return back()->withErrors($validator)->withInput();
+      }
+      return 1;
     }
 
     public function armazenarAnexosFinais($request, $pasta, $trabalho, $evento){
