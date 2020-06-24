@@ -47,7 +47,7 @@
         </thead>
         <tbody>
           @foreach ($projetos as $projeto)
-            @if ($projeto->status != 'Rascunho')
+            @if ($projeto->status != 'Rascunho' && $projeto->proponente_id === Auth()->user()->proponentes->id)
               <tr>
                 <td>
                   {{ $projeto->titulo }}
@@ -64,9 +64,9 @@
                           <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                       </a>
                       <div class="dropdown-menu">
-                          <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
-                            Editar projeto
-                          </a>
+                            <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
+                              Editar projeto
+                            </a>
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Visualizar projeto
                           </a>
@@ -76,17 +76,10 @@
                           <a href="" class="dropdown-item" style="text-align: center">
                             Resultado
                           </a> --}}
-                          @if($projeto->status == 'Submetido')
-                            
-                            <!-- Button trigger modal -->
-                            <button type="button"  class="dropdown-item"data-toggle="modal" data-target="#modal{{$projeto->id}}">
-                              Excluir projeto
-                            </button>
-
-                            
-                            
-                          @endif
-                          
+                          <!-- Button trigger modal -->
+                          <button type="button"  class="dropdown-item"data-toggle="modal" data-target="#modal{{$projeto->id}}">
+                            Excluir projeto
+                          </button>
                       </div>
                   </div>
                 </td>
