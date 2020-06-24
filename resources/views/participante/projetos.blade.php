@@ -13,7 +13,8 @@
             <!-- Se usuário não é proponente, redirecionar para view de cadastro -->
             @if(Auth::user()->proponentes == null)
               <a href="{{ route('proponente.create' )}}" class="btn btn-primary">Criar projeto</a>
-              
+            @else
+              <a href="{{ route('trabalho.index' )}}" class="btn btn-primary">Criar projeto</a>
             @endif
           </div>
       </div>
