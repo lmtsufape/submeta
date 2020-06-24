@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-sm-4">
                   <label for="area" class="col-form-label">{{ __('Área*:') }}</label>
-                  <input type="hidden" id="oldArea" value="{{ old('area') }}"></input>
+                  <input type="hidden" id="oldArea" value="{{ old('area') }}">
                   <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">                    
                     <option value="" disabled selected hidden>-- Área --</option>
                     {{-- @foreach($areas as $area)
@@ -63,7 +63,7 @@
                 </div>
                 <div class="col-sm-4">
                   <label for="subArea" class="col-form-label">{{ __('Sub Área*:') }}</label>
-                  <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}"></input>
+                  <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}">
                   <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">                    
                     <option value="" disabled selected hidden>-- Sub Área --</option>
                     {{-- @foreach($subAreas as $subArea)
@@ -221,7 +221,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF ou XLS de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF, XLS ou XLSX de até 2mb.</label>
                     </div>
                   </div>
                   @error('anexoPlanilha')
@@ -385,7 +385,7 @@
                 @endfor
                     @endif
                   </div>
-                  <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}"></input>
+                  <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}">
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
                 </div>
               </div>

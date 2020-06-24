@@ -171,7 +171,7 @@ class TrabalhoController extends Controller
           'nomePlanoTrabalho.*'     => ['nullable', 'string'],
           'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
-          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls', 'max:2000000'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2000000'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2000000'],
         ]);
 
