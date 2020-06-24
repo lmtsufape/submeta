@@ -77,7 +77,7 @@
                             Resultado
                           </a> --}}
                           <!-- Button trigger modal -->
-                          <button type="button"  class="dropdown-item"data-toggle="modal" data-target="#modal{{$projeto->id}}">
+                          <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
                             Excluir projeto
                           </button>
                       </div>
