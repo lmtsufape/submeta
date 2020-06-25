@@ -393,7 +393,11 @@
           </p>
           <div class="row justify-content-center">
             <div class="col-md-6">
-              <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+              @if (Auth()->user()->administradors != null)
+                <a href="{{ route('admin.editais') }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+              @else
+                <a href="{{ route('projetos.edital', ['id' => $edital->id]) }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+              @endif
             </div>
             <div class="col-md-6">
               <button type="submit" class="btn btn-primary" style="width:100%">

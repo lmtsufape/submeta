@@ -193,6 +193,11 @@
                     </p>
                     <div class="row justify-content-center">
                         <div class="col-md-12">
+                            @if (Auth()->user()->administradors != null)
+                                <a href="{{ route('admin.editais') }}" class="btn btn-secondary" style="width:100%">Voltar</a>
+                            @else
+                                <a href="{{ route('projetos.edital', ['id' => $edital->id]) }}" class="btn btn-secondary" style="width:100%">Voltar</a>
+                            @endif
                             <a href="{{route('participante.edital',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Voltar</a>
                         </div>
                         

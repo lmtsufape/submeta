@@ -21,16 +21,16 @@
     @endif
     <div class="container" >
       <div class="row" >
-        <div class="col-sm-10">
+        <div class="col-sm-9">
             <h3>Projetos do edital {{ $edital->nome }}</h3> 
             <h6 style="color: rgb(4, 78, 4);">Submissão irá até o dia {{ date('d-m-Y', strtotime($edital->fimSubmissao)) }}</h6>
         </div>
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <!-- Se usuário não é proponente, redirecionar para view de cadastro -->
             @if(Auth::user()->proponentes == null)
-              <a href="{{ route('proponente.create' )}}" class="btn btn-primary">Criar projeto</a>
+              <a href="{{ route('proponente.create' )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>
             @else
-              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary">Criar projeto</a>
+              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>
             @endif
           </div>
       </div>
