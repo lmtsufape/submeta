@@ -91,7 +91,7 @@
             <nav class="navbar navbar-light backgroud-color-default shadow">
                 <div class="container">
                     <div class="links-menu">
-                        <a class="navbar-brand" href="{{route('home-user')}}">
+                        <a class="navbar-brand" href="{{route('inicial')}}">
                             <img id="logo-menu" src="{{ asset('img/icons/logo_submeta_pemenor.png') }}" alt="">
                         </a>
                     </div>
