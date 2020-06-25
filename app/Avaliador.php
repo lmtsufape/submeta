@@ -21,7 +21,7 @@ class Avaliador extends Model
         return $this->belongsToMany('App\Trabalho')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
     }
     public function eventos(){
-        return $this->belongsToMany('App\Evento');
+        return $this->belongsToMany('App\Evento')->withPivot('convite', 'created_at');
     }
     public function area(){
         return $this->belongsTo('App\Area');

@@ -206,8 +206,9 @@ class TrabalhoController extends Controller
           $participante = new Participante();
           if($userParticipante == null){
 
-            $passwordTemporario = Str::random(8);
-            Mail::to($value)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, '  ', 'Participante', $evento->nome, $passwordTemporario));
+            $passwordTemporario = Str::random(8);            
+            $subject = "Participante de Projeto";
+            Mail::to($value)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $request->nomeProjeto, 'Participante', $evento->nome, $passwordTemporario, $subject));
             $usuario = User::create([
               'email' => $value,
               'password' => bcrypt($passwordTemporario),

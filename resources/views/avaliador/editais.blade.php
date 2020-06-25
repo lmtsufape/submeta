@@ -35,10 +35,28 @@
                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                 </a>
                 <div class="dropdown-menu">
+                  @if(!is_null(Auth::user()->avaliadors->eventos->where('id', 1)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == true )
                     <a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]) }}" class="dropdown-item">
                         <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
                         Projetos para avaliar
                     </a>
+                  @elseif(!is_null(Auth::user()->avaliadors->eventos->where('id', 1)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == false)
+                    <button disabled="disabled" class="dropdown-item">
+                       Convite recusado
+                    </button>
+                  @elseif(is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) )
+                    <a href="{{ route('avaliador.conviteResposta', ['evento_id' => $evento->id, 'resposta'=>true]) }}" class="dropdown-item">
+                        <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                        Aceitar Convite
+                    </a>
+                    <a href="{{ route('avaliador.conviteResposta', ['evento_id' => $evento->id, 'resposta'=>false]) }}" class="dropdown-item">
+                        <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                        Recusar Convite
+                    </a>
+                  @endif
+                    
+
+                    
                     
                 </div>
             </div>

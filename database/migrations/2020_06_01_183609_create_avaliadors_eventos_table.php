@@ -17,6 +17,8 @@ class CreateAvaliadorsEventosTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
 
+            $table->boolean('convite')->nullable();
+
             $table->unsignedBigInteger('avaliador_id');
             $table->unsignedBigInteger('evento_id');
 

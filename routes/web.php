@@ -27,6 +27,7 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::post('/parecer',       'AvaliadorController@parecer'                    )->name('parecer')->middleware('auth');
   Route::get('/editais',        'AvaliadorController@editais'                    )->name('editais')->middleware('auth');
   Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'              )->name('enviarParecer')->middleware('auth');
+  Route::get('/Resposta', 'AvaliadorController@conviteResposta'              )->name('conviteResposta')->middleware('auth');
 });
 
 //######### Proponente  ########################################

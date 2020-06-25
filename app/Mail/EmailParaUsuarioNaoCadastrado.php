@@ -15,19 +15,21 @@ class EmailParaUsuarioNaoCadastrado extends Mailable
     public $nomeFuncao;
     public $nomeEvento;
     public $senhaTemporaria;
+    public $subject;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(String $nomeUsuarioPai, String $nomeTrabalho, String $nomeFuncao, String $nomeEvento, String $senhaTemporaria)
+    public function __construct(String $nomeUsuarioPai, String $nomeTrabalho, String $nomeFuncao, String $nomeEvento, String $senhaTemporaria,  String $subject)
     {
       $this->nomeUsuarioPai  = $nomeUsuarioPai;
       $this->nomeTrabalho    = $nomeTrabalho;
       $this->nomeFuncao      = $nomeFuncao;
       $this->nomeEvento      = $nomeEvento;
       $this->senhaTemporaria = $senhaTemporaria;
+      $this->subject         = $subject;
     }
 
     /**
@@ -37,6 +39,17 @@ class EmailParaUsuarioNaoCadastrado extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.usuarioNaoCadastrado');
+        return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
+                    ->subject($this->subject)
+                    ->view('emails.usuarioNaoCadastrado')
+                    ->with([
+                        'nomeUsuarioPai' => $this->nomeUsuarioPai,
+                        'nomeTrabalho' => $this->nomeTrabalho,    
+                        'nomeFuncao' => $this->nomeFuncao,      
+                        'nomeEvento' => $this->nomeEvento,      
+                        'senhaTemporaria' => $this->senhaTemporaria
+                        
+                    ]);
+    
     }
 }

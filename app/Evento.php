@@ -41,7 +41,7 @@ class Evento extends Model
       return $this->hasMany('App\Trabalho');
   }
   public function avaliadors(){
-      return $this->belongsToMany('App\Avaliador');
+      return $this->belongsToMany('App\Avaliador')->withPivot('convite', 'created_at');
   }
 
 
