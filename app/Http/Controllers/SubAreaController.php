@@ -112,6 +112,6 @@ class SubAreaController extends Controller
         $id = json_decode($request->id) ;
         $subAreas = SubArea::where('area_id', $id)->orderBy('nome')->get();
         return response()->json($subAreas);
-        return $subAreas->toJson();
+        //return $subAreas->toJson();
     }
 }
