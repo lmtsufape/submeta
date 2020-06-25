@@ -8,7 +8,7 @@
         <div class="card-body">
           <h5 class="card-title">Enviar Projeto</h5>
           <p class="card-text">
-            <form method="POST" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
+            <form method="POST" name="formTrabalho" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="editalId" value="{{$edital->id}}">
 
@@ -114,7 +114,7 @@
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
-                  @enderror
+                  @enderror                 
                 </div>
                 <div class="col-sm-6">
                   <label for="linkGrupo" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
@@ -137,13 +137,13 @@
               <div class="row justify-content-center">
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
-                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>
+                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>                  
                   @if(old('anexoProjetoPreenchido') != null || (isset($rascunho) && $rascunho->anexoProjeto != ""))
                   <a id="anexoProjetoTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoProjeto' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido" 
-                    @if( isset($rascunho) && $rascunho->anexoProjeto != "") value="sim" @else value="old('anexoProjetoPreenchido')" @endif >
+                    @if( isset($rascunho) && $rascunho->anexoProjeto != "") value="sim" @else value="{{old('anexoProjetoPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -165,7 +165,7 @@
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoLattesPreenchido" name="anexoLattesPreenchido" 
-                    @if( isset($rascunho) && $rascunho->anexoLattesCoordenador != "") value="sim" @else value="old('anexoLattesPreenchido')" @endif >
+                    @if( isset($rascunho) && $rascunho->anexoLattesCoordenador != "") value="sim" @else value="{{old('anexoLattesPreenchido')}}" @endif >
 
                   <div class="input-group">
 
@@ -198,7 +198,7 @@
                                                           'nomeAnexo' => 'anexoAutorizacaoComiteEtica' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido"                 
-                    @if( isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "") value="sim" @else value="old('anexoComitePreenchido')" @endif >
+                    @if( isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "") value="sim" @else value="{{old('anexoComitePreenchido')}}" @endif >
 
                   <div class="input-group">
 
@@ -221,7 +221,7 @@
                                                           'nomeAnexo' => 'anexoPlanilhaPontuacao' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoPlanilhaPreenchido" name="anexoPlanilhaPreenchido"
-                    @if( isset($rascunho) && $rascunho->anexoPlanilhaPontuacao != "") value="sim" @else value="old('anexoPlanilhaPreenchido')" @endif >
+                    @if( isset($rascunho) && $rascunho->anexoPlanilhaPontuacao != "") value="sim" @else value="{{old('anexoPlanilhaPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -230,6 +230,11 @@
                     </div>
                   </div>
                   @error('anexoPlanilha')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                  @error('anexoPlanilhaPontuacao')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -243,7 +248,7 @@
                                                           'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido" 
-                    @if( isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "") value="sim" @else value="old('anexoJustificativaPreenchido')" @endif >
+                    @if( isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "") value="sim" @else value="{{old('anexoJustificativaPreenchido')}}" @endif >
                   <div class="input-group">
 
 
@@ -268,7 +273,7 @@
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido" 
-                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="old('anexoConsuPreenchido')" @endif >
+                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -769,6 +774,11 @@
       var anexoPlanilhaPreenchido = document.getElementById('anexoPlanilhaPreenchido');
       anexoPlanilhaPreenchido.value = "sim";
     }
+  }
+
+  function removerPlanilha(){
+    console.log('a');
+    $('#anexoPlanilhaPreenchido').val("");
   }
   window.onload = areas();
   window.onload = habilitarBotao();
