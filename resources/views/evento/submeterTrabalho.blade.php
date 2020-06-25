@@ -8,7 +8,7 @@
         <div class="card-body">
           <h5 class="card-title">Enviar Projeto</h5>
           <p class="card-text">
-            <form method="POST" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
+            <form method="POST" name="formTrabalho" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="editalId" value="{{$edital->id}}">
 
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-sm-4">
                   <label for="area" class="col-form-label">{{ __('Área*:') }}</label>
-                  <input type="hidden" id="oldArea" value="{{ old('area') }}"></input>
+                  <input type="hidden" id="oldArea" value="{{ old('area') }}">
                   <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">                    
                     <option value="" disabled selected hidden>-- Área --</option>
                     {{-- @foreach($areas as $area)
@@ -63,7 +63,7 @@
                 </div>
                 <div class="col-sm-4">
                   <label for="subArea" class="col-form-label">{{ __('Sub Área*:') }}</label>
-                  <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}"></input>
+                  <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}">
                   <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">                    
                     <option value="" disabled selected hidden>-- Sub Área --</option>
                     {{-- @foreach($subAreas as $subArea)
@@ -114,7 +114,7 @@
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
-                  @enderror
+                  @enderror                 
                 </div>
                 <div class="col-sm-6">
                   <label for="linkGrupo" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
@@ -137,12 +137,13 @@
               <div class="row justify-content-center">
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
-                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>
+                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>                  
                   @if(old('anexoProjetoPreenchido') != null || (isset($rascunho) && $rascunho->anexoProjeto != ""))
                   <a id="anexoProjetoTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoProjeto' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido" value="{{ old('anexoProjetoPreenchido') }}" >
+                  <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido" 
+                    @if( isset($rascunho) && $rascunho->anexoProjeto != "") value="sim" @else value="{{old('anexoProjetoPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -163,7 +164,8 @@
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoLattesPreenchido" name="anexoLattesPreenchido" value="{{ old('anexoLattesPreenchido') }}" >
+                  <input type="hidden" id="anexoLattesPreenchido" name="anexoLattesPreenchido" 
+                    @if( isset($rascunho) && $rascunho->anexoLattesCoordenador != "") value="sim" @else value="{{old('anexoLattesPreenchido')}}" @endif >
 
                   <div class="input-group">
 
@@ -195,7 +197,9 @@
                   <a id="anexoComiteTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoAutorizacaoComiteEtica' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido" value="{{ old('anexoComitePreenchido') }}" >
+                  <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido"                 
+                    @if( isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "") value="sim" @else value="{{old('anexoComitePreenchido')}}" @endif >
+
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -216,15 +220,21 @@
                   <a id="anexoPlanilhaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoPlanilhaPontuacao' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoPlanilhaPreenchido" name="anexoPlanilhaPreenchido" value="{{ old('anexoPlanilhaPreenchido') }}" >
+                  <input type="hidden" id="anexoPlanilhaPreenchido" name="anexoPlanilhaPreenchido"
+                    @if( isset($rascunho) && $rascunho->anexoPlanilhaPontuacao != "") value="sim" @else value="{{old('anexoPlanilhaPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF ou XLS de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF, XLS ou XLSX de até 2mb.</label>
                     </div>
                   </div>
                   @error('anexoPlanilha')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                  @error('anexoPlanilhaPontuacao')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -237,7 +247,8 @@
                   <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido" value="{{ old('anexoJustificativaPreenchido') }}" >
+                  <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido" 
+                    @if( isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "") value="sim" @else value="{{old('anexoJustificativaPreenchido')}}" @endif >
                   <div class="input-group">
 
 
@@ -261,8 +272,8 @@
                   <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido" value="{{ old('anexoConsuPreenchido') }}" >
-
+                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido" 
+                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
@@ -385,7 +396,7 @@
                 @endfor
                     @endif
                   </div>
-                  <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}"></input>
+                  <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}">
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
                 </div>
               </div>
@@ -605,11 +616,11 @@
 
                   "<div class="+"input-group"+">"+
                     "<div class='input-group-prepend'>"+
-                      "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
+                      "<span class='input-group-text' id='anexoPlanoTrabalho'>Selecione um arquivo:</span>"+
                     "</div>"+
                     "<div class='custom-file'>"+
-                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='inputGroupFile01'"+
-                        "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
+                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='anexoPlanoTrabalho'"+
+                        " aria-describedby='anexoPlanoTrabalho' name='anexoPlanoTrabalho[]'>"+
                       "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
                   "</div>"+
                   "</div>"+
@@ -621,7 +632,7 @@
                 "</div>"+
                 "<div class="+"col-sm-1"+">"+
                     "<a  class="+"delete"+">"+
-                      "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
+                      "<img src="+"{{ asset('/img/icons/user-times-solid.svg') }}"+" style="+"width:25px;margin-top:35px"+">"+
                     "</a>"+
                 "</div>"+
               "</div>"+
@@ -763,6 +774,11 @@
       var anexoPlanilhaPreenchido = document.getElementById('anexoPlanilhaPreenchido');
       anexoPlanilhaPreenchido.value = "sim";
     }
+  }
+
+  function removerPlanilha(){
+    console.log('a');
+    $('#anexoPlanilhaPreenchido').val("");
   }
   window.onload = areas();
   window.onload = habilitarBotao();

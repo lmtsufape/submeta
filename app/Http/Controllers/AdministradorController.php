@@ -415,17 +415,33 @@ class AdministradorController extends Controller
         $nomeAvaliador = $request->nomeAvaliador;
         $emailAvaliador = $request->emailAvaliador;
         $tipo = $request->tipo;
+        $user = User::where('email', $emailAvaliador )->first();
 
-        $passwordTemporario = Str::random(8);
-        Mail::to($emailAvaliador)
-            ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario));
-        $user = User::create([
-          'email' => $emailAvaliador,
-          'password' => bcrypt($passwordTemporario),
-          'usuarioTemp' => true,
-          'name' => $nomeAvaliador,
-          'tipo' => 'avaliador',
-        ]);
+        //existe o caso de enviar o convite de novo para um mesmo usuário
+        // if(isset($user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) ){
+        //     return redirect()->back()->with(['mensagem' => 'Usuário já recebeu um convite e está pendente']);
+        // }
+
+        if(isset($user)){
+            $passwordTemporario = Str::random(8);
+            $subject = "Convite para avaliar projetos da UFAPE";
+            Mail::to($emailAvaliador)
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject));
+
+        }else{
+            $passwordTemporario = Str::random(8);
+            $subject = "Convite para avaliar projetos da UFAPE";
+            Mail::to($emailAvaliador)
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject));
+            $user = User::create([
+              'email' => $emailAvaliador,
+              'password' => bcrypt($passwordTemporario),
+              'usuarioTemp' => true,
+              'name' => $nomeAvaliador,
+              'tipo' => 'avaliador',
+            ]);
+        }
+        
 
         $avaliador = new Avaliador();
         $avaliador->save();

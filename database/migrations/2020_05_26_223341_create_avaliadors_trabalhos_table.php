@@ -19,7 +19,7 @@ class CreateAvaliadorsTrabalhosTable extends Migration
 
             $table->text('parecer')->nullable();
             $table->string('AnexoParecer')->nullable();
-            $table->boolean('status')->nullable();
+            $table->boolean('status')->nullable();            
             $table->string('recomendacao')->nullable();
             $table->softDeletes();
 

@@ -19,7 +19,7 @@ class ProponenteController extends Controller
     }
 
     public function create(){
-        return view('proponente.cadastro');
+        return view('proponente.cadastro')->with(['mensagem' => 'Preencha o seguinte formulário para poder submeter algum projeto.']);;
     }
     public function editais(){
 

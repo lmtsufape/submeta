@@ -41,7 +41,14 @@
         <tr>
           <td>{{ $avaliador->user->name }}</td>
           <td>{{ $avaliador->user->email }}</td>
-          <td>{{ $avaliador->area->nome }}</td>
+          <td>
+            @if(is_null($avaliador->area))
+              Indefinida
+            @else
+              {{ $avaliador->area->nome }}
+            @endif
+            
+          </td>
           <td style="text-align:center">
             <form action="{{ route('admin.adicionar') }}" method="POST">
               @csrf
@@ -77,7 +84,15 @@
         <tr>
           <td>{{ $avaliador->user->name }}</td>
           <td>{{ $avaliador->user->email }}</td>
-          <td>Status-Aceito ou Rejeitado</td>
+          <td>
+            @if($avaliador->eventos->where('id', $evento->id)->first()->pivot->convite == true)
+              Aceito
+            @elseif(is_null($avaliador->eventos->where('id', $evento->id)->first()->pivot->convite))
+              Pendente
+            @else
+              Recusado
+            @endif
+          </td>
 
           <td style="text-align:center">
             <form action="{{ route('admin.remover') }}" method="POST">

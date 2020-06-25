@@ -29,7 +29,7 @@ class ParticipanteController extends Controller
         //$projetos = Auth::user()->participantes->where('user_id', Auth::user()->id)->first()->trabalhos;
 
 
-        //dd($projetos);
+        //dd(Auth::user()->proponentes);
 
         return view('participante.projetos')->with(['edital' => $edital, 'projetos' => $projetos]);
     }

@@ -20,14 +20,7 @@ Route::get('/editais/home'                    ,'EventoController@index'         
 Route::get('/perfil','UserController@perfil')->name('perfil');
 Auth::routes(['verify' => true]);
 
-//######## Rotas Avaliador  ####################################
-Route::prefix('avaliador')->name('avaliador.')->group(function(){
-  Route::get('/index',          'AvaliadorController@index'                      )->name('index')->middleware('auth');
-  Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'         )->name('visualizarTrabalho')->middleware('auth');
-  Route::post('/parecer',       'AvaliadorController@parecer'                    )->name('parecer')->middleware('auth');
-  Route::get('/editais',        'AvaliadorController@editais'                    )->name('editais')->middleware('auth');
-  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'              )->name('enviarParecer')->middleware('auth');
-});
+
 
 //######### Proponente  ########################################
 Route::get('/proponente/index', 'ProponenteController@index'                      )->name('proponente.index');
@@ -42,6 +35,16 @@ Route::post('/perfil-usuario',                 'UserController@editarPerfil'    
 
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
+
+  //######## Rotas Avaliador  ####################################
+Route::prefix('avaliador')->name('avaliador.')->group(function(){
+  Route::get('/index',          'AvaliadorController@index'                      )->name('index')->middleware('auth');
+  Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'         )->name('visualizarTrabalho')->middleware('auth');
+  Route::post('/parecer',       'AvaliadorController@parecer'                    )->name('parecer')->middleware('auth');
+  Route::get('/editais',        'AvaliadorController@editais'                    )->name('editais')->middleware('auth');
+  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'              )->name('enviarParecer')->middleware('auth');
+  Route::get('/Resposta', 'AvaliadorController@conviteResposta'              )->name('conviteResposta')->middleware('auth');
+});
   
 
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
