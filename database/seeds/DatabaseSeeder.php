@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsuarioSeeder::class);
         $this->call(AdministradorSeeder::class);
         $this->call(AdministradorResponsavelSeeder::class);
-        //$this->call(ProponenteSeeder::class);
+        // $this->call(ProponenteSeeder::class);
         $this->call(GrandeAreaSeeder::class);
         $this->call(AreaSeeder::class);
         $this->call(SubAreaSeeder::class);
@@ -80,8 +80,8 @@ class DatabaseSeeder extends Seeder
         //   'inicioSubmissao'=>'2020-03-30',
         //   'fimSubmissao'=>'2020-09-20',
         //   'inicioRevisao'=>'2020-04-21',
-        //   'fimRevisao'=>'2020-05-21',
-        //   'resultado'=>'2020-05-22',
+        //   'fimRevisao'=>'2020-07-21',
+        //   'resultado'=>'2020-07-22',
         //   'numMaxTrabalhos' => 2,
         //   'numMaxCoautores' => 5,
         //   'coordenadorId'=>1,

@@ -179,7 +179,7 @@
             <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
                 <div class="col-md-6" style="padding-left:0">
-                    <a class="btn btn-secondary botao-form" href="{{route('admin.editais')}}" style="width:100%">Cancelar Cadastro</a>
+                    <a class="btn btn-secondary botao-form" href="{{ route('home') }}" style="width:100%">Cancelar Cadastro</a>
                 </div>
                 <div class="col-md-6" style="padding-right:0">
                     <button type="submit" class="btn btn-primary botao-form" style="width:100%">

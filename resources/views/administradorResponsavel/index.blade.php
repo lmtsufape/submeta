@@ -4,7 +4,7 @@
 
 <div class="container">
 
-  	<h2 style="margin-top: 100px; ">{{ Auth()->user()->name }}</h2>
+  	<h2 style="margin-top: 100px; ">{{ Auth()->user()->name }} - Perfil: Administrador Responsável</h2>
 	<div class="row justify-content-center d-flex align-items-center">
 	      <div class="col-sm-4 d-flex justify-content-center ">
 	         <a href="{{route('adminResp.editais')}}" style="text-decoration:none; color: inherit;">

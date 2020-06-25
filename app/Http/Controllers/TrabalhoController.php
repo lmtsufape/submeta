@@ -255,6 +255,8 @@ class TrabalhoController extends Controller
             $file = $request->anexoPlanoTrabalho[$key];
             Storage::putFileAs($path, $file, $nome);
 
+            $mytime = Carbon::now('America/Recife');
+            $mytime = $mytime->toDateString();
             $arquivo = new Arquivo();
             $arquivo->titulo = $request->nomePlanoTrabalho[$key];
             $arquivo->nome = $path . $nome;
@@ -470,8 +472,8 @@ class TrabalhoController extends Controller
 
             $subject = "Participante de Projeto";            
             $email = $value;
-            Mail::to($email)
-                  ->send(new SubmissaoTrabalho($userParticipante, $subject, $evento, $trabalho));
+            // Mail::to($email)
+            //       ->send(new SubmissaoTrabalho($userParticipante, $subject, $evento, $trabalho));
           }
 
           if($request->nomePlanoTrabalho[$key] != null){
@@ -482,6 +484,8 @@ class TrabalhoController extends Controller
             $file = $request->anexoPlanoTrabalho[$key];
             Storage::putFileAs($path, $file, $nome);
 
+            $mytime = Carbon::now('America/Recife');
+            $mytime = $mytime->toDateString();
             $arquivo = new Arquivo();
             $arquivo->titulo = $request->nomePlanoTrabalho[$key];
             $arquivo->nome = $path . $nome;
