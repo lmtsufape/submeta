@@ -27,7 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         $eventos = \App\Evento::all();        
-        if(Auth::check()){
+        
           if(Auth::user()->administradors != null){            
             return view('administrador.index');
           }
@@ -45,10 +45,9 @@ class HomeController extends Controller
           }
           else if (Auth::user()->participantes != null) {
             return view('participante.index');
-          }
-        }
-        Log::debug('HomeController');
-        return view('index', ['eventos' => $eventos]);
+          }else{
+            return view('index', ['eventos' => $eventos]);
+          }        
     }
 
     public function downloadArquivo(Request $request){

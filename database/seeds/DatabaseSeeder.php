@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsuarioSeeder::class);
         $this->call(AdministradorSeeder::class);
         $this->call(AdministradorResponsavelSeeder::class);
-        // $this->call(ProponenteSeeder::class);
+        $this->call(ProponenteSeeder::class);
         $this->call(GrandeAreaSeeder::class);
         $this->call(AreaSeeder::class);
         $this->call(SubAreaSeeder::class);

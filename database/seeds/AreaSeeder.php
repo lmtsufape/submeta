@@ -11,6 +11,7 @@ class AreaSeeder extends Seeder
      */
     public function run()
     {
+        // Ciências Exatas e da Terra 1
         DB::table('areas')->insert([
         	'nome'=>'Matemática',
         	'grande_area_id' => '1'
@@ -51,7 +52,7 @@ class AreaSeeder extends Seeder
         	'grande_area_id' => '1'
       	]);
 
-      	// Ciências Biológicas ----------------------
+      	// Ciências Biológicas 2----------------------
 
       	DB::table('areas')->insert([
         	'nome'=>'Biologia Geral',

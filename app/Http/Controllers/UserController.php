@@ -35,6 +35,15 @@ class UserController extends Controller
       return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);
       //return view('auth.login');
     }
+    public function inicial()
+    {
+      $eventos = Evento::all();
+      
+      $hoje = Carbon::today('America/Recife');
+      $hoje = $hoje->toDateString();
+      return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);
+      //return view('auth.login');
+    }
 
 
     function perfil(){

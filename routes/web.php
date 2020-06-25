@@ -13,6 +13,7 @@
 
 
 Route::get('/', 'UserController@index'                                            )->name('home-user');
+Route::get('/', 'UserController@inicial'                                          )->name('inicial');
 Route::get('/home', 'HomeController@index'                                        )->name('home')->middleware('verified');
 
 Route::get('/evento/visualizar/naologado/{id}','EventoController@showNaoLogado'   )->name('evento.visualizarNaoLogado');
