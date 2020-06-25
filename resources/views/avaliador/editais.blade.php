@@ -46,11 +46,11 @@
                     </button>
                   @elseif(is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) )
                     <a href="{{ route('avaliador.conviteResposta', ['evento_id' => $evento->id, 'resposta'=>true]) }}" class="dropdown-item">
-                        <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                        <img src="{{asset('img/icons/confirm.png')}}" class="icon-card" alt="" style="width: 20px; height: auto">
                         Aceitar Convite
                     </a>
                     <a href="{{ route('avaliador.conviteResposta', ['evento_id' => $evento->id, 'resposta'=>false]) }}" class="dropdown-item">
-                        <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                        <img src="{{asset('img/icons/recuse.png')}}" class="icon-card" alt="" style="width: 20px; height: auto">
                         Recusar Convite
                     </a>
                   @endif

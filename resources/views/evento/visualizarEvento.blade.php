@@ -263,7 +263,18 @@
     <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
         <div class="col-md-6 botao-form-left" style="">
-            <a class="btn btn-secondary botao-form" href="{{ route('home') }}" style="width:100%">Voltar</a>
+            @if (Auth::check()) 
+              @if (Auth()->user()->administradors != null)
+                <a class="btn btn-secondary botao-form" href="{{ route('admin.editais') }}" style="width:100%">Voltar</a>
+              @elseif (Auth()->user()->proponentes != null)
+                <a class="btn btn-secondary botao-form" href="{{ route('proponente.editais') }}" style="width:100%">Voltar</a>
+              @else
+                <a class="btn btn-secondary botao-form" href="{{ route('participante.editais') }}" style="width:100%">Voltar</a>
+              
+              @endif
+            @else 
+              <a class="btn btn-secondary botao-form" href="{{ route('home-user') }}" style="width:100%">Voltar</a>
+            @endif
         </div>
 
         @if($evento->inicioSubmissao <= $mytime)
