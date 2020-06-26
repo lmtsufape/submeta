@@ -38,26 +38,31 @@
             </div>
             {{-- Instituição de Ensino e Celular --}}
             <div class="form-group row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="col-form-label">{{ __('Instituição de Vínculo*') }}</label>
-                    <input style="display: none;" id="instituicao" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="instituicao" value="{{ old('instituicao') }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
                     <select style="display: inline" onchange="showInstituicao()" class="form-control @error('instituicaoSelect') is-invalid @enderror" name="instituicaoSelect" id="instituicaoSelect">
                         <option value="" disabled hidden>-- Instituição --</option>
-                        <option value="{{ $user->instituicao }}" selected>{{ $user->instituicao }}</option>
-                        <option value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
-                        <option>Outra</option>
-                    </select>
-    
-                    @error('instituicao')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
+                        @if($user->instituicao != "UFAPE")
+                            <option value="{{ $user->instituicao }}" selected>{{ $user->instituicao }}</option>
+                        @endif                       
+                        <option @if( $user->instituicao == "UFAPE") selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
+                        <option @if(old('instituicaoSelect') == "Outra") selected @endif value="Outra">Outra</option>
+                    </select>    
+                   
                     @error('instituicaoSelect')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
+                </div>
+                <div class='col-md-4' style="display: none;">
+                    <label for="instituicao" class="col-form-label">{{ __('Digite a Instituição*') }}</label>
+                    <input id="instituicao" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="instituicao" value="{{ old('instituicao') }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
+                    @error('instituicao')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror               
                 </div>
                 <div class="col-md-4">
                     <label for="tipo" class="col-form-label">{{ __('Tipo*') }}</label>
@@ -70,7 +75,7 @@
                         <option @if($user->tipo =='participante' ) selected @endif value="participante">Participante</option>
                     </select>
                 </div>        
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <label for="celular" class="col-form-label">{{ __('Celular*') }}</label>
                     <input id="celular" type="text" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ $user->celular }}" required autocomplete="celular" autofocus>
     
@@ -497,10 +502,18 @@
         var instituicao = document.getElementById('instituicao');
         var instituicaoSelect = document.getElementById('instituicaoSelect');
 
-        if(instituicaoSelect.value === "Outra"){
-            instituicaoSelect.style.display = "none";
-            instituicao.style.display = "inline";
+        // if(instituicaoSelect.value === "Outra"){
+        //     instituicaoSelect.style.display = "none";
+        //     instituicao.style.display = "inline";
+        // }
+        if(instituicaoSelect.value === "Outra"){        
+            instituicaoSelect.parentElement.className = 'col-md-2';
+            instituicao.parentElement.style.display = '';
+        }else if(instituicaoSelect.value === "UFAPE"){
+            instituicaoSelect.parentElement.className = 'col-md-6';
+            instituicao.parentElement.style.display = 'none';
         }
     }
+    window.onload = showInstituicao();
 </script>
 @endsection
