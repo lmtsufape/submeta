@@ -18,6 +18,7 @@ use App\Natureza;
 use App\CoordenadorComissao;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Rules\ExcelRule;  
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -80,6 +81,11 @@ class EventoController extends Controller
         $user_id = Auth()->user()->id;
 
         //dd($user_id);
+        if(isset($request->modeloDocumento)){
+          $request->validate([
+            'modeloDocumento' => ['file', 'max:2048', new ExcelRule($request->file('modeloDocumento'))],
+          ]);          
+        }
 
         //--Salvando os anexos da submissão temporariamente
         $evento = $this->armazenarAnexosTemp($request);
@@ -105,8 +111,8 @@ class EventoController extends Controller
             'inicioRevisao'       => ['required', 'date'],
             'fimRevisao'          => ['required', 'date'],
             'resultado'           => ['required', 'date'],    
-            'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],  	 
-            'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
+            'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],  	 
+            //'modeloDocumento'     => [],
           ]);
         }
 
@@ -124,8 +130,8 @@ class EventoController extends Controller
           'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
           'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
           'resultado'           => ['required', 'date', 'after:' . $yesterday],
-          'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2000000'],
-          'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
+          'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+          //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
         
         //$evento = Evento::create([
@@ -329,8 +335,8 @@ class EventoController extends Controller
             'inicioRevisao'       => ['required', 'date'],
             'fimRevisao'          => ['required', 'date'],
             'resultado'           => ['required', 'date'],    
-            'pdfEdital'           => ['file', 'mimes:pdf', 'max:2000000'],  	 
-            'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
+            'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],  	 
+            'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
           ]);
         }
 
@@ -344,8 +350,8 @@ class EventoController extends Controller
           'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
           'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
           'resultado'           => ['required', 'date', 'after:' . $yesterday],
-          'pdfEdital'           => ['file', 'mimes:pdf', 'max:2000000'],
-          'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2000000'],
+          'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
+          'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
 
         $evento->nome                 = $request->nome;        
