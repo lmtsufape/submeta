@@ -21,9 +21,10 @@ class DatabaseSeeder extends Seeder
         $this->call(SubAreaSeeder::class);
         $this->call(FuncaoParticipanteSeeder::class);
         $this->call(CoordenadorComissaoSeeder::class);
-        //$this->call(ParticipanteSeeder::class);
+        // $this->call(ParticipanteSeeder::class);
         $this->call(NaturezaSeeder::class);
         $this->call(RecomendacaoSeeder::class);
+        $this->call(AvaliadorSeeder::class);
         
         // $this->call(UsersTableSeeder::class);
 

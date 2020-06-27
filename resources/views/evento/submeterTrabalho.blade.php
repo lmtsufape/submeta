@@ -414,7 +414,11 @@
                   </button>
                 </div>                
               </div>
-              <a href="{{route('evento.visualizar',['id'=>$edital->id])}}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+              @if (Auth()->user()->administradors != null)
+                <a href="{{ route('admin.editais') }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+              @else
+                <a href="{{ route('projetos.edital', ['id' => $edital->id]) }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+              @endif
             </form>
           </div>
         </div>
