@@ -60,7 +60,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'cpf' => ['required', 'cpf', 'unique:users'],
-            'celular' => ['required', 'string'],
+            'celular' => ['required', 'string', 'telefone'],
             'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
             'instituicaoSelect' => ['required_without:instituicao'],
             'cargo' => ['required'],

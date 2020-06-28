@@ -28,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('link_lattes', '\App\Utils\LattesValidation@validate', 'Link inválido');
         Validator::extend('link_grupo', '\App\Utils\GrupoPesquisaValidation@validate', 'Link inválido');
         Validator::extend('planilha', '\App\Utils\ExtensaoValidation@validate', 'Extensão do arquivo é inválida');
+        Validator::extend('telefone', '\App\Utils\TelefoneValidation@validate', 'Telefone inválido');
     }
 }

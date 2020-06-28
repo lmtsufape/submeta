@@ -70,6 +70,7 @@
                         @if(auth()->user()->tipo == 'administrador')
                             <option @if($user->tipo =='administradorResponsavel' ) selected @endif value="administradorResponsavel">Administrador responsável</option>
                         @endif
+                        <option @if($user->tipo =='coordenador' ) selected @endif value="coordenador">Coordenador</option>
                         <option @if($user->tipo =='avaliador' ) selected @endif value="avaliador">Avaliador</option>
                         <option @if($user->tipo =='proponente' ) selected @endif value="proponente">Proponente</option>
                         <option @if($user->tipo =='participante' ) selected @endif value="participante">Participante</option>
@@ -464,6 +465,20 @@
 
 @section('javascript')
 <script>
+    $(document).ready(function($) {
+        $('#cpf').mask('000.000.000-00');
+        var SPMaskBehavior = function(val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            },
+            spOptions = {
+                onKeyPress: function(val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                }
+            };
+        $('#celular').mask(SPMaskBehavior, spOptions);
+
+    });
+    
     function mudar() {
         var divProponente = document.getElementById('proponente');
         var comboBoxTipo = document.getElementById('tipo');
