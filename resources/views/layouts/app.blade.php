@@ -239,10 +239,10 @@
               <div class="col-sm-2">
                   <div class="row justify-content-center">
                       <div class="col-sm-12 styleRodape_Imagem_ufape">
-                          <a href="http://ww3.uag.ufrpe.br/" target="_blank"><img src="{{ asset('img/logoUfape.svg') }}" alt="Logo" width="40px;"></a>
+                          <a href="http://www.ufape.edu.br" target="_blank"><img src="{{ asset('img/logoUfape.svg') }}" alt="Logo" width="40px;"></a>
                       </div>
                       <div class="col-sm-12 styleRodape_Texto">
-                          <a href="http://ww3.uag.ufrpe.br/" target="_blank" style="color: white; font-weight: normal;">Universidade Federal do Agreste de Pernambuco</a>
+                          <a href="http://www.ufape.edu.br" target="_blank" style="color: white; font-weight: normal;">Universidade Federal do Agreste de Pernambuco</a>
                       </div>
                   </div>
               </div>
