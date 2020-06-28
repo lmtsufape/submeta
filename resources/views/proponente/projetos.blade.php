@@ -14,7 +14,7 @@
     <div class="container" >
       <div class="row" >
         <div class="col-sm-12">
-            <h3>Projetos submetidos</h3> 
+            <h3>Meus Projetos</h3> 
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
         </thead>
         <tbody>
           @foreach ($projetos as $projeto)
-            @if ($projeto->status != 'Rascunho') 
+            
               <tr>
                 <td>
                   {{ $projeto->titulo }}
@@ -72,7 +72,7 @@
                   </div>
                 </td>
               </tr>
-            @endif
+
             <!-- Modal -->
             <div class="modal fade" id="modal{{$projeto->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
