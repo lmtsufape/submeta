@@ -42,7 +42,7 @@
         </thead>
         <tbody>
           @foreach ($projetos as $projeto)
-            @if ($projeto->status != 'Rascunho' && $projeto->proponente_id === Auth()->user()->proponentes->id)
+            @if ($projeto->proponente_id === Auth()->user()->proponentes->id)
               <tr>
                 <td>
                   {{ $projeto->titulo }}
@@ -51,6 +51,8 @@
                   <td style="color: rgb(6, 85, 6)">Avaliado</td>
                 @elseif($projeto->status == 'Submetido')
                   <td style="color: rgb(0, 0, 0)">Submetido</td>
+                @elseif($projeto->status == 'Rascunho')
+                  <td style="color: rgb(0, 0, 0)">Rascunho</td>
                 @endif
                 <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
                 <td>

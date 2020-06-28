@@ -47,7 +47,7 @@
         </thead>
         <tbody>
           @foreach ($projetos as $projeto)
-            @if ($projeto->status != 'Rascunho' && $projeto->proponente_id === Auth()->user()->proponentes->id)
+            @if ($projeto->proponente_id != Auth()->user()->proponentes->id)
               <tr>
                 <td>
                   {{ $projeto->titulo }}
