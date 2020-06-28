@@ -24,7 +24,10 @@ class CreateEventosTable extends Migration
             $table->date('fimSubmissao')->nullable();
             $table->date('inicioRevisao')->nullable();
             $table->date('fimRevisao')->nullable();
-            $table->date('resultado')->nullable();        
+            $table->date('resultado_final')->nullable();        
+            $table->date('resultado_preliminar')->nullable();        
+            $table->date('inicio_recurso')->nullable();        
+            $table->date('fim_recurso')->nullable();        
             $table->integer('numMaxTrabalhos')->nullable();
             $table->integer('numMaxCoautores')->nullable();
             $table->boolean('hasResumo')->nullable();

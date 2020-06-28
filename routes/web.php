@@ -24,10 +24,12 @@ Auth::routes(['verify' => true]);
 
 
 //######### Proponente  ########################################
-Route::get('/proponente/index', 'ProponenteController@index'                      )->name('proponente.index');
-Route::get('/proponente/cadastro', 'ProponenteController@create'                  )->name('proponente.create');
-Route::post('/proponente/cadastro', 'ProponenteController@store'                  )->name('proponente.store');
-Route::get( '/proponente/editais',   'ProponenteController@editais'                )->name('proponente.editais');
+Route::get( '/proponente/index',      'ProponenteController@index'                  )->name('proponente.index');
+Route::get( '/proponente/cadastro',   'ProponenteController@create'                 )->name('proponente.create');
+Route::post('/proponente/cadastro',   'ProponenteController@store'                  )->name('proponente.store');
+Route::get( '/proponente/editais',    'ProponenteController@editais'                )->name('proponente.editais');
+Route::get( '/projetos-submetidos',   'ProponenteController@projetosDoProponente'   )->name('proponente.projetos');
+Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital');
 
 
 //######### Rotas Administrador #################################
@@ -103,7 +105,7 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                     )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
-  Route::get(   '/projetos-submetidos',     'ProponenteController@projetosDoProponente'     )->name('proponente.projetos');
+
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');

@@ -292,8 +292,8 @@
               </div>
 
               <hr>
-              <h3>Participantes</h3>
 
+              <h3>Participantes</h3>
               {{-- Participantes  --}}
               <div class="row" style="margin-top:20px">
                 <div class="col-sm-12">
@@ -306,101 +306,111 @@
 
                     @if ($countParticipante != null && $countParticipante > 0)
                       @for ($i = 0; $i < $countParticipante; $i++) 
-                      <div id="novoParticipante" style="display: block;">
-                        <br>
-                        <h4>Dados do participante</h4>
-                        <div class="row">
-                          <div class="col-sm-5">
-                            <label>Nome Completo*</label>
-                            <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}">
-                            @error('nomeParticipante')
-                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                              <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                          </div>
-                          <div class="col-sm-4">
-                            <label>E-mail*</label>
-                            <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}">
-                            @error('emailParticipante')
-                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                              <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                          </div>
-                          <div class="col-sm-3">
-                            <label>Função*:</label>
-                            <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
-                              <option value="" disabled selected hidden>-- Função --</option>
-                              @foreach($funcaoParticipantes as $funcaoParticipante)
-                              <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
-                              @endforeach
-
-                              @error('funcaoParticipante')
+                      {{-- inicio do card --}}
+                      {{-- <div class="card" >
+                        <div class="card-body"> --}}
+                       
+                        <div id="novoParticipante" style="display: block;">
+                          <br>
+                          <h4>Dados do participante</h4>
+                          <div class="row">
+                            <div class="col-sm-5">
+                              <label>Nome Completo*</label>
+                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}">
+                              @error('nomeParticipante')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
                               </span>
                               @enderror
-                            </select>
-                          </div>
-                        </div>                      
-                      <h6 class="mb-1">Possui plano de trabalho?</h6>
-                      <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
-                      <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>                      
-                      <div id="planoHabilitado" >
-                      <h5>Dados do plano de trabalho</h5>
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div id="planoTrabalho">
-                            <div class="row">
-                              <div class="col-sm-4">
-                                <label>Titulo* </label>
-                                <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" value="{{old('nomePlanoTrabalho.'.$i)}}">
-                                
-                                @error('nomePlanoTrabalho')
+                            </div>
+                            <div class="col-sm-4">
+                              <label>E-mail*</label>
+                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}">
+                              @error('emailParticipante')
+                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                <strong>{{ $message }}</strong>
+                              </span>
+                              @enderror
+                            </div>
+                            <div class="col-sm-3">
+                              <label>Função*:</label>
+                              <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
+                                <option value="" disabled selected hidden>-- Função --</option>
+                                @foreach($funcaoParticipantes as $funcaoParticipante)
+                                <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
+                                @endforeach
+
+                                @error('funcaoParticipante')
                                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                   <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                              </div>
-                              {{-- Arquivo  --}}
-                              <div class="col-sm-7">
-                                <label for="nomeTrabalho">Anexo*</label>
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
-                                  </div>
-                                  <div class="custom-file">
-                                    <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
-                                    <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
-                                  </div>
-                                </div>
-                                @error('anexoPlanoTrabalho')
-                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                  <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror                               
-                              </div>
-                              <div class="col-sm-1">
-                                <a class="delete">
-                                  <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
-                                </a>
-                              </div>                              
+                              </select>
                             </div>
-                          </div>
-                        </div>                  
-                      </div> 
-                      
-                  </div>         
-                </div>         
-                @endfor
+                          </div>                      
+                          <h6 class="mb-1">Possui plano de trabalho?</h6>
+                          <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
+                          <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>                      
+                                               
+                          <div id="planoHabilitado" style="display:none;">
+                          <h5>Dados do plano de trabalho</h5>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div id="planoTrabalho">
+                                <div class="row">
+                                  <div class="col-sm-4">
+                                    <label>Titulo* </label>
+                                    <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" value="{{old('nomePlanoTrabalho.'.$i)}}">
+                                    
+                                    @error('nomePlanoTrabalho')
+                                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                  </div>
+                                  {{-- Arquivo  --}}
+                                  <div class="col-sm-7">
+                                    <label for="nomeTrabalho">Anexo*</label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
+                                      </div>
+                                      <div class="custom-file">
+                                        <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                        <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                                      </div>
+                                    </div>
+                                    @error('anexoPlanoTrabalho')
+                                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror                               
+                                  </div>
+                                  <div class="col-sm-1">
+                                    {{-- <a class="delete">
+                                      <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
+                                    </a> --}}
+                                  </div>                              
+                                </div>
+                              </div>
+                            </div>                  
+                          </div> 
+                        
+                          </div>         
+                        </div>
+
+                      {{--  </div>
+                      </div> --}}
+                      {{-- inicio do card --}}         
+                      @endfor
                     @endif
                   </div>
                   <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}">
-                  <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Participantes +</a>
+                  <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Adicionar participante</a>
+                  
                 </div>
               </div>
-    
+              <hr>
               </p>
               <div class="row justify-content-center">
                 <div class="col-md-6">
@@ -409,7 +419,7 @@
                   </button>                  
                 </div>                
                 <div class="col-md-6">                  
-                  <button type="submit" class="btn btn-primary" style="width:100%">
+                  <button type="submit" class="btn btn-success" style="width:100%">
                     {{ __('Enviar Projeto') }}
                   </button>
                 </div>                
@@ -564,8 +574,15 @@
 
   function montarLinhaInput() {
 
-    return    "<div id="+"novoParticipante"+">" +
-          "<br><h4>Dados do participante</h4>" +
+    return "<div id="+"novoParticipante"+">" +
+          "<div class='row'>"+
+            "<div class='col-sm-9'>"+
+              "<br><h4>Dados do participante</h4>" +
+            "</div>"+
+            "<div class='col-sm-3'>"+
+              
+            "</div>"+
+          "</div>"+
           "<div class="+"row"+">"+
             "<div class="+"col-sm-5"+">"+
                 "<label>Nome Completo*</label>"+
@@ -602,8 +619,8 @@
         "</div>" +        
             "<h6 class='mb-1'>Possui plano de trabalho?</h6>"+
             "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 simPlano'"+">Sim</button>"+
-            "<button  class="+"'btn btn-primary mt-2 mb-2 naoPlano'"+">Não</button>"+
-            "<div id="+"planoHabilitado"+">" +
+            "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 naoPlano'"+">Não</button>"+           
+            "<div id="+"planoHabilitado"+" style="+"'display:none;'"+">" +
             "<h5>Dados do plano de trabalho</h5>" +
             "<div class="+"row"+">"+
                 "<div class="+"col-sm-4"+">"+
@@ -641,6 +658,8 @@
                 "</div>"+
               "</div>"+
               "</div>"+
+              
+              "<a href='#' class="+"'btn btn-danger mt-2 mb-2 delete'"+" style='width:100%;margin-top:10px'"+">Remover participante</a>"+ 
             "</div>";
   }
 

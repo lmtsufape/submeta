@@ -1035,3 +1035,4 @@ class TrabalhoController extends Controller
       return Storage::download($eventoTemp->$nomeAnexo);
     }
 }
+    

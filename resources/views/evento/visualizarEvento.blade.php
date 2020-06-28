@@ -273,7 +273,7 @@
               
               @endif
             @else 
-              <a class="btn btn-secondary botao-form" href="{{ route('home-user') }}" style="width:100%">Voltar</a>
+              <a class="btn btn-secondary botao-form" href="{{ route('inicial') }}" style="width:100%">Voltar</a>
             @endif
         </div>
 

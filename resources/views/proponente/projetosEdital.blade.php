@@ -26,12 +26,7 @@
             <h6 style="color: rgb(4, 78, 4);">Submissão irá até o dia {{ date('d-m-Y', strtotime($edital->fimSubmissao)) }}</h6>
         </div>
           <div class="col-sm-3">
-            <!-- Se usuário não é proponente, redirecionar para view de cadastro -->
-            @if(Auth::user()->proponentes->where('user_id', Auth::user()->id)->count() == 0) == null)
-              <a href="{{ route('proponente.create' )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>
-            @elseif(Auth::user()->participantes->where('user_id', Auth::user()->id)->count() == 0)
-              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>
-            @endif
+              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>           
           </div>
       </div>
     </div>
@@ -47,7 +42,7 @@
         </thead>
         <tbody>
           @foreach ($projetos as $projeto)
-            @if ($projeto->proponente_id != Auth()->user()->proponentes->id)
+            @if ($projeto->proponente_id === Auth()->user()->proponentes->id)
               <tr>
                 <td>
                   {{ $projeto->titulo }}
@@ -56,6 +51,8 @@
                   <td style="color: rgb(6, 85, 6)">Avaliado</td>
                 @elseif($projeto->status == 'Submetido')
                   <td style="color: rgb(0, 0, 0)">Submetido</td>
+                @elseif($projeto->status == 'Rascunho')
+                  <td style="color: rgb(0, 0, 0)">Rascunho</td>
                 @endif
                 <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
                 <td>
@@ -70,6 +67,12 @@
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Visualizar projeto
                           </a>
+                          {{-- <a href="" class="dropdown-item" style="text-align: center">
+                            Recorrer
+                          </a>
+                          <a href="" class="dropdown-item" style="text-align: center">
+                            Resultado
+                          </a> --}}
                           <!-- Button trigger modal -->
                           <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
                             Excluir projeto
