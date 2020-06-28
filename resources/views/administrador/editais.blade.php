@@ -51,7 +51,7 @@
                           Visualizar Pareceres
                       </a>
                         <!-- Button trigger modal -->
-                          <button type="button" class="dropdown-item text-center"  data-toggle="modal" data-target="#exampleModal">
+                          <button type="button" class="dropdown-item text-center"  data-toggle="modal" data-target="#exampleModal{{ $evento->id }}">
                             Deletar
                           </button>
 
@@ -63,7 +63,7 @@
             </td>
           </tr>
           <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="exampleModal{{ $evento->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
