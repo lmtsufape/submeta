@@ -86,4 +86,10 @@ class ProponenteController extends Controller
         
         return view('proponente.projetos')->with(['projetos' => $projetos]);
     }
+    public function projetosEdital($id) {
+      $edital = Evento::find($id);
+      $projetos = Trabalho::where('evento_id', '=', $id)->get();
+
+      return view('proponente.projetosEdital')->with(['edital' => $edital, 'projetos' => $projetos]);
+    }
 }

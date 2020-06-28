@@ -26,13 +26,7 @@
             <h6 style="color: rgb(4, 78, 4);">Submissão irá até o dia {{ date('d-m-Y', strtotime($edital->fimSubmissao)) }}</h6>
         </div>
           <div class="col-sm-3">
-            <!-- Se usuário não é proponente, redirecionar para view de cadastro -->
-            @if(Auth::user()->proponentes == null)
-              <a href="{{ route('proponente.create' )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>
-            @elseif(Auth::user()->participantes->where('user_id', Auth::user()->id)->count() == 0)
-            @else
-              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>
-            @endif
+              <a href="{{ route('proponente.create' )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>            
           </div>
       </div>
     </div>
@@ -71,6 +65,12 @@
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Visualizar projeto
                           </a>
+                          {{-- <a href="" class="dropdown-item" style="text-align: center">
+                            Recorrer
+                          </a>
+                          <a href="" class="dropdown-item" style="text-align: center">
+                            Resultado
+                          </a> --}}
                           <!-- Button trigger modal -->
                           <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
                             Excluir projeto
