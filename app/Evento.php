@@ -14,7 +14,7 @@ class Evento extends Model
   protected $fillable = [
       'nome', 'descricao', 'tipo',
       'inicioSubmissao', 'fimSubmissao', 'inicioRevisao', 'fimRevisao',
-      'resultado', 'coordenadorId',
+      'resultado_final','resultado_preliminar', 'coordenadorId',
       'numMaxTrabalhos', 'numMaxCoautores', 'hasResumo', 'criador_id'
   ];
 

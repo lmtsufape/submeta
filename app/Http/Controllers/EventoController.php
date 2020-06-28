@@ -110,7 +110,8 @@ class EventoController extends Controller
             'fimSubmissao'        => ['required', 'date'],
             'inicioRevisao'       => ['required', 'date'],
             'fimRevisao'          => ['required', 'date'],
-            'resultado'           => ['required', 'date'],    
+            'resultado_final'     => ['required', 'date'],    
+            'resultado_preliminar'=> ['required', 'date'],    
             'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],  	 
             //'modeloDocumento'     => [],
           ]);
@@ -129,7 +130,8 @@ class EventoController extends Controller
           'fimSubmissao'        => ['required', 'date', 'after:' . $request->inicioSubmissao],
           'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
           'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
-          'resultado'           => ['required', 'date', 'after:' . $yesterday],
+          'resultado_final'     => ['required', 'date', 'after:' . $yesterday],
+          'resultado_preliminar'=> ['required', 'date'],
           'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
           //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
@@ -143,7 +145,8 @@ class EventoController extends Controller
         $evento['fimSubmissao']        = $request->fimSubmissao;
         $evento['inicioRevisao']       = $request->inicioRevisao;
         $evento['fimRevisao']          = $request->fimRevisao;
-        $evento['resultado']           = $request->resultado;
+        $evento['resultado_final']     = $request->resultado_final;
+        $evento['resultado_preliminar']= $request->resultado_preliminar;
         $evento['coordenadorId']       = $request->coordenador_id;          
         $evento['criador_id']          = $user_id;  
         $evento['anexosStatus']        = 'final';         

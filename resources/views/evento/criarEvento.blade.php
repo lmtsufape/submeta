@@ -143,10 +143,20 @@
 
         <div class="row justify-content-left">
           <div class="col-sm-6">
-              <label for="resultado" class="col-form-label">{{ __('Data do Resultado*:') }}</label>
-              <input id="resultado" type="date" class="form-control @error('resultado') is-invalid @enderror" name="resultado" value="{{ old('resultado') }}" required autocomplete="resultado" autofocus>
+              <label for="resultado_preliminar" class="col-form-label">{{ __('Data do Resultado preliminar*:') }}</label>
+              <input id="resultado_preliminar" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ old('resultado_preliminar') }}" required autocomplete="resultado_preliminar" autofocus>
 
-              @error('resultado')
+              @error('resultado_preliminar')
+              <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+              </span>
+              @enderror
+          </div>
+          <div class="col-sm-6">
+              <label for="resultado_final" class="col-form-label">{{ __('Data do Resultado final*:') }}</label>
+              <input id="resultado_final" type="date" class="form-control @error('resultado_final') is-invalid @enderror" name="resultado_final" value="{{ old('resultado_final') }}" required autocomplete="resultado" autofocus>
+
+              @error('resultado_final')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
               </span>
