@@ -134,10 +134,10 @@ class EventoController extends Controller
           'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
           'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
           'fimRevisao'          => ['required', 'date', 'after:inicioRevisao', 'after:fimSubmissao'],
-          'inicio_recurso'      => ['required', 'date', 'after:inicioRevisao'],
+          'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
+          'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
           'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
-          'resultado_preliminar'=> ['required', 'date', 'after_or_equal:inicio_recurso'],
-          'resultado_final'     => ['required', 'date', 'after:resultado_preliminar'],
+          'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
           'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
           //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
