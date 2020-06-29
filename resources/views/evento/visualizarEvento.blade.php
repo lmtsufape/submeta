@@ -114,10 +114,43 @@
     <div class="row margin">
         <div class="col-sm-12 info-evento">
 
-            <h4>Data do resultado</h4>
+            <h4>Resultado Preliminar</h4>
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
-                {{date('d/m/Y',strtotime($evento->resultado))}}
+                {{date('d/m/Y',strtotime($evento->resultado_preliminar))}}
+            </p>
+
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="col-sm-12 info-evento">
+
+            <h4>Inicio do Recurso</h4>
+            <p>
+                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
+                {{date('d/m/Y',strtotime($evento->inicio_recurso))}}
+            </p>
+
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="col-sm-12 info-evento">
+
+            <h4>Fim do Recurso</h4>
+            <p>
+                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
+                {{date('d/m/Y',strtotime($evento->fim_recurso))}}
+            </p>
+
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="col-sm-12 info-evento">
+
+            <h4>Resultado Final</h4>
+            <p>
+                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
+                {{date('d/m/Y',strtotime($evento->resultado_final))}}
             </p>
 
         </div>
