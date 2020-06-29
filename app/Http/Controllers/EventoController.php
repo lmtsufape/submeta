@@ -123,7 +123,7 @@ class EventoController extends Controller
         //before  = antes
         $validatedData = $request->validate([
           'nome'                => ['required', 'string'],        
-          'descricao'           => ['required', 'string','size:1500'],
+          'descricao'           => ['required', 'string','min:1500'],
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'],    
           'coordenador_id'      => ['required'],
@@ -354,7 +354,7 @@ class EventoController extends Controller
 
         $validated = $request->validate([
           'nome'                => ['required', 'string'],        
-          'descricao'           => ['required', 'string', 'size:1500'],
+          'descricao'           => ['required', 'string', 'min:1500'],
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'], 
           'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
