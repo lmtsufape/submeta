@@ -6,8 +6,11 @@
 
   <div class="container" >
     <div class="row" >
-      <div class="col-sm-12">
+      <div class="col-sm-11">
           <h3>Editais</h3> 
+      </div>
+      <div class="col">
+        <a href="{{ route('home') }}" class="btn btn-primary">Voltar</a>
       </div>
       
     </div>

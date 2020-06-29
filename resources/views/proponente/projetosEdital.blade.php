@@ -25,9 +25,12 @@
             <h3>Projetos do edital {{ $edital->nome }}</h3> 
             <h6 style="color: rgb(4, 78, 4);">Submissão irá até o dia {{ date('d-m-Y', strtotime($edital->fimSubmissao)) }}</h6>
         </div>
-          <div class="col-sm-3">
-              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>           
-          </div>
+        <div class="col">
+          <a href="{{ route('home') }}" class="btn btn-primary">Voltar</a>
+        </div>
+        <div class="col">
+            <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>           
+        </div>
       </div>
     </div>
     <hr>

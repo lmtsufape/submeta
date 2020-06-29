@@ -12,10 +12,10 @@ class ProponenteSeeder extends Seeder
      */
     public function run()
     {
-      $user_id = DB::table('users')->where('name','Proponente')->select('id');
+      $user_id = DB::table('users')->where('name','Proponente')->pluck('id');
 
       DB::table('proponentes')->insert([
-        'user_id' => '4',
+        'user_id' => $user_id[0],
         'SIAPE' => '123123123',
         'cargo' => '123123123',
         'vinculo' => '123123123',
