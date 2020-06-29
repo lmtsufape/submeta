@@ -104,7 +104,6 @@ class EventoController extends Controller
             'descricao'           => ['required', 'string'],
             'tipo'                => ['required', 'string'],
             'natureza'            => ['required'],  
-            'descricao'           => ['required'],  
             'coordenador_id'      => ['required'],        
             'inicioSubmissao'     => ['required', 'date'],
             'fimSubmissao'        => ['required', 'date'],
@@ -124,10 +123,9 @@ class EventoController extends Controller
         //before  = antes
         $validatedData = $request->validate([
           'nome'                => ['required', 'string'],        
-          'descricao'           => ['required', 'string'],
+          'descricao'           => ['required', 'string','size:1500'],
           'tipo'                => ['required', 'string'],
-          'natureza'            => ['required'], 
-          'descricao'           => ['required'],    
+          'natureza'            => ['required'],    
           'coordenador_id'      => ['required'],
           #----------------------------------------------
           'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
@@ -356,7 +354,7 @@ class EventoController extends Controller
 
         $validated = $request->validate([
           'nome'                => ['required', 'string'],        
-          'descricao'           => ['required', 'string', 'size:500'],
+          'descricao'           => ['required', 'string', 'size:1500'],
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'], 
           'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],

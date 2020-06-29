@@ -27,7 +27,7 @@
         </div>
           <div class="col-sm-3">
             <!-- Se usuário não é proponente, redirecionar para view de cadastro -->
-            @if(Auth::user()->proponentes->where('user_id', Auth::user()->id)->count() == 0) == null)
+            @if(Auth::user()->proponentes == null)
               <a href="{{ route('proponente.create' )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>
             @elseif(Auth::user()->participantes->where('user_id', Auth::user()->id)->count() == 0)
               <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>
