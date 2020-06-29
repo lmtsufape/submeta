@@ -102,7 +102,17 @@
 
                 @error('inicioSubmissao')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                    <strong>
+                        @if ($message != null)
+                            @for ($i = 0; $i < 9; $i++) 
+                                @if ($i < 8)
+                                    {{ explode(" ", $message)[$i] }}
+                                @else 
+                                    {{ date('d/m/Y', strtotime(explode(" ", $message)[$i])) }}
+                                @endif
+                            @endfor
+                        @endif
+                    </strong>
                 </span>
                 @enderror
             </div>
@@ -112,7 +122,7 @@
 
                 @error('fimSubmissao')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message . date('d/m/Y', strtotime(old('inicioSubmissao'))) . '.'  }}</strong>
+                    <strong>{{ $message }}</strong>
                 </span>
                 @enderror
             </div>
@@ -125,7 +135,7 @@
 
               @error('inicioRevisao')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
@@ -135,7 +145,7 @@
 
               @error('fimRevisao')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime( old('inicioRevisao') )) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
@@ -148,7 +158,7 @@
 
               @error('resultado_preliminar')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
@@ -158,7 +168,7 @@
 
               @error('inicio_recurso')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
@@ -171,7 +181,7 @@
 
               @error('fim_recurso')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
@@ -182,7 +192,7 @@
 
               @error('resultado_final')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>

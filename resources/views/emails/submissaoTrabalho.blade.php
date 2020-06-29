@@ -8,7 +8,14 @@
 		@if($user->proponentes->id == $trabalho->proponente_id)
 			{{-- Usuario proponente--}}
 			<h2>Olá, {{ $user->name }} </h2>
-			<h4>Seu trabalho {{ $trabalho->titulo }} foi submetido com sucesso no Edital {{ $evento->nome }}  </h4>		
+			<br>
+			<h4>Seu projeto intitulado {{ $trabalho->titulo }} foi submetido com sucesso ao Edital {{ $evento->nome }}  </h4>
+			<br>
+			<h4>
+				Atenciosamente,
+				<br>
+				Equipe submeta.
+			</h4>	
 		@endif
 	@else
 			{{-- Usuario participante--}}

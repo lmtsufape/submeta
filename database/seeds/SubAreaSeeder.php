@@ -1404,4 +1404,6 @@ class SubAreaSeeder extends Seeder
       	]);
 
     }
+
 }
+
