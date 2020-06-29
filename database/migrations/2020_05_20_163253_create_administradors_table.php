@@ -15,8 +15,6 @@ class CreateAdministradorsTable extends Migration
     {
         Schema::create('administradors', function (Blueprint $table) {
             $table->bigIncrements('id');
-
-            $table->string('matricula')->unique(); 
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id');

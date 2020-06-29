@@ -21,6 +21,14 @@ class UsuarioSeeder extends Seeder
           'tipo'=>'administrador',
           'email_verified_at'=>'2020-01-01'
         ]);
+        DB::table('users')->insert([
+
+          'name'=>'Comitê do PIBIC',
+          'email'=>'ciic.pibic.uag@gmail.com',
+          'password'=>Hash::make('12345678'),
+          'tipo'=>'administrador',
+          'email_verified_at'=>'2020-01-01'
+        ]);
 
         DB::table('users')->insert([
 
