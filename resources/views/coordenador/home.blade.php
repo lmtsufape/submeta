@@ -71,7 +71,9 @@
                     <p class="card-text">                        
                         <strong>Submissão:</strong> {{date('d/m/Y',strtotime($evento->inicioSubmissao))}} - {{date('d/m/Y',strtotime($evento->fimSubmissao))}}<br>
                         <strong>Revisão:</strong> {{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}<br>
-                        <strong>Resultado:</strong> {{date('d/m/Y',strtotime($evento->resultado))}}<br>
+                        <strong>Resultado Preliminar:</strong> {{date('d/m/Y',strtotime($evento->resultado_preliminar))}}<br>
+                        <strong>Recurso:</strong> {{date('d/m/Y',strtotime($evento->inicio_recurso))}} - {{date('d/m/Y',strtotime($evento->fim_recurso))}}<br>
+                        <strong>Resultado Final:</strong> {{date('d/m/Y',strtotime($evento->resultado_final))}}<br>
                     </p>
                     
                     <p>
