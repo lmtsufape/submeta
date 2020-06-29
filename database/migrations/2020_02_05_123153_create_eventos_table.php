@@ -17,7 +17,7 @@ class CreateEventosTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->string('nome')->nullable();            
-            $table->string('descricao')->nullable();
+            $table->text('descricao')->nullable();
             $table->string('tipo')->nullable(); 
             $table->unsignedBigInteger('natureza_id')->nullable();           
             $table->date('inicioSubmissao')->nullable();
