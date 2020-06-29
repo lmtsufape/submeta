@@ -98,9 +98,9 @@
 
             <div class="col-sm-6">
                 <label for="inicioSubmissao" class="col-form-label">{{ __('Início da Submissão*:') }}</label>
-                <input id="inicioSubmissao" type="date" class="form-control @error('inicioDaSubmissao') is-invalid @enderror" name="inicioDaSubmissao" value="{{ old('inicioSubmissao') }}" required autocomplete="inicioSubmissao" autofocus>
+                <input id="inicioSubmissao" type="date" class="form-control @error('inicioSubmissao') is-invalid @enderror" name="inicioSubmissao" value="{{ old('inicioSubmissao') }}" required autocomplete="inicioSubmissao" autofocus>
 
-                @error('inicioDaSubmissao')
+                @error('inicioSubmissao')
                 <span class="invalid-feedback" role="alert">
                     <strong>
                         @if ($message != null)
