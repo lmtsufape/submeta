@@ -356,7 +356,7 @@ class EventoController extends Controller
 
         $validated = $request->validate([
           'nome'                => ['required', 'string'],        
-          'descricao'           => ['required', 'string'],
+          'descricao'           => ['required', 'string', 'size:500'],
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'], 
           'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
