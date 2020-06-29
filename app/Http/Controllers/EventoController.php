@@ -130,9 +130,9 @@ class EventoController extends Controller
           'descricao'           => ['required'],    
           'coordenador_id'      => ['required'],
           #----------------------------------------------
-          'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
+          'inicioSubmissao'     => ['required', 'date', 'after:' . $yesterday],
           'fimSubmissao'        => ['required', 'date', 'after:fim_recurso','after:resultado_final'],
-          'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
+          'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
           'fimRevisao'          => ['required', 'date', 'after:inicioRevisao', 'before:fimSubmissao'],
           'inicio_recurso'      => ['required', 'date', 'after:inicioRevisao'],
           'fim_recurso'         => ['required', 'date', 'after:fim_recurso'],
