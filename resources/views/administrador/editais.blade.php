@@ -6,10 +6,13 @@
 
   <div class="container" >
     <div class="row" >
-      <div class="col-sm-10">        
+      <div class="col-9">        
           <h3>Meus Editais</h3>         
       </div>
-      <div class="col-sm-2">
+      <div class="col">
+          <a href="{{route('home')}}" class="btn btn-primary" style="float: right;">Voltar</a>
+      </div>
+      <div class="col">
           <a href="{{route('evento.criar')}}" class="btn btn-primary" style="float: right;">Criar Edital</a>
       </div>
   </div>

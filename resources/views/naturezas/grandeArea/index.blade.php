@@ -11,10 +11,13 @@
             </div>
         </div>
         @endif
-        <div class="col-sm-9">
+        <div class="col-sm-8">
           <h2 style="margin-top: 100px; ">{{ __('Grandes áreas') }}</h2>
         </div>
-        <div class="col-sm-3">
+        <div class="col">
+          <a href="{{ route('home') }}" style="position:relative;top:100px; float: right;"  class="btn btn-primary">Voltar</a>
+        </div>
+        <div class="col">
           <a href="{{route('grandearea.criar')}}" class="btn btn-primary" style="position:relative;top:100px; float: right;">{{ __('Criar grande área') }}</a>
         </div>
     </div>

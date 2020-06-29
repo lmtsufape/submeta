@@ -6,10 +6,13 @@
 
   <div class="container" >
     <div class="row" >
-      <div class="col-sm-10">
+      <div class="col-sm-9">
         <h3>Usuários</h3> 
       </div>
-      <div class="col-sm-2">
+      <div class="col">
+        <a href="{{ route('home') }}" style="float: right;" class="btn btn-primary">Voltar</a>
+      </div>
+      <div class="col">
         <a href="{{route('admin.user.create')}}" class="btn btn-primary" style="float: right;">{{ __('Criar usuário') }}</a>
       </div>
     </div>
