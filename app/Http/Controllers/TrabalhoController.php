@@ -1025,14 +1025,20 @@ class TrabalhoController extends Controller
       $trabalho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$eventoId)->where('status', 'Rascunho')
                   ->orderByDesc('updated_at')->first();
 
-      return Storage::download($trabalho->$nomeAnexo);
+      if (Storage::disk()->exists($trabalho->$nomeAnexo)) {
+        return Storage::download($trabalho->$nomeAnexo);
+      }
+      return abort(404);
     }
     
     public function baixarEventoTemp($nomeAnexo){
       $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
                             ->orderByDesc('updated_at')->first();
 
-      return Storage::download($eventoTemp->$nomeAnexo);
+      if (Storage::disk()->exists($eventoTemp->$nomeAnexo)) {
+        return Storage::download($eventoTemp->$nomeAnexo);
+      }
+      return abort(404);
     }
+
 }
-    
