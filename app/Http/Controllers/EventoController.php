@@ -343,9 +343,12 @@ class EventoController extends Controller
             'natureza'            => ['required'],           
             'inicioSubmissao'     => ['required', 'date'],
             'fimSubmissao'        => ['required', 'date'],
-            'inicioRevisao'       => ['required', 'date'],
+            'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
             'fimRevisao'          => ['required', 'date'],
-            'resultado'           => ['required', 'date'],    
+            'resultado_preliminar'=> ['required', 'date'],
+            'inicio_recurso'      => ['required', 'date'],
+            'fim_recurso'         => ['required', 'date'],
+            'resultado_final'     => ['required', 'date'],
             'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],  	 
             'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
           ]);
@@ -356,12 +359,14 @@ class EventoController extends Controller
           'descricao'           => ['required', 'string'],
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'], 
-          'inicioSubmissao'     => ['required', 'date', 'after:' . $yesterday],
-          'fimSubmissao'        => ['required', 'date', 'after:' . $request->inicioSubmissao],
-          'inicioRevisao'       => ['required', 'date', 'after:' . $yesterday],
-          'fimRevisao'          => ['required', 'date', 'after:' . $request->inicioRevisao],
-          'resultado'           => ['required', 'date', 'after:' . $yesterday],
-          'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
+          'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
+          'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
+          'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
+          'fimRevisao'          => ['required', 'date', 'after:inicioRevisao', 'after:fimSubmissao'],
+          'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
+          'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
+          'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
+          'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
           'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
 
@@ -373,7 +378,10 @@ class EventoController extends Controller
         $evento->fimSubmissao         = $request->fimSubmissao;
         $evento->inicioRevisao        = $request->inicioRevisao;
         $evento->fimRevisao           = $request->fimRevisao;
-        $evento->resultado            = $request->resultado;
+        $evento->inicio_recurso       = $request->inicio_recurso;
+        $evento->fim_recurso          = $request->fim_recurso;
+        $evento->resultado_preliminar = $request->resultado_preliminar;
+        $evento->resultado_final      = $request->resultado_final;
         $evento->coordenadorId        = $request->coordenador_id; 
         
         if($request->pdfEdital != null){
