@@ -125,7 +125,7 @@
     <div class="row margin">
         <div class="col-sm-12 info-evento">
 
-            <h4>Inicio do Recurso</h4>
+            <h4>Início do Recurso</h4>
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
                 {{date('d/m/Y',strtotime($evento->inicio_recurso))}}
