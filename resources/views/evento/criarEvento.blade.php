@@ -98,14 +98,14 @@
 
             <div class="col-sm-6">
                 <label for="inicioSubmissao" class="col-form-label">{{ __('Início da Submissão*:') }}</label>
-                <input id="inicioSubmissao" type="date" class="form-control @error('inicioSubmissao') is-invalid @enderror" name="inicioSubmissao" value="{{ old('inicioSubmissao') }}" required autocomplete="inicioSubmissao" autofocus>
+                <input id="inicioSubmissao" type="date" class="form-control @error('inícioDaSubmissão') is-invalid @enderror" name="inícioDaSubmissão" value="{{ old('inícioDaSubmissão') }}" required autocomplete="inícioDaSubmissão" autofocus>
 
-                @error('inicioSubmissao')
+                @error('inícioDaSubmissão')
                 <span class="invalid-feedback" role="alert">
                     <strong>
                         @if ($message != null)
-                            @for ($i = 0; $i < 9; $i++) 
-                                @if ($i < 8)
+                            @for ($i = 0; $i < 10; $i++) 
+                                @if ($i < 9)
                                     {{ explode(" ", $message)[$i] }}
                                 @else 
                                     {{ date('d/m/Y', strtotime(explode(" ", $message)[$i])) }}
@@ -118,9 +118,9 @@
             </div>
             <div class="col-sm-6">
                 <label for="fimSubmissao" class="col-form-label">{{ __('Fim da Submissão*:') }}</label>
-                <input id="fimSubmissao" type="date" class="form-control @error('fimSubmissao') is-invalid @enderror" name="fimSubmissao" value="{{ old('fimSubmissao') }}" required autocomplete="fimSubmissao" autofocus>
+                <input id="fimSubmissao" type="date" class="form-control @error('fimDaSubmissão') is-invalid @enderror" name="fimDaSubmissão" value="{{ old('fimDaSubmissão') }}" required autocomplete="fimDaSubmissão" autofocus>
 
-                @error('fimSubmissao')
+                @error('fimDaSubmissão')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -130,20 +130,30 @@
 
         <div class="row justify-content-center">
           <div class="col-sm-6">
-              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação*:') }}</label>
-              <input id="inicioRevisao" type="date" class="form-control @error('inicioRevisao') is-invalid @enderror" name="inicioRevisao" value="{{ old('inicioRevisao') }}" required autocomplete="inicioRevisao" autofocus>
+              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Revisão*:') }}</label>
+              <input id="inicioRevisao" type="date" class="form-control @error('inícioDaRevisão') is-invalid @enderror" name="inícioDaRevisão" value="{{ old('inícioDaRevisão') }}" required autocomplete="inícioDaRevisão" autofocus>
 
-              @error('inicioRevisao')
+              @error('inícioDaRevisão')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
+                  <strong>
+                    @if ($message != null)
+                        @for ($i = 0; $i < 10; $i++) 
+                            @if ($i < 9)
+                                {{ explode(" ", $message)[$i] }}
+                            @else 
+                                {{ date('d/m/Y', strtotime(explode(" ", $message)[$i])) }}
+                            @endif
+                        @endfor
+                    @endif
+                    </strong>
               </span>
               @enderror
           </div>
           <div class="col-sm-6">
-              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação*:') }}</label>
-              <input id="fimRevisao" type="date" class="form-control @error('fimRevisao') is-invalid @enderror" name="fimRevisao" value="{{ old('fimRevisao') }}" required autocomplete="fimRevisao" autofocus>
+              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Revisão*:') }}</label>
+              <input id="fimRevisao" type="date" class="form-control @error('fimDaRevisão') is-invalid @enderror" name="fimDaRevisão" value="{{ old('fimDaRevisão') }}" required autocomplete="fimDaRevisão" autofocus>
 
-              @error('fimRevisao')
+              @error('fimDaRevisão')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
               </span>
@@ -152,39 +162,39 @@
         </div>
 
         <div class="row justify-content-left">
-          <div class="col-sm-6">
-              <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar*:') }}</label>
-              <input id="resultado_preliminar" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ old('resultado_preliminar') }}" required autocomplete="resultado_preliminar" autofocus>
-
-              @error('resultado_preliminar')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-              @enderror
-          </div>
           <div class="col-sm-6">
               <label for="inicio_recurso" class="col-form-label">{{ __('Início do recurso*:') }}</label>
-              <input id="inicio_recurso" type="date" class="form-control @error('inicio_recurso') is-invalid @enderror" name="inicio_recurso" value="{{ old('inicio_recurso') }}" required autocomplete="inicio_recurso" autofocus>
+              <input id="inicio_recurso" type="date" class="form-control @error('início_do_recurso') is-invalid @enderror" name="início_do_recurso" value="{{ old('início_do_recurso') }}" required autocomplete="início_do_recurso" autofocus>
 
-              @error('inicio_recurso')
+              @error('início_do_recurso')
               <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
-          
-        </div>
-        <div class="row justify-content-left">
           <div class="col-sm-6">
-              <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso*:') }}</label>
-              <input id="fim_recurso" type="date" class="form-control @error('fim_recurso') is-invalid @enderror" name="fim_recurso" value="{{ old('fim_recurso') }}" required autocomplete="resultado" autofocus>
+            <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso*:') }}</label>
+            <input id="fim_recurso" type="date" class="form-control @error('fim_do_recurso') is-invalid @enderror" name="fim_do_recurso" value="{{ old('fim_do_recurso') }}" required autocomplete="fim_do_recurso" autofocus>
 
-              @error('fim_recurso')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-              @enderror
+            @error('fim_do_recurso')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
           </div>
+        </div>
+
+        <div class="row justify-content-left">
+            <div class="col-sm-6">
+                <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar*:') }}</label>
+                <input id="resultado_preliminar" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ old('resultado_preliminar') }}" required autocomplete="resultado_preliminar" autofocus>
+
+                @error('resultado_preliminar')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div> 
           
           <div class="col-sm-6">
               <label for="resultado_final" class="col-form-label">{{ __('Resultado Final*:') }}</label>
