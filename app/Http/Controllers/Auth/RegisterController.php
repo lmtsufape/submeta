@@ -95,7 +95,7 @@ class RegisterController extends Controller
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
-        $user->password = bcrypt($data['password']);
+        $user->password = bcrypt($data['senha']);
         $user->cpf = $data['cpf'];
         $user->celular = $data['celular'];
         if ($data['instituicao'] != null) {
