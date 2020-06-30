@@ -114,14 +114,9 @@
 
             <div class="col-md-4">
                 <label for="password-confirm" class="col-form-label">{{ __('Confirme a Senha*') }}</label>
-                <input id="password-confirm" type="password" class="form-control @error('confirmar_senha') is-invalid @enderror" name="confirmar_senha" required autocomplete="new-password">
+                <input id="password-confirm" type="password" class="form-control @error('senha_confirm') is-invalid @enderror" name="senha_confirm" required autocomplete="new-password">
             </div>
 
-            @error('confirmar_senha')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
         </div>
         <div id="proponente" style="display: none;">
 

@@ -75,8 +75,7 @@ class AdministradorController extends Controller
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'celular' => ['required', 'string', 'telefone'],
-                'senha' => 'required',
-                'confirmar_senha' => 'required',
+                'senha' => ['required', 'string', 'min:8', 'confirmed'],
                 'cpf' => ['required', 'cpf', 'unique:users'],
             ]);
         } else {
@@ -86,8 +85,7 @@ class AdministradorController extends Controller
             'tipo' => ['required'],
             'cpf' => ['required', 'cpf', 'unique:users'],
             'celular' => ['required', 'string', 'telefone'],
-            'senha' => 'required',
-            'confirmar_senha' => 'required',
+            'senha' => ['required', 'string', 'min:8', 'confirmed'],
             'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
             'instituicaoSelect' => ['required_without:instituicao'],
             'cargo' => ['required'],
@@ -109,10 +107,6 @@ class AdministradorController extends Controller
             'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
             'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
             ]);
-        }
-
-        if (!($request->senha === $request->confirmar_senha)) {
-            return redirect()->back()->withErrors(['senha' => 'Senhas diferentes']);
         }
         
         $user = new User();
