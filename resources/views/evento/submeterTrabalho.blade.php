@@ -16,7 +16,7 @@
               <div class="row justify-content-center">
                 <div class="col-sm-12">
                   <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto*:') }}</label>
-                  <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" autofocus>
+                  <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" autofocus placeholder="Nome do meu projeto">
 
                   @error('nomeProjeto')
                   <span class="invalid-feedback" role="alert">
@@ -91,8 +91,8 @@
                   <input class="form-control" type="text" id="nomeCoordenador" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
                 </div>
                 <div class="col-sm-6">
-                  <label for="linkLattesEstudante" class="col-form-label">Link Lattes do Proponente*</label>
-                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
+                  <label for="linkLattesEstudante" class="col-form-label">Link do Currículo Lattes do Proponente*</label>
+                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="url" name="linkLattesEstudante"
                   @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
                     value="{{ Auth()->user()->proponentes->linkLattes }}"
                   @else
@@ -107,8 +107,8 @@
                 </div>
                 <div class="col-sm-6">
                   <label for="pontuacaoPlanilha" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação*:') }}</label>
-                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha" 
-                          value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}">
+                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" name="pontuacaoPlanilha" 
+                          value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}" placeholder="80">
 
                   @error('pontuacaoPlanilha')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -119,7 +119,7 @@
                 <div class="col-sm-6">
                   <label for="linkGrupo" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
                   <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo" 
-                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}">
+                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}" placeholder="http://dgp.cnpq.br/dgp/espelhogrupolinkexemplo/123456">
 
                   @error('linkGrupo')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -325,7 +325,7 @@
                             </div>
                             <div class="col-sm-4">
                               <label>E-mail*</label>
-                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}">
+                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="e-mail" value="{{old('emailParticipante.'.$i)}}">
                               @error('emailParticipante')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -595,7 +595,7 @@
             "</div>"+
             "<div class="+"col-sm-4"+">"+
                 "<label>E-mail*</label>"+
-                "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' >" +
+                "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='e-mail' >" +
                 "@error('emailParticipante')" +
                 "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
                   "<strong>{{ $message }}</strong>" +
