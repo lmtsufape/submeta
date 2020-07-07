@@ -7,16 +7,14 @@
       <div class="card" style="margin-top:50px">
         <div class="card-body">
           <h5 class="card-title">Enviar Projeto</h5>
-          @if($errors->any())
+          {{-- @if($errors->any())
             <div class="col-md-12" style="margin-top: 100px;">
               <div class="alert alert-success">
                 <p>{{ $errors}}</p>
-            {{-- @foreach ($errors->all() as $key => $value)
-                  <p>{{ $value}}</p>
-            @endforeach --}}
+
               </div>
             </div>
-          @endif
+          @endif --}}
           <p class="card-text">
             <form method="POST" name="formTrabalho" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
               @csrf
