@@ -92,7 +92,7 @@
                 </div>
                 <div class="col-sm-6">
                   <label for="linkLattesEstudante" class="col-form-label">Link do Currículo Lattes do Proponente*</label>
-                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="url" name="linkLattesEstudante"
+                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="url" name="linkLattesEstudante" placeholder="http://lattes.cnpq.br/1481900951748328"
                   @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
                     value="{{ Auth()->user()->proponentes->linkLattes }}"
                   @else
@@ -117,9 +117,9 @@
                   @enderror                 
                 </div>
                 <div class="col-sm-6">
-                  <label for="linkGrupo" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
+                  <label for="linkGrupo" class="col-form-label">{{ __('Link do Grupo de Pesquisa*:') }}</label>
                   <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo" 
-                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}" placeholder="http://dgp.cnpq.br/dgp/espelhogrupolinkexemplo/123456">
+                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}" placeholder="http://dgp.cnpq.br/dgp/espelhogrupo/4921797051521302">
 
                   @error('linkGrupo')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">

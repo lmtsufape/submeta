@@ -227,7 +227,7 @@
 
                 <div class="col-md-4">
                     <label for="linkLattes" class="col-form-label">{{ __('Link do currículo Lattes*') }}</label>
-                    <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="{{ old('linkLattes') }}" autocomplete="nome">
+                    <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="{{ old('linkLattes') }}" autocomplete="nome" placeholder="http://lattes.cnpq.br/1481900951748328">
 
                     @error('linkLattes')
                     <span class="invalid-feedback" role="alert">
