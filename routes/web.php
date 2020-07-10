@@ -40,7 +40,7 @@ Route::post('/perfil-usuario',                 'UserController@editarPerfil'    
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //######## Rotas Avaliador  ####################################
-Route::prefix('avaliador')->name('avaliador.')->group(function(){
+  Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::get('/index',          'AvaliadorController@index'                      )->name('index')->middleware('auth');
   Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'         )->name('visualizarTrabalho')->middleware('auth');
   Route::post('/parecer',       'AvaliadorController@parecer'                    )->name('parecer')->middleware('auth');

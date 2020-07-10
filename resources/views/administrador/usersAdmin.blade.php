@@ -5,6 +5,17 @@
 <div class="container" style="margin-top: 100px;">
 
   <div class="container" >
+    @if ($errors->any())
+      <div class="row">
+        <div class="col-md-12">
+          <ul style="list-style-type: none;">
+              @foreach ($errors->all() as $error)
+                  <li class="alert alert-danger" role="alert">{{ $error }}</li>
+              @endforeach
+          </ul>
+        </div>
+      </div>
+    @endif
     <div class="row" >
       <div class="col-sm-10">
         <h3>Usuários</h3> 
