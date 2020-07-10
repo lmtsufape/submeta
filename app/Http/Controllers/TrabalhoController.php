@@ -1044,3 +1044,4 @@ class TrabalhoController extends Controller
     }
 
 }
+  
