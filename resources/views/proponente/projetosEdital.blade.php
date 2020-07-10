@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container" style="margin-top: 100px;">
-    
+
     @if(isset($mensagem))
     <div class="col-sm-12">
         <br>
@@ -22,18 +22,23 @@
     <div class="container" >
       <div class="row" >
         <div class="col-sm-9">
-            <h3>Projetos do edital {{ $edital->nome }}</h3> 
+            <h3>Projetos do edital {{ $edital->nome }}</h3>
             <h6 style="color: rgb(4, 78, 4);">Submissão irá até o dia {{ date('d-m-Y', strtotime($edital->fimSubmissao)) }}</h6>
         </div>
-          <div class="col-sm-3">
-              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" style="position:relative; float: right;">Criar projeto</a>           
-          </div>
+        <div class="col-sm-1">
+            <a href="{{ route('proponente.editais') }}" class="btn btn-primary" style="position:relative; float: right;">Voltar</a>
+        </div>
+        <div class="col-sm-2">
+
+            <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" @else href="#" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar projeto</a>
+
+        </div>
       </div>
     </div>
     <hr>
     <table class="table table-bordered">
         <thead>
-          <tr>   
+          <tr>
             <th scope="col">Nome do projeto</th>
             <th scope="col">Status</th>
             <th scope="col">Data de Criação</th>
@@ -54,11 +59,11 @@
                 @elseif($projeto->status == 'Rascunho')
                   <td style="color: rgb(0, 0, 0)">Rascunho</td>
                 @endif
-                <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
+                <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>
                 <td>
                   <div class="btn-group dropright dropdown-options">
                       <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
+                          <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                       </a>
                       <div class="dropdown-menu">
                             <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
@@ -112,7 +117,7 @@
 
 @section('javascript')
 <script>
-  
+
 
 </script>
 @endsection

@@ -7,6 +7,14 @@
       <div class="card" style="margin-top:50px">
         <div class="card-body">
           <h5 class="card-title">Enviar Projeto</h5>
+          {{-- @if($errors->any())
+            <div class="col-md-12" style="margin-top: 100px;">
+              <div class="alert alert-success">
+                <p>{{ $errors}}</p>
+
+              </div>
+            </div>
+          @endif --}}
           <p class="card-text">
             <form method="POST" name="formTrabalho" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
               @csrf
@@ -33,7 +41,7 @@
                   <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()">
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
-                    <option @if(old('grandeArea') !== null ? old('grandeArea') : (isset($rascunho) ? $rascunho->grande_area_id : '') 
+                    <option @if(old('grandeArea') !== null ? old('grandeArea') : (isset($rascunho) ? $rascunho->grande_area_id : '')
                             == $grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
                     @endforeach
                   </select>
@@ -47,7 +55,7 @@
                 <div class="col-sm-4">
                   <label for="area" class="col-form-label">{{ __('Área*:') }}</label>
                   <input type="hidden" id="oldArea" value="{{ old('area') }}">
-                  <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">                    
+                  <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">
                     <option value="" disabled selected hidden>-- Área --</option>
                     {{-- @foreach($areas as $area)
                       <option @if(old('area') !== null ? old('area') : (isset($rascunho) ? $rascunho->area_id : '')
@@ -64,7 +72,7 @@
                 <div class="col-sm-4">
                   <label for="subArea" class="col-form-label">{{ __('Sub Área*:') }}</label>
                   <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}">
-                  <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">                    
+                  <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">
                     <option value="" disabled selected hidden>-- Sub Área --</option>
                     {{-- @foreach($subAreas as $subArea)
                       <option @if(old('subArea') !== null ? old('subArea') : (isset($rascunho) ? $rascunho->sub_area_id : '')
@@ -107,18 +115,18 @@
                 </div>
                 <div class="col-sm-6">
                   <label for="pontuacaoPlanilha" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação*:') }}</label>
-                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" name="pontuacaoPlanilha" 
+                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" name="pontuacaoPlanilha"
                           value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}" placeholder="80">
 
                   @error('pontuacaoPlanilha')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
-                  @enderror                 
+                  @enderror
                 </div>
                 <div class="col-sm-6">
                   <label for="linkGrupo" class="col-form-label">{{ __('Link do Grupo de Pesquisa*:') }}</label>
-                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo" 
+                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo"
                           value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}" placeholder="http://dgp.cnpq.br/dgp/espelhogrupo/4921797051521302">
 
                   @error('linkGrupo')
@@ -137,17 +145,17 @@
               <div class="row justify-content-center">
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
-                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>                  
+                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>
                   @if(old('anexoProjetoPreenchido') != null || (isset($rascunho) && $rascunho->anexoProjeto != ""))
                   <a id="anexoProjetoTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoProjeto' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido" 
+                  <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido"
                     @if( isset($rascunho) && $rascunho->anexoProjeto != "") value="sim" @else value="{{old('anexoProjetoPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto" onchange="exibirAnexoTemp(this)">                      
+                      <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto" onchange="exibirAnexoTemp(this)">
                       <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2mb.</label>
                     </div>
                   </div>
@@ -164,7 +172,7 @@
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoLattesPreenchido" name="anexoLattesPreenchido" 
+                  <input type="hidden" id="anexoLattesPreenchido" name="anexoLattesPreenchido"
                     @if( isset($rascunho) && $rascunho->anexoLattesCoordenador != "") value="sim" @else value="{{old('anexoLattesPreenchido')}}" @endif >
 
                   <div class="input-group">
@@ -197,7 +205,7 @@
                   <a id="anexoComiteTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoAutorizacaoComiteEtica' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido"                 
+                  <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido"
                     @if( isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "") value="sim" @else value="{{old('anexoComitePreenchido')}}" @endif >
 
                   <div class="input-group">
@@ -247,7 +255,7 @@
                   <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido" 
+                  <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido"
                     @if( isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "") value="sim" @else value="{{old('anexoJustificativaPreenchido')}}" @endif >
                   <div class="input-group">
 
@@ -272,7 +280,7 @@
                   <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido" 
+                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido"
                    @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif >
                   <div class="input-group">
 
@@ -305,11 +313,11 @@
                     @endif
 
                     @if ($countParticipante != null && $countParticipante > 0)
-                      @for ($i = 0; $i < $countParticipante; $i++) 
+                      @for ($i = 0; $i < $countParticipante; $i++)
                       {{-- inicio do card --}}
                       {{-- <div class="card" >
                         <div class="card-body"> --}}
-                       
+
                         <div id="novoParticipante" style="display: block;">
                           <br>
                           <h4>Dados do participante</h4>
@@ -317,7 +325,7 @@
                             <div class="col-sm-5">
                               <label>Nome Completo*</label>
                               <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}">
-                              @error('nomeParticipante')
+                              @error('nomeParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
                               </span>
@@ -339,19 +347,18 @@
                                 @foreach($funcaoParticipantes as $funcaoParticipante)
                                 <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
                                 @endforeach
-
-                                @error('funcaoParticipante')
+                              </select>
+                              @error('funcaoParticipante')
                                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                   <strong>{{ $message }}</strong>
                                 </span>
-                                @enderror
-                              </select>
+                              @enderror
                             </div>
-                          </div>                      
+                          </div>
                           <h6 class="mb-1">Possui plano de trabalho?</h6>
                           <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
-                          <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>                      
-                                               
+                          <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
+
                           <div id="planoHabilitado" style="display:none;">
                           <h5>Dados do plano de trabalho</h5>
                           <div class="row">
@@ -361,7 +368,7 @@
                                   <div class="col-sm-4">
                                     <label>Titulo* </label>
                                     <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" value="{{old('nomePlanoTrabalho.'.$i)}}">
-                                    
+
                                     @error('nomePlanoTrabalho')
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -384,33 +391,33 @@
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
                                     </span>
-                                    @enderror                               
+                                    @enderror
                                   </div>
                                   <div class="col-sm-1">
                                     {{-- <a class="delete">
                                       <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
                                     </a> --}}
-                                  </div>                              
+                                  </div>
                                 </div>
-                              </div>                              
-                            </div>                  
-                          </div> 
-                          
-                          </div>  
-                          @if($i != 0)       
+                              </div>
+                            </div>
+                          </div>
+
+                          </div>
+                          @if($i != 0)
                             <a href='#' class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px'>Remover participante</a>
                           @endif
                         </div>
-                        
+
                       {{--  </div>
                       </div> --}}
-                      {{-- inicio do card --}}         
+                      {{-- inicio do card --}}
                       @endfor
                     @endif
                   </div>
                   <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}">
                   <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Adicionar participante</a>
-                  
+
                 </div>
               </div>
               <hr>
@@ -419,13 +426,13 @@
                 <div class="col-md-6">
                   <button type="submit" formaction="{{route('trabalho.storeParcial')}}" class="btn btn-primary" style="width:100%;margin-bottom:10px">
                     {{ __('Salvar como Rascunho') }}
-                  </button>                  
-                </div>                
-                <div class="col-md-6">                  
+                  </button>
+                </div>
+                <div class="col-md-6">
                   <button type="submit" class="btn btn-success" style="width:100%">
                     {{ __('Enviar Projeto') }}
                   </button>
-                </div>                
+                </div>
               </div>
               @if (Auth()->user()->administradors != null)
                 <a href="{{ route('admin.editais') }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
@@ -443,7 +450,7 @@
 @section('javascript')
 <script type="text/javascript">
   $(function() {
-    var qtdLinhas = 1;   
+    var qtdLinhas = 1;
     // Coautores
     $('#addCoautor').click(function(e) {
       var countParticipante = document.getElementById('countParticipante');
@@ -451,7 +458,7 @@
         e.preventDefault();
         linha = montarLinhaInput();
         $('#participantes').append(linha);
-        setParticipanteDiv(parseInt(countParticipante.value) + 1);        
+        setParticipanteDiv(parseInt(countParticipante.value) + 1);
       }
     });
 
@@ -475,11 +482,11 @@
     // });
     $(document).on('click', '.delete', function() {
       var countParticipante = document.getElementById('countParticipante');
-      if (countParticipante.value >= 2) {        
+      if (countParticipante.value >= 2) {
         setParticipanteDiv(parseInt(countParticipante.value) - 1);
         $(this).closest('#novoParticipante').remove();
         return false;
-      } 
+      }
     });
     $(document).on('click', '.deletePlano', function() {
       if (qtdLinhas > 1) {
@@ -510,7 +517,7 @@
     $('#buttonNao').on('click', function(e) {
       e.preventDefault();
       $('#inputEtica').prop('disabled', true);
-      $('#inputJustificativa').prop('disabled', false);      
+      $('#inputJustificativa').prop('disabled', false);
       exibirErro('justificativa');
       //$('#anexoComitePreenchido').val("");
     });
@@ -521,17 +528,17 @@
     $(document).on('click', '.simPlano', function(e) {
         e.preventDefault();
         var plano = $(this).next().next()[0];
-        plano.style.display = 'block';   
+        plano.style.display = 'block';
     });
     $(document).on('click', '.naoPlano', function(e) {
       e.preventDefault();
         var plano = $(this).next()[0];
-        plano.style.display = 'none';        
+        plano.style.display = 'none';
     });
-   
+
   });
 
-  function exibirErro(campo) {    
+  function exibirErro(campo) {
     var botao = document.getElementById('botao');
     botao.value = "sim";
     var comiteErro = document.getElementById('comiteErro');
@@ -554,11 +561,11 @@
 
     if(anexoComitePreenchido.value == "sim"){
       $('#inputEtica').prop('disabled', false);
-      $('#inputJustificativa').prop('disabled', true);      
+      $('#inputJustificativa').prop('disabled', true);
       exibirErro('comite');
     } else if(anexoJustificativaPreenchido.value == "sim"){
       $('#inputEtica').prop('disabled', true);
-      $('#inputJustificativa').prop('disabled', false);      
+      $('#inputJustificativa').prop('disabled', false);
       exibirErro('justificativa');
     }
   }
@@ -583,7 +590,7 @@
               "<br><h4>Dados do participante</h4>" +
             "</div>"+
             "<div class='col-sm-3'>"+
-              
+
             "</div>"+
           "</div>"+
           "<div class="+"row"+">"+
@@ -612,17 +619,17 @@
                   "@foreach($funcaoParticipantes as $funcaoParticipante)"+
                     "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+
                   "@endforeach"+
-                  "@error('funcaoParticipante')" +
-                  "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
+                  "@error('funcaoParticipante'. $i)" +
+                  "<span class='invalid-feedback'" + " role='alert'" + " style='overflow: visible; display:block'>" +
                     "<strong>{{ $message }}</strong>" +
                   "</span>" +
                   "@enderror" +
               "</select>"+
             "</div>"+
-        "</div>" +        
+        "</div>" +
             "<h6 class='mb-1'>Possui plano de trabalho?</h6>"+
             "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 simPlano'"+">Sim</button>"+
-            "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 naoPlano'"+">Não</button>"+           
+            "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 naoPlano'"+">Não</button>"+
             "<div id="+"planoHabilitado"+" style="+"'display:none;'"+">" +
             "<h5>Dados do plano de trabalho</h5>" +
             "<div class="+"row"+">"+
@@ -652,7 +659,7 @@
                   "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
                     "<strong>{{ $message }}</strong>"+
                   "</span>"+
-                  "@enderror"+                
+                  "@enderror"+
                 "</div>"+
                 "<div class="+"col-sm-1"+">"+
                     "<a  class="+"delete"+">"+
@@ -661,73 +668,40 @@
                 "</div>"+
               "</div>"+
               "</div>"+
-              
-              "<a href='#' class="+"'btn btn-danger mt-2 mb-2 delete'"+" style='width:100%;margin-top:10px'"+">Remover participante</a>"+ 
+
+              "<a href='#' class="+"'btn btn-danger mt-2 mb-2 delete'"+" style='width:100%;margin-top:10px'"+">Remover participante</a>"+
             "</div>";
   }
 
-  // function montarLinhaInputPlanoTrabalho(){
 
-  //   return  "<div class="+"row"+">"+
-  //               "<div class="+"col-sm-4"+">"+
-  //                   "<label>Nome Completo</label>"+
-  //                   "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control emailCoautor'+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+" required>"+
-  //               "</div>"+
-  //               "<div class="+"col-sm-7" +">"+
-  //                 "<label for="+"nomeTrabalho"+">Anexo </label>"+
-
-  //                 "<div class="+"input-group"+">"+
-  //                   "<div class='input-group-prepend'>"+
-  //                     "<span class='input-group-text' id='inputGroupFileAddon01'>Selecione um arquivo:</span>"+
-  //                   "</div>"+
-  //                   "<div class='custom-file'>"+
-  //                     "<input type='file' class='custom-file-input' id='inputGroupFile01'"+
-  //                       "aria-describedby='inputGroupFileAddon01' name='anexoPlanoTrabalho[]'>"+
-  //                     "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
-  //                   "</div>"+
-  //                 "</div>"+
-  //                 "@error('arquivo')"+
-  //                 "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
-  //                   "<strong>{{ $message }}</strong>"+
-  //                 "</span>"+
-  //                 "@enderror"+
-  //                 "</div>"+                 
-  //                 "<div class="+"col-sm-1"+">"+
-  //                     "<a class="+"deletePlano"+">"+
-  //                       "<img src="+"/img/icons/user-times-solid.svg"+" style="+"width:25px;margin-top:35px"+">"+
-  //                     "</a>"+
-  //                 "</div>"+
-  //           "</div>";
-  // }
-
-  function areas() {    
+  function areas() {
     var grandeArea = $('#grandeArea').val();
     $.ajax({
         type: 'POST',
         url: '{{ route('area.consulta') }}',
         data: 'id='+grandeArea ,
-        headers: 
+        headers:
         {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: (dados) => {
-            
-        if (dados.length > 0) {  
-          if($('#oldArea').val() == null || $('#oldArea').val() == ""){        
+
+        if (dados.length > 0) {
+          if($('#oldArea').val() == null || $('#oldArea').val() == ""){
             var option = '<option selected disabled>-- Área --</option>';
           }
-          $.each(dados, function(i, obj) {            
-            if($('#oldArea').val() != null && $('#oldArea').val() == obj.id){                
+          $.each(dados, function(i, obj) {
+            if($('#oldArea').val() != null && $('#oldArea').val() == obj.id){
               option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
             }else{
               option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
             }
           })
-        } else {          
+        } else {
           var option = "<option selected disabled>-- Área --</option>";
         }
-        $('#area').html(option).show(); 
-        subareas();       
+        $('#area').html(option).show();
+        subareas();
       },
         error: (data) => {
             console.log(data);
@@ -742,7 +716,7 @@
         type: 'POST',
         url: '{{ route('subarea.consulta') }}',
         data: 'id='+area ,
-        headers: 
+        headers:
         {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -751,7 +725,7 @@
           if($('#oldSubArea').val() == null || $('#oldSubArea').val() == ""){
             var option = '<option selected disabled>-- Sub Área --</option>';
           }
-          $.each(dados, function(i, obj) {            
+          $.each(dados, function(i, obj) {
             if($('#oldSubArea').val() != null && $('#oldSubArea').val() == obj.id){
               option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
             }else{
@@ -771,7 +745,7 @@
 
   }
 
-  function exibirAnexoTemp(file){  
+  function exibirAnexoTemp(file){
     if(file.id === "anexoProjeto"){
       var anexoProjetoPreenchido = document.getElementById('anexoProjetoPreenchido');
       anexoProjetoPreenchido.value = "sim";
