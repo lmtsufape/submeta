@@ -392,13 +392,16 @@
                                     </a> --}}
                                   </div>                              
                                 </div>
-                              </div>
+                              </div>                              
                             </div>                  
                           </div> 
-                        
-                          </div>         
+                          
+                          </div>  
+                          @if($i != 0)       
+                            <a href='#' class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px'>Remover participante</a>
+                          @endif
                         </div>
-
+                        
                       {{--  </div>
                       </div> --}}
                       {{-- inicio do card --}}         
