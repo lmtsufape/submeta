@@ -10,6 +10,7 @@ use App\User;
 use App\Trabalho;
 use App\Proponente;
 use App\Evento;
+use Carbon\Carbon;
 
 class ProponenteController extends Controller
 {
@@ -24,23 +25,25 @@ class ProponenteController extends Controller
     public function editais(){
 
         $eventos = Evento::all();
-        return view('proponente.editais', ['eventos'=> $eventos] );
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+        return view('proponente.editais', ['eventos'=> $eventos, 'hoje'=>$hoje] );
     }
 
     public function store(Request $request){
         if (Auth()->user()->proponentes == null) {
-            
-            $validated = $request->validate([                   
+
+            $validated = $request->validate([
                 'cargo' => 'required',
                 'vinculo' => 'required',
-                'outro' => ['required_if:vinculo,Outro'],                
+                'outro' => ['required_if:vinculo,Outro'],
                 'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade,linkLattes'],
                 'titulacaoMaxima' => Rule::requiredIf( (isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo']=== 'Pós-doutorando')),
                 'anoTitulacao'=> ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
                 'anoTitulacao' => Rule::requiredIf( (isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando')),
                 'areaFormacao'=> ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
                 'areaFormacao' => Rule::requiredIf( (isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando')),
-                'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],            
+                'bolsistaProdutividade'=> ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],
                 'bolsistaProdutividade' => Rule::requiredIf( (isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando')),
                 'nivel' => ['required_if:bolsistaProdutividade,sim'],
                 //'nivel' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
@@ -58,17 +61,17 @@ class ProponenteController extends Controller
                 $proponente->vinculo = $request->vinculo;
                 $proponente->titulacaoMaxima = $request->titulacaoMaxima;
                 $proponente->anoTitulacao = $request->anoTitulacao;
-                $proponente->areaFormacao = $request->areaFormacao;            
+                $proponente->areaFormacao = $request->areaFormacao;
                 $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
                 $proponente->nivel = $request->nivel;
                 $proponente->linkLattes = $request->linkLattes;
                 $proponente->user_id = Auth::user()->id;
                 $proponente->save();
-                
-                $user = User::find(Auth()->user()->id); 
+
+                $user = User::find(Auth()->user()->id);
                 //$user->tipo = "proponente";
                 $user->save();
-        
+
                 $eventos = Evento::all();
                 return redirect( route('home'))->with(['mensagem' => 'Cadastro feito com sucesso! Você já pode criar projetos']);
             }
@@ -76,20 +79,22 @@ class ProponenteController extends Controller
             return redirect( route('proponente.create'))->with(['mensagem' => 'Você já é proponente!']);
         }
 
-        
+
     }
 
     public function projetosDoProponente() {
         $proponente = Proponente::where('user_id', Auth()->user()->id)->first();
 
         $projetos = Trabalho::where('proponente_id', $proponente->id)->get();
-        
+
         return view('proponente.projetos')->with(['projetos' => $projetos]);
     }
     public function projetosEdital($id) {
       $edital = Evento::find($id);
       $projetos = Trabalho::where('evento_id', '=', $id)->get();
+      $hoje = Carbon::today('America/Recife');
+      $hoje = $hoje->toDateString();
 
-      return view('proponente.projetosEdital')->with(['edital' => $edital, 'projetos' => $projetos]);
+      return view('proponente.projetosEdital')->with(['edital' => $edital, 'projetos' => $projetos, 'hoje'=>$hoje]);
     }
 }

@@ -7,15 +7,15 @@
   <div class="container" >
     <div class="row" >
       <div class="col-sm-12">
-          <h3>Editais</h3> 
+          <h3>Editais</h3>
       </div>
-      
+
     </div>
   </div>
   <hr>
     <table class="table table-bordered">
       <thead>
-        <tr>   
+        <tr>
           <th scope="col">Nome do Edital</th>
           <th scope="col">Inicio da Submissão</th>
           <th scope="col">Fim da Submissão</th>
@@ -43,15 +43,17 @@
             <td>
               <div class="btn-group dropright dropdown-options">
                   <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
+                       <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                   </a>
                   <div class="dropdown-menu">
                       <a href="{{ route('proponente.projetosEdital', ['id' => $evento->id]) }}" class="dropdown-item" style="text-align: center">
                         Projetos submetidos
                       </a>
-                      <a href="{{ route('trabalho.index', ['id' => $evento->id] )}}" class="dropdown-item" style="text-align: center">
-                        Criar projeto
-                      </a>
+                      @if($evento->inicioSubmissao <= $hoje && $hoje <= $evento->fimSubmissao)
+                        <a href="{{ route('trabalho.index', ['id' => $evento->id] )}}" class="dropdown-item" style="text-align: center">
+                          Criar projeto
+                        </a>
+                      @endif
                       {{-- <a href="" class="dropdown-item" style="text-align: center">
                         Visualizar resultado
                       </a> --}}
@@ -78,6 +80,6 @@
 
 @section('javascript')
 <script>
-  
+
 </script>
 @endsection
