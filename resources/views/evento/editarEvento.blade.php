@@ -100,95 +100,113 @@
         {{-- dataInicio | dataFim | inicioSubmissao | fimSubmissao --}}
         <div class="row justify-content-center">
 
-            {{-- Início da Submissão --}}
             <div class="col-sm-6">
                 <label for="inicioSubmissao" class="col-form-label">{{ __('Início da Submissão*:') }}</label>
-                <input value="{{$evento->inicioSubmissao}}" id="inicioSubmissao" type="date" class="form-control @error('inicioSubmissao') is-invalid @enderror" name="inicioSubmissao" value="{{ old('inicioSubmissao') }}" required autocomplete="inicioSubmissao" autofocus>
+                <input id="inicioSubmissao" type="date" class="form-control @error('inícioDaSubmissão') is-invalid @enderror" name="inícioDaSubmissão" value="{{ $evento->inicioSubmissao }}" required autocomplete="inícioDaSubmissão" autofocus>
 
-                @error('inicioSubmissao')
+                @error('inícioDaSubmissão')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                    <strong>
+                        @if ($message != null)
+                            @for ($i = 0; $i < 10; $i++) 
+                                @if ($i < 9)
+                                    {{ explode(" ", $message)[$i] }}
+                                @else 
+                                    {{ date('d/m/Y', strtotime(explode(" ", $message)[$i])) }}
+                                @endif
+                            @endfor
+                        @endif
+                    </strong>
                 </span>
                 @enderror
-            </div>{{-- end Início da Submissão --}}
-            {{-- Fim da submissão --}}
+            </div>
             <div class="col-sm-6">
                 <label for="fimSubmissao" class="col-form-label">{{ __('Fim da Submissão*:') }}</label>
-                <input value="{{$evento->fimSubmissao}}" id="fimSubmissao" type="date" class="form-control @error('fimSubmissao') is-invalid @enderror" name="fimSubmissao" value="{{ old('fimSubmissao') }}" required autocomplete="fimSubmissao" autofocus>
+                <input id="fimSubmissao" type="date" class="form-control @error('fimDaSubmissão') is-invalid @enderror" name="fimDaSubmissão" value="{{ $evento->fimSubmissao }}" required autocomplete="fimDaSubmissão" autofocus>
 
-                @error('fimSubmissao')
+                @error('fimDaSubmissão')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message . date('d/m/Y', strtotime(old('inicioSubmissao'))) . '.' }}</strong>
+                    <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-            </div>{{-- end Fim da submissão --}}
+            </div>
         </div>{{-- end dataInicio | dataFim | inicioSubmissao | fimSubmissao --}}
+
         <div class="row justify-content-center">
           <div class="col-sm-6">
-              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação*:') }}</label>
-              <input value="{{$evento->inicioRevisao}}" id="inicioRevisao" type="date" class="form-control @error('inicioRevisao') is-invalid @enderror" name="inicioRevisao" value="{{ old('inicioRevisao') }}" required autocomplete="inicioRevisao" autofocus>
+              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Revisão*:') }}</label>
+              <input id="inicioRevisao" type="date" class="form-control @error('inícioDaRevisão') is-invalid @enderror" name="inícioDaRevisão" value="{{ $evento->inicioRevisao }}" required autocomplete="inícioDaRevisão" autofocus>
 
-              @error('inicioRevisao')
+              @error('inícioDaRevisão')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                  <strong>
+                    @if ($message != null)
+                        @for ($i = 0; $i < 10; $i++) 
+                            @if ($i < 9)
+                                {{ explode(" ", $message)[$i] }}
+                            @else 
+                                {{ date('d/m/Y', strtotime(explode(" ", $message)[$i])) }}
+                            @endif
+                        @endfor
+                    @endif
+                    </strong>
               </span>
               @enderror
           </div>
           <div class="col-sm-6">
-              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação*:') }}</label>
-              <input value="{{$evento->fimRevisao}}" id="fimRevisao" type="date" class="form-control @error('fimRevisao') is-invalid @enderror" name="fimRevisao" value="{{ old('fimRevisao') }}" required autocomplete="fimRevisao" autofocus>
+              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Revisão*:') }}</label>
+              <input id="fimRevisao" type="date" class="form-control @error('fimDaRevisão') is-invalid @enderror" name="fimDaRevisão" value="{{ $evento->fimRevisao }}" required autocomplete="fimDaRevisão" autofocus>
 
-              @error('fimRevisao')
+              @error('fimDaRevisão')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime( old('inicioRevisao') )) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
         </div>
-        
-        {{-- inicioRevisao | fimRevisao | inicioResultado | fimResultado--}}
-        <div class="row justify-content-left">
-          <div class="col-sm-6">
-              <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar*:') }}</label>
-              <input id="resultado_preliminar" value="{{$evento->resultado_preliminar}}" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ old('resultado_preliminar') }}" required autocomplete="resultado_preliminar" autofocus>
 
-              @error('resultado_preliminar')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
-          </div>
+        <div class="row justify-content-left">
           <div class="col-sm-6">
               <label for="inicio_recurso" class="col-form-label">{{ __('Início do recurso*:') }}</label>
-              <input id="inicio_recurso" type="date" value="{{ $evento->inicio_recurso }}" class="form-control @error('inicio_recurso') is-invalid @enderror" name="inicio_recurso" value="{{ old('inicio_recurso') }}" required autocomplete="inicio_recurso" autofocus>
+              <input id="inicio_recurso" type="date" class="form-control @error('início_do_recurso') is-invalid @enderror" name="início_do_recurso" value="{{ $evento->inicio_recurso }}" required autocomplete="início_do_recurso" autofocus>
 
-              @error('inicio_recurso')
+              @error('início_do_recurso')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
-          
-        </div>
-        <div class="row justify-content-left">
           <div class="col-sm-6">
-              <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso*:') }}</label>
-              <input id="fim_recurso" type="date" value="{{ $evento->fim_recurso }}" class="form-control @error('fim_recurso') is-invalid @enderror" name="fim_recurso" value="{{ old('fim_recurso') }}" required autocomplete="resultado" autofocus>
+            <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso*:') }}</label>
+            <input id="fim_recurso" type="date" class="form-control @error('fim_do_recurso') is-invalid @enderror" name="fim_do_recurso" value="{{ $evento->fim_recurso }}" required autocomplete="fim_do_recurso" autofocus>
 
-              @error('fim_recurso')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
+            @error('fim_do_recurso')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
           </div>
+        </div>
+
+        <div class="row justify-content-left">
+            <div class="col-sm-6">
+                <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar*:') }}</label>
+                <input id="resultado_preliminar" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ $evento->resultado_preliminar }}" required autocomplete="resultado_preliminar" autofocus>
+
+                @error('resultado_preliminar')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div> 
           
           <div class="col-sm-6">
               <label for="resultado_final" class="col-form-label">{{ __('Resultado Final*:') }}</label>
-              <input id="resultado_final" type="date" value="{{ $evento->resultado_final }}" class="form-control @error('resultado_final') is-invalid @enderror" name="resultado_final" value="{{ old('resultado_final') }}" required autocomplete="resultado" autofocus>
+              <input id="resultado_final" type="date" class="form-control @error('resultado_final') is-invalid @enderror" name="resultado_final" value="{{ $evento->resultado_final }}" required autocomplete="resultado" autofocus>
 
               @error('resultado_final')
               <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                  <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>

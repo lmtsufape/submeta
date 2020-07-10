@@ -75,8 +75,7 @@ class AdministradorController extends Controller
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'celular' => ['required', 'string', 'telefone'],
-                'senha' => 'required',
-                'confirmar_senha' => 'required',
+                'senha' => ['required', 'string', 'min:8', 'confirmed'],
                 'cpf' => ['required', 'cpf', 'unique:users'],
             ]);
         } else {
@@ -86,8 +85,7 @@ class AdministradorController extends Controller
             'tipo' => ['required'],
             'cpf' => ['required', 'cpf', 'unique:users'],
             'celular' => ['required', 'string', 'telefone'],
-            'senha' => 'required',
-            'confirmar_senha' => 'required',
+            'senha' => ['required', 'string', 'min:8', 'confirmed'],
             'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
             'instituicaoSelect' => ['required_without:instituicao'],
             'cargo' => ['required'],
@@ -109,10 +107,6 @@ class AdministradorController extends Controller
             'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
             'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
             ]);
-        }
-
-        if (!($request->senha === $request->confirmar_senha)) {
-            return redirect()->back()->withErrors(['senha' => 'Senhas diferentes']);
         }
         
         $user = new User();
@@ -312,23 +306,37 @@ class AdministradorController extends Controller
 
     public function destroy($id) {
         $user = User::find($id);
-
-        $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
-        $avaliador = Avaliador::where('user_id', '=', $id)->first();
-        $proponente = Proponente::where('user_id', '=', $id)->first();
-        $participante = Participante::where('user_id', '=', $id)->first();
+        
+        $adminResp = AdministradorResponsavel::where('user_id', $id)->first();
+        $coordenador = CoordenadorComissao::where('user_id', $id)->first();
+        $avaliador = Avaliador::where('user_id', $id)->first();
+        $proponente = Proponente::where('user_id', $id)->first();
+        $participantes = Participante::where('user_id', $id)->get();
 
         if (!(is_null($adminResp))) {
             $adminResp->delete();
-        } else if (!(is_null($avaliador))) {
-            $avaliador->delete();
-        } else if (!(is_null($proponente))) {
-            $proponente->delete();
-        } else if (!(is_null($participante))) {
-            $participante->delete();
         }
-
+        if (!(is_null($coordenador))) {
+            $evento = Evento::where('coordenadorId', $coordenador->id)->get();
+            if (isset($evento) && $evento->count() > 0) {
+                return redirect()->back()->withErrors(['error' => 'Esse coordenador está ligado a um edital']);
+            } else {
+                $coordenador->delete();
+            }
+        }
+        if (!(is_null($avaliador))) {
+            $avaliador->delete();
+        }
+        
+        if (!(is_null($proponente))) {
+            $proponente->delete();
+        }
+        if (isset($participantes) && $participantes->count() > 0) {
+            return redirect()->back()->withErrors(['error' => 'Esse participante está ligado a um projeto que só pode ser deletado por seu proponente']);
+        }
+    
         $user->delete();
+
         return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário deletado com sucesso']);
     }
 

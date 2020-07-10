@@ -99,7 +99,7 @@
                         @guest
                             <a href="{{ route('coord.home') }}" class="btn navbar-text negrito" style="color: rgb(0, 140, 255);">Editais</a>
                             <a href="#" class="btn dropdown-toggle negrito" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 140, 255);">Login</a>
-                            <div class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: 380px;">
+                            <div id="login-dropdown-menu" class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: 380px;">
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div style="padding: 20px;">
@@ -128,7 +128,7 @@
                                         </div>
                                         <div style="position: relative; top: 40px;">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }} >
             
                                                 <label class="form-check-label" for="remember">
                                                     {{ __('Lembrar Senha') }}
@@ -309,5 +309,10 @@
           </div>
       </div>
   </div>
+  <script>
+      $('#login-dropdown-menu').click(function(event){
+        event.stopPropagation();
+    });
+  </script>
 </body>
 </html>

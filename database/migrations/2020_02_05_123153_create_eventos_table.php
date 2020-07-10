@@ -36,6 +36,7 @@ class CreateEventosTable extends Migration
             $table->string('pdfEdital')->nullable();
             $table->string('modeloDocumento')->nullable();
             $table->string('anexosStatus')->nullable();
+            $table->softDeletes();
             
         });
     }

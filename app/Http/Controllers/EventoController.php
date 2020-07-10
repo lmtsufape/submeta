@@ -130,14 +130,14 @@ class EventoController extends Controller
           'natureza'            => ['required'],
           'coordenador_id'      => ['required'],
           #----------------------------------------------
-          'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
-          'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-          'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
-          'fimRevisao'          => ['required', 'date', 'after:inicioRevisao', 'after:fimSubmissao'],
-          'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
-          'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
-          'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
-          'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
+          'inícioDaSubmissão'   => ['required', 'date', 'after:' . $yesterday],
+          'fimDaSubmissão'      => ['required', 'date', 'after_or_equal:inícioDaSubmissão'],
+          'inícioDaRevisão'     => ['required', 'date', 'after:' . $yesterday],
+          'fimDaRevisão'        => ['required', 'date', 'after:inícioDaRevisão', 'after:fimDaSubmissão'],
+          'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimDaRevisão'],
+          'início_do_recurso'   => ['required', 'date', 'after_or_equal:resultado_preliminar'],
+          'fim_do_recurso'      => ['required', 'date', 'after:início_do_recurso'],
+          'resultado_final'     => ['required', 'date', 'after:fim_do_recurso'],
           'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
           //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
@@ -147,12 +147,12 @@ class EventoController extends Controller
         $evento['descricao']           = $request->descricao;
         $evento['tipo']                = $request->tipo;
         $evento['natureza_id']         = $request->natureza;
-        $evento['inicioSubmissao']     = $request->inicioSubmissao;
-        $evento['fimSubmissao']        = $request->fimSubmissao;
-        $evento['inicioRevisao']       = $request->inicioRevisao;
-        $evento['fimRevisao']          = $request->fimRevisao;
-        $evento['inicio_recurso']      = $request->inicio_recurso;
-        $evento['fim_recurso']         = $request->fim_recurso;
+        $evento['inicioSubmissao']     = $request->inícioDaSubmissão;
+        $evento['fimSubmissao']        = $request->fimDaSubmissão;
+        $evento['inicioRevisao']       = $request->inícioDaRevisão;
+        $evento['fimRevisao']          = $request->fimDaRevisão;
+        $evento['inicio_recurso']      = $request->início_do_recurso;
+        $evento['fim_recurso']         = $request->fim_do_recurso;
         $evento['resultado_preliminar']= $request->resultado_preliminar;
         $evento['resultado_final']     = $request->resultado_final;
         $evento['coordenadorId']       = $request->coordenador_id;

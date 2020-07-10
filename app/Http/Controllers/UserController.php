@@ -61,7 +61,7 @@ class UserController extends Controller
                 'email' => 'required',
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
-                'celular' => 'required',
+                'celular' => 'required|telefone',
                 'cpf' => 'required|cpf',
             ]);
         } else {
@@ -69,7 +69,7 @@ class UserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'cpf' => ['required', 'cpf'],
-                'celular' => ['required', 'string'],
+                'celular' => ['required', 'string', 'telefone'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'cargo' => ['required'],
