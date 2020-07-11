@@ -93,7 +93,7 @@ class TrabalhoController extends Controller
       //   return view('proponente.cadastro');
       // }
       //$trabalho->proponentes()->save($proponente);
-
+      //dd($proponente);
       $trabalho = "trabalho";
       if($evento->inicioSubmissao > $mytime){
         if($mytime >= $evento->fimSubmissao){
@@ -131,7 +131,7 @@ class TrabalhoController extends Controller
           'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2048'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
         ]);
-        dd($request->all());
+
         if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
           return $this->validarAnexosRascunho($request, $trabalho);
         }
@@ -680,7 +680,8 @@ class TrabalhoController extends Controller
           $userParticipante = User::where('email', $value)->first();
           if($userParticipante == null){
             $passwordTemporario = Str::random(8);
-            Mail::to($value)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, '  ', 'Participante', $evento->nome, $passwordTemporario));
+            $subject = "Participante de Projeto";
+            Mail::to($value)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, '  ', 'Participante', $evento->nome, $passwordTemporario, $sube));
             $usuario = User::create([
               'email' => $value,
               'password' => bcrypt($passwordTemporario),
@@ -707,7 +708,7 @@ class TrabalhoController extends Controller
             $subject = "Participante de Projeto";
             $email = $value;
             Mail::to($email)
-                  ->send(new SubmissaoTrabalho($userParticipante, $subject));
+                  ->send(new SubmissaoTrabalho($userParticipante, $subject, $evento, $trabalho));
           }
 
           $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
@@ -1044,4 +1045,3 @@ class TrabalhoController extends Controller
     }
 
 }
-  
