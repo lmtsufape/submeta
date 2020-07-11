@@ -68,7 +68,7 @@ return [
         'numeric' => ':Attribute deve ser :size.',
         'file'    => ':Attribute deve ter :size kilobytes.',
         'string'  => ':Attribute deve ter :size caracteres.',
-        'array'   => ':Attribute deve conter :size itens.',
+        'array'   => 'Preencha todos os campos.',
     ],
     'string'               => ':Attribute deve ser uma string',
     'timezone'             => ':Attribute deve ser uma timezone válida.',

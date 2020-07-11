@@ -8,9 +8,9 @@
     <div class="row justify-content-center titulo">
         <div class="col-sm-12">
             <div class="row">
-                
+
                 <h3>Editais</h3>
-                
+
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                                         @can('isCoordenador', $evento)
                                             <div class="btn-group dropright dropdown-options">
                                                 <a id="options" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                     <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
+                                                     <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                                                 </a>
                                                 <div class="dropdown-menu">
                                                     <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item">
@@ -68,21 +68,23 @@
 
                         </div>
                     </div>
-                    <p class="card-text">                        
+                    <p class="card-text">
                         <strong>Submissão:</strong> {{date('d/m/Y',strtotime($evento->inicioSubmissao))}} - {{date('d/m/Y',strtotime($evento->fimSubmissao))}}<br>
                         <strong>Revisão:</strong> {{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}<br>
                         <strong>Resultado Preliminar:</strong> {{date('d/m/Y',strtotime($evento->resultado_preliminar))}}<br>
                         <strong>Recurso:</strong> {{date('d/m/Y',strtotime($evento->inicio_recurso))}} - {{date('d/m/Y',strtotime($evento->fim_recurso))}}<br>
                         <strong>Resultado Final:</strong> {{date('d/m/Y',strtotime($evento->resultado_final))}}<br>
                     </p>
-                    
+
                     <p>
                         @if (Auth::check())
                             <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
                             @if(Auth::user()->proponentes == null)
                               <br><a href="{{ route('proponente.create' )}}" class="visualizarEvento">Criar projeto</a>
                             @else
-                              <br><a href="{{ route('trabalho.index', ['id' => $evento->id] )}}" class="visualizarEvento">Criar projeto</a>
+                              @if($evento->inicioSubmissao <= $hoje && $hoje <= $evento->fimSubmissao)
+                                <br><a href="{{ route('trabalho.index', ['id' => $evento->id] )}}" class="visualizarEvento">Criar projeto</a>
+                              @endif
                             @endif
                         @else
                             <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
