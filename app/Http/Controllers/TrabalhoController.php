@@ -390,7 +390,7 @@ class TrabalhoController extends Controller
       ]);
 
       if ($validator->fails()) {
-        dd('asdf');
+        //dd('asdf');
         return back()->withErrors($validator)->withInput();
       }
       return 1;
