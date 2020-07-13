@@ -24,7 +24,7 @@
           <div id="editais">
                 <ul class="col-sm-12 list-editais flexcroll" style="list-style-type: none;">
                 @foreach ($eventos as $evento)
-                    @if (\Carbon\Carbon::create($evento->fimSubmissao) > \Carbon\Carbon::create($hoje))
+                    @if (\Carbon\Carbon::create($evento->fimSubmissao) >= \Carbon\Carbon::create($hoje))
                         <li class="col-sm-12 li-editais">
                             <div class="container">
                                 <div class="row">
