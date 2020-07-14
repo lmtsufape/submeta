@@ -887,8 +887,10 @@ class TrabalhoController extends Controller
     public function projetosDoEdital($id) {
       $edital = Evento::find($id);
       $projetos = Trabalho::where('evento_id', '=', $id)->get();
+      $hoje = Carbon::today('America/Recife');
+      $hoje = $hoje->toDateString();
 
-      return view('projeto.index')->with(['edital' => $edital, 'projetos' => $projetos]);
+      return view('proponente.projetosEdital')->with(['edital' => $edital, 'projetos' => $projetos, 'hoje'=>$hoje]);
     }
 
     public function baixarAnexoProjeto($id) {
@@ -967,6 +969,4 @@ class TrabalhoController extends Controller
       }
       return abort(404);
     }
-
 }
-                                                                                                               
