@@ -11,6 +11,7 @@ use App\Participante;
 use App\Proponente;
 use App\Natureza;
 use App\Trabalho;
+use App\FuncaoParticipantes;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Evento;
@@ -44,15 +45,26 @@ class AdministradorController extends Controller
     }
 
     public function pareceres(Request $request){
-        
+
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos;
+        $trabalhos = $evento->trabalhos->where('status', 'Submetido');;
 
         return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
     }
+    public function analisar(Request $request){
+
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $trabalhos = $evento->trabalhos->where('status', 'Submetido');
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        // $participantes = Participante::where('trabalho_id', $id)->get();
+        // $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
+        // $participantes = User::whereIn('id', $participantesUsersIds)->get();
+
+        return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes]);
+    }
 
     public function visualizarParecer(Request $request){
-        
+
         $avaliador = Avaliador::find($request->avaliador_id);
         $trabalho = $avaliador->trabalhos->where('id', $request->trabalho_id)->first();
         $parecer = $avaliador->trabalhos->where('id', $request->trabalho_id)->first()->pivot;
@@ -61,12 +73,12 @@ class AdministradorController extends Controller
         return view('administrador.visualizarParecer')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador]);
     }
 
-    public function create() {    
+    public function create() {
         return view('administrador.novo_user');
     }
 
     public function salvar(Request $request) {
-        
+
         if ($request->tipo != "proponente") {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
@@ -103,9 +115,9 @@ class AdministradorController extends Controller
             'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'nivel' => ['required_if:bolsistaProdutividade,sim'],
             //'nivel' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
-            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
-                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
-            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
+            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
+                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
+            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
             'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
             'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
             ]);
@@ -114,7 +126,7 @@ class AdministradorController extends Controller
         if (!($request->senha === $request->confirmar_senha)) {
             return redirect()->back()->withErrors(['senha' => 'Senhas diferentes']);
         }
-        
+
         $user = new User();
         $user->name = $request->name;
         $user->tipo = $request->tipo;
@@ -128,10 +140,10 @@ class AdministradorController extends Controller
             $user->instituicao = $request->instituicaoSelect;
         }
         $user->save();
-        
+
 
         switch ($request->tipo) {
-            case "administradorResponsavel": 
+            case "administradorResponsavel":
                 $adminResp = new AdministradorResponsavel();
                 $adminResp->user_id = $user->id;
                 $adminResp->save();
@@ -141,12 +153,12 @@ class AdministradorController extends Controller
                 $coordenador->user_id = $user->id;
                 $coordenador->save();
                 break;
-            case "avaliador": 
+            case "avaliador":
                 $avaliador = new Avaliador();
                 $avaliador->user_id = $user->id;
                 $avaliador->save();
                 break;
-            case "proponente": 
+            case "proponente":
                 $proponente = new Proponente();
                 if ($request->SIAPE != null) {
                     $proponente->SIAPE = $request->SIAPE;
@@ -170,7 +182,7 @@ class AdministradorController extends Controller
 
                 $proponente->user_id = $user->id;
                 $proponente->save();
-                break;               
+                break;
             case "participante":
                 $participante = new Participante();
                 $participante->user_id = $user->id;
@@ -197,7 +209,7 @@ class AdministradorController extends Controller
 
     public function update(Request $request, $id) {
         $user = User::find($id);
-        
+
         if ($request->tipo != "proponente") {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
@@ -230,14 +242,14 @@ class AdministradorController extends Controller
             'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'nivel' => ['required_if:bolsistaProdutividade,sim'],
             //'nivel' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
-            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
-                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
-            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
+            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
+                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
+            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
             'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
             'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
             ]);
         }
-        
+
         // if (!(Hash::check($request->senha_atual, $user->password))) {
         //     return redirect()->back()->withErrors(['senha_atual' => 'Senha atual não correspondente']);
         // }
@@ -247,7 +259,7 @@ class AdministradorController extends Controller
         // }
 
         switch ($request->tipo) {
-            case "administradorResponsavel": 
+            case "administradorResponsavel":
                 $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
                 $adminResp->user_id = $user->id;
                 $adminResp->update();
@@ -257,12 +269,12 @@ class AdministradorController extends Controller
                 $coordenador->user_id = $user->id;
                 $coordenador->update();
                 break;
-            case "avaliador": 
+            case "avaliador":
                 $avaliador = Avaliador::where('user_id', '=', $id)->first();
                 $avaliador->user_id = $user->id;
                 $avaliador->update();
                 break;
-            case "proponente": 
+            case "proponente":
                 $proponente = Proponente::where('user_id', '=', $id)->first();
                 if ($request->SIAPE != null) {
                     $proponente->SIAPE = $request->SIAPE;
@@ -348,25 +360,25 @@ class AdministradorController extends Controller
         //dd($avaliadores);
         return view('administrador.selecionarAvaliadores', [
                                                             'evento'=> $evento,
-                                                            'avaliadores'=>$avaliadores, 
+                                                            'avaliadores'=>$avaliadores,
                                                             'avalSelecionados'=>$avalSelecionados
                                                            ]);
     }
     public function projetos(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos;
-        
+        $trabalhos = $evento->trabalhos->where('status', 'Submetido');
+
         $avaliadores = $evento->avaliadors;
         foreach ($trabalhos as $key => $trabalho) {
 
-            
+
             $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
             $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
             $trabalho->aval = $avalProjeto;
 
         }
-        
+
         //dd($avaliadores->teste);
 
 
@@ -459,11 +471,11 @@ class AdministradorController extends Controller
               'tipo' => 'avaliador',
             ]);
         }
-        
+
 
         $avaliador = new Avaliador();
         $avaliador->save();
-        $avaliador->user()->associate($user);        
+        $avaliador->user()->associate($user);
         $avaliador->eventos()->attach($evento);
 
         $user->save();
