@@ -106,6 +106,7 @@
                   @else
                   value=""
                   @endif >
+                  <small>Exemplo: <b>http://lattes.cnpq.br/8363536830656923</b></small>
 
                   @error('linkLattesEstudante')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -129,6 +130,7 @@
                   <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo"
                           value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}">
 
+                  <small>Exemplo: <b>http://dgp.cnpq.br/dgp/espelhogrupo/228363</b></small>
                   @error('linkGrupo')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
