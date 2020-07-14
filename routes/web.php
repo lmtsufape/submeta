@@ -48,12 +48,12 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'              )->name('enviarParecer')->middleware('auth');
   Route::get('/Resposta', 'AvaliadorController@conviteResposta'              )->name('conviteResposta')->middleware('auth');
 });
-  
+
 
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
 
   // ######## rotas de teste #####################################
-  
+
   Route::get('/coordenador/evento/detalhes',         'EventoController@detalhes'          )->name('coord.detalhesEvento');
 
   //####### Visualizar trabalhos do usuário ######################
@@ -78,7 +78,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/area/comissao',         'EventoController@listComissaoTrabalhos'        )->name('area.comissao');
 
   //###########  Deletar Comissão ###################################
-  Route::delete('/evento/apagar-comissao/','ComissaoController@destroy'                   )->name('delete.comissao'); 
+  Route::delete('/evento/apagar-comissao/','ComissaoController@destroy'                   )->name('delete.comissao');
   Route::post(  '/evento/numTrabalhos',   'EventoController@numTrabalhos'                 )->name('trabalho.numTrabalhos');
 
   //##########  Area  ###########################################
@@ -86,7 +86,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //########### Deletar Area ######################################
   Route::delete('/area/deletar/{id}',     'AreaController@destroy'                        )->name('area.delete');
-  
+
   //#########  Deletar Revisores  ##############################
   Route::delete(  '/revisor/apagar',      'RevisorController@destroy'                     )->name('revisor.delete');
 
@@ -152,6 +152,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
+  Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
 });
 
 Route::prefix('naturezas')->group(function(){
@@ -174,7 +175,7 @@ Route::prefix('naturezas')->group(function(){
   Route::get('/grande-area/editar/{id}',    'GrandeAreaController@edit'            )->name('grandearea.editar')->middleware('checkAdministrador');
   Route::post('/grande-area/atualizar/{id}','GrandeAreaController@update'          )->name('grandearea.atualizar')->middleware('checkAdministrador');
   Route::post('/grande-area/excluir/{id}',  'GrandeAreaController@destroy'         )->name('grandearea.deletar')->middleware('checkAdministrador');
-  
+
   //#### Rotas das areas, id's de nova e salvar são os ids da grande área a qual a nova área pertence ####
   Route::get('/areas',                  'AreaController@index'                      )->name('area.index')->middleware('checkAdministrador');
   Route::get('/{id}/area/nova',         'AreaController@create'                     )->name('area.criar')->middleware('checkAdministrador');
@@ -184,7 +185,7 @@ Route::prefix('naturezas')->group(function(){
   Route::post('/area/atualizar/{id}',   'AreaController@update'                     )->name('area.atualizar')->middleware('checkAdministrador');
   Route::post('/area/excluir/{id}',     'AreaController@destroy'                    )->name('area.deletar')->middleware('checkAdministrador');
   Route::post('/areas/',                 'AreaController@consulta'                   )->name('area.consulta');
-      
+
   //### Rotas das subareas, id's de nova e salvar são os ids da área a qual a nova subárea pertence #####
   Route::get('/subareas',                 'SubAreaController@index'                   )->name('subarea.index')->middleware('checkAdministrador');
   Route::get('/{id}/subarea/nova',        'SubAreaController@create'                  )->name('subarea.criar')->middleware('checkAdministrador');
@@ -196,7 +197,7 @@ Route::prefix('naturezas')->group(function(){
   Route::post('/subarea/',                 'SubAreaController@consulta'                )->name('subarea.consulta');
 
 });
- 
+
 //############ Evento ##############################################
 Route::prefix('evento')->name('evento.')->group(function(){
   Route::get(    '/criar',          'EventoController@create'                           )->name('criar')->middleware('checkAdministrador');
@@ -208,7 +209,7 @@ Route::prefix('evento')->name('evento.')->group(function(){
   Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update')->middleware('checkAdministrador');
   Route::post(   '/setResumo',      'EventoController@setResumo'                        )->name('setResumo')->middleware('checkAdministrador');
   Route::post(   '/setFoto',        'EventoController@setFotoEvento'                    )->name('setFotoEvento')->middleware('checkAdministrador');
-  
+
 });
 
 //########## Rotas de administrador responsavel (Reitor ou pro-reitor)########
@@ -238,4 +239,3 @@ Route::prefix('coordenador')->name('coordenador.')->group(function(){
   Route::post('/atribuirAvaliadorTrabalho','TrabalhoController@atribuirAvaliadorTrabalho'       )->name('atribuirAvaliadorTrabalho');
   Route::post('/atribuir',        'TrabalhoController@atribuir'                                 )->name('atribuir');
 });
-

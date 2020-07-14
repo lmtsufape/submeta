@@ -3,18 +3,18 @@
 @section('content')
 
 <div class="container" style="margin-top: 100px;">
-  
+
 
   <div class="container" >
     <div class="row justify-content-center d-flex align-items-center" >
       {{-- <div class="col-md-12"> --}}
-         <h3>Lista  de Projetos do Edital: {{ $evento->nome }} </h3>         
+         <h3>Lista  de Projetos do Edital: {{ $evento->nome }} </h3>
       {{-- </div> --}}
 
     </div>
     <div class="row justify-content-center d-flex align-items-center" >
       {{-- <div class="col-md-12"> --}}
-         <h5>Total:  </h5>         
+         <h5>Total:  </h5>
       {{-- </div> --}}
 
     </div>
@@ -26,7 +26,7 @@
   <hr>
   <table class="table table-bordered">
     <thead>
-      <tr>   
+      <tr>
         <th scope="col">Nome do Projeto</th>
         <th scope="col">Área</th>
         <th scope="col">Proponente</th>
@@ -37,7 +37,7 @@
       @foreach ($trabalhos as $trabalho)
         <tr>
           <td>{{ $trabalho->titulo}}</td>
-          <td>{{ $trabalho->area->nome}}</td>
+          <td>{{ App\Area::find($trabalho->area_id)->nome}}</td>
           <td>{{ $trabalho->proponente->user->name }}</td>
           <td style="text-align:center">
               <button type="button" class="btn btn-primary" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModalCenter{{ $trabalho->id }}">
@@ -61,10 +61,10 @@
                         <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                         <div class="form-group">
                           <label for="exampleFormControlSelect2">Example multiple select</label>
-                          <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2">              
-                            @foreach ($trabalho->aval as $avaliador)                
-                              <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} (@if(is_null($avaliador->area))Indefinida)@else ({{ $avaliador->area->nome }}) @endif </option>
-                            @endforeach     
+                          <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2">
+                            @foreach ($trabalho->aval as $avaliador)
+                              <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{$avaliador->area->nome ?? 'Indefinida'}}) </option>
+                            @endforeach
                           </select>
                           <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
                         </div>
@@ -81,21 +81,21 @@
               </div>
           </td>
         </tr>
-      @endforeach      
+      @endforeach
     </tbody>
   </table>
-  
+
   <div class="container" >
     <div class="row justify-content-center d-flex align-items-center" >
-      
-        <h3>Status dos Projetos em Avaliação: {{ $evento->nome }} </h3> 
+
+        <h3>Status dos Projetos em Avaliação: {{ $evento->nome }} </h3>
 
     </div>
   </div>
   <hr>
   <table class="table table-bordered">
     <thead>
-      <tr>   
+      <tr>
         <th scope="col">Nome do Usuário</th>
         <th scope="col">E-mail</th>
         <th scope="col">Status</th>
@@ -116,15 +116,15 @@
           <td>{{ $contador }} / {{ $avaliador->trabalhos->where('evento_id', $evento->id)->count() }}</td>
           <td style="text-align:center"> ...</td>
         </tr>
-      @endforeach      
+      @endforeach
     </tbody>
   </table>
-  
+
 </div>
 
 
 <!-- Button trigger modal -->
-      
+
 
 
 

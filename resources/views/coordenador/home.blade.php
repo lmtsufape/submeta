@@ -79,11 +79,11 @@
                     <p>
                         @if (Auth::check())
                             <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" class="visualizarEvento">Visualizar edital</a>
-                            @if(Auth::user()->proponentes == null)
-                              <br><a href="{{ route('proponente.create' )}}" class="visualizarEvento">Criar projeto</a>
-                            @else
-                              @if($evento->inicioSubmissao <= $hoje && $hoje <= $evento->fimSubmissao)
-                                <br><a href="{{ route('trabalho.index', ['id' => $evento->id] )}}" class="visualizarEvento">Criar projeto</a>
+                            @if($evento->inicioSubmissao <= $hoje && $hoje <= $evento->fimSubmissao)
+                              @if(Auth::user()->proponentes == null)
+                                <br><a href="{{ route('proponente.create' )}}" class="visualizarEvento">Criar projeto</a>
+                              @else
+                                  <br><a href="{{ route('trabalho.index', ['id' => $evento->id] )}}" class="visualizarEvento">Criar projeto</a>
                               @endif
                             @endif
                         @else
