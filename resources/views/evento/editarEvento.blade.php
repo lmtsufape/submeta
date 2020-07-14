@@ -239,9 +239,11 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="modeloDocumento">Arquivo com os modelos de documentos do edital:</label>
-                    <a href="{{route('download', ['file' => $evento->modeloDocumento])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
+                    @if ($evento->modeloDocumento != null) 
+                        <a href="{{route('download', ['file' => $evento->modeloDocumento])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
+                    @endif
                     <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
                     <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('modeloDocumento')

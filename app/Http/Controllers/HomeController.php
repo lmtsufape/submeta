@@ -51,6 +51,9 @@ class HomeController extends Controller
     }
 
     public function downloadArquivo(Request $request){
-      return Storage::download($request->file);
+      if (Storage::disk()->exists($request->file)) {
+        return Storage::download($request->file);
+      }
+      return abort(404);
   	}
 }
