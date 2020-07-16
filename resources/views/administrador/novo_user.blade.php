@@ -114,11 +114,95 @@
 
             <div class="col-md-4">
                 <label for="password-confirm" class="col-form-label">{{ __('Confirme a Senha*') }}</label>
-                <input id="password-confirm" type="password" class="form-control @error('senha_confirm') is-invalid @enderror" name="senha_confirm" required autocomplete="new-password">
+                <input id="password-confirm" type="password" class="form-control @error('senha_confirmation') is-invalid @enderror" name="senha_confirmation" required autocomplete="new-password">
             </div>
 
+            <div id="divEditais" class="col-md-3" @if ( old('edital') != null) style="display: block; border: none;" @else style="display: none; border: none;" @endif>
+                <label for="edital" class="col-form-label">{{ __('Edital*') }}</label>
+                <select id="edital" name="edital" class="form-control @error('edital') is-invalid @enderror" onchange="projetosTeste()">
+                    <option value="" disabled selected hidden>-- Edital --</option>
+                    @if ( old('edital') != null)
+                        @foreach ($editais as $edital)
+                            <option @if( old('edital') == $edital->id ) selected @endif value="{{ $edital->id }}">{{ $edital->nome }}</option>
+                        @endforeach
+                    @else 
+                        @foreach ($editais as $edital)
+                            <option value="{{ $edital->id }}">{{ $edital->nome }}</option>
+                        @endforeach
+                    @endif
+                </select>
+
+                @error('edital')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div id="divProjetos" class="col-md-3" @if(old('projeto') != null) style="display: block; border: none;" @else style="display: none; border: none;" @endif>
+                <label for="projeto" class="col-form-label">{{ __('Projeto*') }}</label>
+                <select id="projeto" name="projeto" class="form-control @error('projeto') is-invalid @enderror" onchange="">
+                    @if(old('projeto') != null)
+                        @foreach ($projetos as $projeto)
+                            <option @if(old('projeto') == $projeto->id) selected @endif value="{{ $projeto->id }}">{{ $projeto->titulo }}</option>
+                        @endforeach
+                    @else
+                        <option value="" disabled selected>-- Projeto --</option>
+                    @endif
+                </select>
+
+                @error('projeto')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div id="divAreas" class="col-md-3" @if(old('area') != null) style="display: block; border: none;" @else style="display: none; border: none;" @endif>
+                <label for="area" class="col-form-label">{{ __('Área*') }}</label>
+                <select id="area" name="area" class="form-control @error('area') is-invalid @enderror" onchange="">
+                    <option value="">-- Área --</option>
+                    @if(old('area') != null)
+                        @foreach ($areas as $area)
+                            <option @if(old('area') == $area->id) selected @endif value="{{ $area->id }}">{{ $area->nome }}</option>
+                        @endforeach
+                    @else
+                        @foreach ($areas as $area)
+                            <option value="{{ $area->id }}">{{ $area->nome }}</option>
+                        @endforeach
+                    @endif
+                </select>
+
+                @error('area')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div id="divFuncaoParticipante" class="col-md-3" @if (old('funcaoParticipante') != null) style="display: block; border: none;" @else style="display: none; border: none;" @endif>
+                <label for="funcaoParticipante" class="col-form-label">{{ __('Função de participante*') }}</label>
+                <select id="funcaoParticipante" name="funcaoParticipante" class="form-control @error('funcaoParticipante') is-invalid @enderror" onchange="">
+                    <option value="" disabled selected hidden>-- Função de Participante --</option>
+                    @if (old('funcaoParticipante') != null)
+                        @foreach($funcaoParticipantes as $funcaoParticipante)
+                            <option  @if (old('funcaoParticipante') == $funcaoParticipante->id) selected @endif value="{{ $funcaoParticipante->id }}">{{ $funcaoParticipante->nome }}</option>
+                        @endforeach
+                    @else
+                        @foreach($funcaoParticipantes as $funcaoParticipante)
+                            <option value="{{ $funcaoParticipante->id }}">{{ $funcaoParticipante->nome }}</option>
+                        @endforeach
+                    @endif
+                </select>
+
+                @error('funcaoParticipante')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
         </div>
-        <div id="proponente" style="display: none;">
+        <div id="proponente" @if (old('tipo') == "proponente") style="display: block;" @else style="display: none;" @endif>
 
         <div>
             <h4>Dados do proponente</h4>
@@ -304,11 +388,35 @@
     function mudar() {
         var divProponente = document.getElementById('proponente');
         var comboBoxTipo = document.getElementById('tipo');
+        var comboBoxEditais = document.getElementById('divEditais');
+        var comboBoxProjetos = document.getElementById('divProjetos');
+        var comboBoxFuncaoParticipante = document.getElementById('divFuncaoParticipante');
+        var comboBoxAreas = document.getElementById('divAreas');
         
         if (comboBoxTipo.value == "proponente") {
-            divProponente.style.display = "inline";
+            divProponente.style.display = "block";
+            comboBoxEditais.style.display = "none";
+            comboBoxProjetos.style.display = "none";
+            comboBoxFuncaoParticipante.style.display = "none";
+            comboBoxAreas.style.display = "none";
+        } else if (comboBoxTipo.value == "participante") {
+            comboBoxEditais.style.display = "block";
+            comboBoxProjetos.style.display = "block";
+            divProponente.style.display = "none";
+            comboBoxFuncaoParticipante.style.display = "block";
+            comboBoxAreas.style.display = "none";
+        } else if (comboBoxTipo.value == "avaliador") {
+            divProponente.style.display = "none";
+            comboBoxEditais.style.display = "none";
+            comboBoxProjetos.style.display = "none";
+            comboBoxFuncaoParticipante.style.display = "none";
+            comboBoxAreas.style.display = "block";
         } else {
             divProponente.style.display = "none";
+            comboBoxEditais.style.display = "none";
+            comboBoxProjetos.style.display = "none";
+            comboBoxFuncaoParticipante.style.display = "none";
+            comboBoxAreas.style.display = "none";
         }
     }
     
@@ -350,6 +458,41 @@
             instituicaoSelect.parentElement.className = 'col-md-6';
             instituicao.parentElement.style.display = 'none';
         }
+    }
+
+    function projetosTeste() {
+        var edital = $('#edital').val();
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('trabalho.consulta') }}',
+            data: 'id='+edital ,
+            headers:
+            {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: (dados) => {
+            console.log(dados);
+            if (dados.length > 0) {
+            if($('#projeto').val() == null || $('#projeto').val() == ""){
+                var option = '<option selected disabled>-- Projeto --</option>';
+            }
+            $.each(dados, function(i, obj) {
+                if($('#projeto').val() != null && $('#projeto').val() == obj.id){
+                    option += '<option selected value="' + obj.id + '">' + obj.titulo + '</option>';
+                }else{
+                    option += '<option value="' + obj.id + '">' + obj.titulo + '</option>';
+                }
+            })
+            } else {
+                var option = "<option selected disabled>-- Projeto --</option>";
+            }
+            $('#projeto').html(option).show();
+        },
+            error: (data) => {
+                console.log(data);
+            }
+
+        })
     }
     window.onload = showInstituicao();
 </script>

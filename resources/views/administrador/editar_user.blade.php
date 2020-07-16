@@ -177,6 +177,7 @@
                 <div id="divAreas" class="col-md-3" @if($avaliador != null) style="display: block; border: none;" @else style="display: none; border: none;" @endif>
                     <label for="area" class="col-form-label">{{ __('Área*') }}</label>
                     <select id="area" name="area" class="form-control @error('area') is-invalid @enderror" onchange="">
+                        <option disabled selected hidden value="">-- Área --</option> 
                         @if(old('area') != null)
                             @foreach ($areas as $area)
                                 <option @if(old('area') == $area->id) selected @endif value="{{ $area->id }}">{{ $area->nome }}</option>

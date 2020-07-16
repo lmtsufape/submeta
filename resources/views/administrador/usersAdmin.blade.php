@@ -53,7 +53,7 @@
                 {{ $user->name }}
               </td>
               <td>{{ $user->tipo }}</td>
-              <td>{{ $user->creaet_at }}</td>
+              <td>@if($user->updated_at == null) Criado pelo seed @else {{ date('d/m/Y - h:m:s',strtotime($user->updated_at)) }} @endif</td>
               <td>
                 <div class="btn-group dropright dropdown-options">
                     <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,7 +83,7 @@
                 {{ $user->name }}
               </td>
               <td>{{ $user->tipo }}</td>
-              <td>{{ $user->creaet_at }}</td>
+              <td>@if($user->updated_at == null) Criado pelo seed @else {{ date('d/m/Y - h:m:s',strtotime($user->updated_at)) }} @endif</td>
               <td>
                 <div class="btn-group dropright dropdown-options">
                     <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -76,7 +76,17 @@ class AdministradorController extends Controller
     }
 
     public function create() {
-        return view('administrador.novo_user');
+        $editais = Evento::all();
+        $projetos = Trabalho::all();
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        $areas = Area::all();
+
+        return view('administrador.novo_user')->with([
+            'editais' => $editais,
+            'funcaoParticipantes' => $funcaoParticipantes,
+            'areas' => $areas,
+            'projetos' => $projetos,
+        ]);
     }
 
     public function salvar(Request $request) {
@@ -91,6 +101,32 @@ class AdministradorController extends Controller
                 'celular' => ['required', 'string', 'telefone'],
                 'senha' => ['required', 'string', 'min:8', 'confirmed'],
                 'cpf' => ['required', 'cpf', 'unique:users'],
+            ]);
+        } else if ($request->tipo == "participante") {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'tipo' => ['required'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'senha' => ['required', 'string', 'min:8', 'confirmed'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'celular' => ['required', 'string', 'telefone'],
+                'cpf' => ['required', 'cpf', 'unique:users'],
+                'edital' => 'required',
+                'projeto' => 'required',
+                'funcaoParticipante' => 'required',
+            ]);
+        } else if ($request->tipo === "avaliador") {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'tipo' => ['required'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'senha' => ['required', 'string', 'min:8', 'confirmed'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'celular' => ['required', 'string', 'telefone'],
+                'cpf' => ['required', 'cpf', 'unique:users'],
+                'area' => 'required',
             ]);
         } else {
             $validated = $request->validate([
@@ -152,6 +188,7 @@ class AdministradorController extends Controller
             case "avaliador":
                 $avaliador = new Avaliador();
                 $avaliador->user_id = $user->id;
+                $avaliador->area_id = $request->area;
                 $avaliador->save();
                 break;
             case "proponente":
@@ -182,6 +219,8 @@ class AdministradorController extends Controller
             case "participante":
                 $participante = new Participante();
                 $participante->user_id = $user->id;
+                $participante->trabalho_id = $request->projeto;
+                $participante->funcao_participante_id = $request->funcaoParticipante;
                 $participante->save();
                 break;
         }
