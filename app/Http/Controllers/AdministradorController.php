@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Administrador;
 use App\User;
+use App\Area;
 use App\Avaliador;
 use App\AdministradorResponsavel;
 use App\Participante;
@@ -15,6 +16,7 @@ use App\FuncaoParticipantes;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Evento;
+use Illuminate\Support\Facades\Storage;
 use App\CoordenadorComissao;
 use Illuminate\Validation\Rule;
 use App\Mail\EmailParaUsuarioNaoCadastrado;
@@ -189,21 +191,36 @@ class AdministradorController extends Controller
 
     public function edit($id) {
         $user = User::find($id);
+        $editalParticipante = null;
 
+        $editais = Evento::all();
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        $projetos = Trabalho::all();
+        $areas = Area::all();
         $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
         $avaliador = Avaliador::where('user_id', '=', $id)->first();
         $proponente = Proponente::where('user_id', '=', $id)->first();
         $participante = Participante::where('user_id', '=', $id)->first();
+        if ($participante != null) {
+            $editalParticipante = Evento::where('id', Trabalho::where('id', $participante->trabalho_id)->first()->evento_id)->first();
+        }
 
         return view ('administrador.editar_user')->with(['user' => $user,
+                                                         'avaliador' => $avaliador,
                                                          'adminResp' => $adminResp,
                                                          'proponente' => $proponente,
-                                                         'participante' => $participante,]);
+                                                         'participante' => $participante,
+                                                         'editais' => $editais,
+                                                         'funcaoParticipantes' => $funcaoParticipantes,
+                                                         'projetos' => $projetos,
+                                                         'editalParticipante' => $editalParticipante,
+                                                         'areas' => $areas,]);
     }
 
     public function update(Request $request, $id) {
         $user = User::find($id);
-
+    
+        //validação de dados
         if ($request->tipo != "proponente") {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
@@ -214,34 +231,150 @@ class AdministradorController extends Controller
                 'celular' => ['required', 'string', 'telefone'],
                 'cpf' => ['required', 'cpf'],
             ]);
+        } else if ($request->tipo === "participante") {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'tipo' => ['required'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'celular' => ['required', 'string', 'telefone'],
+                'cpf' => ['required', 'cpf'],
+                'edital' => 'required',
+                'projeto' => 'required',
+                'funcaoParticipante' => 'required',
+            ]);
+        } else if ($request->tipo === "avaliador") {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'tipo' => ['required'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'celular' => ['required', 'string', 'telefone'],
+                'cpf' => ['required', 'cpf'],
+                'area' => 'required',
+            ]);
         } else {
             $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'tipo' => ['required'],
-            'cpf' => ['required', 'cpf',],
-            'celular' => ['required', 'string', 'telefone'],
-            'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
-            'instituicaoSelect' => ['required_without:instituicao'],
-            'cargo' => ['required'],
-            'vinculo' => ['required'],
-            'outro' => ['required_if:vinculo,Outro'],
-            'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade'],
-            'titulacaoMaxima' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
-            'anoTitulacao' => ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
-            'anoTitulacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
-            'areaFormacao' => ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
-            'areaFormacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
-            'bolsistaProdutividade' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],
-            'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
-            'nivel' => ['required_if:bolsistaProdutividade,sim'],
-            //'nivel' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
-            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
-                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
-            'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
-            'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
-            'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'cpf' => ['required', 'cpf'],
+                'celular' => ['required', 'string', 'telefone'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'cargo' => ['required'],
+                'vinculo' => ['required'],
+                'outro' => ['required_if:vinculo,Outro'],
+                'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade'],
+                'titulacaoMaxima' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'anoTitulacao' => ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
+                'anoTitulacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'areaFormacao' => ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
+                'areaFormacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'bolsistaProdutividade' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],
+                'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+                'nivel' => ['required_if:bolsistaProdutividade,sim'],
+                //'nivel' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
+                'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
             ]);
+        }
+        //validação de mudança de tipo se confirmar a mudança exclui os dados do usuário atual e adiciona o novo perfil
+        if ($user->tipo != $request->tipo && $request->confirmarMudançaDeTipo == null) {
+            return redirect()->back()->withErrors(['tipo' => 'A mudança de tipo irá excluir tudo associado ao tipo atual do usuário!']);
+        } else if ($request->confirmarMudançaDeTipo != null) {
+            // dd($request);
+            switch ($user->tipo) {
+                case "administradorResponsavel":
+                    $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
+                    $adminResp->delete();
+                    break;
+                case "coordenador":
+                    $coordenador = CoordenadorComissao::where('user_id', '=', $id)->first();
+
+                    $projetos = Trabalho::where('coordenador_id', $coordenador->id)->get();
+
+                    foreach ($projetos as $projeto) {
+                        Storage::deleteDirectory('trabalhos/' . $projeto->evento->id . '/' . $projeto->id );
+                        $projeto->delete();
+                    }
+
+                    // PENDENTE: chave estrangeira (trabalhos) não deixa apagar o coordenador mesmo que o mesmo não esteja vinculado a nenhum projeto
+                    $coordenador->delete();
+                    break;
+                case "avaliador":
+                    $avaliador = Avaliador::where('user_id', '=', $id)->first();
+                    $avaliador->delete();
+                    break;
+                case "proponente":
+                    $proponente = Proponente::where('user_id', '=', $id)->first();
+                    $projetos = Trabalho::where('proponente_id', $proponente->id)->get();
+
+                    foreach ($projetos as $projeto) {
+                        Storage::deleteDirectory('trabalhos/' . $projeto->evento->id . '/' . $projeto->id );
+                        $projeto->delete();
+                    }
+
+                    $proponente->delete();
+                    break;
+                case "participante":
+                    $participante = Participante::where('user_id', '=', $id)->first();
+                    $participante->delete();
+                    break;
+            }
+
+            switch ($request->tipo) {
+                case "administradorResponsavel":
+                    $adminResp = new AdministradorResponsavel();
+                    $adminResp->user_id = $user->id;
+                    $adminResp->save();
+                    break;
+                case "coordenador":
+                    $coordenador = new CoordenadorComissao();
+                    $coordenador->user_id = $user->id;
+                    $coordenador->save();
+                    break;
+                case "avaliador":
+                    $avaliador = new Avaliador();
+                    $avaliador->user_id = $user->id;
+                    $avaliador->area_id = $request->area;
+                    $avaliador->save();
+                    break;
+                case "proponente":
+                    $proponente = new Proponente();
+                    if ($request->SIAPE != null) {
+                        $proponente->SIAPE = $request->SIAPE;
+                    }
+                    $proponente->cargo = $request->cargo;
+    
+                    if ($request->vinculo != 'Outro') {
+                        $proponente->vinculo = $request->vinculo;
+                    } else {
+                        $proponente->vinculo = $request->outro;
+                    }
+    
+                    $proponente->titulacaoMaxima = $request->titulacaoMaxima;
+                    $proponente->anoTitulacao = $request->anoTitulacao;
+                    $proponente->areaFormacao = $request->areaFormacao;
+                    $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
+                    if ($request->bolsistaProdutividade == 'sim') {
+                        $proponente->nivel = $request->nivel;
+                    }
+                    $proponente->linkLattes = $request->linkLattes;
+    
+                    $proponente->user_id = $user->id;
+                    $proponente->save();
+                    break;
+                case "participante":
+                    $participante = new Participante();
+                    $participante->user_id = $user->id;
+                    $participante->trabalho_id = $request->projeto;
+                    $participante->funcao_participante_id = $request->funcaoParticipante;
+                    $participante->save();
+                    break;
+            }
         }
 
         // if (!(Hash::check($request->senha_atual, $user->password))) {
@@ -252,52 +385,54 @@ class AdministradorController extends Controller
         //     return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
         // }
 
-        switch ($request->tipo) {
-            case "administradorResponsavel":
-                $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
-                $adminResp->user_id = $user->id;
-                $adminResp->update();
-                break;
-            case "coordenador":
-                $coordenador = CoordenadorComissao::where('user_id', '=', $id)->first();
-                $coordenador->user_id = $user->id;
-                $coordenador->update();
-                break;
-            case "avaliador":
-                $avaliador = Avaliador::where('user_id', '=', $id)->first();
-                $avaliador->user_id = $user->id;
-                $avaliador->update();
-                break;
-            case "proponente":
-                $proponente = Proponente::where('user_id', '=', $id)->first();
-                if ($request->SIAPE != null) {
-                    $proponente->SIAPE = $request->SIAPE;
-                }
-                $proponente->cargo = $request->cargo;
-
-                if ($request->vinculo != 'Outro') {
-                    $proponente->vinculo = $request->vinculo;
-                } else {
-                    $proponente->vinculo = $request->outro;
-                }
-
-                $proponente->titulacaoMaxima = $request->titulacaoMaxima;
-                $proponente->anoTitulacao = $request->anoTitulacao;
-                $proponente->areaFormacao = $request->areaFormacao;
-                $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
-                if ($request->bolsistaProdutividade == 'sim') {
-                    $proponente->nivel = $request->nivel;
-                }
-                $proponente->linkLattes = $request->linkLattes;
-
-                $proponente->user_id = $user->id;
-                $proponente->update();
-                break;
-            case "participante":
-                $participante = Participante::where('user_id', '=', $id)->first();
-                $participante->user_id = $user->id;
-                $participante->update();
-                break;
+        if ($request->confirmarMudançaDeTipo == null) {
+            switch ($request->tipo) {
+                case "administradorResponsavel":
+                    $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
+                    $adminResp->user_id = $user->id;
+                    $adminResp->update();
+                    break;
+                case "coordenador":
+                    $coordenador = CoordenadorComissao::where('user_id', '=', $id)->first();
+                    $coordenador->user_id = $user->id;
+                    $coordenador->update();
+                    break;
+                case "avaliador":
+                    $avaliador = Avaliador::where('user_id', '=', $id)->first();
+                    $avaliador->user_id = $user->id;
+                    $avaliador->update();
+                    break;
+                case "proponente":
+                    $proponente = Proponente::where('user_id', '=', $id)->first();
+                    if ($request->SIAPE != null) {
+                        $proponente->SIAPE = $request->SIAPE;
+                    }
+                    $proponente->cargo = $request->cargo;
+    
+                    if ($request->vinculo != 'Outro') {
+                        $proponente->vinculo = $request->vinculo;
+                    } else {
+                        $proponente->vinculo = $request->outro;
+                    }
+    
+                    $proponente->titulacaoMaxima = $request->titulacaoMaxima;
+                    $proponente->anoTitulacao = $request->anoTitulacao;
+                    $proponente->areaFormacao = $request->areaFormacao;
+                    $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
+                    if ($request->bolsistaProdutividade == 'sim') {
+                        $proponente->nivel = $request->nivel;
+                    }
+                    $proponente->linkLattes = $request->linkLattes;
+    
+                    $proponente->user_id = $user->id;
+                    $proponente->update();
+                    break;
+                case "participante":
+                    $participante = Participante::where('user_id', '=', $id)->first();
+                    $participante->user_id = $user->id;
+                    $participante->update();
+                    break;
+            }
         }
 
         $user->name = $request->name;

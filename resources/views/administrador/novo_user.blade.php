@@ -66,12 +66,12 @@
                 <label for="tipo" class="col-form-label">{{ __('Tipo*') }}</label>
                 <select name="tipo" id="tipo" onchange="mudar()" class="form-control">
                     @if(auth()->user()->tipo == 'administrador')
-                        <option @if ( old('tipo') == "administradorResponsavel" ) required @endif value="administradorResponsavel">Administrador responsável</option>
+                        <option @if ( old('tipo') == "administradorResponsavel" ) selected @endif value="administradorResponsavel">Administrador responsável</option>
                     @endif
-                    <option @if ( old('tipo') == "coordenador" ) required @endif value="coordenador">Coordenador</option>
-                    <option @if ( old('tipo') == "avaliador" ) required @endif value="avaliador">Avaliador</option>
-                    <option @if ( old('tipo') == "proponente" ) required @endif value="proponente">Proponente</option>
-                    <option @if ( old('tipo') == "participante" ) required @endif value="participante">Participante</option>
+                    <option @if ( old('tipo') == "coordenador" ) selected @endif value="coordenador">Coordenador</option>
+                    <option @if ( old('tipo') == "avaliador" ) selected @endif value="avaliador">Avaliador</option>
+                    <option @if ( old('tipo') == "proponente" ) selected @endif value="proponente">Proponente</option>
+                    <option @if ( old('tipo') == "participante" ) selected @endif value="participante">Participante</option>
                 </select>
             </div>        
             <div class="col-md-2">

@@ -968,4 +968,9 @@ class TrabalhoController extends Controller
       return abort(404);
     }
 
+    public function consulta(Request $request) {
+      $id = json_decode($request->id) ;
+      $projetos = Trabalho::where('evento_id', $id)->orderBy('titulo')->get();
+      return response()->json($projetos);
+    }
 }

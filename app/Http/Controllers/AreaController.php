@@ -122,6 +122,6 @@ class AreaController extends Controller
         $id = json_decode($request->id) ;
         $areas = Area::where('grande_area_id', $id)->orderBy('nome')->get();
         return response()->json($areas);
-        return $areas->toJson();
+        // return $areas->toJson();
     }
 }
