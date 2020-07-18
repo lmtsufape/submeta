@@ -66,9 +66,12 @@
                           <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                       </a>
                       <div class="dropdown-menu">
+                          @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao)
                             <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                               Editar projeto
                             </a>
+                          @else
+                          @endif
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Visualizar projeto
                           </a>
