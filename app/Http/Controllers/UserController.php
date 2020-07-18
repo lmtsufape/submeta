@@ -38,7 +38,7 @@ class UserController extends Controller
     public function inicial()
     {
       $eventos = Evento::all();
-      
+
       $hoje = Carbon::today('America/Recife');
       $hoje = $hoje->toDateString();
       return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);
@@ -48,7 +48,7 @@ class UserController extends Controller
 
     function perfil(){
         $user = User::find(Auth::user()->id);
-        
+
         return view('user.perfilUser',['user'=>$user]);
     }
     function editarPerfil(Request $request){
@@ -85,34 +85,41 @@ class UserController extends Controller
                 'bolsistaProdutividade' => Rule::requiredIf((isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando')),
                 'nivel' => ['required_if:bolsistaProdutividade,sim'],
                 //'nivel' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
-                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
+                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
                 'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
                 'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
             ]);
         }
-        
+
         if ($request->alterarSenhaCheckBox != null) {
             if (!(Hash::check($request->senha_atual, $user->password))) {
                 return redirect()->back()->withErrors(['senha_atual' => 'Senha atual não correspondente']);
             }
-    
+
             if (!($request->nova_senha === $request->confirmar_senha)) {
                 return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
             }
         }
+        if(Auth()->user()->avaliadors != null && $request->area != null && Auth()->user()->tipo != "avaliador"){
+          $avaliador = Avaliador::where('user_id', '=', $id)->first();
+          $avaliador->user_id = $user->id;
+          $avaliador->area_id = $request->area;
+          $avaliador->update();
+        }
 
         switch ($request->tipo) {
-            case "administradorResponsavel": 
+            case "administradorResponsavel":
                 $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
                 $adminResp->user_id = $user->id;
                 $adminResp->update();
                 break;
-            case "avaliador": 
+            case "avaliador":
                 $avaliador = Avaliador::where('user_id', '=', $id)->first();
                 $avaliador->user_id = $user->id;
+                $avaliador->area_id = $request->area;
                 $avaliador->update();
                 break;
-            case "proponente": 
+            case "proponente":
                 $proponente = Proponente::where('user_id', '=', $id)->first();
                 if ($request->SIAPE != null) {
                     $proponente->SIAPE = $request->SIAPE;
@@ -138,8 +145,8 @@ class UserController extends Controller
                 $proponente->update();
                 break;
             case "participante":
-                $participante = Participante::where('user_id', '=', $id)->first();                
-                //$participante = $user->participantes->where('user_id', Auth::user()->id)->first();                
+                $participante = Participante::where('user_id', '=', $id)->first();
+                //$participante = $user->participantes->where('user_id', Auth::user()->id)->first();
                 $participante->user_id = $user->id;
                 //dd($participante);
                 if($user->usuarioTemp == true){
@@ -187,7 +194,7 @@ class UserController extends Controller
     public function minhaConta() {
         $id = Auth::user()->id;
         $user = User::find($id);
-        
+
         $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
         $avaliador = Avaliador::where('user_id', '=', $id)->first();
         $proponente = Proponente::where('user_id', '=', $id)->first();

@@ -14,14 +14,14 @@
     <div class="container" >
       <div class="row" >
         <div class="col-sm-12">
-            <h3>Meus Projetos</h3> 
+            <h3>Meus Projetos</h3>
         </div>
       </div>
     </div>
     <hr>
     <table class="table table-bordered">
         <thead>
-          <tr>   
+          <tr>
             <th scope="col">Nome do projeto</th>
             <th scope="col">Status</th>
             <th scope="col">Data de Criação</th>
@@ -30,7 +30,7 @@
         </thead>
         <tbody>
           @foreach ($projetos as $projeto)
-            
+
               <tr>
                 <td>
                   {{ $projeto->titulo }}
@@ -42,16 +42,19 @@
                 @elseif($projeto->status == 'Rascunho')
                   <td style="color: rgb(0, 0, 0)">Rascunho</td>
                 @endif
-                <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
+                <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>
                 <td>
                   <div class="btn-group dropright dropdown-options">
                       <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
+                          <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                       </a>
                       <div class="dropdown-menu">
+                        @if($projeto->evento->inicioSubmissao <= $hoje && $hoje <= $projeto->evento->fimSubmissao)
                           <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                             Editar projeto
                           </a>
+                        @else
+                        @endif
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Visualizar projeto
                           </a>
@@ -61,13 +64,13 @@
                           <a href="" class="dropdown-item" style="text-align: center">
                             Resultado
                           </a> --}}
-                          @if($projeto->status == 'Submetido')                          
+                          @if($projeto->status == 'Submetido')
                             <!-- Button trigger modal -->
                             <button type="button"  class="dropdown-item" style="text-align: center" data-toggle="modal" data-target="#modal{{$projeto->id}}">
                               Excluir projeto
                             </button>
                           @endif
-                          
+
                       </div>
                   </div>
                 </td>

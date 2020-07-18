@@ -86,8 +86,11 @@ class ProponenteController extends Controller
         $proponente = Proponente::where('user_id', Auth()->user()->id)->first();
 
         $projetos = Trabalho::where('proponente_id', $proponente->id)->get();
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
 
-        return view('proponente.projetos')->with(['projetos' => $projetos]);
+
+        return view('proponente.projetos')->with(['projetos' => $projetos, 'hoje'=>$hoje]);
     }
     public function projetosEdital($id) {
       $edital = Evento::find($id);
