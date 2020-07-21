@@ -19,6 +19,10 @@
         <tr>
           <th scope="col">Nome do Edital</th>
           <th scope="col">Data de Criação</th>
+          <th scope="col">Resultado Preliminar</th>
+          <th scope="col">Início do Recurso</th>
+          <th scope="col">Fim do Recurso</th>
+          <th scope="col">Resultado Final</th>
           <th scope="col">Opção</th>
         </tr>
       </thead>
@@ -31,6 +35,10 @@
               </a>
             </td>
             <td>{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->resultado_preliminar)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->inicio_recurso)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->fim_recurso)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->resultado_final)) }}</td>
             <td>
               @if(auth()->user()->id == $evento->criador_id)
               <div class="btn-group dropright dropdown-options">

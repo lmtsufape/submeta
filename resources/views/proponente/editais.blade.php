@@ -17,9 +17,11 @@
       <thead>
         <tr>
           <th scope="col">Nome do Edital</th>
-          <th scope="col">Inicio da Submissão</th>
+          <th scope="col">Início da Submissão</th>
           <th scope="col">Fim da Submissão</th>
           <th scope="col">Resultado Preliminar</th>
+          <th scope="col">Início do Recurso</th>
+          <th scope="col">Fim do Recurso</th>
           <th scope="col">Resultado Final</th>
           <th scope="col">Baixar edital</th>
           <th scope="col">Opção</th>
@@ -36,6 +38,8 @@
             <td>{{ date('d/m/Y', strtotime($evento->inicioSubmissao)) }}</td>
             <td>{{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</td>
             <td>{{ date('d/m/Y', strtotime($evento->resultado_preliminar)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->inicio_recurso)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->fim_recurso)) }}</td>
             <td>{{ date('d/m/Y', strtotime($evento->resultado_final)) }}</td>
             <td style="text-align: center">
               <a href="{{ route('baixar.edital', ['id' => $evento->id]) }}">
