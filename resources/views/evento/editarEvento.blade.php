@@ -223,9 +223,13 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="pdfEdital">PDF do Edital*:</label>
-                    <a href="{{route('download', ['file' => $evento->pdfEdital])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
+                    @if(Storage::disk()->exists($evento->pdfEdital))
+                        <a href="{{route('download', ['file' => $evento->pdfEdital])}}" target="_new" style="font-size: 20px; color: #114048ff; text-decoration:none;">
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
+                        <small>Para alterar o anexo envie novamente</small>
+                    @endif
+                    
                     <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfEdital')
@@ -239,10 +243,11 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="modeloDocumento">Arquivo com os modelos de documentos do edital:</label>
-                    @if ($evento->modeloDocumento != null) 
-                        <a href="{{route('download', ['file' => $evento->modeloDocumento])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                    @if (Storage::disk()->exists($evento->modeloDocumento)) 
+                        <a href="{{route('download', ['file' => $evento->modeloDocumento])}}" target="_new" style="font-size: 20px; color: #114048ff; text-decoration:none;" >
                             <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                         </a>
+                        <small>Para alterar o anexo envie novamente</small>
                     @endif
                     <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
                     <small>O arquivo selecionado deve ter até 2mb.</small>
