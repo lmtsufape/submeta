@@ -19,7 +19,8 @@
           <th scope="col">Nome do Edital</th>
           <th scope="col">Inicio da Submissão</th>
           <th scope="col">Fim da Submissão</th>
-          <th scope="col">Data do Resultado</th>
+          <th scope="col">Resultado Preliminar</th>
+          <th scope="col">Resultado Final</th>
           <th scope="col">Baixar edital</th>
           <th scope="col">Opção</th>
         </tr>
@@ -34,7 +35,8 @@
             </td>
             <td>{{ date('d/m/Y', strtotime($evento->inicioSubmissao)) }}</td>
             <td>{{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</td>
-            <td>{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->resultado_preliminar)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->resultado_final)) }}</td>
             <td style="text-align: center">
               <a href="{{ route('baixar.edital', ['id' => $evento->id]) }}">
                 <img src="{{asset('img/icons/file-download-solid.svg')}}" width="15px">
