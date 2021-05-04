@@ -100,7 +100,7 @@ class TrabalhoController extends Controller
             return redirect()->route('home');
         }
       }
-
+      
       //--Salvando os dados da submissão temporariamente
       $trabalho = $this->armazenarInfoTemp($request, $proponente);
 
@@ -128,10 +128,10 @@ class TrabalhoController extends Controller
           'anexoComiteEtica'        => [($request->anexoComitePreenchido!=='sim'&&$request->anexoJustificativaPreenchido!=='sim'?'required_without:justificativaAutorizacaoEtica':''), 'file', 'mimes:pdf', 'max:2048'],
           'justificativaAutorizacaoEtica' => [($request->anexoJustificativaPreenchido!=='sim'&&$request->anexoComitePreenchido!=='sim'?'required_without:anexoComiteEtica':''), 'file', 'mimes:pdf', 'max:2048'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required': ''), 'file', 'mimes:pdf', 'max:2048'],
-          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2048'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:xls,xlsx,ods', 'max:2048'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
         ]);
-
+        
         if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
           return $this->validarAnexosRascunho($request, $trabalho);
         }

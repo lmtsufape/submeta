@@ -236,7 +236,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF, XLS ou XLSX de até 2MB.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato XLS, XLSX ou ODS de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoPlanilha')
@@ -252,7 +252,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Justificativa*:') }}</label>
+                  <label for="nomeTrabalho" class="col-form-label">{{ __('Declaração de não necessidade de autorizações especiais*:') }}</label>
                   @if(old('anexoJustificativaPreenchido') != null || (isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "" && $rascunho->justificativaAutorizacaoEtica != null))
                   <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
