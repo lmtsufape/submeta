@@ -158,7 +158,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoProjeto')
@@ -181,7 +181,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="anexoLattesCoordenador" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoLattesCoordenador">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoLattesCoordenador">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoLattesCoordenador')
@@ -214,7 +214,7 @@
 
                     <div class="custom-file">
                       <input disabled type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="inputEtica">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="inputEtica">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoComiteEtica')
@@ -236,7 +236,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF, XLS ou XLSX de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF, XLS ou XLSX de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoPlanilha')
@@ -264,7 +264,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled name="justificativaAutorizacaoEtica" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('justificativaAutorizacaoEtica')
@@ -288,7 +288,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoCONSU')
@@ -386,7 +386,7 @@
                                       </div>
                                       <div class="custom-file">
                                         <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
-                                        <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                                        <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
                                       </div>
                                     </div>
                                     @error('anexoPlanoTrabalho')
@@ -654,7 +654,7 @@
                     "<div class='custom-file'>"+
                       "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='anexoPlanoTrabalho'"+
                         " aria-describedby='anexoPlanoTrabalho' name='anexoPlanoTrabalho[]'>"+
-                      "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
+                      "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2MB.</label>"+
                   "</div>"+
                   "</div>"+
                   "@error('anexoPlanoTrabalho')"+
