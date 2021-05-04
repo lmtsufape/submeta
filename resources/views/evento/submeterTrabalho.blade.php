@@ -89,13 +89,13 @@
               </div>
 
               <hr>
-              <h3>Coordenador</h3>
+              <h3>Proponente</h3>
 
               {{-- Coordenador  --}}
               <div class="row justify-content-center">
 
                 <div class="col-sm-6">
-                  <label for="nomeCoordenador" class="col-form-label">{{ __('Coordenador:') }}</label>
+                  <label for="nomeCoordenador" class="col-form-label">{{ __('Proponente:') }}</label>
                   <input class="form-control" type="text" id="nomeCoordenador" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
                 </div>
                 <div class="col-sm-6">
