@@ -45,7 +45,7 @@ class TrabalhoController extends Controller
     {
         $edital = Evento::find($id);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
-        $funcaoParticipantes = FuncaoParticipantes::all();
+        $funcaoParticipantes = FuncaoParticipantes::orderBy('nome')->get();
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
 
         if($proponente == null){
