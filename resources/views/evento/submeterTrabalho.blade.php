@@ -169,7 +169,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador*:') }}</label>
+                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador dos últimos 5 anos*:') }}</label>
                   @if(old('anexoLattesPreenchido') != null || (isset($rascunho) && $rascunho->anexoLattesCoordenador != ""))
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
