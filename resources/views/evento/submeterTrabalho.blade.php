@@ -395,20 +395,14 @@
                                     </span>
                                     @enderror
                                   </div>
-                                  <div class="col-sm-1">
-                                    {{-- <a class="delete">
-                                      <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
-                                    </a> --}}
-                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
 
                           </div>
-                          @if($i != 0)
-                            <a href='#' class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px'>Remover participante</a>
-                          @endif
+                          <button class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px' disabled>Limite minimo de participantes</button>
+                          
                         </div>
 
                       {{--  </div>
@@ -418,7 +412,7 @@
                     @endif
                   </div>
                   <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}">
-                  <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Adicionar participante</a>
+                  <button class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Adicionar participante</button>
 
                 </div>
               </div>
@@ -453,14 +447,28 @@
 <script type="text/javascript">
   $(function() {
     var qtdLinhas = 1;
+    const limiteMaxParticipantes = 3;
+    const limiteMinParticipantes = 1;
     // Coautores
     $('#addCoautor').click(function(e) {
       var countParticipante = document.getElementById('countParticipante');
-      if (countParticipante.value < 100) {
+      if (countParticipante.value < limiteMaxParticipantes) {
         e.preventDefault();
         linha = montarLinhaInput();
         $('#participantes').append(linha);
         setParticipanteDiv(parseInt(countParticipante.value) + 1);
+
+        var btnsDeletar = document.getElementsByClassName("delete");
+        for(var i = 0; i < btnsDeletar.length; i++) {
+          btnsDeletar[i].disabled = "";
+          $(btnsDeletar[i]).text("Remover participantes");
+        }
+
+        if (countParticipante.value >= limiteMaxParticipantes) {
+          var btn = document.getElementById('addCoautor');
+          btn.disabled = "true";
+          $('#addCoautor').text("Limite de participantes atingido");
+        }
       }
     });
 
@@ -484,11 +492,20 @@
     // });
     $(document).on('click', '.delete', function() {
       var countParticipante = document.getElementById('countParticipante');
-      if (countParticipante.value >= 2) {
+      if (countParticipante.value >= limiteMinParticipantes) {
         setParticipanteDiv(parseInt(countParticipante.value) - 1);
         $(this).closest('#novoParticipante').remove();
+        document.getElementById("addCoautor").disabled = "";
+        $('#addCoautor').text("Adicionar participante");
+        if (countParticipante.value == limiteMinParticipantes) {
+          var btnsDeletar = document.getElementsByClassName("delete");
+          for(var i = 0; i < btnsDeletar.length; i++) {
+            btnsDeletar[i].disabled = true;
+            $(btnsDeletar).text("Limite minimo de participantes");
+          }
+        }
         return false;
-      }
+      } 
     });
     $(document).on('click', '.deletePlano', function() {
       if (qtdLinhas > 1) {
@@ -663,15 +680,10 @@
                   "</span>"+
                   "@enderror"+
                 "</div>"+
-                "<div class="+"col-sm-1"+">"+
-                    "<a  class="+"delete"+">"+
-                      "<img src="+"{{ asset('/img/icons/user-times-solid.svg') }}"+" style="+"width:25px;margin-top:35px"+">"+
-                    "</a>"+
-                "</div>"+
               "</div>"+
               "</div>"+
 
-              "<a href='#' class="+"'btn btn-danger mt-2 mb-2 delete'"+" style='width:100%;margin-top:10px'"+">Remover participante</a>"+
+              "<button href='#' class="+"'btn btn-danger mt-2 mb-2 delete'"+" style='width:100%;margin-top:10px'"+">Remover participante</button>"+
             "</div>";
   }
 
