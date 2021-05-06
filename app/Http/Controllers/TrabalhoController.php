@@ -33,6 +33,7 @@ use App\Mail\SubmissaoTrabalho;
 use App\Mail\EventoCriado;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\OutrasInfoParticipante;
 
 class TrabalhoController extends Controller
 {
@@ -61,7 +62,8 @@ class TrabalhoController extends Controller
                                             'edital'             => $edital,
                                             'grandeAreas'        => $grandeAreas,
                                             'funcaoParticipantes'=> $funcaoParticipantes,
-                                            'rascunho'           => $rascunho
+                                            'rascunho'           => $rascunho,
+                                            'enum_turno'         => OutrasInfoParticipante::ENUM_TURNO
                                             ]);
     }
 
