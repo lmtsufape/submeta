@@ -33,6 +33,7 @@ use App\Mail\SubmissaoTrabalho;
 use App\Mail\EventoCriado;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\OutrasInfoParticipante;
 
 class TrabalhoController extends Controller
 {
@@ -45,7 +46,7 @@ class TrabalhoController extends Controller
     {
         $edital = Evento::find($id);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
-        $funcaoParticipantes = FuncaoParticipantes::all();
+        $funcaoParticipantes = FuncaoParticipantes::orderBy('nome')->get();
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
 
         if($proponente == null){
@@ -61,7 +62,8 @@ class TrabalhoController extends Controller
                                             'edital'             => $edital,
                                             'grandeAreas'        => $grandeAreas,
                                             'funcaoParticipantes'=> $funcaoParticipantes,
-                                            'rascunho'           => $rascunho
+                                            'rascunho'           => $rascunho,
+                                            'enum_turno'         => OutrasInfoParticipante::ENUM_TURNO
                                             ]);
     }
 
@@ -82,7 +84,7 @@ class TrabalhoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-      // dd($request->all());
+      dd($request);
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();
       $evento = Evento::find($request->editalId);
@@ -128,10 +130,10 @@ class TrabalhoController extends Controller
           'anexoComiteEtica'        => [($request->anexoComitePreenchido!=='sim'&&$request->anexoJustificativaPreenchido!=='sim'?'required_without:justificativaAutorizacaoEtica':''), 'file', 'mimes:pdf', 'max:2048'],
           'justificativaAutorizacaoEtica' => [($request->anexoJustificativaPreenchido!=='sim'&&$request->anexoComitePreenchido!=='sim'?'required_without:anexoComiteEtica':''), 'file', 'mimes:pdf', 'max:2048'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required': ''), 'file', 'mimes:pdf', 'max:2048'],
-          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2048'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:xls,xlsx,ods', 'max:2048'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
         ]);
-
+        
         if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
           return $this->validarAnexosRascunho($request, $trabalho);
         }
@@ -175,7 +177,7 @@ class TrabalhoController extends Controller
           'nomePlanoTrabalho.*'     => ['nullable', 'string'],
           'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
           'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,xls,xlsx', 'max:2048'],
+          'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:xls,xlsx,ods', 'max:2048'],
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
         ]);
 

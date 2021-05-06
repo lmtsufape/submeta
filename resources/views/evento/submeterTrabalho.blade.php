@@ -89,13 +89,13 @@
               </div>
 
               <hr>
-              <h3>Coordenador</h3>
+              <h3>Proponente</h3>
 
               {{-- Coordenador  --}}
               <div class="row justify-content-center">
 
                 <div class="col-sm-6">
-                  <label for="nomeCoordenador" class="col-form-label">{{ __('Coordenador:') }}</label>
+                  <label for="nomeCoordenador" class="col-form-label">{{ __('Proponente:') }}</label>
                   <input class="form-control" type="text" id="nomeCoordenador" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
                 </div>
                 <div class="col-sm-6">
@@ -158,7 +158,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoProjeto')
@@ -169,7 +169,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador*:') }}</label>
+                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador dos últimos 5 anos*:') }}</label>
                   @if(old('anexoLattesPreenchido') != null || (isset($rascunho) && $rascunho->anexoLattesCoordenador != ""))
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
@@ -181,7 +181,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="anexoLattesCoordenador" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoLattesCoordenador">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoLattesCoordenador">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoLattesCoordenador')
@@ -214,7 +214,7 @@
 
                     <div class="custom-file">
                       <input disabled type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="inputEtica">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="inputEtica">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoComiteEtica')
@@ -236,7 +236,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato PDF, XLS ou XLSX de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato XLS, XLSX ou ODS de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoPlanilha')
@@ -252,7 +252,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Justificativa*:') }}</label>
+                  <label for="nomeTrabalho" class="col-form-label">{{ __('Declaração de não necessidade de autorizações especiais*:') }}</label>
                   @if(old('anexoJustificativaPreenchido') != null || (isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "" && $rascunho->justificativaAutorizacaoEtica != null))
                   <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
@@ -264,7 +264,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled name="justificativaAutorizacaoEtica" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('justificativaAutorizacaoEtica')
@@ -288,7 +288,7 @@
 
                     <div class="custom-file">
                       <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2mb.</label>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoCONSU')
@@ -323,10 +323,11 @@
                         <div id="novoParticipante" style="display: block;">
                           <br>
                           <h4>Dados do participante</h4>
+                          <h6>Dados pessoais</h6>
                           <div class="row">
                             <div class="col-sm-5">
                               <label>Nome Completo*</label>
-                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}">
+                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}" required>
                               @error('nomeParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -335,7 +336,7 @@
                             </div>
                             <div class="col-sm-4">
                               <label>E-mail*</label>
-                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}">
+                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}" required>
                               @error('emailParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -344,7 +345,7 @@
                             </div>
                             <div class="col-sm-3">
                               <label>Função*:</label>
-                              <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante">
+                              <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante" required>
                                 <option value="" disabled selected hidden>-- Função --</option>
                                 @foreach($funcaoParticipantes as $funcaoParticipante)
                                 <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
@@ -357,6 +358,170 @@
                               @enderror
                             </div>
                           </div>
+                          <div id="dados_complemento_1">
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('CPF*') }}</label>
+                                  <input type="text" class="form-control cpf" name="cpf[]" required>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('RG*') }}</label>
+                                  <input type="text" class="form-control rg" name="rg[]" required>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Celular*') }}</label>
+                                  <input type="text" class="form-control celular" name="celular[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Data de nascimento*') }}</label>
+                                  <input type="date" class="form-control" name="data_de_nascimento[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="container">
+                                  <h6>Endereço do participante</h6>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('CEP*') }}</label>
+                                  <input type="text" class="form-control" name="cep[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-6">
+                                  <label for="">{{ __('Rua*') }}</label>
+                                  <input type="text" class="form-control" name="rua[]" required>
+                                </div>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Número*') }}</label>
+                                  <input type="text" class="form-control" name="numero[]" required>
+                                </div>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Bairro*') }}</label>
+                                  <input type="text" class="form-control" name="bairro[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Cidade*') }}</label>
+                                  <input type="text" class="form-control " name="cidade[]" required>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Complemento*') }}</label>
+                                  <input type="text" class="form-control" name="complemento[]" required>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Estado*') }}</label>
+                                  <select name="uf[]" id="" class="form-control" required>
+                                    <option value="" disabled selected>-- UF --</option>
+                                    <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
+                                    <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
+                                    <option @if(old('uf') == 'AP') selected @endif value="AP">Amapá</option>
+                                    <option @if(old('uf') == 'AM') selected @endif value="AM">Amazonas</option>
+                                    <option @if(old('uf') == 'BA') selected @endif value="BA">Bahia</option>
+                                    <option @if(old('uf') == 'CE') selected @endif value="CE">Ceará</option>
+                                    <option @if(old('uf') == 'DF') selected @endif value="DF">Distrito Federal</option>
+                                    <option @if(old('uf') == 'ES') selected @endif value="ES">Espírito Santo</option>
+                                    <option @if(old('uf') == 'GO') selected @endif value="GO">Goiás</option>
+                                    <option @if(old('uf') == 'MA') selected @endif value="MA">Maranhão</option>
+                                    <option @if(old('uf') == 'MT') selected @endif value="MT">Mato Grosso</option>
+                                    <option @if(old('uf') == 'MS') selected @endif value="MS">Mato Grosso do Sul</option>
+                                    <option @if(old('uf') == 'MG') selected @endif value="MG">Minas Gerais</option>
+                                    <option @if(old('uf') == 'PA') selected @endif value="PA">Pará</option>
+                                    <option @if(old('uf') == 'PB') selected @endif value="PB">Paraíba</option>
+                                    <option @if(old('uf') == 'PR') selected @endif value="PR">Paraná</option>
+                                    <option @if(old('uf') == 'PE') selected @endif value="PE">Pernambuco</option>
+                                    <option @if(old('uf') == 'PI') selected @endif value="PI">Piauí</option>
+                                    <option @if(old('uf') == 'RJ') selected @endif value="RJ">Rio de Janeiro</option>
+                                    <option @if(old('uf') == 'RN') selected @endif value="RN">Rio Grande do Norte</option>
+                                    <option @if(old('uf') == 'RS') selected @endif value="RS">Rio Grande do Sul</option>
+                                    <option @if(old('uf') == 'RO') selected @endif value="RO">Rondônia</option>
+                                    <option @if(old('uf') == 'RR') selected @endif value="RR">Roraima</option>
+                                    <option @if(old('uf') == 'SC') selected @endif value="SC">Santa Catarina</option>
+                                    <option @if(old('uf') == 'SP') selected @endif value="SP">São Paulo</option>
+                                    <option @if(old('uf') == 'SE') selected @endif value="SE">Sergipe</option>
+                                    <option @if(old('uf') == 'TO') selected @endif value="TO">Tocantins</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="container">
+                                  <h6>Dados do curso do participante</h6>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-6">
+                                  <label for="">{{ __('Universidade*') }}</label>
+                                  <input type="text" class="form-control" name="universidade[]" required>
+                                </div>
+                                <div class="col-sm-6">
+                                  <label for="">{{ __('Curso*') }}</label>
+                                  <input type="text" class="form-control" name="curso[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Turno*') }}</label>
+                                  <select id="" class="form-control" name="turno[]" required>
+                                    <option value="" disabled selected>-- TURNO --</option>
+                                    @foreach ($enum_turno as $turno)
+                                      <option value="{{$turno}}">{{$turno}}</option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Total de periodos do curso*') }}</label>
+                                  <select name="total_periodos[]" id="" class="form-control" onchange="gerarPeriodos(this)" required>
+                                    <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Periodo atual*') }}</label>
+                                  <select name="periodo_cursado[]" id="" class="form-control" required>
+                                    <option value="" disabled selected>-- PERÍODO ATUAL --</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Ordem de prioridade*') }}</label>
+                                  <select name="ordem_prioridade[]" id="" class="form-control" required>
+                                    <option value="" disabled selected>-- ORDEM --</option>
+                                    <option value="1">1º</option>
+                                    <option value="2">2º</option>
+                                    <option value="3">3º</option>
+                                    <option value="4">4º</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Média geral do curso*') }}</label>
+                                  <input type="number" class="form-control media" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" required>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
                           <h6 class="mb-1">Possui plano de trabalho?</h6>
                           <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
                           <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
@@ -386,7 +551,7 @@
                                       </div>
                                       <div class="custom-file">
                                         <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
-                                        <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2mb.</label>
+                                        <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
                                       </div>
                                     </div>
                                     @error('anexoPlanoTrabalho')
@@ -395,20 +560,14 @@
                                     </span>
                                     @enderror
                                   </div>
-                                  <div class="col-sm-1">
-                                    {{-- <a class="delete">
-                                      <img src="{{ asset('/img/icons/user-times-solid.svg') }}" style="width:25px;margin-top:35px">
-                                    </a> --}}
-                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
 
                           </div>
-                          @if($i != 0)
-                            <a href='#' class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px'>Remover participante</a>
-                          @endif
+                          <button class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px' disabled>Limite minimo de participantes</button>
+                          
                         </div>
 
                       {{--  </div>
@@ -418,7 +577,7 @@
                     @endif
                   </div>
                   <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}">
-                  <a href="#" class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Adicionar participante</a>
+                  <button class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Adicionar participante</button>
 
                 </div>
               </div>
@@ -453,14 +612,30 @@
 <script type="text/javascript">
   $(function() {
     var qtdLinhas = 1;
+    const limiteMaxParticipantes = 3;
+    const limiteMinParticipantes = 1;
     // Coautores
     $('#addCoautor').click(function(e) {
       var countParticipante = document.getElementById('countParticipante');
-      if (countParticipante.value < 100) {
+      if (countParticipante.value < limiteMaxParticipantes) {
         e.preventDefault();
         linha = montarLinhaInput();
         $('#participantes').append(linha);
         setParticipanteDiv(parseInt(countParticipante.value) + 1);
+
+        var btnsDeletar = document.getElementsByClassName("delete");
+        for(var i = 0; i < btnsDeletar.length; i++) {
+          btnsDeletar[i].disabled = "";
+          $(btnsDeletar[i]).text("Remover participantes");
+        }
+
+        if (countParticipante.value >= limiteMaxParticipantes) {
+          var btn = document.getElementById('addCoautor');
+          btn.disabled = "true";
+          $('#addCoautor').text("Limite de participantes atingido");
+        }
+
+        // aplicarMascaras();
       }
     });
 
@@ -484,11 +659,20 @@
     // });
     $(document).on('click', '.delete', function() {
       var countParticipante = document.getElementById('countParticipante');
-      if (countParticipante.value >= 2) {
+      if (countParticipante.value >= limiteMinParticipantes) {
         setParticipanteDiv(parseInt(countParticipante.value) - 1);
         $(this).closest('#novoParticipante').remove();
+        document.getElementById("addCoautor").disabled = "";
+        $('#addCoautor').text("Adicionar participante");
+        if (countParticipante.value == limiteMinParticipantes) {
+          var btnsDeletar = document.getElementsByClassName("delete");
+          for(var i = 0; i < btnsDeletar.length; i++) {
+            btnsDeletar[i].disabled = true;
+            $(btnsDeletar).text("Limite minimo de participantes");
+          }
+        }
         return false;
-      }
+      } 
     });
     $(document).on('click', '.deletePlano', function() {
       if (qtdLinhas > 1) {
@@ -586,93 +770,255 @@
 
   function montarLinhaInput() {
 
-    return "<div id="+"novoParticipante"+">" +
-          "<div class='row'>"+
-            "<div class='col-sm-9'>"+
-              "<br><h4>Dados do participante</h4>" +
-            "</div>"+
-            "<div class='col-sm-3'>"+
+    return `<div id="novoParticipante" style="display: block;">
+                          <br>
+                          <h4>Dados do participante</h4>
+                          <h6>Dados pessoais</h6>
+                          <div class="row">
+                            <div class="col-sm-5">
+                              <label>Nome Completo*</label>
+                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}" required>
+                              @error('nomeParticipante.'.$i)
+                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                <strong>{{ $message }}</strong>
+                              </span>
+                              @enderror
+                            </div>
+                            <div class="col-sm-4">
+                              <label>E-mail*</label>
+                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}" required>
+                              @error('emailParticipante.'.$i)
+                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                <strong>{{ $message }}</strong>
+                              </span>
+                              @enderror
+                            </div>
+                            <div class="col-sm-3">
+                              <label>Função*:</label>
+                              <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante" required>
+                                <option value="" disabled selected hidden>-- Função --</option>
+                                @foreach($funcaoParticipantes as $funcaoParticipante)
+                                <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
+                                @endforeach
+                              </select>
+                              @error('funcaoParticipante')
+                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                  <strong>{{ $message }}</strong>
+                                </span>
+                              @enderror
+                            </div>
+                          </div>
+                          <div id="dados_complemento_1">
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('CPF*') }}</label>
+                                  <input type="text" class="form-control cpf" name="cpf[]" required>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('RG*') }}</label>
+                                  <input type="text" class="form-control rg" name="rg[]" required>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Celular*') }}</label>
+                                  <input type="text" class="form-control celular" name="celular[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Data de nascimento*') }}</label>
+                                  <input type="date" class="form-control" name="data_de_nascimento[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="container">
+                                  <h6>Endereço do participante</h6>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('CEP*') }}</label>
+                                  <input type="text" class="form-control" name="cep[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-6">
+                                  <label for="">{{ __('Rua*') }}</label>
+                                  <input type="text" class="form-control" name="rua[]" required>
+                                </div>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Número*') }}</label>
+                                  <input type="text" class="form-control" name="numero[]" required>
+                                </div>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Bairro*') }}</label>
+                                  <input type="text" class="form-control" name="bairro[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Cidade*') }}</label>
+                                  <input type="text" class="form-control " name="cidade[]" required>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Complemento*') }}</label>
+                                  <input type="text" class="form-control" name="complemento[]" required>
+                                </div>
+                                <div class="col-sm-4">
+                                  <label for="">{{ __('Estado*') }}</label>
+                                  <select name="uf[]" id="" class="form-control" required>
+                                    <option value="" disabled selected>-- UF --</option>
+                                    <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
+                                    <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
+                                    <option @if(old('uf') == 'AP') selected @endif value="AP">Amapá</option>
+                                    <option @if(old('uf') == 'AM') selected @endif value="AM">Amazonas</option>
+                                    <option @if(old('uf') == 'BA') selected @endif value="BA">Bahia</option>
+                                    <option @if(old('uf') == 'CE') selected @endif value="CE">Ceará</option>
+                                    <option @if(old('uf') == 'DF') selected @endif value="DF">Distrito Federal</option>
+                                    <option @if(old('uf') == 'ES') selected @endif value="ES">Espírito Santo</option>
+                                    <option @if(old('uf') == 'GO') selected @endif value="GO">Goiás</option>
+                                    <option @if(old('uf') == 'MA') selected @endif value="MA">Maranhão</option>
+                                    <option @if(old('uf') == 'MT') selected @endif value="MT">Mato Grosso</option>
+                                    <option @if(old('uf') == 'MS') selected @endif value="MS">Mato Grosso do Sul</option>
+                                    <option @if(old('uf') == 'MG') selected @endif value="MG">Minas Gerais</option>
+                                    <option @if(old('uf') == 'PA') selected @endif value="PA">Pará</option>
+                                    <option @if(old('uf') == 'PB') selected @endif value="PB">Paraíba</option>
+                                    <option @if(old('uf') == 'PR') selected @endif value="PR">Paraná</option>
+                                    <option @if(old('uf') == 'PE') selected @endif value="PE">Pernambuco</option>
+                                    <option @if(old('uf') == 'PI') selected @endif value="PI">Piauí</option>
+                                    <option @if(old('uf') == 'RJ') selected @endif value="RJ">Rio de Janeiro</option>
+                                    <option @if(old('uf') == 'RN') selected @endif value="RN">Rio Grande do Norte</option>
+                                    <option @if(old('uf') == 'RS') selected @endif value="RS">Rio Grande do Sul</option>
+                                    <option @if(old('uf') == 'RO') selected @endif value="RO">Rondônia</option>
+                                    <option @if(old('uf') == 'RR') selected @endif value="RR">Roraima</option>
+                                    <option @if(old('uf') == 'SC') selected @endif value="SC">Santa Catarina</option>
+                                    <option @if(old('uf') == 'SP') selected @endif value="SP">São Paulo</option>
+                                    <option @if(old('uf') == 'SE') selected @endif value="SE">Sergipe</option>
+                                    <option @if(old('uf') == 'TO') selected @endif value="TO">Tocantins</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="container">
+                                  <h6>Dados do curso do participante</h6>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-6">
+                                  <label for="">{{ __('Universidade*') }}</label>
+                                  <input type="text" class="form-control" name="universidade[]" required>
+                                </div>
+                                <div class="col-sm-6">
+                                  <label for="">{{ __('Curso*') }}</label>
+                                  <input type="text" class="form-control" name="curso[]" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Turno*') }}</label>
+                                  <select id="" class="form-control" name="turno[]" required>
+                                    <option value="" disabled selected>-- TURNO --</option>
+                                    @foreach ($enum_turno as $turno)
+                                      <option value="{{$turno}}">{{$turno}}</option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Total de periodos do curso*') }}</label>
+                                  <select name="total_periodos[]" id="" class="form-control" onchange="gerarPeriodos(this)" required>
+                                    <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Periodo atual*') }}</label>
+                                  <select name="periodo_cursado[]" id="" class="form-control" required>
+                                    <option value="" disabled selected>-- PERÍODO ATUAL --</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Ordem de prioridade*') }}</label>
+                                  <select name="ordem_prioridade[]" id="" class="form-control" required>
+                                    <option value="" disabled selected>-- ORDEM --</option>
+                                    <option value="1">1º</option>
+                                    <option value="2">2º</option>
+                                    <option value="3">3º</option>
+                                    <option value="4">4º</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Média geral do curso*') }}</label>
+                                  <input type="number" class="form-control media" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" required>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <h6 class="mb-1">Possui plano de trabalho?</h6>
+                          <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
+                          <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
 
-            "</div>"+
-          "</div>"+
-          "<div class="+"row"+">"+
-            "<div class="+"col-sm-5"+">"+
-                "<label>Nome Completo*</label>"+
-                "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+'form-control' + " @error('nomeParticipante') is-invalid @enderror" + "name=" +'nomeParticipante[]'+" placeholder="+"Nome"+">"+
-                "@error('nomeParticipante')" +
-                "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
-                  "<strong>{{ $message }}</strong>" +
-                "</span>" +
-                "@enderror" +
-            "</div>"+
-            "<div class="+"col-sm-4"+">"+
-                "<label>E-mail*</label>"+
-                "<input type='email'" + "style='margin-bottom:10px'" + "class=" + "form-control @error('emailParticipante') is-invalid @enderror" + "name='emailParticipante[]'" + "placeholder='email' >" +
-                "@error('emailParticipante')" +
-                "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
-                  "<strong>{{ $message }}</strong>" +
-                "</span>" +
-                "@enderror" +
-            "</div>"+
-            "<div class='col-sm-3'>"+
-              "<label>Função*:</label>"+
-              "<select class=" + "form-control @error('funcaoParticipante') is-invalid @enderror" + "name='funcaoParticipante[]'" + "id='funcaoParticipante'> " +
-                  "<option value='' disabled selected hidden> Função </option>"+
-                  "@foreach($funcaoParticipantes as $funcaoParticipante)"+
-                    "<option value='{{$funcaoParticipante->id}}'>{{$funcaoParticipante->nome}}</option>"+
-                  "@endforeach"+
-                  "@error('funcaoParticipante'. $i)" +
-                  "<span class='invalid-feedback'" + " role='alert'" + " style='overflow: visible; display:block'>" +
-                    "<strong>{{ $message }}</strong>" +
-                  "</span>" +
-                  "@enderror" +
-              "</select>"+
-            "</div>"+
-        "</div>" +
-            "<h6 class='mb-1'>Possui plano de trabalho?</h6>"+
-            "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 simPlano'"+">Sim</button>"+
-            "<button  class="+"'btn btn-primary mt-2 mb-2 mr-1 naoPlano'"+">Não</button>"+
-            "<div id="+"planoHabilitado"+" style="+"'display:none;'"+">" +
-            "<h5>Dados do plano de trabalho</h5>" +
-            "<div class="+"row"+">"+
-                "<div class="+"col-sm-4"+">"+
-                    "<label>Titulo*</label>"+
-                    "<input"+" type="+'text'+" style="+"margin-bottom:10px"+" class="+"form-control @error('nomePlanoTrabalho') is-invalid @enderror"+" name="+'nomePlanoTrabalho[]'+" placeholder="+"Nome"+">"+
-                    "@error('nomePlanoTrabalho')" +
-                      "<span class='invalid-feedback'" + "role='alert'" + "style='overflow: visible; display:block'>" +
-                        "<strong>{{ $message }}</strong>" +
-                      "</span>" +
-                    "@enderror" +
-                "</div>"+
-                "<div class="+"col-sm-7" +">"+
-                  "<label for="+"nomeTrabalho"+">Anexo* </label>"+
+                          <div id="planoHabilitado" style="display:none;">
+                          <h5>Dados do plano de trabalho</h5>
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div id="planoTrabalho">
+                                <div class="row">
+                                  <div class="col-sm-4">
+                                    <label>Titulo* </label>
+                                    <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" value="{{old('nomePlanoTrabalho.'.$i)}}">
 
-                  "<div class="+"input-group"+">"+
-                    "<div class='input-group-prepend'>"+
-                      "<span class='input-group-text' id='anexoPlanoTrabalho'>Selecione um arquivo:</span>"+
-                    "</div>"+
-                    "<div class='custom-file'>"+
-                      "<input type='file' class='custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" + "id='anexoPlanoTrabalho'"+
-                        " aria-describedby='anexoPlanoTrabalho' name='anexoPlanoTrabalho[]'>"+
-                      "<label class='custom-file-label' id='custom-file-label' for='inputGroupFile01'>O arquivo deve ser no formato PDF de até 2mb.</label>"+
-                  "</div>"+
-                  "</div>"+
-                  "@error('anexoPlanoTrabalho')"+
-                  "<span class='invalid-feedback' role='alert' style='overflow: visible; display:block'>"+
-                    "<strong>{{ $message }}</strong>"+
-                  "</span>"+
-                  "@enderror"+
-                "</div>"+
-                "<div class="+"col-sm-1"+">"+
-                    "<a  class="+"delete"+">"+
-                      "<img src="+"{{ asset('/img/icons/user-times-solid.svg') }}"+" style="+"width:25px;margin-top:35px"+">"+
-                    "</a>"+
-                "</div>"+
-              "</div>"+
-              "</div>"+
+                                    @error('nomePlanoTrabalho')
+                                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                  </div>
+                                  {{-- Arquivo  --}}
+                                  <div class="col-sm-7">
+                                    <label for="nomeTrabalho">Anexo*</label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
+                                      </div>
+                                      <div class="custom-file">
+                                        <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                        <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
+                                      </div>
+                                    </div>
+                                    @error('anexoPlanoTrabalho')
+                                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
 
-              "<a href='#' class="+"'btn btn-danger mt-2 mb-2 delete'"+" style='width:100%;margin-top:10px'"+">Remover participante</a>"+
-            "</div>";
+                          </div>
+                          <button class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px' disabled>Limite minimo de participantes</button>
+                          
+                        </div>`;
   }
 
 
@@ -784,5 +1130,36 @@
   }
   window.onload = areas();
   window.onload = habilitarBotao();
+
+  $(document).ready(aplicarMascaras());
+
+  function aplicarMascaras() {
+    $('.cpf').mask('000.000.000-00');
+    var SPMaskBehavior = function(val) {
+            return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+        },
+        spOptions = {
+            onKeyPress: function(val, e, field, options) {
+                field.mask(SPMaskBehavior.apply({}, arguments), options);
+            }
+        };
+    $('.celular').mask(SPMaskBehavior, spOptions);
+    $('.rg').mask('99.999.999-9');
+    $('.media').mask('00.00');
+  }
+
+  function gerarPeriodos(select) {
+    var div = select.parentElement.parentElement;
+    var selectPeriodos = div.children[2].children[1];
+
+    var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
+    for(var i = 0; i < parseInt(select.value); i++) {
+      html += `<option value="${i+1}">${i+1}º</option>`;
+    }
+
+    $(selectPeriodos).html('');
+    $(selectPeriodos).append(html);
+  }
+
 </script>
 @endsection
