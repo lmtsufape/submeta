@@ -379,7 +379,7 @@
                               <div class="row">
                                 <div class="col-sm-4">
                                   <label for="">{{ __('Data de nascimento*') }}</label>
-                                  <input type="date" class="form-control cpf" name="data_de_nascimento[]" required>
+                                  <input type="date" class="form-control" name="data_de_nascimento[]" required>
                                 </div>
                               </div>
                             </div>
@@ -424,7 +424,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                   <label for="">{{ __('Estado*') }}</label>
-                                  <select name="uf" id="" class="form-control" name="estado[]" required>
+                                  <select name="uf[]" id="" class="form-control" required>
                                     <option value="" disabled selected>-- UF --</option>
                                     <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
                                     <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
@@ -476,7 +476,7 @@
                             </div>
                             <div class="form-group">
                               <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                   <label for="">{{ __('Turno*') }}</label>
                                   <select id="" class="form-control" name="turno[]" required>
                                     <option value="" disabled selected>-- TURNO --</option>
@@ -498,10 +498,20 @@
                                     <option value="12">12</option>
                                   </select>
                                 </div>
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('Periodo que está cursando*') }}</label>
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Periodo atual*') }}</label>
                                   <select name="periodo_cursado[]" id="" class="form-control" required>
-                                    <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
+                                    <option value="" disabled selected>-- PERÍODO ATUAL --</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Ordem de prioridade*') }}</label>
+                                  <select name="ordem_prioridade[]" id="" class="form-control" required>
+                                    <option value="" disabled selected>-- ORDEM --</option>
+                                    <option value="1">1º</option>
+                                    <option value="2">2º</option>
+                                    <option value="3">3º</option>
+                                    <option value="4">4º</option>
                                   </select>
                                 </div>
                                 <div class="col-sm-3">
@@ -624,6 +634,8 @@
           btn.disabled = "true";
           $('#addCoautor').text("Limite de participantes atingido");
         }
+
+        // aplicarMascaras();
       }
     });
 
@@ -758,7 +770,7 @@
 
   function montarLinhaInput() {
 
-    return `<hr><div id="novoParticipante" style="display: block;">
+    return `<div id="novoParticipante" style="display: block;">
                           <br>
                           <h4>Dados do participante</h4>
                           <h6>Dados pessoais</h6>
@@ -817,7 +829,7 @@
                               <div class="row">
                                 <div class="col-sm-4">
                                   <label for="">{{ __('Data de nascimento*') }}</label>
-                                  <input type="date" class="form-control cpf" name="data_de_nascimento[]" required>
+                                  <input type="date" class="form-control" name="data_de_nascimento[]" required>
                                 </div>
                               </div>
                             </div>
@@ -862,7 +874,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                   <label for="">{{ __('Estado*') }}</label>
-                                  <select name="uf" id="" class="form-control" name="estado[]" required>
+                                  <select name="uf[]" id="" class="form-control" required>
                                     <option value="" disabled selected>-- UF --</option>
                                     <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
                                     <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
@@ -914,7 +926,7 @@
                             </div>
                             <div class="form-group">
                               <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                   <label for="">{{ __('Turno*') }}</label>
                                   <select id="" class="form-control" name="turno[]" required>
                                     <option value="" disabled selected>-- TURNO --</option>
@@ -936,10 +948,20 @@
                                     <option value="12">12</option>
                                   </select>
                                 </div>
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('Periodo que está cursando*') }}</label>
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Periodo atual*') }}</label>
                                   <select name="periodo_cursado[]" id="" class="form-control" required>
-                                    <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
+                                    <option value="" disabled selected>-- PERÍODO ATUAL --</option>
+                                  </select>
+                                </div>
+                                <div class="col-sm-2">
+                                  <label for="">{{ __('Ordem de prioridade*') }}</label>
+                                  <select name="ordem_prioridade[]" id="" class="form-control" required>
+                                    <option value="" disabled selected>-- ORDEM --</option>
+                                    <option value="1">1º</option>
+                                    <option value="2">2º</option>
+                                    <option value="3">3º</option>
+                                    <option value="4">4º</option>
                                   </select>
                                 </div>
                                 <div class="col-sm-3">
@@ -1109,7 +1131,9 @@
   window.onload = areas();
   window.onload = habilitarBotao();
 
-  $(document).ready(function($) {
+  $(document).ready(aplicarMascaras());
+
+  function aplicarMascaras() {
     $('.cpf').mask('000.000.000-00');
     var SPMaskBehavior = function(val) {
             return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
@@ -1122,7 +1146,7 @@
     $('.celular').mask(SPMaskBehavior, spOptions);
     $('.rg').mask('99.999.999-9');
     $('.media').mask('00.00');
-  });
+  }
 
   function gerarPeriodos(select) {
     var div = select.parentElement.parentElement;
