@@ -10,7 +10,7 @@
         <h3>Usuários</h3> 
       </div>
       <div class="col-sm-2">
-        <a href="{{route('admin.user.create')}}" class="btn btn-primary" style="float: right;">{{ __('Criar usuário') }}</a>
+        <a href="{{route('admin.user.create')}}" class="btn btn-info" style="float: right;">{{ __('Criar usuário') }}</a>
       </div>
     </div>
     <div class="row">

@@ -314,3 +314,39 @@ section {
 .quant-titulo-card {
   font-size: 60px;
 }
+
+.btn-info {
+  border-radius: 5px;
+  background-color: rgb(55, 187, 55);
+  color: white;
+  font-weight: bolder;
+  border-color: rgb(55, 187, 55);
+}
+
+.btn-info:hover {
+  border-radius: 5px;
+  background-color: rgb(172, 172, 172);
+  color: black;
+  font-weight: bolder;
+  border-color: rgb(172, 172, 172);
+}
+
+.btn-primary {
+  border-radius: 5px;
+  font-weight: bolder;
+}
+
+.btn-secondary {
+  border-radius: 5px;
+  font-weight: bolder;
+}
+
+.btn-danger {
+  border-radius: 5px;
+  font-weight: bolder;
+}
+
+.btn-success {
+  border-radius: 5px;
+  font-weight: bolder;
+}

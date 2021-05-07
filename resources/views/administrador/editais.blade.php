@@ -10,7 +10,7 @@
           <h3>Meus Editais</h3>
       </div>
       <div class="col-sm-2">
-          <a href="{{route('evento.criar')}}" class="btn btn-primary" style="float: right;">Criar Edital</a>
+          <a href="{{route('evento.criar')}}" class="btn btn-info" style="float: right;">Criar Edital</a>
       </div>
   </div>
   <hr>

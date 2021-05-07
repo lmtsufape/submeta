@@ -17,7 +17,7 @@
       </div>
       <div class="col-md-2">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
           Enviar Convite
         </button>
       </div>
