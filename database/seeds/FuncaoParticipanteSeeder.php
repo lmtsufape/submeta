@@ -35,5 +35,10 @@ class FuncaoParticipanteSeeder extends Seeder
         	'nome'=>'Voluntário',
         	
       	]);
+
+		DB::table('funcao_participantes')->insert([
+        	'nome'=>'Pesquisador',
+        	
+      	]);
     }
 }
