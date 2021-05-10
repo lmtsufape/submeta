@@ -350,3 +350,70 @@ section {
   border-radius: 5px;
   font-weight: bolder;
 }
+
+.dropdown-item {
+  color: rgb(0, 140, 255);
+}
+
+.dropdown-item:hover {
+  color: rgb(0, 140, 255);
+}
+
+.dropdown-item-delete {
+  background-color: red;
+  width: 155px;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: white;
+}
+
+.dropdown-item-delete:hover {
+  background-color: rgb(207, 0, 0);
+  color: white;
+}
+
+.dropdown-options a:hover {
+  text-decoration: none;
+}
+
+.dropdown-hr {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 80%;
+}
+
+.titulo-table {
+  color: rgb(0, 140, 255);
+}
+
+.table th {
+  color: rgb(0, 140, 255);
+}
+
+.form-control-edit {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0px;
+  border-color: rgb(0, 140, 255);
+}
+
+.form-control-edit:focus {
+  border-color: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0px;
+}
+
+.form-control-edit:hover {
+  border-color: none;
+  box-shadow: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0px;
+  border-color: rgb(0, 140, 255);
+}
