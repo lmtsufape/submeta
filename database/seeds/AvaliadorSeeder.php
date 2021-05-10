@@ -47,7 +47,7 @@ class AvaliadorSeeder extends Seeder
       // $aval->eventos()->attach($evento);
       // $aval->save();
 
-      // $user_id = DB::table('users')->where('name','Avaliador3')->pluck('id');
+      $user_id = DB::table('users')->where('name','Avaliador3')->pluck('id');
 
       DB::table('avaliadors')->insert([
         'user_id' => $user_id[0],

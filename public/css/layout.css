@@ -417,3 +417,47 @@ section {
   border-radius: 0px;
   border-color: rgb(0, 140, 255);
 }
+
+.modal-header-submeta {
+  border-bottom: 1px solid rgb(0, 140, 255);
+  padding-bottom: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.labels-blue label {
+  color: rgb(0, 140, 255);
+  font-weight: 500;
+}
+
+.modal-submeta {
+  border-radius: 20px;
+  border-color: rgba(204, 204, 204, 0.555);
+}
+
+.texto-info {
+  color: rgba(102, 102, 102, 0.555);
+  text-align: justify;
+  font-size: 12px;
+  padding-top: 0px;
+  margin-bottom: 40px;
+  border-top: 1px solid rgba(102, 102, 102, 0.555) ; 
+}
+
+
+button.close {
+  padding: 0;
+  font-size: 35px;
+  background-color: transparent;
+  border: none;
+  -webkit-appearance: none;
+}
+
+.close:hover, .close:focus {
+  color: none;
+  text-decoration: none;
+  text-shadow: none;
+  box-shadow: none;
+  border: none;
+}
+
