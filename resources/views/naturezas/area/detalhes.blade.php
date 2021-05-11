@@ -26,43 +26,47 @@
       </div>
     </div>
     <hr>
-  <table class="table table-bordered">
-    <thead>
-      <tr>   
-        <th scope="col">Nome</th>
-        <th scope="col">Opção</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach ($subAreas as $subArea)
-        <tr>
-          <td>
-            {{ $subArea->nome }}
-          </td>
-          <td>
-            <div class="btn-group dropright dropdown-options">
-                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
-                </a>
-                <div class="dropdown-menu">
-                    <a href="{{ route('subarea.editar', ['id' => $subArea->id]) }}" class="dropdown-item text-center">
-                        Editar
-                    </a>
-                    <form method="POST" action="{{ route('subarea.deletar', ['id' => $subArea->id]) }}">
-                        {{ csrf_field() }}
-                        <button type="submit" class="dropdown-item dropdown-item-delete text-center">
-                          <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
-                            Deletar
-                        </button>
-
-                    </form>
-                </div>
-            </div>
-          </td>
-        </tr>
-      @endforeach
-    </tbody>
-  </table>
+    <div class="row" style="margin-bottom: 200px;">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>   
+              <th scope="col">Nome</th>
+              <th scope="col">Opção</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($subAreas as $subArea)
+              <tr>
+                <td>
+                  {{ $subArea->nome }}
+                </td>
+                <td>
+                  <div class="btn-group dropright dropdown-options">
+                      <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                      </a>
+                      <div class="dropdown-menu">
+                          <a href="{{ route('subarea.editar', ['id' => $subArea->id]) }}" class="dropdown-item text-center">
+                              Editar
+                          </a>
+                          <form method="POST" action="{{ route('subarea.deletar', ['id' => $subArea->id]) }}">
+                              {{ csrf_field() }}
+                              <button type="submit" class="dropdown-item dropdown-item-delete text-center">
+                                <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
+                                  Deletar
+                              </button>
+      
+                          </form>
+                      </div>
+                  </div>
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
 </div>
 
 @endsection
