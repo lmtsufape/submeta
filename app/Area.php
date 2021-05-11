@@ -37,4 +37,7 @@ class Area extends Model
   public function avaliador(){
       return $this->hasMany('App\Area');
   }
+  public function grandeArea() {
+    return $this->belongsTo('App\GrandeArea', 'grande_area_id');
+  }
 }
