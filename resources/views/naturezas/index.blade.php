@@ -33,7 +33,7 @@
       </div>
     <div class="row" >
       @if(session('mensagem'))
-      <div class="col-md-12" style="margin-top: 100px;">
+      <div class="col-md-12" style="margin-top: 30px;">
          <div class="alert alert-success">
                <p>{{session('mensagem')}}</p>
          </div>
