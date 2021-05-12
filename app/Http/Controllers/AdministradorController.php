@@ -29,7 +29,8 @@ class AdministradorController extends Controller
     }
     public function naturezas(){
         $naturezas = Natureza::orderBy('nome')->get();
-    	return view('naturezas.index')->with(['naturezas' => $naturezas]);
+        $funcoesParticipante = FuncaoParticipantes::orderBy('nome')->get();
+    	return view('naturezas.index')->with(['naturezas' => $naturezas, 'funcoes' => $funcoesParticipante]);
     }
     public function usuarios(){
         $users = User::orderBy('name')->get();

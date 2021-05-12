@@ -50,9 +50,11 @@
                     <a href="{{ route('grandearea.show', ['id' => $grandeArea->id ]) }}" class="dropdown-item text-center">
                       Detalhes
                     </a>
+                    <hr class="dropdown-hr">
                     <a href="{{ route('grandearea.editar', ['id' => $grandeArea->id]) }}" class="dropdown-item text-center">
                         Editar
                     </a>
+                    <hr class="dropdown-hr">
                     <form method="POST" action="{{ route('grandearea.deletar', ['id' => $grandeArea->id]) }}">
                         {{ csrf_field() }}
                         <button type="submit" class="dropdown-item dropdown-item-delete text-center">

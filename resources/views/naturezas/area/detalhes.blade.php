@@ -50,6 +50,7 @@
                           <a href="{{ route('subarea.editar', ['id' => $subArea->id]) }}" class="dropdown-item text-center">
                               Editar
                           </a>
+                          <hr class="dropdown-hr">
                           <form method="POST" action="{{ route('subarea.deletar', ['id' => $subArea->id]) }}">
                               {{ csrf_field() }}
                               <button type="submit" class="dropdown-item dropdown-item-delete text-center">

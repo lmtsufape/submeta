@@ -196,6 +196,9 @@ Route::prefix('naturezas')->group(function(){
   Route::post('/subarea/excluir/{id}',    'SubAreaController@destroy'                 )->name('subarea.deletar')->middleware('checkAdministrador');
   Route::post('/subarea/',                 'SubAreaController@consulta'                )->name('subarea.consulta');
 
+  Route::post('/funcao-participante/store', 'ParticipanteController@storeFuncao'      )->name('funcao_participante.store');
+  Route::post('/funcao-participante/{id}/update', 'ParticipanteController@updateFuncao')->name('funcao_participante.update');
+  Route::get('/funcao-participante/{id}/destroy', 'ParticipanteController@destroyFuncao')->name('funcao_participante.destroy');
 });
 
 //############ Evento ##############################################

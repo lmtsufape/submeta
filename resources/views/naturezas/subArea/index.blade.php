@@ -42,6 +42,7 @@
                               <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
                               Editar
                           </a>
+                          <hr class="dropdown-hr">
                           <form method="POST" action="{{ route('subarea.deletar', ['id' => $subArea->id]) }}">
                               {{ csrf_field() }}
                               <button type="submit" class="dropdown-item">
