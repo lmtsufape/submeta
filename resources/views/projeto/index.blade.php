@@ -39,7 +39,7 @@
     <table class="table table-bordered">
         <thead>
           <tr>   
-            <th scope="col">Nome do projeto</th>
+            <th scope="col">Projeto</th>
             <th scope="col">Status</th>
             <th scope="col">Data de Criação</th>
             <th scope="col">Opção</th>
@@ -57,7 +57,7 @@
                 @elseif($projeto->status == 'Submetido')
                   <td style="color: rgb(0, 0, 0)">Submetido</td>
                 @endif
-                <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
+                <td>{{ date('d/m/Y', strtotime($projeto->updated_at)) }}</td>   
                 <td>
                   <div class="btn-group dropright dropdown-options">
                       <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -16,11 +16,11 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th scope="col">Nome do Edital</th>
-          <th scope="col">Inicio da Submissão</th>
-          <th scope="col">Fim da Submissão</th>
-          <th scope="col">Data do Resultado</th>
-          <th scope="col">Baixar edital</th>
+          <th scope="col">Edital</th>
+          <th scope="col" style="text-align: center;">Inicio da Submissão</th>
+          <th scope="col" style="text-align: center;">Fim da Submissão</th>
+          <th scope="col" style="text-align: center;">Data do Resultado</th>
+          <th scope="col" style="text-align: center;">Baixar Edital</th>
           <th scope="col">Opção</th>
         </tr>
       </thead>
@@ -32,9 +32,9 @@
                   {{ $evento->nome }}
               </a>
             </td>
-            <td>{{ date('d/m/Y', strtotime($evento->inicioSubmissao)) }}</td>
-            <td>{{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</td>
-            <td>{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
+            <td style="text-align: center;">{{ date('d/m/Y', strtotime($evento->inicioSubmissao)) }}</td>
+            <td style="text-align: center;">{{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</td>
+            <td style="text-align: center;">{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
             <td style="text-align: center">
               <a href="{{ route('baixar.edital', ['id' => $evento->id]) }}">
                 <img src="{{asset('img/icons/file-download-solid.svg')}}" width="15px">

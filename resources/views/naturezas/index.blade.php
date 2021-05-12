@@ -97,7 +97,7 @@
             <thead>
               <tr>   
                 <th scope="col">Nome</th>
-                <th scope="col">Data de criação</th>
+                <th scope="col">Data de Criação</th>
                 <th scope="col">Opção</th>
               </tr>
             </thead>
@@ -203,7 +203,7 @@
             <thead>
               <tr>   
                 <th scope="col">Nome</th>
-                <th scope="col">Data de criação</th>
+                <th scope="col">Data de Criação</th>
                 <th scope="col">Opção</th>
               </tr>
             </thead>
