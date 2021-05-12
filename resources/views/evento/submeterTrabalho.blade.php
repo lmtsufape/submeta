@@ -584,22 +584,28 @@
               <hr>
               </p>
               <div class="row justify-content-center">
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                   <button type="submit" formaction="{{route('trabalho.storeParcial')}}" class="btn btn-primary" style="width:100%;margin-bottom:10px">
                     {{ __('Salvar como Rascunho') }}
                   </button>
-                </div>
-                <div class="col-md-6">
+                </div> --}}
+                <div class="col-md-12">
                   <button type="submit" class="btn btn-success" style="width:100%">
                     {{ __('Enviar Projeto') }}
                   </button>
                 </div>
+                
               </div>
-              @if (Auth()->user()->administradors != null)
-                <a href="{{ route('admin.editais') }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
-              @else
-                <a href="{{ route('proponente.projetosEdital', ['id' => $edital->id]) }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
-              @endif
+              <br>
+              <div class="row justify-content-center">
+                <div class="col-sm-12">
+                  @if (Auth()->user()->administradors != null)
+                    <a href="{{ route('admin.editais') }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+                  @else
+                    <a href="{{ route('proponente.projetosEdital', ['id' => $edital->id]) }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
+                  @endif
+                </div>
+              </div>
             </form>
           </div>
         </div>

@@ -104,7 +104,7 @@ class TrabalhoController extends Controller
       }
 
       //--Salvando os dados da submissão temporariamente
-      $trabalho = $this->armazenarInfoTemp($request, $proponente);
+      // $trabalho = $this->armazenarInfoTemp($request, $proponente);
 
       //O anexo de Decisão do CONSU dependo do tipo de edital
       if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM'){
@@ -134,9 +134,9 @@ class TrabalhoController extends Controller
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
         ]);
         
-        if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
-          return $this->validarAnexosRascunho($request, $trabalho);
-        }
+        // if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
+        //   return $this->validarAnexosRascunho($request, $trabalho);
+        // }
 
         //$trabalho = Trabalho::create([
         $trabalho['titulo']                        = $request->nomeProjeto;
@@ -181,9 +181,9 @@ class TrabalhoController extends Controller
           'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
         ]);
 
-        if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
-          return $this->validarAnexosRascunho($request, $trabalho);
-        }
+        // if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
+        //   return $this->validarAnexosRascunho($request, $trabalho);
+        // }
         //$trabalho = Trabalho::create([
           $trabalho['titulo']                        = $request->nomeProjeto;
           $trabalho['coordenador_id']                = $coordenador->id;

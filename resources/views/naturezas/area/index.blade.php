@@ -33,18 +33,20 @@
                   <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                 </a>
                 <div class="dropdown-menu">
-                    <a href="{{ route('area.show', ['id' => $area->id ]) }}" class="dropdown-item">
+                    <a href="{{ route('area.show', ['id' => $area->id ]) }}" class="dropdown-item text-center">
                         <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
                         Detalhes
                     </a>
-                    <a href="{{ route('area.editar', ['id' => $area->id]) }}" class="dropdown-item">
+                    <hr class="dropdown-hr">
+                    <a href="{{ route('area.editar', ['id' => $area->id]) }}" class="dropdown-item text-center">
                         <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
                         Editar
                     </a>
+                    <hr class="dropdown-hr">
                     <form method="POST" action="{{ route('area.deletar', ['id' => $area->id]) }}">
                         {{ csrf_field() }}
-                        <button type="submit" class="dropdown-item">
-                            <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
+                        <button type="submit" class="dropdown-item dropdown-item-delete text-center">
+                          <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
                             Deletar
                         </button>
 

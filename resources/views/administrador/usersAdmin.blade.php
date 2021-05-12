@@ -2,25 +2,30 @@
 
 @section('content')
 
-<div class="container" style="margin-top: 100px;">
+<div class="container" style="margin-top: 30px;">
 
   <div class="container" >
-    <div class="row" >
-      <div class="col-sm-10">
-        <h3>Usuários</h3> 
-      </div>
-      <div class="col-sm-2">
-        <a href="{{route('admin.user.create')}}" class="btn btn-primary" style="float: right;">{{ __('Criar usuário') }}</a>
-      </div>
-    </div>
     <div class="row">
       @if(session('mensagem'))
-        <div class="col-md-12" style="margin-top: 100px;">
+        <div class="col-md-12" style="margin-top: 30px;">
             <div class="alert alert-success">
                 <p>{{session('mensagem')}}</p>
             </div>
         </div>
       @endif
+    </div>
+    <div class="row" >
+      <div class="col-sm-1">
+        <a href="{{ route('admin.index') }}" class="btn btn-secondary">
+          Voltar
+        </a>
+      </div>
+      <div class="col-sm-9" style="text-align: center;">
+        <h3 class="titulo-table">Usuários</h3> 
+      </div>
+      <div class="col-sm-2">
+        <a href="{{route('admin.user.create')}}" class="btn btn-info" style="float: right;">{{ __('Criar usuário') }}</a>
+      </div>
     </div>
   </div>
   <hr>
@@ -49,14 +54,14 @@
                       <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{{route('admin.user.edit', $user->id)}}" class="dropdown-item">
-                            <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
+                        <a href="{{route('admin.user.edit', $user->id)}}" class="dropdown-item text-center">
                             Editar
                         </a>
+                        <hr class="dropdown-hr">
                         <form method="POST" action="{{route('admin.user.destroy', $user->id)}}">
                             {{ csrf_field() }}
-                            <button type="submit" class="dropdown-item">
-                                <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
+                            <button type="submit" class="dropdown-item dropdown-item-delete text-center">
+                              <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
                                 Deletar
                             </button>
 
@@ -79,14 +84,14 @@
                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{{route('admin.user.edit', $user->id)}}" class="dropdown-item">
-                            <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
+                        <a href="{{route('admin.user.edit', $user->id)}}" class="dropdown-item text-center">
                             Editar
                         </a>
+                        <hr class="dropdown-hr">
                         <form method="POST" action="{{route('admin.user.destroy', $user->id)}}">
                             {{ csrf_field() }}
-                            <button type="submit" class="dropdown-item">
-                                <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
+                            <button type="submit" class="dropdown-item dropdown-item-delete text-center">
+                                <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
                                 Deletar
                             </button>
     

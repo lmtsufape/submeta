@@ -2,27 +2,41 @@
 
 @section('content')
 
-<div class="container" style="margin-top: 100px;">
+<div class="container" style="margin-top: 30px;">
 
 
   <div class="container" >
-    <div class="row justify-content-center d-flex align-items-center" >
-      {{-- <div class="col-md-12"> --}}
-         <h3>Lista  de Projetos do Edital: {{ $evento->nome }} </h3>
-      {{-- </div> --}}
-
+    <div class="row justify-content-center" style="margin-bottom: 50px;">
+      <div class="col-md-1">
+        <a href="{{ route('admin.atribuir', ['evento_id' => $evento->id]) }}" class="btn btn-secondary">
+          Voltar
+        </a>
+      </div>
+      <div class="col-md-10" style="text-align: center;">
+        <h3  class="titulo-table">Lista de Projetos do Edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
+      </div>
+      <div class="col-md-1">
+        <!-- Button trigger modal -->
+        {{-- <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+          Enviar Convite
+        </button> --}}
+      </div>
     </div>
-    <div class="row justify-content-center d-flex align-items-center" >
-      {{-- <div class="col-md-12"> --}}
-         <h5>Total:  </h5>
-      {{-- </div> --}}
-
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-sm-1">
+            <button class="btn" onclick="buscar(this.parentElement.parentElement.children[1].children[0])">
+              <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
+            </button>
+          </div>
+          <div class="col-sm-6">
+            <input type="text" class="form-control form-control-edit" placeholder="Digite o nome do projeto" onkeyup="buscar(this)">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <a href="{{ route('admin.atribuir', ['evento_id' => $evento->id]) }}" class="btn btn-primary">
-    Voltar
-  </a>
-
   <hr>
   <table class="table table-bordered">
     <thead>
@@ -33,7 +47,7 @@
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="projetos">
       @foreach ($trabalhos as $trabalho)
         <tr>
           <td>{{ $trabalho->titulo}}</td>
@@ -85,10 +99,10 @@
     </tbody>
   </table>
 
-  <div class="container" >
+  <div class="container" style="margin-top: 50px;">
     <div class="row justify-content-center d-flex align-items-center" >
 
-        <h3>Status dos Projetos em Avaliação: {{ $evento->nome }} </h3>
+        <h3 class="titulo-table">Status dos Projetos em Avaliação do edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
 
     </div>
   </div>
@@ -134,7 +148,24 @@
 <script>
   $('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
-  })
+  });
 
+  function buscar(input) {
+    var editais = document.getElementById('projetos').children;
+    if(input.value.length > 2) {      
+      for(var i = 0; i < editais.length; i++) {
+        var nomeEvento = editais[i].children[0].textContent;
+        if(nomeEvento.substr(0).indexOf(input.value) >= 0) {
+          editais[i].style.display = "";
+        } else {
+          editais[i].style.display = "none";
+        }
+      }
+    } else {
+      for(var i = 0; i < editais.length; i++) {
+        editais[i].style.display = "";
+      }
+    }
+  }
 </script>
 @endsection

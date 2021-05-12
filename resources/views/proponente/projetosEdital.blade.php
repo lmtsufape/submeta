@@ -30,7 +30,7 @@
         </div>
         <div class="col-sm-2">
 
-            <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-primary" @else href="#" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar projeto</a>
+            <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-info" @else href="#" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar projeto</a>
 
         </div>
       </div>

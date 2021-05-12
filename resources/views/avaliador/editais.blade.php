@@ -23,45 +23,43 @@
     </thead>
     <tbody>
       @foreach ($eventos as $evento)
-        <tr>
-          <td>
-              {{ $evento->nome }}
-          </td>
-          <td>{{ date('d/m/Y', strtotime($evento->inicioRevisao)) }}</td>
-          <td>{{ date('d/m/Y', strtotime($evento->fimRevisao)) }}</td>
-          <td>
-            <div class="btn-group dropright dropdown-options">
-                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
-                </a>
-                <div class="dropdown-menu">
-                  @if(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == true )
-                    <a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]) }}" class="dropdown-item">
-                        <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
-                        Projetos para avaliar
-                    </a>
-                  @elseif(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == false)
-                    <button disabled="disabled" class="dropdown-item">
-                       Convite recusado
-                    </button>
-                  @elseif(is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) )
-                    <a href="{{ route('avaliador.conviteResposta', ['evento_id' => $evento->id, 'resposta'=>true]) }}" class="dropdown-item">
-                        <img src="{{asset('img/icons/confirm.png')}}" class="icon-card" alt="" style="width: 20px; height: auto">
-                        Aceitar Convite
-                    </a>
-                    <a href="{{ route('avaliador.conviteResposta', ['evento_id' => $evento->id, 'resposta'=>false]) }}" class="dropdown-item">
-                        <img src="{{asset('img/icons/recuse.png')}}" class="icon-card" alt="" style="width: 20px; height: auto">
-                        Recusar Convite
-                    </a>
-                  @endif
-
-
-
-
-                </div>
-            </div>
-          </td>
-        </tr>
+        @if($evento->pivot->convite !== false)
+          <tr>
+            <td>
+                {{ $evento->nome }}
+            </td>
+            <td>{{ date('d/m/Y', strtotime($evento->inicioRevisao)) }}</td>
+            <td>{{ date('d/m/Y', strtotime($evento->fimRevisao)) }}</td>
+            <td>
+              <div class="btn-group dropright dropdown-options">
+                  <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                  </a>
+                  <div class="dropdown-menu">
+                    @if(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == true )
+                      <a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]) }}" class="dropdown-item">
+                          <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                          Projetos para avaliar
+                      </a>
+                    @elseif(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == false)
+                      <button disabled="disabled" class="dropdown-item">
+                        Convite recusado
+                      </button>
+                    @elseif(is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) )
+                      <a href="{{ route('avaliador.conviteResposta', ['evento_id' => $evento->id, 'resposta'=>true]) }}" class="dropdown-item">
+                          <img src="{{asset('img/icons/confirm.png')}}" class="icon-card" alt="" style="width: 20px; height: auto">
+                          Aceitar Convite
+                      </a>
+                      <a href="{{ route('avaliador.conviteResposta', ['evento_id' => $evento->id, 'resposta'=>false]) }}" class="dropdown-item">
+                          <img src="{{asset('img/icons/recuse.png')}}" class="icon-card" alt="" style="width: 20px; height: auto">
+                          Recusar Convite
+                      </a>
+                    @endif
+                  </div>
+              </div>
+            </td>
+          </tr>
+        @endif
       @endforeach
     </tbody>
   </table>

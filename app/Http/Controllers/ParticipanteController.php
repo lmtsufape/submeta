@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Evento;
 use App\Trabalho;
 use App\Participante;
+use App\FuncaoParticipantes;
 use Auth;
 
 class ParticipanteController extends Controller
@@ -32,5 +33,46 @@ class ParticipanteController extends Controller
         //dd(Auth::user()->proponentes);
 
         return view('participante.projetos')->with(['edital' => $edital, 'projetos' => $projetos]);
+    }
+
+    public function storeFuncao(Request $request) {
+        $validated = $request->validate([
+            'newFuncao'      => 'required',
+            'nome_da_função' => 'required',
+        ]);
+
+        $funcao = new FuncaoParticipantes();
+        $funcao->nome = $request->input('nome_da_função');
+
+        $funcao->save();
+
+        return redirect()->back()->with(['mensagem' => 'Função de participante cadastrada com sucesso!']);
+    }
+
+    public function updateFuncao(Request $request, $id) {
+        $validated = $request->validate([
+            'editFuncao' => 'required',
+            'nome_da_função'.$id => 'required',
+        ]);
+
+        $funcao = FuncaoParticipantes::find($id);
+        if ($funcao->participantes->count() > 0) {
+            return redirect()->back()->with(['error' => 'Essa função não pode ser editada pois participantes estão vinculados a ela!']);
+        }
+
+        $funcao->nome = $request->input('nome_da_função'.$id);
+        $funcao->update();
+
+        return redirect()->back()->with(['mensagem' => 'Função de participante salva com sucesso!']);
+    }
+
+    public function destroyFuncao($id) {
+        $funcao = FuncaoParticipantes::find($id);
+        if ($funcao->participantes->count() > 0) {
+            return redirect()->back()->with(['error' => 'Essa função não pode ser excluída pois participantes estão vinculados a ela!']);
+        }
+
+        $funcao->delete();
+        return redirect()->back()->with(['mensagem' => 'Função de participante deletada com sucesso!']);
     }
 }
