@@ -461,3 +461,15 @@ button.close {
   border: none;
 }
 
+.select-submeta {
+  border-radius: 5px;
+  border: 1px solid rgb(172, 172, 172);
+}
+
+.background-yellow {
+  background-color: rgb(42, 212, 0);
+}
+
+.background-red {
+  background-color: rgb(235, 0, 0);
+}

@@ -24,7 +24,8 @@ class UserController extends Controller
 
     public function index()
     {
-      $eventos = Evento::all();
+      $eventos = Evento::orderBy('created_at', 'desc')->get();
+      dd($eventos);
       if(Auth::check()){
         Log::debug('UserController check');
         return redirect()->route('home');
@@ -37,8 +38,7 @@ class UserController extends Controller
     }
     public function inicial()
     {
-      $eventos = Evento::all();
-
+      $eventos = Evento::orderBy('created_at', 'desc')->get();
       $hoje = Carbon::today('America/Recife');
       $hoje = $hoje->toDateString();
       return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);

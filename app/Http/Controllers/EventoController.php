@@ -343,7 +343,7 @@ class EventoController extends Controller
             'natureza'            => ['required'],
             'inicioSubmissao'     => ['required', 'date'],
             'fimSubmissao'        => ['required', 'date'],
-            'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
+            'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
             'fimRevisao'          => ['required', 'date'],
             'resultado_preliminar'=> ['required', 'date'],
             'inicio_recurso'      => ['required', 'date'],
@@ -359,10 +359,10 @@ class EventoController extends Controller
           'descricao'           => ['required', 'string', 'max:1500'],
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'],
-          'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
+          'inicioSubmissao'     => ['required', 'date', 'after_or_equal:inicioSubmissao'],
           'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-          'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
-          'fimRevisao'          => ['required', 'date', 'after:inicioRevisao', 'after:fimSubmissao'],
+          'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
+          'fimRevisao'          => ['required', 'date', 'after:inicioRevisao'],
           'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
           'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
           'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
@@ -402,8 +402,8 @@ class EventoController extends Controller
 
         $evento->update();
 
-        $eventos = Evento::all();
-        return view('coordenador.home',['eventos'=>$eventos]);
+        $eventos = Evento::orderBy('nome')->get();
+        return view('administrador.editais',['eventos'=>$eventos]);
     }
 
     /**
