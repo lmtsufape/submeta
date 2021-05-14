@@ -60,10 +60,10 @@
               <!-- Modal -->
               <div class="modal fade" id="exampleModalCenter{{ $trabalho->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLongTitle">Selecione o avaliador(es)</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <div class="modal-content modal-submeta">
+                    <div class="modal-header modal-header-submeta">
+                      <h5 class="modal-title titulo-table" id="exampleModalLongTitle">Selecione o(s) avaliador(es)</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"  style="color: rgb(182, 182, 182)">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
@@ -74,7 +74,7 @@
                         <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                         <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                         <div class="form-group">
-                          <label for="exampleFormControlSelect2">Example multiple select</label>
+                          <label for="exampleFormControlSelect2">Selecione o(s) avaliador(es) para esse projeto</label>
                           <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2">
                             @foreach ($trabalho->aval as $avaliador)
                               <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{$avaliador->area->nome ?? 'Indefinida'}}) </option>
@@ -83,8 +83,8 @@
                           <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
                         </div>
 
-                        <div class="mx-auto" >
-                          <button type="submit" class="btn btn-success mx-auto">Atribuir</button>
+                        <div>
+                          <button type="submit" class="btn btn-info" style="width: 100%">Atribuir</button>
                         </div>
 
                       </form>
