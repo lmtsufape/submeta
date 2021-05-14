@@ -21,6 +21,7 @@ use App\FuncaoParticipantes;
 use App\Participante;
 use App\Avaliador;
 use Carbon\Carbon;
+use App\Endereco;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
@@ -63,7 +64,7 @@ class TrabalhoController extends Controller
                                             'grandeAreas'        => $grandeAreas,
                                             'funcaoParticipantes'=> $funcaoParticipantes,
                                             'rascunho'           => $rascunho,
-                                            'enum_turno'         => OutrasInfoParticipante::ENUM_TURNO
+                                            'enum_turno'         => Participante::ENUM_TURNO
                                             ]);
     }
 
@@ -84,7 +85,7 @@ class TrabalhoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-      dd($request);
+      
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();
       $evento = Evento::find($request->editalId);
@@ -970,5 +971,158 @@ class TrabalhoController extends Controller
         return Storage::download($eventoTemp->$nomeAnexo);
       }
       return abort(404);
+    }
+
+    public function salvar(Request $request) {
+      $edital = Evento::find($request->editalId);
+      $hoje = now();
+      
+      if (!($edital->inicioSubmissao < $hoje && $edital->fimSubmissao >= $hoje)) {
+        return redirect()->route('inicial')->with(['error'=> 0, 'mensagem' => 'As submissões para o edital '. $edital->titulo .' foram encerradas.']);
+      }
+
+      $projeto = $this->atribuirDados($request, $edital);
+      $projeto->save();
+
+      // Salvando anexos no storage
+
+      $pasta = 'trabalhos/' . $edital->id . '/' . $projeto->id;
+
+      $projeto = $this->armazenarAnexosFinais($request, $pasta, $projeto, $edital);
+      $subject = "Submissão de Trabalho";
+      $proponente = Auth()->user();
+      Mail::to($proponente->email)->send(new SubmissaoTrabalho($proponente, $subject, $edital, $projeto));
+
+      // Salvando participantes
+      $this->salvarParticipantes($request, $edital, $projeto);
+
+      dd("foi");
+    }
+
+    public function atribuirDados(Request $request, $edital) {
+      $projeto = new Trabalho();
+      $proponente = User::find(auth()->user()->id)->proponentes;
+      $hoje = now();
+
+      $projeto->titulo                           = $request->nomeProjeto;
+      $projeto->coordenador_id                   = $edital->coordenadorComissao->id;
+      $projeto->grande_area_id                   = $request->grandeArea;
+      $projeto->area_id                          = $request->area;
+      $projeto->sub_area_id                      = $request->subArea;
+      $projeto->pontuacaoPlanilha                = $request->pontuacaoPlanilha;
+      $projeto->linkGrupoPesquisa                = $request->linkGrupo;
+      $projeto->linkLattesEstudante              = $request->linkLattesEstudante;
+      $projeto->data                             = $hoje;
+      $projeto->evento_id                        = $request->editalId;
+      $projeto->status                           = 'Submetido';
+      $projeto->proponente_id                    = $proponente->id;
+      //Anexos
+      $projeto->anexoProjeto                     = $request->anexoProjeto;
+      $projeto->anexoAutorizacaoComiteEtica      = $request->anexoComiteEtica;
+      $projeto->justificativaAutorizacaoEtica    = $request->justificativaAutorizacaoEtica;
+      $projeto->anexoLattesCoordenador           = $request->anexoLattesCoordenador;
+      $projeto->anexoPlanilhaPontuacao           = $request->anexoPlanilha;
+      
+      if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM'){ 
+        $projeto->anexoDecisaoCONSU                = $request->anexoCONSU;
+      } 
+
+      return $projeto;
+    }
+
+    public function salvarParticipantes(Request $request, $edital, $projeto) {
+      if($request->emailParticipante != null) {
+        foreach ($request->emailParticipante as $key => $email) {
+          $userParticipante = User::where('email', $email)->first();
+          
+          $participante = new Participante();
+
+          if($userParticipante == null){
+            $passwordTemporario = Str::random(8);
+
+            $usuario                = new User();
+            $usuario->email         = $email;
+            $usuario->password      = bcrypt($passwordTemporario);
+            $usuario->usuarioTemp   = false;
+            $usuario->name          = $request->nomeParticipante[$key];
+            $usuario->tipo          = 'participante';
+            $usuario->instituicao   = $request->universidade[$key];
+            $usuario->cpf           = $request->cpf[$key];
+            $usuario->celular       = $request->celular[$key];
+
+            $endereco               = new Endereco();
+            $endereco->rua          = $request->rua[$key];
+            $endereco->numero       = $request->numero[$key];  
+            $endereco->bairro       = $request->bairro[$key];
+            $endereco->cidade       = $request->cidade[$key];
+            $endereco->uf           = $request->uf[$key];
+            $endereco->cep          = $request->cep[$key];
+            $endereco->complemento  = $request->complemento[$key];
+            $endereco->save();
+
+            $usuario->enderecoId  = $endereco->id;
+
+            $usuario->save();
+
+            $participante->user_id                  = $usuario->id;
+            $participante->trabalho_id              = $projeto->id;
+            $participante->funcao_participante_id   = $request->funcaoParticipante[$key];
+            $participante->confirmacao_convite      = true;
+            $participante->rg                       = $request->rg[$key];
+            $participante->data_de_nascimento       = $request->data_de_nascimento[$key];
+            $participante->curso                    = $request->curso[$key];
+            $participante->turno                    = $request->turno[$key];
+            $participante->ordem_prioridade         = $request->ordem_prioridade[$key];
+            $participante->periodo_atual            = $request->periodo_cursado[$key];
+            $participante->total_periodos           = $request->total_periodos[$key];
+            $participante->media_do_curso           = $request->media_geral_curso[$key];
+            $participante->save();
+
+            
+            $subject = "Participante de Projeto";
+            Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
+          } else {
+
+            $participante->user_id                  = $userParticipante->id;
+            $participante->trabalho_id              = $projeto->id;
+            $participante->funcao_participante_id   = $request->funcaoParticipante[$key];
+            $participante->confirmacao_convite      = true;
+            $participante->rg                       = $request->rg[$key];
+            $participante->data_de_nascimento       = $request->data_de_nascimento[$key];
+            $participante->curso                    = $request->curso[$key];
+            $participante->turno                    = $request->turno[$key];
+            $participante->ordem_prioridade         = $request->ordem_prioridade[$key];
+            $participante->periodo_atual            = $request->periodo_cursado[$key];
+            $participante->total_periodos           = $request->total_periodos[$key];
+            $participante->media_do_curso           = $request->media_geral_curso[$key];
+            $participante->save();
+
+            $subject = "Participante de Projeto";
+            Mail::to($email)
+                  ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
+
+          }
+
+          if($request->nomePlanoTrabalho[$key] != null){
+            $usuario = User::where('email', $email)->first();
+            $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $projeto->id]])->first();
+
+            $path = 'trabalhos/' . $edital->id . '/' . $projeto->id .'/';
+            $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+            $file = $request->anexoPlanoTrabalho[$key];
+            Storage::putFileAs($path, $file, $nome);
+
+            $agora = now();
+            $arquivo = new Arquivo();
+            $arquivo->titulo = $request->nomePlanoTrabalho[$key];
+            $arquivo->nome = $path . $nome;
+            $arquivo->trabalhoId = $projeto->id;
+            $arquivo->data = $agora;
+            $arquivo->participanteId = $participante->id;
+            $arquivo->versaoFinal = true;
+            $arquivo->save();
+          }
+        }
+      }
     }
 }
