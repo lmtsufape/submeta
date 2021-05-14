@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Participante extends Model
 {
     use SoftDeletes;
+    public const ENUM_TURNO = ['Matutino',  'Vespertino', 'Noturno', 'Integral'];
 
 	protected $fillable = ['name', 'user_id', 'trabalho_id', 'participante_id'];
 

@@ -97,7 +97,7 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::get(   '/trabalho/submeter/{id}',  'TrabalhoController@index'                      )->name('trabalho.index');
   Route::get(   '/trabalho/visualizar/{id}','TrabalhoController@show'                       )->name('trabalho.show');
   Route::post(  '/trabalho/novaVersao',     'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
-  Route::post(  '/trabalho/criar',          'TrabalhoController@store'                      )->name('trabalho.store');
+  Route::post(  '/trabalho/criar',          'TrabalhoController@salvar'                      )->name('trabalho.store');
   Route::post(  '/trabalho/criarRascunho',  'TrabalhoController@storeParcial'               )->name('trabalho.storeParcial');
   Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
   Route::get(   '/projeto/{id}/visualizar', 'TrabalhoController@show'                       )->name('trabalho.show');

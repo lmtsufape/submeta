@@ -14,7 +14,9 @@
             </div>
         </div>
     </div>
-
+    @php
+        $hoje = now();
+    @endphp
     <div class="row">
 
 
