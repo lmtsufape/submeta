@@ -99,50 +99,54 @@
                         @guest
                             <a href="{{ route('coord.home') }}" class="btn navbar-text negrito" style="color: rgb(0, 140, 255);">Editais</a>
                             <a href="#" class="btn dropdown-toggle negrito" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 140, 255);">Login</a>
-                            <div class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: 380px;">
-                                <form method="POST" action="{{ route('login') }}">
-                                    @csrf
-                                    <div style="padding: 20px;">
-                                        <div style="color: rgb(0, 140, 255); position: relative; top: 5px; text-align: center; font-size: 20px;">
-                                            Entrar
-                                        </div>
-                                        <div style="position: relative; top: 30px; left: 1px;">
-                                            
-                                            <label for="email" class="col-form-label negrito"  style="color: rgb(0, 140, 255);">{{ __('Endereço de E-mail') }}</label>
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-    
-                                            @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-    
-                                            <label for="password" class="col-form-label negrito" style="color: rgb(0, 140, 255);">{{ __('Senha') }}</label>
-                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-    
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                        <div style="position: relative; top: 40px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-            
-                                                <label class="form-check-label" for="remember">
-                                                    {{ __('Lembrar Senha') }}
-                                                </label>
+                            <div id="dropdown-login" class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: 380px;">
+                                
+                                <div class="">
+                                    <form method="POST" action="{{ route('login') }}">
+                                        @csrf
+                                        <div style="padding: 20px;">
+                                                <div style="color: rgb(0, 140, 255); position: relative; top: 5px; text-align: center; font-size: 20px;">
+                                                    Entrar
+                                                </div>
+                                            <div style="position: relative; top: 30px; left: 1px;">
+                                                
+                                                <label for="email" class="col-form-label negrito"  style="color: rgb(0, 140, 255);">{{ __('Endereço de E-mail') }}</label>
+                                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        
+                                                @error('email')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+        
+                                                <label for="password" class="col-form-label negrito" style="color: rgb(0, 140, 255);">{{ __('Senha') }}</label>
+                                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+        
+                                                @error('password')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            <div style="position: relative; top: 40px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                
+                                                    <label class="form-check-label" for="remember">
+                                                        {{ __('Lembrar Senha') }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div style="position: relative; top: 50px;">
+                                                <button class="btn botao-entrar" style="color: white;">
+                                                    {{__('Entrar')}}
+                                                </button>
+                                                <a href="{{ route('password.request') }}" style="font-weight: normal; color: rgb(44, 96, 209);">{{ __('Esqueceu sua senha?')}}</a>
                                             </div>
                                         </div>
-                                        <div style="position: relative; top: 50px;">
-                                            <button class="btn botao-entrar" style="color: white;">
-                                                {{__('Entrar')}}
-                                            </button>
-                                            <a href="{{ route('password.request') }}" style="font-weight: normal; color: rgb(44, 96, 209);">{{ __('Esqueceu sua senha?')}}</a>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
+                                
                             </div>
                             <a href="{{ route('register') }}" class="btn navbar-text btn-azul-destaque negrito" style="color:  rgb(0, 140, 255);">{{ __('Cadastre-se') }}</a>
                         @else
@@ -313,4 +317,16 @@
       </div>
   </div>
 </body>
+<script>
+    $(document).ready(function() {
+        $("#dropdown-login").on('click', function(event){
+            event.stopPropagation();
+        });
+    });
+    @if(old('email') != null)
+        $(document).ready(function() {
+            $('#dropdownMenuLink').click();
+        });
+    @endif
+</script>
 </html>
