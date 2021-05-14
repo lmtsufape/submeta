@@ -441,11 +441,12 @@ section {
 }
 
 .texto-info {
-  color: rgba(102, 102, 102, 0.555);
+  color: rgba(102, 102, 102, 0.705);
   text-align: justify;
   font-size: 12px;
   padding-top: 0px;
   margin-bottom: 40px;
+  font-weight: 500;
   border-top: 1px solid rgba(102, 102, 102, 0.555) ; 
 }
 
