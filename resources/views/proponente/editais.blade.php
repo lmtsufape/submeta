@@ -6,6 +6,18 @@
 
   <div class="container" >
     <div class="row" >
+      <div class="col-sm-1" style="text-align: left; flaot:left;">
+        <a href="{{ route('proponente.index') }}" class="btn btn-secondary" style="position:relative; float: right;">Voltar</a>
+      </div>
+      <div class="col-sm-7" style="text-align: center;">
+        <div class="row">
+          <div class="col-md-4">
+          </div>
+          <div class="col-md-8">
+            <h4 class="titulo-table">Editais</h4>
+          </div>
+        </div>
+      </div>
       <div class="col-sm-4">
         <div class="row">
           <div class="col-sm-2">
@@ -17,14 +29,6 @@
             <input type="text" class="form-control form-control-edit" placeholder="Digite o nome do edital" onkeyup="buscarEdital(this)">
           </div>
         </div>
-      </div>
-      <div class="col-sm-1">
-      </div>
-      <div class="col-sm-5" style="float: center;">
-        <h4 class="titulo-table">Editais</h4>
-      </div>
-      <div class="col-sm-2">
-          
       </div>
     </div>
   </div>

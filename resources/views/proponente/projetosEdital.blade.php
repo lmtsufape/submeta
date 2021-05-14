@@ -21,17 +21,15 @@
     @endif
     <div class="container" >
       <div class="row" >
-        <div class="col-sm-9">
-            <h3>Projetos do edital {{ $edital->nome }}</h3>
-            <h6 style="color: rgb(4, 78, 4);">Submissão irá até o dia {{ date('d-m-Y', strtotime($edital->fimSubmissao)) }}</h6>
-        </div>
         <div class="col-sm-1">
-            <a href="{{ route('proponente.editais') }}" class="btn btn-primary" style="position:relative; float: right;">Voltar</a>
+          <a href="{{ route('proponente.editais') }}" class="btn btn-secondary" style="position:relative; float: right;">Voltar</a>
+        </div>
+        <div class="col-sm-9" style="text-align: center">
+          <h4 class="titulo-table">Projetos do edital {{ $edital->nome }}</h4>
+          <h6 class="titulo-table">Submissão irá até o dia <span style="color: rgb(0, 0, 0);">{{ date('d/m/Y', strtotime($edital->fimSubmissao)) }}</span></h6>
         </div>
         <div class="col-sm-2">
-
             <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-info" @else href="#" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar projeto</a>
-
         </div>
       </div>
     </div>
@@ -45,7 +43,7 @@
             <th scope="col">Opção</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="projetos">
           @foreach ($projetos as $projeto)
             @if ($projeto->proponente_id === Auth()->user()->proponentes->id)
               <tr>
@@ -120,7 +118,22 @@
 
 @section('javascript')
 <script>
-
-
+function buscarEdital(input) {
+    var editais = document.getElementById('projetos').children;
+    if(input.value.length > 2) {      
+      for(var i = 0; i < editais.length; i++) {
+        var nomeEvento = editais[i].children[0].textContent;
+        if(nomeEvento.substr(0).indexOf(input.value) >= 0) {
+          editais[i].style.display = "";
+        } else {
+          editais[i].style.display = "none";
+        }
+      }
+    } else {
+      for(var i = 0; i < editais.length; i++) {
+        editais[i].style.display = "";
+      }
+    }
+  }
 </script>
 @endsection
