@@ -6,10 +6,26 @@
 
   <div class="container" >
     <div class="row" >
-      <div class="col-sm-12">
-          <h3>Editais</h3>
+      <div class="col-sm-4">
+        <div class="row">
+          <div class="col-sm-2">
+            <button class="btn" onclick="buscarEdital(this.parentElement.parentElement.children[1].children[0])">
+              <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
+            </button>
+          </div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control form-control-edit" placeholder="Digite o nome do edital" onkeyup="buscarEdital(this)">
+          </div>
+        </div>
       </div>
-
+      <div class="col-sm-1">
+      </div>
+      <div class="col-sm-5" style="float: center;">
+        <h4 class="titulo-table">Editais</h4>
+      </div>
+      <div class="col-sm-2">
+          
+      </div>
     </div>
   </div>
   <hr>
@@ -24,7 +40,7 @@
           <th scope="col">Opção</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="eventos">
         @foreach ($eventos as $evento)
           <tr>
             <td>
@@ -80,6 +96,22 @@
 
 @section('javascript')
 <script>
-
+  function buscarEdital(input) {
+    var editais = document.getElementById('eventos').children;
+    if(input.value.length > 2) {      
+      for(var i = 0; i < editais.length; i++) {
+        var nomeEvento = editais[i].children[0].children[0].textContent;
+        if(nomeEvento.substr(0).indexOf(input.value) >= 0) {
+          editais[i].style.display = "";
+        } else {
+          editais[i].style.display = "none";
+        }
+      }
+    } else {
+      for(var i = 0; i < editais.length; i++) {
+        editais[i].style.display = "";
+      }
+    }
+  }
 </script>
 @endsection

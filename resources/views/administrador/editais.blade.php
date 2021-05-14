@@ -26,7 +26,7 @@
       <div class="col-sm-2">
           <a href="{{route('evento.criar')}}" class="btn btn-info" style="float: right;">Criar Edital</a>
       </div>
-  </div>
+    </div>
   <hr>
   @if(session('mensagem'))
     <div class="row">
