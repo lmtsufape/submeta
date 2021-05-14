@@ -5,7 +5,7 @@
 <div class="container">
 
     <div class="row justify-content-center titulo-menu">
-		<h4>Página Principal - Administrador</h4>
+		<h4>Perfil de Administrador</h4>
 	</div>
 
        <div class="row justify-content-center d-flex align-items-center">

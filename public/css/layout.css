@@ -152,12 +152,17 @@ body{
   font-weight: bolder;
 }
 
-.botao-entrar {
+.btn-login {
   background-color: rgb(0, 140, 255);
   text-align: center;
   border-radius: 3px;
-  padding-left: 42%;
-  padding-right: 42%;
+  width: 100%;
+  font-weight: 700;
+  color: white;
+}
+
+.btn-login:hover {
+  color: black;
 }
 
 .position-image {
@@ -472,4 +477,18 @@ button.close {
 
 .background-red {
   background-color: rgb(235, 0, 0);
+}
+
+.btn-cadastro {
+  color: white; 
+  background-color: rgb(172, 79, 235);
+  text-align: center;
+  border-radius: 3px;
+  width: 100%;
+  font-weight: 700;
+  margin-bottom: 0px;
+}
+
+.btn-cadastro:hover {
+  color: black;
 }

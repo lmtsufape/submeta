@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Evento;
 
 class HomeController extends Controller
 {
@@ -28,8 +29,10 @@ class HomeController extends Controller
     {
         $eventos = \App\Evento::all();        
         
-          if(Auth::user()->administradors != null){            
-            return view('administrador.index');
+          if(Auth::user()->administradors != null){        
+            $eventos = Evento::orderBy('nome')->get();
+            
+            return view('administrador.editais')->with(['eventos' => $eventos]);
           }
           else if (Auth::user()->AdministradorResponsavel != null) {
             return view('administradorResponsavel.index');
