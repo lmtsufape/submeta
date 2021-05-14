@@ -199,7 +199,7 @@ class EventoController extends Controller
         // Mail::to($user->email)
         //     ->send(new EventoCriado($user, $subject));
 
-        return redirect()->route('coord.home');
+        return redirect()->route('admin.editais')->with(['mensagem' => 'Edital criado com sucesso!']);
     }
 
     public function armazenarAnexosTemp(Request $request){
@@ -403,7 +403,8 @@ class EventoController extends Controller
         $evento->update();
 
         $eventos = Evento::orderBy('nome')->get();
-        return view('administrador.editais',['eventos'=>$eventos]);
+
+        return redirect( route('admin.editais') )->with(['mensagem' => 'Edital salvo com sucesso!', 'eventos'=>$eventos]);
     }
 
     /**
