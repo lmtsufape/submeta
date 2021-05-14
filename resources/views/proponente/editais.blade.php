@@ -70,6 +70,7 @@
                         Projetos submetidos
                       </a>
                       @if($evento->inicioSubmissao <= $hoje && $hoje <= $evento->fimSubmissao)
+                        <hr class="dropdown-hr">
                         <a href="{{ route('trabalho.index', ['id' => $evento->id] )}}" class="dropdown-item" style="text-align: center">
                           Criar projeto
                         </a>

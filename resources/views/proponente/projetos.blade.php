@@ -72,12 +72,13 @@
                       <div class="dropdown-menu">
                         @if($projeto->evento->inicioSubmissao <= $hoje && $hoje <= $projeto->evento->fimSubmissao)
                           <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
-                            Editar projeto
+                            Editar
                           </a>
+                          <hr class="dropdown-hr">
                         @else
                         @endif
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
-                            Visualizar projeto
+                            Visualizar
                           </a>
                         {{--  <a href="" class="dropdown-item" style="text-align: center">
                             Recorrer
@@ -86,9 +87,10 @@
                             Resultado
                           </a> --}}
                           @if($projeto->status == 'Submetido')
+                            <hr class="dropdown-hr">
                             <!-- Button trigger modal -->
-                            <button type="button"  class="dropdown-item" style="text-align: center" data-toggle="modal" data-target="#modal{{$projeto->id}}">
-                              Excluir projeto
+                            <button type="button"  class="dropdown-item dropdown-item-delete" style="text-align: center" data-toggle="modal" data-target="#modal{{$projeto->id}}">
+                              <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar
                             </button>
                           @endif
 

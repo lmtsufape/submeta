@@ -66,13 +66,15 @@
                       <div class="dropdown-menu">
                           @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao)
                             <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
-                              Editar projeto
+                              Editar
                             </a>
+                            <hr class="dropdown-hr">
                           @else
                           @endif
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
-                            Visualizar projeto
+                            Visualizar
                           </a>
+                          <hr class="dropdown-hr">
                           {{-- <a href="" class="dropdown-item" style="text-align: center">
                             Recorrer
                           </a>
@@ -80,8 +82,8 @@
                             Resultado
                           </a> --}}
                           <!-- Button trigger modal -->
-                          <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
-                            Excluir projeto
+                          <button type="button" class="dropdown-item dropdown-item-delete" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
+                            <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar
                           </button>
                       </div>
                   </div>

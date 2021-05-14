@@ -65,14 +65,14 @@
                       </a>
                       <div class="dropdown-menu">
                             <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
-                              Editar projeto
+                              Editar
                             </a>
                           <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                             Visualizar projeto
                           </a>
                           <!-- Button trigger modal -->
                           <button type="button" class="dropdown-item" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
-                            Excluir projeto
+                            <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar
                           </button>
                       </div>
                   </div>
