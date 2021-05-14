@@ -99,16 +99,16 @@
                         @guest
                             <a href="{{ route('coord.home') }}" class="btn navbar-text negrito" style="color: rgb(0, 140, 255);">Editais</a>
                             <a href="#" class="btn dropdown-toggle negrito" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 140, 255);">Login</a>
-                            <div id="dropdown-login" class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: 380px;">
+                            <div id="dropdown-login" class="dropdown-menu dropdown-menu-right negrito" aria-labelledby="dropdownMenuLink" style="right: 15%; width: 300px; height: auto;">
                                 
                                 <div class="">
                                     <form method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <div style="padding: 20px;">
-                                                <div style="color: rgb(0, 140, 255); position: relative; top: 5px; text-align: center; font-size: 20px;">
-                                                    Entrar
-                                                </div>
-                                            <div style="position: relative; top: 30px; left: 1px;">
+                                            <div style="color: rgb(0, 140, 255); margin: 5px; text-align: center; font-size: 20px;">
+                                                Entrar
+                                            </div>
+                                            <div style="margin-top: 30px;">
                                                 
                                                 <label for="email" class="col-form-label negrito"  style="color: rgb(0, 140, 255);">{{ __('Endereço de E-mail') }}</label>
                                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -128,7 +128,7 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                            <div style="position: relative; top: 40px;">
+                                            <div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                 
@@ -137,11 +137,21 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div style="position: relative; top: 50px;">
-                                                <button class="btn botao-entrar" style="color: white;">
+                                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                                <button class="btn btn-login">
                                                     {{__('Entrar')}}
                                                 </button>
+                                                <br>
                                                 <a href="{{ route('password.request') }}" style="font-weight: normal; color: rgb(44, 96, 209);">{{ __('Esqueceu sua senha?')}}</a>
+                                            </div>
+                                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                                <label for="password" class="col-form-label negrito" style="color: rgb(0, 140, 255);">{{ __('Crie sua conta!') }}</label>
+                                                <br>
+                                                <a href="{{ route('register') }}">
+                                                    <button type="button" class="btn btn-cadastro">
+                                                        {{__('Cadastre-se')}}
+                                                    </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </form>
