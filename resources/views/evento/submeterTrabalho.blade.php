@@ -1188,7 +1188,7 @@
   }
 
 /*  
-* FUNCAO: funcao responsavel pela verificacao dos arquivos anexados
+* FUNCAO: funcao responsavel pela verificacao dos arquivos anexados (PDF)
 *
 */
   function verificarArquivoAnexado_pdf(item){
@@ -1206,11 +1206,11 @@
     }
   }
   /*  
-* FUNCAO: funcao responsavel pela verificacao dos arquivos anexados
+* FUNCAO: funcao responsavel pela verificacao dos arquivos anexados (XLS, XLSX, ODS)
 *
 */
 function verificarArquivoAnexado_xls_xlsx_ods(item){
-    /*if(item.files[0].type.split('/')[1] != "xls" ){
+    if(item.files[0].type.split('/')[1] != "xls" || item.files[0].type.split('/')[1] != "xlsx" || item.files[0].type.split('/')[1] != "ods"){
         document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
         document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo deve ser no formato XLS, XLSX ou OCD ";
         document.getElementById(item.id).value = "";
@@ -1230,7 +1230,7 @@ function verificarArquivoAnexado_xls_xlsx_ods(item){
         document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
         document.getElementById(item.id).value = "";
         $("#exampleModalAnexarDocumento").modal({show: true});
-    }*/
+    }
     
   }
 
