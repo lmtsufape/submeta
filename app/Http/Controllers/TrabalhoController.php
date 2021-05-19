@@ -996,7 +996,7 @@ class TrabalhoController extends Controller
       // Salvando participantes
       $this->salvarParticipantes($request, $edital, $projeto);
 
-      dd("foi");
+      return redirect()->route('coord.home');
     }
 
     public function atribuirDados(Request $request, $edital) {

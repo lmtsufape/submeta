@@ -3,18 +3,14 @@
 @section('content')
 <div class="container content">
   <div class="row justify-content-center">
-    <div class="col-sm-12">
-      <div class="card" style="margin-top:50px">
-        <div class="card-body">
-          <h5 class="card-title">Enviar Projeto</h5>
-          {{-- @if($errors->any())
-            <div class="col-md-12" style="margin-top: 100px;">
-              <div class="alert alert-success">
-                <p>{{ $errors}}</p>
-
-              </div>
-            </div>
-          @endif --}}
+    <div class="col-sm-10">
+      <div class="card" style="margin-top:50px; border-radius:12px">
+        <div class="card-header" style="background-color: #fff; border-top-left-radius:12px; border-top-right-radius:12px; border-bottom-radius:0px; margin-bottom:-2.5rem; border: none;">
+          <h4 style="margin-top: 10px; margin-bottom:-5px; color: #01487E; font-weight:bold; font-family:Arial, Helvetica, sans-serif">CRIAR PROJETO</h4>
+          <hr style="border-bottom: 1px solid #01487E">
+        </div>
+        <div class="card-body" style="margin-top:0rem">
+          <h5 class="card-title" style="color: #1492E6; margin-top:1rem; margin-bottom:-1rem">Informações do projeto</h5>
           <p class="card-text">
             <form method="POST" name="formTrabalho" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
               @csrf
@@ -23,8 +19,8 @@
               {{-- Nome do Projeto  --}}
               <div class="row justify-content-center">
                 <div class="col-sm-12">
-                  <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto*:') }}</label>
-                  <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" autofocus>
+                  <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
+                  <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" placeholder="Digite o nome do projeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" autofocus required>
 
                   @error('nomeProjeto')
                   <span class="invalid-feedback" role="alert">
@@ -37,8 +33,8 @@
               {{-- Grande Area --}}
               <div class="row justify-content-center">
                 <div class="col-sm-4">
-                  <label for="grandeArea" class="col-form-label">{{ __('Grande Área*:') }}</label>
-                  <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()">
+                  <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
+                  <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()" required>
                     <option value="" disabled selected hidden>-- Grande Área --</option>
                     @foreach($grandeAreas as $grandeArea)
                     <option @if(old('grandeArea') !== null ? old('grandeArea') : (isset($rascunho) ? $rascunho->grande_area_id : '')
@@ -53,9 +49,9 @@
                   @enderror
                 </div>
                 <div class="col-sm-4">
-                  <label for="area" class="col-form-label">{{ __('Área*:') }}</label>
+                  <label for="area" class="col-form-label">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
                   <input type="hidden" id="oldArea" value="{{ old('area') }}">
-                  <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()">
+                  <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()" required>
                     <option value="" disabled selected hidden>-- Área --</option>
                     {{-- @foreach($areas as $area)
                       <option @if(old('area') !== null ? old('area') : (isset($rascunho) ? $rascunho->area_id : '')
@@ -70,10 +66,10 @@
                   @enderror
                 </div>
                 <div class="col-sm-4">
-                  <label for="subArea" class="col-form-label">{{ __('Sub Área*:') }}</label>
+                  <label for="subArea" class="col-form-label">{{ __('Subárea') }} <span style="color: red; font-weight:bold">*</span></label>
                   <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}">
-                  <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea">
-                    <option value="" disabled selected hidden>-- Sub Área --</option>
+                  <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea" required>
+                    <option value="" disabled selected hidden>-- Subárea --</option>
                     {{-- @foreach($subAreas as $subArea)
                       <option @if(old('subArea') !== null ? old('subArea') : (isset($rascunho) ? $rascunho->sub_area_id : '')
                               ==$subArea->id ) selected @endif value="{{$subArea->id}}">{{$subArea->nome}}</option>
@@ -88,24 +84,23 @@
                 </div>
               </div>
 
-              <hr>
-              <h3>Proponente</h3>
+              <h5 class="card-title" style="color: #1492E6; margin-top:1rem; margin-bottom:-0.1rem">Proponente</h5>
 
               {{-- Coordenador  --}}
               <div class="row justify-content-center">
 
                 <div class="col-sm-6">
-                  <label for="nomeCoordenador" class="col-form-label">{{ __('Proponente:') }}</label>
+                  <label for="nomeCoordenador" class="col-form-label">{{ __('Proponente') }}</label>
                   <input class="form-control" type="text" id="nomeCoordenador" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
                 </div>
                 <div class="col-sm-6">
-                  <label for="linkLattesEstudante" class="col-form-label">Link Lattes do Proponente*</label>
+                  <label for="linkLattesEstudante" class="col-form-label">Link Lattes do Proponente <span style="color: red; font-weight:bold">*</span></label>
                   <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
                   @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
                     value="{{ Auth()->user()->proponentes->linkLattes }}"
                   @else
                   value=""
-                  @endif >
+                  @endif required>
                   <small>Exemplo: http://lattes.cnpq.br/8363536830656923</small>
 
                   @error('linkLattesEstudante')
@@ -114,10 +109,10 @@
                   </span>
                   @enderror
                 </div>
-                <div class="col-sm-6">
-                  <label for="pontuacaoPlanilha" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação*:') }}</label>
+                <div class="col-sm-6 mt-1">
+                  <label for="pontuacaoPlanilha" class="col-form-label">{{ __('Pontuação da Planilha de Pontuação') }} <span style="color: red; font-weight:bold">*</span></label>
                   <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha"
-                          value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}">
+                          value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}" required>
 
                   @error('pontuacaoPlanilha')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -126,9 +121,9 @@
                   @enderror
                 </div>
                 <div class="col-sm-6">
-                  <label for="linkGrupo" class="col-form-label">{{ __('Link do grupo de pesquisa*:') }}</label>
+                  <label for="linkGrupo" class="col-form-label">{{ __('Link do grupo de pesquisa') }} <span style="color: red; font-weight:bold">*</span></label>
                   <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo"
-                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}">
+                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}" required>
 
                   <small>Exemplo: http://dgp.cnpq.br/dgp/espelhogrupo/228363</small>
                   @error('linkGrupo')
@@ -140,24 +135,23 @@
 
               </div>
 
-              <hr>
-              <h3>Anexos</h3>
+              <h5 class="card-title" style="color: #1492E6; margin-top:15px; margin-bottom:-0.1rem">Anexos</h5>
 
               {{-- Anexo do Projeto --}}
               <div class="row justify-content-center">
                 {{-- Arquivo  --}}
                 <div class="col-sm-6">
-                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo Projeto*:') }}</label>
+                  <label for="anexoProjeto" class="col-form-label">{{ __('Anexo do projeto') }} <span style="color: red; font-weight:bold">*</span></label>
                   @if(old('anexoProjetoPreenchido') != null || (isset($rascunho) && $rascunho->anexoProjeto != ""))
                   <a id="anexoProjetoTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoProjeto' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoProjetoPreenchido" name="anexoProjetoPreenchido"
-                    @if( isset($rascunho) && $rascunho->anexoProjeto != "") value="sim" @else value="{{old('anexoProjetoPreenchido')}}" @endif >
+                    @if( isset($rascunho) && $rascunho->anexoProjeto != "") value="sim" @else value="{{old('anexoProjetoPreenchido')}}" @endif required>
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto" onchange="exibirAnexoTemp(this)">
+                      <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto" onchange="verificarArquivoAnexado_pdf(this)" required>
                       <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
@@ -169,7 +163,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do Lattes do Coordenador dos últimos 5 anos*:') }}</label>
+                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do currículo Lattes do Coordenador') }} <span style="color: red; font-weight:bold">*</span></label>
                   @if(old('anexoLattesPreenchido') != null || (isset($rascunho) && $rascunho->anexoLattesCoordenador != ""))
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
@@ -180,63 +174,30 @@
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="anexoLattesCoordenador" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador" onchange="exibirAnexoTemp(this)">
+                      <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="anexoLattesCoordenador" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador" onchange="verificarArquivoAnexado_pdf(this)" required>
                       <label class="custom-file-label" id="custom-file-label" for="anexoLattesCoordenador">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
+                  <small>Dos últimos 5 anos</small>
                   @error('anexoLattesCoordenador')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
                   @enderror
                 </div>
-
-                <div class="col-sm-6">
-                  <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf.">{{ __('Possui autorizações especiais?*:') }}</label>
-                  <button id="buttonSim" class="btn btn-primary mt-2 mb-2">Sim</button>
-                  <button id="buttonNao" class="btn btn-primary mt-2 mb-2">Não</button>
-                  <input type="hidden" id="botao" name="botao" value="">
-
-                  @error('botao')
-                  <span id="botao" class="invalid-feedback" role="alert" style="overflow: visible; display:inline">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
-                  <br/>
-                  @if(old('anexoComitePreenchido') != null || (isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "" && $rascunho->anexoAutorizacaoComiteEtica != null))
-                  <a id="anexoComiteTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
-                                                          'nomeAnexo' => 'anexoAutorizacaoComiteEtica' ])}}">Arquivo atual</a>
-                  @endif
-                  <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido"
-                    @if( isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "") value="sim" @else value="{{old('anexoComitePreenchido')}}" @endif >
-
-                  <div class="input-group">
-
-                    <div class="custom-file">
-                      <input disabled type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="inputEtica">O arquivo deve ser no formato PDF de até 2MB.</label>
-                    </div>
-                  </div>
-                  @error('anexoComiteEtica')
-                  <span id="comiteErro" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
-                </div>
-
                 <div class="col-sm-6 mt-3">
-                  <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo do Planilha de Pontuação*:') }}</label>
+                  <label for="anexoPlanilha" class="col-form-label">{{ __('Anexo da Planilha de Pontuação') }} <span style="color: red; font-weight:bold">*</span></label>
                   @if(old('anexoPlanilhaPreenchido') != null || (isset($rascunho) && $rascunho->anexoPlanilhaPontuacao != ""))
                   <a id="anexoPlanilhaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoPlanilhaPontuacao' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoPlanilhaPreenchido" name="anexoPlanilhaPreenchido"
+                  <input type="hidden" id="anexoPlanilhaPreenchido" name="anexoPlanilhaPreenchido" 
                     @if( isset($rascunho) && $rascunho->anexoPlanilhaPontuacao != "") value="sim" @else value="{{old('anexoPlanilhaPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">O arquivo deve ser no formato XLS, XLSX ou ODS de até 2MB.</label>
+                      <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="verificarArquivoAnexado_xls_xlsx_ods(this)" required>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">Formato do arquivo: XLS, XLSX ou ODS de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoPlanilha')
@@ -250,44 +211,19 @@
                   </span>
                   @enderror
                 </div>
-
-                <div class="col-sm-6">
-                  <label for="nomeTrabalho" class="col-form-label">{{ __('Declaração de não necessidade de autorizações especiais*:') }}</label>
-                  @if(old('anexoJustificativaPreenchido') != null || (isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "" && $rascunho->justificativaAutorizacaoEtica != null))
-                  <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
-                                                          'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
-                  @endif
-                  <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido"
-                    @if( isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "") value="sim" @else value="{{old('anexoJustificativaPreenchido')}}" @endif >
-                  <div class="input-group">
-
-
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" disabled name="justificativaAutorizacaoEtica" onchange="exibirAnexoTemp(this)">
-                      <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2MB.</label>
-                    </div>
-                  </div>
-                  @error('justificativaAutorizacaoEtica')
-                  <span id="justificativaErro" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
-                </div>
-
-                @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM')
                 {{-- Decisão do CONSU --}}
-                <div class="col-sm-6">
-                  <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU*:') }}</label>
+                <div class="col-sm-6" style="margin-top: 15px">
+                  <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU') }} <span style="color: red; font-weight:bold">*</span></label>
                   @if(old('anexoConsuPreenchido') != null || (isset($rascunho) && $rascunho->anexoDecisaoCONSU != "" && $rascunho->anexoDecisaoCONSU != null))
                   <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido"
-                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif >
+                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif required>
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="exibirAnexoTemp(this)">
+                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="verificarArquivoAnexado_pdf(this)" required>
                       <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
@@ -297,13 +233,84 @@
                   </span>
                   @enderror
                 </div>
+
+                <div class="col-sm-6" style="margin-top: 15px">
+                
+                  <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="margin-right: 15px;">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
+                  <input type="radio" id="radioSim" onchange="displayAutorizacoesEspeciais('sim')">
+                  <label for="radioSim" style="margin-right: 5px">Sim</label>
+                  <input type="radio" id="radioNao" onchange="displayAutorizacoesEspeciais('nao')">
+                  <label for="radioNao" style="margin-right: 5px">Não</label><br>
+                  
+                  <div class="form-group" id="displaySim" style="display: none; margin-top:-1rem">
+                    <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf.">{{ __('Sim, declaro que necessito de autorizações especiais') }}</label>
+                      @error('botao')
+                        <span id="botao" class="invalid-feedback" role="alert" style="overflow: visible; display:inline">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                      <br/>
+                      @if(old('anexoComitePreenchido') != null || (isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "" && $rascunho->anexoAutorizacaoComiteEtica != null))
+                        <a id="anexoComiteTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                              'nomeAnexo' => 'anexoAutorizacaoComiteEtica' ])}}">Arquivo atual</a>
+                      @endif
+                      <input type="hidden" id="anexoComitePreenchido" name="anexoComitePreenchido" 
+                        @if( isset($rascunho) && $rascunho->anexoAutorizacaoComiteEtica != "") value="sim" @else value="{{old('anexoComitePreenchido')}}" @endif >
+    
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="verificarArquivoAnexado_pdf(this)">
+                          <label class="custom-file-label" id="custom-file-label" for="inputEtica">O arquivo deve ser no formato PDF de até 2MB.</label>
+                        </div>
+                      </div>
+                      @error('anexoComiteEtica')
+                      <span id="comiteErro" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                      @enderror
+                    </div>
+
+                    <div class="form-group" id="displayNao" style="display: none; margin-top:-1rem">
+                      <label for="nomeTrabalho" class="col-form-label">{{ __('Declaração de que não necessito de autorização especiais') }}</label>
+                        @if(old('anexoJustificativaPreenchido') != null || (isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "" && $rascunho->justificativaAutorizacaoEtica != null))
+                        <a id="anexoJustificativaTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                                'nomeAnexo' => 'justificativaAutorizacaoEtica' ])}}">Arquivo atual</a>
+                        @endif
+                        <input type="hidden" id="anexoJustificativaPreenchido" name="anexoJustificativaPreenchido"
+                          @if( isset($rascunho) && $rascunho->justificativaAutorizacaoEtica != "") value="sim" @else value="{{old('anexoJustificativaPreenchido')}}" @endif >
+                        <div class="input-group">
+      
+      
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" name="justificativaAutorizacaoEtica" onchange="verificarArquivoAnexado_pdf(this)">
+                            <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2MB.</label>
+                          </div>
+                        </div>
+                        @error('justificativaAutorizacaoEtica')
+                        <span id="justificativaErro" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                  </div>
+                  
+                </div>
+
+
+                <div class="form-group col-md-6 mt-3" style="margin-bottom:-0.5rem;">
+                  
+
+                @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM')
+                
                 @endif
 
               </div>
+            </div>
 
-              <hr>
-
-              <h3>Participantes</h3>
+              <div class="d-flex justify-content-between align-items-center" style="margin-top:2.5rem; margin-bottom:-0.2rem">
+                <h4 style="margin-top: 10px; margin-bottom:-5px; color: #01487E; font-weight:bold; font-family:Arial, Helvetica, sans-serif; margin-right:15px">PARTICIPANTE</h4>
+                <button class="btn btn-primary" id="addCoautor" style="">Adicionar participante</button>
+              </div>
+              <hr style="border-bottom: 1px solid #01487E">
               {{-- Participantes  --}}
               <div class="row" style="margin-top:20px">
                 <div class="col-sm-12">
@@ -320,23 +327,32 @@
                       {{-- <div class="card" >
                         <div class="card-body"> --}}
 
-                        <div id="novoParticipante" style="display: block;">
-                          <br>
-                          <h4>Dados do participante</h4>
-                          <h6>Dados pessoais</h6>
+                        <div id="novoParticipante" style="display: block; margin-top:-1rem;">
+                          
+                          <div style="background-color: #9FCAEB; margin-left:-20px; margin-right:-20px">
+                            <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px; margin-bottom:4px; margin-left:1px; margin-right:20px">
+                              <div class="container" style="margin-left: 5px; height:40px;">
+                                <h5 style="padding-top:10px; padding-bottom:15px; color:#01487E">Participante</label>
+                              </div>
+                              <div>
+                                <button class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px' disabled>Limite minimo de participantes</button>
+                              </div>
+                            </div>
+                          </div>
+                          <h5 class="card-title" style="color: #1492E6; margin-top:1.3rem; margin-bottom:0.7rem">Dados do participante</h5>
                           <div class="row">
-                            <div class="col-sm-5">
-                              <label>Nome Completo*</label>
-                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}" required>
+                            <div class="col-sm-6">
+                              <label>Nome Completo <span style="color: red; font-weight:bold">*</span></label>
+                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Digite o nome do participante" value="{{old('nomeParticipante.'.$i)}}" required>
                               @error('nomeParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
                               </span>
                               @enderror
                             </div>
-                            <div class="col-sm-4">
-                              <label>E-mail*</label>
-                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}" required>
+                            <div class="col-sm-6">
+                              <label>E-mail <span style="color: red; font-weight:bold">*</span></label>
+                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="Digite o e-mail do participante" value="{{old('emailParticipante.'.$i)}}" required>
                               @error('emailParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -344,88 +360,46 @@
                               @enderror
                             </div>
                             <div class="col-sm-3">
-                              <label>Função*:</label>
-                              <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante" required>
-                                <option value="" disabled selected hidden>-- Função --</option>
-                                @foreach($funcaoParticipantes as $funcaoParticipante)
-                                <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
-                                @endforeach
-                              </select>
-                              @error('funcaoParticipante')
-                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                  <strong>{{ $message }}</strong>
-                                </span>
-                              @enderror
+                              <input type="hidden" name="funcaoParticipante[]" value="4">
+                              
                             </div>
                           </div>
                           <div id="dados_complemento_1">
                             <div class="form-group">
                               <div class="row">
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('CPF*') }}</label>
-                                  <input type="text" class="form-control cpf" name="cpf[]" required>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('RG*') }}</label>
-                                  <input type="text" class="form-control rg" name="rg[]" required>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Celular*') }}</label>
-                                  <input type="text" class="form-control celular" name="celular[]" required>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <div class="row">
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Data de nascimento*') }}</label>
+                                <div class="col-sm-3" style="margin-top: 5px">
+                                  <label for="">{{ __('Data de nascimento ') }} <span style="color: red; font-weight:bold">*</span></label>
                                   <input type="date" class="form-control" name="data_de_nascimento[]" required>
+                                </div>
+                                <div class="col-sm-3" style="margin-top: 5px">
+                                  <label for="">{{ __('CPF') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control cpf" placeholder="000.000.000-00" name="cpf[]" required>
+                                </div>
+                                <div class="col-sm-3" style="margin-top: 5px">
+                                  <label for="">{{ __('RG') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control rg" placeholder="00.000.000-0" name="rg[]" required>
+                                </div>
+                                <div class="col-sm-3" style="margin-top: 5px">
+                                  <label for="">{{ __('Celular') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control celular" placeholder="(00) 00000-0000" name="celular[]" required>
                                 </div>
                               </div>
                             </div>
                             <div class="form-group">
                               <div class="row">
                                 <div class="container">
-                                  <h6>Endereço do participante</h6>
+                                  <h5 style="color: #1492E6; margin-top:0.5rem; margin-bottom:-0.2rem">Endereço do participante</h5>
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('CEP*') }}</label>
-                                  <input type="text" class="form-control" name="cep[]" required>
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('CEP') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o CEP do participante" name="cep[]" required>
                                 </div>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <div class="row">
-                                <div class="col-sm-6">
-                                  <label for="">{{ __('Rua*') }}</label>
-                                  <input type="text" class="form-control" name="rua[]" required>
-                                </div>
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('Número*') }}</label>
-                                  <input type="text" class="form-control" name="numero[]" required>
-                                </div>
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('Bairro*') }}</label>
-                                  <input type="text" class="form-control" name="bairro[]" required>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <div class="row">
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Cidade*') }}</label>
-                                  <input type="text" class="form-control " name="cidade[]" required>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Complemento*') }}</label>
-                                  <input type="text" class="form-control" name="complemento[]" required>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Estado*') }}</label>
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('Estado') }} <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="uf[]" id="" class="form-control" required>
-                                    <option value="" disabled selected>-- UF --</option>
+                                    <option value="" disabled selected>-- Selecione o estado --</option>
                                     <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
                                     <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
                                     <option @if(old('uf') == 'AP') selected @endif value="AP">Amapá</option>
@@ -459,25 +433,55 @@
                             </div>
                             <div class="form-group">
                               <div class="row">
-                                <div class="container">
-                                  <h6>Dados do curso do participante</h6>
+                                <div class="col-sm-6" style="">
+                                  <label for="">{{ __('Cidade') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control " placeholder="Digite o nome da cidade" name="cidade[]" required>
+                                  
                                 </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-sm-6">
-                                  <label for="">{{ __('Universidade*') }}</label>
-                                  <input type="text" class="form-control" name="universidade[]" required>
+                                <div class="col-sm-6" >
+                                  <label for="">{{ __('Bairro') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome do bairro" name="bairro[]" required>
                                 </div>
-                                <div class="col-sm-6">
-                                  <label for="">{{ __('Curso*') }}</label>
-                                  <input type="text" class="form-control" name="curso[]" required>
+                                
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('Rua') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome da rua" name="rua[]" required>
                                 </div>
+
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('Número') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome da rua" name="numero[]" required>
+                                </div>
+
                               </div>
                             </div>
                             <div class="form-group">
                               <div class="row">
-                                <div class="col-sm-2">
-                                  <label for="">{{ __('Turno*') }}</label>
+                                
+                                <div class="col-sm-12">
+                                  <label for="">{{ __('Complemento') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <textarea type="text" class="form-control" placeholder="Apartamento, casa, sítio..." name="complemento[]" required></textarea>
+                                </div>
+                                
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="container">
+                                  <h5 style="color: #1492E6; margin-top:0.5rem; margin-bottom:0.7rem">Dados do curso do participante</h5>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <label for="">{{ __('Universidade') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome da universidade" name="universidade[]" required>
+                                </div>
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('Curso') }} <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome do curso" name="curso[]" required>
+                                </div>
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('Turno') }} <span style="color: red; font-weight:bold">*</span></label>
                                   <select id="" class="form-control" name="turno[]" required>
                                     <option value="" disabled selected>-- TURNO --</option>
                                     @foreach ($enum_turno as $turno)
@@ -485,8 +489,13 @@
                                     @endforeach
                                   </select>
                                 </div>
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('Total de periodos do curso*') }}</label>
+                              </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 2rem">
+                              <div class="row">
+                                
+                                <div class="col-sm-3" style="margin-top: 15px">
+                                  <label for="">{{ __('Total de períodos do curso') }} <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="total_periodos[]" id="" class="form-control" onchange="gerarPeriodos(this)" required>
                                     <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
                                     <option value="6">6</option>
@@ -498,14 +507,14 @@
                                     <option value="12">12</option>
                                   </select>
                                 </div>
-                                <div class="col-sm-2">
-                                  <label for="">{{ __('Periodo atual*') }}</label>
+                                <div class="col-sm-3" style="margin-top: 15px">
+                                  <label for="">{{ __('Período atual') }} <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="periodo_cursado[]" id="" class="form-control" required>
                                     <option value="" disabled selected>-- PERÍODO ATUAL --</option>
                                   </select>
                                 </div>
-                                <div class="col-sm-2">
-                                  <label for="">{{ __('Ordem de prioridade*') }}</label>
+                                <div class="col-sm-3" style="margin-top: 15px">
+                                  <label for="">{{ __('Ordem de prioridade') }} <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="ordem_prioridade[]" id="" class="form-control" required>
                                     <option value="" disabled selected>-- ORDEM --</option>
                                     <option value="1">1º</option>
@@ -514,43 +523,32 @@
                                     <option value="4">4º</option>
                                   </select>
                                 </div>
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('Média geral do curso*') }}</label>
+                                <div class="col-sm-3" style="margin-top: 15px">
+                                  <label for="">{{ __('Coeficiente de rendimento') }} <span style="color: red; font-weight:bold">*</span></label>
                                   <input type="number" class="form-control media" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" required>
                                 </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <h6 class="mb-1">Possui plano de trabalho?</h6>
-                          <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
-                          <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
-
-                          <div id="planoHabilitado" style="display:none;">
-                          <h5>Dados do plano de trabalho</h5>
-                          <div class="row">
-                            <div class="col-sm-12">
-                              <div id="planoTrabalho">
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <label>Titulo* </label>
-                                    <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" value="{{old('nomePlanoTrabalho.'.$i)}}">
-
+                                <div class="col-sm-12">
+                                  <div class="row">
+                                    <div class="container">
+                                      <h5 style="color: #1492E6; margin-top:1.5rem; margin-bottom:0.7rem">Plano de trabalho</h5>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-6">
+                                  <label>Titulo <span style="color: red; font-weight:bold">*</span> </label>
+                                    <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" value="{{old('nomePlanoTrabalho.'.$i)}}" required>
                                     @error('nomePlanoTrabalho')
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                  </div>
-                                  {{-- Arquivo  --}}
-                                  <div class="col-sm-7">
-                                    <label for="nomeTrabalho">Anexo*</label>
+                                </div>
+                                <div class="col-sm-6">
+                                  <div class="custom-file">
+                                    <label for="nomeTrabalho">Anexo <span style="color: red; font-weight:bold">*</span></label>
                                     <div class="input-group">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
-                                      </div>
                                       <div class="custom-file">
-                                        <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                        <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]" onchange="verificarArquivoAnexado_pdf(this)" required>
                                         <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
                                       </div>
                                     </div>
@@ -564,10 +562,6 @@
                               </div>
                             </div>
                           </div>
-
-                          </div>
-                          <button class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px' disabled>Limite minimo de participantes</button>
-                          
                         </div>
 
                       {{--  </div>
@@ -577,7 +571,6 @@
                     @endif
                   </div>
                   <input type="hidden" name="countParticipante" id="countParticipante" value="{{ old('countParticipante') != null ? old('countParticipante') : 1}}">
-                  <button class="btn btn-primary" id="addCoautor" style="width:100%;margin-top:10px">Adicionar participante</button>
 
                 </div>
               </div>
@@ -589,15 +582,14 @@
                     {{ __('Salvar como Rascunho') }}
                   </button>
                 </div> --}}
-                <div class="col-md-12">
-                  <button type="submit" class="btn btn-success" style="width:100%">
-                    {{ __('Enviar Projeto') }}
-                  </button>
+                <div class="col-md-12 d-flex justify-content-between align-items-center" style="margin-top:0.5rem; margin-bottom:-1rem">
+                  <h6 style="font-family:Arial, Helvetica, sans-serif; margin-right:15px"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
+                  <button type="submit" class="btn btn-success" style="">{{ __('Enviar Projeto') }}</button>
                 </div>
                 
               </div>
               <br>
-              <div class="row justify-content-center">
+              <!--<div class="row justify-content-center">
                 <div class="col-sm-12">
                   @if (Auth()->user()->administradors != null)
                     <a href="{{ route('admin.editais') }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
@@ -605,12 +597,35 @@
                     <a href="{{ route('proponente.projetosEdital', ['id' => $edital->id]) }}" class="btn btn-secondary" style="width:100%">Cancelar</a>
                   @endif
                 </div>
-              </div>
+              </div>-->
             </form>
           </div>
         </div>
       </div>
     </div>
+</div>
+<!-- Modal de Aviso Edit -->
+<div class="modal fade" id="exampleModalAnexarDocumento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+      <div class="modal-header" id="idCorCabecalhoModalDocumento">
+              <h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="idTituloDaMensagemModalDocumento"></label></div>
+              <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal"style="width:200px;">Fechar</button>
+      </div>
+  </div>
+</div>
 </div>
 @endsection
 
@@ -776,23 +791,32 @@
 
   function montarLinhaInput() {
 
-    return `<div id="novoParticipante" style="display: block;">
-                          <br>
-                          <h4>Dados do participante</h4>
-                          <h6>Dados pessoais</h6>
+    return `<div id="novoParticipante" style="display: block; margin-top:-1rem">
+                          
+                          <div style="background-color: #9FCAEB; margin-left:-20px; margin-right:-20px">
+                            <div class="d-flex justify-content-between align-items-center" style="margin-top: 5px; margin-bottom:4px; margin-left:1px; margin-right:20px">
+                              <div class="container" style="margin-left: 5px; height:40px;">
+                                <h5 style="padding-top:10px; padding-bottom:15px; color:#01487E">Participante</label>
+                              </div>
+                              <div>
+                                <button class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px' disabled>Limite minimo de participantes</button>
+                              </div>
+                            </div>
+                          </div>
+                          <h5 class="card-title" style="color: #1492E6; margin-top:1.3rem; margin-bottom:0.7rem">Dados do participante</h5>
                           <div class="row">
-                            <div class="col-sm-5">
-                              <label>Nome Completo*</label>
-                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Nome" value="{{old('nomeParticipante.'.$i)}}" required>
+                            <div class="col-sm-6">
+                              <label>Nome Completo  <span style="color: red; font-weight:bold">*</span></label>
+                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Digite o nome do participante" value="{{old('nomeParticipante.'.$i)}}" required>
                               @error('nomeParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
                               </span>
                               @enderror
                             </div>
-                            <div class="col-sm-4">
-                              <label>E-mail*</label>
-                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="email" value="{{old('emailParticipante.'.$i)}}" required>
+                            <div class="col-sm-6">
+                              <label>E-mail  <span style="color: red; font-weight:bold">*</span></label>
+                              <input type="email" style="margin-bottom:10px" class="form-control @error('emailParticipante') is-invalid @enderror" name="emailParticipante[]" placeholder="Digite o e-mail do participante" value="{{old('emailParticipante.'.$i)}}" required>
                               @error('emailParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -800,88 +824,46 @@
                               @enderror
                             </div>
                             <div class="col-sm-3">
-                              <label>Função*:</label>
-                              <select class="form-control @error('funcaoParticipante') is-invalid @enderror" name="funcaoParticipante[]" id="funcaoParticipante" required>
-                                <option value="" disabled selected hidden>-- Função --</option>
-                                @foreach($funcaoParticipantes as $funcaoParticipante)
-                                <option @if(old('funcaoParticipante.'.$i)==$funcaoParticipante->id ) selected @endif value="{{$funcaoParticipante->id}}">{{$funcaoParticipante->nome}}</option>
-                                @endforeach
-                              </select>
-                              @error('funcaoParticipante')
-                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                  <strong>{{ $message }}</strong>
-                                </span>
-                              @enderror
+                              <input type="hidden" name="funcaoParticipante[]" value="4">
+                              
                             </div>
                           </div>
                           <div id="dados_complemento_1">
                             <div class="form-group">
                               <div class="row">
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('CPF*') }}</label>
-                                  <input type="text" class="form-control cpf" name="cpf[]" required>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('RG*') }}</label>
-                                  <input type="text" class="form-control rg" name="rg[]" required>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Celular*') }}</label>
-                                  <input type="text" class="form-control celular" name="celular[]" required>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <div class="row">
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Data de nascimento*') }}</label>
+                                <div class="col-sm-3" style="margin-top: 5px">
+                                  <label for="">{{ __('Data de nascimento') }}  <span style="color: red; font-weight:bold">*</span></label>
                                   <input type="date" class="form-control" name="data_de_nascimento[]" required>
+                                </div>
+                                <div class="col-sm-3" style="margin-top: 5px">
+                                  <label for="">{{ __('CPF') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control cpf" placeholder="000.000.000-00" name="cpf[]" required>
+                                </div>
+                                <div class="col-sm-3" style="margin-top: 5px">
+                                  <label for="">{{ __('RG') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control rg" placeholder="00.000.000-0" name="rg[]" required>
+                                </div>
+                                <div class="col-sm-3" style="margin-top: 5px">
+                                  <label for="">{{ __('Celular') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control celular" placeholder="(00) 00000-0000" name="celular[]" required>
                                 </div>
                               </div>
                             </div>
                             <div class="form-group">
                               <div class="row">
                                 <div class="container">
-                                  <h6>Endereço do participante</h6>
+                                  <h5 style="color: #1492E6; margin-top:0.5rem; margin-bottom:-0.2rem">Endereço do participante</h5>
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('CEP*') }}</label>
-                                  <input type="text" class="form-control" name="cep[]" required>
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('CEP') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o CEP do participante" name="cep[]" required>
                                 </div>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <div class="row">
-                                <div class="col-sm-6">
-                                  <label for="">{{ __('Rua*') }}</label>
-                                  <input type="text" class="form-control" name="rua[]" required>
-                                </div>
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('Número*') }}</label>
-                                  <input type="text" class="form-control" name="numero[]" required>
-                                </div>
-                                <div class="col-sm-3">
-                                  <label for="">{{ __('Bairro*') }}</label>
-                                  <input type="text" class="form-control" name="bairro[]" required>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <div class="row">
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Cidade*') }}</label>
-                                  <input type="text" class="form-control " name="cidade[]" required>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Complemento*') }}</label>
-                                  <input type="text" class="form-control" name="complemento[]" required>
-                                </div>
-                                <div class="col-sm-4">
-                                  <label for="">{{ __('Estado*') }}</label>
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('Estado') }}  <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="uf[]" id="" class="form-control" required>
-                                    <option value="" disabled selected>-- UF --</option>
+                                    <option value="" disabled selected>-- Selecione o estado --</option>
                                     <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
                                     <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
                                     <option @if(old('uf') == 'AP') selected @endif value="AP">Amapá</option>
@@ -915,25 +897,55 @@
                             </div>
                             <div class="form-group">
                               <div class="row">
-                                <div class="container">
-                                  <h6>Dados do curso do participante</h6>
+                                <div class="col-sm-6" style="">
+                                  <label for="">{{ __('Cidade') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control " placeholder="Digite o nome da cidade" name="cidade[]" required>
+                                  
                                 </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-sm-6">
-                                  <label for="">{{ __('Universidade*') }}</label>
-                                  <input type="text" class="form-control" name="universidade[]" required>
+                                <div class="col-sm-6" style="">
+                                  <label for="">{{ __('Bairro') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome do bairro" name="bairro[]" required>
                                 </div>
-                                <div class="col-sm-6">
-                                  <label for="">{{ __('Curso*') }}</label>
-                                  <input type="text" class="form-control" name="curso[]" required>
+                                
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('Rua') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome da rua" name="rua[]" required>
                                 </div>
+
+                                <div class="col-sm-6" style="margin-top: 15px">
+                                  <label for="">{{ __('Número') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome da rua" name="numero[]" required>
+                                </div>
+
                               </div>
                             </div>
                             <div class="form-group">
                               <div class="row">
-                                <div class="col-sm-2">
-                                  <label for="">{{ __('Turno*') }}</label>
+                                
+                                <div class="col-sm-12">
+                                  <label for="">{{ __('Complemento') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <textarea type="text" class="form-control" placeholder="Apartamento, casa, sítio..." name="complemento[]" required></textarea>
+                                </div>
+                                
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="row">
+                                <div class="container">
+                                  <h5 style="color: #1492E6; margin-top:0.5rem; margin-bottom:0.7rem">Dados do curso do participante</h5>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <label for="">{{ __('Universidade') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome da universidade" name="universidade[]" required>
+                                </div>
+                                <div class="col-sm-6">
+                                  <label for="">{{ __('Curso') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <input type="text" class="form-control" placeholder="Digite o nome do curso" name="curso[]" required>
+                                </div>
+                                <div class="col-sm-6">
+                                  <label for="">{{ __('Turno') }}  <span style="color: red; font-weight:bold">*</span></label>
                                   <select id="" class="form-control" name="turno[]" required>
                                     <option value="" disabled selected>-- TURNO --</option>
                                     @foreach ($enum_turno as $turno)
@@ -941,8 +953,13 @@
                                     @endforeach
                                   </select>
                                 </div>
+                              </div>
+                            </div>
+                            <div class="form-group"  style="margin-bottom: 2rem">
+                              <div class="row">
+                                
                                 <div class="col-sm-3">
-                                  <label for="">{{ __('Total de periodos do curso*') }}</label>
+                                  <label for="">{{ __('Total de períodos do curso') }}  <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="total_periodos[]" id="" class="form-control" onchange="gerarPeriodos(this)" required>
                                     <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
                                     <option value="6">6</option>
@@ -954,14 +971,14 @@
                                     <option value="12">12</option>
                                   </select>
                                 </div>
-                                <div class="col-sm-2">
-                                  <label for="">{{ __('Periodo atual*') }}</label>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Período atual') }}  <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="periodo_cursado[]" id="" class="form-control" required>
                                     <option value="" disabled selected>-- PERÍODO ATUAL --</option>
                                   </select>
                                 </div>
-                                <div class="col-sm-2">
-                                  <label for="">{{ __('Ordem de prioridade*') }}</label>
+                                <div class="col-sm-3">
+                                  <label for="">{{ __('Ordem de prioridade') }}  <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="ordem_prioridade[]" id="" class="form-control" required>
                                     <option value="" disabled selected>-- ORDEM --</option>
                                     <option value="1">1º</option>
@@ -971,42 +988,31 @@
                                   </select>
                                 </div>
                                 <div class="col-sm-3">
-                                  <label for="">{{ __('Média geral do curso*') }}</label>
+                                  <label for="">{{ __('Coeficiente de rendimento') }} <span style="color: red; font-weight:bold">*</span></label>
                                   <input type="number" class="form-control media" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" required>
                                 </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <h6 class="mb-1">Possui plano de trabalho?</h6>
-                          <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
-                          <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
-
-                          <div id="planoHabilitado" style="display:none;">
-                          <h5>Dados do plano de trabalho</h5>
-                          <div class="row">
-                            <div class="col-sm-12">
-                              <div id="planoTrabalho">
-                                <div class="row">
-                                  <div class="col-sm-4">
-                                    <label>Titulo* </label>
-                                    <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Nome" value="{{old('nomePlanoTrabalho.'.$i)}}">
-
+                                <div class="col-sm-12">
+                                  <div class="row">
+                                    <div class="container">
+                                      <h5 style="color: #1492E6; margin-top:1.5rem; margin-bottom:0.7rem">Plano de trabalho</h5>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-6">
+                                  <label>Titulo  <span style="color: red; font-weight:bold">*</span></label>
+                                    <input type="text" style="margin-bottom:10px" class="form-control @error('nomePlanoTrabalho') is-invalid @enderror" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" value="{{old('nomePlanoTrabalho.'.$i)}}" required>
                                     @error('nomePlanoTrabalho')
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                  </div>
-                                  {{-- Arquivo  --}}
-                                  <div class="col-sm-7">
+                                </div>
+                                <div class="col-sm-6">
+                                  <div class="custom-file">
                                     <label for="nomeTrabalho">Anexo*</label>
                                     <div class="input-group">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text" id="anexoPlanoTrabalho">Selecione um arquivo:</span>
-                                      </div>
                                       <div class="custom-file">
-                                        <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]">
+                                        <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]" onchange="verificarArquivoAnexado_pdf(this)" required>
                                         <label class="custom-file-label" id="custom-file-label" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
                                       </div>
                                     </div>
@@ -1020,10 +1026,6 @@
                               </div>
                             </div>
                           </div>
-
-                          </div>
-                          <button class="btn btn-danger mt-2 mb-2 delete" style='width:100%;margin-top:10px' disabled>Limite minimo de participantes</button>
-                          
                         </div>`;
   }
 
@@ -1077,7 +1079,7 @@
         success: (dados)=> {
         if (dados.length > 0) {
           if($('#oldSubArea').val() == null || $('#oldSubArea').val() == ""){
-            var option = '<option selected disabled>-- Sub Área --</option>';
+            var option = '<option selected disabled>-- Subárea --</option>';
           }
           $.each(dados, function(i, obj) {
             if($('#oldSubArea').val() != null && $('#oldSubArea').val() == obj.id){
@@ -1087,7 +1089,7 @@
             }
           })
         } else {
-          var option = "<option selected disabled>-- Sub Área --</option>";
+          var option = "<option selected disabled>-- Subárea --</option>";
         }
         $('#subArea').html(option).show();
       },
@@ -1156,7 +1158,7 @@
 
   function gerarPeriodos(select) {
     var div = select.parentElement.parentElement;
-    var selectPeriodos = div.children[2].children[1];
+    var selectPeriodos = div.children[1].children[1];
 
     var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
     for(var i = 0; i < parseInt(select.value); i++) {
@@ -1165,6 +1167,71 @@
 
     $(selectPeriodos).html('');
     $(selectPeriodos).append(html);
+  }
+
+/*  
+* FUNCAO: funcao responsavel pelo abre e fecha da area "possui autorizacoes especiais?"
+*
+*/
+  function displayAutorizacoesEspeciais(valor){
+    if(valor == "sim"){
+      document.getElementById("radioSim").checked = true;
+      document.getElementById("radioNao").checked = false;
+      document.getElementById("displaySim").style.display = "block";
+      document.getElementById("displayNao").style.display = "none";
+    }else if(valor == "nao"){
+      document.getElementById("radioSim").checked = false;
+      document.getElementById("radioNao").checked = true;
+      document.getElementById("displaySim").style.display = "none";
+      document.getElementById("displayNao").style.display = "block";
+    }
+  }
+
+/*  
+* FUNCAO: funcao responsavel pela verificacao dos arquivos anexados
+*
+*/
+  function verificarArquivoAnexado_pdf(item){
+    
+    if(item.files[0].type.split('/')[1] != "pdf"){
+        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
+        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado não é do tipo PDF! ";
+        document.getElementById(item.id).value = "";
+        $("#exampleModalAnexarDocumento").modal({show: true});
+    }else if(item.files[0].size > 2000000 && item.files[0].type.split('/')[1] == "pdf"){
+        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
+        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
+        document.getElementById(item.id).value = "";
+        $("#exampleModalAnexarDocumento").modal({show: true});
+    }
+  }
+  /*  
+* FUNCAO: funcao responsavel pela verificacao dos arquivos anexados
+*
+*/
+function verificarArquivoAnexado_xls_xlsx_ods(item){
+    /*if(item.files[0].type.split('/')[1] != "xls" ){
+        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
+        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo deve ser no formato XLS, XLSX ou OCD ";
+        document.getElementById(item.id).value = "";
+        $("#exampleModalAnexarDocumento").modal({show: true});
+    }else if(item.files[0].size > 2000000 && item.files[0].type.split('/')[1] == "xls"){
+        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
+        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
+        document.getElementById(item.id).value = "";
+        $("#exampleModalAnexarDocumento").modal({show: true});
+    }else if(item.files[0].size > 2000000 && item.files[0].type.split('/')[1] == "xlsx"){
+        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
+        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
+        document.getElementById(item.id).value = "";
+        $("#exampleModalAnexarDocumento").modal({show: true});
+    }else if(item.files[0].size > 2000000 && item.files[0].type.split('/')[1] == "ods"){
+        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
+        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
+        document.getElementById(item.id).value = "";
+        $("#exampleModalAnexarDocumento").modal({show: true});
+    }*/
+    
   }
 
 </script>
