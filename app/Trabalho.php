@@ -83,7 +83,7 @@ class Trabalho extends Model
       return $this->hasMany('App\PlanoTrabalho');
   }
   public function participantes(){
-      return $this->belongsToMany('App\Participante', 'trabalho_participante');
+      return $this->hasMany('App\Participante', 'trabalho_id');
   }
   public function proponente(){
       return $this->belongsTo('App\Proponente');
