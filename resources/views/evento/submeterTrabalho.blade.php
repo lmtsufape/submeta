@@ -15,8 +15,9 @@
               </div>
             </div>
           @endif --}}
+          {{-- action="{{route('trabalho.store')}}" --}}
           <p class="card-text">
-            <form method="POST" name="formTrabalho" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
+            <form method="POST" name="formTrabalho"  enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="editalId" value="{{$edital->id}}">
 
@@ -590,7 +591,7 @@
                   </button>
                 </div> --}}
                 <div class="col-md-12">
-                  <button type="submit" class="btn btn-success" style="width:100%">
+                  <button id="button" type="submit" class="btn btn-success" style="width:100%">
                     {{ __('Enviar Projeto') }}
                   </button>
                 </div>
@@ -1167,5 +1168,27 @@
     $(selectPeriodos).append(html);
   }
 
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $("#button").click(function(e){
+    e.preventDefault();
+
+    $.ajax({
+      headers: {
+        'X-CSRF-Token': $('input[name="_token"]').val()
+      },
+      url: "{{route('trabalho.store')}}",
+      type: 'post',
+      enctype: 'multipart/form-data',
+      success: function(result){
+        console.log("success")
+        console.log(result)
+      },
+      erro: (xhr,status,error) => {
+        console.log("erro")
+      }
+    });
+  });
 </script>
 @endsection
