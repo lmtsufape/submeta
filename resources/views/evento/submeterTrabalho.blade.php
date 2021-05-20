@@ -643,7 +643,7 @@
       var countParticipante = document.getElementById('countParticipante');
       if (countParticipante.value < limiteMaxParticipantes) {
         e.preventDefault();
-        linha = montarLinhaInput();
+        linha = montarLinhaInput(parseInt(countParticipante.value) + 1);
         $('#participantes').append(linha);
         setParticipanteDiv(parseInt(countParticipante.value) + 1);
 
@@ -792,7 +792,7 @@
   //   }
   // }
 
-  function montarLinhaInput() {
+  function montarLinhaInput(valor) {
 
     return `<div id="novoParticipante" style="display: block; margin-top:-1rem">
                           
@@ -810,7 +810,7 @@
                           <div class="row">
                             <div class="col-sm-6">
                               <label>Nome Completo  <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" id={{'nomeParticipante.'.$i}} style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Digite o nome do participante" value="{{old('nomeParticipante.'.$i)}}" required>
+                              <input type="text" id="nomeParticipante${valor}" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Digite o nome do participante" value="{{old('nomeParticipante.'.$i)}}" required>
                               @error('nomeParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -840,15 +840,22 @@
                                 </div>
                                 <div class="col-sm-3" style="margin-top: 5px">
                                   <label for="">{{ __('CPF') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                  <input type="text" class="form-control cpf" placeholder="000.000.000-00" name="cpf[]" required>
+                                  <input type="text" class="form-control cpf${valor}" id="cpf${valor}" minlength="14" maxlength="14" onkeyup="verificaCampos(this, 'cpf')"  placeholder="000.000.000-00" name="cpf[]" required>
+                                  <span id="idAvisoCpfParticipantecpf${valor}" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
+                                    <strong>Preencha o campo neste formato 000.000.000-00</strong>
+                                  </span>
                                 </div>
                                 <div class="col-sm-3" style="margin-top: 5px">
                                   <label for="">{{ __('RG') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                  <input type="text" class="form-control rg" placeholder="00.000.000-0" name="rg[]" required>
+                                  <input type="text" class="form-control rg${valor}" id="rg${valor}" onkeyup="verificaCampos(this, 'rg')" placeholder="00.000.000-0" name="rg[]" required>
+                                  <span id="idAvisoRgParticipanterg${valor}" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
+                                  <strong>Preencha o campo com números</strong>
+                                </span>
                                 </div>
                                 <div class="col-sm-3" style="margin-top: 5px">
                                   <label for="">{{ __('Celular') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                  <input type="text" class="form-control celular" placeholder="(00) 00000-0000" name="celular[]" required>
+                                  <input type="text" class="form-control celular${valor}" id="celular${valor}" onkeyup="verificaCampos(this, 'celular')" placeholder="(00) 00000-0000" name="celular[]" required>
+                                  <span id="idAvisoCelularParticipantecelular${valor}" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
                                 </div>
                               </div>
                             </div>
@@ -1236,11 +1243,42 @@ function verificarArquivoAnexado_xls_xlsx_ods(item){
 function validarForm(){
   var buttonRadioSim = document.getElementById("radioSim");
   var buttonRadioNao = document.getElementById("radioNao");
+  
+  //button radio
   if(buttonRadioSim.checked == false && buttonRadioNao.checked == false){
     document.getElementById("idAvisoAutorizacaoEspecial").style.display = "block";
+  }  
+}
+var novoRG = "";
+function verificaCampos(input, tipo){
+  if(tipo == "cpf"){
+  var regExp = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/g;
+    if(regExp.test(input.value) == false){
+      document.getElementById(input.id).style.borderColor = "red";
+      document.getElementById("idAvisoCpfParticipante"+input.id).style.display="block";
+    }else{
+      document.getElementById(input.id).style.borderColor = "#c6c8ca";
+      document.getElementById("idAvisoCpfParticipante"+input.id).style.display="none";
+    }
+  }else if(tipo == "rg"){
+    var regExp = /[0-9]$/g;
+    if(regExp.test(input.value) == false){
+      document.getElementById(input.id).style.borderColor = "red";
+      document.getElementById("idAvisoRgParticipante"+input.id).style.display="block";
+    }else{
+      document.getElementById(input.id).style.borderColor = "#c6c8ca";
+      document.getElementById("idAvisoRgParticipante"+input.id).style.display="none";
+    }
   }
 }
-  
+
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+
+
 
 </script>
 @endsection
