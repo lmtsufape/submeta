@@ -241,6 +241,9 @@
                   <label for="radioSim" style="margin-right: 5px">Sim</label>
                   <input type="radio" id="radioNao" onchange="displayAutorizacoesEspeciais('nao')">
                   <label for="radioNao" style="margin-right: 5px">Não</label><br>
+                  <span id="idAvisoAutorizacaoEspecial" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
+                    <strong>Selecione a autorização e envie o arquivo!</strong>
+                  </span>
                   
                   <div class="form-group" id="displaySim" style="display: none; margin-top:-1rem">
                     <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf.">{{ __('Sim, declaro que necessito de autorizações especiais') }}</label>
@@ -282,7 +285,7 @@
       
       
                           <div class="custom-file">
-                            <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" name="justificativaAutorizacaoEtica" onchange="verificarArquivoAnexado_pdf(this)">
+                            <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" name="justificativaAutorizacaoEtica" onchange="verificarArquivoAnexado_pdf(this)" >
                             <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2MB.</label>
                           </div>
                         </div>
@@ -584,7 +587,7 @@
                 </div> --}}
                 <div class="col-md-12 d-flex justify-content-between align-items-center" style="margin-top:0.5rem; margin-bottom:-1rem">
                   <h6 style="font-family:Arial, Helvetica, sans-serif; margin-right:15px"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
-                  <button type="submit" class="btn btn-success" style="">{{ __('Enviar Projeto') }}</button>
+                  <button type="submit" class="btn btn-success" style="" onclick="validarForm()">{{ __('Enviar Projeto') }}</button>
                 </div>
                 
               </div>
@@ -807,7 +810,7 @@
                           <div class="row">
                             <div class="col-sm-6">
                               <label>Nome Completo  <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Digite o nome do participante" value="{{old('nomeParticipante.'.$i)}}" required>
+                              <input type="text" id={{'nomeParticipante.'.$i}} style="margin-bottom:10px" class="form-control @error('nomeParticipante') is-invalid @enderror" name="nomeParticipante[]" placeholder="Digite o nome do participante" value="{{old('nomeParticipante.'.$i)}}" required>
                               @error('nomeParticipante.'.$i)
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -1009,7 +1012,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                   <div class="custom-file">
-                                    <label for="nomeTrabalho">Anexo*</label>
+                                    <label for="nomeTrabalho">Anexo <span style="color: red; font-weight:bold">*</span></label>
                                     <div class="input-group">
                                       <div class="custom-file">
                                         <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoTrabalho" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]" onchange="verificarArquivoAnexado_pdf(this)" required>
@@ -1179,11 +1182,13 @@
       document.getElementById("radioNao").checked = false;
       document.getElementById("displaySim").style.display = "block";
       document.getElementById("displayNao").style.display = "none";
+      document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
     }else if(valor == "nao"){
       document.getElementById("radioSim").checked = false;
       document.getElementById("radioNao").checked = true;
       document.getElementById("displaySim").style.display = "none";
       document.getElementById("displayNao").style.display = "block";
+      document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
     }
   }
 
@@ -1210,29 +1215,32 @@
 *
 */
 function verificarArquivoAnexado_xls_xlsx_ods(item){
-    if(item.files[0].type.split('/')[1] != "xls" || item.files[0].type.split('/')[1] != "xlsx" || item.files[0].type.split('/')[1] != "ods"){
-        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
-        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo deve ser no formato XLS, XLSX ou OCD ";
-        document.getElementById(item.id).value = "";
-        $("#exampleModalAnexarDocumento").modal({show: true});
-    }else if(item.files[0].size > 2000000 && item.files[0].type.split('/')[1] == "xls"){
-        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
-        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
-        document.getElementById(item.id).value = "";
-        $("#exampleModalAnexarDocumento").modal({show: true});
-    }else if(item.files[0].size > 2000000 && item.files[0].type.split('/')[1] == "xlsx"){
-        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
-        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
-        document.getElementById(item.id).value = "";
-        $("#exampleModalAnexarDocumento").modal({show: true});
-    }else if(item.files[0].size > 2000000 && item.files[0].type.split('/')[1] == "ods"){
-        document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
-        document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
-        document.getElementById(item.id).value = "";
-        $("#exampleModalAnexarDocumento").modal({show: true});
+    if(item.files[0].name.split('.')[1] == "xls" || item.files[0].name.split('.')[1] == "ods" || item.files[0].name.split('.')[1] == "xlsx"){
+        if(item.files[0].size > 2000000){
+          document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
+          document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
+          document.getElementById(item.id).value = "";
+          $("#exampleModalAnexarDocumento").modal({show: true});
+        }
+    }else{
+      document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
+      document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado não é do tipo XLS, XLSX ou ODS! ";
+      document.getElementById(item.id).value = "";
+      $("#exampleModalAnexarDocumento").modal({show: true});
     }
     
+}
+/* FUNCAO: validar formulario
+*
+*/
+function validarForm(){
+  var buttonRadioSim = document.getElementById("radioSim");
+  var buttonRadioNao = document.getElementById("radioNao");
+  if(buttonRadioSim.checked == false && buttonRadioNao.checked == false){
+    document.getElementById("idAvisoAutorizacaoEspecial").style.display = "block";
   }
+}
+  
 
 </script>
 @endsection
