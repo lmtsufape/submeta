@@ -427,6 +427,11 @@ class TrabalhoController extends Controller
         $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilha, "Planilha.". $request->file('anexoPlanilha')->extension());
       }
 
+      // Anexo grupo pesquisa
+      if(isset($request->grupoPesquisa)){
+        $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoPlanilha, "Grupo_de_pesquisa.". $request->file('grupoPesquisa')->extension());
+      }
+
       $trabalho->update();
 
       return $trabalho;

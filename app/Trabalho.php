@@ -28,6 +28,7 @@ class Trabalho extends Model
       'anexoAutorizacaoComiteEtica',
       'JustificativaAutorizacaoEtica',
       'anexoLattesCoordenador',
+      'anexoGrupoPesquisa',
       'anexoPlanilhaPontuacao',
       'anexoProjeto',
 
