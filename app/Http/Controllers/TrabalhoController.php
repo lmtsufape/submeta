@@ -804,11 +804,18 @@ class TrabalhoController extends Controller
      */
     public function destroy(Request $request)
     {
-        $trabalho = Trabalho::find($request->id);
+        $projeto = Trabalho::find($request->id);
         //dd($trabalho);
-        Storage::deleteDirectory('trabalhos/' . $trabalho->evento->id . '/' . $trabalho->id );
+        Storage::deleteDirectory('trabalhos/' . $projeto->evento->id . '/' . $projeto->id );
 
-        $trabalho->delete();
+        $participantes = $projeto->participantes;
+        foreach ($participantes as $participante) {
+          $plano = $participante->planoTrabalho;
+          $plano->delete();
+          $participante->delete();
+        }
+
+        $projeto->delete();
         return redirect()->back()->with(['mensagem' => 'Projeto deletado com sucesso!']);
     }
 
