@@ -1059,7 +1059,7 @@ class TrabalhoController extends Controller
       // Salvando participantes
       $this->salvarParticipantes($request, $edital, $projeto);
 
-      dd("foi");
+      return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto submetido com sucesso!']);
     }
 
     public function atribuirDados(Request $request, $edital, Trabalho $projeto = null) {
@@ -1246,7 +1246,7 @@ class TrabalhoController extends Controller
               $arquivo->nome = $path . $nome;
               $arquivo->trabalhoId = $projeto->id;
               $arquivo->data = $agora;
-              $arquivo->participanteId = $participante->id;
+              $arquivo->participanteId = $id;
               $arquivo->versaoFinal = true;
               $arquivo->save();
             }
@@ -1255,8 +1255,12 @@ class TrabalhoController extends Controller
         // Excluidos
         $participantesExcluidos = $participantes->diff($participantesPermanecem);
         foreach ($participantesExcluidos as $participante) {
+          $plano = $participante->planoTrabalho;
+          $plano->delete();
           $participante->delete();
         }
+
+        return true;
       }
       if($request->emailParticipante != null) {
         foreach ($request->emailParticipante as $key => $email) {
@@ -1351,6 +1355,8 @@ class TrabalhoController extends Controller
           }
         }
       }
+
+      return true;
     }
 
     public function atualizar(Request $request, $id) {
@@ -1369,6 +1375,6 @@ class TrabalhoController extends Controller
       // Salvando participantes
       $this->salvarParticipantes($request, $edital, $projeto, true);
 
-      dd("foi");
+      return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto atualizado com sucesso!']);
     }
 }

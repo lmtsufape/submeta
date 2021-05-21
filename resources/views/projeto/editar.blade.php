@@ -480,10 +480,9 @@
                           </div>
                           
                           <h6 class="mb-1">Possui plano de trabalho?</h6>
-                          {{dd($participantes[1]->user->email)}}
                           <button  class="btn btn-primary mt-2 mb-2 simPlano">Sim</button>
                           <button  class="btn btn-primary mt-2 mb-2 naoPlano">Não</button>
-                          
+                          {{-- {{dd($participantes)}} --}}
                           <div id="planoHabilitado" style="display:@if($participante->planoTrabalho != null) block; @else none; @endif">
                           <h5>Dados do plano de trabalho</h5>
                           <div class="row">
