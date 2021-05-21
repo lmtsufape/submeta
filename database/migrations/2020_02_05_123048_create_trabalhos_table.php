@@ -23,10 +23,11 @@ class CreateTrabalhosTable extends Migration
             $table->string('pontuacaoPlanilha');
             $table->date('data')->nullable();
             //Anexos
-            $table->string('anexoProjeto');
+            $table->string('anexoProjeto')->nullable();
             $table->string('anexoDecisaoCONSU')->nullable();
-            $table->string('anexoPlanilhaPontuacao');
-            $table->string('anexoLattesCoordenador');
+            $table->string('anexoPlanilhaPontuacao')->nullable();
+            $table->string('anexoLattesCoordenador')->nullable();
+            $table->string('anexoGrupoPesquisa')->nullable();
             $table->string('anexoAutorizacaoComiteEtica')->nullable(); 
             $table->string('justificativaAutorizacaoEtica')->nullable();
             //chaves estrangeiras

@@ -12,10 +12,14 @@ class Arquivo extends Model
    * @var array
    */
   protected $fillable = [
-      'nome', 'versao', 'versaoFinal', 'data', 'trabalhoId',
+      'nome', 'versao', 'versaoFinal', 'data', 'trabalhoId', 'participanteId'
   ];
 
   public function trabalho(){
       return $this->belongsTo('App\Trabalho', 'trabalhoId');
+  }
+
+  public function participante() {
+      return $this->belongsTo('App\Participante', 'participanteId');
   }
 }
