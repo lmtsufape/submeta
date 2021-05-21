@@ -18,4 +18,8 @@ class Participante extends Model
     public function trabalhos(){
       return $this->belongsToMany('App\Trabalho', 'trabalho_participante');
   	}
+
+    public function planoTrabalho() {
+        return $this->hasOne('App\Arquivo', 'participanteId');
+    }
 }

@@ -102,7 +102,7 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
   Route::get(   '/projeto/{id}/visualizar', 'TrabalhoController@show'                       )->name('trabalho.show');
   Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
-  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                     )->name('trabalho.update');
+  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@atualizar'                  )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
 
