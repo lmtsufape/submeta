@@ -12,10 +12,17 @@ class Arquivo extends Model
    * @var array
    */
   protected $fillable = [
-      'nome', 'versao', 'versaoFinal', 'data', 'trabalhoId',
+      'nome', 'versao', 'versaoFinal', 'data', 'trabalhoId', 'participanteId'
   ];
 
   public function trabalho(){
       return $this->belongsTo('App\Trabalho', 'trabalhoId');
+  }
+
+  public function participante() {
+      return $this->belongsTo('App\Participante', 'participanteId');
+  }
+  public function avaliadors(){
+    return $this->belongsToMany('App\Avaliador', 'avaliadors_plano_trabalho')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
   }
 }

@@ -66,9 +66,11 @@
                                             <div class="color-subtitle-edital">Submissão até o dia {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</div>
                                         </div>
                                         <div class="col-sm-4">
-                                            <button class="btn btn-opcoes-edital background-yellow" style="float: right;" disable>
-                                                Em avaliação
-                                            </button>
+                                            <a href="{{ route('evento.visualizarNaoLogado', ['id' => $evento->id]) }}">
+                                                <button class="btn btn-opcoes-edital background-yellow" style="float: right;" disable>
+                                                    Em avaliação
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -85,9 +87,11 @@
                                             <div class="color-subtitle-edital">Submissão até o dia {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</div>
                                         </div>
                                         <div class="col-sm-3">
-                                            <button class="btn btn-opcoes-edital background-red" style="float: right;" disabled>
-                                                Encerrado
-                                            </button>
+                                            <a href="{{ route('evento.visualizarNaoLogado', ['id' => $evento->id]) }}">
+                                                <button class="btn btn-opcoes-edital background-red" style="float: right;" disabled>
+                                                    Encerrado
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

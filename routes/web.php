@@ -41,12 +41,15 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //######## Rotas Avaliador  ####################################
 Route::prefix('avaliador')->name('avaliador.')->group(function(){
-  Route::get('/index',          'AvaliadorController@index'                      )->name('index')->middleware('auth');
-  Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'         )->name('visualizarTrabalho')->middleware('auth');
-  Route::post('/parecer',       'AvaliadorController@parecer'                    )->name('parecer')->middleware('auth');
-  Route::get('/editais',        'AvaliadorController@editais'                    )->name('editais')->middleware('auth');
-  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'              )->name('enviarParecer')->middleware('auth');
-  Route::get('/Resposta', 'AvaliadorController@conviteResposta'              )->name('conviteResposta')->middleware('auth');
+  Route::get('/index',          'AvaliadorController@index'                )->name('index')->middleware('auth');
+  Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'   )->name('visualizarTrabalho')->middleware('auth');
+  Route::get('/planos',     'AvaliadorController@listarPlanos'         )->name('listarPlanos')->middleware('auth');
+  Route::post('/parecer',       'AvaliadorController@parecer'              )->name('parecer')->middleware('auth');
+  Route::post('/parecer/plano',       'AvaliadorController@parecerPlano'   )->name('parecer.plano')->middleware('auth');
+  Route::get('/editais',        'AvaliadorController@editais'              )->name('editais')->middleware('auth');
+  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'        )->name('enviarParecer')->middleware('auth');
+  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecerPlano'   )->name('enviarParecerPlano')->middleware('auth');
+  Route::get('/Resposta', 'AvaliadorController@conviteResposta'            )->name('conviteResposta')->middleware('auth');
 });
 
 
@@ -72,6 +75,14 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   //######### Participante ########################################
   Route::get('/participante/index',         'ParticipanteController@index'          )->name('participante.index');
   Route::get('/participante/edital/{id}',    'ParticipanteController@edital'        )->name('participante.edital');
+
+  //######### Plano de Trablho ########################################
+  Route::prefix('/plano/trabalho')->name('plano.trabalho.')->group(function(){
+    Route::get('/index/{evento_id}',     'PlanoTrabalhoController@index'        )->name('index');
+    Route::get('/selecionar/{evento_id}', 'PlanoTrabalhoController@selecionarPlanos' )->name('selecionarPlanos');
+    Route::post('/atribuicao',            'PlanoTrabalhoController@atribuicao' )->name('atribuicao');
+    
+  });
 
   //########## Area da comissao  ###################################
   Route::get(   '/comissoes',             'EventoController@listComissao'                 )->name('comissoes');
@@ -102,7 +113,7 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
   Route::get(   '/projeto/{id}/visualizar', 'TrabalhoController@show'                       )->name('trabalho.show');
   Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
-  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                     )->name('trabalho.update');
+  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@atualizar'                  )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
 

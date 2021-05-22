@@ -1991,6 +1991,27 @@ function validarPart3(){
   }
 }
 
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+  // $("#button").click(function(e){
+  //   e.preventDefault();
 
- </script> 
+  //   $.ajax({
+  //     headers: {
+  //       'X-CSRF-Token': $('input[name="_token"]').val()
+  //     },
+  //     url: "{{route('trabalho.store')}}",
+  //     type: 'post',
+  //     enctype: 'multipart/form-data',
+  //     success: function(result){
+  //       console.log("success")
+  //       console.log(result)
+  //     },
+  //     erro: (xhr,status,error) => {
+  //       console.log("erro")
+  //     }
+  //   });
+  // });
+</script>
 @endsection

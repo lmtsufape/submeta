@@ -41,6 +41,10 @@
                           <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
                           Projetos para avaliar
                       </a>
+                      <a href="{{ route('avaliador.listarPlanos', ['evento_id' => $evento->id]) }}" class="dropdown-item">
+                          <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                          Planos para avaliar
+                      </a>
                     @elseif(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == false)
                       <button disabled="disabled" class="dropdown-item">
                         Convite recusado

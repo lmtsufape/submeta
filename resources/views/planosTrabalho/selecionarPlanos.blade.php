@@ -8,12 +8,12 @@
   <div class="container" >
     <div class="row justify-content-center" style="margin-bottom: 50px;">
       <div class="col-md-1">
-        <a href="{{ route('admin.atribuir', ['evento_id' => $evento->id]) }}" class="btn btn-secondary">
+        <a href="{{ route('plano.trabalho.index', ['evento_id' => $evento->id]) }}" class="btn btn-secondary">
           Voltar
         </a>
       </div>
       <div class="col-md-10" style="text-align: center;">
-        <h3  class="titulo-table">Lista de Projetos do Edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
+        <h3  class="titulo-table">Lista de Planos do Edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
       </div>
       <div class="col-md-1">
         <!-- Button trigger modal -->
@@ -42,23 +42,22 @@
     <thead>
       <tr>
         <th scope="col">Nome do Projeto</th>
-        <th scope="col">Área</th>
         <th scope="col">Proponente</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
     </thead>
     <tbody id="projetos">
-      @foreach ($trabalhos as $trabalho)
+      @foreach ($planos as $plano)
         <tr>
-          <td>{{ $trabalho->titulo}}</td>
-          <td>{{ App\Area::find($trabalho->area_id)->nome}}</td>
-          <td>{{ $trabalho->proponente->user->name }}</td>
+          <td>{{ $plano->titulo}}</td>
+          {{-- <td>{{ App\Area::find($trabalho->area_id)->nome}}</td> --}}
+          <td>{{ $plano->participante->user->name }}</td>
           <td style="text-align:center">
-              <button type="button" class="btn btn-primary" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModalCenter{{ $trabalho->id }}">
+              <button type="button" class="btn btn-primary" value="{{ $plano->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModalCenter{{ $plano->id }}">
                 Atribuir
               </button>
               <!-- Modal -->
-              <div class="modal fade" id="exampleModalCenter{{ $trabalho->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal fade" id="exampleModalCenter{{ $plano->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content modal-submeta">
                     <div class="modal-header modal-header-submeta">
@@ -71,12 +70,12 @@
 
                       <form action="{{ route('plano.trabalho.atribuicao') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
+                        <input type="hidden" name="plano_id" value="{{ $plano->id }}">
                         <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                         <div class="form-group">
-                          <label for="exampleFormControlSelect2">Selecione o(s) avaliador(es) para esse projeto</label>
+                          <label for="exampleFormControlSelect2">Selecione o(s) avaliador(es) para esse plano</label>
                           <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2">
-                            @foreach ($trabalho->aval as $avaliador)
+                            @foreach ($plano->aval as $avaliador)
                               <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{$avaliador->area->nome ?? 'Indefinida'}}) </option>
                             @endforeach
                           </select>
@@ -102,7 +101,7 @@
   <div class="container" style="margin-top: 50px;">
     <div class="row justify-content-center d-flex align-items-center" >
 
-        <h3 class="titulo-table">Status dos Projetos em Avaliação do edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
+        <h3 class="titulo-table">Status dos Planos em Avaliação do edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
 
     </div>
   </div>
@@ -119,15 +118,15 @@
     <tbody>
       @foreach ($avaliadores as $avaliador)
         @php $contador = 0;  @endphp
-        @foreach($avaliador->trabalhos->where('evento_id', $evento->id) as $trabalho)
-          @if($trabalho->pivot->status == true)
+        @foreach($avaliador->planoTrabalhos as $plano)
+          @if($plano->pivot->status == true)
             @php $contador++;  @endphp
           @endif
         @endforeach
         <tr>
           <td>{{ $avaliador->user->name }}</td>
           <td>{{ $avaliador->user->email }}</td>
-          <td>{{ $contador }} / {{ $avaliador->trabalhos->where('evento_id', $evento->id)->count() }}</td>
+          <td>{{ $contador }} / {{ $avaliador->planoTrabalhos->count() }}</td>
           <td style="text-align:center"> ...</td>
         </tr>
       @endforeach
