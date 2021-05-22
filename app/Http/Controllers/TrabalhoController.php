@@ -1067,7 +1067,9 @@ class TrabalhoController extends Controller
       // Salvando participantes
       $this->salvarParticipantes($request, $edital, $projeto);
 
+
       return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto submetido com sucesso!']);
+
     }
 
     public function atribuirDados(Request $request, $edital, Trabalho $projeto = null) {

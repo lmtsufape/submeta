@@ -2368,21 +2368,25 @@ pre code {
 .form-control::-webkit-input-placeholder {
   color: #6c757d;
   opacity: 1;
+  font-style: italic;
 }
 
 .form-control::-moz-placeholder {
   color: #6c757d;
   opacity: 1;
+  font-style: italic;  
 }
 
 .form-control:-ms-input-placeholder {
   color: #6c757d;
   opacity: 1;
+  font-style: italic;
 }
 
 .form-control::-ms-input-placeholder {
   color: #6c757d;
   opacity: 1;
+  font-style: italic;
 }
 
 .form-control::placeholder {
