@@ -1048,7 +1048,6 @@ class TrabalhoController extends Controller
     }
 
     public function salvar(Request $request) {
-      return response()->json('ok');
       $edital = Evento::find($request->editalId);
       $hoje = now();
       
@@ -1387,4 +1386,4 @@ class TrabalhoController extends Controller
 
       return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto atualizado com sucesso!']);
     }
-}   
+}
