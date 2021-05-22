@@ -1385,4 +1385,4 @@ class TrabalhoController extends Controller
 
       return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto atualizado com sucesso!']);
     }
-}
+}   

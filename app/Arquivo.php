@@ -22,4 +22,7 @@ class Arquivo extends Model
   public function participante() {
       return $this->belongsTo('App\Participante', 'participanteId');
   }
+  public function avaliadors(){
+    return $this->belongsToMany('App\Avaliador', 'avaliadors_plano_trabalho')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
+  }
 }

@@ -17,7 +17,7 @@
           @endif --}}
           {{-- action="{{route('trabalho.store')}}" --}}
           <p class="card-text">
-            <form method="POST" name="formTrabalho"  enctype="multipart/form-data">
+            <form method="POST" name="formTrabalho" action="{{route('trabalho.store')}}" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="editalId" value="{{$edital->id}}">
 
@@ -1171,24 +1171,24 @@
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-  $("#button").click(function(e){
-    e.preventDefault();
+  // $("#button").click(function(e){
+  //   e.preventDefault();
 
-    $.ajax({
-      headers: {
-        'X-CSRF-Token': $('input[name="_token"]').val()
-      },
-      url: "{{route('trabalho.store')}}",
-      type: 'post',
-      enctype: 'multipart/form-data',
-      success: function(result){
-        console.log("success")
-        console.log(result)
-      },
-      erro: (xhr,status,error) => {
-        console.log("erro")
-      }
-    });
-  });
+  //   $.ajax({
+  //     headers: {
+  //       'X-CSRF-Token': $('input[name="_token"]').val()
+  //     },
+  //     url: "{{route('trabalho.store')}}",
+  //     type: 'post',
+  //     enctype: 'multipart/form-data',
+  //     success: function(result){
+  //       console.log("success")
+  //       console.log(result)
+  //     },
+  //     erro: (xhr,status,error) => {
+  //       console.log("erro")
+  //     }
+  //   });
+  // });
 </script>
 @endsection
