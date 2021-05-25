@@ -505,27 +505,27 @@ class TrabalhoController extends Controller
     public function show($id)
     {
         //
-      $projeto = Trabalho::find($id);
-      $edital = Evento::find($projeto->evento_id);
-      $grandeArea = GrandeArea::where('id', $projeto->grande_area_id)->select('nome')->first();
-      $area = Area::where('id', $projeto->area_id)->select('nome')->first();
-      $subarea = Subarea::where('id', $projeto->sub_area_id)->select('nome')->first();
-      $proponente = Proponente::find($projeto->proponente_id);
-      $funcaoParticipantes = FuncaoParticipantes::all();
-      $participantes = Participante::where('trabalho_id', $id)->get();
-      $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
-      $users = User::whereIn('id', $participantesUsersIds)->get();
-      $arquivos = Arquivo::where('trabalhoId', $id)->get();
+        $projeto = Trabalho::find($id);
+        $edital = Evento::find($projeto->evento_id);
+        $grandeAreas = GrandeArea::all();
+        $areas = Area::all();
+        $subareas = Subarea::all();
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        $participantes = Participante::where('trabalho_id', $id)->get();
+        $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
+        $users = User::whereIn('id', $participantesUsersIds)->get();
+        $arquivos = Arquivo::where('trabalhoId', $id)->get();
       return view('projeto.visualizar')->with(['projeto' => $projeto,
-                                           'grandeArea' => $grandeArea,
-                                           'area' => $area,
-                                           'subArea' => $subarea,
-                                           'proponente' => $proponente,
-                                           'edital' => $edital,
-                                           'users' => $users,
-                                           'funcaoParticipantes' => $funcaoParticipantes,
-                                           'participantes' => $participantes,
-                                           'arquivos' => $arquivos,]);
+                                                'grandeAreas' => $grandeAreas,
+                                                'areas' => $areas,
+                                                'subAreas' => $subareas,
+                                                'edital' => $edital,
+                                                'users' => $users,
+                                                'funcaoParticipantes' => $funcaoParticipantes,
+                                                'participantes' => $participantes,
+                                                'arquivos' => $arquivos,
+                                                'enum_turno'         => Participante::ENUM_TURNO,
+                                           ]);
     }
 
     /**
@@ -1371,7 +1371,7 @@ class TrabalhoController extends Controller
     public function atualizar(Request $request, $id) {
       $edital = Evento::find($request->editalId);
       $hoje = now();
-      
+
       $projeto = Trabalho::find($id);
 
       if (!($edital->inicioSubmissao < $hoje && $edital->fimSubmissao >= $hoje)) {
