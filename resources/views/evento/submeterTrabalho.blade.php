@@ -247,6 +247,31 @@
                   </span>
                   @enderror
                 </div>
+                
+                <div class="form-group col-md-6">
+                  <label for="grupoPesquisa" class="col-form-label">{{ __('Comprovante do grupo de pesquisa') }} <span style="color: red; font-weight:bold">*</span></label>
+                  @if(old('grupoPesquisa') != null || (isset($rascunho) && $rascunho->anexoGrupoPesquisa != "" && $rascunho->anexoGrupoPesquisa != null))
+                  <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                          'nomeAnexo' => 'anexoGrupoPesquisa' ])}}">Arquivo atual</a>
+                  @endif
+                  <input type="hidden" id="grupoPesquisa" name="grupoPesquisa"
+                   @if( isset($rascunho) && $rascunho->anexoGrupoPesquisa != "") value="sim" @else value="{{old('grupoPesquisa')}}" @endif required>
+                  <div class="input-group">
+
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input @error('grupoPesquisa') is-invalid @enderror" id="grupoPesquisa" aria-describedby="inputGroupFileAddon01" name="grupoPesquisa" onchange="verificarArquivoAnexado_pdf(this)" required>
+                      <label class="custom-file-label" id="custom-file-label" for="grupoPesquisa">O arquivo deve ser no formato PDF de até 2MB.</label>
+                    </div>
+                  </div>
+                  @error('grupoPesquisa')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                </div>
+                <div class="form-group col-md-6">
+                  <!-- vazio -->
+                </div>
                 <div class="form-group col-md-6">
                   <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="margin-right: 15px;">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
                   <input type="radio" id="radioSim" onchange="displayAutorizacoesEspeciais('sim')">
