@@ -19,6 +19,10 @@
     <script src="{{ asset('js/jquery-3.4.1.min.js')}}"></script>
     <script src="{{ asset('js/jquery-mask-plugin.js')}}"></script>
 
+    <!-- Scripts -->
+    <script type="text/javascript" src="{{URL::asset('js/valida_cpf_cnpj.js')}}" defer></script>
+    <script type="text/javascript" src="{{URL::asset('js/pesquisar_cep.js')}}" defer></script>
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 

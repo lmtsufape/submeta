@@ -59,7 +59,7 @@
                     @enderror
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="subArea" class="col-form-label">{{ __('Subárea') }} <span style="color: red; font-weight:bold">*</span></label>
+                  <label for="subArea" class="col-form-label">{{ __('Subárea') }}</label>
                     <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}">
                     <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea" required>
                       <option value="" disabled selected hidden>-- Subárea --</option>
@@ -439,7 +439,7 @@
                             <div class="col-md-12"><h5>Endereço</h5></div>
                             <div class="form-group col-md-6">
                               <label for="cep1">CEP <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cep1') is-invalid @enderror" id="cep1" name="cep[]" placeholder="Digite o CEP do participante" required>
+                              <input type="text" class="form-control @error('cep1') is-invalid @enderror" id="cep1" onblur="pesquisacep1(this.value);" name="cep[]" placeholder="Digite o CEP do participante" required>
                               @error('cep1')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -691,7 +691,7 @@
                           <div class="col-md-12"><h5>Endereço</h5></div>
                           <div class="form-group col-md-6">
                             <label for="cep2">CEP <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('cep2') is-invalid @enderror" id="cep2" name="cep[]" placeholder="Digite o CEP do participante" required>
+                            <input type="text" class="form-control @error('cep2') is-invalid @enderror" id="cep2" onblur="pesquisacep2(this.value);" name="cep[]" placeholder="Digite o CEP do participante" required>
                             @error('cep2')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
@@ -943,7 +943,7 @@
                             <div class="col-md-12"><h5>Endereço</h5></div>
                             <div class="form-group col-md-6">
                               <label for="cep3">CEP <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cep3') is-invalid @enderror" id="cep3" name="cep[]" placeholder="Digite o CEP do participante" required>
+                              <input type="text" class="form-control @error('cep3') is-invalid @enderror" id="cep3" onblur="pesquisacep3(this.value);" name="cep[]" placeholder="Digite o CEP do participante" required>
                               @error('cep3')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -1049,7 +1049,7 @@
                             </div>
                             <div class="form-group col-md-6">
                               <label for="turno3">Turno <span style="color: red; font-weight:bold">*</span></label>
-                              <select id="turno3" class="form-control" required  name="turno[]" 
+                              <select id="turno3" class="form-control" required  name="turno[]" required>
                                 <option value="" disabled selected>-- TURNO --</option>
                                 @foreach ($enum_turno as $turno)
                                   <option value="{{$turno}}">{{$turno}}</option>
@@ -1416,7 +1416,6 @@ function selecionarParticipantes(quantidade){
 */
 function abrirModalenviarProjeto(){
   if(validarForm() == true){
-    //fecharModalenviarProjeto();
   }else{
     document.getElementById("modalSubmit").classList.add("show");
     document.getElementById("modalSubmit").style.display="block";
@@ -1434,10 +1433,6 @@ function fecharModalenviarProjeto(){
   document.getElementById("modalSubmit").classList.remove("show");
   document.getElementById("modalSubmit").style.display="none";
   document.getElementById("modalSubmit").style.backgroundColor="rgba(0, 0, 0, 0.5)";
-
-  //document.getElementById("collapseParticipante1").classList.remove("show");
-  //document.getElementById("collapseParticipante2").classList.remove("show");
-  //document.getElementById("collapseParticipante3").classList.remove("show");
 }
 /*
 * FUNCAO: enviar modal
@@ -1526,492 +1521,54 @@ function aplicarMascaras() {
   $('#cep2').mask('00000-000');
   $('#cep3').mask('00000-000');
 }
-function validarForm(){
-  
-  /*var buttonRadioSim = document.getElementById("radioSim");
-  var buttonRadioNao = document.getElementById("radioNao");
-  
-  //button radio
-  if(buttonRadioSim.checked == false && buttonRadioNao.checked == false){
-    document.getElementById("idAvisoAutorizacaoEspecial").style.display = "block";
-    document.getElementById("idAvisoAutorizacaoEspecial").autofocus;
-  }
-  //participantes
-  var part1 = document.getElementById("participante1").style.visibility;
-  var part2 = document.getElementById("participante1").style.visibility;
-  var part3 = document.getElementById("participante1").style.visibility;
-  */
-  
+/*
+* FUNCAO: validar CPF
+*
+*/
+window.onload= function() {
+
+$('#cpf1').blur(function(){
+
+    // O CPF ou CNPJ
+    var cpf_cnpj = $(this).val();
+    
+    // Testa a validação e formata se estiver OK
+    if ( formata_cpf_cnpj( cpf_cnpj ) ) {
+        $(this).val( formata_cpf_cnpj( cpf_cnpj ) );
+    } else {
+        alert('CPF inválido!');
+    }    
+});  
+
+$('#cpf2').blur(function(){
+
+// O CPF ou CNPJ
+var cpf_cnpj = $(this).val();
+
+// Testa a validação e formata se estiver OK
+if ( formata_cpf_cnpj( cpf_cnpj ) ) {
+    $(this).val( formata_cpf_cnpj( cpf_cnpj ) );
+} else {
+    alert('CPF inválido!');
+}    
+});  
+
+$('#cpf3').blur(function(){
+
+// O CPF ou CNPJ
+var cpf_cnpj = $(this).val();
+
+// Testa a validação e formata se estiver OK
+if ( formata_cpf_cnpj( cpf_cnpj ) ) {
+    $(this).val( formata_cpf_cnpj( cpf_cnpj ) );
+} else {
+    alert('CPF inválido!');
+}    
+});  
+};
 
 
-  
-  
-  /*
-
-  document.getElementById("modalSubmit").classList.add("show");
-  document.getElementById("modalSubmit").style.display="block";
-  document.getElementById("modalSubmit").style.backgroundColor="black";
-
-  document.getElementById("collapseParticipante1").classList.add("show");
-  document.getElementById("collapseParticipante2").classList.add("show");
-  document.getElementById("collapseParticipante3").classList.add("show");
-  //document.getElementById("collapseParticipante1").classList.remove = "collapsed";
-  */
-}
-function validarPart1(){
-  //participante 1
-  var nome1 = document.getElementById("nomeCompletoParticipante1");
-  var email1 = document.getElementById("email1");
-  var data1 = document.getElementById("data1");
-  var cpf1 = document.getElementById("cpf1");
-  var rg1 = document.getElementById("rg1");
-  var celular1 = document.getElementById("celular1");
-  var cep1 = document.getElementById("cep1");
-  var estado1 = document.getElementById("estado1");
-  var cidade1 = document.getElementById("cidade1");
-  var bairro1 = document.getElementById("bairro1");
-  var rua1 = document.getElementById("rua1");
-  var numero1 = document.getElementById("numero1");
-  var complemento1 = document.getElementById("complemento1");
-  var universidade1 = document.getElementById("universidade1");
-  var curso1 = document.getElementById("curso1");
-  var turno1 = document.getElementById("turno1");
-  var totalDePeriodos1 = document.getElementById("totalDePeriodos1");
-  var periodoAtual1 = document.getElementById("periodoAtual1");
-  var ordemDePrioridade1 = document.getElementById("ordemDePrioridade1");
-  var coeficineteDeRendimento1 = document.getElementById("coeficienteDeRendimento1");
-  var tituloPlanoDeTrabalho1 = document.getElementById("titulo1");
-  var anexoPlanoDeTrabalho1 = document.getElementById("anexoPlanoDeTrabalho1");
-  
-//validacao dos campos - participante 1
-if(nome1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    nome1.focus();
-    return true;
-  }else if(email1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    email1.focus();
-    return true;
-  }else if(data1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    data1.focus();
-    return true;
-  }else if(cpf1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    cpf1.focus();
-    return true;
-  }else if(rg1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    rg1.focus();
-    return true;
-  }else if(celular1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    celular1.focus();
-    return true;
-  }else if(cep1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    cep1.focus();
-    return true;
-  }else if(estado1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    estado1.focus();
-    return true;
-  }else if(cidade1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    cidade1.focus();
-    return true;
-  }else if(bairro1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    bairro1.focus();
-    return true;
-  }else if(rua1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    rua1.focus();
-    return true;
-  }else if(numero1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    numero1.focus();
-    return true;
-  }else if(complemento1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    complemento1.focus();
-    return true;
-  }else if(complemento1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    complemento1.focus();
-    return true;
-  }else if(universidade1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    universidade1.focus();
-    return true;
-  }else if(curso1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    curso1.focus();
-    return true;
-  }else if(turno1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    turno1.focus();
-    return true;
-  }else if(totalDePeriodos1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    totalDePeriodos1.focus();
-    return true;
-  }else if(periodoAtual1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    periodoAtual1.focus();
-    return true;
-  }else if(ordemDePrioridade1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    ordemDePrioridade1.focus();
-    return true;
-  }else if(coeficineteDeRendimento1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    coeficineteDeRendimento1.focus();
-    return true;
-  }else if(tituloPlanoDeTrabalho1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    tituloPlanoDeTrabalho1.focus();
-    return true;
-  }else if(anexoPlanoDeTrabalho1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    anexoPlanoDeTrabalho1.focus();
-    return true;
-  }
-}
-function validarPart2(){
-  //participante 2
-  var nome2 = document.getElementById("nomeCompletoParticipante2");
-  var email2 = document.getElementById("email2");
-  var data2 = document.getElementById("data2");
-  var cpf2 = document.getElementById("cpf2");
-  var rg2 = document.getElementById("rg2");
-  var celular2 = document.getElementById("celular2");
-  var cep2 = document.getElementById("cep2");
-  var estado2 = document.getElementById("estado2");
-  var cidade2 = document.getElementById("cidade2");
-  var bairro2 = document.getElementById("bairro2");
-  var rua2 = document.getElementById("rua2");
-  var numero2 = document.getElementById("numero2");
-  var complemento2 = document.getElementById("complemento2");
-  var universidade2 = document.getElementById("universidade2");
-  var curso2 = document.getElementById("curso2");
-  var turno2 = document.getElementById("turno2");
-  var totalDePeriodos2 = document.getElementById("totalDePeriodos2");
-  var periodoAtual2 = document.getElementById("periodoAtual2");
-  var ordemDePrioridade2 = document.getElementById("ordemDePrioridade2");
-  var coeficineteDeRendimento2 = document.getElementById("coeficienteDeRendimento2");
-  var tituloPlanoDeTrabalho2 = document.getElementById("titulo2");
-  var anexoPlanoDeTrabalho2 = document.getElementById("anexoPlanoDeTrabalho2");
-
-  //validacao dos campos - participante 2
-  if(nome2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    nome2.focus();
-    return true;
-  } else if(email2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    email2.focus();
-    return true;
-  }else if(data2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    data2.focus();
-    return true;
-  }else if(cpf2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    cpf2.focus();
-    return true;
-  }else if(rg2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    rg2.focus();
-    return true;
-  }else if(celular2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    celular2.focus();
-    return true;
-  }else if(cep2.value == ""){
-    document.getElementById("colapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    cep2.focus();
-    return true;
-  }else if(estado2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    estado2.focus();
-    return true;
-  }else if(cidade2.value == ""){
-    console.log(cidade2.value)
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    cidade2.focus();
-    return true;
-  }else if(bairro2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    bairro2.focus();
-    return true;
-  }else if(rua2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    rua2.focus();
-    return true;
-  }else if(numero2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    numero2.focus();
-    return true;
-  }else if(complemento2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    complemento2.focus();
-    return true;
-  }else if(complemento2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    complemento2.focus();
-    return true;
-  }else if(universidade2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    universidade2.focus();
-    return true;
-  }else if(curso2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    curso2.focus();
-    return true;
-  }else if(turno2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    turno2.focus();
-    return true;
-  }else if(totalDePeriodos2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    totalDePeriodos2.focus();
-    return true;
-  }else if(periodoAtual2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    periodoAtual2.focus();
-    return true;
-  }else if(ordemDePrioridade2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    ordemDePrioridade2.focus();
-    return true;
-  }else if(coeficineteDeRendimento2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    coeficineteDeRendimento2.focus();
-    return true;
-  }else if(tituloPlanoDeTrabalho2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    tituloPlanoDeTrabalho2.focus();
-    return true;
-  }else if(anexoPlanoDeTrabalho2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    anexoPlanoDeTrabalho2.focus();
-    return true;
-  }
-
-  
-}
-function validarPart3(){
-  //participante 3
-  var nome3 = document.getElementById("nomeCompletoParticipante3");
-  var email3 = document.getElementById("email3");
-  var data3 = document.getElementById("data3");
-  var cpf3 = document.getElementById("cpf3");
-  var rg3 = document.getElementById("rg3");
-  var celular3 = document.getElementById("celular3");
-  var cep3 = document.getElementById("cep3");
-  var estado3 = document.getElementById("estado3");
-  var cidade3 = document.getElementById("cidade3");
-  var bairro3 = document.getElementById("bairro3");
-  var rua3 = document.getElementById("rua3");
-  var numero3 = document.getElementById("numero3");
-  var complemento3 = document.getElementById("complemento3");
-  var universidade3 = document.getElementById("universidade3");
-  var curso3 = document.getElementById("curso3");
-  var turno3 = document.getElementById("turno3");
-  var totalDePeriodos3 = document.getElementById("totalDePeriodos3");
-  var periodoAtual3 = document.getElementById("periodoAtual3");
-  var ordemDePrioridade3 = document.getElementById("ordemDePrioridade3");
-  var coeficineteDeRendimento3 = document.getElementById("coeficienteDeRendimento3");
-  var tituloPlanoDeTrabalho3 = document.getElementById("titulo3");
-  var anexoPlanoDeTrabalho3 = document.getElementById("anexoPlanoDeTrabalho3");
-
-  //validacao dos campos - participante 3
-  if(nome3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    nome3.focus();
-    return true;
-  }else if(email3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    email3.focus();
-    return true;
-  }else if(data3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    data3.focus();
-    return true;
-  }else if(cpf3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    cpf3.focus();
-    return true;
-  }else if(rg3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    rg3.focus();
-    return true;
-  }else if(celular3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    celular3.focus();
-    return true;
-  }else if(cep3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    cep3.focus();
-    return true;
-  }else if(estado3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    estado3.focus();
-    return true;
-  }else if(cidade3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    cidade3.focus();
-    return true;
-  }else if(bairro3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    bairro3.focus();
-    return true;
-  }else if(rua3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    rua3.focus();
-    return true;
-  }else if(numero3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    numero3.focus();
-    return true;
-  }else if(complemento3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    complemento3.focus();
-    return true;
-  }else if(complemento3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    complemento3.focus();
-    return true;
-  }else if(universidade3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    universidade3.focus();
-    return true;
-  }else if(curso3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    curso3.focus();
-    return true;
-  }else if(turno3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    turno3.focus();
-    return true;
-  }else if(totalDePeriodos3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    totalDePeriodos3.focus();
-    return true;
-  }else if(periodoAtual3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    periodoAtual3.focus();
-    return true;
-  }else if(ordemDePrioridade3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    ordemDePrioridade3.focus();
-    return true;
-  }else if(coeficineteDeRendimento3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    coeficineteDeRendimento3.focus();
-    return true;
-  }else if(tituloPlanoDeTrabalho3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    tituloPlanoDeTrabalho3.focus();
-    return true;
-  }else if(anexoPlanoDeTrabalho3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    anexoPlanoDeTrabalho3.focus();
-    return true;
-  }
-}
 
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript">
-  // $("#button").click(function(e){
-  //   e.preventDefault();
 
-  //   $.ajax({
-  //     headers: {
-  //       'X-CSRF-Token': $('input[name="_token"]').val()
-  //     },
-  //     url: "{{route('trabalho.store')}}",
-  //     type: 'post',
-  //     enctype: 'multipart/form-data',
-  //     success: function(result){
-  //       console.log("success")
-  //       console.log(result)
-  //     },
-  //     erro: (xhr,status,error) => {
-  //       console.log("erro")
-  //     }
-  //   });
-  // });
-</script>
 @endsection
