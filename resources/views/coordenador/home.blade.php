@@ -26,7 +26,7 @@
             @else 
             <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none">
             @endif
-                <div class="card" style="width: 18rem; border-radius:12px; border-width:0px">
+                <div class="card" style="width: 18rem; border-radius:12px; border-width:0px;">
                     @if(isset($evento->fotoEvento))
                     <img src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" class="card-img-top" alt="...">
                     @else
@@ -103,7 +103,7 @@
                                 <div style="color: #909090">{{date('d/m/Y',strtotime($evento->inicio_recurso))}} - {{date('d/m/Y',strtotime($evento->fim_recurso))}}</div>
                             </div>
                         </div>
-                        <div class="row justify-content-lg-left" style="margin-left:1px; margin-right:1px">
+                        <div class="row justify-content-lg-left" style="margin-left:1px; margin-right:1px; margin-bottom:-0.8rem">
                             <div><img src="{{asset('img/icons/icon_resultado_final.png')}}" class="card-img-top" alt="..." style="width:45px; margin-right:15px"></div>
                             <div class="form-group" style="text-align: left">
                                 <div  style="font-weight: normal;color:black; font-family:Arial, Helvetica, sans-serif; font-size:18px; margin-bottom:-5px">Resultado final</div>
