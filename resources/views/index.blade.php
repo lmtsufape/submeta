@@ -54,8 +54,28 @@
                                     </div>
                                 </div>
                             </li>
-                        @elseif($fimSub < $today && $fimRev >= $today || $i == 1)
-                            <li class="col-sm-12 li-editais avaliacao" style="display: none;">
+                            @elseif($fimSub < $today)
+                            <li class="col-sm-12 li-editais encerrado" style="display: none;">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <img class="img-arquivo" src="{{ asset('img/icons/logo_arquivo.png') }}" alt="">
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div>{{$evento->nome}}</div>
+                                            <div class="color-subtitle-edital">Submissão até o dia {{ date('d/m/Y', strtotime($evento->fimSubmissao)) }}</div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <a href="{{ route('evento.visualizarNaoLogado', ['id' => $evento->id]) }}">
+                                                <button class="btn btn-opcoes-edital background-red" style="float: right;">
+                                                    Encerrado
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {{-- <li class="col-sm-12 li-editais avaliacao" style="display: none;">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-sm-1">
@@ -74,8 +94,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                        @elseif($fimRev <= $today) 
+                            </li> --}}
+                        {{-- @elseif($fimRev <= $today) 
                             <li class="col-sm-12 li-editais encerrado" style="display: none;">
                                 <div class="container">
                                     <div class="row">
@@ -95,7 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
+                            </li> --}}
                         @endif
                     @endforeach
                 </ul>
@@ -107,7 +127,7 @@
                 <div class="col-md-4" style="float: right;">
                     <select id="" class="form-control select-submeta" onchange="exibirEditais(this)">
                         <option value="aberto" selected>Aberto</option>
-                        <option value="avaliacao">Em Avaliação</option>
+                        {{-- <option value="avaliacao">Em Avaliação</option> --}}
                         <option value="encerrado">Encerrado</option>
                         <option value="todos">Todos</option>
                     </select>

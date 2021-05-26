@@ -220,7 +220,8 @@ body{
   border-radius: 5px;
 }
 
-.flexcroll{ width:500px;
+.flexcroll{ 
+  width:99%;
   height:400px;
   overflow-y:inherit;
   overflow-x:hidden;

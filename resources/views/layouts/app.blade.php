@@ -108,11 +108,12 @@
                                             <div style="color: rgb(0, 140, 255); margin: 5px; text-align: center; font-size: 20px;">
                                                 Entrar
                                             </div>
+                                            <input type="hidden" name="login" value="0">
                                             <div style="margin-top: 30px;">
                                                 
                                                 <label for="email" class="col-form-label negrito"  style="color: rgb(0, 140, 255);">{{ __('Endereço de E-mail') }}</label>
                                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-        
+                                                
                                                 @error('email')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -333,7 +334,7 @@
             event.stopPropagation();
         });
     });
-    @if(old('email') != null)
+    @if(old('login') != null)
         $(document).ready(function() {
             $('#dropdownMenuLink').click();
         });
