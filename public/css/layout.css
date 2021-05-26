@@ -493,3 +493,14 @@ button.close {
 .btn-cadastro:hover {
   color: black;
 }
+
+.bottomVoltar{
+  display: none;
+  margin-right:10px;
+}
+@media screen and (max-width: 767px){
+  .bottomVoltar{
+      display: block;
+      margin-right:10px;
+  }
+}
