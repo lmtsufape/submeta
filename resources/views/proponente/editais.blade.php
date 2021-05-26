@@ -28,17 +28,17 @@
         </div>
 
         <div class="card-body" >
-          <table class="table table-bordered" style="display: block; 
+          <table class="table table-bordered table-hover" style="display: block; 
           overflow-x: auto;
           white-space: nowrap; border-radius:10px">
             <thead>
               <tr>
-                <th scope="col" style="width: 100%; color:#909090">Edital</th>
-                <th scope="col" style="text-align: center; color:#909090">Inicio da Submissão</th>
-                <th scope="col" style="text-align: center; color:#909090">Fim da Submissão</th>
-                <th scope="col" style="text-align: center; color:#909090">Data do Resultado</th>
-                <th scope="col" style="text-align: center; color:#909090">Baixar Edital</th>
-                <th scope="col" style="text-align: center; color:#909090">Opção</th>
+                <th scope="col" style="width: 100%;">Edital</th>
+                <th scope="col" style="text-align: center;">Inicio da Submissão</th>
+                <th scope="col" style="text-align: center;">Fim da Submissão</th>
+                <th scope="col" style="text-align: center;">Data do Resultado</th>
+                <th scope="col" style="text-align: center;">Baixar Edital</th>
+                <th scope="col" style="text-align: center;">Opção</th>
               </tr>
             </thead>
             <tbody id="eventos">
