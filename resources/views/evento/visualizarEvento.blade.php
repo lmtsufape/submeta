@@ -1,6 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container" style="margin-top: 3rem; ">
+  <div class="form-row justify-content-lg-center">
+    <div class="col-md-7">
+      <div class="card" style="border-radius:12px; border-width:0px;">
+        @if(isset($evento->fotoEvento))
+        <img src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" class="card-img-top" alt="...">
+        @else
+        <img src="{{asset('img/img_fundo.png')}}" class="card-img-top" alt="..." style="border-radius: 12px;">
+        @endif
+        <div class="card-body">a</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card" style="border-radius:12px; border-width:0px;">
+        <div class="card-body form-group">
+          <div>enviar</div>
+          <div>meu projetos</div>
+        </div>
+      </div>
+      <div class="card" style="border-radius:12px; border-width:0px;">
+        <div class="card-body">Datas importantes</div>
+      </div>
+      <div class="card" style="border-radius:12px; border-width:0px;">
+        <div class="card-body">Download</div>
+      </div>
+    </div>
+</div>
 
 
 <div class="modal fade" id="modalTrabalho" tabindex="-1" role="dialog" aria-labelledby="modalTrabalho" aria-hidden="true">
