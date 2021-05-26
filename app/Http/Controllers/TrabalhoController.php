@@ -38,11 +38,7 @@ use App\OutrasInfoParticipante;
 
 class TrabalhoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index($id)
     {
         $edital = Evento::find($id);
@@ -67,23 +63,7 @@ class TrabalhoController extends Controller
                                             'enum_turno'         => Participante::ENUM_TURNO
                                             ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request){
       
       $mytime = Carbon::now('America/Recife');
@@ -496,12 +476,7 @@ class TrabalhoController extends Controller
 
       return $trabalho;
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Trabalho  $trabalho
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         //
@@ -528,12 +503,6 @@ class TrabalhoController extends Controller
                                            'arquivos' => $arquivos,]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Trabalho  $trabalho
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
       $projeto = Trabalho::find($id);
@@ -560,13 +529,6 @@ class TrabalhoController extends Controller
                                            ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Trabalho  $trabalho
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
       $mytime = Carbon::now('America/Recife');
@@ -796,12 +758,6 @@ class TrabalhoController extends Controller
       return redirect()->route('evento.visualizar',['id'=>$request->editalId]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Trabalho  $trabalho
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         $projeto = Trabalho::find($request->id);
@@ -1050,7 +1006,7 @@ class TrabalhoController extends Controller
     public function salvar(Request $request) {
       $edital = Evento::find($request->editalId);
       $hoje = now();
-      
+      // dd();
       if (!($edital->inicioSubmissao < $hoje && $edital->fimSubmissao >= $hoje)) {
         return redirect()->route('inicial')->with(['error'=> 0, 'mensagem' => 'As submissões para o edital '. $edital->titulo .' foram encerradas.']);
       }
@@ -1089,7 +1045,7 @@ class TrabalhoController extends Controller
       $projeto->linkLattesEstudante              = $request->linkLattesEstudante;
       $projeto->data                             = $hoje;
       $projeto->evento_id                        = $request->editalId;
-      $projeto->status                           = 'Submetido';
+      $projeto->status                           = 'submetido';
       $projeto->proponente_id                    = $proponente->id;
       
       // Salvando anexos no storage

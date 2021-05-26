@@ -178,7 +178,7 @@
                 </div>
 
                 <div class="form-group col-md-6" style="margin-top: 10px">
-                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do currículo Lattes do Coordenador') }} <span style="color: red; font-weight:bold">*</span></label>
+                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do currículo Lattes do Proponente') }} <span style="color: red; font-weight:bold">*</span></label>
                   @if(old('anexoLattesPreenchido') != null || (isset($rascunho) && $rascunho->anexoLattesCoordenador != ""))
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
@@ -1138,9 +1138,10 @@
             </div>
             <div class=" d-flex justify-content-between align-items-center" style="margin-top: 15px; margin-bottom:18px">
               <h6 style="font-family:Arial, Helvetica, sans-serif; margin-right:15px"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
-              
+              <input id="rascunhoInput" type="hidden" name="rascunho" value="false">
+              <button type="button" class="btn btn-primary" id="formRascunho" onclick="rascunho()" >{{ __('Rascunho') }}</button>
               <button type="submit" id="clickSubmitForm" style="display: none"></button>
-              <button type="button" class="btn btn-success" id="idButtonSubmitProjeto" onclick="enviarModalenviarProjeto()" disabled>{{ __('Enviar Projeto') }}</button>
+              <button type="button" class="btn btn-success" id="idButtonSubmitProjeto" onclick="enviarModalenviarProjeto()" disabled>{{ __('Enviar Proposta') }}</button>
             </div>
           </div>
         </div>
@@ -1195,6 +1196,7 @@
   </div>
 </div>
 </div>
+
 @endsection
 
 @section('javascript')
@@ -1992,8 +1994,25 @@ function validarPart3(){
 }
 
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
+
+  $(document).ready(()=>{
+      
+      function rascunho(){
+        
+        $("input").removeAttr('required')
+        $("select").removeAttr('required')
+        $("textarea").removeAttr('required')
+
+        // $('#criarProjetoForm').append("<li>Appended item</li>");
+        $('#rascunhoInput').val('true');
+        $('#criarProjetoForm').submit();
+      }
+
+
+  });
+
   // $("#button").click(function(e){
   //   e.preventDefault();
 

@@ -161,9 +161,9 @@
                             <a href="{{ route('register') }}" class="btn navbar-text btn-azul-destaque negrito" style="color:  rgb(0, 140, 255);">{{ __('Cadastre-se') }}</a>
                         @else
                             @if(Auth::user()->administradors != null)
-                                <a href="{{route('admin.editais')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Home</a>
+                                <a href="{{route('admin.editais')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Editais</a>
                             @else 
-                                <a href="{{route('coord.home')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Home</a>
+                                <a href="{{route('coord.home')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Editais</a>
                             @endif
                             <a id="navbarDropdown" class="btn navbar-text negrito dropdown-toggle" style="color: rgb(0, 140, 255);" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }} <span class="caret"></span>

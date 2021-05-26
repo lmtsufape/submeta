@@ -94,7 +94,7 @@
     </div>
     <div class="row margin">
         <div class="col-sm-12 info-evento">
-            <h4>Submissão de Projetos</h4>
+            <h4>Submissão de Propostas</h4>
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
                 {{date('d/m/Y',strtotime($evento->inicioSubmissao))}} - {{date('d/m/Y',strtotime($evento->fimSubmissao))}}
@@ -104,7 +104,7 @@
     <div class="row margin">
         <div class="col-sm-12 info-evento">
 
-            <h4>Avaliação de Projetos</h4>
+            <h4>Avaliação de Propostas</h4>
             <p>
                 <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
                 {{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}
@@ -313,7 +313,7 @@
         @if($evento->inicioSubmissao <= $mytime)
           @if($mytime < $evento->fimSubmissao)
             <div class="col-md-6 botao-form-right" style="">
-              <a class="btn btn-primary botao-form" href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%">Submeter Projeto</a>
+              <a class="btn btn-primary botao-form" href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%">Submeter Proposta</a>
             </div>
           @endif
         @endif
