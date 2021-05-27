@@ -117,7 +117,7 @@
                     <option value="" disabled selected hidden>-- Cargo --</option>
                     <option @if(old('cargo')=='Professor' ) selected @endif value="Professor">Professor</option>
                     <option @if(old('cargo')=='Técnico' ) selected @endif value="Técnico">Técnico</option>
-                    <option @if(old('cargo')=='Estudante' ) selected @endif value="Estudante">Estudante</option>
+                    <option @if(old('cargo')=='Outro' ) selected @endif value="Outro">Outro</option>
                 </select>
 
                 @error('cargo')
