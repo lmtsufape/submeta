@@ -18,7 +18,7 @@ class CreateTrabalhosTable extends Migration
             $table->string('titulo');
             $table->string('status')->nullable();
             $table->string('aprovado')->nullable();
-            $table->string('linkGrupoPesquisa');
+            $table->string('linkGrupoPesquisa')->nullable();
             $table->string('linkLattesEstudante');
             $table->string('pontuacaoPlanilha');
             $table->date('data')->nullable();
@@ -33,7 +33,7 @@ class CreateTrabalhosTable extends Migration
             //chaves estrangeiras
             $table->unsignedBigInteger('grande_area_id');
             $table->unsignedBigInteger('area_id');
-            $table->unsignedBigInteger('sub_area_id');
+            $table->unsignedBigInteger('sub_area_id')->nullable();
             $table->unsignedBigInteger('evento_id');
             $table->unsignedBigInteger('coordenador_id');
             $table->unsignedBigInteger('proponente_id');
