@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container content">
+<div class="container content" style="margin-top: 3rem">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Redefinir Senha') }}</div>
+        <div class="col-md-8" style="margin-bottom:20px">
+            <div class="card shadow bg-white" style="border-radius:12px; border-width:0px;">
+                <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
+                    <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
+                        <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Redefinir Senha</h5>
+                    </div>    
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
