@@ -26,15 +26,15 @@
         <div class="card-body" style="margin-bottom: -2rem">
           <div class="d-flex justify-content-between align-items-center">
             <div class="bottomVoltar">
-              <a href="{{ route('proponente.editais') }}"  class="btn btn-secondary" style="position:relative; float: right;"><img src="{{asset('img/icons/logo_esquerda.png')}}" alt="" width="15px"></a>
+              <a href="{{  route('evento.visualizar',['id'=> $edital->id])  }}"  class="btn btn-secondary" style="position:relative; float: right;"><img src="{{asset('img/icons/logo_esquerda.png')}}" alt="" width="15px"></a>
             </div>
             <div>
-              <h5 style="color: #1492E6; margin-top:0.5rem">Projetos submetidos - {{ $edital->nome }}</h5>
-              <h6 class="titulo-table" style="color: red">Submissão irá até o dia <span style="color: red">{{ date('d/m/Y', strtotime($edital->fimSubmissao)) }}</span></h6>
+              <h5 style="color: #1492E6; margin-top:0.5rem">Propostas submetidas - {{ $edital->nome }}</h5>
+              <h6 class="titulo-table" style="color: red;padding-left: 10px;">Submissão irá até o dia <span style="color: red">{{ date('d/m/Y', strtotime($edital->fimSubmissao)) }}</span></h6>
             </div>
             <div>
-              <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-info" @else href="#" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar projeto</a>
-          </div>
+              <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-info" @else href="#" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar proposta</a>
+            </div>
           </div>
           <div  style="margin-top:-10px"><hr style="border-top: 1px solid#1492E6"></div>
         </div>

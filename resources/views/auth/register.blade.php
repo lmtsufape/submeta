@@ -268,6 +268,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                    <small>Deve ter no mínimo 8 caracteres</small>
                                 </div>
                             </div>
                             <div class="col-md-6">

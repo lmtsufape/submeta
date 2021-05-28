@@ -26,9 +26,9 @@
             @foreach ($eventos as $evento)
 
             @if (Auth::check())
-            <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none">
+                <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none">
             @else 
-            <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none">
+                <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none">
             @endif
                 <div class="card" style="width: 18rem; border-radius:12px; border-width:0px; margin:10px">
                     @if(isset($evento->fotoEvento))
