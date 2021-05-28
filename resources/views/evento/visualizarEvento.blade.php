@@ -1,325 +1,261 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="margin-top: 3rem; ">
-  <div class="form-row justify-content-lg-center">
-    <div class="col-md-7">
-      <div class="card" style="border-radius:12px; border-width:0px;">
-        @if(isset($evento->fotoEvento))
-        <img src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" class="card-img-top" alt="...">
-        @else
-        <img src="{{asset('img/img_fundo.png')}}" class="card-img-top" alt="..." style="border-radius: 12px;">
-        @endif
-        <div class="card-body">a</div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card" style="border-radius:12px; border-width:0px;">
-        <div class="card-body form-group">
-          <div>enviar</div>
-          <div>meu projetos</div>
-        </div>
-      </div>
-      <div class="card" style="border-radius:12px; border-width:0px;">
-        <div class="card-body">Datas importantes</div>
-      </div>
-      <div class="card" style="border-radius:12px; border-width:0px;">
-        <div class="card-body">Download</div>
-      </div>
-    </div>
-</div>
 
 
-<div class="modal fade" id="modalTrabalho" tabindex="-1" role="dialog" aria-labelledby="modalTrabalho" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Submeter nova versão</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form method="POST" action="{{route('trabalho.novaVersao')}}" enctype="multipart/form-data">
-        @csrf
-      <div class="modal-body">
-
-        <div class="row justify-content-center">
-          <div class="col-sm-12">
-              @if($hasFile)
-                <input type="hidden" name="trabalhoId" value="" id="trabalhoNovaVersaoId">
-              @endif
-              <input type="hidden" name="eventoId" value="{{$evento->id}}">
-
-              {{-- Arquivo  --}}
-              <label for="nomeTrabalho" class="col-form-label">{{ __('Arquivo') }}</label>
-
-              <div class="custom-file">
-                <input type="file" class="filestyle" data-placeholder="Nenhum arquivo" data-text="Selecionar" data-btnClass="btn-primary-lmts" name="arquivo">
-              </div>
-              <small>O arquivo Selecionado deve ser no formato PDF de até 2mb.</small>
-              @error('arquivo')
-              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                <strong>{{ $message }}</strong>
-              </span>
-              @enderror
+<div class="container" style="margin-top: 2rem">
+  <div class="row justify-content-center">
+      <div class="container" style="margin-bottom: 1rem;">
+        @if(!Auth::check())
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong> A submissão de um projeto é possível apenas quando cadastrado no sistema. </strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-        </div>
+        @endif
+      </div>
+      <div class="col-md-7" style="margin-bottom:25px">
 
+        <div class="form-row">
+          <div class="col-md-12" style="margin-bottom:30px">
+            <div class="card shadow bg-white" style="border-radius:12px; border-width:0px;">
+              @if(isset($evento->fotoEvento))
+                <img src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" class="card-img-top" alt="...">
+              @else
+                <img src="{{asset('img/img_fundo_2.png')}}" class="card-img-top" alt="..." style="border-radius:12px">
+              @endif
+                <div class="card-body">
+                    <div class="form-row">
+                      
+                      <div class="col-md-12" style="margin-bottom: 1.5rem">
+                        <h5 class="card-title mb-0" style="font-size:35px; font-family:Arial, Helvetica, sans-serif; color:#0842A0; font-weight:bold">{{$evento->nome}}</h5>
+                      </div>
+
+                      <div class="col-md-12" style="margin-top: 5px">
+                        <div><h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6;">Descrição</h5></div>
+                        <div style="margin-top: 10px"><h5>{{$evento->descricao}}</h5></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          @if($hasFile == true)
+          @if($hasTrabalho)
+          <div class="col-md-12" style="margin-bottom:5px">
+            <div class="card shadow bg-white" style="border-radius:12px; border-width:0px;">
+              <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
+                <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
+                  <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Minhas propostas</h5>
+                </div>
+              </div>
+                <div class="card-body">
+                    <div class="form-row">
+                      
+                     
+                        <div class="col-md-12">
+                          <div style=" margin-bottom:-12px">
+                                
+                            <table class="table table-bordered table-hover" style="display: block; 
+                            overflow-x: auto;
+                            white-space: nowrap; border-radius:10px">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col" style="width:100%; font-weight:normal; color:#909090">Título</th>
+                                      <th scope="col" style="font-weight:normal; color:#909090; text-align:center">Baixar</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    @foreach($trabalhos as $trabalho)
+                                      <tr>
+                                        <td style="font-size:18px">{{ $trabalho->titulo }}</td>
+                                        <td style="text-align:center">
+                                          @php $arquivo = ""; @endphp
+                                          @foreach($trabalho->arquivo as $key)
+                                            @php
+                                              if($key->versaoFinal == true){
+                                                $arquivo = $key->nome;
+                                              }
+                                            @endphp
+                                          @endforeach
+                                          <a class="btn btn-light" href="{{route('baixar.anexo.projeto', ['id' => $trabalho->id])}}" target="_new" style="" >
+                                              <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px"> Baixar
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    @endforeach
+                                  </tbody>
+                                </table>
+                            
+                          </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+          </div>
+          @endif
+          @endif
+        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-primary">Salvar</button>
-      </div>
-    </form>
-    </div>
+      <div class="col-md-4">
+          <div class="form-row">
+              <div class="col-md-12" style="margin-bottom:30px">
+                  <div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px;">
+                      <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
+                          <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
+                              <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Ações</h5>
+                            </div>
+                      </div>
+                      <div class="card-body">
+                        <div class="form-row">
+                          <div class="col-md-12" style="margin-bottom:18px">
+                            @if($evento->inicioSubmissao <= $mytime)
+                              @if($mytime < $evento->fimSubmissao)
+                                  <a class="btn btn-success " href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%; height:50px; padding-top:7px; font-size:20px"><img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter Projeto</a>
+                              @endif
+                            @endif
+                          </div>
+                          <div class="col-md-12">
+                            <button class="btn btn-primary" style="width:100%; height:50px; padding-top:5px; font-size:20px"><img src="{{asset('img/icons/icon_minhas_propostas.png')}}" class="card-img-top" alt="..." style="width:20px; margin-right:10px; margin-top:-5px"> Minhas propostas</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-12" style="margin-bottom:30px">
+                  <div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px;">
+                      <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
+                          <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
+                            <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Datas importantes</h5>
+                          </div>
+                      </div>
+                      <div class="card-body">
+                        <div class="form-row">
+
+                          <div class="col-md-12">
+                            <div class="d-flex justify-content-left align-items-center">
+                              <div style="margin-right:10px; margin-top:-20px">
+                                <img class="" src="{{asset('img/icons/icon_submissao.png')}}" alt="" width="40px">
+                              </div>
+                                <div class="form-group">
+                                  <div style="margin-bottom: -8px;"><h5 style="font-weight: bold; font-size:19px">Submissão</h5></div>
+                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicioSubmissao))}} - {{date('d/m/Y',strtotime($evento->fimSubmissao))}}</h5></div>
+                                </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12">
+                            <div class="d-flex justify-content-left align-items-center">
+                              <div style="margin-right:10px; margin-top:-20px">
+                                <img class="" src="{{asset('img/icons/icon_revisao.png')}}" alt="" width="40px">
+                              </div>
+                                <div class="form-group">
+                                  <div style="margin-bottom: -8px;"><h5 style="font-weight: bold; font-size:19px">Revisão</h5></div>
+                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}</h5></div>
+                                </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12">
+                            <div class="d-flex justify-content-left align-items-center">
+                              <div style="margin-right:10px; margin-top:-20px">
+                                <img class="" src="{{asset('img/icons/icon_resultado_preliminar.png')}}" alt="" width="40px">
+                              </div>
+                                <div class="form-group">
+                                  <div style="margin-bottom: -8px;"><h5 style="font-weight: bold; font-size:19px">Resultado preliminar</h5></div>
+                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->resultado_preliminar))}}</h5></div>
+                                </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12">
+                            <div class="d-flex justify-content-left align-items-center">
+                              <div style="margin-right:10px; margin-top:-20px">
+                                <img class="" src="{{asset('img/icons/icon_recurso.png')}}" alt="" width="40px">
+                              </div>
+                                <div class="form-group">
+                                  <div style="margin-bottom: -8px;"><h5 style="font-weight: bold; font-size:19px">Recurso</h5></div>
+                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicio_recurso))}} - {{date('d/m/Y',strtotime($evento->fim_recurso))}}</h5></div>
+                                </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-12" style="margin-bottom: -15px">
+                            <div class="d-flex justify-content-left align-items-center">
+                              <div style="margin-right:10px; margin-top:-20px">
+                                <img class="" src="{{asset('img/icons/icon_resultado_final.png')}}" alt="" width="40px">
+                              </div>
+                                <div class="form-group">
+                                  <div style="margin-bottom: -8px;"><h5 style="font-weight: bold; font-size:19px">Resultado final</h5></div>
+                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->resultado_final))}}</h5></div>
+                                </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-12" style="margin-bottom:30px">
+                <div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px;">
+                    <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
+                        <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
+                          <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Documentos</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-row">
+
+                        <div class="col-md-12">
+                          <div class="d-flex justify-content-left align-items-center" style="margin-bottom: -15px">
+                            <div style="margin-right:10px; margin-top:-15px">
+                              <img class="" src="{{asset('img/icons/icon_edital.png')}}" alt="" width="40px">
+                            </div>
+                            <div class="form-group" style="width: 100%">
+                              <div class="d-flex justify-content-between" style="width: 100%">
+                                <div><h5 style="font-weight: bold; font-size:19px; margin-top:9px">Edital</h5></div>
+                                <div style="float: right"><a class="btn btn-light" href="{{route('baixar.edital', ['id' => $evento->id])}}" target="_new" style="" >
+                                  <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                                  Baixar</a></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12"><hr></div>
+
+                        <div class="col-md-12">
+                          @if($evento->modeloDocumento != null)
+                          <div class="d-flex justify-content-left align-items-center" style="margin-bottom: -15px">
+                            <div style="margin-right:10px; margin-top:-15px">
+                              <img class="" src="{{asset('img/icons/icon_modelo.png')}}" alt="" width="40px">
+                            </div>
+                            <div class="form-group" style="width: 100%">
+                              <div class="d-flex justify-content-between" style="width: 100%">
+                                <div><h5 style="font-weight: bold; font-size:19px; margin-top:9px">Modelo</h5></div>
+                                <div>
+                                    <a class="btn btn-light" href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="" >
+                                      <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                                    Baixar</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          @else
+                          <h6 style="color: #909090">O criador do edital não disponibilizou modelos</h6>
+                        @endif
+                        </div>
+
+                      </div>
+                    </div>
+                </div>
+            </div>
   </div>
 </div>
 
 
 
-
-
-
-
-
-
-<div class="container-fluid content">
-    <div class="row">
-        @if(isset($evento->fotoEvento))
-          <img class="front-image-evento" src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" alt="">
-        @else
-          <img class="front-image-evento" src="{{asset('img/colorscheme.png')}}" alt="">
-        @endif
-    </div>
-</div>
-<div class="container" style="margin-top:20px">
-    @if(!Auth::check())
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong> A submissão de um projeto é possível apenas quando cadastrado no sistema. </strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    @endif
-    <div class="row margin">
-        <div class="col-sm-12">
-            <h1>
-                {{$evento->nome}}
-            </h1>
-        </div>
-    </div>
-
-    <div class="row margin">
-        <div class="col-sm-12">
-            <h4>Descrição</h4>
-        </div>
-    </div>
-    <div class="row margin">
-        <div class="col-sm-12">
-            <p>{{$evento->descricao}}</p>
-        </div>
-    </div>
-    <div class="row margin">
-        <div class="col-sm-12 info-evento">
-            <h4>Submissão de Projetos</h4>
-            <p>
-                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
-                {{date('d/m/Y',strtotime($evento->inicioSubmissao))}} - {{date('d/m/Y',strtotime($evento->fimSubmissao))}}
-            </p>
-        </div>
-    </div>
-    <div class="row margin">
-        <div class="col-sm-12 info-evento">
-
-            <h4>Avaliação de Projetos</h4>
-            <p>
-                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
-                {{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}
-            </p>
-        </div>
-    </div>
-    <div class="row margin">
-        <div class="col-sm-12 info-evento">
-
-            <h4>Resultado Preliminar</h4>
-            <p>
-                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
-                {{date('d/m/Y',strtotime($evento->resultado_preliminar))}}
-            </p>
-
-        </div>
-    </div>
-    <div class="row margin">
-        <div class="col-sm-12 info-evento">
-
-            <h4>Início do Recurso</h4>
-            <p>
-                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
-                {{date('d/m/Y',strtotime($evento->inicio_recurso))}}
-            </p>
-
-        </div>
-    </div>
-    <div class="row margin">
-        <div class="col-sm-12 info-evento">
-
-            <h4>Fim do Recurso</h4>
-            <p>
-                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
-                {{date('d/m/Y',strtotime($evento->fim_recurso))}}
-            </p>
-
-        </div>
-    </div>
-    <div class="row margin">
-        <div class="col-sm-12 info-evento">
-
-            <h4>Resultado Final</h4>
-            <p>
-                <img class="" src="{{asset('img/icons/calendar-evento.svg')}}" alt="">
-                {{date('d/m/Y',strtotime($evento->resultado_final))}}
-            </p>
-
-        </div>
-    </div>
-
-    <div class="row justify-content-center">
-      <div class="col-sm-12">
-
-        <table class="table table-responsive-lg table-hover">
-          <thead>
-            <tr>
-              <th style="text-align:center">Edital</th>
-              <th style="text-align:center">Modelos</th>
-            </tr>
-          </thead>
-          <tbody>
-              <tr>
-                <td style="text-align:center">
-                  <a href="{{route('baixar.edital', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
-                    <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                  </a>
-                </td>
-                <td style="text-align:center">
-                  @if($evento->modeloDocumento != null)
-                    <a href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
-                      <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
-                  @else
-                    O criador do edital não disponibilizou modelos
-                  @endif
-                </td>
-              </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    @if($hasFile == true)
-      <div class="row margin">
-          <div class="col-sm-12">
-              <h1>
-                  Meus Projetos
-              </h1>
-          </div>
-      </div>
-      @if($hasTrabalho)
-        <div class="row margin">
-            <div class="col-sm-12 info-evento">
-                <h4>Como Proponente</h4>
-            </div>
-        </div>
-
-        <!-- Tabela de trabalhos -->
-
-        <div class="row justify-content-center">
-          <div class="col-sm-12">
-
-            <table class="table table-responsive-lg table-hover">
-              <thead>
-                <tr>
-                  <th>Título</th>
-                  <th style="text-align:center">Baixar</th>
-                  {{-- <th style="text-align:center">Nova Versão</th> --}}
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($trabalhos as $trabalho)
-                  <tr>
-                    <td>{{$trabalho->titulo}}</td>
-                    <td style="text-align:center">
-                      @php $arquivo = ""; @endphp
-                      @foreach($trabalho->arquivo as $key)
-                        @php
-                          if($key->versaoFinal == true){
-                            $arquivo = $key->nome;
-                          }
-                        @endphp
-                      @endforeach
-                      <a href="{{route('baixar.anexo.projeto', ['id' => $trabalho->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
-                          <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                      </a>
-                    </td>
-                    {{-- <td style="text-align:center">
-                      @if($evento->inicioSubmissao <= $mytime)
-                        @if($mytime < $evento->fimSubmissao)
-                          <a href="#" onclick="changeTrabalho({{$trabalho->id}})" data-toggle="modal" data-target="#modalTrabalho" style="color:#114048ff">
-                            <img class="" src="{{asset('img/icons/file-upload-solid.svg')}}" style="width:20px">
-                          </a>
-                        @endif
-                      @endif
-                    </td> --}}
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      @endif
-
-{{--       @if($hasTrabalhoCoautor)
-        <div class="row margin">
-            <div class="col-sm-12 info-evento">
-                <h4>Como Coautor</h4>
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-          <div class="col-sm-12">
-
-            <table class="table table-responsive-lg table-hover">
-              <thead>
-                <tr>
-                  <th>Título</th>
-                  <th  style="text-align:center">Baixar</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($trabalhosCoautor as $trabalho)
-                  <tr>
-                    <td>{{$trabalho->titulo}}</td>
-                    <td style="text-align:center">
-                      @php $arquivo = ""; @endphp
-                      @foreach($trabalho->arquivo as $key)
-                        @php
-                          if($key->versaoFinal == true){
-                            $arquivo = $key->nome;
-                          }
-                        @endphp
-                      @endforeach
-                      <a href="{{route('download', ['file' => $arquivo])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
-                          <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                      </a>
-                    </td>
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      @endif --}}
-    @endif
-
+<!--
     <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
         <div class="col-md-6 botao-form-left" style="">
@@ -346,8 +282,8 @@
         @endif
 
     </div>
-</div>
 
+  -->
 
 @endsection
 
