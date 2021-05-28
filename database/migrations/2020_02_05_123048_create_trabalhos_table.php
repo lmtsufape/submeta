@@ -15,13 +15,13 @@ class CreateTrabalhosTable extends Migration
     {
         Schema::create('trabalhos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('titulo');
-            $table->string('status')->nullable();
+            $table->string('titulo')->nullable();
             $table->string('aprovado')->nullable();
             $table->string('linkGrupoPesquisa')->nullable();
-            $table->string('linkLattesEstudante');
-            $table->string('pontuacaoPlanilha');
+            $table->string('linkLattesEstudante')->nullable();
+            $table->string('pontuacaoPlanilha')->nullable();
             $table->date('data')->nullable();
+            $table->enum('status',['rascunho','submetido', 'avaliado', 'corrigido','aprovado','reprovado', 'arquivado'])->default('rascunho')->nullable(); 
             //Anexos
             $table->string('anexoProjeto')->nullable();
             $table->string('anexoDecisaoCONSU')->nullable();
@@ -31,12 +31,12 @@ class CreateTrabalhosTable extends Migration
             $table->string('anexoAutorizacaoComiteEtica')->nullable(); 
             $table->string('justificativaAutorizacaoEtica')->nullable();
             //chaves estrangeiras
-            $table->unsignedBigInteger('grande_area_id');
-            $table->unsignedBigInteger('area_id');
+            $table->unsignedBigInteger('grande_area_id')->nullable();
+            $table->unsignedBigInteger('area_id')->nullable();
             $table->unsignedBigInteger('sub_area_id')->nullable();
-            $table->unsignedBigInteger('evento_id');
-            $table->unsignedBigInteger('coordenador_id');
-            $table->unsignedBigInteger('proponente_id');
+            $table->unsignedBigInteger('evento_id')->nullable();
+            $table->unsignedBigInteger('coordenador_id')->nullable();
+            $table->unsignedBigInteger('proponente_id')->nullable();
             $table->softDeletes();
 
             $table->timestamps();
