@@ -6,14 +6,14 @@
   @csrf --}}
   <input type="hidden" name="editalId" value="{{$edital->id}}">
 
-  <div class="container">
+  <div class="container" style="margin-top: 3rem">
     <div class="row justify-content-center">
       
       <!-- projeto -->
       {{-- <div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">1º Passo</h4></div>
       <div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Preencha os campos com as informações do projeto</h5></div> --}}
       <div class="col-md-10">
-        <div class="card" style="border-radius: 12px">
+        <div class="card" style="border-radius: 12px; margin-bottom:2rem;">
           
           <div class="card-body">
             <div class="container">
@@ -99,7 +99,7 @@
       {{-- <div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">2º Passo</h4></div>
       <div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Preencha os campos com as informações do proponente</h5></div> --}}
       <div class="col-md-10">
-        <div class="card" style="border-radius: 12px">
+        <div class="card" style="border-radius: 12px; margin-bottom:2rem">
           <div class="card-body">
             <div class="container">
               <div class="form-row mt-3">
@@ -161,7 +161,7 @@
       {{-- <div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">3º Passo</h4></div>
       <div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Anexos</h5></div> --}}
       <div class="col-md-10">
-        <div class="card" style="border-radius: 12px">
+        <div class="card" style="border-radius: 12px; margin-bottom:2rem">
           <div class="card-body">
             <div class="container">
               <div class="form-row mt-3">

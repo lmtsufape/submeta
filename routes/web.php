@@ -29,7 +29,7 @@ Route::get( '/proponente/cadastro',   'ProponenteController@create'             
 Route::post('/proponente/cadastro',   'ProponenteController@store'                  )->name('proponente.store');
 Route::get( '/proponente/editais',    'ProponenteController@editais'                )->name('proponente.editais');
 Route::get( '/projetos-submetidos',   'ProponenteController@projetosDoProponente'   )->name('proponente.projetos');
-Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital');
+Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital')->middleware('auth');
 
 
 //######### Rotas Administrador #################################
