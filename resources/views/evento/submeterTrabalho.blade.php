@@ -575,14 +575,14 @@
                               <label for="ordemDePrioridade1">{{ __('Ordem de prioridade') }}  <span style="color: red; font-weight:bold">*</span></label>
                                     <select name="ordem_prioridade[]" id="ordemDePrioridade1" class="form-control" >
                                       <option value="" disabled selected>-- ORDEM --</option>
-                                      <option value="1">1º</option>
-                                      <option value="2">2º</option>
-                                      <option value="3">3º</option>
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
                                     </select>
                             </div>
                             <div class="form-group col-md-6">
                               <label for="coeficienteDeRendimento1">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="number" class="form-control media" id="coeficienteDeRendimento1" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" required>
+                              <input type="number" class="form-control media" id="coeficienteDeRendimento1" min="0" max="10" step="0.01" name="media_geral_curso[]" required>
                               @error('coeficienteDeRendimento1')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -827,14 +827,14 @@
                             <label for="ordemDePrioridade2">{{ __('Ordem de prioridade') }}  <span style="color: red; font-weight:bold">*</span></label>
                                   <select name="ordem_prioridade[]" id="ordemDePrioridade2" class="form-control" required>
                                     <option value="" disabled selected>-- ORDEM --</option>
-                                    <option value="1">1º</option>
-                                    <option value="2">2º</option>
-                                    <option value="3">3º</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
                                   </select>
                           </div>
                           <div class="form-group col-md-6">
                             <label for="coeficienteDeRendimento2">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="number" class="form-control media" id="coeficienteDeRendimento2" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" required>
+                            <input type="number" class="form-control media" id="coeficienteDeRendimento2" min="0" max="10" step="0.01" name="media_geral_curso[]" required>
                             @error('coeficienteDeRendimento2')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
@@ -1079,14 +1079,14 @@
                               <label for="ordemDePrioridade3">{{ __('Ordem de prioridade') }}  <span style="color: red; font-weight:bold">*</span></label>
                                     <select name="ordem_prioridade[]" id="ordemDePrioridade3" class="form-control" required>
                                       <option value="" disabled selected>-- ORDEM --</option>
-                                      <option value="1">1º</option>
-                                      <option value="2">2º</option>
-                                      <option value="3">3º</option>
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
                                     </select>
                             </div>
                             <div class="form-group col-md-6">
                               <label for="coeficienteDeRendimento3">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="number" class="form-control media" id="coeficienteDeRendimento3" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" required>
+                              <input type="number" class="form-control media" id="coeficienteDeRendimento3" min="0" max="10" step="0.01" name="media_geral_curso[]" required>
                               @error('coeficienteDeRendimento3')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>

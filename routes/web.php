@@ -29,7 +29,7 @@ Route::get( '/proponente/cadastro',   'ProponenteController@create'             
 Route::post('/proponente/cadastro',   'ProponenteController@store'                  )->name('proponente.store');
 Route::get( '/proponente/editais',    'ProponenteController@editais'                )->name('proponente.editais');
 Route::get( '/projetos-submetidos',   'ProponenteController@projetosDoProponente'   )->name('proponente.projetos');
-Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital');
+Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital')->middleware('auth');
 
 
 //######### Rotas Administrador #################################
@@ -40,17 +40,17 @@ Route::post('/perfil-usuario',                 'UserController@editarPerfil'    
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //######## Rotas Avaliador  ####################################
-Route::prefix('avaliador')->name('avaliador.')->group(function(){
-  Route::get('/index',          'AvaliadorController@index'                )->name('index')->middleware('auth');
-  Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'   )->name('visualizarTrabalho')->middleware('auth');
-  Route::get('/planos',     'AvaliadorController@listarPlanos'         )->name('listarPlanos')->middleware('auth');
-  Route::post('/parecer',       'AvaliadorController@parecer'              )->name('parecer')->middleware('auth');
-  Route::post('/parecer/plano',       'AvaliadorController@parecerPlano'   )->name('parecer.plano')->middleware('auth');
-  Route::get('/editais',        'AvaliadorController@editais'              )->name('editais')->middleware('auth');
-  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'        )->name('enviarParecer')->middleware('auth');
-  Route::post('/Enviarparecer', 'AvaliadorController@enviarParecerPlano'   )->name('enviarParecerPlano')->middleware('auth');
-  Route::get('/Resposta', 'AvaliadorController@conviteResposta'            )->name('conviteResposta')->middleware('auth');
-});
+  Route::prefix('avaliador')->name('avaliador.')->group(function(){
+    Route::get('/index',          'AvaliadorController@index'                )->name('index')->middleware('auth');
+    Route::get('/trabalhos',     'AvaliadorController@visualizarTrabalhos'   )->name('visualizarTrabalho')->middleware('auth');
+    Route::get('/planos',     'AvaliadorController@listarPlanos'         )->name('listarPlanos')->middleware('auth');
+    Route::post('/parecer',       'AvaliadorController@parecer'              )->name('parecer')->middleware('auth');
+    Route::post('/parecer/plano',       'AvaliadorController@parecerPlano'   )->name('parecer.plano')->middleware('auth');
+    Route::get('/editais',        'AvaliadorController@editais'              )->name('editais')->middleware('auth');
+    Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'        )->name('enviarParecer')->middleware('auth');
+    Route::post('/Enviarparecer', 'AvaliadorController@enviarParecerPlano'   )->name('enviarParecerPlano')->middleware('auth');
+    Route::get('/Resposta', 'AvaliadorController@conviteResposta'            )->name('conviteResposta')->middleware('auth');
+  });
 
 
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
@@ -131,8 +131,6 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::post(  '/revisor/emailTodos',    'RevisorController@enviarEmailTodosRevisores'   )->name('revisor.emailTodos');
 
   //########## Rotas de download  de documentos ###########################
-  Route::get('/baixar/edital/{id}',           'EventoController@baixarEdital'             )->name('baixar.edital');
-  Route::get('/baixar/modelos/{id}',          'EventoController@baixarModelos'            )->name('baixar.modelos');
   Route::get('/baixar/anexo-projeto/{id}', 'TrabalhoController@baixarAnexoProjeto'        )->name('baixar.anexo.projeto');
   Route::get('/baixar/anexo-consu/{id}',   'TrabalhoController@baixarAnexoConsu'          )->name('baixar.anexo.consu');
   Route::get('/baixar/anexo-comite/{id}',  'TrabalhoController@baixarAnexoComite'         )->name('baixar.anexo.comite');
@@ -143,6 +141,9 @@ Route::prefix('avaliador')->name('avaliador.')->group(function(){
   Route::get('/baixar/anexo-temp/{eventoId}/{nomeAnexo}', 'TrabalhoController@baixarAnexoTemp'            )->name('baixar.anexo.temp');
   Route::get('/baixar/evento-temp/{nomeAnexo}', 'TrabalhoController@baixarEventoTemp'            )->name('baixar.evento.temp');
 });
+
+Route::get('/baixar/edital/{id}',           'EventoController@baixarEdital'             )->name('baixar.edital');
+Route::get('/baixar/modelos/{id}',          'EventoController@baixarModelos'            )->name('baixar.modelos');
 
 Route::prefix('usuarios')->name('admin.')->group(function(){
   //######### Rotas da administração dos usuários ####################

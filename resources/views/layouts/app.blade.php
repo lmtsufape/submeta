@@ -23,6 +23,9 @@
     <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 
     <style>
+    body{
+        background-color: #f8fafc
+    }
       .styleRodape {
         background-color: rgb(0, 140, 255);;
         text-align: center;
