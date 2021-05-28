@@ -3,17 +3,17 @@
 @section('content')
 <div class="container content">
     <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card card-login-cadastro">
-                <div class="card-header">{{ __('Login') }}</div>
+        <div class="col-md-5" style="margin-top: 5rem">
+            <div class="card shadow bg-white" style="border-radius: 12px">
+                <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
+                    <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
+                      <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Entrar</h5>
+                    </div>
+                  </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-
-                        <div class="row justify-content-center">
-                            <div class="titulo-login-cadastro">LOGIN</div>
-                        </div>
 
                         <div class="form-group row">
                             
