@@ -116,7 +116,7 @@
                               <a class="btn btn-success " href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%; height:50px; padding-top:7px; font-size:20px"><img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
                             </div>
                             <div class="col-md-12">
-                              <button class="btn btn-primary" style="width:100%; height:50px; padding-top:5px; font-size:20px"><img src="{{asset('img/icons/icon_minhas_propostas.png')}}" class="card-img-top" alt="..." style="width:20px; margin-right:10px; margin-top:-5px"> Minhas propostas</button>
+                              <a class="btn btn-primary" href="{{ route('proponente.projetosEdital', ['id' => $evento->id]) }}" style="width:100%; height:50px; padding-top:5px; font-size:20px"><img src="{{asset('img/icons/icon_minhas_propostas.png')}}" class="card-img-top" alt="..." style="width:20px; margin-right:10px; margin-top:-5px"> Minhas propostas</a>
                             </div>
                             @endif
                           @endif
