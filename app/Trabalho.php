@@ -9,11 +9,7 @@ class Trabalho extends Model
 {
 
   use SoftDeletes;
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
+  //   'rascunho','submetido', 'avaliado', 'corrigido','aprovado','reprovado', 'arquivado'
   protected $fillable = [
       'titulo',
       'data', 
