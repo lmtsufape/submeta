@@ -40,7 +40,7 @@
                 </div>
             </div>
           </div>
-          @if($hasFile == true)
+          {{-- @if($hasFile == true)
           @if($hasTrabalho)
           <div class="col-md-12" style="margin-top:8px; margin-bottom:20px">
             <div class="card shadow bg-white" style="border-radius:12px; border-width:0px;">
@@ -95,7 +95,7 @@
             </div>
           </div>
           @endif
-          @endif
+          @endif --}}
         </div>
       </div>
       <div class="col-md-4">
@@ -115,12 +115,11 @@
                             <div class="col-md-12" style="margin-bottom:18px">
                               <a class="btn btn-success " href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%; height:50px; padding-top:7px; font-size:20px"><img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
                             </div>
-                            <div class="col-md-12">
-                              <a class="btn btn-primary" href="{{ route('proponente.projetosEdital', ['id' => $evento->id]) }}" style="width:100%; height:50px; padding-top:5px; font-size:20px"><img src="{{asset('img/icons/icon_minhas_propostas.png')}}" class="card-img-top" alt="..." style="width:20px; margin-right:10px; margin-top:-5px"> Minhas propostas</a>
-                            </div>
                             @endif
                           @endif
-                          
+                          <div class="col-md-12">
+                            <a class="btn btn-primary" href="{{ route('proponente.projetosEdital', ['id' => $evento->id]) }}" style="width:100%; height:50px; padding-top:5px; font-size:20px"><img src="{{asset('img/icons/icon_minhas_propostas.png')}}" class="card-img-top" alt="..." style="width:20px; margin-right:10px; margin-top:-5px"> Minhas propostas</a>
+                          </div>
                         </div>
                       </div>
                   </div>
@@ -216,9 +215,9 @@
                             </div>
                             <div class="form-group" style="width: 100%">
                               <div class="d-flex justify-content-between" style="width: 100%">
-                                <div><h5 style=" font-size:19px; margin-top:9px">Edital</h5></div>
+                                <div><h5 style=" font-size:19px; margin-top:18px">Edital</h5></div>
                                 <div style="float: right"><a class="btn btn-light" href="{{route('baixar.edital', ['id' => $evento->id])}}" target="_new" style="" >
-                                  <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                                  <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px"><br>
                                   Baixar</a></div>
                               </div>
                             </div>
@@ -234,10 +233,10 @@
                             </div>
                             <div class="form-group" style="width: 100%">
                               <div class="d-flex justify-content-between" style="width: 100%">
-                                <div><h5 style=" font-size:19px; margin-top:9px">Modelo</h5></div>
+                                <div><h5 style=" font-size:19px; margin-top:9px">Outros documentos</h5></div>
                                 <div>
                                     <a class="btn btn-light" href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="" >
-                                      <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                                    <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px"><br>
                                     Baixar</a>
                                 </div>
                               </div>

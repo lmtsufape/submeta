@@ -10,7 +10,7 @@
 
     <div class="row justify-content-center d-flex align-items-center">
         <div class="col-sm-3 d-flex justify-content-center ">
-           <a href="{{route('proponente.editais')}}" style="text-decoration:none; color: inherit;">
+           <a href="{{route('coord.home')}}" style="text-decoration:none; color: inherit;">
             <div class="card text-center card-menu">
 					<div class="card-body d-flex justify-content-center">
 						<div class="container">
