@@ -1139,7 +1139,7 @@
             <div class=" d-flex justify-content-between align-items-center" style="margin-top: 15px; margin-bottom:18px">
               <h6 style="font-family:Arial, Helvetica, sans-serif; margin-right:15px"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
               <input id="rascunhoInput" type="hidden" name="rascunho" value="false">
-              <button type="button" class="btn btn-primary" id="formRascunho" onclick="rascunho()" >{{ __('Rascunho') }}</button>
+              <button type="button" class="btn btn-primary" id="formRascunho" >{{ __('Rascunho') }}</button>
               <button type="submit" id="clickSubmitForm" style="display: none"></button>
               <button type="button" class="btn btn-success" id="idButtonSubmitProjeto" onclick="enviarModalenviarProjeto()" disabled>{{ __('Enviar Proposta') }}</button>
             </div>
@@ -1997,21 +1997,18 @@ function validarPart3(){
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 
-  $(document).ready(()=>{
-      
-      function rascunho(){
-        
-        $("input").removeAttr('required')
-        $("select").removeAttr('required')
-        $("textarea").removeAttr('required')
-
-        // $('#criarProjetoForm').append("<li>Appended item</li>");
-        $('#rascunhoInput').val('true');
-        $('#criarProjetoForm').submit();
-      }
-
-
+$(document).ready(()=>{
+  console.log('rascunho')
+  $("#formRascunho").click(function(){
+    $("input").removeAttr('required')
+    $("select").removeAttr('required')
+    $("textarea").removeAttr('required')
+  
+    // $('#criarProjetoForm').append("<li>Appended item</li>");
+    $('#rascunhoInput').val('true');
+    $('#criarProjetoForm').submit();
   });
+});
 
   // $("#button").click(function(e){
   //   e.preventDefault();

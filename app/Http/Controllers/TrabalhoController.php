@@ -1006,7 +1006,7 @@ class TrabalhoController extends Controller
     public function salvar(Request $request) {
       $edital = Evento::find($request->editalId);
       $hoje = now();
-      // dd();
+      // dd($request->all());
       if (!($edital->inicioSubmissao < $hoje && $edital->fimSubmissao >= $hoje)) {
         return redirect()->route('inicial')->with(['error'=> 0, 'mensagem' => 'As submissões para o edital '. $edital->titulo .' foram encerradas.']);
       }
