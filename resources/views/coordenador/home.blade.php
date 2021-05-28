@@ -7,7 +7,11 @@
     {{-- titulo da página --}}
     <div class="row justify-content-center" style="margin-top: 3rem; text-align:center">
         <div class="col-md-12" style="margin-bottom: -0.5rem">
-            <h3>Editais</h3>
+            @if(count($eventos)>0)
+                <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Editais</h5>
+            @else
+                <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Edital</h5>
+            @endif
         </div>
         <div class="col-md-12">
             <hr>
@@ -16,7 +20,7 @@
     @php
         $hoje = now();
     @endphp
-    <div class="row">
+    <div class="row justify-content-center">
 
         @if(count($eventos)>0)
             @foreach ($eventos as $evento)
@@ -26,7 +30,7 @@
             @else 
             <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none">
             @endif
-                <div class="card" style="width: 18rem; border-radius:12px; border-width:0px;">
+                <div class="card" style="width: 18rem; border-radius:12px; border-width:0px; margin:10px">
                     @if(isset($evento->fotoEvento))
                     <img src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" class="card-img-top" alt="...">
                     @else
