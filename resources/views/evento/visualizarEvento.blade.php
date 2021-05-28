@@ -15,10 +15,10 @@
           </div>
         @endif
       </div>
-      <div class="col-md-7" style="margin-bottom:25px">
+      <div class="col-md-7" style="margin-bottom:10px">
 
         <div class="form-row">
-          <div class="col-md-12" style="margin-bottom:30px">
+          <div class="col-md-12" style="margin-bottom:20px">
             <div class="card shadow bg-white" style="border-radius:12px; border-width:0px;">
               @if(isset($evento->fotoEvento))
                 <img src="{{asset('storage/eventos/'.$evento->id.'/logo.png')}}" class="card-img-top" alt="...">
@@ -42,7 +42,7 @@
           </div>
           @if($hasFile == true)
           @if($hasTrabalho)
-          <div class="col-md-12" style="margin-bottom:5px">
+          <div class="col-md-12" style="margin-top:8px; margin-bottom:20px">
             <div class="card shadow bg-white" style="border-radius:12px; border-width:0px;">
               <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
                 <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
