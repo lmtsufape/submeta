@@ -29,16 +29,22 @@ use Illuminate\Support\Facades\Mail;
 
 class EventoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $eventos = Evento::all();
-        // $comissaoEvento = ComissaoEvento::all();
-        // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
-        $hoje = Carbon::today('America/Recife');
-        $hoje = $hoje->toDateString();
+        if($request->buscar == null){
+          $eventos = Evento::all();
+          // $comissaoEvento = ComissaoEvento::all();
+          // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
+          $hoje = Carbon::today('America/Recife');
+          $hoje = $hoje->toDateString();
 
-        return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje]);
+          return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>'', 'flag'=>'false']);
+        }else{
+          $eventos = Evento::where('nome','ilike','%'.$request->buscar.'%')->get();
+          $hoje = Carbon::today('America/Recife');
+          $hoje = $hoje->toDateString();
+          return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>$request->buscar, 'flag'=>'true']);
+        }
 
     }
 

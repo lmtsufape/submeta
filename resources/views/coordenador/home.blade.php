@@ -6,13 +6,33 @@
 
     {{-- titulo da página --}}
     <div class="row justify-content-center" style="margin-top: 3rem; text-align:center">
-        <div class="col-md-12" style="margin-bottom: -0.5rem">
-            @if(count($eventos)>0)
-                <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Editais</h5>
-            @else
-                <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Edital</h5>
-            @endif
+
+        <div class="col-md-12">
+            <div class="row justify-content-between">
+                <div class="col-sm"></div>
+                <div class="col-sm" style="margin-bottom: 10px">
+                    @if($flag == 'false')
+                        @if(count($eventos)>0)
+                            <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Editais</h5>
+                        @else
+                            <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Edital</h5>
+                        @endif
+                    @else
+                        <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Resultado da busca por: <span style="font-style: italic; font-weight:bold">{{$palavra}}</span></h5>
+                    @endif
+                </div>
+                <div class="col-sm">
+                        <form action="{{route('coord.home')}}" method="get">
+                            @csrf
+                            <div class="btn-group">
+                                <input type="text" class="form-control shadow-sm" name="buscar" placeholder="Digite o nome do edital" value="{{$palavra}}" style="margin-right: 5px;border-radius:8px; border-color:#fff;">
+                                <button type="submit" class="btn btn-light shadow-sm" style="border-radius: 8px"><img src="{{asset('img/icons/logo_lupa.png')}}" alt="" width="20px"></button>
+                            </div>
+                        </form>
+                </div>
+            </div>
         </div>
+
         <div class="col-md-12">
             <hr>
         </div>
@@ -147,7 +167,11 @@
                 <div class="col-md-12">
                     <img src="{{asset('img/icons/logo_projeto.png')}}"  alt="..." width="190px">
                 </div>
-                <div class="col-md-5" style="text-align: center;margin-top:1rem"><h5>Nenhum edital cadastrado!</h5></div>
+                @if($flag == 'true')
+                    <div class="col-md-5" style="text-align: center;margin-top:1rem"><h5>Nenhum edital encontrado!</h5></div>
+                @else
+                    <div class="col-md-5" style="text-align: center;margin-top:1rem"><h5>Nenhum edital cadastrado!</h5></div>
+                @endif
             </div>
         @endif
     </div>
