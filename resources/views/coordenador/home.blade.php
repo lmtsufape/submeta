@@ -168,7 +168,10 @@
                     <img src="{{asset('img/icons/logo_projeto.png')}}"  alt="..." width="190px">
                 </div>
                 @if($flag == 'true')
-                    <div class="col-md-5" style="text-align: center;margin-top:1rem"><h5>Nenhum edital encontrado!</h5></div>
+                    <div class="col-md-5" style="text-align: center;margin-top:1rem">
+                        <h5>Nenhum edital encontrado!</h5>
+                        <a href="{{route('coord.home')}}">Clique aqui para ver todos os editais</a>
+                    </div>
                 @else
                     <div class="col-md-5" style="text-align: center;margin-top:1rem"><h5>Nenhum edital cadastrado!</h5></div>
                 @endif
