@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div>
-  <form method="POST" id="criarProjetoForm"  action="{{route('trabalho.store')}}" enctype="multipart/form-data">
+  <form method="POST" id="criarProjetoForm"  action="{{route('trabalho.store')}}" enctype="multipart/form-data" onsubmit="return validarForm(this)">
   @csrf
   <input type="hidden" name="editalId" value="{{$edital->id}}">
 
@@ -23,7 +24,7 @@
 
                 <div class="form-group col-md-12" style="margin-top: 10px">
                     <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
-                    <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" placeholder="Digite o nome do projeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" autofocus required>
+                    <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" placeholder="Digite o nome do projeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" >
                     @error('nomeProjeto')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -33,7 +34,7 @@
 
                 <div class="form-group col-md-4">
                   <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
-                    <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()" required>
+                    <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()" >
                       <option value="" disabled selected hidden>-- Grande Área --</option>
                       @foreach($grandeAreas as $grandeArea)
                       <option @if(old('grandeArea') !== null ? old('grandeArea') : (isset($rascunho) ? $rascunho->grande_area_id : '')
@@ -49,7 +50,7 @@
                 <div class="form-group col-md-4">
                   <label for="area" class="col-form-label">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
                     <input type="hidden" id="oldArea" value="{{ old('area') }}">
-                    <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()" required>
+                    <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()" >
                       <option value="" disabled selected hidden>-- Área --</option>
                     </select>
                     @error('area')
@@ -61,7 +62,7 @@
                 <div class="form-group col-md-4">
                   <label for="subArea" class="col-form-label">{{ __('Subárea') }} <span style="color: red; font-weight:bold">*</span></label>
                     <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}">
-                    <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea" required>
+                    <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea" >
                       <option value="" disabled selected hidden>-- Subárea --</option>
                       {{-- @foreach($subAreas as $subArea)
                         <option @if(old('subArea') !== null ? old('subArea') : (isset($rascunho) ? $rascunho->sub_area_id : '')
@@ -94,19 +95,19 @@
                 <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
 
                 <div class="form-group col-md-12" style="margin-top: 15px">
-                  <label for="nomeCompletoParticipante1">Proponente</label>
-                  <input class="form-control" type="text" id="nomeCoordenador" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
+                  <label for="nomeCompletoProponente1">Proponente</label>
+                  <input class="form-control" type="text" id="nomeCompletoProponente1" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
                  
                 </div>
 
                 <div class="form-group col-md-4">
                   <label for="linkLattesEstudante">Link do currículo Lattes<span style="color: red; font-weight:bold">*</span></label>
-                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante" required
+                  <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante" 
                   @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
                     value="{{ Auth()->user()->proponentes->linkLattes }}"
                   @else
                   value=""
-                  @endif required>
+                  @endif >
                   <small>Ex.: http://lattes.cnpq.br/8363536830656923</small>
                   @error('linkLattesEstudante')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -117,7 +118,7 @@
                 <div class="form-group col-md-4">
                   <label for="pontuacaoPlanilha">Pontuação da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
                   <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha"
-                          value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}" required>
+                          value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}" >
 
                   @error('pontuacaoPlanilha')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -161,13 +162,14 @@
                   <a id="anexoProjetoTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoProjeto' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoProjeto" name="anexoProjetoPreenchido"
+                  <input type="hidden" name="anexoProjetoPreenchido"
                     @if( isset($rascunho) && $rascunho->anexoProjeto != "") value="sim" @else value="{{old('anexoProjetoPreenchido')}}" @endif >
+                    
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="inputGroupFileAddon01" name="anexoProjeto" onchange="verificarArquivoAnexado_pdf(this)" required>
-                      <label class="custom-file-label" id="custom-file-label" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2MB.</label>
+                      <input type="file" id="anexoProjeto"  class="custom-file-input @error('anexoProjeto') is-invalid @enderror" id="anexoProjeto" aria-describedby="anexoProjeto" name="anexoProjeto" onchange="verificarArquivoAnexado_pdf(this, 'anexoProjetoLegenda')" >
+                      <label class="custom-file-label" id="anexoProjetoLegenda" for="anexoProjeto">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoProjeto')
@@ -178,7 +180,7 @@
                 </div>
 
                 <div class="form-group col-md-6" style="margin-top: 10px">
-                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do currículo Lattes do Proponente') }} <span style="color: red; font-weight:bold">*</span></label>
+                  <label for="anexoLattesCoordenador" class="col-form-label">{{ __('Anexo do currículo Lattes do Coordenador') }} <span style="color: red; font-weight:bold">*</span></label>
                   @if(old('anexoLattesPreenchido') != null || (isset($rascunho) && $rascunho->anexoLattesCoordenador != ""))
                   <a id="anexoLattesTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoLattesCoordenador' ])}}">Arquivo atual</a>
@@ -189,8 +191,8 @@
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="anexoLattesCoordenador" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador" onchange="verificarArquivoAnexado_pdf(this)" required>
-                      <label class="custom-file-label" id="custom-file-label" for="anexoLattesCoordenador">O arquivo deve ser no formato PDF de até 2MB.</label>
+                      <input type="file" class="custom-file-input @error('anexoLattesCoordenador') is-invalid @enderror" id="anexoLattesCoordenador" aria-describedby="anexoLattesCoordenador" name="anexoLattesCoordenador" onchange="verificarArquivoAnexado_pdf(this, 'anexoLattesCoordenadorLegenda')" >
+                      <label class="custom-file-label" id="anexoLattesCoordenadorLegenda" for="anexoLattesCoordenador">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   <small>Dos últimos 5 anos</small>
@@ -211,8 +213,8 @@
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="verificarArquivoAnexado_xls_xlsx_ods(this)" required>
-                      <label class="custom-file-label" id="custom-file-label" for="anexoPlanilha">Formato do arquivo: XLS, XLSX ou ODS de até 2MB.</label>
+                      <input type="file" class="custom-file-input @error('anexoPlanilha') is-invalid @enderror" id="anexoPlanilha" aria-describedby="anexoPlanilhaDescribe" name="anexoPlanilha" onchange="verificarArquivoAnexado_xls_xlsx_ods(this, 'anexoPlanilhaLegenda')" >
+                      <label class="custom-file-label" id="anexoPlanilhaLegenda" for="anexoPlanilha">Formato do arquivo: XLS, XLSX ou ODS de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoPlanilha')
@@ -233,12 +235,12 @@
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
                   @endif
                   <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido"
-                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif required>
+                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif >
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="verificarArquivoAnexado_pdf(this)" required>
-                      <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2MB.</label>
+                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="verificarArquivoAnexado_pdf(this, 'anexoCONSULegenda')" >
+                      <label class="custom-file-label" id="anexoCONSULegenda" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
                   @error('anexoCONSU')
@@ -274,8 +276,8 @@
     
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="verificarArquivoAnexado_pdf(this)">
-                          <label class="custom-file-label" id="custom-file-label" for="inputEtica">O arquivo deve ser no formato PDF de até 2MB.</label>
+                          <input type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="verificarArquivoAnexado_pdf(this, 'anexoComiteEticaLegenda')">
+                          <label class="custom-file-label" id="anexoComiteEticaLegenda" for="inputEtica">O arquivo deve ser no formato PDF de até 2MB.</label>
                         </div>
                       </div>
                       @error('anexoComiteEtica')
@@ -297,8 +299,8 @@
       
       
                           <div class="custom-file">
-                            <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" name="justificativaAutorizacaoEtica" onchange="verificarArquivoAnexado_pdf(this)" >
-                            <label class="custom-file-label" id="custom-file-label" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2MB.</label>
+                            <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" name="justificativaAutorizacaoEtica" onchange="verificarArquivoAnexado_pdf(this, 'justificativaAutorizacaoEticaLegenda')" >
+                            <label class="custom-file-label" id="justificativaAutorizacaoEticaLegenda" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2MB.</label>
                           </div>
                         </div>
                         @error('justificativaAutorizacaoEtica')
@@ -323,21 +325,17 @@
           <div class="card-body" style="margin-bottom: -2rem">
             <div class="d-flex justify-content-between align-items-center">
               <div><h5 style="color: #1492E6; margin-top:0.5rem">Participante(s)</h5></div>
-              <div><div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButtonAlterar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none">
-                  Selecionar
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlterar">
-                  <a type="button" class="dropdown-item" onclick="alterarFormacao(1)">1 Participante</a>
-                  <a type="button" class="dropdown-item" onclick="alterarFormacao(2)">2 Participantes</a>
-                  <a type="button" class="dropdown-item" onclick="alterarFormacao(3)">3 Participantes</a>
-                </div>
-              </div></div>
+              <div>
+
+                
+                <button type="button" class="btn btn-light" onclick="novoParticipante()">Adicionar participante</button>
+
+              </div>
             </div>
             <div  style="margin-top:-10px"><hr style="border-top: 1px solid#1492E6"></div>
           </div>
 
-          <div class="card-body" id="selecaoParticipantes" style="text-align: center; display:block; margin-top:1rem">
+          <div class="card-body" id="selecaoParticipantes" style="text-align: center; display:none; margin-top:1rem">
             <div><h5>Selecione o número de participantes do projeto</h5></div>
             <div class="btn-group" style="text-align:center">
               <button type="button" class="btn btn-light" onclick="selecionarParticipantes('1')" style="width: 123px; margin:5px; border-radius:12px">
@@ -361,282 +359,132 @@
             </div>
           </div>
 
-          <div class="card-body">
-            <div id="participante1" style="display:none; margin-bottom:15px">
-                <div class="form-row">
-                  <div class="col-md-12"><h5>Clique em um dos participantes para preencher os dados</h5></div>
-                  <div class="col-md-12">
-                  
-                    <a class="btn btn-light" data-toggle="collapse" href="#collapseParticipante1" role="button" aria-expanded="false" aria-controls="collapseParticipante1" id="buttonParticipante1" style="width: 100%; text-align:left">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <h4 id="buttonTitulo1" style="color: #01487E; font-size:17px; margin-top:5px">Participante 1</h4>
-                        
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-md-12">
-                    <div class="collapse" id="collapseParticipante1">
-                      <div class="container">
-                          <div class="form-row mt-3">
-                            <div class="col-md-12"><h5>Dados do participante</h5></div>
+          <ol style="counter-reset: item;list-style-type: none; margin-left:-20px; margin-right:20px; margin-top:10px">
+            <li>
 
-                            <div class="form-group col-md-6">
-                              <label for="nomeCompletoParticipante1">Nome completo <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('nomeCompletoParticipante1') is-invalid @enderror" id="nomeCompletoParticipante1" name="nomeParticipante[]"  placeholder="Digite o nome completo do participante" required>
-                              @error('nomeCompletoParticipante1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
+            </li>
 
-                            <div class="form-group col-md-6">
-                              <label for="email1">E-mail <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="email" class="form-control @error('email1') is-invalid @enderror" id="email1" name="emailParticipante[]" placeholder="Digite o e-mail do participante" required>
-                              @error('email')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <input type="hidden"  name="funcaoParticipante[]" value="4">
-                            <div class="form-group col-md-6">
-                              <label for="data1">Data de nascimento <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="date" class="form-control @error('data1') is-invalid @enderror" id="data1" name="data_de_nascimento[]" required>
-                              @error('data1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="cpf1">CPF <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cpf1') is-invalid @enderror" id="cpf1" name="cpf[]" placeholder="Digite o CPF do participante" required>
-                              @error('cpf1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="rg1">RG <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('rg1') is-invalid @enderror" id="rg1" name="rg[]" placeholder="Digite o RG do participante" required>
-                              @error('rg1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="celular1">Celular <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('celular1') is-invalid @enderror" id="celular1" name="celular[]" placeholder="Digite o telefone do participante" required>
-                              @error('celular1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="col-md-12"><h5>Endereço</h5></div>
-                            <div class="form-group col-md-6">
-                              <label for="cep1">CEP <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cep1') is-invalid @enderror" id="cep1" name="cep[]" placeholder="Digite o CEP do participante" required>
-                              @error('cep1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="estado1">Estado <span style="color: red; font-weight:bold">*</span></label>
-                                    <select name="uf[]" id="estado1" class="form-control" style="visibility: visible" required>
-                                      <option value="" disabled selected>-- Selecione o estado --</option>
-                                      <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
-                                      <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
-                                      <option @if(old('uf') == 'AP') selected @endif value="AP">Amapá</option>
-                                      <option @if(old('uf') == 'AM') selected @endif value="AM">Amazonas</option>
-                                      <option @if(old('uf') == 'BA') selected @endif value="BA">Bahia</option>
-                                      <option @if(old('uf') == 'CE') selected @endif value="CE">Ceará</option>
-                                      <option @if(old('uf') == 'DF') selected @endif value="DF">Distrito Federal</option>
-                                      <option @if(old('uf') == 'ES') selected @endif value="ES">Espírito Santo</option>
-                                      <option @if(old('uf') == 'GO') selected @endif value="GO">Goiás</option>
-                                      <option @if(old('uf') == 'MA') selected @endif value="MA">Maranhão</option>
-                                      <option @if(old('uf') == 'MT') selected @endif value="MT">Mato Grosso</option>
-                                      <option @if(old('uf') == 'MS') selected @endif value="MS">Mato Grosso do Sul</option>
-                                      <option @if(old('uf') == 'MG') selected @endif value="MG">Minas Gerais</option>
-                                      <option @if(old('uf') == 'PA') selected @endif value="PA">Pará</option>
-                                      <option @if(old('uf') == 'PB') selected @endif value="PB">Paraíba</option>
-                                      <option @if(old('uf') == 'PR') selected @endif value="PR">Paraná</option>
-                                      <option @if(old('uf') == 'PE') selected @endif value="PE">Pernambuco</option>
-                                      <option @if(old('uf') == 'PI') selected @endif value="PI">Piauí</option>
-                                      <option @if(old('uf') == 'RJ') selected @endif value="RJ">Rio de Janeiro</option>
-                                      <option @if(old('uf') == 'RN') selected @endif value="RN">Rio Grande do Norte</option>
-                                      <option @if(old('uf') == 'RS') selected @endif value="RS">Rio Grande do Sul</option>
-                                      <option @if(old('uf') == 'RO') selected @endif value="RO">Rondônia</option>
-                                      <option @if(old('uf') == 'RR') selected @endif value="RR">Roraima</option>
-                                      <option @if(old('uf') == 'SC') selected @endif value="SC">Santa Catarina</option>
-                                      <option @if(old('uf') == 'SP') selected @endif value="SP">São Paulo</option>
-                                      <option @if(old('uf') == 'SE') selected @endif value="SE">Sergipe</option>
-                                      <option @if(old('uf') == 'TO') selected @endif value="TO">Tocantins</option>
-                                    </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="cidade1">Cidade <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cidade1') is-invalid @enderror" id="cidade1" name="cidade[]" placeholder="Digite o nome da cidade" required>
-                              @error('cidade1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="bairro1">Bairro <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('bairro1') is-invalid @enderror" id="bairro1" name="bairro[]" placeholder="Digite o nome do bairro"required>
-                              @error('bairro1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="rua1">Rua <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('rua1') is-invalid @enderror" id="rua1" name="rua[]" placeholder="Digite o nome da avenida, rua, travessa..." required>
-                              @error('rua1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="numero1">Número <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('numero1') is-invalid @enderror" id="numero1" name="numero[]" placeholder="Digite o número" required>
-                              @error('numero1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-12">
-                              <label for="complemento1">Complemento <span style="color: red; font-weight:bold">*</span></label>
-                              <textarea type="text" class="form-control @error('complemento1') is-invalid @enderror" id="complemento1" name="complemento[]" placeholder="Apartamento, casa, sítio..." required></textarea>
-                              @error('complemento1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="col-md-12"><h5>Dados do curso</h5></div>
-                            <div class="form-group col-md-12">
-                              <label for="universidade1">Universidade <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('universidade1') is-invalid @enderror" id="universidade1" name="universidade[]" placeholder="Digite o nome da universidade" required>
-                              @error('universidade1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-12">
-                              <label for="curso1">Curso <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('curso1') is-invalid @enderror" id="curso1" name="curso[]" placeholder="Digite o nome do curso" required>
-                              @error('curso1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="turno1">Turno <span style="color: red; font-weight:bold">*</span></label>
-                              <select id="turno1" class="form-control" name="turno[]"  >
-                                <option value="" disabled selected>-- TURNO --</option>
-                                @foreach ($enum_turno as $turno)
-                                  <option value="{{$turno}}">{{$turno}}</option>
-                                @endforeach
-                              </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="totalDePeriodos1">{{ __('Total de períodos do curso') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                    <select name="total_periodos[]" id="totalDePeriodos1" class="form-control" onchange="gerarPeriodos1(this)" >
-                                      <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
-                                      <option value="6">6</option>
-                                      <option value="7">7</option>
-                                      <option value="8">8</option>
-                                      <option value="9">9</option>
-                                      <option value="10">10</option>
-                                      <option value="11">11</option>
-                                      <option value="12">12</option>
-                                    </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="periodoAtual1">{{ __('Período atual') }}  <span style="color: red; font-weight:bold">*</span></label>
-                              <select name="periodo_cursado[]" id="periodoAtual1" class="form-control" >
-                                <option value="" disabled selected>-- PERÍODO ATUAL --</option>
-                              </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="ordemDePrioridade1">{{ __('Ordem de prioridade') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                    <select name="ordem_prioridade[]" id="ordemDePrioridade1" class="form-control" >
-                                      <option value="" disabled selected>-- ORDEM --</option>
-                                      <option value="1">1</option>
-                                      <option value="2">2</option>
-                                      <option value="3">3</option>
-                                    </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="coeficienteDeRendimento1">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="number" class="form-control media" id="coeficienteDeRendimento1" min="0" max="10" step="0.01" name="media_geral_curso[]" required>
-                              @error('coeficienteDeRendimento1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="col-md-12"><h5>Plano de trabalho</h5></div>
-                            <div class="form-group col-md-6">
-                              <label for="titulo1">Título <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('titulo1') is-invalid @enderror" id="titulo1" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" required>
-                              @error('titulo1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="anexoPlanoDeTrabalho1">Anexo <span style="color: red; font-weight:bold">*</span></label>
-                              <div class="custom-file">
-                                <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoDeTrabalho1" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]" onchange="verificarArquivoAnexado_pdf(this)" required>
-                                <label class="custom-file-label" id="anexoPlanoDeTrabalho1" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
-                              </div>
-                              @error('anexoPlanoDeTrabalho1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
+          </ol>
+
+        </div>
+      </div>
+      <!--X Participantes X-->
+
+      <!-- Finalizar -->
+      <div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">5º Passo</h4></div>
+      <div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Finalizar</h5></div>
+      <div class="col-md-10">
+        <div class="card" style="border-radius: 12px">
+        <div class="card-body">
+          <div class="container">
+            <div class="form-row mt-3">
+              <div class="col-md-12"><h5 style="color: #1492E6; margin-bottom:-0.4rem">Finalizar</h5></div>
+              <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
+            </div>
+            <div class=" d-flex justify-content-between align-items-center" style="margin-top: 15px; margin-bottom:18px">
+              <h6 style="font-family:Arial, Helvetica, sans-serif; margin-right:15px"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
+              
+              <button type="submit" class="btn btn-success" id="idButtonSubmitProjeto" >{{ __('Enviar Projeto') }}</button>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <!--X Finalizar X-->
+    </div>
+  </div>
+  </form>
+  <!-- Modal de Aviso Edit -->
+  <div class="modal fade" id="exampleModalAnexarDocumento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" id="idCorCabecalhoModalDocumento">
+                <h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="idTituloDaMensagemModalDocumento"></label></div>
+                <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">
                 </div>
             </div>
-            <div id="posicaoParticipante2"></div>
-            <div id="participante2" style="display:none; margin-bottom:15px">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal"style="width:200px;">Fechar</button>
+        </div>
+    </div>
+  </div>
+  </div>
+
+</div>
+
+
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+
+
+
+/*
+* ARRAY
+* 
+*/
+let arrayElementos = ['3','2','1']
+
+/*
+* FUNCAO: Funcao novo participante
+* 
+*/
+function novoParticipante(){
+
+  if(arrayElementos.length > 0){
+    $("ol").append(blocoDeCodigo(arrayElementos.pop()));
+  }else{
+    alert("Você atingiu o limite máximo de participantes")
+  }
+}
+/*
+* FUNCAO: Funcao remove o participante
+* ENTRADA: <li>, (int)valor
+*/
+function removerParticipante(valor, id){
+  let participante = document.getElementById(valor);
+  //console.log(valor, id, participante)
+  arrayElementos.push(id);
+  participante.remove();
+}
+
+/*
+* FUNCAO: Bloco de codigo contendo os campos do participante
+*/
+function blocoDeCodigo(valor){
+  //return "<li id='item"+valor+"'>Appended item "+valor+"  <button type='button' onclick='removerParticipante(item"+valor+","+valor+")'>remover</button> <input id='idNomeTeste'"+valor+" type='text' name='nome[]'></li>"
+  return `
+  <li id="item${valor}">
+    
+    <div style="margin-bottom:15px">
               <div class="form-row">
                 <div class="col-md-12">
-                  <a class="btn btn-light" data-toggle="collapse" href="#collapseParticipante2" role="button" aria-expanded="false" aria-controls="collapseParticipante2" style="width: 100%; text-align:left">
+                  <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante${valor}" href="#collapseParticipante${valor}" role="button" aria-expanded="false" aria-controls="collapseParticipante${valor}" style="width: 100%; text-align:left">
                     <div class="d-flex justify-content-between align-items-center">
-                      <h4 style="color: #01487E; font-size:17px; margin-top:5px">Participante 2</h4>
+                      <h4 id="tituloParticipante${valor}" style="color: #01487E; font-size:17px; margin-top:5px">Participante </h4>
                     </div>
                   </a>
                 </div>
                 <div class="col-md-12">
-                  <div class="collapse" id="collapseParticipante2">
+                  <div class="collapse" id="collapseParticipante${valor}">
                     <div class="container">
                         <div class="form-row mt-3">
+                          <button type='button' onclick='removerParticipante("item${valor}","${valor}")'>remover</button>
                           <div class="col-md-12"><h5>Dados do participante</h5></div>
 
                           <div class="form-group col-md-6">
-                            <label for="nomeCompletoParticipante2">Nome completo <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('nomeCompletoParticipante2') is-invalid @enderror" id="nomeCompletoParticipante2" name="nomeParticipante[]" placeholder="Digite o nome completo do participante" required>
-                            @error('nomeCompletoParticipante2')
+                            <label for="nomeCompletoParticipante${valor}">Nome completo <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control js-input-name @error('nomeCompletoParticipante${valor}') is-invalid @enderror" id="nomeCompletoParticipante${valor}"  name="nomeParticipante[]" placeholder="Digite o nome completo do participante" >
+                            @error('nomeCompletoParticipante${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
@@ -644,45 +492,45 @@
                           </div>
                           <input type="hidden"  name="funcaoParticipante[]" value="4">
                           <div class="form-group col-md-6">
-                            <label for="email2">E-mail <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="email" class="form-control @error('email2') is-invalid @enderror" id="email2" name="emailParticipante[]" placeholder="Digite o e-mail do participante" required>
-                            @error('email2')
+                            <label for="email${valor}">E-mail <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('email${valor}') is-invalid @enderror" id="email${valor}" name="emailParticipante[]" placeholder="Digite o e-mail do participante" >
+                            @error('email${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="data2">Data de nascimento <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="date" class="form-control @error('data2') is-invalid @enderror" id="data2" name="data_de_nascimento[]" required>
-                            @error('data2')
+                            <label for="data${valor}">Data de nascimento <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="date" class="form-control @error('data${valor}') is-invalid @enderror" id="data${valor}" name="data_de_nascimento[]" >
+                            @error('data${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="cpf2">CPF <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('cpf2') is-invalid @enderror" id="cpf2" name="cpf[]" placeholder="Digite o CPF do participante" required>
-                            @error('cpf2')
+                            <label for="cpf${valor}">CPF <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('cpf${valor}') is-invalid @enderror" id="cpf${valor}" name="cpf[]" placeholder="Digite o CPF do participante" >
+                            @error('cpf${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="rg2">RG <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('rg2') is-invalid @enderror" id="rg2" name="rg[]" placeholder="Digite o RG do participante" required>
-                            @error('rg2')
+                            <label for="rg${valor}">RG <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('rg${valor}') is-invalid @enderror" id="rg${valor}" name="rg[]" placeholder="Digite o RG do participante" >
+                            @error('rg${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="celular2">Celular <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('celular2') is-invalid @enderror" id="celular2" name="celular[]" placeholder="Digite o telefone do participante" required>
-                            @error('celular2')
+                            <label for="celular${valor}">Celular <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('celular${valor}') is-invalid @enderror" id="celular${valor}" name="celular[]" placeholder="Digite o telefone do participante" >
+                            @error('celular${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
@@ -690,17 +538,17 @@
                           </div>
                           <div class="col-md-12"><h5>Endereço</h5></div>
                           <div class="form-group col-md-6">
-                            <label for="cep2">CEP <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('cep2') is-invalid @enderror" id="cep2" name="cep[]" placeholder="Digite o CEP do participante" required>
-                            @error('cep2')
+                            <label for="cep${valor}">CEP <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('cep${valor}') is-invalid @enderror" id="cep${valor}" name="cep[]" placeholder="Digite o CEP do participante" >
+                            @error('cep${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="estado2">Estado <span style="color: red; font-weight:bold">*</span></label>
-                                  <select name="uf[]" id="estado2" class="form-control"   style="visibility: visible" required>
+                            <label for="estado${valor}">Estado <span style="color: red; font-weight:bold">*</span></label>
+                                  <select name="uf[]" id="estado${valor}" class="form-control"   style="visibility: visible" >
                                     <option value="" disabled selected>-- Selecione o estado --</option>
                                     <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
                                     <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
@@ -732,45 +580,45 @@
                                   </select>
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="cidade2">Cidade <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('cidade2') is-invalid @enderror" id="cidade2" name="cidade[]" placeholder="Email" required>
-                            @error('cidade2')
+                            <label for="cidade${valor}">Cidade <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('cidade${valor}') is-invalid @enderror" id="cidade${valor}" name="cidade[]" placeholder="Email" >
+                            @error('cidade${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="bairro2">Bairro <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('bairro2') is-invalid @enderror" id="bairro2" name="bairro[]" placeholder="Digite o nome do bairro" required>
-                            @error('bairro2')
+                            <label for="bairro${valor}">Bairro <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('bairro${valor}') is-invalid @enderror" id="bairro${valor}" name="bairro[]" placeholder="Digite o nome do bairro" >
+                            @error('bairro${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="rua2">Rua <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('rua2') is-invalid @enderror" id="rua2" name="rua[]" placeholder="Digite o nome da avenida, rua, travessa..." required>
-                            @error('rua2')
+                            <label for="rua${valor}">Rua <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('rua${valor}') is-invalid @enderror" id="rua${valor}" name="rua[]" placeholder="Digite o nome da avenida, rua, travessa..." >
+                            @error('rua${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="numero2">Número <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('numero2') is-invalid @enderror" id="numero2" name="numero[]" placeholder="Digite o número" required>
-                            @error('numero2')
+                            <label for="numero${valor}">Número <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('numero${valor}') is-invalid @enderror" id="numero${valor}" name="numero[]" placeholder="Digite o número" >
+                            @error('numero${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-12">
-                            <label for="complemento2">Complemento <span style="color: red; font-weight:bold">*</span></label>
-                            <textarea type="text" class="form-control @error('complemento2') is-invalid @enderror" id="complemento2" name="complemento[]" placeholder="Apartamento, casa, sítio..." required></textarea>
-                            @error('complemento2')
+                            <label for="complemento${valor}">Complemento <span style="color: red; font-weight:bold">*</span></label>
+                            <textarea type="text" class="form-control @error('complemento${valor}') is-invalid @enderror" id="complemento${valor}" name="complemento[]" placeholder="Apartamento, casa, sítio..." ></textarea>
+                            @error('complemento${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
@@ -778,26 +626,26 @@
                           </div>
                           <div class="col-md-12"><h5>Dados do curso</h5></div>
                           <div class="form-group col-md-12">
-                            <label for="universidade2">Universidade <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('universidade2') is-invalid @enderror" id="universidade2" name="universidade[]" placeholder="Digite o nome da universidade" required>
-                            @error('universidade2')
+                            <label for="universidade${valor}">Universidade <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('universidade${valor}') is-invalid @enderror" id="universidade${valor}" name="universidade[]" placeholder="Digite o nome da universidade" >
+                            @error('universidade${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-12">
-                            <label for="curso2">Curso <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('curso2') is-invalid @enderror" id="curso2" name="curso[]" placeholder="Digite o nome do curso" required>
-                            @error('curso2')
+                            <label for="curso${valor}">Curso <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('curso${valor}') is-invalid @enderror" id="curso${valor}" name="curso[]" placeholder="Digite o nome do curso" >
+                            @error('curso${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="turno2">Turno <span style="color: red; font-weight:bold">*</span></label>
-                            <select id="turno2" class="form-control" name="turno[]" required>
+                            <label for="turno${valor}">Turno <span style="color: red; font-weight:bold">*</span></label>
+                            <select id="turno${valor}" class="form-control" name="turno[]" >
                               <option value="" disabled selected>-- TURNO --</option>
                               @foreach ($enum_turno as $turno)
                                 <option value="{{$turno}}">{{$turno}}</option>
@@ -805,8 +653,8 @@
                             </select>
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="totalDePeriodos2">{{ __('Total de períodos do curso') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                  <select name="total_periodos[]" id="totalDePeriodos2" class="form-control" onchange="gerarPeriodos1(this)" required>
+                            <label for="totalDePeriodos${valor}">{{ __('Total de períodos do curso') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <select name="total_periodos[]" id="totalDePeriodos${valor}" class="form-control" onchange="gerarPeriodos${valor}(this)" >
                                     <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
                                     <option value="6">6</option>
                                     <option value="7">7</option>
@@ -818,24 +666,24 @@
                                   </select>
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="periodoAtual2">{{ __('Período atual') }}  <span style="color: red; font-weight:bold">*</span></label>
-                            <select name="periodo_cursado[]" id="periodoAtual2" class="form-control" required >
+                            <label for="periodoAtual${valor}">{{ __('Período atual') }}  <span style="color: red; font-weight:bold">*</span></label>
+                            <select name="periodo_cursado[]" id="periodoAtual${valor}" class="form-control"  >
                               <option value="" disabled selected>-- PERÍODO ATUAL --</option>
                             </select>
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="ordemDePrioridade2">{{ __('Ordem de prioridade') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                  <select name="ordem_prioridade[]" id="ordemDePrioridade2" class="form-control" required>
+                            <label for="ordemDePrioridade${valor}">{{ __('Ordem de prioridade') }}  <span style="color: red; font-weight:bold">*</span></label>
+                                  <select name="ordem_prioridade[]" id="ordemDePrioridade${valor}" class="form-control" >
                                     <option value="" disabled selected>-- ORDEM --</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <option value="1">1º</option>
+                                    <option value="2">2º</option>
+                                    <option value="3">3º</option>
                                   </select>
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="coeficienteDeRendimento2">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="number" class="form-control media" id="coeficienteDeRendimento2" min="0" max="10" step="0.01" name="media_geral_curso[]" required>
-                            @error('coeficienteDeRendimento2')
+                            <label for="coeficienteDeRendimento${valor}">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="number" class="form-control media" id="coeficienteDeRendimento${valor}" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" >
+                            @error('coeficienteDeRendimento${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
@@ -843,21 +691,21 @@
                           </div>
                           <div class="col-md-12"><h5>Plano de trabalho</h5></div>
                           <div class="form-group col-md-6">
-                            <label for="titulo2">Título <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('titulo2') is-invalid @enderror" id="titulo2" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" required>
-                            @error('titulo2')
+                            <label for="titulo${valor}">Título <span style="color: red; font-weight:bold">*</span></label>
+                            <input type="text" class="form-control @error('titulo${valor}') is-invalid @enderror" id="titulo${valor}" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" >
+                            @error('titulo${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="anexoPlanoDeTrabalho2">Anexo <span style="color: red; font-weight:bold">*</span></label>
+                            <label for="anexoPlanoDeTrabalho${valor}">Anexo <span style="color: red; font-weight:bold">*</span></label>
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoDeTrabalho2" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]" onchange="verificarArquivoAnexado_pdf(this)" required>
-                              <label class="custom-file-label" id="anexoPlanoDeTrabalho2" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
+                              <input type="file" class="custom-file-input @error('anexoPlanoTrabalho') is-invalid @enderror" id="anexoPlanoDeTrabalho${valor}" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]" onchange="verificarArquivoAnexado_pdf(this, 'anexoPlanoTrabalho${valor}')" >
+                              <label class="custom-file-label" id="anexoPlanoTrabalho${valor}" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
                             </div>
-                            @error('anexoPlanoDeTrabalho2')
+                            @error('anexoPlanoDeTrabalho${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
                             </span>
@@ -868,371 +716,508 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div id="posicaoParticipante3"></div>
-            <div id="participante3" style="display:none;  margin-bottom:15px">
-              <div class="form-row">
-                <div class="col-md-12">
-                  <a class="btn btn-light" data-toggle="collapse" href="#collapseParticipante3" role="button" aria-expanded="false" aria-controls="collapseParticipante3" style="width: 100%; text-align:left">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <h4 style="color: #01487E; font-size:17px; margin-top:5px">Participante 3</h4>
-                    </div>
-                  </a>
-                </div>
-                  <div class="col-md-12">
-                    <div class="collapse" id="collapseParticipante3">
-                      <div class="container">
-                          <div class="form-row mt-3">
-                            <div class="col-md-12"><h5>Dados do participante</h5></div>
-
-                            <div class="form-group col-md-6">
-                              <label for="nomeCompletoParticipante3">Nome completo <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('nomeCompletoParticipante3') is-invalid @enderror" id="nomeCompletoParticipante3" name="nomeParticipante[]" placeholder="Digite o nome completo do participante"  required>
-                              @error('nomeCompletoParticipante3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <input type="hidden"  name="funcaoParticipante[]" value="4">
-                            <div class="form-group col-md-6">
-                              <label for="email3">E-mail <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="email" class="form-control @error('email3') is-invalid @enderror" id="email3" name="emailParticipante[]" placeholder="Digite o e-mail do participante" required>
-                              @error('email3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="data3">Data de nascimento <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="date" class="form-control @error('data3') is-invalid @enderror" id="data3" name="data_de_nascimento[]" required>
-                              @error('data3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="cpf3">CPF <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cpf3') is-invalid @enderror" id="cpf3" name="cpf[]" placeholder="Digite o CPF do participante" required>
-                              @error('cpf3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="rg3">RG <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('rg3') is-invalid @enderror" id="rg3" name="rg[]" placeholder="Digite o RG do participante" required>
-                              @error('rg3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="celular3">Celular <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('celular3') is-invalid @enderror" id="celular3" name="celular[]" placeholder="Digite o telefone do participante" required>
-                              @error('celular3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="col-md-12"><h5>Endereço</h5></div>
-                            <div class="form-group col-md-6">
-                              <label for="cep3">CEP <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cep3') is-invalid @enderror" id="cep3" name="cep[]" placeholder="Digite o CEP do participante" required>
-                              @error('cep3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="estado3">Estado <span style="color: red; font-weight:bold">*</span></label>
-                                    <select name="uf[]" id="estado3" class="form-control" style="visibility: visible" required>
-                                      <option value="" disabled selected>-- Selecione o estado --</option>
-                                      <option @if(old('uf') == 'AC') selected @endif value="AC">Acre</option>
-                                      <option @if(old('uf') == 'AL') selected @endif value="AL">Alagoas</option>
-                                      <option @if(old('uf') == 'AP') selected @endif value="AP">Amapá</option>
-                                      <option @if(old('uf') == 'AM') selected @endif value="AM">Amazonas</option>
-                                      <option @if(old('uf') == 'BA') selected @endif value="BA">Bahia</option>
-                                      <option @if(old('uf') == 'CE') selected @endif value="CE">Ceará</option>
-                                      <option @if(old('uf') == 'DF') selected @endif value="DF">Distrito Federal</option>
-                                      <option @if(old('uf') == 'ES') selected @endif value="ES">Espírito Santo</option>
-                                      <option @if(old('uf') == 'GO') selected @endif value="GO">Goiás</option>
-                                      <option @if(old('uf') == 'MA') selected @endif value="MA">Maranhão</option>
-                                      <option @if(old('uf') == 'MT') selected @endif value="MT">Mato Grosso</option>
-                                      <option @if(old('uf') == 'MS') selected @endif value="MS">Mato Grosso do Sul</option>
-                                      <option @if(old('uf') == 'MG') selected @endif value="MG">Minas Gerais</option>
-                                      <option @if(old('uf') == 'PA') selected @endif value="PA">Pará</option>
-                                      <option @if(old('uf') == 'PB') selected @endif value="PB">Paraíba</option>
-                                      <option @if(old('uf') == 'PR') selected @endif value="PR">Paraná</option>
-                                      <option @if(old('uf') == 'PE') selected @endif value="PE">Pernambuco</option>
-                                      <option @if(old('uf') == 'PI') selected @endif value="PI">Piauí</option>
-                                      <option @if(old('uf') == 'RJ') selected @endif value="RJ">Rio de Janeiro</option>
-                                      <option @if(old('uf') == 'RN') selected @endif value="RN">Rio Grande do Norte</option>
-                                      <option @if(old('uf') == 'RS') selected @endif value="RS">Rio Grande do Sul</option>
-                                      <option @if(old('uf') == 'RO') selected @endif value="RO">Rondônia</option>
-                                      <option @if(old('uf') == 'RR') selected @endif value="RR">Roraima</option>
-                                      <option @if(old('uf') == 'SC') selected @endif value="SC">Santa Catarina</option>
-                                      <option @if(old('uf') == 'SP') selected @endif value="SP">São Paulo</option>
-                                      <option @if(old('uf') == 'SE') selected @endif value="SE">Sergipe</option>
-                                      <option @if(old('uf') == 'TO') selected @endif value="TO">Tocantins</option>
-                                    </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="cidade3">Cidade <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cidade3') is-invalid @enderror" id="cidade3" name="cidade[]" placeholder="Digite o e-mail do participante" required>
-                              @error('cidade3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="bairro3">Bairro <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('bairro3') is-invalid @enderror" id="bairro3" name="bairro[]" placeholder="Digite o nome do bairro" required>
-                              @error('bairro3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="rua3">Rua <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('rua3') is-invalid @enderror" id="rua3" name="rua[]" placeholder="Digite o nome da avenida, rua, travessa..."required>
-                              @error('rua3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="numero3">Número <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('numero3') is-invalid @enderror" id="numero3" name="numero[]" placeholder="Digite o número"required>
-                              @error('numero3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-12">
-                              <label for="complemento3">Complemento <span style="color: red; font-weight:bold">*</span></label>
-                              <textarea type="text" class="form-control @error('complemento3') is-invalid @enderror" id="complemento3" name="complemento[]" placeholder="Apartamento, casa, sítio..."required></textarea>
-                              @error('complemento3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="col-md-12"><h5>Dados do curso</h5></div>
-                            <div class="form-group col-md-12">
-                              <label for="universidade3">Universidade <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('universidade3') is-invalid @enderror" id="universidade3" name="universidade[]" placeholder="Email" required>
-                              @error('universidade3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-12">
-                              <label for="curso3">Curso <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('curso3') is-invalid @enderror" id="curso3" name="curso[]" placeholder="Password" required>
-                              @error('curso3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="turno3">Turno <span style="color: red; font-weight:bold">*</span></label>
-                              <select id="turno3" class="form-control" required  name="turno[]" 
-                                <option value="" disabled selected>-- TURNO --</option>
-                                @foreach ($enum_turno as $turno)
-                                  <option value="{{$turno}}">{{$turno}}</option>
-                                @endforeach
-                              </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="totalDePeriodos3">{{ __('Total de períodos do curso') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                    <select name="total_periodos[]" id="totalDePeriodos3" class="form-control" onchange="gerarPeriodos1(this)" required>
-                                      <option value="" disabled selected>-- TOTAL DE PERIODOS --</option>
-                                      <option value="6">6</option>
-                                      <option value="7">7</option>
-                                      <option value="8">8</option>
-                                      <option value="9">9</option>
-                                      <option value="10">10</option>
-                                      <option value="11">11</option>
-                                      <option value="12">12</option>
-                                    </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="periodoAtual3">{{ __('Período atual') }}  <span style="color: red; font-weight:bold">*</span></label>
-                              <select name="periodo_cursado[]" id="periodoAtual3" class="form-control" required>
-                                <option value="" disabled selected>-- PERÍODO ATUAL --</option>
-                              </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="ordemDePrioridade3">{{ __('Ordem de prioridade') }}  <span style="color: red; font-weight:bold">*</span></label>
-                                    <select name="ordem_prioridade[]" id="ordemDePrioridade3" class="form-control" required>
-                                      <option value="" disabled selected>-- ORDEM --</option>
-                                      <option value="1">1</option>
-                                      <option value="2">2</option>
-                                      <option value="3">3</option>
-                                    </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="coeficienteDeRendimento3">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="number" class="form-control media" id="coeficienteDeRendimento3" min="0" max="10" step="0.01" name="media_geral_curso[]" required>
-                              @error('coeficienteDeRendimento3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="col-md-12"><h5>Plano de trabalho</h5></div>
-                            <div class="form-group col-md-6">
-                              <label for="titulo3">Título <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('titulo3') is-invalid @enderror" id="titulo3" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" required>
-                              @error('titulo3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="anexoPlanoDeTrabalho3">Anexo <span style="color: red; font-weight:bold">*</span></label>
-                              <div class="custom-file">
-                                <input type="file" class="custom-file-input @error('anexoPlanoTrabalho3') is-invalid @enderror" id="anexoPlanoDeTrabalho3" aria-describedby="anexoPlanoTrabalho" name="anexoPlanoTrabalho[]" onchange="verificarArquivoAnexado_pdf(this)" required>
-                                <label class="custom-file-label" id="anexoPlanoDeTrabalho1" for="inputGroupFile01">O arquivo deve ser no formato PDF de até 2MB.</label>
-                              </div>
-                              @error('anexoPlanoDeTrabalho3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--X Participantes X-->
-      <!-- Finalizar -->
-      <div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">5º Passo</h4></div>
-      <div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Finalizar</h5></div>
-      <div class="col-md-10">
-        <div class="card" style="border-radius: 12px">
-        <div class="card-body">
-          <div class="container">
-            <div class="form-row mt-3">
-              <div class="col-md-12"><h5 style="color: #1492E6; margin-bottom:-0.4rem">Finalizar</h5></div>
-              <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
-            </div>
-            <div class=" d-flex justify-content-between align-items-center" style="margin-top: 15px; margin-bottom:18px">
-              <h6 style="font-family:Arial, Helvetica, sans-serif; margin-right:15px"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
-              <input id="rascunhoInput" type="hidden" name="rascunho" value="false">
-              <button type="button" class="btn btn-primary" id="formRascunho" >{{ __('Rascunho') }}</button>
-              <button type="submit" id="clickSubmitForm" style="display: none"></button>
-              <button type="button" class="btn btn-success" id="idButtonSubmitProjeto" onclick="enviarModalenviarProjeto()" disabled>{{ __('Enviar Proposta') }}</button>
-            </div>
-          </div>
-        </div>
-        </div>
-      </div>
-      <!--X Finalizar X-->
-    </div>
-  </div>
-  </form>
-<!-- Modal de Aviso Edit -->
-<div class="modal fade" id="exampleModalAnexarDocumento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        <div class="modal-header" id="idCorCabecalhoModalDocumento">
-                <h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-12" style="font-family: 'Roboto', sans-serif;"><label id="idTituloDaMensagemModalDocumento"></label></div>
-                <div class="col-12" style="font-family: 'Roboto', sans-serif; margin-top:10px;">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal"style="width:200px;">Fechar</button>
-        </div>
-    </div>
-  </div>
-  </div>
-
-<!-- Modal -->
-<div class="modal fade" id="modalSubmit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-        <button type="button" class="close" onclick="fecharModalenviarProjeto()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary"  onclick="fecharModalenviarProjeto()">Close</button>
-        <button type="button" class="btn btn-primary" onclick="enviarModalenviarProjeto()">Enviar projeto</button>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-@endsection
-
-@section('javascript')
-<script type="text/javascript">
+            </div>        
+    
+  </li>`;
+}
 
 /*
-* GLOBAL
-*/
-var numeroDeParticipantes;
-var tempPart1;
-var tempPart2;
-var tempPart3;
-
-  
-tempPart1 = document.getElementById("participante1");
-tempPart2 = document.getElementById("participante2");
-tempPart3 = document.getElementById("participante3");
-
-window.onload = areas();
-
-/*
-* FUNCAO: Mostrar no input o arquivo selecionado
+*  FUNCAO: Alterar o nome na aba 
 *
 */
-    
-    $('.custom-file-input').on('change', function() {
-      var fieldVal = $(this).val();
+$(document).on('keyup', "#nomeCompletoParticipante1",function () {
+  if($(this).val().length>0){
+    document.getElementById('tituloParticipante1').innerHTML = "Participante - "+$(this).val();
+  }else{
+    document.getElementById('tituloParticipante1').innerHTML = "Participante";
+  }
+});
+$(document).on('keyup', "#nomeCompletoParticipante2",function () {
+  if($(this).val().length>0){
+    document.getElementById('tituloParticipante2').innerHTML = "Participante - "+$(this).val();
+  }else{
+    document.getElementById('tituloParticipante2').innerHTML = "Participante";
+  }
+});
+$(document).on('keyup', "#nomeCompletoParticipante3",function () {
+  if($(this).val().length>0){
+    document.getElementById('tituloParticipante3').innerHTML = "Participante - "+$(this).val();
+  }else{
+    document.getElementById('tituloParticipante3').innerHTML = "Participante";
+  }
+});
 
-      // Change the node's value by removing the fake path (Chrome)
-      fieldVal = fieldVal.replace("C:\\fakepath\\", "");
+/*
+*  FUNCAOS: validar input
+*/
+function validarForm(form){
 
-      if (fieldVal != undefined || fieldVal != "") {
-        $(this).next(".custom-file-label").attr('data-content', fieldVal);
-        $(this).next(".custom-file-label").text(fieldVal);
+  //regex
+  const regexNumero = /[0-9]/;
+  const regexLetra = /[A-Za-z]/;
+  var regexEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+
+
+  //informacoes do projeto
+  let nomeDoProjeto = form.nomeProjeto.value;
+  let grandeArea = form.grandeArea.value;
+  let area = form.area.value;
+
+  //informacoes do proponente
+  let linkLattesEstudante = form.linkLattesEstudante.value;
+  let pontuacaoPlanilha = form.pontuacaoPlanilha.value;
+  let linkGrupo = form.linkGrupo.value;
+
+  //anexos
+  let anexoProjeto = form.anexoProjeto.value;
+  let anexoLattesCoordenador = form.anexoLattesCoordenador.value;
+  let anexoPlanilha = form.anexoPlanilha.value;
+  let anexoCONSU = form.anexoCONSU.value;
+  let anexoComiteEtica = form.anexoComiteEtica.value;
+  let justificativaAutorizacaoEtica = form.justificativaAutorizacaoEtica.value;
+  let radioSim = document.getElementById("radioSim").checked;
+  let radioNao = document.getElementById("radioNao").checked;
+
+  //participantes
+  //let nomeCompletoParticipante = form.elements['nomeParticipante[]'];
+  //let emailParticipante = form.elements['emailParticipante[]'];
+  //console.log(nomeCompletoParticipante1)
+
+  /*var myCollection = document.getElementsByTagName("input");
+  console.log(myCollection.length, myCollection[24]);
+  console.log(myCollection.length, myCollection[25]);
+  console.log(myCollection.length, myCollection[26]);
+  console.log(myCollection.length);
+
+  if(toString(myCollection[24]) != 'undefined'){
+    if(myCollection[24] == ""){
+      alert('Digite seu nome completo');
+      return false;
+    }
+  }
+  */
+
+  //participantes
+
+    //participante1 - data
+    if(arrayElementos.length == 3){
+      alert("É necesário cadastrar pelo menos um participante!");
+          return false;
+    }else{
+      for(i = 1; i<=3; i++){
+        if(arrayElementos.includes(i.toString()) == false){
+          //console.log("temos", i);
+          
+          //nome participante
+          var elementNome =  document.getElementById('nomeCompletoParticipante'+i);
+          if (typeof(elementNome) != 'undefined' && elementNome != null){
+            if(elementNome.value == ""){
+              alert("nome vazio");
+              return false;
+            }else if(regexNumero.test(elementNome.value) == true){
+              alert("Você colocou número no nome do participante. Verifique o campo e tente novamente!");
+              return false;
+            }
+          }
+          //email participante
+          var elementEmail =  document.getElementById('email'+i);
+          if (typeof(elementEmail) != 'undefined' && elementEmail != null){
+            if(elementEmail.value == ""){
+              alert("email vazio");
+              return false;
+            }else if(regexEmail.test(elementEmail.value) == false){
+              alert("Verifique o e-mail do participante e tente novamente!");
+              return false;
+            }
+          }
+          //data participante
+          var elementData =  document.getElementById('data'+i);
+          if (typeof(elementData) != 'undefined' && elementData != null){
+            if(elementData.value == ""){
+              alert("Verifique a data de nascimento do participante e tente novamente!");
+              return false;
+            }
+          }
+          //cpf participante
+          var elementCpf =  document.getElementById('cpf'+i);
+          if (typeof(elementCpf) != 'undefined' && elementCpf != null){
+            if(elementCpf.value == ""){
+              alert("cpf vazio");
+              return false;
+            }else if(regexLetra.test(elementCpf.value)==true){
+              alert("Verifique o cpf do participante e tente novamente!");
+              return false;
+            }else if(validarCPF(elementCpf.value)==false){
+              alert("Verifique o cpf do participante e tente novamente!");
+              return false;
+            }
+          }
+          //rg participante
+          var elementRg =  document.getElementById("rg"+i);
+          if (typeof(elementRg) != 'undefined' && elementRg != null){
+            if(elementRg.value == ""){
+              alert("rg vazio");
+              return false;
+            }
+          }
+          //celular participante
+          var elementCelular =  document.getElementById('celular'+i);
+          if (typeof(elementCelular) != 'undefined' && elementCelular != null){
+            if(elementCelular.value == ""){
+              alert("celular vazio");
+              return false;
+            }
+          }
+          //cep participante
+          var elementCep =  document.getElementById('cep'+i);
+          if (typeof(elementCep) != 'undefined' && elementCep != null){
+            if(elementCep.value == ""){
+              alert("cep vazio");
+              return false;
+            }
+          }
+          //estado participante
+          var elementEstado =  document.getElementById('estado'+i);
+          if (typeof(elementEstado) != 'undefined' && elementEstado != null){
+            if(elementEstado.value == ""){
+              alert("estado vazio");
+              return false;
+            }
+          }
+          //cidade participante
+          var elementCidade =  document.getElementById('cidade'+i);
+          if (typeof(elementCidade) != 'undefined' && elementCidade != null){
+            if(elementCidade.value == ""){
+              alert("cidade vazio");
+              return false;
+            }
+          }
+          //bairro participante
+          var elementBairro =  document.getElementById('bairro'+i);
+          if (typeof(elementBairro) != 'undefined' && elementBairro != null){
+            if(elementBairro.value == ""){
+              alert("bairro vazio");
+              return false;
+            }
+          }
+          //rua participante
+          var elementRua =  document.getElementById('rua'+i);
+          if (typeof(elementRua) != 'undefined' && elementRua != null){
+            if(elementRua.value == ""){
+              alert("rua vazio");
+              return false;
+            }
+          }
+          //numero participante
+          var elementNumero =  document.getElementById('numero'+i);
+          if (typeof(elementNumero) != 'undefined' && elementNumero != null){
+            if(elementNumero.value == ""){
+              alert("numero vazio");
+              return false;
+            }
+          }
+          //complemento participante
+          var elementComplemento =  document.getElementById('complemento'+i);
+          if (typeof(elementComplemento) != 'undefined' && elementComplemento != null){
+            if(elementComplemento.value == ""){
+              alert("complemento vazio");
+              return false;
+            }
+          }
+          //universidade participante
+          var elementUniversidade =  document.getElementById('universidade'+i);
+          if (typeof(elementUniversidade) != 'undefined' && elementUniversidade != null){
+            if(elementUniversidade.value == ""){
+              alert("Universidade vazio");
+              return false;
+            }
+          }
+          //curso participante
+          var elementCurso =  document.getElementById('curso'+i);
+          if (typeof(elementCurso) != 'undefined' && elementCurso != null){
+            if(elementCurso.value == ""){
+              alert("Curso vazio");
+              return false;
+            }
+          }
+          //turno participante
+          var elementTurno =  document.getElementById('turno'+i);
+          if (typeof(elementTurno) != 'undefined' && elementTurno != null){
+            if(elementTurno.value == ""){
+              alert("Turno vazio");
+              return false;
+            }
+          }
+          
+          //totalDePeriodos participante
+          var elementTotalDePeriodos =  document.getElementById('totalDePeriodos'+i);
+          if (typeof(elementTotalDePeriodos) != 'undefined' && elementTotalDePeriodos != null){
+            if(elementTotalDePeriodos.value == ""){
+              alert("totalDePeriodos1 vazio");
+              return false;
+            }
+          }
+          //totalDePeriodos participante
+          var elementPeriodoAtual =  document.getElementById('periodoAtual'+i);
+          if (typeof(elementPeriodoAtual) != 'undefined' && elementPeriodoAtual != null){
+            if(elementPeriodoAtual.value == ""){
+              alert("periodoAtual1 vazio");
+              return false;
+            }
+          }
+          //ordemDePrioridade1 participante
+          var elementOrdemDePrioridade =  document.getElementById('ordemDePrioridade'+i);
+          if (typeof(elementOrdemDePrioridade) != 'undefined' && elementOrdemDePrioridade != null){
+            if(elementOrdemDePrioridade.value == ""){
+              alert("elementOrdemDePrioridade vazio");
+              return false;
+            }
+          }
+          //coeficienteDeRendimento1 participante
+          var elementCoeficienteDeRendimento =  document.getElementById('coeficienteDeRendimento'+i);
+          if (typeof(elementCoeficienteDeRendimento) != 'undefined' && elementCoeficienteDeRendimento != null){
+            if(elementCoeficienteDeRendimento.value == ""){
+              alert("elementCoeficienteDeRendimento vazio");
+              return false;
+            }
+          }
+          //titulo1 participante
+          var elemenTtitulo =  document.getElementById('titulo'+i);
+          if (typeof(elemenTtitulo) != 'undefined' && elemenTtitulo != null){
+            if(elemenTtitulo.value == ""){
+              alert("elemenTtitulo vazio");
+              return false;
+            }
+          }
+          //anexoPlanoDeTrabalho1 participante
+          var elemenAnexoPlanoDeTrabalho =  document.getElementById('anexoPlanoDeTrabalho'+i);
+          if (typeof(elemenAnexoPlanoDeTrabalho) != 'undefined' && elemenAnexoPlanoDeTrabalho != null){
+            if(elemenAnexoPlanoDeTrabalho.value == ""){
+              alert("elemenAnexoPlanoDeTrabalho vazio");
+              return false;
+            }
+          }
+
+
+
+        }
       }
-    })
+      alert("ok");
+      return false;
+      
+      //nome participante
+     /* var elementNome =  document.getElementById('nomeCompletoParticipante1');
+      if (typeof(elementNome) != 'undefined' && elementNome != null){
+        if(elementNome.value == ""){
+          alert("nome vazio");
+          return false;
+        }
+      }
+      //email participante
+      var elementEmail =  document.getElementById('email1');
+      if (typeof(elementEmail) != 'undefined' && elementEmail != null){
+        if(elementEmail.value == ""){
+          alert("email vazio");
+          return false;
+        }
+      }
+      //data participante
+      var elementData =  document.getElementById('data1');
+      if (typeof(elementData) != 'undefined' && elementData != null){
+        if(elementData.value == ""){
+          alert("Data vazio");
+          return false;
+        }
+      }
+      //cpf participante
+      var elementCpf =  document.getElementById('cpf1');
+      if (typeof(elementCpf) != 'undefined' && elementCpf != null){
+        if(elementCpf.value == ""){
+          alert("cpf vazio");
+          return false;
+        }
+      }
+      //rg participante
+      var elementRg =  document.getElementById('rg1');
+      if (typeof(elementRg) != 'undefined' && elementRg != null){
+        if(elementRg.value == ""){
+          alert("rg vazio");
+          return false;
+        }
+      }
+      //celular participante
+      var elementCelular =  document.getElementById('celular1');
+      if (typeof(elementCelular) != 'undefined' && elementCelular != null){
+        if(elementCelular.value == ""){
+          alert("celular vazio");
+          return false;
+        }
+      }
+      //cep participante
+      var elementCep =  document.getElementById('cep1');
+      if (typeof(elementCep) != 'undefined' && elementCep != null){
+        if(elementCep.value == ""){
+          alert("cep vazio");
+          return false;
+        }
+      }
+      //estado participante
+      var elementEstado =  document.getElementById('estado1');
+      if (typeof(elementEstado) != 'undefined' && elementEstado != null){
+        if(elementEstado.value == ""){
+          alert("estado vazio");
+          return false;
+        }
+      }
+      //cidade participante
+      var elementCidade =  document.getElementById('cidade1');
+      if (typeof(elementCidade) != 'undefined' && elementCidade != null){
+        if(elementCidade.value == ""){
+          alert("cidade vazio");
+          return false;
+        }
+      }
+      //bairro participante
+      var elementBairro =  document.getElementById('bairro1');
+      if (typeof(elementBairro) != 'undefined' && elementBairro != null){
+        if(elementBairro.value == ""){
+          alert("bairro vazio");
+          return false;
+        }
+      }
+      //rua participante
+      var elementRua =  document.getElementById('rua1');
+      if (typeof(elementRua) != 'undefined' && elementRua != null){
+        if(elementRua.value == ""){
+          alert("rua vazio");
+          return false;
+        }
+      }
+      //numero participante
+      var elementNumero =  document.getElementById('numero1');
+      if (typeof(elementNumero) != 'undefined' && elementNumero != null){
+        if(elementNumero.value == ""){
+          alert("numero vazio");
+          return false;
+        }
+      }
+      //complemento participante
+      var elementComplemento =  document.getElementById('complemento1');
+      if (typeof(elementComplemento) != 'undefined' && elementComplemento != null){
+        if(elementComplemento.value == ""){
+          alert("complemento vazio");
+          return false;
+        }
+      }
+      //universidade participante
+      var elementUniversidade =  document.getElementById('universidade1');
+      if (typeof(elementUniversidade) != 'undefined' && elementUniversidade != null){
+        if(elementUniversidade.value == ""){
+          alert("Universidade vazio");
+          return false;
+        }
+      }
+      //curso participante
+      var elementCurso =  document.getElementById('curso1');
+      if (typeof(elementCurso) != 'undefined' && elementCurso != null){
+        if(elementCurso.value == ""){
+          alert("Curso vazio");
+          return false;
+        }
+      }
+      //turno participante
+      var elementTurno =  document.getElementById('turno1');
+      if (typeof(elementTurno) != 'undefined' && elementTurno != null){
+        if(elementTurno.value == ""){
+          alert("Turno vazio");
+          return false;
+        }
+      }
+      
+      //totalDePeriodos participante
+      var elementTotalDePeriodos =  document.getElementById('totalDePeriodos1');
+      if (typeof(elementTotalDePeriodos) != 'undefined' && elementTotalDePeriodos != null){
+        if(elementTotalDePeriodos.value == ""){
+          alert("totalDePeriodos1 vazio");
+          return false;
+        }
+      }
+      //totalDePeriodos participante
+      var elementPeriodoAtual =  document.getElementById('periodoAtual1');
+      if (typeof(elementPeriodoAtual) != 'undefined' && elementPeriodoAtual != null){
+        if(elementPeriodoAtual.value == ""){
+          alert("periodoAtual1 vazio");
+          return false;
+        }
+      }
+      //ordemDePrioridade1 participante
+      var elementOrdemDePrioridade =  document.getElementById('ordemDePrioridade1');
+      if (typeof(elementOrdemDePrioridade) != 'undefined' && elementOrdemDePrioridade != null){
+        if(elementOrdemDePrioridade.value == ""){
+          alert("elementOrdemDePrioridade vazio");
+          return false;
+        }
+      }
+      //coeficienteDeRendimento1 participante
+      var elementCoeficienteDeRendimento =  document.getElementById('coeficienteDeRendimento1');
+      if (typeof(elementCoeficienteDeRendimento) != 'undefined' && elementCoeficienteDeRendimento != null){
+        if(elementCoeficienteDeRendimento.value == ""){
+          alert("elementCoeficienteDeRendimento vazio");
+          return false;
+        }
+      }
+      //titulo1 participante
+      var elemenTtitulo =  document.getElementById('titulo1');
+      if (typeof(elemenTtitulo) != 'undefined' && elemenTtitulo != null){
+        if(elemenTtitulo.value == ""){
+          alert("elemenTtitulo vazio");
+          return false;
+        }
+      }
+      //anexoPlanoDeTrabalho1 participante
+      var elemenAnexoPlanoDeTrabalho =  document.getElementById('anexoPlanoDeTrabalho1');
+      if (typeof(elemenAnexoPlanoDeTrabalho) != 'undefined' && elemenAnexoPlanoDeTrabalho != null){
+        if(elemenAnexoPlanoDeTrabalho.value == ""){
+          alert("elemenAnexoPlanoDeTrabalho vazio");
+          return false;
+        }
+      }
+
+      */
+
+
+
+    }
+    
+    
+    alert("CHEGOUUU!");
+    return false;
+
+  
+}
+function validarCPF(valor){
+    var soma = 0;
+    var resto;
+    var inputCPF = valor.match(/\d/g).join('');
+
+    if(inputCPF == '00000000000') return false;
+
+    if(inputCPF.length >11) return false;
+
+    for(i=1; i<=9; i++) soma = soma + parseInt(inputCPF.substring(i-1, i)) * (11 - i);
+    resto = (soma * 10) % 11;
+
+    if((resto == 10) || (resto == 11)) resto = 0;
+    if(resto != parseInt(inputCPF.substring(9, 10))) return false;
+
+    soma = 0;
+    for(i = 1; i <= 10; i++) soma = soma + parseInt(inputCPF.substring(i-1, i))*(12-i);
+    resto = (soma * 10) % 11;
+
+    if((resto == 10) || (resto == 11)) resto = 0;
+    if(resto != parseInt(inputCPF.substring(10, 11))) return false;
+    return true;
+}
 
 /*
 * FUNCAO: Gerar as areas
@@ -1311,7 +1296,7 @@ function subareas() {
     })
 
   }
-/*  
+  /*  
 * FUNCAO: funcao responsavel pelo abre e fecha da area "possui autorizacoes especiais?"
 *
 */
@@ -1330,56 +1315,90 @@ function displayAutorizacoesEspeciais(valor){
       document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
     }
   }
-/*  
+  /*  
 * FUNCAO: funcao responsavel pela verificacao dos arquivos anexados (PDF)
 *
 */
-function verificarArquivoAnexado_pdf(item){
+function verificarArquivoAnexado_pdf(item, legenda){
     
     if(item.files[0].type.split('/')[1] != "pdf"){
         document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
         document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado não é do tipo PDF! ";
+        document.getElementById(legenda).innerHTML = "O arquivo deve ser no formato PDF de até 2MB.";
         document.getElementById(item.id).value = "";
         $("#exampleModalAnexarDocumento").modal({show: true});
     }else if(item.files[0].size > 2000000 && item.files[0].type.split('/')[1] == "pdf"){
         document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
         document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
+        document.getElementById(legenda).innerHTML = "O arquivo deve ser no formato PDF de até 2MB.";
         document.getElementById(item.id).value = "";
         $("#exampleModalAnexarDocumento").modal({show: true});
+    }else{
+      document.getElementById(legenda).innerHTML = item.value.split('\\')[2];
     }
   }
 /* FUNCAO: funcao responsavel pela verificacao dos arquivos anexados (XLS, XLSX, ODS)
 *
 */
-function verificarArquivoAnexado_xls_xlsx_ods(item){
+function verificarArquivoAnexado_xls_xlsx_ods(item, legenda){
     if(item.files[0].name.split('.')[1] == "xls" || item.files[0].name.split('.')[1] == "ods" || item.files[0].name.split('.')[1] == "xlsx"){
         if(item.files[0].size > 2000000){
           document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
           document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado é maior que 2MB!";
+          document.getElementById(legenda).innerHTML = "Formato do arquivo: XLS, XLSX ou ODS de até 2MB.";
           document.getElementById(item.id).value = "";
           $("#exampleModalAnexarDocumento").modal({show: true});
+        }else{
+          document.getElementById(legenda).innerHTML = item.value.split('\\')[2];
         }
     }else{
       document.getElementById("idCorCabecalhoModalDocumento").style.backgroundColor = "red";
       document.getElementById("idTituloDaMensagemModalDocumento").innerHTML = "O arquivo selecionado não é do tipo XLS, XLSX ou ODS! ";
+      document.getElementById(legenda).innerHTML = "Formato do arquivo: XLS, XLSX ou ODS de até 2MB.";
       document.getElementById(item.id).value = "";
       $("#exampleModalAnexarDocumento").modal({show: true});
     }
     
 }
-
 /*
-* FUNCAO: Gerar periodos
+* FUNCAO: Gerar periodos 1
 *
 */
 function gerarPeriodos1(select) {
     var div = select.parentElement.parentElement;
-    var selectPeriodos = div.children[21].children[1];
+    var selectPeriodos = div.children[22].children[1];
     var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
     for(var i = 0; i < parseInt(select.value); i++) {
       html += `<option value="${i+1}">${i+1}º</option>`;
     }
-
+    $(selectPeriodos).html('');
+    $(selectPeriodos).append(html);
+  }
+/*
+* FUNCAO: Gerar periodos 2
+*
+*/
+function gerarPeriodos2(select) {
+    var div = select.parentElement.parentElement;
+    var selectPeriodos = div.children[22].children[1];
+    var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
+    for(var i = 0; i < parseInt(select.value); i++) {
+      html += `<option value="${i+1}">${i+1}º</option>`;
+    }
+    $(selectPeriodos).html('');
+    $(selectPeriodos).append(html);
+  }
+/*
+* FUNCAO: Gerar periodos 3
+*
+*/
+function gerarPeriodos3(select) {
+    var div = select.parentElement.parentElement;
+    var selectPeriodos = div.children[22].children[1];
+    var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
+    for(var i = 0; i < parseInt(select.value); i++) {
+      html += `<option value="${i+1}">${i+1}º</option>`;
+    }
     $(selectPeriodos).html('');
     $(selectPeriodos).append(html);
   }
@@ -1387,647 +1406,5 @@ function gerarPeriodos1(select) {
 * FUNCAO: Selecionar participantes do projeto
 *
 */
-
-function selecionarParticipantes(quantidade){
-  if(quantidade == "1"){
-    numeroDeParticipantes = 1;
-    document.getElementById("participante1").style.display ="block";
-    document.getElementById("participante2").remove();
-    document.getElementById("participante3").remove();
-    document.getElementById("selecaoParticipantes").style.display ="none";
-  }else if(quantidade == 2){
-    numeroDeParticipantes = 2;
-    document.getElementById("participante1").style.display ="block";
-    document.getElementById("participante2").style.display ="block";
-    document.getElementById("participante3").remove();
-    document.getElementById("selecaoParticipantes").style.display ="none";
-  }else if(quantidade == 3){
-    numeroDeParticipantes = 3;
-    document.getElementById("participante1").style.display ="block";
-    document.getElementById("participante2").style.display ="block";
-    document.getElementById("participante3").style.display ="block";
-    document.getElementById("selecaoParticipantes").style.display ="none";
-  }
-  //mostrar botao alterar
-  document.getElementById("dropdownMenuButtonAlterar").style.display = "block";
-  // habilitar botao submeter projeto
-  document.getElementById("idButtonSubmitProjeto").disabled  = false;
-}
-/*
-* FUNCAO: abrir modal para enviar o trabalho
-*/
-function abrirModalenviarProjeto(){
-  if(validarForm() == true){
-    //fecharModalenviarProjeto();
-  }else{
-    document.getElementById("modalSubmit").classList.add("show");
-    document.getElementById("modalSubmit").style.display="block";
-    document.getElementById("modalSubmit").style.backgroundColor="rgba(0, 0, 0, 0.5)";
-
-    document.getElementById("collapseParticipante1").classList.add("show");
-    document.getElementById("collapseParticipante2").classList.add("show");
-    document.getElementById("collapseParticipante3").classList.add("show");
-  }
-}
-/*
-* FUNCAO: fechar modal para enviar o trabalho
-*/
-function fecharModalenviarProjeto(){
-  document.getElementById("modalSubmit").classList.remove("show");
-  document.getElementById("modalSubmit").style.display="none";
-  document.getElementById("modalSubmit").style.backgroundColor="rgba(0, 0, 0, 0.5)";
-
-  //document.getElementById("collapseParticipante1").classList.remove("show");
-  //document.getElementById("collapseParticipante2").classList.remove("show");
-  //document.getElementById("collapseParticipante3").classList.remove("show");
-}
-/*
-* FUNCAO: enviar modal
-*
-*/
-function enviarModalenviarProjeto(){
-  if(numeroDeParticipantes == 1){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    document.getElementById("clickSubmitForm").click();
-  }else if(numeroDeParticipantes == 2){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    document.getElementById("collapseParticipante2").classList.add("show");
-    document.getElementById("clickSubmitForm").click();
-  }else if(numeroDeParticipantes == 3){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    document.getElementById("collapseParticipante2").classList.add("show");
-    document.getElementById("collapseParticipante3").classList.add("show");
-    document.getElementById("clickSubmitForm").click();
-  }
-}
-/*
-* FUNCAO: Formacao dos participantes
-*
-*/
-function alterarFormacao(quero){
-  //console.log(numeroDeParticipantes);
-  if(numeroDeParticipantes == 1 && quero == 2){
-    var container = document.getElementById("posicaoParticipante2");
-    container.append(tempPart2);
-    document.getElementById("participante2").style.display ="block";
-    numeroDeParticipantes = quero;
-  }else if(numeroDeParticipantes == 1 && quero == 3){
-
-    var container2 = document.getElementById("posicaoParticipante2");
-    container2.append(tempPart2);
-
-    var container3 = document.getElementById("posicaoParticipante3");
-    container3.append(tempPart3);
-
-    document.getElementById("participante2").style.display ="block";
-    document.getElementById("participante3").style.display ="block";
-
-    numeroDeParticipantes = quero;
-  }else if(numeroDeParticipantes == 2 && quero == 1){
-    document.getElementById("participante1").style.display ="block";
-    document.getElementById("participante2").remove();
-    numeroDeParticipantes = quero;
-  }else if(numeroDeParticipantes == 2 && quero == 3){
-    var container3 = document.getElementById("posicaoParticipante3");
-    container3.append(tempPart3);
-    document.getElementById("participante3").style.display ="block";
-    numeroDeParticipantes = quero;
-  }else if(numeroDeParticipantes == 3 && quero == 1){
-    document.getElementById("participante1").style.display ="block";
-    document.getElementById("participante2").remove();
-    document.getElementById("participante3").remove();
-    numeroDeParticipantes = quero;
-  }else if(numeroDeParticipantes == 3 && quero == 2){
-    document.getElementById("participante1").style.display ="block";
-    document.getElementById("participante3").remove();
-    numeroDeParticipantes = quero;
-  }
-}
-
-
-/* FUNCAO: validar campos
-*
-*/
-$(document).ready(aplicarMascaras());
-
-function aplicarMascaras() {
-
-  $('#cpf1').mask('000.000.000-00');
-  $('#cpf2').mask('000.000.000-00');
-  $('#cpf3').mask('000.000.000-00');
-
-  $('#rg1').mask('00000000');
-  $('#rg2').mask('00000000');
-  $('#rg3').mask('00000000');
-
-  $('#celular1').mask('(00) 00000-0000');
-  $('#celular2').mask('(00) 00000-0000');
-  $('#celular3').mask('(00) 00000-0000');
-
-  $('#cep1').mask('00000-000');
-  $('#cep2').mask('00000-000');
-  $('#cep3').mask('00000-000');
-}
-function validarForm(){
-  
-  /*var buttonRadioSim = document.getElementById("radioSim");
-  var buttonRadioNao = document.getElementById("radioNao");
-  
-  //button radio
-  if(buttonRadioSim.checked == false && buttonRadioNao.checked == false){
-    document.getElementById("idAvisoAutorizacaoEspecial").style.display = "block";
-    document.getElementById("idAvisoAutorizacaoEspecial").autofocus;
-  }
-  //participantes
-  var part1 = document.getElementById("participante1").style.visibility;
-  var part2 = document.getElementById("participante1").style.visibility;
-  var part3 = document.getElementById("participante1").style.visibility;
-  */
-  
-
-
-  
-  
-  /*
-
-  document.getElementById("modalSubmit").classList.add("show");
-  document.getElementById("modalSubmit").style.display="block";
-  document.getElementById("modalSubmit").style.backgroundColor="black";
-
-  document.getElementById("collapseParticipante1").classList.add("show");
-  document.getElementById("collapseParticipante2").classList.add("show");
-  document.getElementById("collapseParticipante3").classList.add("show");
-  //document.getElementById("collapseParticipante1").classList.remove = "collapsed";
-  */
-}
-function validarPart1(){
-  //participante 1
-  var nome1 = document.getElementById("nomeCompletoParticipante1");
-  var email1 = document.getElementById("email1");
-  var data1 = document.getElementById("data1");
-  var cpf1 = document.getElementById("cpf1");
-  var rg1 = document.getElementById("rg1");
-  var celular1 = document.getElementById("celular1");
-  var cep1 = document.getElementById("cep1");
-  var estado1 = document.getElementById("estado1");
-  var cidade1 = document.getElementById("cidade1");
-  var bairro1 = document.getElementById("bairro1");
-  var rua1 = document.getElementById("rua1");
-  var numero1 = document.getElementById("numero1");
-  var complemento1 = document.getElementById("complemento1");
-  var universidade1 = document.getElementById("universidade1");
-  var curso1 = document.getElementById("curso1");
-  var turno1 = document.getElementById("turno1");
-  var totalDePeriodos1 = document.getElementById("totalDePeriodos1");
-  var periodoAtual1 = document.getElementById("periodoAtual1");
-  var ordemDePrioridade1 = document.getElementById("ordemDePrioridade1");
-  var coeficineteDeRendimento1 = document.getElementById("coeficienteDeRendimento1");
-  var tituloPlanoDeTrabalho1 = document.getElementById("titulo1");
-  var anexoPlanoDeTrabalho1 = document.getElementById("anexoPlanoDeTrabalho1");
-  
-//validacao dos campos - participante 1
-if(nome1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    nome1.focus();
-    return true;
-  }else if(email1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    email1.focus();
-    return true;
-  }else if(data1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    data1.focus();
-    return true;
-  }else if(cpf1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    cpf1.focus();
-    return true;
-  }else if(rg1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    rg1.focus();
-    return true;
-  }else if(celular1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    celular1.focus();
-    return true;
-  }else if(cep1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    cep1.focus();
-    return true;
-  }else if(estado1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    estado1.focus();
-    return true;
-  }else if(cidade1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    cidade1.focus();
-    return true;
-  }else if(bairro1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    bairro1.focus();
-    return true;
-  }else if(rua1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    rua1.focus();
-    return true;
-  }else if(numero1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    numero1.focus();
-    return true;
-  }else if(complemento1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    complemento1.focus();
-    return true;
-  }else if(complemento1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    complemento1.focus();
-    return true;
-  }else if(universidade1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    universidade1.focus();
-    return true;
-  }else if(curso1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    curso1.focus();
-    return true;
-  }else if(turno1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    turno1.focus();
-    return true;
-  }else if(totalDePeriodos1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    totalDePeriodos1.focus();
-    return true;
-  }else if(periodoAtual1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    periodoAtual1.focus();
-    return true;
-  }else if(ordemDePrioridade1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    ordemDePrioridade1.focus();
-    return true;
-  }else if(coeficineteDeRendimento1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    coeficineteDeRendimento1.focus();
-    return true;
-  }else if(tituloPlanoDeTrabalho1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    tituloPlanoDeTrabalho1.focus();
-    return true;
-  }else if(anexoPlanoDeTrabalho1.value == ""){
-    document.getElementById("collapseParticipante1").classList.add("show");
-    //alert("Nome não informado");
-    anexoPlanoDeTrabalho1.focus();
-    return true;
-  }
-}
-function validarPart2(){
-  //participante 2
-  var nome2 = document.getElementById("nomeCompletoParticipante2");
-  var email2 = document.getElementById("email2");
-  var data2 = document.getElementById("data2");
-  var cpf2 = document.getElementById("cpf2");
-  var rg2 = document.getElementById("rg2");
-  var celular2 = document.getElementById("celular2");
-  var cep2 = document.getElementById("cep2");
-  var estado2 = document.getElementById("estado2");
-  var cidade2 = document.getElementById("cidade2");
-  var bairro2 = document.getElementById("bairro2");
-  var rua2 = document.getElementById("rua2");
-  var numero2 = document.getElementById("numero2");
-  var complemento2 = document.getElementById("complemento2");
-  var universidade2 = document.getElementById("universidade2");
-  var curso2 = document.getElementById("curso2");
-  var turno2 = document.getElementById("turno2");
-  var totalDePeriodos2 = document.getElementById("totalDePeriodos2");
-  var periodoAtual2 = document.getElementById("periodoAtual2");
-  var ordemDePrioridade2 = document.getElementById("ordemDePrioridade2");
-  var coeficineteDeRendimento2 = document.getElementById("coeficienteDeRendimento2");
-  var tituloPlanoDeTrabalho2 = document.getElementById("titulo2");
-  var anexoPlanoDeTrabalho2 = document.getElementById("anexoPlanoDeTrabalho2");
-
-  //validacao dos campos - participante 2
-  if(nome2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    nome2.focus();
-    return true;
-  } else if(email2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    email2.focus();
-    return true;
-  }else if(data2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    data2.focus();
-    return true;
-  }else if(cpf2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    cpf2.focus();
-    return true;
-  }else if(rg2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    rg2.focus();
-    return true;
-  }else if(celular2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    celular2.focus();
-    return true;
-  }else if(cep2.value == ""){
-    document.getElementById("colapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    cep2.focus();
-    return true;
-  }else if(estado2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    estado2.focus();
-    return true;
-  }else if(cidade2.value == ""){
-    console.log(cidade2.value)
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    cidade2.focus();
-    return true;
-  }else if(bairro2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    bairro2.focus();
-    return true;
-  }else if(rua2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    rua2.focus();
-    return true;
-  }else if(numero2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    numero2.focus();
-    return true;
-  }else if(complemento2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    complemento2.focus();
-    return true;
-  }else if(complemento2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    complemento2.focus();
-    return true;
-  }else if(universidade2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    universidade2.focus();
-    return true;
-  }else if(curso2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    curso2.focus();
-    return true;
-  }else if(turno2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    turno2.focus();
-    return true;
-  }else if(totalDePeriodos2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    totalDePeriodos2.focus();
-    return true;
-  }else if(periodoAtual2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    periodoAtual2.focus();
-    return true;
-  }else if(ordemDePrioridade2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    ordemDePrioridade2.focus();
-    return true;
-  }else if(coeficineteDeRendimento2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    coeficineteDeRendimento2.focus();
-    return true;
-  }else if(tituloPlanoDeTrabalho2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    tituloPlanoDeTrabalho2.focus();
-    return true;
-  }else if(anexoPlanoDeTrabalho2.value == ""){
-    document.getElementById("collapseParticipante2").classList.add("show");
-    //alert("Nome não informado");
-    anexoPlanoDeTrabalho2.focus();
-    return true;
-  }
-
-  
-}
-function validarPart3(){
-  //participante 3
-  var nome3 = document.getElementById("nomeCompletoParticipante3");
-  var email3 = document.getElementById("email3");
-  var data3 = document.getElementById("data3");
-  var cpf3 = document.getElementById("cpf3");
-  var rg3 = document.getElementById("rg3");
-  var celular3 = document.getElementById("celular3");
-  var cep3 = document.getElementById("cep3");
-  var estado3 = document.getElementById("estado3");
-  var cidade3 = document.getElementById("cidade3");
-  var bairro3 = document.getElementById("bairro3");
-  var rua3 = document.getElementById("rua3");
-  var numero3 = document.getElementById("numero3");
-  var complemento3 = document.getElementById("complemento3");
-  var universidade3 = document.getElementById("universidade3");
-  var curso3 = document.getElementById("curso3");
-  var turno3 = document.getElementById("turno3");
-  var totalDePeriodos3 = document.getElementById("totalDePeriodos3");
-  var periodoAtual3 = document.getElementById("periodoAtual3");
-  var ordemDePrioridade3 = document.getElementById("ordemDePrioridade3");
-  var coeficineteDeRendimento3 = document.getElementById("coeficienteDeRendimento3");
-  var tituloPlanoDeTrabalho3 = document.getElementById("titulo3");
-  var anexoPlanoDeTrabalho3 = document.getElementById("anexoPlanoDeTrabalho3");
-
-  //validacao dos campos - participante 3
-  if(nome3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    nome3.focus();
-    return true;
-  }else if(email3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    email3.focus();
-    return true;
-  }else if(data3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    data3.focus();
-    return true;
-  }else if(cpf3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    cpf3.focus();
-    return true;
-  }else if(rg3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    rg3.focus();
-    return true;
-  }else if(celular3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    celular3.focus();
-    return true;
-  }else if(cep3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    cep3.focus();
-    return true;
-  }else if(estado3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    estado3.focus();
-    return true;
-  }else if(cidade3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    cidade3.focus();
-    return true;
-  }else if(bairro3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    bairro3.focus();
-    return true;
-  }else if(rua3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    rua3.focus();
-    return true;
-  }else if(numero3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    numero3.focus();
-    return true;
-  }else if(complemento3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    complemento3.focus();
-    return true;
-  }else if(complemento3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    complemento3.focus();
-    return true;
-  }else if(universidade3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    universidade3.focus();
-    return true;
-  }else if(curso3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    curso3.focus();
-    return true;
-  }else if(turno3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    turno3.focus();
-    return true;
-  }else if(totalDePeriodos3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    totalDePeriodos3.focus();
-    return true;
-  }else if(periodoAtual3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    periodoAtual3.focus();
-    return true;
-  }else if(ordemDePrioridade3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    ordemDePrioridade3.focus();
-    return true;
-  }else if(coeficineteDeRendimento3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    coeficineteDeRendimento3.focus();
-    return true;
-  }else if(tituloPlanoDeTrabalho3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    tituloPlanoDeTrabalho3.focus();
-    return true;
-  }else if(anexoPlanoDeTrabalho3.value == ""){
-    document.getElementById("collapseParticipante3").classList.add("show");
-    //alert("Nome não informado");
-    anexoPlanoDeTrabalho3.focus();
-    return true;
-  }
-}
-
-</script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
-
-$(document).ready(()=>{
-  console.log('rascunho')
-  $("#formRascunho").click(function(){
-    $("input").removeAttr('required')
-    $("select").removeAttr('required')
-    $("textarea").removeAttr('required')
-  
-    // $('#criarProjetoForm').append("<li>Appended item</li>");
-    $('#rascunhoInput').val('true');
-    $('#criarProjetoForm').submit();
-  });
-});
-
-  // $("#button").click(function(e){
-  //   e.preventDefault();
-
-  //   $.ajax({
-  //     headers: {
-  //       'X-CSRF-Token': $('input[name="_token"]').val()
-  //     },
-  //     url: "{{route('trabalho.store')}}",
-  //     type: 'post',
-  //     enctype: 'multipart/form-data',
-  //     success: function(result){
-  //       console.log("success")
-  //       console.log(result)
-  //     },
-  //     erro: (xhr,status,error) => {
-  //       console.log("erro")
-  //     }
-  //   });
-  // });
 </script>
 @endsection
