@@ -53,7 +53,7 @@
                   @if ($projeto->proponente_id === Auth()->user()->proponentes->id)
                     <tr>
                       <td>
-                        {{ $projeto->titulo }}{{$projeto->status}}
+                        {{ $projeto->titulo }}
                       </td>
                       <td style="text-align: center">{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>
                       @if($projeto->status == 'Avaliado')
