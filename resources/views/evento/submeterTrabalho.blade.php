@@ -248,7 +248,7 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="anexoGrupoPesquisa" class="col-form-label">{{ __('Pdf do grupo de pesquisa') }} <span style="color: red; font-weight:bold">*</span></label>
+                  <label for="anexoGrupoPesquisa" class="col-form-label">{{ __('Anexo do grupo de pesquisa') }} <span style="color: red; font-weight:bold">*</span></label>
                   @if(old('anexoGrupoPesquisa') != null || (isset($rascunho) && $rascunho->anexoDecisaoCONSU != "" && $rascunho->anexoDecisaoCONSU != null))
                   <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
