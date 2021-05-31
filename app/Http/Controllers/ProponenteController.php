@@ -82,15 +82,26 @@ class ProponenteController extends Controller
 
     }
 
-    public function projetosDoProponente() {
-        $proponente = Proponente::where('user_id', Auth()->user()->id)->first();
+    public function projetosDoProponente(Request $request) {
+        if($request->buscar == null){
+            $proponente = Proponente::where('user_id', Auth()->user()->id)->first();
 
-        $projetos = Trabalho::where('proponente_id', $proponente->id)->get();
-        $hoje = Carbon::today('America/Recife');
-        $hoje = $hoje->toDateString();
+            $projetos = Trabalho::where('proponente_id', $proponente->id)->get();
+            $hoje = Carbon::today('America/Recife');
+            $hoje = $hoje->toDateString();
 
+            return view('proponente.projetos')->with(['projetos' => $projetos, 'hoje'=>$hoje, 'busca'=>$request->buscar, 'flag'=>'false']);
+        }else{
+            $proponente = Proponente::where('user_id', Auth()->user()->id)->first();
+            
+            $projetos = Trabalho::where('proponente_id','=',$proponente->id)->where('titulo','ilike','%'.$request->buscar.'%')->get();
+            
+            $hoje = Carbon::today('America/Recife');
+            $hoje = $hoje->toDateString();
 
-        return view('proponente.projetos')->with(['projetos' => $projetos, 'hoje'=>$hoje]);
+            return view('proponente.projetos')->with(['projetos' => $projetos, 'hoje'=>$hoje, 'busca'=>$request->buscar, 'flag'=>'true']);
+        }
+        
     }
     public function projetosEdital($id) {
       $edital = Evento::find($id);
