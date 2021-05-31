@@ -126,12 +126,12 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="anexoGrupoPesquisa">Link do grupo de pesquisa</label>
-                  <input class="form-control @error('anexoGrupoPesquisa') is-invalid @enderror" type="text" name="anexoGrupoPesquisa"
-                          value="{{old('anexoGrupoPesquisa') !== null ? old('anexoGrupoPesquisa') : (isset($rascunho) ? $rascunho->anexoGrupoPesquisa : '')}}">
+                  <label for="linkGrupo">Link do grupo de pesquisa</label>
+                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo"
+                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}">
 
                   <small>Ex.: http://dgp.cnpq.br/dgp/espelhogrupo/228363</small>
-                  @error('anexoGrupoPesquisa')
+                  @error('linkGrupo')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -248,21 +248,21 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="anexoCONSU" class="col-form-label">{{ __('Pdf do grupo de pesquisa') }} <span style="color: red; font-weight:bold">*</span></label>
-                  @if(old('anexoConsuPreenchido') != null || (isset($rascunho) && $rascunho->anexoDecisaoCONSU != "" && $rascunho->anexoDecisaoCONSU != null))
+                  <label for="anexoGrupoPesquisa" class="col-form-label">{{ __('Pdf do grupo de pesquisa') }} <span style="color: red; font-weight:bold">*</span></label>
+                  @if(old('anexoGrupoPesquisa') != null || (isset($rascunho) && $rascunho->anexoDecisaoCONSU != "" && $rascunho->anexoDecisaoCONSU != null))
                   <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
                                                           'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
                   @endif
-                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido"
-                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif required>
+                  <input type="hidden" id="anexoGrupoPesquisa" name="anexoGrupoPesquisa"
+                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoGrupoPesquisa')}}" @endif required>
                   <div class="input-group">
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="verificarArquivoAnexado_pdf(this)" required>
-                      <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2MB.</label>
+                      <input type="file" class="custom-file-input @error('anexoGrupoPesquisa') is-invalid @enderror" id="anexoGrupoPesquisa" aria-describedby="inputGroupFileAddon01" name="anexoGrupoPesquisa" onchange="verificarArquivoAnexado_pdf(this)" required>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoGrupoPesquisa">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
-                  @error('anexoCONSU')
+                  @error('anexoGrupoPesquisa')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
