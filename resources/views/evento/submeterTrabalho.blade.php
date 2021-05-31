@@ -126,12 +126,12 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="linkGrupo">Link do grupo de pesquisa</label>
-                  <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo"
-                          value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}">
+                  <label for="anexoGrupoPesquisa">Link do grupo de pesquisa</label>
+                  <input class="form-control @error('anexoGrupoPesquisa') is-invalid @enderror" type="text" name="anexoGrupoPesquisa"
+                          value="{{old('anexoGrupoPesquisa') !== null ? old('anexoGrupoPesquisa') : (isset($rascunho) ? $rascunho->anexoGrupoPesquisa : '')}}">
 
                   <small>Ex.: http://dgp.cnpq.br/dgp/espelhogrupo/228363</small>
-                  @error('linkGrupo')
+                  @error('anexoGrupoPesquisa')
                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -248,6 +248,28 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-6">
+                  <label for="anexoCONSU" class="col-form-label">{{ __('Pdf do grupo de pesquisa') }} <span style="color: red; font-weight:bold">*</span></label>
+                  @if(old('anexoConsuPreenchido') != null || (isset($rascunho) && $rascunho->anexoDecisaoCONSU != "" && $rascunho->anexoDecisaoCONSU != null))
+                  <a id="anexoConsuTemp" href="{{ route('baixar.anexo.temp', ['eventoId' => $edital->id,
+                                                          'nomeAnexo' => 'anexoDecisaoCONSU' ])}}">Arquivo atual</a>
+                  @endif
+                  <input type="hidden" id="anexoConsuPreenchido" name="anexoConsuPreenchido"
+                   @if( isset($rascunho) && $rascunho->anexoDecisaoCONSU != "") value="sim" @else value="{{old('anexoConsuPreenchido')}}" @endif required>
+                  <div class="input-group">
+
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input @error('anexoCONSU') is-invalid @enderror" id="anexoCONSU" aria-describedby="inputGroupFileAddon01" name="anexoCONSU" onchange="verificarArquivoAnexado_pdf(this)" required>
+                      <label class="custom-file-label" id="custom-file-label" for="anexoCONSU">O arquivo deve ser no formato PDF de até 2MB.</label>
+                    </div>
+                  </div>
+                  @error('anexoCONSU')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                </div>
+                <div class="col-md-6"></div>
+                <div class="form-group col-md-6">
                   <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="margin-right: 15px;">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
                   <input type="radio" id="radioSim" onchange="displayAutorizacoesEspeciais('sim')">
                   <label for="radioSim" style="margin-right: 5px">Sim</label>
@@ -308,6 +330,7 @@
                         @enderror
                   </div>
                 </div>
+                <div class="col-md-6"></div>
                 
               </div>
           </div>
