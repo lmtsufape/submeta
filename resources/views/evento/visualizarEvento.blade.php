@@ -233,7 +233,7 @@
                             </div>
                             <div class="form-group" style="width: 100%">
                               <div class="d-flex justify-content-between" style="width: 100%">
-                                <div><h5 style=" font-size:19px; margin-top:9px">Outros documentos</h5></div>
+                                <div><h5 style=" font-size:19px; margin-top:9px">Outros<br>documentos</h5></div>
                                 <div>
                                     <a class="btn btn-light" href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="" >
                                     <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px"><br>

@@ -26,7 +26,6 @@
       @component('evento.formulario.finalizar')
       @endcomponent
 
-      
     </div>
   </div>
   </form>
@@ -55,7 +54,6 @@
   </div>
 
 </div>
-
 
 @endsection
 
@@ -309,7 +307,7 @@
     
   });
 
-  
+
 
 </script> --}}
 <script type="text/javascript">
@@ -1259,40 +1257,86 @@
   //     for(var i = 0; i < parseInt(select.value); i++) {
   //       html += `<option value="${i+1}">${i+1}º</option>`;
   //     }
-  //     $(selectPeriodos).html('');
-  //     $(selectPeriodos).append(html);
-  //   }
-  // /*
-  // * FUNCAO: Gerar periodos 2
-  // *
-  // */
-  // function gerarPeriodos2(select) {
-  //     var div = select.parentElement.parentElement;
-  //     var selectPeriodos = div.children[22].children[1];
-  //     var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
-  //     for(var i = 0; i < parseInt(select.value); i++) {
-  //       html += `<option value="${i+1}">${i+1}º</option>`;
-  //     }
-  //     $(selectPeriodos).html('');
-  //     $(selectPeriodos).append(html);
-  //   }
-  // /*
-  // * FUNCAO: Gerar periodos 3
-  // *
-  // */
-  // function gerarPeriodos3(select) {
-  //     var div = select.parentElement.parentElement;
-  //     var selectPeriodos = div.children[22].children[1];
-  //     var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
-  //     for(var i = 0; i < parseInt(select.value); i++) {
-  //       html += `<option value="${i+1}">${i+1}º</option>`;
-  //     }
-  //     $(selectPeriodos).html('');
-  //     $(selectPeriodos).append(html);
-  //   }
-  // /*
-  // * FUNCAO: Selecionar participantes do projeto
-  // *
-  // */
+  //   });
+  // });
+
+  $(document).ready(function(){
+    $(".cpf").change(function(){
+      if (validarCPF(retirarFormatacao(this.value))) {
+        this.parentElement.children[2].style.display = "none";
+        this.parentElement.children[3].style.display = "block";
+      } else {
+        this.parentElement.children[2].style.display = "block";
+        this.parentElement.children[3].style.display = "none";
+      }
+    });
+  });
+
+  function validarCPF(strCPF) {
+    var soma;
+    var resto;
+    soma = 0;    
+    // Verifica se foi informado todos os digitos corretamente
+    if (strCPF.length != 11) {
+      return false;
+    }
+
+    // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+    if (varificarDigitos(strCPF)) {
+        return false;
+    }
+
+    // Faz o calculo para validar o CPF
+    for (var t = 9; t < 11; t++) {
+        for (var d = 0, c = 0; c < t; c++) {
+            d += strCPF[c] * ((t + 1) - c);
+        }
+        d = ((10 * d) % 11) % 10;
+        if (strCPF[c] != d) {
+          return false;
+        }
+    }
+    return true;
+  }
+
+  function retirarFormatacao(strCpf) {
+    resultado = "";
+    for(var i = 0; i < strCpf.length; i++) {
+      if (strCpf[i] != "." && strCpf[i] != "-") {
+        resultado += strCpf[i];
+      }
+    }
+    return resultado;
+  }
+
+  function varificarDigitos(strCpf) {
+    var cont = 1;
+    dig1 = strCpf[0];
+
+    for(var i = 1; i < strCpf.length; i++) {
+      if(dig1 == strCpf[i]) {
+        cont++;
+      }
+    }
+    if (cont == strCpf.length) {
+      return true;
+    }
+    return false;
+  }
+
+  function checarCpfs() {
+    var validacoes = document.getElementsByClassName("cpf-invalido");
+    var count = validacoes.length;
+    var quant = 0;
+    for(var i = 0; i < validacoes.length; i++) {
+      if (validacoes[i].style.display == "none") {
+        quant++;
+      }
+    }
+    if(quant == count) {
+      return true;
+    }
+    return false;
+  }
 </script>
 @endsection

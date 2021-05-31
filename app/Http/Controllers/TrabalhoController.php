@@ -1143,7 +1143,7 @@ class TrabalhoController extends Controller
 
               
               $subject = "Participante de Projeto";
-              Mail::to($request->emailParticipante[$key])->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
+              // Mail::to($request->emailParticipante[$key])->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
             } else {
 
               $participante->user_id                  = $userParticipante->id;
@@ -1161,8 +1161,8 @@ class TrabalhoController extends Controller
               $participante->save();
 
               $subject = "Participante de Projeto";
-              Mail::to($request->emailParticipante[$key])
-                    ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
+              // Mail::to($request->emailParticipante[$key])
+              //       ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
 
             }
 
@@ -1306,7 +1306,7 @@ class TrabalhoController extends Controller
 
             
             $subject = "Participante de Projeto";
-            Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
+            // Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
           } else {
 
             $participante->user_id                  = $userParticipante->id;
@@ -1324,8 +1324,8 @@ class TrabalhoController extends Controller
             $participante->save();
 
             $subject = "Participante de Projeto";
-            Mail::to($email)
-                  ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
+            // Mail::to($email)
+            //       ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
 
           }
 
