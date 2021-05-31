@@ -115,8 +115,8 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="pontuacaoPlanilha">Pontuação da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
-                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha"
+                  <label for="pontuacaoPlanilha">Nota da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
+                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" name="pontuacaoPlanilha"
                           value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}" required>
 
                   @error('pontuacaoPlanilha')

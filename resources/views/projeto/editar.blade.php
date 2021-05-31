@@ -128,8 +128,8 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="pontuacaoPlanilha">Pontuação da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
-                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha"
+                  <label for="pontuacaoPlanilha">Nota da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
+                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" name="pontuacaoPlanilha"
                   value="{{ $projeto->pontuacaoPlanilha }}" required>
 
                   @error('pontuacaoPlanilha')
@@ -431,12 +431,14 @@
                             </div>
                             <div class="form-group col-md-6">
                               <label for="cpf1">CPF <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cpf1') is-invalid @enderror" id="cpf1" name="cpf[]" placeholder="Digite o CPF do participante" required value="@if($resultado_participante_um){{$participantes[0]->user->cpf}}@endif"> 
-                              @error('cpf1')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
+                              <input type="text" class="form-control @error('cpf1') is-invalid @enderror cpf" id="cpf1" name="cpf[]" placeholder="Digite o CPF do participante" required value="@if($resultado_participante_um){{$participantes[0]->user->cpf}}@endif"> 
+                              
+                              <span id="cpf-invalido-1" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
+                                <strong>CPF inválido</strong>
                               </span>
-                              @enderror
+                              <span id="cpf-valido-1" class="valid-feedback" role="alert" style="overflow: visible; display:none">
+                                <strong>CPF válido!</strong>
+                              </span> 
                             </div>
                             <div class="form-group col-md-6">
                               <label for="rg1">RG <span style="color: red; font-weight:bold">*</span></label>
@@ -689,12 +691,14 @@
                           </div>
                           <div class="form-group col-md-6">
                             <label for="cpf2">CPF <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="text" class="form-control @error('cpf2') is-invalid @enderror" id="cpf2" name="cpf[]" placeholder="Digite o CPF do participante" required value="@if($resultado_participante_dois){{$participantes[1]->user->cpf}}@endif">
-                            @error('cpf2')
-                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                              <strong>{{ $message }}</strong>
+                            <input type="text" class="form-control @error('cpf2') is-invalid @enderror cpf" id="cpf2" name="cpf[]" placeholder="Digite o CPF do participante" required value="@if($resultado_participante_dois){{$participantes[1]->user->cpf}}@endif">
+                            
+                            <span id="cpf-invalido-2" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
+                              <strong>CPF inválido</strong>
                             </span>
-                            @enderror
+                            <span id="cpf-valido-2" class="valid-feedback" role="alert" style="overflow: visible; display:none">
+                              <strong>CPF válido!</strong>
+                            </span>
                           </div>
                           <div class="form-group col-md-6">
                             <label for="rg2">RG <span style="color: red; font-weight:bold">*</span></label>
@@ -945,12 +949,14 @@
                             </div>
                             <div class="form-group col-md-6">
                               <label for="cpf3">CPF <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="text" class="form-control @error('cpf3') is-invalid @enderror" id="cpf3" name="cpf[]" placeholder="Digite o CPF do participante" required value="@if($resultado_participante_tres){{$participantes[2]->user->cpf}}@endif">
-                              @error('cpf3')
-                              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                <strong>{{ $message }}</strong>
+                              <input type="text" class="form-control @error('cpf3') is-invalid @enderror cpf" id="cpf3" name="cpf[]" placeholder="Digite o CPF do participante" required value="@if($resultado_participante_tres){{$participantes[2]->user->cpf}}@endif">
+                              
+                              <span id="cpf-invalido-3" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
+                                <strong>CPF inválido</strong>
                               </span>
-                              @enderror
+                              <span id="cpf-valido-3" class="valid-feedback" role="alert" style="overflow: visible; display:none">
+                                <strong>CPF válido!</strong>
+                              </span>
                             </div>
                             <div class="form-group col-md-6">
                               <label for="rg3">RG <span style="color: red; font-weight:bold">*</span></label>
@@ -1228,6 +1234,27 @@
   </div>
 </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalCpfInvalido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: red;">
+              <h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        Existe um CPF inválido em um dos participantes por favor corrija para continuar.
+      </div>
+      {{-- <div class="modal-footer">
+        {{-- <button type="button" class="btn btn-secondary"></button> 
+        {{-- <button type="button" class="btn btn-primary">Certo</button> 
+      </div> --}}
+    </div>
+  </div>
+</div>
+</div>
 @endsection
 
 @section('javascript')
@@ -1490,16 +1517,19 @@ function fecharModalenviarProjeto(){
 function enviarModalenviarProjeto(){
   if(numeroDeParticipantes == 1){
     document.getElementById("collapseParticipante1").classList.add("show");
-    document.getElementById("clickSubmitForm").click();
   }else if(numeroDeParticipantes == 2){
     document.getElementById("collapseParticipante1").classList.add("show");
     document.getElementById("collapseParticipante2").classList.add("show");
-    document.getElementById("clickSubmitForm").click();
   }else if(numeroDeParticipantes == 3){
     document.getElementById("collapseParticipante1").classList.add("show");
     document.getElementById("collapseParticipante2").classList.add("show");
     document.getElementById("collapseParticipante3").classList.add("show");
+  }
+
+  if (checarCpfs()) {
     document.getElementById("clickSubmitForm").click();
+  } else {
+    $("#modalCpfInvalido").modal('show');
   }
 }
 /*
@@ -2057,5 +2087,83 @@ function validarPart3(){
   //     }
   //   });
   // });
+  $(document).ready(function(){
+    $(".cpf").change(function(){
+      if (validarCPF(retirarFormatacao(this.value))) {
+        this.parentElement.children[2].style.display = "none";
+        this.parentElement.children[3].style.display = "block";
+      } else {
+        this.parentElement.children[2].style.display = "block";
+        this.parentElement.children[3].style.display = "none";
+      }
+    });
+  });
+
+  function validarCPF(strCPF) {
+    var soma;
+    var resto;
+    soma = 0;    
+    // Verifica se foi informado todos os digitos corretamente
+    if (strCPF.length != 11) {
+      return false;
+    }
+
+    // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+    if (varificarDigitos(strCPF)) {
+        return false;
+    }
+
+    // Faz o calculo para validar o CPF
+    for (var t = 9; t < 11; t++) {
+        for (var d = 0, c = 0; c < t; c++) {
+            d += strCPF[c] * ((t + 1) - c);
+        }
+        d = ((10 * d) % 11) % 10;
+        if (strCPF[c] != d) {
+          return false;
+        }
+    }
+    return true;
+  }
+
+  function retirarFormatacao(strCpf) {
+    resultado = "";
+    for(var i = 0; i < strCpf.length; i++) {
+      if (strCpf[i] != "." && strCpf[i] != "-") {
+        resultado += strCpf[i];
+      }
+    }
+    return resultado;
+  }
+
+  function varificarDigitos(strCpf) {
+    var cont = 1;
+    dig1 = strCpf[0];
+
+    for(var i = 1; i < strCpf.length; i++) {
+      if(dig1 == strCpf[i]) {
+        cont++;
+      }
+    }
+    if (cont == strCpf.length) {
+      return true;
+    }
+    return false;
+  }
+
+  function checarCpfs() {
+    var validacoes = document.getElementsByClassName("cpf-invalido");
+    var count = validacoes.length;
+    var quant = 0;
+    for(var i = 0; i < validacoes.length; i++) {
+      if (validacoes[i].style.display == "none") {
+        quant++;
+      }
+    }
+    if(quant == count) {
+      return true;
+    }
+    return false;
+  }
 </script>
 @endsection
