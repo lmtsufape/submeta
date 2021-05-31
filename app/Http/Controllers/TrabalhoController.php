@@ -49,18 +49,48 @@ class TrabalhoController extends Controller
         if($proponente == null){
           return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
         }
-
+        $estados = array(
+          'AC' => 'Acre',
+          'AL' => 'Alagoas',
+          'AP' => 'Amapá',
+          'AM' => 'Amazonas',
+          'BA' => 'Bahia',
+          'CE' => 'Ceará',
+          'DF' => 'Distrito Federal',
+          'ES' => 'Espirito Santo',
+          'GO' => 'Goiás',
+          'MA' => 'Maranhão',
+          'MS' => 'Mato Grosso do Sul',
+          'MT' => 'Mato Grosso',
+          'MG' => 'Minas Gerais',
+          'PA' => 'Pará',
+          'PB' => 'Paraíba',
+          'PR' => 'Paraná',
+          'PE' => 'Pernambuco',
+          'PI' => 'Piauí',
+          'RJ' => 'Rio de Janeiro',
+          'RN' => 'Rio Grande do Norte',
+          'RS' => 'Rio Grande do Sul',
+          'RO' => 'Rondônia',
+          'RR' => 'Roraima',
+          'SC' => 'Santa Catarina',
+          'SP' => 'São Paulo',
+          'SE' => 'Sergipe',
+          'TO' => 'Tocantins',
+        );
         $rascunho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$edital->id)->where('status', 'Rascunho')
                                 ->orderByDesc('updated_at')->first();
 
-      //dd($rascunho);
+      // dd($estados);
 
         return view('evento.submeterTrabalho',[
+        // return view('evento.backupForm',[
                                             'edital'             => $edital,
                                             'grandeAreas'        => $grandeAreas,
                                             'funcaoParticipantes'=> $funcaoParticipantes,
                                             'rascunho'           => $rascunho,
-                                            'enum_turno'         => Participante::ENUM_TURNO
+                                            'enum_turno'         => Participante::ENUM_TURNO,
+                                            'estados'            => $estados,
                                             ]);
     }
     

@@ -18,7 +18,7 @@
     
     <script src="{{ asset('js/jquery-3.4.1.min.js')}}"></script>
     <script src="{{ asset('js/jquery-mask-plugin.js')}}"></script>
-
+    
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/layout.css') }}" rel="stylesheet">
 
@@ -330,17 +330,19 @@
           </div>
       </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+  <script>
+      $(document).ready(function() {
+          $("#dropdown-login").on('click', function(event){
+              event.stopPropagation();
+          });
+      });
+      @if(old('login') != null)
+          $(document).ready(function() {
+              $('#dropdownMenuLink').click();
+          });
+      @endif
+  </script>
 </body>
-<script>
-    $(document).ready(function() {
-        $("#dropdown-login").on('click', function(event){
-            event.stopPropagation();
-        });
-    });
-    @if(old('login') != null)
-        $(document).ready(function() {
-            $('#dropdownMenuLink').click();
-        });
-    @endif
-</script>
 </html>
