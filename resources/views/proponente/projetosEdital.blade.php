@@ -129,7 +129,11 @@
               <h5>Nenhum projeto submetido!</h5>
             </div>
             <div class="col-md-12" style="text-align: center;">
-              <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}">Cliquei aqui para submeter um projeto.</a>
+              @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao)
+                <a href="{{ route('trabalho.index', ['id' => $edital->id] )}}">Cliquei aqui para submeter um projeto.</a>
+              @else
+                <a href="#">O periodo de submissão foi encerrado.</a>
+              @endif
             </div>
           </div>
           @endif
