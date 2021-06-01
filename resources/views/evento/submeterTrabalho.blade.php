@@ -164,6 +164,16 @@
 <script>
   
   $( document ).ready( function () {
+
+    $("input[type='file']").on("change", function () {
+     if(this.files[0].size > 2000000) {
+      //  console.log($(this).parents( ".col-sm-5" ))
+       alert("O tamanho do arquivo deve ser menor que 2MB!");
+       $(this).val('');
+       
+     }
+    });
+
     $.validator.setDefaults( {
       
       submitHandler: function () {
@@ -192,6 +202,7 @@
           required: true,
           email: true
         },
+        
         agree: "required"
       },
       messages: {

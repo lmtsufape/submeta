@@ -10,25 +10,25 @@
           <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
 
           <div class="form-group col-md-6" style="margin-top: 10px">
-            @component('componentes.input', ['label' => 'Anexo do projeto'])
+            @component('componentes.input', ['label' => 'Anexo do projeto(.pdf)'])
               <input type="file" class="input-group-text" name="anexoProjeto" placeholder="nomeProjeto" accept="application/pdf" required/>
             @endcomponent
             
           </div>
 
           <div class="form-group col-md-6" style="margin-top: 10px">
-            @component('componentes.input', ['label' => 'Anexo do currículo Lattes do Coordenador'])
-              <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" required/>
+            @component('componentes.input', ['label' => 'Anexo do currículo Lattes do Coordenador(.pdf)'])
+              <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" accept=".pdf" required/>
             @endcomponent
           </div>
           <div class="form-group col-md-6">
-            @component('componentes.input', ['label' => 'Anexo da Planilha de Pontuação'])
-              <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" required/>
+            @component('componentes.input', ['label' => 'Anexo da Planilha de Pontuação(.ods,.xls,.ods)'])
+              <input type="file" class="input-group-text" name="anexoPlanilha" placeholder="anexoPlanoTrabalho" accept=".ods, .xls, .ods" required/>
             @endcomponent
           </div>
           <div class="form-group col-md-6">
-            @component('componentes.input', ['label' => 'Decisão do CONSU'])
-              <input type="file" class="input-group-text" name="anexoConsuPreenchido" placeholder="anexoConsuPreenchido" required/>
+            @component('componentes.input', ['label' => 'Decisão do CONSU(.pdf)'])
+              <input type="file" class="input-group-text" name="anexoConsuPreenchido" placeholder="anexoConsuPreenchido" accept=".pdf" required/>
             @endcomponent
           </div>
           <div class="form-group col-md-6">
@@ -58,7 +58,7 @@
 
                 <div class="input-group">
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="verificarArquivoAnexado_pdf(this, 'anexoComiteEticaLegenda')">
+                    <input type="file" class="custom-file-input @error('anexoComiteEtica') is-invalid @enderror" accept=".pdf" id="inputEtica" aria-describedby="inputGroupFileAddon01" name="anexoComiteEtica" onchange="verificarArquivoAnexado_pdf(this, 'anexoComiteEticaLegenda')">
                     <label class="custom-file-label" id="anexoComiteEticaLegenda" for="inputEtica">O arquivo deve ser no formato PDF de até 2MB.</label>
                   </div>
                 </div>
@@ -81,7 +81,7 @@
 
 
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" name="justificativaAutorizacaoEtica" onchange="verificarArquivoAnexado_pdf(this, 'justificativaAutorizacaoEticaLegenda')" required>
+                      <input type="file" class="custom-file-input @error('justificativaAutorizacaoEtica') is-invalid @enderror" accept=".pdf" id="inputJustificativa" aria-describedby="inputGroupFileAddon01" name="justificativaAutorizacaoEtica" onchange="verificarArquivoAnexado_pdf(this, 'justificativaAutorizacaoEticaLegenda')" required>
                       <label class="custom-file-label" id="justificativaAutorizacaoEticaLegenda" for="inputJustificativa">O arquivo deve ser no formato PDF de até 2MB.</label>
                     </div>
                   </div>
