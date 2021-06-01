@@ -563,6 +563,10 @@
           required:true,
           alpha:true,
         },
+        'rg[]':{
+          required: true,
+          maxlength: 8,
+        },
         
         agree: "required"
       },
@@ -571,7 +575,10 @@
         'emailParticipante[]': "Este campo é obrigatório.",
         'data_de_nascimento[]': "Este campo é obrigatório.",
         'cpf[]': "Este campo é obrigatório.",
-        'rg[]': "Este campo é obrigatório.",
+        'rg[]': {
+          required: "Este campo é obrigatório.",
+          maxlength: "Este campo deve conter no máximo 8 números."
+        },
         'celular[]': "Este campo é obrigatório.",
         'cep[]': "Este campo é obrigatório.",
         'uf[]': "Este campo é obrigatório.",
