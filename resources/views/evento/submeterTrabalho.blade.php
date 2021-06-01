@@ -109,7 +109,12 @@
   }
   function removerPart(e){
     if(e.parentElement){
-      parts.removeChild(e.parentElement);
+      if(parts.children.length <= 1){
+        
+      }else{
+        parts.removeChild(e.parentElement);
+      }
+      
     }
   }
 
