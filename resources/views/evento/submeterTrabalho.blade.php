@@ -467,6 +467,8 @@
           let select = cln.children[i].querySelectorAll('select')[index];
           if(select){
             let selectName = select.getAttributeNode("name").value;
+            selectName = selectName.replace("[", "");
+            selectName = selectName.replace("]", "");
             // console.log(select.getAttributeNode("name").value)
             select.getAttributeNode("name").value = selectName + '[]';
           }
