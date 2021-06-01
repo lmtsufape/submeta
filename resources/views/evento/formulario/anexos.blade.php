@@ -22,7 +22,7 @@
             @endcomponent
           </div>
           <div class="form-group col-md-6">
-            @component('componentes.input', ['label' => 'Anexo da Planilha de Pontuação(.ods,.xls,.ods)'])
+            @component('componentes.input', ['label' => 'Anexo da Planilha de Pontuação(.xlsx,.xls,.ods)'])
               <input type="file" class="input-group-text" name="anexoPlanilha" placeholder="anexoPlanoTrabalho" accept=".xlsx, .xls, .ods" required/>
             @endcomponent
           </div>
@@ -52,6 +52,12 @@
                   <input type="file" class="input-group-text" name="inputJustificativa" placeholder="inputJustificativa" accept=".pdf" required/>
                 @endcomponent
             </div>
+          </div>
+          <div class="form-group col-md-6" style="margin-top: 10px">
+            @component('componentes.input', ['label' => 'Anexo do Grupo de Pesquisa(.pdf)'])
+              <input type="file" class="input-group-text" name="anexoGrupoPesquisa" placeholder="Anexo do Grupo de Pesquisa" accept="application/pdf" required/>
+            @endcomponent
+            
           </div>
           
         </div>
