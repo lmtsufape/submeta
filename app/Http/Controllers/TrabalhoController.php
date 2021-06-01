@@ -834,27 +834,30 @@ class TrabalhoController extends Controller
     }
 
     public function salvar(Request $request) {
-      // dd($request->all());
+      try {
+
       $edital = Evento::find($request->editalId);
       $hoje = now();
-      // dd($request->all());
       if (!($edital->inicioSubmissao < $hoje && $edital->fimSubmissao >= $hoje)) {
         return redirect()->route('inicial')->with(['error'=> 0, 'mensagem' => 'As submissões para o edital '. $edital->titulo .' foram encerradas.']);
       }
 
       $projeto = $this->atribuirDados($request, $edital);
       $projeto->save();
-      // dd($request->all());
       // Email de submissão
-        // $subject = "Submissão de Trabalho";
-        // $proponente = Auth()->user();
-        // Mail::to($proponente->email)->send(new SubmissaoTrabalho($proponente, $subject, $edital, $projeto));
+        $subject = "Submissão de Trabalho";
+        $proponente = Auth()->user();
+        Mail::to($proponente->email)->send(new SubmissaoTrabalho($proponente, $subject, $edital, $projeto));
     
       // Salvando participantes
       $this->salvarParticipantes($request, $edital, $projeto);
 
 
-      return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto submetido com sucesso!']);
+        return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto submetido com sucesso!']);
+      } catch (\Throwable $th) {
+        return back()->with(['mensagem' => $th->getMessage()]);
+      }
+      
 
     }
 
