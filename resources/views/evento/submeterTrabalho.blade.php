@@ -460,13 +460,17 @@
         for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
           let input = cln.children[i].querySelectorAll('input')[index];
           let name = input.getAttributeNode("name").value;
-          input.getAttributeNode("name").value = name + '[' + contador + ']';
+          name = name.replace("[", "");
+          name = name.replace("]", "");
+          input.getAttributeNode("name").value = name + '['+ cln.children.length +']';
           // input.getAttributeNode("disabled").value = " ";
           let select = cln.children[i].querySelectorAll('select')[index];
           if(select){
             let selectName = select.getAttributeNode("name").value;
+            selectName = selectName.replace("[", "");
+            selectName = selectName.replace("]", "");
             // console.log(select.getAttributeNode("name").value)
-            select.getAttributeNode("name").value = selectName + '[' + contador + ']';
+            select.getAttributeNode("name").value = selectName + '['+ cln.children.length +']';
           }
           
         }
@@ -534,7 +538,27 @@
         form.submit();
       }
     } );
+    jQuery.extend(jQuery.validator.messages, {
+        required: "Este campo &eacute; requerido.",
+        remote: "Por favor, corrija este campo.",
+        email: "Por favor, forne&ccedil;a um endere&ccedil;o eletr&ocirc;nico v&aacute;lido.",
+        url: "Por favor, forne&ccedil;a uma URL v&aacute;lida.",
+        date: "Por favor, forne&ccedil;a uma data v&aacute;lida.",
+        dateISO: "Por favor, forne&ccedil;a uma data v&aacute;lida (ISO).",
+        number: "Por favor, forne&ccedil;a um n&uacute;mero v&aacute;lido.",
+        digits: "Por favor, forne&ccedil;a somente d&iacute;gitos.",
+        creditcard: "Por favor, forne&ccedil;a um cart&atilde;o de cr&eacute;dito v&aacute;lido.",
+        equalTo: "Por favor, forne&ccedil;a o mesmo valor novamente.",
+        accept: "Por favor, forne&ccedil;a um valor com uma extens&atilde;o v&aacute;lida.",
+        maxlength: jQuery.validator.format("Por favor, forne&ccedil;a n&atilde;o mais que {0} caracteres."),
+        minlength: jQuery.validator.format("Por favor, forne&ccedil;a ao menos {0} caracteres."),
+        rangelength: jQuery.validator.format("Por favor, forne&ccedil;a um valor entre {0} e {1} caracteres de comprimento."),
+        range: jQuery.validator.format("Por favor, forne&ccedil;a um valor entre {0} e {1}."),
+        max: jQuery.validator.format("Por favor, forne&ccedil;a um valor menor ou igual a {0}."),
+        min: jQuery.validator.format("Por favor, forne&ccedil;a um valor maior ou igual a {0}.")
+    });
     $( "#criarProjetoForm" ).validate( {
+      lang: 'PT_BR',
       rules: {
         firstname: "required",
         username: {
@@ -571,61 +595,62 @@
         agree: "required"
       },
       messages: {
-        nomeProjeto: "O nome do projeto é obrigatório.",
-        'emailParticipante[]': "Este campo é obrigatório.",
-        'data_de_nascimento[]': "Este campo é obrigatório.",
-        'cpf[]': "Este campo é obrigatório.",
-        'rg[]': {
-          required: "Este campo é obrigatório.",
-          maxlength: "Este campo deve conter no máximo 8 números."
-        },
-        'celular[]': "Este campo é obrigatório.",
-        'cep[]': "Este campo é obrigatório.",
-        'uf[]': "Este campo é obrigatório.",
-        'cidade[]': "Este campo é obrigatório.",
-        'bairro[]': "Este campo é obrigatório.",
-        'rua[]': "Este campo é obrigatório.",
-        'numero[]': "Este campo é obrigatório.",
-        'complemento[]': "Este campo é obrigatório.",
-        'universidade[]': "Este campo é obrigatório.",
-        'curso[]': "Este campo é obrigatório.",
-        'turno[]': "Este campo é obrigatório.",
-        'total_periodos[]': "Este campo é obrigatório.",
-        'periodo_atual[]': "Este campo é obrigatório.",
-        'ordem_prioridade[]': "Este campo é obrigatório.",
-        'media_geral_curso[]': "Este campo é obrigatório.",
-        'nomePlanoTrabalho[]': "Este campo é obrigatório.",
-        'anexoPlanoTrabalho[]': "Este campo é obrigatório.",
-        grandeArea: "Escolha uma grande área.",
-        area: "Escolha uma área.",
-        linkGrupo: "Este campo é obrigatório.",
-        pontuacaoPlanilha: "Este campo é obrigatório.",
-        anexoProjeto: "Este campo é obrigatório.",
-        anexoLattesCoordenador: "Este campo é obrigatório.",
-        anexoConsuPreenchido: "Este campo é obrigatório.",
-        anexoGrupoPesquisa: "Este campo é obrigatório.",
-        anexoPlanilha: "Este campo é obrigatório.",
-        anexoComiteEtica: "Este campo é obrigatório.",
-        inputJustificativa: "Este campo é obrigatório.",
-        "nomeParticipante[]": {
-          required: "O nome do participante é obrigatório.",
-          alpha: "Não é permitido números."
-        },
-        username: {
-          required: "Please enter a username",
-          minlength: "Your username must consist of at least 2 characters"
-        },
-        password: {
-          required: "Please provide a password",
-          minlength: "Your password must be at least 5 characters long"
-        },
-        confirm_password: {
-          required: "Please provide a password",
-          minlength: "Your password must be at least 5 characters long",
-          equalTo: "Please enter the same password as above"
-        },
-        email: "Please enter a valid email address",
-        agree: "Please accept our policy"
+        // nomeProjeto: "O nome do projeto é obrigatório.",
+        
+        // 'emailParticipante[]': "Este campo é obrigatório.",
+        // 'data_de_nascimento[]': "Este campo é obrigatório.",
+        // 'cpf[]': "Este campo é obrigatório.",
+        // 'rg[]': {
+        //   required: "Este campo é obrigatório.",
+        //   maxlength: "Este campo deve conter no máximo 8 números."
+        // },
+        // 'celular[]': "Este campo é obrigatório.",
+        // 'cep[]': "Este campo é obrigatório.",
+        // 'uf[]': "Este campo é obrigatório.",
+        // 'cidade[]': "Este campo é obrigatório.",
+        // 'bairro[]': "Este campo é obrigatório.",
+        // 'rua[]': "Este campo é obrigatório.",
+        // 'numero[]': "Este campo é obrigatório.",
+        // 'complemento[]': "Este campo é obrigatório.",
+        // 'universidade[]': "Este campo é obrigatório.",
+        // 'curso[]': "Este campo é obrigatório.",
+        // 'turno[]': "Este campo é obrigatório.",
+        // 'total_periodos[]': "Este campo é obrigatório.",
+        // 'periodo_atual[]': "Este campo é obrigatório.",
+        // 'ordem_prioridade[]': "Este campo é obrigatório.",
+        // 'media_geral_curso[]': "Este campo é obrigatório.",
+        // 'nomePlanoTrabalho[]': "Este campo é obrigatório.",
+        // 'anexoPlanoTrabalho[]': "Este campo é obrigatório.",
+        // grandeArea: "Escolha uma grande área.",
+        // area: "Escolha uma área.",
+        // linkGrupo: "Este campo é obrigatório.",
+        // pontuacaoPlanilha: "Este campo é obrigatório.",
+        // anexoProjeto: "Este campo é obrigatório.",
+        // anexoLattesCoordenador: "Este campo é obrigatório.",
+        // anexoConsuPreenchido: "Este campo é obrigatório.",
+        // anexoGrupoPesquisa: "Este campo é obrigatório.",
+        // anexoPlanilha: "Este campo é obrigatório.",
+        // anexoComiteEtica: "Este campo é obrigatório.",
+        // inputJustificativa: "Este campo é obrigatório.",
+        // "nomeParticipante[]": {
+        //   required: "O nome do participante é obrigatório.",
+        //   alpha: "Não é permitido números."
+        // },
+        // username: {
+        //   required: "Please enter a username",
+        //   minlength: "Your username must consist of at least 2 characters"
+        // },
+        // password: {
+        //   required: "Please provide a password",
+        //   minlength: "Your password must be at least 5 characters long"
+        // },
+        // confirm_password: {
+        //   required: "Please provide a password",
+        //   minlength: "Your password must be at least 5 characters long",
+        //   equalTo: "Please enter the same password as above"
+        // },
+        // email: "Please enter a valid email address",
+        // agree: "Please accept our policy"
       },
       errorElement: "em",
       errorPlacement: function ( error, element ) {
