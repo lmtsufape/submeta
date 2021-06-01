@@ -498,3 +498,10 @@ button.close {
       margin-right:10px;
   }
 }
+.imagem_shadow{
+  transition: -webkit-filter 0.5s;
+}
+.imagem_shadow:hover{
+  -webkit-filter: drop-shadow(5px 5px 5px rgb(206, 206, 206)); filter: drop-shadow(5px 5px 5px rgb(206, 206, 206)); 
+
+}
