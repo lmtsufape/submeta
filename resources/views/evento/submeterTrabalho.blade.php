@@ -450,7 +450,7 @@
   buttonMais.addEventListener("click", (e) => {
     
     // console.log("{{ $edital->numParticipantes }}")
-    if(parts.children.length - 1 >= "{{ $edital->numParticipantes }}"){
+    if(parts.children.length  >= "{{ $edital->numParticipantes }}"){
       alert('Limite de participante.')
     }else{
       var cln = participante.cloneNode(true);
@@ -461,7 +461,7 @@
           let input = cln.children[i].querySelectorAll('input')[index];
           let name = input.getAttributeNode("name").value;
           input.getAttributeNode("name").value = name + '[' + contador + ']';
-          input.getAttributeNode("disabled").value = " ";
+          // input.getAttributeNode("disabled").value = " ";
           let select = cln.children[i].querySelectorAll('select')[index];
           if(select){
             let selectName = select.getAttributeNode("name").value;
@@ -563,6 +563,10 @@
           required:true,
           alpha:true,
         },
+        'rg[]':{
+          required: true,
+          maxlength: 8,
+        },
         
         agree: "required"
       },
@@ -571,7 +575,10 @@
         'emailParticipante[]': "Este campo é obrigatório.",
         'data_de_nascimento[]': "Este campo é obrigatório.",
         'cpf[]': "Este campo é obrigatório.",
-        'rg[]': "Este campo é obrigatório.",
+        'rg[]': {
+          required: "Este campo é obrigatório.",
+          maxlength: "Este campo deve conter no máximo 8 números."
+        },
         'celular[]': "Este campo é obrigatório.",
         'cep[]': "Este campo é obrigatório.",
         'uf[]': "Este campo é obrigatório.",
