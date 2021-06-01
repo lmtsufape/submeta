@@ -834,6 +834,7 @@ class TrabalhoController extends Controller
     }
 
     public function salvar(Request $request) {
+      // dd($request->all());
       $edital = Evento::find($request->editalId);
       $hoje = now();
       // dd($request->all());
