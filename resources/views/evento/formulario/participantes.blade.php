@@ -26,8 +26,8 @@
                   </div>
                 </a>
               </div>
-              <div class="col-1">
-                <button type="button" class="btn btn-danger" id="buttonRemover" onclick="removerPart(this)" >X</button>
+              <div class="col-1" style="margin-top:4.3px">
+                <button type="button" class="btn btn-danger shadow-sm" id="buttonRemover" onclick="removerPart(this)" >X</button>
               </div>
               <div class="col-md-12">
                 <div class="collapse" id="collapseParticipante">
@@ -52,7 +52,13 @@
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'CPF'])
-                                <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required/>
+                                <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required onchange="checarCPFdoCampo(this)" onkeyup="mascaraCPF(this)"/>
+                                <span id="cpf-invalido-1" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
+                                  <span style="font-style: italic;">CPF inválido.</span>
+                                </span>
+                                <span id="cpf-valido-1" class="valid-feedback" role="alert" style="overflow: visible; display:none">
+                                  <span style="font-style: italic;">CPF válido.</span>
+                                </span>
                               @endcomponent
                         </div>                              
                         <div class="col-6">

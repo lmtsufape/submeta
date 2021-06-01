@@ -59,7 +59,27 @@
   </div>
 
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="modalCpfInvalido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: red;">
+              <h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        Existe um CPF inválido em um dos participantes por favor corrija para continuar.
+      </div>
+      {{-- <div class="modal-footer">
+        {{-- <button type="button" class="btn btn-secondary"></button> 
+        {{-- <button type="button" class="btn btn-primary">Certo</button> 
+      </div> --}}
+    </div>
+  </div>
+</div>
+</div>
 @endsection
 
 @section('javascript')
@@ -143,6 +163,7 @@
       parts.appendChild(cln);
       $("input.cpf:text").val("").mask("000.000.000-00");
       $("input.celular:text").val("").mask(SPMaskBehavior, spOptions);
+      $("input.cep:text").val("").mask("00000-000");
 
     }
 
@@ -174,7 +195,7 @@
     });
 
     $('.cep').mask('00000000');
-    $('.cpf').mask('000.000.000-00');
+    // $('.cpf').mask('000.000.000-00');
     $('.numero').mask('0000000000000');
     var SPMaskBehavior = function (val) {
         return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
@@ -527,80 +548,126 @@
   //     console.log(this.parentElement.children[0])
   //     if (validarCPF(retirarFormatacao(this.value))) {
 
-  //       this.parentElement.children[0].style.display = "none";
-  //       this.parentElement.children[1].style.display = "block";
-  //     } else {
-  //       this.parentElement.children[0].style.display = "block";
   //       this.parentElement.children[1].style.display = "none";
+  //       this.parentElement.children[2].style.display = "block";
+  //     } else {
+  //       this.parentElement.children[1].style.display = "block";
+  //       this.parentElement.children[2].style.display = "none";
   //     }
   //   });
   // });
 
-  // function validarCPF(strCPF) {
-  //   var soma;
-  //   var resto;
-  //   soma = 0;    
-  //   // Verifica se foi informado todos os digitos corretamente
-  //   if (strCPF.length != 11) {
-  //     return false;
-  //   }
+  function checarCPFdoCampo(input) {
+    if (input.value.length == 14) {
+      if (validarCPF(retirarFormatacao(input.value))) {
+        input.parentElement.children[1].style.display = "none";
+        input.parentElement.children[2].style.display = "block";
+      } else {
+        input.parentElement.children[1].style.display = "block";
+        input.parentElement.children[2].style.display = "none";
+      }
+    } else {
+      input.parentElement.children[1].style.display = "none";
+      input.parentElement.children[2].style.display = "none";
+    }
+  }
 
-  //   // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
-  //   if (varificarDigitos(strCPF)) {
-  //       return false;
-  //   }
+  function validarCPF(strCPF) {
+    var soma;
+    var resto;
+    soma = 0;    
+    // Verifica se foi informado todos os digitos corretamente
+    if (strCPF.length != 11) {
+      return false;
+    }
 
-  //   // Faz o calculo para validar o CPF
-  //   for (var t = 9; t < 11; t++) {
-  //       for (var d = 0, c = 0; c < t; c++) {
-  //           d += strCPF[c] * ((t + 1) - c);
-  //       }
-  //       d = ((10 * d) % 11) % 10;
-  //       if (strCPF[c] != d) {
-  //         return false;
-  //       }
-  //   }
-  //   return true;
-  // }
+    // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+    if (varificarDigitos(strCPF)) {
+        return false;
+    }
 
-  // function retirarFormatacao(strCpf) {
-  //   resultado = "";
-  //   for(var i = 0; i < strCpf.length; i++) {
-  //     if (strCpf[i] != "." && strCpf[i] != "-") {
-  //       resultado += strCpf[i];
-  //     }
-  //   }
-  //   return resultado;
-  // }
+    // Faz o calculo para validar o CPF
+    for (var t = 9; t < 11; t++) {
+        for (var d = 0, c = 0; c < t; c++) {
+            d += strCPF[c] * ((t + 1) - c);
+        }
+        d = ((10 * d) % 11) % 10;
+        if (strCPF[c] != d) {
+          return false;
+        }
+    }
+    return true;
+  }
 
-  // function varificarDigitos(strCpf) {
-  //   var cont = 1;
-  //   dig1 = strCpf[0];
+  function retirarFormatacao(strCpf) {
+    resultado = "";
+    for(var i = 0; i < strCpf.length; i++) {
+      if (strCpf[i] != "." && strCpf[i] != "-") {
+        resultado += strCpf[i];
+      }
+    }
+    return resultado;
+  }
 
-  //   for(var i = 1; i < strCpf.length; i++) {
-  //     if(dig1 == strCpf[i]) {
-  //       cont++;
-  //     }
-  //   }
-  //   if (cont == strCpf.length) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  function varificarDigitos(strCpf) {
+    var cont = 1;
+    dig1 = strCpf[0];
 
-  // function checarCpfs() {
-  //   var validacoes = document.getElementsByClassName("cpf-invalido");
-  //   var count = validacoes.length;
-  //   var quant = 0;
-  //   for(var i = 0; i < validacoes.length; i++) {
-  //     if (validacoes[i].style.display == "none") {
-  //       quant++;
-  //     }
-  //   }
-  //   if(quant == count) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+    for(var i = 1; i < strCpf.length; i++) {
+      if(dig1 == strCpf[i]) {
+        cont++;
+      }
+    }
+    if (cont == strCpf.length) {
+      return true;
+    }
+    return false;
+  }
+
+  function checarCpfs() {
+    var validacoes = document.getElementsByClassName("cpf-invalido");
+    var count = validacoes.length;
+    var quant = 0;
+    for(var i = 0; i < validacoes.length; i++) {
+      if (validacoes[i].style.display == "none") {
+        quant++;
+      }
+    }
+    if(quant == count) {
+      return true;
+    }
+    return false;
+  }
+
+  function submeterProposta() {
+    if (checarCpfs()) {
+      document.getElementById("submeterFormProposta").click();
+    } else {
+      $("#modalCpfInvalido").modal('show');
+    }
+  }
+
+  function mascaraCPF(input) {
+    var numeros = "0123456789.-";
+    var resultado = "";
+    if (input.value.length < 14) {
+      for (var i = 0; i < input.value.length; i++) {
+        if (numeros.indexOf(input.value[i]) > -1) {
+          if ((i == 2 || i == 6) && input.value[i+1] != ".") {
+            resultado += input.value[i] + ".";
+          } else if (i == 10 && input.value[i+1] != "-") {
+            resultado += input.value[i] + "-";
+          } else {
+            resultado += input.value[i];
+          }
+        }
+      }
+    } else {
+      for (var i = 0; i < 14; i++) { 
+        resultado += input.value[i];
+      }
+    }
+    input.value = resultado;
+  }
 </script>
 @endsection
