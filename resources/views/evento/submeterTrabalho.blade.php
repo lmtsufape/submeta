@@ -219,8 +219,8 @@
 
     $.validator.setDefaults( {
       
-      submitHandler: function () {
-        alert( "submitted!" );
+      submitHandler: function (form) {
+        form.submit();
       }
     } );
     $( "#criarProjetoForm" ).validate( {
