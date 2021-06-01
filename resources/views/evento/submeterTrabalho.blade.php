@@ -442,6 +442,7 @@
         
       }else{
         parts.removeChild(e.parentElement);
+        contador--;
       }
       
     }
@@ -453,8 +454,11 @@
     if(parts.children.length  >= "{{ $edital->numParticipantes }}"){
       alert('Limite de participante.')
     }else{
+      contador++;
       var cln = participante.cloneNode(true);
       cln.style.display = 'block';
+      // console.log(cln.children[2].firstElementChild.id)
+      // console.log(cln.children[1].firstElementChild.href)
       // var id = cln.children[2].firstElementChild.id;
       // var href = cln.children[1].firstElementChild.href;
       // cln.children[2].firstElementChild.id = id + contador;
