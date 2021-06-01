@@ -398,7 +398,7 @@
   // var participante $( "#participante" ).find( item1 )
   const participante = partsFirst.firstElementChild;
   // const participante = document.getElementById('participantePrimeiro');
-  let contador = 2;
+  let contador = 0;
   // var validator = $( "#formPart" ).validate();
 
   buttonSubmit.addEventListener('click', (e)=>{
