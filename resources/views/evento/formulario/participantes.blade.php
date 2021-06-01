@@ -26,8 +26,8 @@
                   </div>
                 </a>
               </div>
-              <div class="col-1">
-                <button type="button" class="btn btn-danger" id="buttonRemover" onclick="removerPart(this)" >X</button>
+              <div class="col-1" style="margin-top:4.3px">
+                <button type="button" class="btn btn-danger shadow-sm" id="buttonRemover" onclick="removerPart(this)" >X</button>
               </div>
               <div class="col-md-12">
                 <div class="collapse" id="collapseParticipante">
