@@ -25,7 +25,7 @@
               <div class="col-md-12">
                 <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante" href="#collapseParticipante" role="button" aria-expanded="false" aria-controls="collapseParticipante" style="width: 100%; text-align:left">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Participante </h4>
+                    <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Participante <span style="display: none;" id="display">:</span>  </h4>
                   </div>
                 </a>
               </div>
@@ -34,10 +34,10 @@
                   <div class="container">
                       <div class="row">
                         <input type="hidden"  name="funcaoParticipante[]" value="4">
-                        <div class="col-md-12"><h5>Dados do participante</h5></div>
+                        <div class="col-md-12 mt-3"><h5>Dados do participante</h5></div>
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Nome completo'])
-                                <input type="text" class="form-control "  name="nomeParticipante[]" placeholder="Nome Completo" required />
+                                <input type="text" class="form-control " id="nomeParticipante"  name="nomeParticipante[]" placeholder="Nome Completo" required />
                               @endcomponent
                         </div>                              
                         <div class="col-6">
@@ -171,8 +171,8 @@
                               @endcomponent
                         </div>                              
                         <div class="col-6">
-                              @component('componentes.input', ['label' => 'Anexo'])
-                                <input type="file" class="input-group-text" name="anexoPlanoTrabalho[]" placeholder="Anexo do Plano de Trabalho" required/>
+                              @component('componentes.input', ['label' => 'Anexo(.pdf)'])
+                                <input type="file" class="input-group-text" name="anexoPlanoTrabalho[]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" required/>
                               @endcomponent
                         </div>                              
                       </div>

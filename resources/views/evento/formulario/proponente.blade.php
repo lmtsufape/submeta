@@ -15,7 +15,7 @@
           
           </div>
 
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-6">
             <label for="linkLattesEstudante">Link do currículo Lattes<span style="color: red; font-weight:bold">*</span></label>
             <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante" 
             @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
@@ -30,24 +30,25 @@
             </span>
             @enderror
           </div>
-          <div class="form-group col-md-4">
-            <label for="pontuacaoPlanilha">Pontuação da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
-            <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha"
-                    value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}" required>
-
-            @error('pontuacaoPlanilha')
-            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-              <strong>{{ $message }}</strong>
-            </span>
-            @enderror
-          </div>
-          <div class="form-group col-md-4">
+          
+          <div class="form-group col-md-6">
             <label for="linkGrupo">Link do grupo de pesquisa<span style="color: red; font-weight:bold">*</span></label>
             <input class="form-control @error('linkGrupo') is-invalid @enderror" type="url" name="linkGrupo"
                     value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}" required>
 
             <small>Ex.: http://dgp.cnpq.br/dgp/espelhogrupo/228363</small>
             @error('linkGrupo')
+            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+          </div>
+          <div class="form-group col-md-6">
+            <label for="pontuacaoPlanilha">Valor da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
+            <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha"
+                    value="{{old('pontuacaoPlanilha') !== null ? old('pontuacaoPlanilha') : (isset($rascunho) ? $rascunho->pontuacaoPlanilha : '')}}" required>
+
+            @error('pontuacaoPlanilha')
             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
               <strong>{{ $message }}</strong>
             </span>
