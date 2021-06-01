@@ -15,7 +15,7 @@ class Evento extends Model
       'nome', 'descricao', 'tipo',
       'inicioSubmissao', 'fimSubmissao', 'inicioRevisao', 'fimRevisao',
       'resultado_final','resultado_preliminar', 'coordenadorId',
-      'numMaxTrabalhos', 'numMaxCoautores', 'hasResumo', 'criador_id'
+      'numMaxTrabalhos', 'numMaxCoautores', 'hasResumo', 'criador_id', 'numParticipantes'
   ];
 
   public function endereco(){

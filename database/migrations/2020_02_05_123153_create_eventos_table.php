@@ -30,6 +30,7 @@ class CreateEventosTable extends Migration
             $table->date('fim_recurso')->nullable();        
             $table->integer('numMaxTrabalhos')->nullable();
             $table->integer('numMaxCoautores')->nullable();
+            $table->integer('numParticipantes')->nullable();
             $table->boolean('hasResumo')->nullable();
             $table->integer('criador_id')->nullable();
             $table->integer('coordenadorId')->nullable();
