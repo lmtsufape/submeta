@@ -52,7 +52,7 @@
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'CPF'])
-                                <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required/>
+                                <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required onchange="checarCPFdoCampo(this)" onkeyup="mascaraCPF(this)"/>
                                 <span id="cpf-invalido-1" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
                                   <span style="font-style: italic;">CPF inválido.</span>
                                 </span>
