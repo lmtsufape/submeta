@@ -213,6 +213,12 @@
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'CPF'])
                                 <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required/>
+                                <span id="cpf-invalido-1" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
+                                  <span style="font-style: italic;">CPF inválido.</span>
+                                </span>
+                                <span id="cpf-valido-1" class="valid-feedback" role="alert" style="overflow: visible; display:none">
+                                  <span style="font-style: italic;">CPF válido.</span>
+                                </span>
                               @endcomponent
                         </div>                              
                         <div class="col-6">

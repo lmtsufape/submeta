@@ -63,6 +63,13 @@
                 <div class="col-6">
                       @component('componentes.input', ['label' => 'CPF'])
                         <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required/>
+
+                        <span id="cpf-invalido-1" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
+                          <strong style="font-style: italic;">CPF inválido.</strong>
+                        </span>
+                        <span id="cpf-valido-1" class="valid-feedback" role="alert" style="overflow: visible; display:none">
+                          <strong style="font-style: italic;">CPF válido.</strong>
+                        </span>
                       @endcomponent
                 </div>                              
                 <div class="col-6">
@@ -225,7 +232,13 @@
                 <div class="col-6">
                       @component('componentes.input', ['label' => 'CPF'])
                         <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required/>
-                      @endcomponent
+                        <span id="cpf-invalido-1" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
+                          <strong style="font-style: italic;">CPF inválido</strong>
+                        </span>
+                        <span id="cpf-valido-1" class="valid-feedback" role="alert" style="overflow: visible; display:none">
+                          <strong style="font-style: italic;">CPF válido!</strong>
+                        </span>
+                      @endcomponent                      
                 </div>                              
                 <div class="col-6">
                       @component('componentes.input', ['label' => 'RG'])
@@ -378,7 +391,27 @@
   </div>
 
 </div>
-
+<!-- Modal -->
+<div class="modal fade" id="modalCpfInvalido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: red;">
+              <h5 class="modal-title" id="exampleModalLabel2" style="font-size:20px; margin-top:7px; color:white; font-weight:bold; font-family: 'Roboto', sans-serif;">Aviso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        Existe um CPF inválido em um dos participantes por favor corrija para continuar.
+      </div>
+      {{-- <div class="modal-footer">
+        {{-- <button type="button" class="btn btn-secondary"></button> 
+        {{-- <button type="button" class="btn btn-primary">Certo</button> 
+      </div> --}}
+    </div>
+  </div>
+</div>
+</div>
 @endsection
 
 @section('javascript')
@@ -866,85 +899,93 @@
   //   });
   // });
 
-  // $(document).ready(function(){
-  //   $(".cpf").change(function(){
-  //     console.log(this.parentElement.children[0])
-  //     if (validarCPF(retirarFormatacao(this.value))) {
+  $(document).ready(function(){
+    $(".cpf").change(function(){
+      console.log(this.parentElement.children[0])
+      if (validarCPF(retirarFormatacao(this.value))) {
 
-  //       this.parentElement.children[0].style.display = "none";
-  //       this.parentElement.children[1].style.display = "block";
-  //     } else {
-  //       this.parentElement.children[0].style.display = "block";
-  //       this.parentElement.children[1].style.display = "none";
-  //     }
-  //   });
-  // });
+        this.parentElement.children[1].style.display = "none";
+        this.parentElement.children[2].style.display = "block";
+      } else {
+        this.parentElement.children[1].style.display = "block";
+        this.parentElement.children[2].style.display = "none";
+      }
+    });
+  });
 
-  // function validarCPF(strCPF) {
-  //   var soma;
-  //   var resto;
-  //   soma = 0;    
-  //   // Verifica se foi informado todos os digitos corretamente
-  //   if (strCPF.length != 11) {
-  //     return false;
-  //   }
+  function validarCPF(strCPF) {
+    var soma;
+    var resto;
+    soma = 0;    
+    // Verifica se foi informado todos os digitos corretamente
+    if (strCPF.length != 11) {
+      return false;
+    }
 
-  //   // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
-  //   if (varificarDigitos(strCPF)) {
-  //       return false;
-  //   }
+    // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+    if (varificarDigitos(strCPF)) {
+        return false;
+    }
 
-  //   // Faz o calculo para validar o CPF
-  //   for (var t = 9; t < 11; t++) {
-  //       for (var d = 0, c = 0; c < t; c++) {
-  //           d += strCPF[c] * ((t + 1) - c);
-  //       }
-  //       d = ((10 * d) % 11) % 10;
-  //       if (strCPF[c] != d) {
-  //         return false;
-  //       }
-  //   }
-  //   return true;
-  // }
+    // Faz o calculo para validar o CPF
+    for (var t = 9; t < 11; t++) {
+        for (var d = 0, c = 0; c < t; c++) {
+            d += strCPF[c] * ((t + 1) - c);
+        }
+        d = ((10 * d) % 11) % 10;
+        if (strCPF[c] != d) {
+          return false;
+        }
+    }
+    return true;
+  }
 
-  // function retirarFormatacao(strCpf) {
-  //   resultado = "";
-  //   for(var i = 0; i < strCpf.length; i++) {
-  //     if (strCpf[i] != "." && strCpf[i] != "-") {
-  //       resultado += strCpf[i];
-  //     }
-  //   }
-  //   return resultado;
-  // }
+  function retirarFormatacao(strCpf) {
+    resultado = "";
+    for(var i = 0; i < strCpf.length; i++) {
+      if (strCpf[i] != "." && strCpf[i] != "-") {
+        resultado += strCpf[i];
+      }
+    }
+    return resultado;
+  }
 
-  // function varificarDigitos(strCpf) {
-  //   var cont = 1;
-  //   dig1 = strCpf[0];
+  function varificarDigitos(strCpf) {
+    var cont = 1;
+    dig1 = strCpf[0];
 
-  //   for(var i = 1; i < strCpf.length; i++) {
-  //     if(dig1 == strCpf[i]) {
-  //       cont++;
-  //     }
-  //   }
-  //   if (cont == strCpf.length) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+    for(var i = 1; i < strCpf.length; i++) {
+      if(dig1 == strCpf[i]) {
+        cont++;
+      }
+    }
+    if (cont == strCpf.length) {
+      return true;
+    }
+    return false;
+  }
 
-  // function checarCpfs() {
-  //   var validacoes = document.getElementsByClassName("cpf-invalido");
-  //   var count = validacoes.length;
-  //   var quant = 0;
-  //   for(var i = 0; i < validacoes.length; i++) {
-  //     if (validacoes[i].style.display == "none") {
-  //       quant++;
-  //     }
-  //   }
-  //   if(quant == count) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  function checarCpfs() {
+    var validacoes = document.getElementsByClassName("cpf-invalido");
+    var count = validacoes.length;
+    var quant = 0;
+    for(var i = 0; i < validacoes.length; i++) {
+      if (validacoes[i].style.display == "none") {
+        quant++;
+      }
+    }
+    if(quant == count) {
+      return true;
+    }
+    return false;
+  }
+
+  function submeterProposta() {
+    if (checarCpfs()) {
+      document.getElementById("submeterFormProposta").click();
+    } else {
+      $("#modalCpfInvalido").modal('show');
+    }
+  }
 </script>
 @endsection
