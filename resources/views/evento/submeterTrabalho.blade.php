@@ -226,20 +226,11 @@
 
 <script>
     
-    
-  let buttonMais = document.getElementById('buttonMais');
-  let buttonMenos = document.getElementById('buttonMenos');
-  let buttonForm = document.getElementById('buttonForm');
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
   let parts = document.getElementById('participante');
   let partsFirst = document.getElementById('participanteFirst');
-  // let buttonRemover = document.getElementById('buttonRemover');
-  // var item1 = $( "#participante" )[ 0 ];
-  // var participante $( "#participante" ).find( item1 )
   const participante = partsFirst.firstElementChild;
-  // const participante = document.getElementById('participantePrimeiro');
   let contador = 0;
-  // var validator = $( "#formPart" ).validate();
 
   buttonSubmit.addEventListener('click', (e)=>{
     $('.collapse').addClass('show')
@@ -257,25 +248,6 @@
 
   }
 
-  function subir(e){
-    if(e.parentElement.previousElementSibling){
-      var atual = e.parentElement;
-      var anterior = e.parentElement.previousElementSibling;
-      console.log(atual)
-      console.log(anterior)
-      atual.insertAdjacentElement('afterend', anterior)
-      anterior.insertAdjacentElement('beforebegin', atual)
-    }
-  }
-
-  function descer(e){
-    if(e.parentElement.nextElementSibling){
-      var atual = e.parentElement;
-      var proximo = e.parentElement.nextElementSibling;
-      proximo.insertAdjacentElement('afterend', atual)
-      atual.insertAdjacentElement('beforebegin', proximo)
-    }
-  }
   function removerPart(e){
     console.log(e)
     if(e.parentElement.parentElement){
@@ -291,35 +263,29 @@
 
   buttonMais.addEventListener("click", (e) => {
     
-    // console.log("{{ $edital->numParticipantes }}")
     if(parts.children.length  >= "{{ $edital->numParticipantes }}"){
       alert('Limite de participante.')
     }else{
       contador++;
       var cln = participante.cloneNode(true);
       cln.setAttribute('style', " "); 
-      console.log(cln.children)
       var id = cln.children[2].firstElementChild.id;
       var id2 = cln.children[0].firstElementChild.id;
       cln.children[2].firstElementChild.setAttribute('id', id + contador);
       cln.children[0].firstElementChild.setAttribute('href', "#collapseParticipante" + contador);
       cln.children[0].firstElementChild.setAttribute('id', id2 + contador);
 
-      // console.log(cln.style.display = 'block')
       for (i = 0; i < cln.children.length; i++) {
         for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
           let input = cln.children[i].querySelectorAll('input')[index];
           let name = input.getAttributeNode("name").value;
-          name = name.replace("[", "");
-          name = name.replace("]", "");
+          name = name.replace("[]", "");
           input.getAttributeNode("name").value = name + '['+ contador +']';
-          // input.getAttributeNode("disabled").value = " ";
           let select = cln.children[i].querySelectorAll('select')[index];
           if(select){
             let selectName = select.getAttributeNode("name").value;
             selectName = selectName.replace("[", "");
             selectName = selectName.replace("]", "");
-            // console.log(select.getAttributeNode("name").value)
             select.getAttributeNode("name").value = selectName + '['+ contador +']';
           }
           
