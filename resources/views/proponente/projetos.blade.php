@@ -43,7 +43,7 @@
                   <form action="{{route('proponente.projetos')}}" method="get">
                     @csrf
                     <div class="btn-group">
-                        <input type="text" class="form-control" name="buscar" placeholder="Digite o nome do edital" value="{{$busca}}" style="margin-right: 5px;border-radius:8px; border-color:#dcdcdc;">
+                        <input type="text" class="form-control" name="buscar" placeholder="Pesquisar propostas" value="{{$busca}}" style="margin-right: 5px;border-radius:8px; border-color:#dcdcdc;">
                         <button type="submit" class="btn btn-light shadow-sm" style="border-radius: 8px; margin-right:3px"><img src="{{asset('img/icons/logo_lupa.png')}}" alt="" width="20px"></button>
                     </div>
                   </form>

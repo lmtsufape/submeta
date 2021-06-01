@@ -2,8 +2,36 @@
 
 @section('content')
 
-<div class="container">
+<div class="container" style="margin-bottom:8rem">
+	<div class="row justify-content-center" style="margin-top: 2rem;">
+		<div class="col-md-12 form-group" style="text-align: center">
+			<h5 style="color: #1492E6; margin-top:0.5rem; font-size:25px">Página inicial</h5>
+			<h5 style="color: #909090; margin-top:-0.2rem; font-size:22px; font-weight:normal">Proponente</h5>
+		</div>
+	  <div class="" style="text-align: center">
+		<div class="form-group imagem_shadow" style="border-radius: 12px; padding:14px; height:200px; width:190px; margin:15px">
+			<a href="{{route('coord.home')}}" style="text-decoration:none; color: inherit;">
+				<img src="{{asset('img/icons/icon_editais.png')}}" alt="" width="120px">
+				<h5 style="color: #073763; margin-top:0.5rem; font-size:25px;">Editais</h5>
+			</a>
+		</div>
+	  </div>
+	  <div class="" style="text-align: center">
+		<div class="form-group imagem_shadow" style="border-radius: 12px; padding:14px; height:200px; width:250px; margin:15px">
+			<a href="{{ route('proponente.projetos')}}" style="text-decoration:none; color: inherit;">
+				@if(\App\Trabalho::where('proponente_id', auth()->user()->proponentes->id)->count() > 0)
+					<img src="{{asset('img/icons/icon_pasta_cheia.png')}}" alt="" width="140px" style="margin-top: 45px; -webkit-filter: drop-shadow(5px 5px 5px rgb(206, 206, 206)); filter: drop-shadow(5px 5px 5px rgb(206, 206, 206));">
+				@else
+					<img src="{{asset('img/icons/icon_pasta_vazia.png')}}" alt="" width="140px" style="margin-top: 45px; -webkit-filter: drop-shadow(5px 5px 5px rgb(206, 206, 206)); filter: drop-shadow(5px 5px 5px rgb(206, 206, 206));">
+				@endif
+				<h5 style="color: #073763; margin-top:0.5rem; font-size:25px">Minhas propostas</h5>
+			</a>
+		</div>
+	  </div>
+	</div>
+</div>
 
+<!--
    <div class="row justify-content-center titulo-menu">
 		<h4>Página Principal - Proponente</h4>
 	</div>
@@ -95,5 +123,5 @@
         </div> --}}
     </div>
 </div>
-
+-->
 @endsection

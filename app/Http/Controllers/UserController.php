@@ -67,7 +67,7 @@ class UserController extends Controller
         } else {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255'],
+                //'email' => ['required', 'string', 'email', 'max:255'],
                 'cpf' => ['required', 'cpf'],
                 'celular' => ['required', 'string'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
@@ -84,11 +84,12 @@ class UserController extends Controller
                 'bolsistaProdutividade' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],
                 'bolsistaProdutividade' => Rule::requiredIf((isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando')),
                 'nivel' => ['required_if:bolsistaProdutividade,sim'],
-                //'nivel' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
+                'nivel' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
                 'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
                 'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
                 'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
-            ]);
+            
+                ]);
         }
 
         if ($request->alterarSenhaCheckBox != null) {
@@ -99,6 +100,7 @@ class UserController extends Controller
             if (!($request->nova_senha === $request->confirmar_senha)) {
                 return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
             }
+        
         }
         if(Auth()->user()->avaliadors != null && $request->area != null && Auth()->user()->tipo != "avaliador"){
           $avaliador = Avaliador::where('user_id', '=', $id)->first();
@@ -160,7 +162,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->tipo = $request->tipo;
-        $user->email = $request->email;
+       // $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->celular = $request->celular;
         if ($request->instituicao != null) {
@@ -172,6 +174,7 @@ class UserController extends Controller
         if ($request->alterarSenhaCheckBox != null) {
             $user->password = bcrypt($request->nova_senha);
         }
+
 
         $user->update();
 
