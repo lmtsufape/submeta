@@ -42,7 +42,7 @@
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'E-mail'])
-                                <input type="text" class="form-control"  name="emailParticipante[]" placeholder="E-mail" required/>
+                                <input type="email" class="form-control"  name="emailParticipante[]" placeholder="E-mail" required/>
                               @endcomponent
                         </div>                              
                         <div class="col-6">
@@ -51,24 +51,24 @@
                               @endcomponent
                         </div>                              
                         <div class="col-6">
-                              @component('componentes.input', ['label' => 'CPF', 'class' => 'cpf'])
+                              @component('componentes.input', ['label' => 'CPF'])
                                 <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required/>
                               @endcomponent
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'RG'])
-                                <input type="text" class="form-control"  name="rg[]" placeholder="RG" required/>
+                                <input type="number" class="form-control"  min="1" maxlength="8" name="rg[]" placeholder="RG" required/>
                               @endcomponent
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Celular'])
-                                <input type="text" class="form-control"  name="celular[]" placeholder="Celular" required/>
+                                <input type="tel" class="form-control celular"  name="celular[]" placeholder="Celular" required/>
                               @endcomponent
                         </div>
                         <div class="col-md-12"><h5>Endereço</h5></div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'CEP'])
-                                <input type="text" class="form-control" name="cep[]" placeholder="CEP" required/>
+                                <input type="number" class="form-control" name="cep[]" placeholder="CEP" required/>
                               @endcomponent
                         </div>           
                                            
@@ -104,7 +104,7 @@
                         </div>                              
                         <div class="col-12">
                               @component('componentes.input', ['label' => 'Complemento'])
-                                <input type="text" class="form-control" name="complemento[]" placeholder="Complemento" required/>
+                                <input type="text" id="complemento" class="form-control" name="complemento[]"  pattern="[A-Za-z]+" placeholder="Complemento" required/>
                               @endcomponent
                         </div>
                         <div class="col-md-12"><h5>Dados do curso</h5></div>                               
