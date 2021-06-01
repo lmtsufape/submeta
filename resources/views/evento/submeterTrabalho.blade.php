@@ -69,7 +69,10 @@
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
   let parts = document.getElementById('participante');
   // let buttonRemover = document.getElementById('buttonRemover');
+  // var item1 = $( "#participante" )[ 0 ];
+  // var participante $( "#participante" ).find( item1 )
   const participante = parts.firstElementChild;
+  // const participante = document.getElementById('participantePrimeiro');
   let contador = 2;
   // var validator = $( "#formPart" ).validate();
 
@@ -122,10 +125,12 @@
   buttonMais.addEventListener("click", (e) => {
     
     // console.log("{{ $edital->numParticipantes }}")
-    if(parts.children.length >= "{{ $edital->numParticipantes }}"){
+    if(parts.children.length - 1 >= "{{ $edital->numParticipantes }}"){
       alert('Limite de participante.')
     }else{
       var cln = participante.cloneNode(true);
+      cln.style.display = 'block';
+      // console.log(cln.style.display = 'block')
       for (i = 0; i < cln.children.length; i++) {
         for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
           let input = cln.children[i].querySelectorAll('input')[index];
@@ -148,25 +153,6 @@
 
     
   });
-
-  // buttonMenos.addEventListener("click", (e) => {
-  //   contador--;
-
-  //   if(parts.lastElementChild){
-  //     parts.removeChild(parts.lastElementChild);
-  //   }
-  // });
-
-  // $(document).ready(function() {
-
-  //   buttonForm.addEventListener('click', (e)=>{
-  //     e.preventDefault();
-  //     // console.log(e)
-  //     validator.form();
-  //     $( "#formPart" ).submit();
-  //   });
-    
-  // });
 
   
 
@@ -226,7 +212,6 @@
     $( "#criarProjetoForm" ).validate( {
       rules: {
         firstname: "required",
-        lastname: "required",
         username: {
           required: true,
           minlength: 2
@@ -247,7 +232,7 @@
         },
         "complemento[]":{
 
-          alpha:true,
+          
         },
         "nomeParticipante[]":{
           required:true,
@@ -258,14 +243,42 @@
       },
       messages: {
         nomeProjeto: "O nome do projeto é obrigatório.",
+        'emailParticipante[]': "Este campo é obrigatório.",
+        'data_de_nascimento[]': "Este campo é obrigatório.",
+        'cpf[]': "Este campo é obrigatório.",
+        'rg[]': "Este campo é obrigatório.",
+        'celular[]': "Este campo é obrigatório.",
+        'cep[]': "Este campo é obrigatório.",
+        'uf[]': "Este campo é obrigatório.",
+        'cidade[]': "Este campo é obrigatório.",
+        'bairro[]': "Este campo é obrigatório.",
+        'rua[]': "Este campo é obrigatório.",
+        'numero[]': "Este campo é obrigatório.",
+        'complemento[]': "Este campo é obrigatório.",
+        'universidade[]': "Este campo é obrigatório.",
+        'curso[]': "Este campo é obrigatório.",
+        'turno[]': "Este campo é obrigatório.",
+        'total_periodos[]': "Este campo é obrigatório.",
+        'periodo_atual[]': "Este campo é obrigatório.",
+        'ordem_prioridade[]': "Este campo é obrigatório.",
+        'media_geral_curso[]': "Este campo é obrigatório.",
+        'nomePlanoTrabalho[]': "Este campo é obrigatório.",
+        'anexoPlanoTrabalho[]': "Este campo é obrigatório.",
         grandeArea: "Escolha uma grande área.",
         area: "Escolha uma área.",
-        "complemento[]": "Não é permitido números.",
+        linkGrupo: "Este campo é obrigatório.",
+        pontuacaoPlanilha: "Este campo é obrigatório.",
+        anexoProjeto: "Este campo é obrigatório.",
+        anexoLattesCoordenador: "Este campo é obrigatório.",
+        anexoConsuPreenchido: "Este campo é obrigatório.",
+        anexoGrupoPesquisa: "Este campo é obrigatório.",
+        anexoPlanilha: "Este campo é obrigatório.",
+        anexoComiteEtica: "Este campo é obrigatório.",
+        inputJustificativa: "Este campo é obrigatório.",
         "nomeParticipante[]": {
-          required: "O nome do projeto é obrigatório.",
+          required: "O nome do participante é obrigatório.",
           alpha: "Não é permitido números."
         },
-        anexoProjeto: "O campo anexo do projeto é obrigatório.",
         username: {
           required: "Please enter a username",
           minlength: "Your username must consist of at least 2 characters"

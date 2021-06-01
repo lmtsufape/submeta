@@ -32,7 +32,7 @@
           </div>
           
           <div class="form-group col-md-6">
-            <label for="linkGrupo">Link do grupo de pesquisa<span style="color: red; font-weight:bold">*</span></label>
+            <label for="linkGrupo">Link do grupo de pesquisa</label>
             <input class="form-control @error('linkGrupo') is-invalid @enderror" type="url" name="linkGrupo"
                     value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}" required>
 
