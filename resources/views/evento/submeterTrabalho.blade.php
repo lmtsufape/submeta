@@ -455,6 +455,12 @@
     }else{
       var cln = participante.cloneNode(true);
       cln.style.display = 'block';
+      // var id = cln.children[2].firstElementChild.id;
+      // var href = cln.children[1].firstElementChild.href;
+      // cln.children[2].firstElementChild.id = id + contador;
+      // cln.children[1].firstElementChild.href = href + contador;
+      // console.log(cln.children[2].firstElementChild.id)
+      // console.log(cln.children[1].firstElementChild.href)
       // console.log(cln.style.display = 'block')
       for (i = 0; i < cln.children.length; i++) {
         for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
@@ -462,7 +468,7 @@
           let name = input.getAttributeNode("name").value;
           name = name.replace("[", "");
           name = name.replace("]", "");
-          input.getAttributeNode("name").value = name + '['+ cln.children.length +']';
+          input.getAttributeNode("name").value = name + '['+ contador +']';
           // input.getAttributeNode("disabled").value = " ";
           let select = cln.children[i].querySelectorAll('select')[index];
           if(select){
@@ -470,7 +476,7 @@
             selectName = selectName.replace("[", "");
             selectName = selectName.replace("]", "");
             // console.log(select.getAttributeNode("name").value)
-            select.getAttributeNode("name").value = selectName + '['+ cln.children.length +']';
+            select.getAttributeNode("name").value = selectName + '['+ contador +']';
           }
           
         }
