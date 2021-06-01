@@ -222,7 +222,7 @@
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Celular'])
-                                <input type="tel" class="form-control celular"  name="celular[]" placeholder="Celular" required/>
+                                <input type="number" class="form-control celular"  name="celular[]" placeholder="Celular" required/>
                               @endcomponent
                         </div>
                         <div class="col-md-12"><h5>Endereço</h5></div>                              
