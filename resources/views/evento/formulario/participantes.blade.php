@@ -18,7 +18,7 @@
       <li id="item">
         <div style="margin-bottom:15px">
           <div id="participante" >
-            <div class="form-row" style="display: none" id="participantePrimeiro">
+            {{-- <div class="form-row" style="display: none" id="participantePrimeiro">
               <button type="button" class="btn btn-danger" id="buttonRemover" onclick="removerPart(this)" >Remover participante</button>
               <div class="col-md-12">
                 <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante" href="#collapseParticipante" role="button" aria-expanded="false" aria-controls="collapseParticipante" style="width: 100%; text-align:left">
@@ -177,7 +177,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> --}}
             <div class="form-row">
               {{-- <button type="button" onload="myScript(this)" onclick="subir(this)" >Subir</button>
               <button type="button" onload="myScript(this)" onclick="descer(this)">Descer</button> --}}
@@ -197,7 +197,7 @@
                         <div class="col-md-12 mt-3"><h5>Dados do participante</h5></div>
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Nome completo'])
-                                <input type="text" class="form-control " id="nomeParticipante"  name="nomeParticipante[]" placeholder="Nome Completo" required />
+                                <input type="text" class="form-control "   name="nomeParticipante[]" placeholder="Nome Completo" required />
                               @endcomponent
                         </div>                              
                         <div class="col-6">
@@ -264,7 +264,7 @@
                         </div>                              
                         <div class="col-12">
                               @component('componentes.input', ['label' => 'Complemento'])
-                                <input type="text" id="complemento" class="form-control" name="complemento[]"  pattern="[A-Za-z]+" placeholder="Complemento" required/>
+                                <input type="text" class="form-control" name="complemento[]"  pattern="[A-Za-z]+" placeholder="Complemento" required/>
                               @endcomponent
                         </div>
                         <div class="col-md-12"><h5>Dados do curso</h5></div>                               
