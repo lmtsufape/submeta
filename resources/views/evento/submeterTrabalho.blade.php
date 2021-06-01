@@ -298,11 +298,12 @@
       contador++;
       var cln = participante.cloneNode(true);
       cln.setAttribute('style', " "); 
+      console.log(cln.children)
       var id = cln.children[2].firstElementChild.id;
-      var id2 = cln.children[1].firstElementChild.id;
+      var id2 = cln.children[0].firstElementChild.id;
       cln.children[2].firstElementChild.setAttribute('id', id + contador);
-      cln.children[1].firstElementChild.setAttribute('href', "#collapseParticipante" + contador);
-      cln.children[1].firstElementChild.setAttribute('id', id2 + contador);
+      cln.children[0].firstElementChild.setAttribute('href', "#collapseParticipante" + contador);
+      cln.children[0].firstElementChild.setAttribute('id', id2 + contador);
 
       // console.log(cln.style.display = 'block')
       for (i = 0; i < cln.children.length; i++) {
