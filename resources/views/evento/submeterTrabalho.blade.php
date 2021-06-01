@@ -4,7 +4,7 @@
 
 <div>
   {{-- action="{{route('trabalho.store')}}" --}}
-  <form method="POST" id="criarProjetoForm"  action="#" enctype="multipart/form-data" >
+  <form method="POST" id="criarProjetoForm"  action="{{route('trabalho.store')}}" enctype="multipart/form-data" >
   @csrf
   <input type="hidden" name="editalId" value="{{$edital->id}}">
 
@@ -110,8 +110,8 @@
 
   buttonMais.addEventListener("click", (e) => {
     
-    
-    if(parts.children.length >= 3){
+    // console.log("{{ $edital->numParticipantes }}")
+    if(parts.children.length >= "{{ $edital->numParticipantes }}"){
       alert('Limite de participante.')
     }else{
       var cln = participante.cloneNode(true);
@@ -124,7 +124,7 @@
           let select = cln.children[i].querySelectorAll('select')[index];
           if(select){
             let selectName = select.getAttributeNode("name").value;
-            console.log(select.getAttributeNode("name").value)
+            // console.log(select.getAttributeNode("name").value)
             select.getAttributeNode("name").value = selectName + '[' + contador + ']';
           }
           

@@ -26,7 +26,7 @@
                 @enderror
             </div>
          
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label for="tipo" class="col-form-label">{{ __('Tipo*:') }}</label>
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required>
                   <option @if(old('tipo')=='PIBIC' ) selected @endif value="PIBIC">PIBIC</option>
@@ -41,7 +41,7 @@
                 @enderror
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label for="natureza" class="col-form-label">{{ __('Natureza*:') }}</label>
                 <select id="natureza" type="text" class="form-control @error('natureza') is-invalid @enderror" name="natureza" value="{{ old('natureza') }}" required>
                   @foreach ($naturezas as $natureza)
@@ -50,6 +50,16 @@
                 </select>
 
                 @error('natureza')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="col-sm-2">
+                <label for="numParticipantes" class="col-form-label">{{ __('numParticipantes*:') }}</label>
+                <input id="numParticipantes" type="number" min="1" max="20" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ old('numParticipantes') }}" required autocomplete="numParticipantes" autofocus>
+
+                @error('numParticipantes')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>

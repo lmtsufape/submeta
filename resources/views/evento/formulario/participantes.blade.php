@@ -33,10 +33,11 @@
                 <div class="collapse" id="collapseParticipante">
                   <div class="container">
                       <div class="row">
+                        <input type="hidden"  name="funcaoParticipante[]" value="4">
                         <div class="col-md-12"><h5>Dados do participante</h5></div>
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Nome completo'])
-                                <input type="text" class="form-control"  name="nomeParticipante[]" placeholder="Nome Completo" required />
+                                <input type="text" class="form-control "  name="nomeParticipante[]" placeholder="Nome Completo" required />
                               @endcomponent
                         </div>                              
                         <div class="col-6">
@@ -46,28 +47,28 @@
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Data de nascimento'])
-                                <input type="date" class="form-control" name="data_de_nascimento" placeholder="Data de nascimento" required/>
+                                <input type="date" class="form-control" name="data_de_nascimento[]" placeholder="Data de nascimento" required/>
                               @endcomponent
                         </div>                              
                         <div class="col-6">
-                              @component('componentes.input', ['label' => 'CPF'])
-                                <input type="text" class="form-control"  name="cpf" placeholder="CPF" required/>
+                              @component('componentes.input', ['label' => 'CPF', 'class' => 'cpf'])
+                                <input type="text" class="form-control cpf"  name="cpf[]" placeholder="CPF" required/>
                               @endcomponent
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'RG'])
-                                <input type="text" class="form-control"  name="rg" placeholder="RG" required/>
+                                <input type="text" class="form-control"  name="rg[]" placeholder="RG" required/>
                               @endcomponent
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Celular'])
-                                <input type="text" class="form-control"  name="celular" placeholder="Celular" required/>
+                                <input type="text" class="form-control"  name="celular[]" placeholder="Celular" required/>
                               @endcomponent
                         </div>
                         <div class="col-md-12"><h5>Endereço</h5></div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'CEP'])
-                                <input type="text" class="form-control" name="cep" placeholder="CEP" required/>
+                                <input type="text" class="form-control" name="cep[]" placeholder="CEP" required/>
                               @endcomponent
                         </div>           
                                            
@@ -83,7 +84,7 @@
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Cidade'])
-                                <input type="text" class="form-control"  name="cidade" placeholder="Cidade" required/>
+                                <input type="text" class="form-control"  name="cidade[]" placeholder="Cidade" required/>
                               @endcomponent
                         </div>                              
                         <div class="col-6">
@@ -122,7 +123,7 @@
                             <select name="turno[]" class="form-control" required>
                               <option value="" disabled selected>-- Selecione uma opção --</option>
                               @foreach ($enum_turno as $key => $value)
-                                <option @if(old('turno') == $value ) selected @endif value="{{ $key }}">{{ $value }}</option>
+                                <option @if(old('turno') == $value ) selected @endif value="{{ $value }}">{{ $value }}</option>
                               @endforeach
                             </select>
                           @endcomponent

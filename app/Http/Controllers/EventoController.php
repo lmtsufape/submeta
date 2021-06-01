@@ -113,6 +113,7 @@ class EventoController extends Controller
             'tipo'                => ['required', 'string'],
             'natureza'            => ['required'],
             'coordenador_id'      => ['required'],
+            'numParticipantes'    => ['required'],
             'inicioSubmissao'     => ['required', 'date'],
             'fimSubmissao'        => ['required', 'date'],
             'inicioRevisao'       => ['required', 'date'],
@@ -135,6 +136,7 @@ class EventoController extends Controller
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'],
           'coordenador_id'      => ['required'],
+          'numParticipantes'      => ['required'],
           #----------------------------------------------
           'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
           'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
@@ -163,6 +165,7 @@ class EventoController extends Controller
         $evento['resultado_final']     = $request->resultado_final;
         $evento['coordenadorId']       = $request->coordenador_id;
         $evento['criador_id']          = $user_id;
+        $evento['numParticipantes']    = $request->numParticipantes;
         $evento['anexosStatus']        = 'final';
 
         //dd($evento);
@@ -347,6 +350,7 @@ class EventoController extends Controller
             'descricao'           => ['required', 'string'],
             'tipo'                => ['required', 'string'],
             'natureza'            => ['required'],
+            'numParticipantes'    => ['required'],
             'inicioSubmissao'     => ['required', 'date'],
             'fimSubmissao'        => ['required', 'date'],
             'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
@@ -365,6 +369,7 @@ class EventoController extends Controller
           'descricao'           => ['required', 'string', 'max:1500'],
           'tipo'                => ['required', 'string'],
           'natureza'            => ['required'],
+          'numParticipantes'    => ['required'],
           'inicioSubmissao'     => ['required', 'date', 'after_or_equal:inicioSubmissao'],
           'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
           'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
@@ -380,6 +385,7 @@ class EventoController extends Controller
         $evento->descricao            = $request->descricao;
         $evento->tipo                 = $request->tipo;
         $evento->natureza_id          = $request->natureza;
+        $evento->numParticipantes     = $request->numParticipantes;
         $evento->inicioSubmissao      = $request->inicioSubmissao;
         $evento->fimSubmissao         = $request->fimSubmissao;
         $evento->inicioRevisao        = $request->inicioRevisao;
