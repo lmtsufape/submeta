@@ -65,11 +65,16 @@
   let buttonMais = document.getElementById('buttonMais');
   let buttonMenos = document.getElementById('buttonMenos');
   let buttonForm = document.getElementById('buttonForm');
+  let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
   let parts = document.getElementById('participante');
   // let buttonRemover = document.getElementById('buttonRemover');
   const participante = parts.firstElementChild;
   let contador = 2;
   // var validator = $( "#formPart" ).validate();
+
+  buttonSubmit.addEventListener('click', (e)=>{
+    $('.collapse').addClass('show')
+  })
 
   function gerarPeriodo(e){
     var select = e.parentElement.parentElement.nextElementSibling;
@@ -104,7 +109,12 @@
   }
   function removerPart(e){
     if(e.parentElement){
-      parts.removeChild(e.parentElement);
+      if(parts.children.length <= 1){
+        
+      }else{
+        parts.removeChild(e.parentElement);
+      }
+      
     }
   }
 
@@ -174,10 +184,11 @@
      }
     });
 
+    
+
     $.validator.setDefaults( {
       
       submitHandler: function () {
-        $('.collapse').collapse()
         alert( "submitted!" );
       }
     } );

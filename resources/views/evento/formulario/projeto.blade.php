@@ -48,7 +48,7 @@
               @enderror
           </div>
           <div class="form-group col-md-4">
-            <label for="subArea" class="col-form-label">{{ __('Subárea') }} <span style="color: red; font-weight:bold">*</span></label>
+            <label for="subArea" class="col-form-label">{{ __('Subárea') }} </label>
               <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}" >
               <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea" >
                 <option value="" disabled selected hidden>-- Subárea --</option>
