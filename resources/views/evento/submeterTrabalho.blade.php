@@ -30,9 +30,8 @@
   </div>
   </form>
   <div id="participanteFirst" >
-    <div class="form-row" style="display: none" id="participantePrimeiro">
-      <button type="button" class="btn btn-danger" id="buttonRemover" onclick="removerPart(this)" >Remover participante</button>
-      <div class="col-md-12">
+    <div class="form-row mt-2" style="display: none;">
+      <div class="col-md-11">
         <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante" href="#collapseParticipante" role="button" aria-expanded="false" aria-controls="collapseParticipante" style="width: 100%; text-align:left">
           <div class="d-flex justify-content-between align-items-center">
             <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Participante<span id="pontos" style="display: none;">:</span> <span style="display: none;" id="display"></span>  </h4>
@@ -289,7 +288,7 @@
                 </div>                              
                 <div class="col-12">
                       @component('componentes.input', ['label' => 'Complemento'])
-                        <input type="text"  class="form-control" name="complemento[]"  pattern="[A-Za-z]+" placeholder="Complemento" required/>
+                        <input type="text" class="form-control" name="complemento[]"  pattern="[A-Za-z]+" placeholder="Complemento" required/>
                       @endcomponent
                 </div>
                 <div class="col-md-12"><h5>Dados do curso</h5></div>                               
@@ -470,11 +469,12 @@
     }
   }
   function removerPart(e){
-    if(e.parentElement){
+    console.log(e)
+    if(e.parentElement.parentElement){
       if(parts.children.length <= 1){
         
       }else{
-        parts.removeChild(e.parentElement);
+        parts.removeChild(e.parentElement.parentElement);
         contador--;
       }
       
@@ -489,15 +489,13 @@
     }else{
       contador++;
       var cln = participante.cloneNode(true);
-      cln.style.display = 'block';
-      // console.log(cln.children[2].firstElementChild.id)
-      // console.log(cln.children[1].firstElementChild.href)
-      // var id = cln.children[2].firstElementChild.id;
-      // var href = cln.children[1].firstElementChild.href;
-      // cln.children[2].firstElementChild.id = id + contador;
-      // cln.children[1].firstElementChild.href = href + contador;
-      // console.log(cln.children[2].firstElementChild.id)
-      // console.log(cln.children[1].firstElementChild.href)
+      cln.setAttribute('style', " "); 
+      var id = cln.children[2].firstElementChild.id;
+      var id2 = cln.children[1].firstElementChild.id;
+      cln.children[2].firstElementChild.setAttribute('id', id + contador);
+      cln.children[1].firstElementChild.setAttribute('href', "#collapseParticipante" + contador);
+      cln.children[1].firstElementChild.setAttribute('id', id2 + contador);
+
       // console.log(cln.style.display = 'block')
       for (i = 0; i < cln.children.length; i++) {
         for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
