@@ -25,7 +25,7 @@
               <div class="col-md-12">
                 <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante" href="#collapseParticipante" role="button" aria-expanded="false" aria-controls="collapseParticipante" style="width: 100%; text-align:left">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Participante <span style="display: none;" id="display">:</span>  </h4>
+                    <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Participante<span id="pontos" style="display: none;">:</span> <span style="display: none;" id="display"></span>  </h4>
                   </div>
                 </a>
               </div>

@@ -94,207 +94,7 @@ class TrabalhoController extends Controller
                                             ]);
     }
     
-    // public function store(Request $request){
-      
-    //   $mytime = Carbon::now('America/Recife');
-    //   $mytime = $mytime->toDateString();
-    //   $evento = Evento::find($request->editalId);
-    //   $coordenador = CoordenadorComissao::find($evento->coordenadorId);
-    //   //Relaciona o projeto criado com o proponente que criou o projeto
-    //   $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-    //   // if($proponente == null){
-    //   //   return view('proponente.cadastro');
-    //   // }
-    //   //$trabalho->proponentes()->save($proponente);
-    //   //dd($proponente);
-    //   $trabalho = "trabalho";
-    //   if($evento->inicioSubmissao > $mytime){
-    //     if($mytime >= $evento->fimSubmissao){
-    //         return redirect()->route('home');
-    //     }
-    //   }
-
-    //   //--Salvando os dados da submissão temporariamente
-    //   // $trabalho = $this->armazenarInfoTemp($request, $proponente);
-
-    //   //O anexo de Decisão do CONSU dependo do tipo de edital
-    //   if( $evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM'){
-
-    //     $validatedData = $request->validate([
-    //       'editalId'                => ['required', 'string'],
-    //       'nomeProjeto'             => ['required', 'string'],
-    //       'grandeArea'              => ['required', 'string'],
-    //       'area'                    => ['required', 'string'],
-    //       'subArea'                 => ['required', 'string'],
-    //       'pontuacaoPlanilha'       => ['required', 'string'],
-    //       'linkGrupo'               => ['required', 'string', 'link_grupo'],
-    //       'linkLattesEstudante'     => ['required', 'string', 'link_lattes'],
-    //       'nomeParticipante.*'      => ['required', 'string'],
-    //       'emailParticipante.*'     => ['required', 'string'],
-    //       'funcaoParticipante'      => ['required', 'array', 'size:'.$request->countParticipante],
-    //       'funcaoParticipante.*'    => ['required', 'string'],
-    //       'nomePlanoTrabalho.*'     => ['nullable', 'string'],
-    //       //--Verificando se anexos já foram submetidos
-    //       'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-    //       'anexoCONSU'              => [($request->anexoConsuPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-    //       'botao'                   => ['required'],
-    //       'anexoComiteEtica'        => [($request->anexoComitePreenchido!=='sim'&&$request->anexoJustificativaPreenchido!=='sim'?'required_without:justificativaAutorizacaoEtica':''), 'file', 'mimes:pdf', 'max:2048'],
-    //       'justificativaAutorizacaoEtica' => [($request->anexoJustificativaPreenchido!=='sim'&&$request->anexoComitePreenchido!=='sim'?'required_without:anexoComiteEtica':''), 'file', 'mimes:pdf', 'max:2048'],
-    //       'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required': ''), 'file', 'mimes:pdf', 'max:2048'],
-    //       'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:xls,xlsx,ods', 'max:2048'],
-    //       'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
-    //     ]);
-        
-    //     // if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
-    //     //   return $this->validarAnexosRascunho($request, $trabalho);
-    //     // }
-
-    //     //$trabalho = Trabalho::create([
-    //     $trabalho['titulo']                        = $request->nomeProjeto;
-    //     $trabalho['coordenador_id']                = $coordenador->id;
-    //     $trabalho['grande_area_id']                = $request->grandeArea;
-    //     $trabalho['area_id']                       = $request->area;
-    //     $trabalho['sub_area_id']                   = $request->subArea;
-    //     $trabalho['pontuacaoPlanilha']             = $request->pontuacaoPlanilha;
-    //     $trabalho['linkGrupoPesquisa']             = $request->linkGrupo;
-    //     $trabalho['linkLattesEstudante']           = $request->linkLattesEstudante;
-    //     $trabalho['data']                          = $mytime;
-    //     $trabalho['evento_id']                     = $request->editalId;
-    //     $trabalho['status']                        = 'Submetido';
-    //     $trabalho['proponente_id']                 = $proponente->id;
-    //     //Anexos
-    //     $trabalho['anexoDecisaoCONSU']             = $request->anexoCONSU != null ? $request->anexoCONSU : $trabalho->anexoDecisaoCONSU;
-    //     $trabalho['anexoProjeto']                  = $request->anexoProjeto != null ? $request->anexoProjeto : $trabalho->anexoProjeto;
-    //     $trabalho['anexoAutorizacaoComiteEtica']   = $request->anexoComiteEtica != null ? $request->anexoComiteEtica : $trabalho->anexoAutorizacaoComiteEtica;
-    //     $trabalho['justificativaAutorizacaoEtica'] = $request->justificativaAutorizacaoEtica != null ? $request->justificativaAutorizacaoEtica : $trabalho->justificativaAutorizacaoEtica;
-    //     $trabalho['anexoLattesCoordenador']        = $request->anexoLattesCoordenador != null ? $request->anexoLattesCoordenador : $trabalho->anexoLattesCoordenador;
-    //     $trabalho['anexoPlanilhaPontuacao']        = $request->anexoPlanilha != null ? $request->anexoPlanilha : $trabalho->anexoPlanilhaPontuacao;
-
-    //     //dd($trabalho);
-    //   } else {
-    //     //Caso em que o anexo da Decisão do CONSU não necessário
-    //     $validatedData = $request->validate([
-    //       'editalId'                => ['required', 'string'],
-    //       'nomeProjeto'             => ['required', 'string',],
-    //       'grandeArea'              => ['required', 'string'],
-    //       'area'                    => ['required', 'string'],
-    //       'subArea'                 => ['required', 'string'],
-    //       'pontuacaoPlanilha'       => ['required', 'string'],
-    //       'linkGrupo'               => ['required', 'string', 'link_grupo'],
-    //       'linkLattesEstudante'     => ['required', 'string', 'link_lattes'],
-    //       'nomeParticipante.*'      => ['required', 'string'],
-    //       'emailParticipante.*'     => ['required', 'string'],
-    //       'funcaoParticipante.*'    => ['required', 'string'],
-    //       'nomePlanoTrabalho.*'     => ['nullable', 'string'],
-    //       'anexoProjeto'            => [($request->anexoProjetoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-    //       'anexoLattesCoordenador'  => [($request->anexoLattesPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-    //       'anexoPlanilha'           => [($request->anexoPlanilhaPreenchido!=='sim'?'required':''), 'file', 'mimes:xls,xlsx,ods', 'max:2048'],
-    //       'anexoPlanoTrabalho.*'    => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
-    //     ]);
-
-    //     // if(gettype($this->validarAnexosRascunho($request, $trabalho)) != 'integer'){
-    //     //   return $this->validarAnexosRascunho($request, $trabalho);
-    //     // }
-    //     //$trabalho = Trabalho::create([
-    //       $trabalho['titulo']                        = $request->nomeProjeto;
-    //       $trabalho['coordenador_id']                = $coordenador->id;
-    //       $trabalho['grande_area_id']                = $request->grandeArea;
-    //       $trabalho['area_id']                       = $request->area;
-    //       $trabalho['sub_area_id']                   = $request->subArea;
-    //       $trabalho['pontuacaoPlanilha']             = $request->pontuacaoPlanilha;
-    //       $trabalho['linkGrupoPesquisa']             = $request->linkGrupo;
-    //       $trabalho['linkLattesEstudante']           = $request->linkLattesEstudante;
-    //       $trabalho['data']                          = $mytime;
-    //       $trabalho['evento_id']                     = $request->editalId;
-    //       $trabalho['status']                        = 'Submetido';
-    //       $trabalho['proponente_id']                 = $proponente->id;
-    //       //Anexos
-    //       $trabalho['anexoProjeto']                  = $request->anexoProjeto;
-    //       $trabalho['anexoAutorizacaoComiteEtica']   = $request->anexoComiteEtica;
-    //       $trabalho['justificativaAutorizacaoEtica'] = $request->justificativaAutorizacaoEtica;
-    //       $trabalho['anexoLattesCoordenador']        = $request->anexoLattesCoordenador;
-    //       $trabalho['anexoPlanilhaPontuacao']        = $request->anexoPlanilha;
-
-    //   }
-
-    //   //Envia email com senha temp para cada participante do projeto
-    //   if($request->emailParticipante != null){
-
-    //     foreach ($request->emailParticipante as $key => $value) {
-    //       $userParticipante = User::where('email', $value)->first();
-    //       $participante = new Participante();
-    //       if($userParticipante == null){
-
-    //         $passwordTemporario = Str::random(8);
-    //         $subject = "Participante de Projeto";
-    //         Mail::to($value)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $request->nomeProjeto, 'Participante', $evento->nome, $passwordTemporario, $subject));
-    //         $usuario = User::create([
-    //           'email' => $value,
-    //           'password' => bcrypt($passwordTemporario),
-    //           'usuarioTemp' => true,
-    //           'name' => $request->nomeParticipante[$key],
-    //           'tipo' => 'participante',
-    //         ]);
-
-    //         $participante->user_id = $usuario->id;
-    //         $participante->trabalho_id = $trabalho->id;
-    //         $participante->funcao_participante_id = $request->funcaoParticipante[$key];
-    //         $participante->save();
-    //         $usuario->participantes()->save($participante);
-    //         $usuario->save();
-
-    //         $participante->trabalhos()->save($trabalho);
-    //       }else{
-
-    //         $participante->user_id = $userParticipante->id;
-    //         $participante->trabalho_id = $trabalho->id;
-    //         $participante->funcao_participante_id = $request->funcaoParticipante[$key];
-    //         $participante->save();
-    //         $userParticipante->participantes()->save($participante);
-    //         $userParticipante->save();
-    //         $participante->trabalhos()->save($trabalho);
-    //         $subject = "Participante de Projeto";
-    //         $email = $value;
-    //         Mail::to($email)
-    //               ->send(new SubmissaoTrabalho($userParticipante, $subject, $evento, $trabalho));
-    //       }
-
-    //       if($request->nomePlanoTrabalho[$key] != null){
-    //         $usuario = User::where('email', $value)->first();
-    //         $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $trabalho->id]])->first();
-    //         $path = 'trabalhos/' . $request->editalId . '/' . $trabalho->id .'/';
-    //         $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
-    //         $file = $request->anexoPlanoTrabalho[$key];
-    //         Storage::putFileAs($path, $file, $nome);
-
-    //         $mytime = Carbon::now('America/Recife');
-    //         $mytime = $mytime->toDateString();
-    //         $arquivo = new Arquivo();
-    //         $arquivo->titulo = $request->nomePlanoTrabalho[$key];
-    //         $arquivo->nome = $path . $nome;
-    //         $arquivo->trabalhoId = $trabalho->id;
-    //         $arquivo->data = $mytime;
-    //         $arquivo->participanteId = $participante->id;
-    //         $arquivo->versaoFinal = true;
-    //         $arquivo->save();
-    //       }
-    //     }
-    //   }
-
-    //   //-- Salvando anexos no storage ---//
-
-    //   $pasta = 'trabalhos/' . $request->editalId . '/' . $trabalho->id;
-
-    //   $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
-    //   $subject = "Submissão de Trabalho";
-    //   $autor = Auth()->user();
-    //   $evento = $evento;
-    //   $trabalho = $trabalho;
-    //   Mail::to($autor->email)
-    //         ->send(new SubmissaoTrabalho($autor, $subject, $evento, $trabalho));
-
-    //   return redirect()->route('evento.visualizar',['id'=>$request->editalId]);
-    // }
+    
 
     public function storeParcial(Request $request){
       $mytime = Carbon::now('America/Recife');
@@ -459,11 +259,11 @@ class TrabalhoController extends Controller
           }
 
           // Anexo grupo pesquisa
-          if(isset($request->grupoPesquisa)){
+          if(isset($request->anexoGrupoPesquisa)){
             if(Storage::disk()->exists($trabalho->anexoGrupoPesquisa)) {
               Storage::delete($trabalho->anexoGrupoPesquisa);
             }
-            $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoPlanilha, "Grupo_de_pesquisa.". $request->file('grupoPesquisa')->extension());
+            $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoPlanilha, "Grupo_de_pesquisa.". $request->file('anexoGrupoPesquisa')->extension());
           }
 
           return $trabalho;
@@ -500,8 +300,8 @@ class TrabalhoController extends Controller
       }
 
       // Anexo grupo pesquisa
-      if(isset($request->grupoPesquisa)){
-        $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoPlanilha, "Grupo_de_pesquisa.". $request->file('grupoPesquisa')->extension());
+      if(isset($request->anexoGrupoPesquisa)){
+        $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoPlanilha, "Grupo_de_pesquisa.". $request->file('anexoGrupoPesquisa')->extension());
       }
 
       return $trabalho;

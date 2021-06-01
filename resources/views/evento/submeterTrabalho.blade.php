@@ -179,10 +179,12 @@
 
     $('#nomeParticipante').keyup(function () {
       $('#display').text($(this).val());
-      if($('#display').text($(this).val()) == ""){
+      if($('#nomeParticipante').val() == ""){
         $('#display').hide();
+        $('#pontos').hide();
       }else{
         $('#display').show();
+        $('#pontos').show();
       }
     });
 
@@ -217,8 +219,8 @@
 
     $.validator.setDefaults( {
       
-      submitHandler: function () {
-        alert( "submitted!" );
+      submitHandler: function (form) {
+        form.submit();
       }
     } );
     $( "#criarProjetoForm" ).validate( {
