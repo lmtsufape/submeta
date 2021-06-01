@@ -462,7 +462,7 @@
           let name = input.getAttributeNode("name").value;
           name = name.replace("[", "");
           name = name.replace("]", "");
-          input.getAttributeNode("name").value = name + '[]';
+          input.getAttributeNode("name").value = name + '['+ cln.children.length +']';
           // input.getAttributeNode("disabled").value = " ";
           let select = cln.children[i].querySelectorAll('select')[index];
           if(select){
@@ -470,7 +470,7 @@
             selectName = selectName.replace("[", "");
             selectName = selectName.replace("]", "");
             // console.log(select.getAttributeNode("name").value)
-            select.getAttributeNode("name").value = selectName + '[]';
+            select.getAttributeNode("name").value = selectName + '['+ cln.children.length +']';
           }
           
         }
