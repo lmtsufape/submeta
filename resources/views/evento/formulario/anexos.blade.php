@@ -23,7 +23,7 @@
           </div>
           <div class="form-group col-md-6">
             @component('componentes.input', ['label' => 'Anexo da Planilha de Pontuação(.ods,.xls,.ods)'])
-              <input type="file" class="input-group-text" name="anexoPlanilha" placeholder="anexoPlanoTrabalho" accept=".ods, .xls, .ods" required/>
+              <input type="file" class="input-group-text" name="anexoPlanilha" placeholder="anexoPlanoTrabalho" accept=".xlsx, .xls, .ods" required/>
             @endcomponent
           </div>
           <div class="form-group col-md-6">

@@ -177,8 +177,17 @@
   
   $( document ).ready( function () {
 
+    $('#nomeParticipante').keyup(function () {
+      $('#display').text($(this).val());
+      if($('#display').text($(this).val()) == ""){
+        $('#display').hide();
+      }else{
+        $('#display').show();
+      }
+    });
+
     $.validator.addMethod("alpha", function(value, element) {
-        return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
+        return this.optional(element) || value == value.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/);
     });
 
     $('.cep').mask('00000000');
@@ -239,7 +248,7 @@
           alpha:true,
         },
         "nomeParticipante[]":{
-
+          required:true,
           alpha:true,
         },
         
@@ -250,7 +259,10 @@
         grandeArea: "Escolha uma grande área.",
         area: "Escolha uma área.",
         "complemento[]": "Não é permitido números.",
-        "nomeParticipante[]": "Não é permitido números.",
+        "nomeParticipante[]": {
+          required: "O nome do projeto é obrigatório.",
+          alpha: "Não é permitido números."
+        },
         anexoProjeto: "O campo anexo do projeto é obrigatório.",
         username: {
           required: "Please enter a username",
