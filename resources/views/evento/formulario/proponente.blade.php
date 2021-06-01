@@ -42,8 +42,8 @@
             @enderror
           </div>
           <div class="form-group col-md-4">
-            <label for="linkGrupo">Link do grupo de pesquisa</label>
-            <input class="form-control @error('linkGrupo') is-invalid @enderror" type="text" name="linkGrupo"
+            <label for="linkGrupo">Link do grupo de pesquisa<span style="color: red; font-weight:bold">*</span></label>
+            <input class="form-control @error('linkGrupo') is-invalid @enderror" type="url" name="linkGrupo"
                     value="{{old('linkGrupo') !== null ? old('linkGrupo') : (isset($rascunho) ? $rascunho->linkGrupoPesquisa : '')}}" required>
 
             <small>Ex.: http://dgp.cnpq.br/dgp/espelhogrupo/228363</small>
