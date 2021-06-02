@@ -9,6 +9,11 @@
   <input type="hidden" name="editalId" value="{{$edital->id}}">
 
   <div class="container">
+    @if (session('mensagem'))
+        <div class="alert alert-warning" role="alert">
+            {{ session('mensagem') }}
+        </div>
+    @endif
     <div class="row justify-content-center">
 
       @component('evento.formulario.projeto', ['grandeAreas' => $grandeAreas])

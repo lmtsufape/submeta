@@ -1,5 +1,9 @@
 <?php
 
+use App\Trabalho;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\SubmissaoNotification;
+use Illuminate\Support\Facades\Notification;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,7 +14,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/email', function (Request $request) {
+  $id = Trabalho::find(9)->id;
+  Notification::send(Auth::user(), new SubmissaoNotification($id));
+  return 'Ok';
+  // Auth::user()->notify(new SubmissaoTrabalho('teste'));
+});
 
 Route::get('/', 'UserController@index'                                            )->name('home-user');
 Route::get('/', 'UserController@inicial'                                          )->name('inicial');
@@ -111,7 +120,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/trabalho/criar',          'TrabalhoController@salvar'                      )->name('trabalho.store');
   Route::post(  '/trabalho/criarRascunho',  'TrabalhoController@storeParcial'               )->name('trabalho.storeParcial');
   Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
-  Route::get(   '/projeto/{id}/visualizar', 'TrabalhoController@show'                       )->name('trabalho.show');
+  Route::get(   '/projeto/visualizar/{id}', 'TrabalhoController@show'                       )->name('trabalho.show');
   Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
   Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@atualizar'                  )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');

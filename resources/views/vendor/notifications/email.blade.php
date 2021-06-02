@@ -44,7 +44,7 @@
 {{ $salutation }}
 @else
 @lang('Atenciosamente'),<br>
-{{ config('app.name') }} - Eventos Acadêmicos
+{{ config('app.name') }}<br><br>
 Laboratório Multidisciplinar de Tecnologias Sociais
 Universidade Federal do Agreste de Pernambuco
 @endif
