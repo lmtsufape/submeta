@@ -9,7 +9,7 @@
 			{{-- Usuario proponente--}}
 			<h2>Olá, {{ $user->name }} </h2>
 			<br>
-			<h4>Seu projeto intitulado {{ $trabalho->titulo }} foi submetido com sucesso ao Edital {{ $evento->nome }}  </h4>
+			<h4>O sistema de recepção de formulários eletrônicos do Submeta registra que em {{ date('d/m/Y \à\s  H:i\h', strtotime(now()))  }} horas, o formulário identificado acima foi recebido e reconhecido no Submeta. Seu projeto intitulado {{ $trabalho->titulo }} foi submetido com sucesso ao Edital {{ $evento->nome }}  </h4>
 			<br>
 			<h4>
 				Atenciosamente,
