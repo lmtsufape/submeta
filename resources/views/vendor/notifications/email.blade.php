@@ -43,9 +43,9 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Atenciosamente'),<br>
+<br>@lang('Atenciosamente'),<br>
 {{ config('app.name') }}<br><br>
-Laboratório Multidisciplinar de Tecnologias Sociais
+Laboratório Multidisciplinar de Tecnologias Sociais<br>
 Universidade Federal do Agreste de Pernambuco
 @endif
 
