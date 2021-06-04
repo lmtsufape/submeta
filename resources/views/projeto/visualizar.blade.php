@@ -1157,6 +1157,7 @@
           </div>
         </div>
       </div>
+      
       <!--X Participantes X-->
       <!-- Finalizar -->
       {{-- <div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">5º Passo</h4></div>
@@ -1181,6 +1182,8 @@
       </div> --}}
       <!--X Finalizar X-->
     </div>
+    <a class="btn btn-success" href="{{ route('exportar.projeto', ['id' => $projeto->id]) }}" target="_blank" rel="noopener noreferrer">Baixar PDF</a>
+    <button type="button" class="btn btn-success" id="exportarPDF">Baixar PDF</button>
   </div>
   {{-- </form> --}}
 <!-- Modal de Aviso Edit -->
@@ -1231,7 +1234,22 @@
 @endsection
 
 @section('javascript')
+{{-- <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script src="https://printjs-4de6.kxcdn.com/print.min.css"></script> --}}
 <script type="text/javascript">
+  function myPrint(){
+    printJS('myFile.pdf');
+  }
+  var buttonPDF = document.getElementById('exportarPDF');
+
+  buttonPDF.addEventListener('click', () =>{
+    window.print();
+    // setTimeout(function(){ 
+    //   document.querySelector("body > print-preview-app").shadowRoot.querySelector("#sidebar").shadowRoot.querySelector("print-preview-button-strip").shadowRoot.querySelector("div > cr-button.action-button").click();
+    // }, 1000);
+    
+    // myPrint()
+  });
 
 /*
 * GLOBAL

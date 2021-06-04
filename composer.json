@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "^4.0",
         "geekcom/validator-docs": "^3.4",
         "guzzlehttp/guzzle": "^6.5",

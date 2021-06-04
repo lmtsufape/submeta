@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use PDF;
 use App\Area;
 use App\User;
 use App\Evento;
@@ -96,8 +97,6 @@ class TrabalhoController extends Controller
                                             ]);
     }
     
-    
-
     public function storeParcial(Request $request){
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();
@@ -333,6 +332,27 @@ class TrabalhoController extends Controller
                                                 'arquivos' => $arquivos,
                                                 'enum_turno'         => Participante::ENUM_TURNO,
                                            ]);
+    }
+
+		public function exportProjeto($id)
+    {
+				$projeto = Trabalho::find($id);
+        $edital = Evento::find($projeto->evento_id);
+        $grandeAreas = GrandeArea::all();
+        $areas = Area::all();
+        $subAreas = Subarea::all();
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        $participantes = Participante::where('trabalho_id', $id)->get();
+        $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
+        $users = User::whereIn('id', $participantesUsersIds)->get();
+        $arquivos = Arquivo::where('trabalhoId', $id)->get();
+				$enum_turno = Participante::ENUM_TURNO;
+      	view()->share('projeto.visualizar', [$projeto, $grandeAreas, $areas, $subAreas, $edital,$users, $funcaoParticipantes,$participantes,$arquivos,$enum_turno]);
+        
+        $pdf = PDF::loadView('projeto.visualizar', compact('projeto', 'grandeAreas', 'areas', 'subAreas', 'edital', 'users', 'funcaoParticipantes', 'participantes', 'arquivos', 'enum_turno'))->setOptions(['defaultFont' => 'sans-serif']);
+
+        // download PDF file with download method
+        return $pdf->download('pdf_file.pdf');
     }
 
     public function edit($id)

@@ -368,7 +368,7 @@ class AdministradorController extends Controller
     public function projetos(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos->where('status', 'Submetido');
+        $trabalhos = $evento->trabalhos->where('status', 'submetido');
 
         $avaliadores = $evento->avaliadors;
         foreach ($trabalhos as $key => $trabalho) {
@@ -427,7 +427,7 @@ class AdministradorController extends Controller
 
     }
 
-    public function atribuicao(Request $request){
+    public function atribuicaoProjeto(Request $request){
 
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         $evento = Evento::where('id', $request->evento_id)->first();
