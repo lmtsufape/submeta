@@ -105,12 +105,18 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="cargo" class="col-form-label">{{ __('Cargo*') }} {{$proponente->cargo}}</label>
+                                    <label for="cargo" class="col-form-label">{{ __('Cargo*') }}</label>
                                     <select id="cargo" name="cargo" class="form-control @error('cargo') is-invalid @enderror" onchange="">
                                         <option value="" disabled selected hidden>-- Cargo --</option>
-                                        <option @if( $proponente->cargo =='Professor' ) selected @endif value="Professor">Professor</option>
-                                        <option @if( $proponente->cargo =='Técnico' ) selected @endif value="Técnico">Técnico</option>
-                                        <option @if( $proponente->cargo =='Outro' ) selected @endif value="Outro">Outro</option>
+                                        @if ($proponente != null)
+                                            <option @if( $proponente->cargo =='Professor' ) selected @endif value="Professor">Professor</option>
+                                            <option @if( $proponente->cargo =='Técnico' ) selected @endif value="Técnico">Técnico</option>
+                                            <option @if( $proponente->cargo =='Outro' ) selected @endif value="Outro">Outro</option>
+                                        @else 
+                                            <option value="Professor">Professor</option>
+                                            <option value="Técnico">Técnico</option>
+                                            <option value="Outro">Outro</option>
+                                        @endif
                                     </select>
 
                                     @error('cargo')
@@ -125,13 +131,21 @@
                                     <label for="vinculo" class="col-form-label">{{ __('Vínculo*') }}</label>
                                     <select name="vinculo" id="vinculo" class="form-control @error('vinculo') is-invalid @enderror" onchange="outroVinculo()">
                                         <option value="" disabled selected hidden>-- Vínculo --</option>
-                                        <option @if($proponente->vinculo =='Servidor na ativa' ) selected @endif value="Servidor na ativa">Servidor na ativa</option>
-                                        <option @if($proponente->vinculo =='Servidor aposentado' ) selected @endif value="Servidor aposentado">Servidor aposentado</option>
-                                        <option @if($proponente->vinculo =='Professor visitante' ) selected @endif value="Professor visitante">Professor visitante</option>
-                                        <option @if($proponente->vinculo =='Pós-doutorando' ) selected @endif value="Pós-doutorando">Pós-doutorando</option>
-                                        <option @if($proponente->vinculo =='Outro' ) selected @endif value="Outro">Outro</option>
-                                        @if ($proponente->vinculo !='Servidor na ativa' && $proponente->vinculo !='Servidor aposentado' && $proponente->vinculo !='Professor visitante' && $proponente->vinculo !='Pós-doutorando' && $proponente->vinculo !='Outro')
-                                            <option value="{{ $proponente->vinculo }}" selected >{{ $proponente->vinculo }}</option>
+                                        @if ($proponente != null)
+                                            <option @if($proponente->vinculo =='Servidor na ativa' ) selected @endif value="Servidor na ativa">Servidor na ativa</option>
+                                            <option @if($proponente->vinculo =='Servidor aposentado' ) selected @endif value="Servidor aposentado">Servidor aposentado</option>
+                                            <option @if($proponente->vinculo =='Professor visitante' ) selected @endif value="Professor visitante">Professor visitante</option>
+                                            <option @if($proponente->vinculo =='Pós-doutorando' ) selected @endif value="Pós-doutorando">Pós-doutorando</option>
+                                            <option @if($proponente->vinculo =='Outro' ) selected @endif value="Outro">Outro</option>
+                                            @if ($proponente->vinculo !='Servidor na ativa' && $proponente->vinculo !='Servidor aposentado' && $proponente->vinculo !='Professor visitante' && $proponente->vinculo !='Pós-doutorando' && $proponente->vinculo !='Outro')
+                                                <option value="{{ $proponente->vinculo }}" selected >{{ $proponente->vinculo }}</option>
+                                            @endif
+                                        @else
+                                            <option value="Servidor na ativa">Servidor na ativa</option>
+                                            <option value="Servidor aposentado">Servidor aposentado</option>
+                                            <option value="Professor visitante">Professor visitante</option>
+                                            <option value="Pós-doutorando">Pós-doutorando</option>
+                                            <option value="Outro">Outro</option>
                                         @endif
                                     </select>
 
@@ -161,11 +175,19 @@
                                             <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima*') }}</label>
                                             <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome">
                                                 <option value="" disabled selected hidden>-- Titulação --</option>
-                                                <option @if( $proponente->titulacaoMaxima =='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
-                                                <option @if( $proponente->titulacaoMaxima =='Mestrado' ) selected @endif value="Mestrado">Mestrado</option>
-                                                <option @if( $proponente->titulacaoMaxima =='Especialização' ) selected @endif value="Especialização">Especialização</option>
-                                                <option @if( $proponente->titulacaoMaxima =='Graduação' ) selected @endif value="Graduação">Graduação</option>
-                                                <option @if( $proponente->titulacaoMaxima =='Técnico' ) selected @endif value="Técnico">Técnico</option>
+                                                @if ($proponente != null) 
+                                                    <option @if( $proponente->titulacaoMaxima =='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
+                                                    <option @if( $proponente->titulacaoMaxima =='Mestrado' ) selected @endif value="Mestrado">Mestrado</option>
+                                                    <option @if( $proponente->titulacaoMaxima =='Especialização' ) selected @endif value="Especialização">Especialização</option>
+                                                    <option @if( $proponente->titulacaoMaxima =='Graduação' ) selected @endif value="Graduação">Graduação</option>
+                                                    <option @if( $proponente->titulacaoMaxima =='Técnico' ) selected @endif value="Técnico">Técnico</option>
+                                                @else 
+                                                    <option value="Doutorado">Doutorado</option>
+                                                    <option value="Mestrado">Mestrado</option>
+                                                    <option value="Especialização">Especialização</option>
+                                                    <option value="Graduação">Graduação</option>
+                                                    <option value="Técnico">Técnico</option>
+                                                @endif
                                             </select>
 
                                             @error('titulacaoMaxima')
@@ -178,7 +200,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="anoTitulacao" class="col-form-label">{{ __('Ano da Titulação*') }}</label>
-                                            <input id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" value="{{ $proponente->anoTitulacao }}" autocomplete="nome">
+                                            <input id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" value="@if($proponente != null){{$proponente->anoTitulacao}}@endif" autocomplete="nome">
 
                                             @error('anoTitulacao')
                                                 <span class="invalid-feedback" role="alert">
@@ -190,7 +212,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="areaFormacao" class="col-form-label">{{ __('Área de Formação*') }}</label>
-                                            <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="{{ $proponente->areaFormacao }}" autocomplete="nome">
+                                            <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="@if($proponente != null){{$proponente->areaFormacao}}@endif" autocomplete="nome">
 
                                             @error('areaFormacao')
                                                 <span class="invalid-feedback" role="alert">
@@ -202,7 +224,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
-                                            <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="{{ $proponente->SIAPE }}" autocomplete="nome">
+                                            <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="@if($proponente != null){{$proponente->SIAPE}}@endif" autocomplete="nome">
 
                                             @error('SIAPE')
                                                 <span class="invalid-feedback" role="alert">
@@ -214,7 +236,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="linkLattes" class="col-form-label">{{ __('Link do currículo Lattes*') }}</label>
-                                            <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="{{ $proponente->linkLattes }}" autocomplete="nome">
+                                            <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="@if($proponente != null){{$proponente->linkLattes}}@endif" autocomplete="nome">
 
                                             @error('linkLattes')
                                                 <span class="invalid-feedback" role="alert">
@@ -228,8 +250,13 @@
                                             <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade*') }}</label><br>
                                             <select name="bolsistaProdutividade" id="bolsistaProdutividade" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" onchange="mudarNivel()">
                                                 <option value="" disabled selected hidden>-- Bolsista --</option>
-                                                <option @if( $proponente->bolsistaProdutividade =='nao' ) selected @endif value="nao">Não</option>
-                                                <option @if( $proponente->bolsistaProdutividade =='sim' ) selected @endif value="sim">Sim</option>
+                                                @if ($proponente != null) 
+                                                    <option @if( $proponente->bolsistaProdutividade =='nao' ) selected @endif value="nao">Não</option>
+                                                    <option @if( $proponente->bolsistaProdutividade =='sim' ) selected @endif value="sim">Sim</option>
+                                                @else 
+                                                    <option value="nao">Não</option>
+                                                    <option value="sim">Sim</option>
+                                                @endif
                                             </select>
                                             @error('bolsistaProdutividade')
                                                 <span class="invalid-feedback" role="alert">
@@ -239,7 +266,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        @if ($proponente->bolsistaProdutividade =='sim')
+                                        @if ($proponente != null && $proponente->bolsistaProdutividade =='sim')
                                             <div class="form-group" id="nivelInput" style="display: block;">
                                                 <label for="nivel" class="col-form-label">{{ __('Nível*') }}</label>
                                                 <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
@@ -348,7 +375,7 @@
         </div>
     </form>
 </div>
-<!--
+{{-- 
 <div class="container content">
     <div class="row titulo">
         <h1>Perfil</h1>
@@ -362,7 +389,7 @@
 
     <form id="formEditUser" method="POST" action="{{ route('perfil.edit') }}">
         @csrf
-        {{-- Nome | CPF --}}
+        {{-- Nome | CPF 
         <div class="form-group row">
             <input type="hidden" name="tipo" value="{{ $user->tipo }}">
             @if(session('mensagem'))
@@ -394,7 +421,7 @@
                 @enderror
             </div>
         </div>
-        {{-- Instituição de Ensino e Celular --}}
+        {{-- Instituição de Ensino e Celular 
         <div class="form-group row">
             <div class="col-md-6">
                 <label class="col-form-label">{{ __('Instituição de Vínculo*') }}</label>
@@ -481,7 +508,7 @@
                 <label for="alterarSenhaCheckBox">Desejo alterar minha senha</label>
             </div>
         </div>
-        {{-- Email | Senha | Confirmar Senha --}}
+        {{-- Email | Senha | Confirmar Senha 
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="senha_atual" class="col-form-label">{{ __('Senha atual*') }}</label>
@@ -709,7 +736,7 @@
         </div>
     </div>
 </div>
--->
+--}}
 
 @endsection
 @section('javascript')
