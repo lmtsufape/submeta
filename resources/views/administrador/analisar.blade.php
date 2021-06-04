@@ -148,7 +148,7 @@
                           </div>
 
                           <hr>
-                          <h4>Participantes</h4>
+                          <h4>Discentes</h4>
 
                           {{-- Participantes  --}}
                           <div class="row" style="margin-top:20px">
@@ -159,7 +159,7 @@
                                               {{-- @if($participante->user_id === $user->id) --}}
                                               <div id="novoParticipante">
                                                   <br>
-                                                  <h5>Dados do participante</h5>
+                                                  <h5>Dados do discente</h5>
                                                   <div class="row">
                                                       <div class="col-sm-5">
                                                           <label>Nome Completo</label>
