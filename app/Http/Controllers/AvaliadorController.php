@@ -70,7 +70,7 @@ class AvaliadorController extends Controller
         $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
       	$avaliador = $user->avaliadors->where('user_id',$user->id)->first();
       	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
-        $trabalho->status = 'Avaliado';
+        $trabalho->status = 'avaliado';
         $trabalho->save();
         $data = Carbon::now('America/Recife');
     	if($request->anexoParecer == ''){  

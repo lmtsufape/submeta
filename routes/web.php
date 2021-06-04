@@ -57,7 +57,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
     Route::post('/parecer/plano',       'AvaliadorController@parecerPlano'   )->name('parecer.plano')->middleware('auth');
     Route::get('/editais',        'AvaliadorController@editais'              )->name('editais')->middleware('auth');
     Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'        )->name('enviarParecer')->middleware('auth');
-    Route::post('/Enviarparecer', 'AvaliadorController@enviarParecerPlano'   )->name('enviarParecerPlano')->middleware('auth');
+    Route::post('/Enviarparecer/plano', 'AvaliadorController@enviarParecerPlano'   )->name('enviarParecerPlano')->middleware('auth');
     Route::get('/Resposta', 'AvaliadorController@conviteResposta'            )->name('conviteResposta')->middleware('auth');
   });
 
@@ -125,6 +125,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@atualizar'                  )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
+  Route::get(   '/projeto/exportar/{id}','TrabalhoController@exportProjeto'                 )->name('exportar.projeto');
 
 
   //#########  Atribuição  #######################################
@@ -169,7 +170,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/selecionarProjetos',          'AdministradorController@projetos'         )->name('projetos');
   Route::post('/adicionarAvalEvento',        'AdministradorController@adicionar'        )->name('adicionar');
   Route::post('/removerAvalEvento',          'AdministradorController@remover'          )->name('remover');
-  Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicao'       )->name('atribuicao');
+  Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicaoProjeto')->name('atribuicao.projeto');
   Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');

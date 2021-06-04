@@ -69,7 +69,7 @@
                     </div>
                     <div class="modal-body">
 
-                      <form action="{{ route('plano.trabalho.atribuicao') }}" method="POST">
+                      <form action="{{ route('admin.atribuicao.projeto') }}" method="POST">
                         @csrf
                         <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                         <input type="hidden" name="evento_id" value="{{ $evento->id }}">
