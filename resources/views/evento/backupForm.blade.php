@@ -319,16 +319,16 @@
       <!--X Anexos X-->
       <!-- Participantes -->
       <div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">4º Passo</h4></div>
-      <div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Área do(s) participante(s)</h5></div>
+      <div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Área do(s) discente(s)</h5></div>
       <div class="col-md-10">
         <div class="card" style="border-radius: 12px; padding:15px">
           <div class="card-body" style="margin-bottom: -2rem">
             <div class="d-flex justify-content-between align-items-center">
-              <div><h5 style="color: #1492E6; margin-top:0.5rem">Participante(s)</h5></div>
+              <div><h5 style="color: #1492E6; margin-top:0.5rem">Discente(s)</h5></div>
               <div>
 
                 
-                <button type="button" class="btn btn-light" onclick="novoParticipante()">Adicionar participante</button>
+                <button type="button" class="btn btn-light" onclick="novoParticipante()">Adicionar discente</button>
 
               </div>
             </div>

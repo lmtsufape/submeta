@@ -2,7 +2,7 @@
   <div class="col-md-11">
     <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante" href="#collapseParticipante" role="button" aria-expanded="false" aria-controls="collapseParticipante" style="width: 100%; text-align:left">
       <div class="d-flex justify-content-between align-items-center">
-        <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Participante<span id="pontos" style="display: none;">:</span> <span style="display: none;" id="display"></span>  </h4>
+        <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Discente<span id="pontos" style="display: none;">:</span> <span style="display: none;" id="display"></span>  </h4>
       </div>
     </a>
   </div>
@@ -14,7 +14,7 @@
       <div class="container">
           <div class="row">
             <input type="hidden"  name="funcaoParticipante[]" value="4">
-            <div class="col-md-12 mt-3"><h5>Dados do participante</h5></div>
+            <div class="col-md-12 mt-3"><h5>Dados do discente</h5></div>
             <div class="col-6">
                   @component('componentes.input', ['label' => 'Nome completo'])
                     <input type="text" class="form-control "   name="nomeParticipante[]" placeholder="Nome Completo" required />
