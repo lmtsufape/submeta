@@ -1,13 +1,13 @@
 <!-- Participantes -->
 <div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">4º Passo</h4></div>
-<div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Área do(s) participante(s)</h5></div>
+<div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Área do(s) discente(s)</h5></div>
 <div class="col-md-10">
   <div class="card" style="border-radius: 12px; padding:15px">
     <div class="card-body" style="margin-bottom: -2rem">
       <div class="d-flex justify-content-between align-items-center">
-        <div><h5 style="color: #1492E6; margin-top:0.5rem">Participante(s)</h5></div>
+        <div><h5 style="color: #1492E6; margin-top:0.5rem">Discente(s)</h5></div>
         <div>
-          <button type="button" class="btn btn-light" id="buttonMais" >Adicionar participante</button>
+          <button type="button" class="btn btn-light" id="buttonMais" >Adicionar discente </button>
           {{-- <button type="button" class="btn btn-light" id="buttonMenos" >Remover participante</button> --}}
           
         </div>
@@ -22,7 +22,7 @@
               <div class="col-md-11">
                 <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante" href="#collapseParticipante" role="button" aria-expanded="false" aria-controls="collapseParticipante" style="width: 100%; text-align:left">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Participante<span id="pontos" style="display: none;">:</span> <span style="display: none;" id="display"></span>  </h4>
+                    <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Discente<span id="pontos" style="display: none;">:</span> <span style="display: none;" id="display"></span>  </h4>
                   </div>
                 </a>
               </div>
@@ -34,7 +34,7 @@
                   <div class="container">
                       <div class="row">
                         <input type="hidden"  name="funcaoParticipante[]" value="4">
-                        <div class="col-md-12 mt-3"><h5>Dados do participante</h5></div>
+                        <div class="col-md-12 mt-3"><h5>Dados do discente</h5></div>
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Nome completo'])
                                 <input type="text" class="form-control "   name="nomeParticipante[]" placeholder="Nome Completo" required />

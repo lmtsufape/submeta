@@ -75,7 +75,7 @@
           </button>
       </div>
       <div class="modal-body">
-        Existe um CPF inválido em um dos participantes por favor corrija para continuar.
+        Existe um CPF inválido em um dos discentes por favor corrija para continuar.
       </div>
       {{-- <div class="modal-footer">
         {{-- <button type="button" class="btn btn-secondary"></button> 

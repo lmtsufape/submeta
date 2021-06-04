@@ -341,7 +341,7 @@
         <div class="card" style="border-radius: 12px; padding:15px">
           <div class="card-body" style="margin-bottom: -2rem">
             <div class="d-flex justify-content-between align-items-center">
-              <div><h5 style="color: #1492E6; margin-top:0.5rem">Participante(s)</h5></div>
+              <div><h5 style="color: #1492E6; margin-top:0.5rem">Discente(s)</h5></div>
               {{-- <div><div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButtonAlterar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none">
                   Selecionar
