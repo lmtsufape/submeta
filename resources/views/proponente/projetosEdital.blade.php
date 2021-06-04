@@ -50,7 +50,7 @@
               </thead>
               <tbody id="projetos">
                 @foreach ($projetos as $projeto)
-                  @if ($projeto->proponente_id === Auth()->user()->proponentes->id)
+                  @if (Auth()->user()->proponentes != null && $projeto->proponente_id === Auth()->user()->proponentes->id)
                     <tr>
                       <td>
                         {{ $projeto->titulo }}

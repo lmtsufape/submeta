@@ -71,7 +71,7 @@
                     <option @if ( old('tipo') == "coordenador" ) required @endif value="coordenador">Coordenador</option>
                     <option @if ( old('tipo') == "avaliador" ) required @endif value="avaliador">Avaliador</option>
                     <option @if ( old('tipo') == "proponente" ) required @endif value="proponente">Proponente</option>
-                    <option @if ( old('tipo') == "participante" ) required @endif value="participante">Participante</option>
+                    <option @if ( old('tipo') == "participante" ) required @endif value="participante">Discente</option>
                 </select>
             </div>        
             <div class="col-md-2">

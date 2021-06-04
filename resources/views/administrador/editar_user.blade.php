@@ -73,7 +73,7 @@
                         <option @if($user->tipo =='coordenador' ) selected @endif value="coordenador">Coordenador</option>
                         <option @if($user->tipo =='avaliador' ) selected @endif value="avaliador">Avaliador</option>
                         <option @if($user->tipo =='proponente' ) selected @endif value="proponente">Proponente</option>
-                        <option @if($user->tipo =='participante' ) selected @endif value="participante">Participante</option>
+                        <option @if($user->tipo =='participante' ) selected @endif value="participante">Discente</option>
                     </select>
                 </div>        
                 <div class="col-md-2">

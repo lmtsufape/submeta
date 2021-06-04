@@ -2,39 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\AnexosTemp;
-use App\Trabalho;
-use App\Coautor;
-use App\Evento;
-use App\CoordenadorComissao;
-use App\User;
-use App\Proponente;
-use App\AreaModalidade;
+use Auth;
 use App\Area;
-use App\Revisor;
-use App\Modalidade;
-use App\Atribuicao;
+use App\User;
+use App\Evento;
 use App\Arquivo;
-use App\GrandeArea;
+use App\Coautor;
+use App\Revisor;
 use App\SubArea;
-use App\FuncaoParticipantes;
-use App\Participante;
+use App\Endereco;
+use App\Trabalho;
 use App\Avaliador;
 use Carbon\Carbon;
-use App\Endereco;
-use Auth;
-use Illuminate\Http\Request;
+use App\AnexosTemp;
+use App\Atribuicao;
+use App\GrandeArea;
+use App\Modalidade;
+use App\Proponente;
+use App\Participante;
+use App\AreaModalidade;
 use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
-use App\Mail\EmailParaUsuarioNaoCadastrado;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use App\Mail\SubmissaoTrabalho;
 use App\Mail\EventoCriado;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+use App\CoordenadorComissao;
+use App\FuncaoParticipantes;
+use Illuminate\Http\Request;
+use App\Mail\SubmissaoTrabalho;
 use App\OutrasInfoParticipante;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use App\Mail\EmailParaUsuarioNaoCadastrado;
+use App\Notifications\SubmissaoNotification;
+use Illuminate\Support\Facades\Notification;
 
 class TrabalhoController extends Controller
 {
@@ -845,9 +847,11 @@ class TrabalhoController extends Controller
       $projeto = $this->atribuirDados($request, $edital);
       $projeto->save();
       // Email de submissão
-        $subject = "Submissão de Trabalho";
-        $proponente = Auth()->user();
-        Mail::to($proponente->email)->send(new SubmissaoTrabalho($proponente, $subject, $edital, $projeto));
+        // $subject = "Submissão de Trabalho";
+        // $proponente = Auth()->user();
+        // Mail::to($proponente->email)->send(new SubmissaoTrabalho($proponente, $subject, $edital, $projeto));
+      $id = $projeto->id;
+      Notification::send(Auth::user(), new SubmissaoNotification($id));
     
       // Salvando participantes
       $this->salvarParticipantes($request, $edital, $projeto);

@@ -40,7 +40,7 @@
 	         <a href="{{ route('coordenador.participante') }}" style="text-decoration:none; color: inherit;">
 	            <div class="card text-center " style="border-radius: 30px; width: 18rem; height: 12rem;">
 	             <div class="card-body d-flex justify-content-center">
-	                  <h2 style="padding-top:15px">Participante</h2>
+	                  <h2 style="padding-top:15px">Discente</h2>
 	               </div>
 	            </div>
 	         </a>
