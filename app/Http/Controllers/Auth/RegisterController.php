@@ -137,8 +137,7 @@ class RegisterController extends Controller
 
             $user->proponentes()->save($proponente);
         }
-
-
+        
         return $user;
     }
 
