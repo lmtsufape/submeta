@@ -45,10 +45,9 @@ class VerifyNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $user = Auth::user();
         return (new MailMessage)
                     ->subject('Verifique seu e-mail')
-                    ->greeting("Olá, {$user->name}!")
+                    ->greeting("Olá, {$notifiable->name}!")
                     ->action(
                         'Verifique seu E-mail',
                         $this->verificationUrl($notifiable)
