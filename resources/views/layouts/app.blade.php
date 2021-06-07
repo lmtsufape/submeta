@@ -264,8 +264,15 @@
                <img src="{{ asset('img/icons/logo_submeta_pemenor2.png') }}" alt="Logo" width="200px;">
               </div>
               <div class="col-sm-4 form-group"  style="margin-top: 0.5rem; color:#909090">
-                  <div style="margin-top: 5px; margin-bottom:5px">Desenvolvido por:</div>
-                  <div> <a href="http://lmts.uag.ufrpe.br/" target="_blank"><img src="{{ asset('img/icons/logo_ufape_lmts.png') }}" alt="Logo" width="200px;"></a></div>
+                    <div style="margin-top: 5px; margin-bottom:5px">Desenvolvido por:</div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-2"> 
+                            <a href="http://ufape.edu.br/" target="_blank"><img src="{{ asset('img/icons/logo_ufape_blue.png') }}" alt="Logo" width="30px;"></a>
+                        </div>
+                        <div class="col-sm-5"> 
+                            <a href="http://lmts.uag.ufrpe.br/" target="_blank"><img src="{{ asset('img/icons/logo_ufape_color.png') }}" alt="Logo" width="160px;"></a>
+                        </div>
+                    </div>
               </div>
               <div class="col-sm-4 form-group"  style="margin-top: 0.5rem; color:#909090">
                 <div style="margin-top: 5px; margin-bottom:5px">Redes sociais:</div>
