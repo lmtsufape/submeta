@@ -34,7 +34,7 @@
 
                       <div class="col-md-12" style="margin-top: 5px">
                         <div><h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6;">Descrição</h5></div>
-                        <div style="margin-top: 10px"><h5>{{$evento->descricao}}</h5></div>
+                        <div style="margin-top: 10px"><h5 style="font-weight:normal">{{$evento->descricao}}</h5></div>
                       </div>
                     </div>
                 </div>
