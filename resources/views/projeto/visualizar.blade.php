@@ -128,7 +128,7 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="pontuacaoPlanilha">Pontuação da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
+                  <label for="pontuacaoPlanilha">Valor da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
                   <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="text" name="pontuacaoPlanilha"
                   value="{{ $projeto->pontuacaoPlanilha }}" disabled>
 
@@ -1182,8 +1182,10 @@
       </div> --}}
       <!--X Finalizar X-->
     </div>
-    <a class="btn btn-success" href="{{ route('exportar.projeto', ['id' => $projeto->id]) }}" target="_blank" rel="noopener noreferrer">Baixar PDF</a>
-    <button type="button" class="btn btn-success" id="exportarPDF">Baixar PDF</button>
+    <div>
+      <a class="btn btn-success mt-4" href="{{ route('exportar.projeto', ['id' => $projeto->id]) }}" target="_blank" rel="noopener noreferrer">Baixar PDF</a>
+      <button type="button" class="btn btn-success mt-4" id="exportarPDF">Imprimir proposta</button>
+    </div>
   </div>
   {{-- </form> --}}
 <!-- Modal de Aviso Edit -->
