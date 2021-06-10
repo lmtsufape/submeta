@@ -476,6 +476,7 @@
                 }
             };
         $('#celular').mask(SPMaskBehavior, spOptions);
+        $('#SIAPE').mask('00000000');
 
     });
     
