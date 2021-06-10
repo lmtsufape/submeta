@@ -128,8 +128,8 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-4">
-                  <label for="pontuacaoPlanilha">Nota da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
-                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" name="pontuacaoPlanilha"
+                  <label for="pontuacaoPlanilha">Valor da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
+                  <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" min= "0" name="pontuacaoPlanilha"
                   value="{{ $projeto->pontuacaoPlanilha }}" required>
 
                   @error('pontuacaoPlanilha')
