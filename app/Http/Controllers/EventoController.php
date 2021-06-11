@@ -449,6 +449,7 @@ class EventoController extends Controller
         }
         if(isset($trabalhos)){
           $trabalhos->delete();
+          Trabalho::withTrashed()->where('evento_id', $id)->update(['evento_id' => null]);
         }
 
         Storage::deleteDirectory('pdfEdital/' . $evento->id );
