@@ -280,7 +280,7 @@
                     <div><a href="https://www.facebook.com/LMTSUFAPE/" target="_blank"><img src="{{ asset('img/icons/icon_facebook.svg') }}" alt="Logo" width="40px;" style="margin:5px"></a></div>
                     <div><a href="https://www.instagram.com/lmts_ufape/" target="_blank"><img src="{{ asset('img/icons/icon_instagram.svg') }}" alt="Logo" width="40px;" style="margin:5px"></a></div>
                 </div>
-                <div><img src="{{ asset('img/icons/icon_email.svg') }}" alt="Logo" width="20px;" style="margin:5px;"> <span>lmts@ufape.br</span></div>
+                <div><img src="{{ asset('img/icons/icon_email.svg') }}" alt="Logo" width="20px;" style="margin:5px;"> <span>lmts@ufape.edu.br</span></div>
             </div>
           </div>
       </div>
