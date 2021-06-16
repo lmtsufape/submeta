@@ -55,7 +55,7 @@
                 @foreach ($planos as $plano)
                     <tr>
                       <td>{{ $plano->titulo }}</td>
-                      <td>{{ $plano->created_at->format('d/m/Y') }}</td>
+                      <td style="text-align: center">{{ $plano->created_at->format('d/m/Y') }}</td>
                       {{-- <td>
                         <a href="{{route('download', ['file' => $trabalho->anexoProjeto])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                             <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
