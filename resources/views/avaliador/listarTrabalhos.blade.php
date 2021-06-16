@@ -25,7 +25,7 @@
         <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
           <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:-1rem">
             <div class="bottomVoltar" style="margin-top: -20px">
-              <a href="{{ route('home') }}"  class="btn btn-secondary" style=""><img src="{{asset('img/icons/logo_esquerda.png')}}" alt="" width="15px"></a>
+              <a href="javascript:history.back()"  class="btn btn-secondary" style=""><img src="{{asset('img/icons/logo_esquerda.png')}}" alt="" width="15px"></a>
             </div>
             <div class="form-group">
                 <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Trabalhos do Edital: {{ $evento->nome }}</h5>
