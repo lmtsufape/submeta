@@ -3,6 +3,13 @@
 @section('content')
 
 <div class="container" style="margin-bottom:8rem">
+	@if(session('verified'))
+        <div class="alert alert-success" role="alert" style="margin-top: 2rem;">
+			<h5 class="alert-heading">Bem-vindo ao Submeta!</h4>
+			<hr>
+            <p>Seu email foi verificado com sucesso.</p>
+        </div>
+    @endif
 	<div class="row justify-content-center" style="margin-top: 2rem;">
 		<div class="col-md-12 form-group" style="text-align: center">
 			<h5 style="color: #1492E6; margin-top:0.5rem; font-size:25px">Página inicial</h5>
