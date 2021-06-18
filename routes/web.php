@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\checkCoordenador;
 use App\Trabalho;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\SubmissaoNotification;
@@ -229,9 +230,16 @@ Route::prefix('evento')->name('evento.')->group(function(){
   Route::post(   '/criar',          'EventoController@store'                            )->name('criar')->middleware('checkAdministrador');
   Route::get(    '/visualizar/{id}','EventoController@show'                             )->name('visualizar')->middleware('auth');
   Route::get(    '/listar',         'EventoController@listar'                           )->name('listar')->middleware('auth');
+
   Route::delete( '/excluir/{id}',   'EventoController@destroy'                          )->name('deletar')->middleware('checkAdministrador');
+  Route::delete( '/excluir/{id}',   'EventoController@destroy'                          )->name('deletar')->middleware(checkCoordenador::class);
+
   Route::get(    '/editar/{id}',    'EventoController@edit'                             )->name('editar')->middleware('checkAdministrador');
+  Route::get(    '/editar/{id}',    'EventoController@edit'                             )->name('editar')->middleware(checkCoordenador::class);
+
   Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update')->middleware('checkAdministrador');
+  Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update')->middleware(checkCoordenador::class);
+
   Route::post(   '/setResumo',      'EventoController@setResumo'                        )->name('setResumo')->middleware('checkAdministrador');
   Route::post(   '/setFoto',        'EventoController@setFotoEvento'                    )->name('setFotoEvento')->middleware('checkAdministrador');
 
@@ -251,16 +259,16 @@ Route::prefix('adminResp')->name('adminResp.')->group(function(){
 
 //########### Rotas Coordenador ##################################
 Route::prefix('coordenador')->name('coordenador.')->group(function(){
-  Route::get('/index',                    'CoordenadorComissaoController@index'                 )->name('index');
-  Route::get('/editais',                  'CoordenadorComissaoController@editais'               )->name('editais');
-  Route::get('/usuarios',                 'CoordenadorComissaoController@usuarios'              )->name('usuarios');
-  Route::get('/listarCoord',              'CoordenadorComissaoController@coordenadorComite'     )->name('coord');
-  Route::get('/listarAvaliador',          'CoordenadorComissaoController@avaliador'             )->name('avaliador');
-  Route::get('/listarProponente',         'CoordenadorComissaoController@proponente'            )->name('proponente');
-  Route::get('/listarParticipante',       'CoordenadorComissaoController@participante'          )->name('participante');
-  Route::get('/listarTrabalhos',          'CoordenadorComissaoController@listarTrabalhos'       )->name('listarTrabalhos');
-  Route::get('/detalhesEdital',           'CoordenadorComissaoController@detalhesEdital'        )->name('detalhesEdital');
-  Route::post('/retornoDetalhes',         'CoordenadorComissaoController@retornoDetalhes'       )->name('retornoDetalhes');
-  Route::post('/atribuirAvaliadorTrabalho','TrabalhoController@atribuirAvaliadorTrabalho'       )->name('atribuirAvaliadorTrabalho');
-  Route::post('/atribuir',        'TrabalhoController@atribuir'                                 )->name('atribuir');
+  Route::get('/index',                        'CoordenadorComissaoController@index'                 )->name('index');
+  Route::get('/editais',                      'CoordenadorComissaoController@editais'               )->name('editais');
+  Route::get('/usuarios',                     'CoordenadorComissaoController@usuarios'              )->name('usuarios');
+  Route::get('/listarCoord',                  'CoordenadorComissaoController@coordenadorComite'     )->name('coord');
+  Route::get('/listarAvaliador',              'CoordenadorComissaoController@avaliador'             )->name('avaliador');
+  Route::get('/listarProponente',             'CoordenadorComissaoController@proponente'            )->name('proponente');
+  Route::get('/listarParticipante',           'CoordenadorComissaoController@participante'          )->name('participante');
+  Route::get('/listarTrabalhos',              'CoordenadorComissaoController@listarTrabalhos'       )->name('listarTrabalhos');
+  Route::get('/detalhesEdital/{evento_id}',   'CoordenadorComissaoController@detalhesEdital'        )->name('detalhesEdital');
+  Route::post('/retornoDetalhes',             'CoordenadorComissaoController@retornoDetalhes'       )->name('retornoDetalhes');
+  Route::post('/atribuirAvaliadorTrabalho',   'TrabalhoController@atribuirAvaliadorTrabalho'        )->name('atribuirAvaliadorTrabalho');
+  Route::post('/atribuir',                    'TrabalhoController@atribuir'                         )->name('atribuir');
 });
