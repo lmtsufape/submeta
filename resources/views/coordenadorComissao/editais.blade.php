@@ -24,22 +24,22 @@
       @foreach ($eventos as $evento)
         <tr>
           <td>
-            <a href="{{  route('coordenador.detalhesEdital',['evento_id'=>$evento->id])  }}" class="visualizarEvento">
+            <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="visualizarEvento">
                 {{ $evento->nome }}
             </a>
           </td>
-          <td>10/05/2020</td>
+          <td>{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
           <td>
             <div class="btn-group dropright dropdown-options">
                 <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                 </a>
                 <div class="dropdown-menu">
-                    <a href="{{ route('coord.detalhesEvento', ['eventoId' => $evento->id]) }}" class="dropdown-item">
+                    <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="dropdown-item">
                         <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
                         Detalhes
                     </a>
-                    <a href="{{route('evento.editar',$evento->id)}}" class="dropdown-item">
+                    <a href="{{ route('evento.editar', ['id' => $evento->id]) }}" class="dropdown-item">
                         <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
                         Editar
                     </a>
