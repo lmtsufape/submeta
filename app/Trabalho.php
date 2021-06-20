@@ -55,6 +55,12 @@ class Trabalho extends Model
   public function area(){
       return $this->belongsTo('App\Area');
   }
+  public function grandeArea(){
+      return $this->belongsTo('App\GrandeArea');
+  }
+  public function subArea(){
+      return $this->belongsTo('App\SubArea');
+  }
 
   public function autor(){
       return $this->belongsTo('App\User', 'autorId');
@@ -79,6 +85,7 @@ class Trabalho extends Model
       return $this->hasMany('App\PlanoTrabalho');
   }
   public function participantes(){
+    // return $this->belongsToMany('App\Trabalho', 'trabalho_participante');
       return $this->hasMany('App\Participante', 'trabalho_id');
   }
   public function proponente(){
