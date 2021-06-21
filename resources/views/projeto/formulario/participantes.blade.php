@@ -188,7 +188,8 @@
                                 @endcomponent
                                 <div class="row justify-content-center">
                                   <div class="col-3 ">
-                                    <a href="{{ route('baixar.anexo.justificativa', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                    <a href="{{ route('baixar.plano', ['id' => $p->planoTrabalho->id]) }}">
+                                    <i class="fas fa-file-pdf fa-2x"></i></a>
                                   </div>
                                 </div>
                           </div>                              
