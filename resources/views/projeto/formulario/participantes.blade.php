@@ -19,9 +19,9 @@
         <div style="margin-bottom:15px">
           <div id="participante" >
             @foreach ($participantes as $key => $p)
-            <div class="form-row">
+            <div class="form-row mt-2">
                 <div class="col-md-11">
-                  <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante" href="#collapseParticipante" role="button" aria-expanded="false" aria-controls="collapseParticipante" style="width: 100%; text-align:left">
+                  <a class="btn btn-light" data-toggle="collapse" id="idCollapseParticipante" href="#collapseParticipante{{ $p->id }}" role="button" aria-expanded="false" aria-controls="collapseParticipante" style="width: 100%; text-align:left">
                     <div class="d-flex justify-content-between align-items-center">
                       <h4 id="tituloParticipante" style="color: #01487E; font-size:17px; margin-top:5px">Discente<span id="pontos" style="display: none;">:</span> <span style="display: none;" id="display"></span>  </h4>
                     </div>
@@ -31,7 +31,7 @@
                   <button type="button" class="btn btn-danger shadow-sm" id="buttonRemover" onclick="removerPart(this)" >X</button>
                 </div>
                 <div class="col-md-12">
-                  <div class="collapse" id="collapseParticipante">
+                  <div class="collapse" id="collapseParticipante{{ $p->id }}">
                     <div class="container">
                         <div class="row">
                           <input type="hidden" name="participante_id[]" value="{{ $p->id }}">
@@ -54,7 +54,7 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'CPF'])
-                                  <input type="text" class="form-control cpf" value="{{ $p->user->cpf }}"  name="cpf[]" placeholder="CPF" required onchange="checarCPFdoCampo(this)" onkeyup="mascaraCPF(this)"/>
+                                  <input type="text" class="form-control cpf" value="{{ $p->user->cpf }}"  name="cpf[]" placeholder="CPF" required />
                                   <span id="cpf-invalido-1" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
                                     <span style="font-style: italic;">CPF inválido.</span>
                                   </span>

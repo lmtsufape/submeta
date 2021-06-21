@@ -168,7 +168,9 @@
           }
       };
       parts.appendChild(cln);
-      $("input.cpf:text").val("").mask("000.000.000-00");
+      // console.log(cln);
+      $(cln).find(".cpf").val("").mask("000.000.000-00");
+      // $("input.cpf:text").val("").mask("000.000.000-00");
       $("input.celular:text").val("").mask(SPMaskBehavior, spOptions);
       $("input.cep:text").val("").mask("00000-000");
 
