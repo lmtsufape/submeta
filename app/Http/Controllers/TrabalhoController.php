@@ -41,6 +41,36 @@ use Illuminate\Support\Facades\Notification;
 
 class TrabalhoController extends Controller
 {
+
+    public $estados = array(
+      'AC' => 'Acre',
+      'AL' => 'Alagoas',
+      'AP' => 'Amapá',
+      'AM' => 'Amazonas',
+      'BA' => 'Bahia',
+      'CE' => 'Ceará',
+      'DF' => 'Distrito Federal',
+      'ES' => 'Espirito Santo',
+      'GO' => 'Goiás',
+      'MA' => 'Maranhão',
+      'MS' => 'Mato Grosso do Sul',
+      'MT' => 'Mato Grosso',
+      'MG' => 'Minas Gerais',
+      'PA' => 'Pará',
+      'PB' => 'Paraíba',
+      'PR' => 'Paraná',
+      'PE' => 'Pernambuco',
+      'PI' => 'Piauí',
+      'RJ' => 'Rio de Janeiro',
+      'RN' => 'Rio Grande do Norte',
+      'RS' => 'Rio Grande do Sul',
+      'RO' => 'Rondônia',
+      'RR' => 'Roraima',
+      'SC' => 'Santa Catarina',
+      'SP' => 'São Paulo',
+      'SE' => 'Sergipe',
+      'TO' => 'Tocantins',
+    );
     
     public function index($id)
     {
@@ -52,35 +82,7 @@ class TrabalhoController extends Controller
         if($proponente == null){
           return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
         }
-        $estados = array(
-          'AC' => 'Acre',
-          'AL' => 'Alagoas',
-          'AP' => 'Amapá',
-          'AM' => 'Amazonas',
-          'BA' => 'Bahia',
-          'CE' => 'Ceará',
-          'DF' => 'Distrito Federal',
-          'ES' => 'Espirito Santo',
-          'GO' => 'Goiás',
-          'MA' => 'Maranhão',
-          'MS' => 'Mato Grosso do Sul',
-          'MT' => 'Mato Grosso',
-          'MG' => 'Minas Gerais',
-          'PA' => 'Pará',
-          'PB' => 'Paraíba',
-          'PR' => 'Paraná',
-          'PE' => 'Pernambuco',
-          'PI' => 'Piauí',
-          'RJ' => 'Rio de Janeiro',
-          'RN' => 'Rio Grande do Norte',
-          'RS' => 'Rio Grande do Sul',
-          'RO' => 'Rondônia',
-          'RR' => 'Roraima',
-          'SC' => 'Santa Catarina',
-          'SP' => 'São Paulo',
-          'SE' => 'Sergipe',
-          'TO' => 'Tocantins',
-        );
+        
         $rascunho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$edital->id)->where('status', 'Rascunho')
                                 ->orderByDesc('updated_at')->first();
 
@@ -93,7 +95,7 @@ class TrabalhoController extends Controller
                                             'funcaoParticipantes'=> $funcaoParticipantes,
                                             'rascunho'           => $rascunho,
                                             'enum_turno'         => Participante::ENUM_TURNO,
-                                            'estados'            => $estados,
+                                            'estados'            => $this->estados,
                                             ]);
     }
     
@@ -194,7 +196,6 @@ class TrabalhoController extends Controller
     }
 
     public function validarAnexosRascunho(Request $request, $trabalho){
-      //dd($trabalho->getAttributes());
       $validator = Validator::make($trabalho->getAttributes(),[
          'anexoPlanilhaPontuacao'           => $request->anexoPlanilha==null?['planilha']:[],
       ]);
@@ -321,7 +322,7 @@ class TrabalhoController extends Controller
         $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         $users = User::whereIn('id', $participantesUsersIds)->get();
         $arquivos = Arquivo::where('trabalhoId', $id)->get();
-      return view('projeto.visualizar')->with(['projeto' => $projeto,
+        return view('projeto.visualizar')->with(['projeto' => $projeto,
                                                 'grandeAreas' => $grandeAreas,
                                                 'areas' => $areas,
                                                 'subAreas' => $subareas,
@@ -357,6 +358,7 @@ class TrabalhoController extends Controller
 
     public function edit($id)
     {
+      $proponente = Proponente::where('user_id', Auth::user()->id)->first();
       $projeto = Trabalho::find($id);
       $edital = Evento::find($projeto->evento_id);
       $grandeAreas = GrandeArea::all();
@@ -368,6 +370,9 @@ class TrabalhoController extends Controller
       $users = User::whereIn('id', $participantesUsersIds)->get();
       $arquivos = Arquivo::where('trabalhoId', $id)->get();
       //dd(Participante::all());
+      $rascunho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$edital->id)->where('status', 'Rascunho')
+                                ->orderByDesc('updated_at')->first();
+      
       return view('projeto.editar')->with(['projeto' => $projeto,
                                            'grandeAreas' => $grandeAreas,
                                            'areas' => $areas,
@@ -378,6 +383,7 @@ class TrabalhoController extends Controller
                                            'participantes' => $participantes,
                                            'arquivos' => $arquivos,
                                            'enum_turno'         => Participante::ENUM_TURNO,
+                                           'estados'            => $this->estados,
                                            ]);
     }
 
@@ -786,6 +792,13 @@ class TrabalhoController extends Controller
       }
       return abort(404);
     }
+    public function baixarAnexoGrupoPesquisa($id) {
+      $projeto = Trabalho::find($id);
+      if (Storage::disk()->exists($projeto->anexoProjeto)) {
+        return Storage::download($projeto->anexoProjeto);
+      }
+      return abort(404);
+    }
 
     public function baixarAnexoConsu($id) {
       $projeto = Trabalho::find($id);
@@ -920,10 +933,10 @@ class TrabalhoController extends Controller
         
         $participantes = $projeto->participantes;
         $participantesPermanecem = collect();
-
+        // dd($request->all());
         foreach ($request->participante_id as $key => $id) {
           // Novo participante
-          if ($id == 0) {
+          if ($id == 0 || $id == null) {
             $userParticipante = User::where('email', $request->emailParticipante[$key])->first();
           
             $participante = new Participante();
@@ -1196,6 +1209,7 @@ class TrabalhoController extends Controller
       $projeto->update();
 
       // Salvando participantes
+      // dd($request->all());
       $this->salvarParticipantes($request, $edital, $projeto, true);
 
       return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto atualizado com sucesso!']);

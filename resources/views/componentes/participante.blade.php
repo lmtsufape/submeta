@@ -14,6 +14,7 @@
       <div class="container">
           <div class="row">
             <input type="hidden"  name="funcaoParticipante[]" value="4">
+            <input type="hidden" name="participante_id[]" >
             <div class="col-md-12 mt-3"><h5>Dados do discente</h5></div>
             <div class="col-6">
                   @component('componentes.input', ['label' => 'Nome completo'])
