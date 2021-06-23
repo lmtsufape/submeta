@@ -59,7 +59,7 @@
               <thead>
                 <tr>
                   <th scope="col">Edital</th>
-                  <th scope="col" style="width:100%">Projeto</th>
+                  <th scope="col" style="width: 100%;">Projeto</th>
                   <th scope="col" style="text-align: center">Data de Criação</th>
                   <th scope="col" style="text-align: center">Status</th>
                   <th scope="col">Opção</th>
@@ -72,7 +72,7 @@
                       <td>
                         {{ $projeto->evento->nome }}
                       </td>
-                      <td>
+                      <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">
                         {{ $projeto->titulo }}
                       </td>
                       <td style="text-align: center">{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>
