@@ -12,7 +12,7 @@
           <div class="form-group col-md-6" style="margin-top: 10px">
             <div class="row justify-content-center">
               <div class="col-12">
-                @component('componentes.input', ['label' => 'Anexo do projeto (.pdf)'])
+                @component('componentes.input', ['label' => 'Projeto (.pdf)'])
                   <input type="file" class="input-group-text" name="anexoProjeto" placeholder="nomeProjeto" accept="application/pdf" />
                 @endcomponent
               </div>
@@ -25,7 +25,7 @@
           <div class="form-group col-md-6" style="margin-top: 10px">
             <div class="row justify-content-center">
               <div class="col-12">
-                @component('componentes.input', ['label' => 'Anexo do currículo Lattes do Coordenador (.pdf)'])
+                @component('componentes.input', ['label' => 'Currículo Lattes do Proponente (.pdf)'])
                   <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" accept=".pdf" />
                 @endcomponent
               </div>
@@ -38,7 +38,7 @@
           <div class="form-group col-md-6" style="margin-top: 10px">
             <div class="row justify-content-center">
               <div class="col-12">
-                @component('componentes.input', ['label' => 'Anexo da Planilha de Pontuação (.xlsx,.xls,.ods)'])
+                @component('componentes.input', ['label' => 'Planilha de Pontuação (.xlsx,.xls,.ods)'])
                   <input type="file" class="input-group-text" name="anexoPlanilha" placeholder="anexoPlanoTrabalho" accept=".xlsx, .xls, .ods" />
                 @endcomponent
               </div>
@@ -66,7 +66,7 @@
           <div class="form-group col-md-6" style="margin-top: 10px">
             <div class="row justify-content-center">
               <div class="col-12">
-                @component('componentes.input', ['label' => 'Anexo do Grupo de Pesquisa (.pdf)'])
+                @component('componentes.input', ['label' => 'Grupo de Pesquisa (.pdf)'])
                   <input type="file" class="input-group-text" name="anexoGrupoPesquisa" placeholder="Anexo do Grupo de Pesquisa" accept="application/pdf" />
                 @endcomponent
               </div>

@@ -10,19 +10,19 @@
           <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
 
           <div class="form-group col-md-6" style="margin-top: 10px">
-            @component('componentes.input', ['label' => 'Anexo do projeto (.pdf)'])
+            @component('componentes.input', ['label' => 'Projeto (.pdf)'])
               <input type="file" class="input-group-text" name="anexoProjeto" placeholder="nomeProjeto" accept="application/pdf" required/>
             @endcomponent
             
           </div>
 
           <div class="form-group col-md-6" style="margin-top: 10px">
-            @component('componentes.input', ['label' => 'Anexo do currículo Lattes do Coordenador (.pdf)'])
+            @component('componentes.input', ['label' => 'Currículo Lattes do Proponente (.pdf)'])
               <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" accept=".pdf" required/>
             @endcomponent
           </div>
           <div class="form-group col-md-6">
-            @component('componentes.input', ['label' => 'Anexo da Planilha de Pontuação (.xlsx,.xls,.ods)'])
+            @component('componentes.input', ['label' => 'Planilha de Pontuação (.xlsx,.xls,.ods)'])
               <input type="file" class="input-group-text" name="anexoPlanilha" placeholder="anexoPlanoTrabalho" accept=".xlsx, .xls, .ods" required/>
             @endcomponent
           </div>
@@ -32,7 +32,7 @@
             @endcomponent
           </div>
           <div class="form-group col-md-6" style="margin-top: 10px">
-            @component('componentes.input', ['label' => 'Anexo do Grupo de Pesquisa (.pdf)'])
+            @component('componentes.input', ['label' => 'Grupo de Pesquisa (.pdf)'])
               <input type="file" class="input-group-text" name="anexoGrupoPesquisa" placeholder="Anexo do Grupo de Pesquisa" accept="application/pdf" required/>
             @endcomponent
             
