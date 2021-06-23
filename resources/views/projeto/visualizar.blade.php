@@ -795,7 +795,7 @@
                           </div>
                           <div class="form-group col-md-12">
                             <label for="complemento2">Complemento <span style="color: red; font-weight:bold">*</span></label>
-                            <textarea type="text" class="form-control @error('complemento2') is-invalid @enderror" id="complemento2" name="complemento[]" placeholder="Apartamento, casa, sítio..." disabled>@if($resultado_participante_dois){{$participantes[1]->user->endereco->complemento}}@endif</textarea>
+                            <textarea type="text" class="form-control @error('complemento2') is-invalid @enderror" id="complemento2" name="complemento[]" disabled>@if($resultado_participante_dois){{$participantes[1]->user->endereco->complemento}}@endif</textarea>
                             @error('complemento2')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
@@ -1051,7 +1051,7 @@
                             </div>
                             <div class="form-group col-md-12">
                               <label for="complemento3">Complemento <span style="color: red; font-weight:bold">*</span></label>
-                              <textarea type="text" class="form-control @error('complemento3') is-invalid @enderror" id="complemento3" name="complemento[]" placeholder="Apartamento, casa, sítio..."disabled>@if($resultado_participante_tres){{$participantes[2]->user->endereco->complemento}}@endif</textarea>
+                              <textarea type="text" class="form-control @error('complemento3') is-invalid @enderror" id="complemento3" name="complemento[]" disabled>@if($resultado_participante_tres){{$participantes[2]->user->endereco->complemento}}@endif</textarea>
                               @error('complemento3')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
