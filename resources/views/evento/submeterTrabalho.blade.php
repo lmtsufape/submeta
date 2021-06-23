@@ -281,7 +281,7 @@
         },
         'rg[]':{
           required: true,
-          maxlength: 8,
+          maxlength: 12,
         },
         
         agree: "required"
