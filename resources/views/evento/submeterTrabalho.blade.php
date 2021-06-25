@@ -121,7 +121,7 @@
         
       }else{
         parts.removeChild(e.parentElement.parentElement);
-        contador--;
+        //contador--;
       }
       
     }
@@ -140,7 +140,7 @@
       cln.children[2].firstElementChild.setAttribute('id', id + contador);
       cln.children[0].firstElementChild.setAttribute('href', "#collapseParticipante" + contador);
       cln.children[0].firstElementChild.setAttribute('id', id2 + contador);
-
+      
       for (i = 0; i < cln.children.length; i++) {
         for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
           let input = cln.children[i].querySelectorAll('input')[index];
