@@ -231,16 +231,9 @@ Route::prefix('evento')->name('evento.')->group(function(){
   Route::post(   '/criar',          'EventoController@store'                            )->name('criar')->middleware('checkAdministrador');
   Route::get(    '/visualizar/{id}','EventoController@show'                             )->name('visualizar')->middleware('auth');
   Route::get(    '/listar',         'EventoController@listar'                           )->name('listar')->middleware('auth');
-
-  Route::delete( '/excluir/{id}',   'EventoController@destroy'                          )->name('deletar')->middleware('checkAdministrador');
-  Route::delete( '/excluir/{id}',   'EventoController@destroy'                          )->name('deletar')->middleware(checkCoordenador::class);
-
-  Route::get(    '/editar/{id}',    'EventoController@edit'                             )->name('editar')->middleware('checkAdministrador');
-  Route::get(    '/editar/{id}',    'EventoController@edit'                             )->name('editar')->middleware(checkCoordenador::class);
-
-  Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update')->middleware('checkAdministrador');
-  Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update')->middleware(checkCoordenador::class);
-
+  Route::delete( '/excluir/{id}',   'EventoController@destroy'                          )->name('deletar')->middleware('checkRoles:coordenador,administrador');
+  Route::get(    '/editar/{id}',    'EventoController@edit'                             )->name('editar')->middleware('checkRoles:coordenador,administrador');
+  Route::post(   '/editar/{id}',    'EventoController@update'                           )->name('update')->middleware('checkRoles:coordenador,administrador');
   Route::post(   '/setResumo',      'EventoController@setResumo'                        )->name('setResumo')->middleware('checkAdministrador');
   Route::post(   '/setFoto',        'EventoController@setFotoEvento'                    )->name('setFotoEvento')->middleware('checkAdministrador');
 

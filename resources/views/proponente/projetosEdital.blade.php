@@ -52,7 +52,7 @@
                 @foreach ($projetos as $projeto)
                   @if (Auth()->user()->proponentes != null && $projeto->proponente_id === Auth()->user()->proponentes->id)
                     <tr>
-                      <td>
+                      <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">
                         {{ $projeto->titulo }}
                       </td>
                       <td style="text-align: center">{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>

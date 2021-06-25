@@ -65,7 +65,7 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'RG'])
-                                  <input type="number" class="form-control" value="{{ $p->rg }}" min="1" maxlength="8" name="rg[]" placeholder="RG" required/>
+                                  <input type="number" class="form-control" value="{{ $p->rg }}" min="1" maxlength="12" name="rg[]" placeholder="RG" required/>
                                 @endcomponent
                           </div>                              
                           <div class="col-6">
@@ -111,8 +111,8 @@
                                 @endcomponent
                           </div>                              
                           <div class="col-12">
-                                @component('componentes.input', ['label' => 'Complemento'])
-                                  <input type="text" class="form-control" value="{{ $p->user->endereco->complemento }}" name="complemento[]"  pattern="[A-Za-z]+" placeholder="Complemento" required/>
+                                @component('componentes.input', ['label' => 'Complemento', 'obrigatorio' => ''])
+                                  <input type="text" class="form-control" value="{{ $p->user->endereco->complemento }}" name="complemento[]"  pattern="[A-Za-z]+" placeholder="Complemento"/>
                                 @endcomponent
                           </div>
                           <div class="col-md-12"><h5>Dados do curso</h5></div>                               
