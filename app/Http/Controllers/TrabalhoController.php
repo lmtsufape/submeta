@@ -331,6 +331,8 @@ class TrabalhoController extends Controller
                                                 'funcaoParticipantes' => $funcaoParticipantes,
                                                 'participantes' => $participantes,
                                                 'arquivos' => $arquivos,
+                                                'estados' => $this->estados,
+                                                'visualizar' => true,
                                                 'enum_turno'         => Participante::ENUM_TURNO,
                                            ]);
     }
