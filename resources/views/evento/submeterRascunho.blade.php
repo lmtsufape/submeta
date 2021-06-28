@@ -93,6 +93,7 @@
 <script>
     
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
+  let buttonSubmitRascunho = document.getElementById('idButtonSubmitRascunho');
   let parts = document.getElementById('participante');
   let partsFirst = document.getElementById('participanteFirst');
   const participante = partsFirst.firstElementChild;
@@ -100,6 +101,9 @@
 
   buttonSubmit.addEventListener('click', (e)=>{
     $('.collapse').addClass('show')
+  })
+  buttonSubmitRascunho.addEventListener('click', (e)=>{
+    
   })
 
   function gerarPeriodo(e){
@@ -250,6 +254,7 @@
         min: jQuery.validator.format("Por favor, forne&ccedil;a um valor maior ou igual a {0}.")
     });
     $( "#criarProjetoForm" ).validate( {
+      ignore: false,
       lang: 'PT_BR',
       rules: {
         firstname: "required",
