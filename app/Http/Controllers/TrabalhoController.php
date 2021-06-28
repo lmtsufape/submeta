@@ -879,6 +879,7 @@ class TrabalhoController extends Controller
         return redirect()->route('inicial')->with(['error'=> 0, 'mensagem' => 'As submissões para o edital '. $edital->titulo .' foram encerradas.']);
       }
 
+      
       $projeto = $this->atribuirDados($request, $edital);
       $projeto->save();
       // Email de submissão
@@ -922,7 +923,7 @@ class TrabalhoController extends Controller
       $projeto->proponente_id                    = $proponente->id;
       
       // Salvando anexos no storage
-
+      $projeto->save();
       $pasta = 'trabalhos/' . $edital->id . '/' . $projeto->id;
 
       $projeto = $this->armazenarAnexosFinais($request, $pasta, $projeto, $edital);

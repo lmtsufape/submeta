@@ -16,21 +16,21 @@
     @endif
     <div class="row justify-content-center">
 
-      @component('projeto.formulario.projeto', 
+      @component('projeto.editaFormulario.projeto', 
                 ['grandeAreas' => $grandeAreas, 'projeto' => $projeto,
                  'areas' => $areas, 'subareas' => $subAreas])
       @endcomponent
       
-      @component('projeto.formulario.proponente', ['projeto' => $projeto])
+      @component('projeto.editaFormulario.proponente', ['projeto' => $projeto])
       @endcomponent
       
-      @component('projeto.formulario.anexos', ['projeto' => $projeto])
+      @component('projeto.editaFormulario.anexos', ['projeto' => $projeto])
       @endcomponent
       
-      @component('projeto.formulario.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno, 'projeto' => $projeto, 'participantes' => $participantes, 'arquivos' =>$arquivos])
+      @component('projeto.editaFormulario.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno, 'projeto' => $projeto, 'participantes' => $participantes, 'arquivos' =>$arquivos])
       @endcomponent
       
-      @component('projeto.formulario.finalizar', ['projeto' => $projeto])
+      @component('projeto.editaFormulario.finalizar', ['projeto' => $projeto])
       @endcomponent
 
     </div>
