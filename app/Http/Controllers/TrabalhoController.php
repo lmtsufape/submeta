@@ -303,7 +303,7 @@ class TrabalhoController extends Controller
 
       // Anexo grupo pesquisa
       if(isset($request->anexoGrupoPesquisa)){
-        $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoPlanilha, "Grupo_de_pesquisa.". $request->file('anexoGrupoPesquisa')->extension());
+        $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoGrupoPesquisa, "Grupo_de_pesquisa.". $request->file('anexoGrupoPesquisa')->extension());
       }
 
       return $trabalho;
@@ -796,8 +796,8 @@ class TrabalhoController extends Controller
     }
     public function baixarAnexoGrupoPesquisa($id) {
       $projeto = Trabalho::find($id);
-      if (Storage::disk()->exists($projeto->anexoProjeto)) {
-        return Storage::download($projeto->anexoProjeto);
+      if (Storage::disk()->exists($projeto->anexoGrupoPesquisa)) {
+        return Storage::download($projeto->anexoGrupoPesquisa);
       }
       return abort(404);
     }

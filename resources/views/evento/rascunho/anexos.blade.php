@@ -28,7 +28,7 @@
           </div>
           <div class="form-group col-md-6">
             @component('componentes.input', ['label' => 'Decisão do CONSU (.pdf)'])
-              <input type="file" class="input-group-text" name="anexoCONSU" placeholder="anexoCONSU" accept=".pdf" required/>
+              <input type="file" class="input-group-text" name="anexoConsuPreenchido" placeholder="anexoConsuPreenchido" accept=".pdf" required/>
             @endcomponent
           </div>
           <div class="form-group col-md-6" style="margin-top: 10px">

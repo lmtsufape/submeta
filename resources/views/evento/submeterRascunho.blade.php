@@ -4,7 +4,7 @@
 
 <div>
   {{-- action="{{route('trabalho.store')}}" --}}
-  <form method="POST" id="criarProjetoForm" action="{{route('trabalho.update', ['id' => $projeto->id])}}" enctype="multipart/form-data" >
+  <form method="POST" id="criarProjetoForm"  action="{{route('trabalho.store')}}" enctype="multipart/form-data" >
   @csrf
   <input type="hidden" name="editalId" value="{{$edital->id}}">
 
@@ -16,21 +16,19 @@
     @endif
     <div class="row justify-content-center">
 
-      @component('projeto.formulario.projeto', 
-                ['grandeAreas' => $grandeAreas, 'projeto' => $projeto,
-                 'areas' => $areas, 'subareas' => $subAreas])
+      @component('evento.formulario.projeto', ['grandeAreas' => $grandeAreas])
       @endcomponent
       
-      @component('projeto.formulario.proponente', ['projeto' => $projeto])
+      @component('evento.formulario.proponente')
       @endcomponent
       
-      @component('projeto.formulario.anexos', ['projeto' => $projeto])
+      @component('evento.formulario.anexos')
       @endcomponent
       
-      @component('projeto.formulario.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno, 'projeto' => $projeto, 'participantes' => $participantes, 'arquivos' =>$arquivos])
+      @component('evento.formulario.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno])
       @endcomponent
       
-      @component('projeto.formulario.finalizar', ['projeto' => $projeto])
+      @component('evento.formulario.finalizar')
       @endcomponent
 
     </div>
@@ -95,6 +93,7 @@
 <script>
     
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
+  let buttonSubmitRascunho = document.getElementById('idButtonSubmitRascunho');
   let parts = document.getElementById('participante');
   let partsFirst = document.getElementById('participanteFirst');
   const participante = partsFirst.firstElementChild;
@@ -102,6 +101,9 @@
 
   buttonSubmit.addEventListener('click', (e)=>{
     $('.collapse').addClass('show')
+  })
+  buttonSubmitRascunho.addEventListener('click', (e)=>{
+    
   })
 
   function gerarPeriodo(e){
@@ -123,7 +125,7 @@
         
       }else{
         parts.removeChild(e.parentElement.parentElement);
-        contador--;
+        //contador--;
       }
       
     }
@@ -142,7 +144,7 @@
       cln.children[2].firstElementChild.setAttribute('id', id + contador);
       cln.children[0].firstElementChild.setAttribute('href', "#collapseParticipante" + contador);
       cln.children[0].firstElementChild.setAttribute('id', id2 + contador);
-
+      
       for (i = 0; i < cln.children.length; i++) {
         for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
           let input = cln.children[i].querySelectorAll('input')[index];
@@ -168,9 +170,7 @@
           }
       };
       parts.appendChild(cln);
-      // console.log(cln);
-      $(cln).find(".cpf").val("").mask("000.000.000-00");
-      // $("input.cpf:text").val("").mask("000.000.000-00");
+      $("input.cpf:text").val("").mask("000.000.000-00");
       $("input.celular:text").val("").mask(SPMaskBehavior, spOptions);
       $("input.cep:text").val("").mask("00000-000");
 
@@ -650,11 +650,11 @@
   }
 
   function submeterProposta() {
+    if (checarCpfs()) {
       document.getElementById("submeterFormProposta").click();
-    // if (checarCpfs()) {
-    // } else {
-    //   $("#modalCpfInvalido").modal('show');
-    // }
+    } else {
+      $("#modalCpfInvalido").modal('show');
+    }
   }
 
   function mascaraCPF(input) {
