@@ -32,7 +32,40 @@
               <h6 class="titulo-table" style="color: red;">Submissão irá até o dia <span style="color: red">{{ date('d/m/Y', strtotime($edital->fimSubmissao)) }}</span></h6>
             </div>
             <div style="margin-top: -2rem">
-              <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-info" @else href="#" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar proposta</a>
+              
+              <div class="col-md-12" style="margin-bottom:18px">
+                @if(date("Y-m-d H:i:s" ) < "2021-07-01 12:30:00") {{-- Agendamento para o dia 01/07/2021 as 12:30:00--}}
+                  <a data-toggle="modal" data-target="#exampleModal"  class="btn btn-info" style="color:#fff; margin-right:-15px">Criar proposta</a>
+
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header" style="border: 0px solid rgba(0, 0, 0, 0.2);">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                       
+                        <div class="modal-body" style="text-align: center">
+                          <h3 style="color: #005387">Site em manutenção!</h3>
+                        </div>
+                        <img src="{{asset('img/img_manutencao.png')}}" class="card-img-top" alt="..." style="width:100%; margin-top:1rem; margin-bottom:1rem;">
+                        <div class="modal-body from-group" style="text-align: center">
+                          <h5 style="color: #005387; margin-bottom:-1px">Voltaremos na quinta-feira!</h5>
+                          <h5 style="color: #909090"> 01/07/2021 às 12h30</h5>
+                        </div>
+                        
+                        <div class="modal-footer"style="border: 0px solid rgba(0, 0, 0, 0.2);">
+                          <button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                @else
+                <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-info" @else href="#" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar proposta</a>
+                @endif
+              </div>
+            
             </div>
           </div>
         </div>

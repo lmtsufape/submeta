@@ -112,11 +112,41 @@
                           
                           @if($evento->inicioSubmissao <= $mytime)
                             @if($mytime < $evento->fimSubmissao)
+
                             <div class="col-md-12" style="margin-bottom:18px">
-                              <a class="btn btn-success " href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%; height:50px; padding-top:7px; font-size:20px"><img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
+                              @if(date("Y-m-d H:i:s" ) < "2021-07-01 12:30:00") {{-- Agendamento para o dia 01/07/2021 as 12:30:00--}}
+                                <a class="btn btn-success" data-toggle="modal" data-target="#exampleModal" style="width:100%; height:50px; padding-top:7px; font-size:20px; color:#fff"><img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header" style="border: 0px solid rgba(0, 0, 0, 0.2);">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                     
+                                      <div class="modal-body" style="text-align: center">
+                                        <h3 style="color: #005387">Site em manutenção!</h3>
+                                      </div>
+                                      <img src="{{asset('img/img_manutencao.png')}}" class="card-img-top" alt="..." style="width:100%; margin-top:1rem; margin-bottom:1rem;">
+                                      <div class="modal-body from-group" style="text-align: center">
+                                        <h5 style="color: #005387; margin-bottom:-1px">Voltaremos na quinta-feira!</h5>
+                                        <h5 style="color: #909090"> 01/07/2021 às 12h30</h5>
+                                      </div>
+                                      
+                                      <div class="modal-footer"style="border: 0px solid rgba(0, 0, 0, 0.2);">
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              @else
+                                <a class="btn btn-success " href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%; height:50px; padding-top:7px; font-size:20px"><img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
+                              @endif
                             </div>
                             @endif
                           @endif
+
                           <div class="col-md-12">
                             <a class="btn btn-primary" href="{{ route('proponente.projetosEdital', ['id' => $evento->id]) }}" style="width:100%; height:50px; padding-top:5px; font-size:20px"><img src="{{asset('img/icons/icon_minhas_propostas.png')}}" class="card-img-top" alt="..." style="width:20px; margin-right:10px; margin-top:-5px"> Minhas propostas</a>
                           </div>
