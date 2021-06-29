@@ -34,7 +34,7 @@
             <div style="margin-top: -2rem">
               
               <div class="col-md-12" style="margin-bottom:18px">
-                @if(date("Y-m-d H:i:s" ) < "2021-07-01 12:30:00") {{-- Agendamento para o dia 01/07/2021 as 12:30:00--}}
+                @if(true) {{-- Agendamento para o dia 01/07/2021 as 12:30:00--}}
                   <a data-toggle="modal" data-target="#exampleModal"  class="btn btn-info" style="color:#fff; margin-right:-15px">Criar proposta</a>
 
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
