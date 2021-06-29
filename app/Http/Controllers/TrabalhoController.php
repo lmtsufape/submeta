@@ -987,7 +987,7 @@ class TrabalhoController extends Controller
 
               
               $subject = "Participante de Projeto";
-              // Mail::to($request->emailParticipante[$key])->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
+              Mail::to($request->emailParticipante[$key])->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
             } else {
 
               $participante->user_id                  = $userParticipante->id;
@@ -1005,11 +1005,11 @@ class TrabalhoController extends Controller
               $participante->save();
 
               $subject = "Participante de Projeto";
-              // Mail::to($request->emailParticipante[$key])
-              //       ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
+              Mail::to($request->emailParticipante[$key])
+                    ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
 
             }
-
+            
             if($request->nomePlanoTrabalho[$key] != null){
               $usuario = User::where('email', $request->emailParticipante[$key])->first();
               $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $projeto->id]])->first();
@@ -1028,7 +1028,7 @@ class TrabalhoController extends Controller
               $arquivo->participanteId = $participante->id;
               $arquivo->versaoFinal = true;
               $arquivo->save();
-
+              // dd($arquivo);
             }
           // Editado
           } elseif ($id > 0) {
@@ -1148,32 +1148,6 @@ class TrabalhoController extends Controller
             $participante->media_do_curso           = $request->media_geral_curso[$key];
             $participante->save();
 
-            
-            $subject = "Participante de Projeto";
-            // Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
-          } else {
-
-            $participante->user_id                  = $userParticipante->id;
-            $participante->trabalho_id              = $projeto->id;
-            $participante->funcao_participante_id   = $request->funcaoParticipante[$key];
-            $participante->confirmacao_convite      = true;
-            $participante->rg                       = $request->rg[$key];
-            $participante->data_de_nascimento       = $request->data_de_nascimento[$key];
-            $participante->curso                    = $request->curso[$key];
-            $participante->turno                    = $request->turno[$key];
-            $participante->ordem_prioridade         = $request->ordem_prioridade[$key];
-            $participante->periodo_atual            = $request->periodo_atual[$key];
-            $participante->total_periodos           = $request->total_periodos[$key];
-            $participante->media_do_curso           = $request->media_geral_curso[$key];
-            $participante->save();
-
-            $subject = "Participante de Projeto";
-            // Mail::to($email)
-            //       ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
-
-          }
-
-          if($request->nomePlanoTrabalho[$key] != null){
             $usuario = User::where('email', $email)->first();
             $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $projeto->id]])->first();
 
@@ -1191,7 +1165,69 @@ class TrabalhoController extends Controller
             $arquivo->participanteId = $participante->id;
             $arquivo->versaoFinal = true;
             $arquivo->save();
+            $subject = "Participante de Projeto";
+            Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject));
+          } else {
+
+            $participante->user_id                  = $userParticipante->id;
+            $participante->trabalho_id              = $projeto->id;
+            $participante->funcao_participante_id   = $request->funcaoParticipante[$key];
+            $participante->confirmacao_convite      = true;
+            $participante->rg                       = $request->rg[$key];
+            $participante->data_de_nascimento       = $request->data_de_nascimento[$key];
+            $participante->curso                    = $request->curso[$key];
+            $participante->turno                    = $request->turno[$key];
+            $participante->ordem_prioridade         = $request->ordem_prioridade[$key];
+            $participante->periodo_atual            = $request->periodo_atual[$key];
+            $participante->total_periodos           = $request->total_periodos[$key];
+            $participante->media_do_curso           = $request->media_geral_curso[$key];
+            $participante->save();
+
+            
+            
+            if ($request->anexoPlanoTrabalho[$key]) {
+              $path = 'trabalhos/' . $edital->id . '/' . $projeto->id .'/';
+              $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+              $file = $request->anexoPlanoTrabalho[$key];
+              Storage::putFileAs($path, $file, $nome);
+  
+              $agora = now();
+              $arquivo = new Arquivo();
+              $arquivo->titulo = $request->nomePlanoTrabalho[$key];
+              $arquivo->nome = $path . $nome;
+              $arquivo->trabalhoId = $projeto->id;
+              $arquivo->data = $agora;
+              $arquivo->participanteId = $participante->id;
+              $arquivo->versaoFinal = true;
+              $arquivo->save();
+              
+            }
+
+            $subject = "Participante de Projeto";
+            Mail::to($email)
+                  ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
+
           }
+
+          // if($request->nomePlanoTrabalho[$key] != null){
+          //   $usuario = User::where('email', $email)->first();
+          //   $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $projeto->id]])->first();
+
+          //   $path = 'trabalhos/' . $edital->id . '/' . $projeto->id .'/';
+          //   $nome =  $request->nomePlanoTrabalho[$key] .".pdf";
+          //   $file = $request->anexoPlanoTrabalho[$key];
+          //   Storage::putFileAs($path, $file, $nome);
+
+          //   $agora = now();
+          //   $arquivo = new Arquivo();
+          //   $arquivo->titulo = $request->nomePlanoTrabalho[$key];
+          //   $arquivo->nome = $path . $nome;
+          //   $arquivo->trabalhoId = $projeto->id;
+          //   $arquivo->data = $agora;
+          //   $arquivo->participanteId = $participante->id;
+          //   $arquivo->versaoFinal = true;
+          //   $arquivo->save();
+          // }
         }
       }
 
@@ -1211,8 +1247,8 @@ class TrabalhoController extends Controller
       $projeto = $this->atribuirDados($request, $edital, $projeto);
       $projeto->update();
 
-      // Salvando participantes
       // dd($request->all());
+      // Salvando participantes
       $this->salvarParticipantes($request, $edital, $projeto, true);
 
       return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto atualizado com sucesso!']);
