@@ -123,7 +123,7 @@
         
       }else{
         parts.removeChild(e.parentElement.parentElement);
-        contador--;
+        //contador--;
       }
       
     }
@@ -203,7 +203,7 @@
         return this.optional(element) || value == value.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/);
     });
 
-    $('.cep').mask('00000000');
+    $('input.cep:text').mask('00000-000');
     // $('.cpf').mask('000.000.000-00');
     $('.numero').mask('0000000000000');
     var SPMaskBehavior = function (val) {
