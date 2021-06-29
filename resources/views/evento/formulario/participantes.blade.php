@@ -74,7 +74,7 @@
                         <div class="col-md-12"><h5>Endereço</h5></div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'CEP'])
-                                <input type="number" class="form-control" name="cep[]" placeholder="CEP" required/>
+                                <input type="text" class="form-control cep" name="cep[]" placeholder="CEP" required/>
                               @endcomponent
                         </div>           
                                            
