@@ -303,7 +303,7 @@ class TrabalhoController extends Controller
 
       // Anexo grupo pesquisa
       if(isset($request->anexoGrupoPesquisa)){
-        $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoPlanilha, "Grupo_de_pesquisa.". $request->file('anexoGrupoPesquisa')->extension());
+        $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoGrupoPesquisa, "Grupo_de_pesquisa.". $request->file('anexoGrupoPesquisa')->extension());
       }
 
       return $trabalho;
@@ -331,6 +331,8 @@ class TrabalhoController extends Controller
                                                 'funcaoParticipantes' => $funcaoParticipantes,
                                                 'participantes' => $participantes,
                                                 'arquivos' => $arquivos,
+                                                'estados' => $this->estados,
+                                                'visualizar' => true,
                                                 'enum_turno'         => Participante::ENUM_TURNO,
                                            ]);
     }
@@ -794,8 +796,8 @@ class TrabalhoController extends Controller
     }
     public function baixarAnexoGrupoPesquisa($id) {
       $projeto = Trabalho::find($id);
-      if (Storage::disk()->exists($projeto->anexoProjeto)) {
-        return Storage::download($projeto->anexoProjeto);
+      if (Storage::disk()->exists($projeto->anexoGrupoPesquisa)) {
+        return Storage::download($projeto->anexoGrupoPesquisa);
       }
       return abort(404);
     }
@@ -877,6 +879,7 @@ class TrabalhoController extends Controller
         return redirect()->route('inicial')->with(['error'=> 0, 'mensagem' => 'As submissões para o edital '. $edital->titulo .' foram encerradas.']);
       }
 
+      
       $projeto = $this->atribuirDados($request, $edital);
       $projeto->save();
       // Email de submissão
@@ -920,7 +923,7 @@ class TrabalhoController extends Controller
       $projeto->proponente_id                    = $proponente->id;
       
       // Salvando anexos no storage
-
+      $projeto->save();
       $pasta = 'trabalhos/' . $edital->id . '/' . $projeto->id;
 
       $projeto = $this->armazenarAnexosFinais($request, $pasta, $projeto, $edital);

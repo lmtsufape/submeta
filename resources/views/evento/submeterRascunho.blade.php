@@ -93,6 +93,7 @@
 <script>
     
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
+  let buttonSubmitRascunho = document.getElementById('idButtonSubmitRascunho');
   let parts = document.getElementById('participante');
   let partsFirst = document.getElementById('participanteFirst');
   const participante = partsFirst.firstElementChild;
@@ -100,6 +101,9 @@
 
   buttonSubmit.addEventListener('click', (e)=>{
     $('.collapse').addClass('show')
+  })
+  buttonSubmitRascunho.addEventListener('click', (e)=>{
+    
   })
 
   function gerarPeriodo(e){
@@ -199,7 +203,7 @@
         return this.optional(element) || value == value.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/);
     });
 
-    $('input.cep:text').mask('00000-000');
+    $('.cep').mask('00000000');
     // $('.cpf').mask('000.000.000-00');
     $('.numero').mask('0000000000000');
     var SPMaskBehavior = function (val) {
@@ -250,6 +254,7 @@
         min: jQuery.validator.format("Por favor, forne&ccedil;a um valor maior ou igual a {0}.")
     });
     $( "#criarProjetoForm" ).validate( {
+      ignore: false,
       lang: 'PT_BR',
       rules: {
         firstname: "required",
