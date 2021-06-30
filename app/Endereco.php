@@ -12,7 +12,7 @@ class Endereco extends Model
    * @var array
    */
   protected $fillable = [
-      'rua', 'numero', 'bairro', 'cidade','uf', 'cep',
+      'rua', 'numero', 'bairro', 'cidade','uf', 'cep','complemento'
   ];
 
   public function user(){
