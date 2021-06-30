@@ -11,30 +11,55 @@
 
           <div class="form-group col-md-6" style="margin-top: 10px">
             @component('componentes.input', ['label' => 'Projeto (.pdf)'])
-              <input type="file" class="input-group-text" name="anexoProjeto" placeholder="nomeProjeto" accept="application/pdf" required/>
+              <input type="file" class="input-group-text" name="anexoProjeto" placeholder="nomeProjeto" accept="application/pdf" />
+              @error('anexoProjeto')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
             @endcomponent
             
           </div>
 
           <div class="form-group col-md-6" style="margin-top: 10px">
             @component('componentes.input', ['label' => 'Currículo Lattes do Proponente (.pdf)'])
-              <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" accept=".pdf" required/>
+              <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" accept=".pdf" />
             @endcomponent
+            @error('anexoLattesCoordenador')
+              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
           </div>
           <div class="form-group col-md-6">
             @component('componentes.input', ['label' => 'Planilha de Pontuação (.xlsx,.xls,.ods)'])
-              <input type="file" class="input-group-text" name="anexoPlanilha" placeholder="anexoPlanoTrabalho" accept=".xlsx, .xls, .ods" required/>
+              <input type="file" class="input-group-text" name="anexoPlanilhaPontuacao" placeholder="anexoPlanilhaPontuacao" accept=".xlsx, .xls, .ods" />
+              @error('anexoPlanilhaPontuacao')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
             @endcomponent
           </div>
           <div class="form-group col-md-6">
             @component('componentes.input', ['label' => 'Decisão do CONSU (.pdf)'])
-              <input type="file" class="input-group-text" name="anexoCONSU" placeholder="anexoCONSU" accept=".pdf" required/>
+              <input type="file" class="input-group-text" name="anexoDecisaoCONSU" placeholder="anexoDecisaoCONSU" accept=".pdf" />
+              @error('anexoDecisaoCONSU')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
             @endcomponent
           </div>
           
           <div class="form-group col-md-6" style="margin-top: 10px">
             @component('componentes.input', ['label' => 'Grupo de Pesquisa (.pdf)'])
-              <input type="file" class="input-group-text" name="anexoGrupoPesquisa" placeholder="Anexo do Grupo de Pesquisa" accept="application/pdf" required/>
+              <input type="file" class="input-group-text" name="anexoGrupoPesquisa" placeholder="Anexo do Grupo de Pesquisa" accept="application/pdf" />
+              @error('anexoGrupoPesquisa')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
             @endcomponent
             
           </div>
@@ -50,13 +75,23 @@
             
             <div class="form-group" id="displaySim" style="display: block; margin-top:-1rem">
               @component('componentes.input', ['label' => 'Sim, declaro que necessito de autorizações especiais (.pdf)'])
-                <input type="file" class="input-group-text" name="anexoComiteEtica" placeholder="anexoComiteEtica" accept=".pdf" required/>
+                <input type="file" class="input-group-text" name="anexoAutorizacaoComiteEtica" placeholder="anexoComiteEtica" accept=".pdf" />
+                @error('anexoAutorizacaoComiteEtica')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
               @endcomponent
               </div>
 
               <div class="form-group" id="displayNao" style="display: none; margin-top:-1rem">
                 @component('componentes.input', ['label' => 'Declaração de que não necessito de autorização especiais (.pdf)'])
-                  <input type="file" class="input-group-text" name="inputJustificativa" placeholder="inputJustificativa" accept=".pdf" required/>
+                  <input type="file" class="input-group-text" name="justificativaAutorizacaoEtica" placeholder="justificativaAutorizacaoEtica" accept=".pdf" />
+                  @error('justificativaAutorizacaoEtica')
+                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
                 @endcomponent
             </div>
           </div>

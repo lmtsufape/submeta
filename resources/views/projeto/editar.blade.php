@@ -148,13 +148,13 @@
           let input = cln.children[i].querySelectorAll('input')[index];
           let name = input.getAttributeNode("name").value;
           name = name.replace("[]", "");
-          input.getAttributeNode("name").value = name + '['+ contador +']';
+          // input.getAttributeNode("name").value = name + '['+ contador +']';
           let select = cln.children[i].querySelectorAll('select')[index];
           if(select){
             let selectName = select.getAttributeNode("name").value;
             selectName = selectName.replace("[", "");
             selectName = selectName.replace("]", "");
-            select.getAttributeNode("name").value = selectName + '['+ contador +']';
+            // select.getAttributeNode("name").value = selectName + '['+ contador +']';
           }
           
         }

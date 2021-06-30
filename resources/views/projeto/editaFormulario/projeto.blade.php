@@ -25,7 +25,7 @@
               <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()" required>
                 <option value="" disabled selected hidden>-- Grande Área --</option>
                 @foreach($grandeAreas as $grandeArea)
-                  <option @if($projeto->grandeArea->id == $grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                  <option @if($projeto->grandeArea->id ?? "" == $grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
                 @endforeach
               </select>
               @error('grandeArea')
@@ -39,7 +39,7 @@
               <input type="hidden" id="oldArea" value="{{ old('area') }}" >
               <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()" required>
                 @foreach($areas as $area)
-                  <option @if($projeto->area->id == $area->id ) selected @endif value="{{$area->id}}">{{$area->nome}}</option>
+                  <option @if($projeto->area->id ?? "" == $area->id ) selected @endif value="{{$area->id}}">{{$area->nome}}</option>
                 @endforeach
 
               </select>
@@ -56,7 +56,7 @@
                 <option value="" disabled selected hidden>-- Subárea --</option>
                 @if ($projeto->subarea != null)
                   @foreach($subareas as $subarea)
-                    <option @if($projeto->subarea->id == $subarea->id ) selected @endif value="{{$subarea->id}}">{{$subarea->nome}}</option>
+                    <option @if($projeto->subarea->id ?? "" == $subarea->id ) selected @endif value="{{$subarea->id}}">{{$subarea->nome}}</option>
                   @endforeach
                 @endif
               </select>
