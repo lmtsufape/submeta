@@ -178,7 +178,7 @@
                           <div class="col-6">
                             {{-- @dd($arquivos) --}}
                                 @component('componentes.input', ['label' => 'Título'])
-                                  <input type="text" class="form-control" value="{{ $arquivos[$loop->index]->titulo }}" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" disabled>
+                                  <input type="text" class="form-control" value="{{$p->planoTrabalho ? $p->planoTrabalho->titulo : "  " }}" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" disabled>
                                 @endcomponent
                           </div>                              
                           <div class="col-6">
