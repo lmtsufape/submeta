@@ -41,15 +41,28 @@
               @enderror
             @endcomponent
           </div>
-          <div class="form-group col-md-6">
-            <label class=" control-label" for="firstname">Decisão do CONSU (.pdf)</label>
-              <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
-              @error('anexoDecisaoCONSU')
-                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror 
-          </div>
+          @if($edital->consu)
+            <div class="form-group col-md-6">
+              <label class=" control-label" for="firstname">Decisão do CONSU (.pdf)<span style="color: red; font-weight:bold">*</span></label>
+                <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
+                @error('anexoDecisaoCONSU')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror 
+            </div>
+          @else
+            <div class="form-group col-md-6">
+              <label class=" control-label" for="firstname">Decisão do CONSU (.pdf)</label>
+                <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
+                @error('anexoDecisaoCONSU')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror 
+            </div>
+            
+          @endif
           
           <div class="form-group col-md-6" style="margin-top: 10px">
             @component('componentes.input', ['label' => 'Grupo de Pesquisa (.pdf)'])

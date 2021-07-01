@@ -166,6 +166,7 @@ class EventoController extends Controller
         $evento['coordenadorId']       = $request->coordenador_id;
         $evento['criador_id']          = $user_id;
         $evento['numParticipantes']    = $request->numParticipantes;
+        $evento['consu']               = $request->has('consu');
         $evento['anexosStatus']        = 'final';
 
         //dd($evento);
@@ -395,7 +396,7 @@ class EventoController extends Controller
         $evento->resultado_preliminar = $request->resultado_preliminar;
         $evento->resultado_final      = $request->resultado_final;
         $evento->coordenadorId        = $request->coordenador_id;
-
+        $evento->consu                = $request->has('consu');
         if($request->pdfEdital != null){
           $pdfEdital = $request->pdfEdital;
           $path = 'pdfEdital/' . $evento->id . '/';

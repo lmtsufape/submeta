@@ -83,33 +83,65 @@
           </div>
           
           {{-- Anexo da Decisão do CONSU --}}
-          <div class="form-group col-md-6" style="margin-top: 10px">
-            <div class="row justify-content-center">
-              <div class="col-12">
-                <div class="form-group">
-                  <label class=" control-label" for="firstname">Decisão do CONSU (.pdf)</label>
+          @if($edital->consu)
+            <div class="form-group col-md-6" style="margin-top: 10px">
+              <div class="row justify-content-center">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class=" control-label" for="firstname">Decisão do CONSU (.pdf<span style="color: red; font-weight:bold">*</span>)</label>
+                    
+                    <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
+                    @error('anexoDecisaoCONSU')
+                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
                   
-                  <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
-                  @error('anexoDecisaoCONSU')
-                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
                 </div>
+                @if($projeto->anexoDecisaoCONSU)
+                  <div class="col-3 ">
+                    <a href="{{ route('baixar.anexo.consu', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                  </div>
+                @else
+                  <div class="col-3 text-danger">
+                    <p><i class="fas fa-times-circle fa-2x"></i></p>
+                  </div>
+                @endif
                 
               </div>
-              @if($projeto->anexoDecisaoCONSU)
-                <div class="col-3 ">
-                  <a href="{{ route('baixar.anexo.consu', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
-                </div>
-              @else
-                <div class="col-3 text-danger">
-                  <p><i class="fas fa-times-circle fa-2x"></i></p>
-                </div>
-              @endif
-              
             </div>
-          </div>
+          @else
+            <div class="form-group col-md-6" style="margin-top: 10px">
+              <div class="row justify-content-center">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class=" control-label" for="firstname">Decisão do CONSU (.pdf)</label>
+                    
+                    <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
+                    @error('anexoDecisaoCONSU')
+                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+                  
+                </div>
+                @if($projeto->anexoDecisaoCONSU)
+                  <div class="col-3 ">
+                    <a href="{{ route('baixar.anexo.consu', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                  </div>
+                @else
+                  <div class="col-3 text-danger">
+                    <p><i class="fas fa-times-circle fa-2x"></i></p>
+                  </div>
+                @endif
+                
+              </div>
+            </div>
+            
+          @endif
+          
           
           {{-- Anexo do Grupo de Pesquisa --}}
           <div class="form-group col-md-6" style="margin-top: 10px">

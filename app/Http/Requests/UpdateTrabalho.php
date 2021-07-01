@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Evento;
 use App\Trabalho;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTrabalho extends FormRequest
 {
@@ -27,7 +28,7 @@ class UpdateTrabalho extends FormRequest
     public function rules()
     {
         $projeto = Trabalho::find($this->id);
-        
+        $evento = Evento::find($this->editalId);
         $rules = [
             'editalId'                => ['required', 'string'],
             'marcado.*'                => ['required'],
@@ -38,7 +39,7 @@ class UpdateTrabalho extends FormRequest
             'pontuacaoPlanilha'       => ['required', 'string'],
             'linkGrupoPesquisa'               => ['required', 'string'],
             'anexoProjeto'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoProjeto == null)], 'mimes:pdf'],
-            'anexoDecisaoCONSU'     => ['mimes:pdf'],
+            'anexoDecisaoCONSU'     => [Rule::requiredIf($evento->consu), 'mimes:pdf'],
             'anexoPlanilhaPontuacao'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoPlanilhaPontuacao == null)]],
             'anexoLattesCoordenador'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoLattesCoordenador == null)], 'mimes:pdf'],
             'anexoGrupoPesquisa'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoGrupoPesquisa == null)], 'mimes:pdf'],
