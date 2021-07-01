@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Evento;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTrabalho extends FormRequest
 {
@@ -25,8 +26,8 @@ class StoreTrabalho extends FormRequest
      */
     public function rules()
     {
-               
-
+        
+        $evento = Evento::find($this->editalId);
         $rules = [
             'editalId'                => ['required', 'string'],
             'marcado.*'                => ['required'],
@@ -37,7 +38,7 @@ class StoreTrabalho extends FormRequest
             'pontuacaoPlanilha'       => ['required', 'string'],
             'linkGrupoPesquisa'               => ['required', 'string'],
             'anexoProjeto'     => ['required', 'mimes:pdf'],
-            'anexoDecisaoCONSU'     => ['required', 'mimes:pdf'],
+            'anexoDecisaoCONSU'     => [Rule::requiredIf($evento->consu), 'mimes:pdf'],
             'anexoPlanilhaPontuacao'     => ['required'],
             'anexoLattesCoordenador'     => ['required', 'mimes:pdf'],
             'anexoGrupoPesquisa'     => ['required', 'mimes:pdf'],

@@ -29,20 +29,20 @@
     
     <div class="row justify-content-center">
 
-      @component('evento.formulario.projeto', ['grandeAreas' => $grandeAreas])
-      @endcomponent
+      @include('evento.formulario.projeto')
       
-      @component('evento.formulario.proponente')
-      @endcomponent
       
-      @component('evento.formulario.anexos')
-      @endcomponent
+      @include('evento.formulario.proponente')
       
-      @component('evento.formulario.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno, 'edital'=>$edital])
-      @endcomponent
       
-      @component('evento.formulario.finalizar')
-      @endcomponent
+      @include('evento.formulario.anexos')
+      
+      
+      @include('evento.formulario.participantes')
+      
+      
+      @include('evento.formulario.finalizar')
+      
 
     </div>
   </div>

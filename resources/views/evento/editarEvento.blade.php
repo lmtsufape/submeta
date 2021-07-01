@@ -15,7 +15,7 @@
         </div>
         {{-- nome | Tipo--}}
         <div class="row justify-content-center">
-            <div class="col-sm-6">{{--Nome do evento--}}
+            <div class="col-sm-12">{{--Nome do evento--}}
                 <label for="nome" class="col-form-label">{{ __('Nome*:') }}</label>
                 <input value="{{$evento->nome}}" id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome') }}" required autocomplete="nome" autofocus>
 
@@ -27,7 +27,7 @@
             </div>{{--End Nome do evento--}}
           
             {{-- Tipo do evento --}}
-            <div class="col-sm-2">
+            <div class="col-sm-5">
                 <label for="tipo" class="col-form-label">{{ __('Tipo*:') }}</label>
                 <!-- <input value="{{$evento->tipo}}" id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required autocomplete="tipo" autofocus> -->
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" required>
@@ -65,6 +65,18 @@
                 <input id="numParticipantes" type="number" min="1" max="20" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ $evento->numParticipantes }}" required autocomplete="numParticipantes" autofocus>
 
                 @error('numParticipantes')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="col-sm-3">
+                <label for="consu" class="col-form-label">{{ __('Consu obrigatório?*') }}</label>
+                <br>
+                <input type="checkbox" @if($evento->consu) checked @endif name="consu" id="consu">
+                {{-- <input id="consu" type="checkbox" class="form-control @error('consu') is-invalid @enderror" name="consu" @if(old('consu')) checked @endif required autocomplete="consu" autofocus> --}}
+
+                @error('consu')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
