@@ -63,7 +63,6 @@ class StoreTrabalho extends FormRequest
                     $rules['cidade.'.$value] = ['required', 'string'];
                     $rules['uf.'.$value] = ['required', 'string'];
                     $rules['cep.'.$value] = ['required', 'string'];
-                    $rules['complemento.'.$value] = ['required', 'string'];
                     //participante
                     $rules['rg.'.$value] = ['required', 'string'];
                     $rules['data_de_nascimento.'.$value] = ['required', 'string'];

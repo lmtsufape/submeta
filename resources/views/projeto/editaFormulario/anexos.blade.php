@@ -61,7 +61,7 @@
             <div class="row justify-content-center">
               <div class="col-12">
                 @component('componentes.input', ['label' => 'Planilha de Pontuação (.xlsx,.xls,.ods)'])
-                  <input type="file" class="input-group-text" name="anexoPlanilhaPontuacao" accept=".xlsx, .xls, .ods" />
+                  <input type="file" class="input-group-text" name="anexoPlanilhaPontuacao" accept=".xlsx, .xls, .ods, .gnumeric" />
                   @error('anexoPlanilhaPontuacao')
                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                       <strong>{{ $message }}</strong>
