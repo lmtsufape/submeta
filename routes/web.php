@@ -1,4 +1,4 @@
-<?php
+  <?php
 
 use App\Http\Middleware\checkCoordenador;
 use App\Trabalho;
@@ -33,21 +33,21 @@ Auth::routes(['verify' => true]);
 
 
 
-//######### Proponente  ########################################
-Route::get( '/proponente/index',      'ProponenteController@index'                  )->name('proponente.index');
-Route::get( '/proponente/cadastro',   'ProponenteController@create'                 )->name('proponente.create');
-Route::post('/proponente/cadastro',   'ProponenteController@store'                  )->name('proponente.store');
-Route::get( '/proponente/editais',    'ProponenteController@editais'                )->name('proponente.editais');
-Route::get( '/projetos-submetidos',   'ProponenteController@projetosDoProponente'   )->name('proponente.projetos');
-Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital')->middleware('auth');
-
-
-//######### Rotas Administrador #################################
-Route::get('/perfil-usuario',                  'UserController@minhaConta'        )->name('user.perfil')->middleware(['auth', 'verified']);
-Route::post('/perfil-usuario',                 'UserController@editarPerfil'      )->name('perfil.edit')->middleware(['auth', 'verified']);
 
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
+  //######### Proponente  ########################################
+  Route::get( '/proponente/index',      'ProponenteController@index'                  )->name('proponente.index');
+  Route::get( '/proponente/cadastro',   'ProponenteController@create'                 )->name('proponente.create');
+  Route::post('/proponente/cadastro',   'ProponenteController@store'                  )->name('proponente.store');
+  Route::get( '/proponente/editais',    'ProponenteController@editais'                )->name('proponente.editais');
+  Route::get( '/projetos-submetidos',   'ProponenteController@projetosDoProponente'   )->name('proponente.projetos');
+  Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital')->middleware('auth');
+  
+  
+  //######### Rotas Administrador #################################
+  Route::get('/perfil-usuario',                  'UserController@minhaConta'        )->name('user.perfil')->middleware(['auth', 'verified']);
+  Route::post('/perfil-usuario',                 'UserController@editarPerfil'      )->name('perfil.edit')->middleware(['auth', 'verified']);
 
   //######## Rotas Avaliador  ####################################
   Route::prefix('avaliador')->name('avaliador.')->group(function(){
@@ -123,7 +123,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
   Route::get(   '/projeto/visualizar/{id}', 'TrabalhoController@show'                       )->name('trabalho.show');
   Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
-  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@atualizar'                  )->name('trabalho.update');
+  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                  )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
   Route::get(   '/projeto/exportar/{id}','TrabalhoController@exportProjeto'                 )->name('exportar.projeto');
