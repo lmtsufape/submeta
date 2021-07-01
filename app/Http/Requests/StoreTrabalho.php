@@ -33,7 +33,6 @@ class StoreTrabalho extends FormRequest
             'titulo'                => ['required', 'string'],
             'grande_area_id'              => ['required', 'string'],
             'area_id'                    => ['required', 'string'],
-            'sub_area_id'                 => ['required', 'string'],
             'linkLattesEstudante'         => ['required', 'string'],
             'pontuacaoPlanilha'       => ['required', 'string'],
             'linkGrupoPesquisa'               => ['required', 'string'],
@@ -80,7 +79,6 @@ class StoreTrabalho extends FormRequest
             }
 
         }
-        // dd($rules);
 
         if ($this->has('rascunho')) {
             return [

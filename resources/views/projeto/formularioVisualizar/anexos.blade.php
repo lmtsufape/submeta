@@ -15,9 +15,15 @@
                 @component('componentes.input', ['label' => 'Projeto (.pdf)'])
                 @endcomponent
               </div>
-              <div class="col-2 ">
-                <a href="{{ route('baixar.anexo.projeto', ['id' => $projeto->id])}}"><i class="fas fa-file-pdf fa-2x"></i></a>
-              </div>
+              @if($projeto->anexoProjeto)
+                <div class="col-3 ">
+                  <a href="{{ route('baixar.anexo.projeto', ['id' => $projeto->id])}}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                </div>
+              @else
+                <div class="col-3 text-danger">
+                  <p><i class="fas fa-times-circle fa-2x"></i></p>
+                </div>
+              @endif
             </div>
           </div>
           {{-- Anexo do currículo --}}
@@ -28,9 +34,15 @@
                   
                 @endcomponent
               </div>
-              <div class="col-2 ">
-                <a href="{{ route('baixar.anexo.lattes', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
-              </div>
+              @if($projeto->anexoLattesCoordenador)
+                <div class="col-2 ">
+                  <a href="{{ route('baixar.anexo.lattes', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                </div>
+              @else
+                <div class="col-2 text-danger">
+                  <p><i class="fas fa-times-circle fa-2x"></i></p>
+                </div>
+              @endif
             </div>
           </div>
           {{-- Anexo da Planilha de Pontuação --}}
@@ -41,9 +53,15 @@
                   
                 @endcomponent
               </div>
-              <div class="col-2 ">
-                <a href="{{ route('baixar.anexo.planilha', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
-              </div>
+              @if($projeto->anexoPlanilhaPontuacao)
+                <div class="col-2 ">
+                  <a href="{{ route('baixar.anexo.planilha', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                </div>
+              @else
+                <div class="col-2 text-danger">
+                  <p><i class="fas fa-times-circle fa-2x"></i></p>
+                </div>
+              @endif
             </div>
           </div>
           
@@ -51,13 +69,24 @@
           <div class="form-group col-md-6" style="margin-top: 10px">
             <div class="row justify-content-start">
               <div class="col-10">
-                @component('componentes.input', ['label' => 'Decisão do CONSU (.pdf)'])
+                
+                <div class="form-group">
+                  <label class=" control-label" for="firstname">Decisão do CONSU (.pdf)</label>
                   
-                @endcomponent
+                  <div class="">
+                    
+                  </div>
+                </div>
               </div>
-              <div class="col-2 ">
-                <a href="{{ route('baixar.anexo.consu', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
-              </div>
+              @if($projeto->anexoDecisaoCONSU)
+                <div class="col-2 ">
+                  <a href="{{ route('baixar.anexo.consu', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                </div>
+              @else
+                <div class="col-2 text-danger">
+                  <p><i class="fas fa-times-circle fa-2x"></i></p>
+                </div>
+              @endif
             </div>
           </div>
           
@@ -69,9 +98,15 @@
                   
                 @endcomponent
               </div>
-              <div class="col-2 ">
-                <a href="{{ route('baixar.anexoGrupoPesquisa', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
-              </div>
+              @if($projeto->anexoGrupoPesquisa)
+                <div class="col-3 ">
+                  <a href="{{ route('baixar.anexoGrupoPesquisa', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                </div>
+              @else
+                <div class="col-3 text-danger">
+                  <p><i class="fas fa-times-circle fa-2x"></i></p>
+                </div>
+              @endif
             </div>
           </div>
           {{-- Anexo da autorizações especiais  --}}
@@ -84,9 +119,9 @@
                     <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="margin-right: 15px;">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
                   </div>
                   <div class="col-12">
-                    <input type="radio" checked id="radioSim" disabled onchange="displayAutorizacoesEspeciais('sim')">
+                    <input type="radio" checked id="radioSim"  onchange="displayAutorizacoesEspeciais('sim')">
                     <label for="radioSim" style="margin-right: 5px">Sim</label>
-                    <input type="radio" id="radioNao" disabled onchange="displayAutorizacoesEspeciais('nao')">
+                    <input type="radio" id="radioNao"  onchange="displayAutorizacoesEspeciais('nao')">
                     <label for="radioNao" style="margin-right: 5px">Não</label><br>
                   </div>
                 </div>
@@ -97,18 +132,52 @@
                 <div class="form-group" id="displaySim" style="display: block; margin-top:-1rem">
                   @component('componentes.input', ['label' => 'Sim, declaro que necessito de autorizações especiais (.pdf)'])
                     
+                    <div class="row justify-content-center">
+                      @if($projeto->anexoAutorizacaoComiteEtica ) 
+                        <div class="col-3 mt-2">
+                          <a href="{{ route('baixar.anexo.comite', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                        </div>
+                      @else
+                          <div class="col-3 text-danger">
+                            <p><i class="fas fa-times-circle fa-2x"></i></p>
+                          </div>
+                      @endif
+                      
+                    </div>
+                    @error('anexoAutorizacaoComiteEtica')
+                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                   @endcomponent
                 </div>
-
+    
                 <div class="form-group" id="displayNao" style="display: none; margin-top:-1rem">
                   @component('componentes.input', ['label' => 'Declaração de que não necessito de autorização especiais (.pdf)'])
                     
-                  @endcomponent
+                      @if($projeto->justificativaAutorizacaoEtica  ) 
+                      <div class="row justify-content-center">
+                        <div class="col-3 mt-2">
+                          <a href="{{ route('baixar.anexo.justificativa', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                        </div>
+                      </div>
+                      @else
+                      <div class="row justify-content-center">
+                        <div class="col-3 text-danger">
+                          <p><i class="fas fa-times-circle fa-2x"></i></p>
+                        </div>
+                      </div>
+                      @endif
+                    
+                      @error('justificativaAutorizacaoEtica')
+                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    @endcomponent
                 </div>
               </div>
-              <div class="col-2 mt-2">
-                <a href="{{ route('baixar.anexo.justificativa', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
-              </div>
+              
             </div>
            
           </div>

@@ -70,13 +70,8 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'CPF'])
-                                  <input type="text" class="form-control cpf" value="{{old('cpf')[$i] ?? "" }}" name="cpf[{{$i}}]" placeholder="CPF"  onchange="checarCPFdoCampo(this)" onkeyup="mascaraCPF(this)"/>
-                                  <span id="cpf-invalido-1" class="invalid-feedback cpf-invalido" role="alert" style="overflow: visible; display:none">
-                                    <span style="font-style: italic;">CPF inválido.</span>
-                                  </span>
-                                  <span id="cpf-valido-1" class="valid-feedback" role="alert" style="overflow: visible; display:none">
-                                    <span style="font-style: italic;">CPF válido.</span>
-                                  </span>
+                                  <input type="text" class="form-control cpf" value="{{old('cpf')[$i] ?? "" }}" name="cpf[{{$i}}]" placeholder="CPF"  />
+                                  
                                   @error('cpf.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -107,7 +102,7 @@
                           <div class="col-md-12"><h5>Endereço</h5></div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'CEP'])
-                                  <input type="number" class="form-control" value="{{old('cep')[$i] ?? "" }}" name="cep[{{$i}}]"  placeholder="CEP" />
+                                  <input type="text" class="form-control" value="{{old('cep')[$i] ?? "" }}" name="cep[{{$i}}]"  placeholder="CEP" />
                                   @error('cep.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>

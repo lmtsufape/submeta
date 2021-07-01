@@ -12,7 +12,7 @@ class Arquivo extends Model
    * @var array
    */
   protected $fillable = [
-      'nome', 'versao', 'versaoFinal', 'data', 'trabalhoId', 'participanteId'
+      'nome','titulo', 'versao', 'versaoFinal', 'data', 'trabalhoId', 'participanteId'
   ];
 
   public function trabalho(){

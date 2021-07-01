@@ -42,14 +42,13 @@
             @endcomponent
           </div>
           <div class="form-group col-md-6">
-            @component('componentes.input', ['label' => 'Decisão do CONSU (.pdf)'])
-              <input type="file" class="input-group-text" name="anexoDecisaoCONSU" placeholder="anexoDecisaoCONSU" accept=".pdf" />
+            <label class=" control-label" for="firstname">Decisão do CONSU (.pdf)</label>
+              <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
               @error('anexoDecisaoCONSU')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                   <strong>{{ $message }}</strong>
                 </span>
-              @enderror
-            @endcomponent
+              @enderror 
           </div>
           
           <div class="form-group col-md-6" style="margin-top: 10px">

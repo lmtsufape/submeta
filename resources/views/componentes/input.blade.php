@@ -1,10 +1,11 @@
 @php
   $class = $class ?? " ";
-  $obrigatorio = $obrigatorio ?? " ";
+  // $obrigatorio = $obrigatorio ?? " ";
 @endphp
 <div class="form-group">
-  <label class=" control-label {{ $class }}" for="firstname">{{ $label }} @if($obrigatorio)  <span style="color: red; font-weight:bold">*</span> @endif</label>
+  <label class=" control-label {{ $class }}" for="firstname">{{  $label  }} <span style="color: red; font-weight:bold">*</span></label>
+  {{ $slot }}
   <div class="">
-    {{ $slot }}
+    
   </div>
 </div>

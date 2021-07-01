@@ -75,7 +75,7 @@
                           <div class="col-md-12"><h5>Endereço</h5></div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'CEP'])
-                                  <input type="number" class="form-control" value="{{ $p->user->endereco->cep }}" name="cep[]" placeholder="CEP" disabled/>
+                                  <input type="text" class="form-control" value="{{ $p->user->endereco->cep }}" name="cep[]" placeholder="CEP" disabled/>
                                 @endcomponent
                           </div>           
                                             
@@ -189,11 +189,18 @@
                                 </div>
                               </div>
                               <div class="row justify-content-center">
-                                <div class="col-3 ">
-                                    <a href="{{ route('baixar.plano', ['id' => $p->planoTrabalho->id]) }}">
-                                    <i class="fas fa-file-pdf fa-2x"></i></a>
+                                
+                                @if($p->planoTrabalho) 
+                                  <div class="col-3 ">
+                                      <a href="{{ route('baixar.plano', ['id' => $p->planoTrabalho->id]) }}">
+                                      <i class="fas fa-file-pdf fa-2x"></i></a>
+                                    </div>
                                   </div>
-                                </div>
+                                @else
+                                  <div class="col-3 text-danger">
+                                    <p><i class="fas fa-times-circle fa-2x"></i></p>
+                                  </div>
+                                @endif
                           </div>                              
                         </div>
                     </div>
