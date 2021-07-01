@@ -39,7 +39,7 @@ class UpdateTrabalho extends FormRequest
             'pontuacaoPlanilha'       => ['required', 'string'],
             'linkGrupoPesquisa'               => ['required', 'string'],
             'anexoProjeto'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoProjeto == null)], 'mimes:pdf'],
-            'anexoDecisaoCONSU'     => [Rule::requiredIf($evento->consu), 'mimes:pdf'],
+            'anexoDecisaoCONSU'     => [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'],
             'anexoPlanilhaPontuacao'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoPlanilhaPontuacao == null)]],
             'anexoLattesCoordenador'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoLattesCoordenador == null)], 'mimes:pdf'],
             'anexoGrupoPesquisa'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoGrupoPesquisa == null)], 'mimes:pdf'],
@@ -67,7 +67,6 @@ class UpdateTrabalho extends FormRequest
                     $rules['cidade.'.$value] = ['required', 'string'];
                     $rules['uf.'.$value] = ['required', 'string'];
                     $rules['cep.'.$value] = ['required', 'string'];
-                    $rules['complemento.'.$value] = ['required', 'string'];
                     //participante
                     $rules['rg.'.$value] = ['required', 'string'];
                     $rules['data_de_nascimento.'.$value] = ['required', 'string'];
