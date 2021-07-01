@@ -106,6 +106,19 @@
 
 <script>
 
+    if(document.getElementById("radioSim").checked){
+      document.getElementById("radioSim").checked = true;
+      document.getElementById("radioNao").checked = false;
+      document.getElementById("displaySim").style.display = "block";
+      document.getElementById("displayNao").style.display = "none";
+      document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+    }else{
+      document.getElementById("radioSim").checked = false;
+      document.getElementById("radioNao").checked = true;
+      document.getElementById("displaySim").style.display = "none";
+      document.getElementById("displayNao").style.display = "block";
+      document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+    }
     
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
   let buttonRascunho = document.getElementById('idButtonSubmitRascunho');

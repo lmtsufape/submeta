@@ -140,15 +140,15 @@
 
           <div class="form-group col-md-6">
             <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="margin-right: 15px;">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
-            <input type="radio" checked id="radioSim" name="sim" onchange="displayAutorizacoesEspeciais('sim')">
+            <input type="radio"  id="radioSim" @if($projeto->anexoAutorizacaoComiteEtica) checked @endif name="sim" onchange="displayAutorizacoesEspeciais('sim')">
             <label for="radioSim" style="margin-right: 5px">Sim</label>
-            <input type="radio" id="radioNao" name="nao" onchange="displayAutorizacoesEspeciais('nao')">
+            <input type="radio" id="radioNao" @if($projeto->justificativaAutorizacaoEtica) checked @endif  name="nao" onchange="displayAutorizacoesEspeciais('nao')">
             <label for="radioNao" style="margin-right: 5px">Não</label><br>
             <span id="idAvisoAutorizacaoEspecial" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
               <strong>Selecione a autorização e envie o arquivo!</strong>
             </span>
             
-            <div class="form-group" id="displaySim" style="display: block; margin-top:-1rem">
+            <div class="form-group" id="displaySim" @if($projeto->anexoAutorizacaoComiteEtica) style="display: block; margin-top:-1rem" @else style="display: none; margin-top:-1rem" @endif >
               @component('componentes.input', ['label' => 'Sim, declaro que necessito de autorizações especiais (.pdf)'])
                 <input type="file" class="input-group-text" name="anexoAutorizacaoComiteEtica" accept=".pdf" />
                 <div class="row justify-content-center">
@@ -173,7 +173,7 @@
               @endcomponent
             </div>
 
-            <div class="form-group" id="displayNao" style="display: none; margin-top:-1rem">
+            <div class="form-group" id="displayNao" @if($projeto->justificativaAutorizacaoEtica) style="display: block; margin-top:-1rem" @else style="display: none; margin-top:-1rem" @endif >
               @component('componentes.input', ['label' => 'Declaração de que não necessito de autorização especiais (.pdf)'])
                 <input type="file" class="input-group-text" name="justificativaAutorizacaoEtica"  accept=".pdf" />
                   @if($projeto->justificativaAutorizacaoEtica || $projeto->anexoAutorizacaoComiteEtica ) 

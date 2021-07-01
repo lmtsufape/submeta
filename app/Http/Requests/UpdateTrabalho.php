@@ -43,10 +43,10 @@ class UpdateTrabalho extends FormRequest
             'anexoLattesCoordenador'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoLattesCoordenador == null)], 'mimes:pdf'],
             'anexoGrupoPesquisa'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoGrupoPesquisa == null)], 'mimes:pdf'],
             'anexoAutorizacaoComiteEtica'     => [
-                Rule::requiredIf((!$this->has('rascunho') && $projeto->anexoAutorizacaoComiteEtica == null) )
+                Rule::requiredIf((!$this->has('rascunho') && $projeto->justificativaAutorizacaoEtica == null && $projeto->anexoAutorizacaoComiteEtica == null) )
             ],
             'justificativaAutorizacaoEtica'   => [
-                Rule::requiredIf((!$this->has('rascunho') && $projeto->anexoAutorizacaoComiteEtica == null))
+                Rule::requiredIf((!$this->has('rascunho') && $projeto->anexoAutorizacaoComiteEtica == null && $projeto->justificativaAutorizacaoEtica == null))
             ],
             
         ];
@@ -90,5 +90,15 @@ class UpdateTrabalho extends FormRequest
         }else{
             return $rules;
         }
+    }
+    public function messages()
+    {
+        
+        return [
+            'titulo.required' => 'O :attribute é obrigatório',
+            'justificativaAutorizacaoEtica.required' => 'O campo justificativa Autorizacao Etica é obrigatório',
+            'anexoAutorizacaoComiteEtica.required' => 'O campo anexoAutorizacao Comite Etica é obrigatório',
+            
+        ];
     }
 }
