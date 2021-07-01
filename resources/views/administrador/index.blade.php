@@ -112,41 +112,60 @@
 			</a>
 		 </div>
 
-	      <div class="col-sm-3 d-flex justify-content-center">
-	         <a href="{{ route('admin.usuarios') }}" style="text-decoration:none; color: inherit;">
-	            <div class="card text-center card-menu">
-					<div class="container">
-						<div class="row titulo-card-menu">
-							<div class="card-body d-flex justify-content-center">
-								<h2 style="padding-top:15px">Usuários</h2>
-						 	</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<h6>Nº total de usuários:</h6>
-							</div>
-						</div>
-						@php
-							$usuarios = \App\User::count();
-						@endphp
-						<div class="row">
-							<div class="col-md-12">
-								<h1 class="quant-titulo-card">{{$usuarios}}</h1>
-							</div>
+			<div class="col-sm-3 d-flex justify-content-center">
+					<a href="{{ route('admin.usuarios') }}" style="text-decoration:none; color: inherit;">
+						<div class="card text-center card-menu">
+				<div class="container">
+					<div class="row titulo-card-menu">
+						<div class="card-body d-flex justify-content-center">
+							<h2 style="padding-top:15px">Usuários</h2>
 						</div>
 					</div>
-	            </div>
-	         </a>
-	      </div>
-	      {{-- <div class="col-sm-3 d-flex justify-content-center">
-	         <a href="{{ route('admin.usuarios') }}" style="text-decoration:none; color: inherit;">
-	            <div class="card text-center " style="border-radius: 31px; width: 13rem;height: 15rem;">
-	             <div class="card-body d-flex justify-content-center">
-	                  <h2 style="padding-top:15px">Mensagens</h2>
-	               </div>
-	            </div>
-	         </a>
-	      </div> --}}
+					<div class="row">
+						<div class="col-md-12">
+							<h6>Nº total de usuários:</h6>
+						</div>
+					</div>
+					@php
+						$usuarios = \App\User::count();
+					@endphp
+					<div class="row">
+						<div class="col-md-12">
+							<h1 class="quant-titulo-card">{{$usuarios}}</h1>
+						</div>
+					</div>
+				</div>
+						</div>
+					</a>
+			</div>
+			<br>
+			<div class="col-sm-3 d-flex justify-content-center m-4">
+					<a href="{{ route('admin.showProjetos') }}" style="text-decoration:none; color: inherit;">
+						<div class="card text-center card-menu">
+				<div class="container">
+					<div class="row titulo-card-menu">
+						<div class="card-body d-flex justify-content-center">
+							<h2 style="padding-top:15px">Projetos</h2>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<h6>Nº total de usuários:</h6>
+						</div>
+					</div>
+					@php
+						$trabalhos = \App\Trabalho::count();
+					@endphp
+					<div class="row">
+						<div class="col-md-12">
+							<h1 class="quant-titulo-card">{{$trabalhos}}</h1>
+						</div>
+					</div>
+				</div>
+						</div>
+					</a>
+			</div>
+	      
 	   </div>
 
 

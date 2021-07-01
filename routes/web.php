@@ -116,7 +116,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //#########  Trabalho  ########################################
   Route::get(   '/trabalho/submeter/{id}',  'TrabalhoController@index'                      )->name('trabalho.index');
-  Route::get(   '/trabalho/visualizar/{id}','TrabalhoController@show'                       )->name('trabalho.show');
+  // Route::get(   '/trabalho/visualizar/{id}','TrabalhoController@show'                       )->name('trabalho.show');
   Route::post(  '/trabalho/novaVersao',     'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
   Route::post(  '/trabalho/criar',          'TrabalhoController@salvar'                      )->name('trabalho.store');
   Route::post(  '/trabalho/criarRascunho',  'TrabalhoController@storeParcial'               )->name('trabalho.storeParcial');
@@ -177,6 +177,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
   Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
+  Route::get('/showrProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
 });
 
 Route::prefix('naturezas')->group(function(){
