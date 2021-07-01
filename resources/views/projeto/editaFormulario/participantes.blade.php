@@ -177,14 +177,16 @@
                                     @endcomponent
                               </div>                              
                               <div class="col-12">
-                                    @component('componentes.input', ['label' => 'Complemento',])
-                                      <input type="text" class="form-control" value="{{old('complemento')[$i] ?? $p->user->endereco->complemento }}" name="complemento[{{$i}}]"    placeholder="Complemento" />
+                                <div class="form-group">
+                                  <label class=" control-label" for="firstname">Complemento</label>
+                                  <input type="text" class="form-control" value="{{old('complemento')[$i] ?? $p->user->endereco->complemento }}" name="complemento[{{$i}}]"    placeholder="Complemento" />
                                     @error('complemento.'.$i)
                                       <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                         <strong>{{ $message }}</strong>
                                       </span>
                                     @enderror
-                                    @endcomponent
+                                </div>
+                                    
                               </div>
                               <div class="col-md-12"><h5>Dados do curso</h5></div>                               
                               <div class="col-6">
