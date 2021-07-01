@@ -11,24 +11,24 @@
           <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
 
           <div class="form-group col-md-12" style="margin-top: 10px">
-              <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
-              <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" placeholder="Digite o nome do projeto" value="{{ $projeto->titulo }}" autocomplete="nomeProjeto" required >
-              @error('nomeProjeto')
+              <label for="titulo" class="col-form-label">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
+              <input id="titulo" type="text" class="form-control @error('titulo') is-invalid @enderror" name="titulo" placeholder="Digite o nome do projeto" value="{{old('titulo') ?? $projeto->titulo}}" autocomplete="titulo"  >
+              @error('titulo')
               <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
               @enderror
           </div>
-          {{-- @dd($projeto->grandeArea->nome) --}}
+
           <div class="form-group col-md-4">
             <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
-              <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grandeArea" onchange="areas()" required>
+              <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grande_area_id" onchange="areas()" >
                 <option value="" disabled selected hidden>-- Grande Área --</option>
                 @foreach($grandeAreas as $grandeArea)
-                  <option @if($projeto->grandeArea->id == $grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                  <option @if($projeto->grande_area_id == $grandeArea->id ) selected @endif value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
                 @endforeach
               </select>
-              @error('grandeArea')
+              @error('grande_area_id')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                 <strong>{{ $message }}</strong>
               </span>
@@ -37,13 +37,12 @@
           <div class="form-group col-md-4">
             <label for="area" class="col-form-label">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
               <input type="hidden" id="oldArea" value="{{ old('area') }}" >
-              <select class="form-control @error('area') is-invalid @enderror" id="area" name="area" onchange="subareas()" required>
+              <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" onchange="subareas()" >
                 @foreach($areas as $area)
-                  <option @if($projeto->area->id == $area->id ) selected @endif value="{{$area->id}}">{{$area->nome}}</option>
+                  <option @if($projeto->area_id == $area->id ) selected @endif value="{{$area->id}}">{{$area->nome}}</option>
                 @endforeach
-
               </select>
-              @error('area')
+              @error('area_id')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                 <strong>{{ $message }}</strong>
               </span>
@@ -52,16 +51,15 @@
           <div class="form-group col-md-4">
             <label for="subArea" class="col-form-label">{{ __('Subárea') }} </label>
               <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}" >
-              <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="subArea" >
-                <option value="" disabled selected hidden>-- Subárea --</option>
-                @if ($projeto->subarea != null)
-                  @foreach($subareas as $subarea)
-                    <option @if($projeto->subarea->id == $subarea->id ) selected @endif value="{{$subarea->id}}">{{$subarea->nome}}</option>
+              <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="sub_area_id" >
+                <@if ($projeto->subarea != null)
+                  @foreach($subAreas as $subarea)
+                    <option @if($projeto->sub_area_id == $subarea->id ) selected @endif value="{{$subarea->id}}">{{$subarea->nome}}</option>
                   @endforeach
                 @endif
               </select>
 
-              @error('subArea')
+              @error('sub_area_id')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                 <strong>{{ $message }}</strong>
               </span>
