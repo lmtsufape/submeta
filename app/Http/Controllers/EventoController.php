@@ -608,6 +608,7 @@ class EventoController extends Controller
       $evento = Evento::find($id);
 
       if (Storage::disk()->exists($evento->modeloDocumento)) {
+        ob_end_clean();
         return Storage::download($evento->modeloDocumento);
       }
 

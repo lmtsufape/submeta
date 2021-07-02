@@ -322,7 +322,7 @@ class TrabalhoController extends Controller
         $areas = Area::all();
         $subareas = Subarea::all();
         $funcaoParticipantes = FuncaoParticipantes::all();
-        $participantes = Participante::where('trabalho_id', $id)->get();
+        $participantes = $projeto->participantes;
         $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         $users = User::whereIn('id', $participantesUsersIds)->get();
         $arquivos = Arquivo::where('trabalhoId', $id)->get();
@@ -609,6 +609,7 @@ class TrabalhoController extends Controller
       $projeto = Trabalho::find($id);
 
       if (Storage::disk()->exists($projeto->anexoPlanilhaPontuacao)) {
+        // ob_end_clean();
         return Storage::download($projeto->anexoPlanilhaPontuacao);
       }
       return abort(404);
@@ -646,58 +647,7 @@ class TrabalhoController extends Controller
       return abort(404);
     }
 
-    // try {
 
-    //   $edital = Evento::find($request->editalId);
-    //   $hoje = now();
-    //   if (!($edital->inicioSubmissao < $hoje && $edital->fimSubmissao >= $hoje)) {
-    //     return redirect()->route('inicial')->with(['error'=> 0, 'mensagem' => 'As submissões para o edital '. $edital->titulo .' foram encerradas.']);
-    //   }
-
-      
-    //   $projeto = $this->atribuirDados($request, $edital);
-    //   $projeto->save();
-    //   // Email de submissão
-    //     // $subject = "Submissão de Trabalho";
-    //     // $proponente = Auth()->user();
-    //     // Mail::to($proponente->email)->send(new SubmissaoTrabalho($proponente, $subject, $edital, $projeto));
-    //   $id = $projeto->id;
-    //   Notification::send(Auth::user(), new SubmissaoNotification($id));
-    
-    //   // Salvando participantes
-    //   $this->salvarParticipantes($request, $edital, $projeto);
-
-
-    //     return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto submetido com sucesso!']);
-    //   } catch (\Throwable $th) {
-    //     return back()->with(['mensagem' => $th->getMessage()]);
-    //   }
-    // foreach ($request->marcado as $key => $value) {
-    //   $user = User::firstOrCreate([
-    //     ['email' => $request->email[$value]],
-    //     [
-    //       'name' => $request->name[$value], 'instituicao' => $request->instituicao[$value],
-    //       'cpf' => $request->cpf[$value], 'celular' => $request->celular[$value],
-    //     ]
-    //   ]);
-    //   $participante = Participante::create([
-    //       'rg'              => $request->rg[$value],     'data_de_nascimento'=> $request->data_de_nascimento[$value],
-    //       'curso'           => $request->curso[$value],  'turno'             => $request->turno[$value],
-    //       'ordem_prioridade'=> $request->ordem_prioridade[$value],'periodo_atual' => $request->periodo_atual[$value],
-    //       'total_periodos'  => $request->total_periodos[$value],'media_do_curso'=> $request->media_do_curso[$value]
-    //   ]);
-    //   $user->endereco()->create([
-    //     'rua' => $request->rua[$value],
-    //     'numero' => $request->numero[$value],
-    //     'bairro' => $request->bairro[$value],
-    //     'cidade' => $request->cidade[$value],
-    //     'uf' => $request->uf[$value],
-    //     'cep' => $request->cep[$value],
-    //     'complemento' => $request->complemento[$value],
-    //   ]);
-    //   $user->participantes()->save($participante);
-    //   $trabalho->participantes()->save($participante);
-    // }
 
     public function update(UpdateTrabalho $request, $id)
     {
