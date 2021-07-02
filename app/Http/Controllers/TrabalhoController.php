@@ -618,7 +618,6 @@ class TrabalhoController extends Controller
         $file  = $projeto->anexoPlanilhaPontuacao;
         $ext = explode(".", $file);
         
-        // dd($ext);
         switch ($ext[1]) {
           case 'xlsx':
             $hearder = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
