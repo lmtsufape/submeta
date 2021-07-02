@@ -315,8 +315,11 @@ class TrabalhoController extends Controller
     
     public function show($id)
     {
-        //
-        $projeto = Trabalho::find($id);
+        
+        $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        if(!$projeto){
+          return back()->withErrors(['Proposta não encontrada!']);
+        }
         $edital = Evento::find($projeto->evento_id);
         $grandeAreas = GrandeArea::all();
         $areas = Area::all();
@@ -343,7 +346,10 @@ class TrabalhoController extends Controller
 
 		public function exportProjeto($id)
     {
-				$projeto = Trabalho::find($id);
+        $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        if(!$projeto){
+          return back()->withErrors(['Proposta não encontrada!']);
+        }
         $edital = Evento::find($projeto->evento_id);
         $grandeAreas = GrandeArea::all();
         $areas = Area::all();
@@ -365,7 +371,10 @@ class TrabalhoController extends Controller
     public function edit($id)
     {
       $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-      $projeto = Trabalho::find($id);
+      $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+      if(!$projeto){
+        return back()->withErrors(['Proposta não encontrada!']);
+      }
       $edital = Evento::find($projeto->evento_id);
       $grandeAreas = GrandeArea::all();
       $areas = Area::all();
@@ -683,8 +692,7 @@ class TrabalhoController extends Controller
 
     public function update(UpdateTrabalho $request, $id)
     {
-      // dd($request->participante_id);
-      // dd( $request->all()  );
+      
       try {    
         if (!$request->has('rascunho') ) {
           $request->merge([
@@ -699,10 +707,12 @@ class TrabalhoController extends Controller
         $request->merge([
           'coordenador_id' => $evento->coordenadorComissao->id
         ]);
+        $trabalho = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
         
         DB::beginTransaction();
-
-        $trabalho = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        if(!$trabalho){
+          return back()->withErrors(['Proposta não encontrada']);
+        }
         $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
         $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
         $trabalho->save();
