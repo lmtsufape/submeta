@@ -88,6 +88,7 @@ class ArquivoController extends Controller
         $arquivo = Arquivo::find($id);
 
         if (Storage::disk()->exists($arquivo->nome)) {
+            ob_end_clean();
             return Storage::download($arquivo->nome);
         }
         return abort(404);
