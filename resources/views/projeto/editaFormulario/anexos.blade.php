@@ -184,14 +184,14 @@
               @component('componentes.input', ['label' => 'Sim, declaro que necessito de autorizações especiais (.pdf)'])
                 <input type="file" class="input-group-text" name="anexoAutorizacaoComiteEtica" accept=".pdf" />
                 <div class="row justify-content-center">
-                  @if($projeto->justificativaAutorizacaoEtica || $projeto->anexoAutorizacaoComiteEtica ) 
+                  @if($projeto->anexoAutorizacaoComiteEtica ) 
                   <div class="row justify-content-center">
                     <div class="col-3 mt-2">
                       <a href="{{ route('baixar.anexo.comite', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
                     </div>
                   </div>
                   @else
-                    <div class="col-3 text-danger">
+                    <div class="col-3 text-danger mt-2">
                       <p><i class="fas fa-times-circle fa-2x"></i></p>
                     </div>
                   @endif
@@ -208,14 +208,14 @@
             <div class="form-group" id="displayNao" @if($projeto->justificativaAutorizacaoEtica) style="display: block; margin-top:-1rem" @else style="display: none; margin-top:-1rem" @endif >
               @component('componentes.input', ['label' => 'Declaração de que não necessito de autorização especiais (.pdf)'])
                 <input type="file" class="input-group-text" name="justificativaAutorizacaoEtica"  accept=".pdf" />
-                  @if($projeto->justificativaAutorizacaoEtica || $projeto->anexoAutorizacaoComiteEtica ) 
+                  @if($projeto->justificativaAutorizacaoEtica) 
                   <div class="row justify-content-center">
                     <div class="col-3 mt-2">
                       <a href="{{ route('baixar.anexo.justificativa', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
                     </div>
                   </div>
                   @else
-                    <div class="col-3 text-danger">
+                    <div class="col-3 text-danger mt-2">
                       <p><i class="fas fa-times-circle fa-2x"></i></p>
                     </div>
                   @endif
