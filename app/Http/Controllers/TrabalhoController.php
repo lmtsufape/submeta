@@ -566,6 +566,7 @@ class TrabalhoController extends Controller
       $projeto = Trabalho::find($id);
       //dd($projeto);
       if (Storage::disk()->exists($projeto->anexoProjeto)) {
+        ob_end_clean();
         return Storage::download($projeto->anexoProjeto);
       }
       return abort(404);
@@ -573,6 +574,7 @@ class TrabalhoController extends Controller
     public function baixarAnexoGrupoPesquisa($id) {
       $projeto = Trabalho::find($id);
       if (Storage::disk()->exists($projeto->anexoGrupoPesquisa)) {
+        ob_end_clean();
         return Storage::download($projeto->anexoGrupoPesquisa);
       }
       return abort(404);
@@ -582,6 +584,7 @@ class TrabalhoController extends Controller
       $projeto = Trabalho::find($id);
 
       if (Storage::disk()->exists($projeto->anexoDecisaoCONSU)) {
+        ob_end_clean();
         return Storage::download($projeto->anexoDecisaoCONSU);
       }
       return abort(404);
@@ -591,6 +594,7 @@ class TrabalhoController extends Controller
       $projeto = Trabalho::find($id);
 
       if (Storage::disk()->exists($projeto->anexoAutorizacaoComiteEtica)) {
+        ob_end_clean();
         return Storage::download($projeto->anexoAutorizacaoComiteEtica);
       }
       return abort(404);
@@ -600,6 +604,7 @@ class TrabalhoController extends Controller
       $projeto = Trabalho::find($id);
 
       if (Storage::disk()->exists($projeto->anexoLattesCoordenador)) {
+        ob_end_clean();
         return Storage::download($projeto->anexoLattesCoordenador);
       }
       return abort(404);
@@ -609,7 +614,7 @@ class TrabalhoController extends Controller
       $projeto = Trabalho::find($id);
 
       if (Storage::disk()->exists($projeto->anexoPlanilhaPontuacao)) {
-        // ob_end_clean();
+        ob_end_clean();
         return Storage::download($projeto->anexoPlanilhaPontuacao);
       }
       return abort(404);
@@ -619,6 +624,7 @@ class TrabalhoController extends Controller
       $projeto = Trabalho::find($id);
 
       if (Storage::disk()->exists($projeto->justificativaAutorizacaoEtica)) {
+        ob_end_clean();
         return Storage::download($projeto->justificativaAutorizacaoEtica);
       }
 
@@ -632,6 +638,7 @@ class TrabalhoController extends Controller
                   ->orderByDesc('updated_at')->first();
 
       if (Storage::disk()->exists($trabalho->$nomeAnexo)) {
+        ob_end_clean();
         return Storage::download($trabalho->$nomeAnexo);
       }
       return abort(404);
@@ -642,6 +649,7 @@ class TrabalhoController extends Controller
                             ->orderByDesc('updated_at')->first();
 
       if (Storage::disk()->exists($eventoTemp->$nomeAnexo)) {
+        ob_end_clean();
         return Storage::download($eventoTemp->$nomeAnexo);
       }
       return abort(404);
