@@ -615,7 +615,12 @@ class TrabalhoController extends Controller
 
       if (Storage::disk()->exists($projeto->anexoPlanilhaPontuacao)) {
         ob_end_clean();
-        return Storage::download($projeto->anexoPlanilhaPontuacao);
+       
+        $headers = array(
+          'Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        );
+
+        return Storage::download($projeto->anexoPlanilhaPontuacao, null,$headers);
       }
       return abort(404);
     }
@@ -679,11 +684,25 @@ class TrabalhoController extends Controller
         DB::beginTransaction();
 
         $trabalho = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
+        $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
+        $trabalho->save();
+        // dd($request->all());
+        // dd($request->has('justificativaAutorizacaoEtica') && ($request->justificativaAutorizacaoEtica == null));
+        if($request->has('anexoAutorizacaoComiteEtica')){
+          $trabalho->justificativaAutorizacaoEtica = null;
+          $trabalho->save();
+        }else{
+          $trabalho->anexoAutorizacaoComiteEtica = null;
+          $trabalho->save();
+        }
         $trabalho->update($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU','anexoPlanilhaPontuacao',
-                            'anexoLattesCoordenador','anexoGrupoPesquisa','anexoAutorizacaoComiteEtica',
-                            'justificativaAutorizacaoEtica'
-                          ]));
+          'anexoProjeto', 'anexoDecisaoCONSU','anexoPlanilhaPontuacao',
+          'anexoLattesCoordenador','anexoGrupoPesquisa','justificativaAutorizacaoEtica',
+          'anexoAutorizacaoComiteEtica'
+          
+          ]));
+        // dd($trabalho);
         if ($request->marcado == null) {
           $idExcluido = $trabalho->participantes->pluck('id');
           
@@ -801,9 +820,7 @@ class TrabalhoController extends Controller
         }
 
   
-        $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
-        $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
-        $trabalho->save();
+        
 
         DB::commit();
 
