@@ -615,12 +615,32 @@ class TrabalhoController extends Controller
 
       if (Storage::disk()->exists($projeto->anexoPlanilhaPontuacao)) {
         ob_end_clean();
+        $file  = $projeto->anexoPlanilhaPontuacao;
+        $ext = explode(".", $file);
+        
+        // dd($ext);
+        switch ($ext[1]) {
+          case 'xlsx':
+            $hearder = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+            break;
+          case 'xls':
+            $hearder = 'application/vnd.ms-excel';
+            break;
+          case 'ods':
+            $hearder = 'application/vnd.oasis.opendocument.spreadsheet';
+            break;
+          
+          default:
+            $hearder = 'application/vnd.ms-excel';
+            break;
+        }
        
         $headers = array(
-          'Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          "Content-type: {$hearder}",
         );
+        
 
-        return Storage::download($projeto->anexoPlanilhaPontuacao, null,$headers);
+        return Storage::download($projeto->anexoPlanilhaPontuacao, "Planilha.{$ext[1]}",$headers);
       }
       return abort(404);
     }
