@@ -239,12 +239,14 @@ class TrabalhoController extends Controller
               Storage::delete($trabalho->anexoAutorizacaoComiteEtica);
             }
             $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoAutorizacaoComiteEtica, 'Comite_de_etica.pdf');
+            $trabalho->justificativaAutorizacaoEtica = null;
 
           } elseif( isset($request->justificativaAutorizacaoEtica)){
             if(Storage::disk()->exists($trabalho->justificativaAutorizacaoEtica)) {
               Storage::delete($trabalho->justificativaAutorizacaoEtica);
             }
             $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica, 'Justificativa.pdf');
+            $trabalho->anexoAutorizacaoComiteEtica = null;
           }
 
         //Anexo Lattes
@@ -290,9 +292,12 @@ class TrabalhoController extends Controller
       //Autorização ou Justificativa
       if( isset($request->anexoAutorizacaoComiteEtica)){
         $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoAutorizacaoComiteEtica, 'Comite_de_etica.pdf');
+        $trabalho->justificativaAutorizacaoEtica = null;
 
       } elseif( isset($request->justificativaAutorizacaoEtica)){
         $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica, 'Justificativa.pdf');
+        $trabalho->anexoAutorizacaoComiteEtica = null;
+        
       }
 
      //Anexo Lattes
@@ -718,23 +723,16 @@ class TrabalhoController extends Controller
         if(!$trabalho){
           return back()->withErrors(['Proposta não encontrada']);
         }
+        
+        $trabalho->update($request->except([
+          'anexoProjeto', 'anexoDecisaoCONSU','anexoPlanilhaPontuacao',
+          'anexoLattesCoordenador','anexoGrupoPesquisa','justificativaAutorizacaoEtica','anexoAutorizacaoComiteEtica'
+          
+        ]));
         $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
         $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
         $trabalho->save();
         
-        if($request->has('anexoAutorizacaoComiteEtica')){
-          $trabalho->justificativaAutorizacaoEtica = null;
-          $trabalho->save();
-        }else{
-          $trabalho->anexoAutorizacaoComiteEtica = null;
-          $trabalho->save();
-        }
-        $trabalho->update($request->except([
-          'anexoProjeto', 'anexoDecisaoCONSU','anexoPlanilhaPontuacao',
-          'anexoLattesCoordenador','anexoGrupoPesquisa'
-          
-          ]));
-
         if ($request->marcado == null) {
           $idExcluido = $trabalho->participantes->pluck('id');
           
