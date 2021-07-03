@@ -721,8 +721,7 @@ class TrabalhoController extends Controller
         $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
         $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
         $trabalho->save();
-        // dd($request->all());
-        // dd($request->has('justificativaAutorizacaoEtica') && ($request->justificativaAutorizacaoEtica == null));
+        
         if($request->has('anexoAutorizacaoComiteEtica')){
           $trabalho->justificativaAutorizacaoEtica = null;
           $trabalho->save();
@@ -732,27 +731,24 @@ class TrabalhoController extends Controller
         }
         $trabalho->update($request->except([
           'anexoProjeto', 'anexoDecisaoCONSU','anexoPlanilhaPontuacao',
-          'anexoLattesCoordenador','anexoGrupoPesquisa','justificativaAutorizacaoEtica',
-          'anexoAutorizacaoComiteEtica'
+          'anexoLattesCoordenador','anexoGrupoPesquisa'
           
           ]));
-        // dd($trabalho);
+
         if ($request->marcado == null) {
           $idExcluido = $trabalho->participantes->pluck('id');
           
         }else{
           $idExcluido = [];
         }
-        // dd($idExcluido);
-        // dd(array_search( 2, $request->marcado));
+        
         foreach ($request->participante_id as $key => $value) {
-          // $value = intval($value);
           if($request->marcado != null && array_search( $key, $request->marcado) === false){
             if($value !== null)
               array_push($idExcluido, $value);
           }
         }                  
-        // dd($idExcluido);
+
         foreach ($idExcluido as $key => $value) {
           $trabalho->participantes()->find($value)->delete();
         }
