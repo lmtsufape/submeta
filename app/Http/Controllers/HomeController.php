@@ -54,6 +54,7 @@ class HomeController extends Controller
     }
 
     public function downloadArquivo(Request $request){
+      ob_end_clean();
       return Storage::download($request->file);
   	}
 }

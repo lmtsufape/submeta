@@ -15,7 +15,7 @@ class CoordenadorComissao extends Model
     }
 
     public function trabalho(){
-    	return $this->hasMany('App\Trabalho');
+    	return $this->hasMany('App\Trabalho', 'coordenador_id');
     }
 
 }

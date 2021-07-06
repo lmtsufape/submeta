@@ -119,9 +119,9 @@
                     <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="margin-right: 15px;">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
                   </div>
                   <div class="col-12">
-                    <input type="radio" checked id="radioSim"  onchange="displayAutorizacoesEspeciais('sim')">
+                    <input type="radio" @if($projeto->anexoAutorizacaoComiteEtica) checked @endif  id="radioSim"  onchange="displayAutorizacoesEspeciais('sim')">
                     <label for="radioSim" style="margin-right: 5px">Sim</label>
-                    <input type="radio" id="radioNao"  onchange="displayAutorizacoesEspeciais('nao')">
+                    <input type="radio" id="radioNao" @if($projeto->justificativaAutorizacaoEtica) checked @endif onchange="displayAutorizacoesEspeciais('nao')">
                     <label for="radioNao" style="margin-right: 5px">Não</label><br>
                   </div>
                 </div>

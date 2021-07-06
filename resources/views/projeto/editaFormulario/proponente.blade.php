@@ -45,7 +45,7 @@
           </div>
           <div class="form-group col-md-6">
             <label for="pontuacaoPlanilha">Valor da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
-            <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" min="0" name="pontuacaoPlanilha"
+            <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" min="0" step=".01" name="pontuacaoPlanilha"
             value="{{ $projeto->pontuacaoPlanilha }}"  >
 
             @error('pontuacaoPlanilha')

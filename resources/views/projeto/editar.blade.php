@@ -106,6 +106,19 @@
 
 <script>
 
+    if(document.getElementById("radioSim").checked){
+      document.getElementById("radioSim").checked = true;
+      document.getElementById("radioNao").checked = false;
+      document.getElementById("displaySim").style.display = "block";
+      document.getElementById("displayNao").style.display = "none";
+      document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+    }else{
+      document.getElementById("radioSim").checked = false;
+      document.getElementById("radioNao").checked = true;
+      document.getElementById("displaySim").style.display = "none";
+      document.getElementById("displayNao").style.display = "block";
+      document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+    }
     
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
   let buttonRascunho = document.getElementById('idButtonSubmitRascunho');
@@ -148,6 +161,18 @@
       
     }
   }
+  var SPMaskBehavior = function (val) {
+      return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+  },
+  spOptions = {
+      onKeyPress: function(val, e, field, options) {
+      field.mask(SPMaskBehavior.apply({}, arguments), options);
+      }
+  };
+
+  $("input.cpf:text").mask("000.000.000-00");
+  $("input.celular:text").mask(SPMaskBehavior, spOptions);
+  $("input.cep:text").mask("00000-000");
 
   buttonMais.addEventListener("click", (e) => {
     
