@@ -847,12 +847,16 @@ class TrabalhoController extends Controller
           
         }
 
-  
         
-
+        
         DB::commit();
+        if (!$request->has('rascunho') ) {
+          Notification::send(Auth::user(), new SubmissaoNotification($id));
+        }else{
 
+        }
         return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta atualizada!']);
+
       } catch (\Throwable $th) {
         DB::rollback();
         return redirect(route('proponente.projetos'))->with(['mensagem' => $th->getMessage()]);
@@ -952,8 +956,13 @@ class TrabalhoController extends Controller
         $trabalho->save();
 
         DB::commit();
-        
-        return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta submetida!']);
+        if (!$request->has('rascunho') ) {
+          Notification::send(Auth::user(), new SubmissaoNotification($trabalho->id));
+          return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta submetida!']);
+        }else{
+          return redirect(route('proponente.projetos'))->with(['mensagem' => 'Rascunho salvo!']);
+
+        }
       } catch (\Throwable $th) {
         DB::rollback();
         return redirect(route('proponente.projetos'))->with(['mensagem' => $th->getMessage()]);
