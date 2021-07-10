@@ -14,7 +14,7 @@
                     </p>
                 </div>
                 <br>
-                <div class="row position-text">
+                {{-- <div class="row position-text">
                     <div class="alert alert-danger" role="alert">
                         <p>
                            <strong>INFORME</strong>
@@ -29,7 +29,7 @@
                             Não serão aceitas propostas submetidas após este prazo.
                         </p>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <br>
             <div class="col-sm-6" style=" position: relative; top: 50px; padding: 25px;">
