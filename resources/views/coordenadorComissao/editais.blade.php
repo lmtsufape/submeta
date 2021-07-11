@@ -35,24 +35,29 @@
                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                 </a>
                 <div class="dropdown-menu">
-                    <a href="{{  route('evento.visualizar',['id'=>$evento->id])  }}" class="dropdown-item">
-                        <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
-                        Detalhes
-                    </a>
-                    <a href="{{ route('evento.editar', ['id' => $evento->id]) }}" class="dropdown-item">
-                        <img src="{{asset('img/icons/edit-regular.svg')}}" class="icon-card" alt="">
-                        Editar
-                    </a>
-                    <form method="POST" action="{{route('evento.deletar',$evento->id)}}">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                        <button type="submit" class="dropdown-item">
-                            <img src="{{asset('img/icons/trash-alt-regular.svg')}}" class="icon-card" alt="">
-                            Deletar
-                        </button>
+                  <a href="{{ route('evento.editar', ['id' => $evento->id]) }}" class="dropdown-item text-center">
+                    Editar Edital
+                  </a>
+                  <hr class="dropdown-hr">
+                  <a href="{{route('admin.atribuir', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
+                      Atribuir Avaliadores
+                  </a>
+                  <hr class="dropdown-hr">
+                  <a href="{{route('admin.pareceres', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
+                      Visualizar Pareceres
+                  </a>
+                  <hr class="dropdown-hr">
+                  <a href="{{route('admin.analisar', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
+                    Analisar projetos
+                  </a>
+                  <hr class="dropdown-hr">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="dropdown-item dropdown-item-delete text-center" data-toggle="modal" data-target="#exampleModal{{ $evento->id }}">
+                      <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar
+                    </button>
 
-                    </form>
-                </div>
+
+              </div>
             </div>
           </td>
         </tr>
