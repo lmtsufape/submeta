@@ -67,11 +67,10 @@ class AdministradorController extends Controller
     public function showProjetos(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
+        $editais = Evento::with('trabalhos')->get();
         $projetos = Trabalho::all();
 
-        
-
-        return view('administrador.listaProjetos')->with(['projetos' => $projetos, 'evento' => $evento]);
+        return view('administrador.listaProjetos', compact('projetos', 'evento','editais'));
     }
 
     public function visualizarParecer(Request $request){
