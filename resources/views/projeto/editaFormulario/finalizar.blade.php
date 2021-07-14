@@ -13,7 +13,7 @@
         <h6 style="font-family:Arial, Helvetica, sans-serif; margin-right:15px"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
         <button id="submeterFormProposta" type="submit" style="display: none;"></button>
         <button type="submit" class="btn btn-primary " id="idButtonSubmitRascunho" >{{ __('Atualizar rascunho') }}</button>
-        <button type="submit" class="btn btn-success" id="idButtonSubmitProjeto" >{{ __('Atualizar Proposta') }}</button>
+        <button type="submit" class="btn btn-success" id="idButtonSubmitProjeto" >{{ __('Submeter projeto') }}</button>
       </div>
     </div>
   </div>

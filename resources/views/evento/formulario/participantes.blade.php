@@ -282,7 +282,7 @@
                                 @endcomponent
                           </div>                              
                           <div class="col-6">
-                                @component('componentes.input', ['label' => 'Anexo(.pdf)'])
+                                @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                                   <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]"  accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
                                   @error('anexoPlanoTrabalho.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">

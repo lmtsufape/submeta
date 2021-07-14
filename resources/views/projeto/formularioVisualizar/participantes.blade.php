@@ -184,7 +184,7 @@
                           <div class="col-6">
                             <div class="row justify-content-center">
                               <div class="col-4">
-                                  @component('componentes.input', ['label' => 'Anexo(.pdf)'])
+                                  @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                                   @endcomponent
                                 </div>
                               </div>
