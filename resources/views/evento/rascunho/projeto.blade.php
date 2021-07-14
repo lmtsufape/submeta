@@ -12,7 +12,9 @@
 
           <div class="form-group col-md-12" style="margin-top: 10px">
               <label for="nomeProjeto" class="col-form-label">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
-              <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" placeholder="Digite o nome do projeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" required >
+              <input id="nomeProjeto" type="text" class="form-control @error('nomeProjeto') is-invalid @enderror" name="nomeProjeto" placeholder="Digite o nome do projeto" value="{{ old('nomeProjeto') !== null ? old('nomeProjeto') : (isset($rascunho) ? $rascunho->titulo : '')}}" autocomplete="nomeProjeto" required maxlength="255" >
+              <span style="color: red; font-size: 12px" id="caracsRestantestitulo">
+              </span>
               @error('nomeProjeto')
               <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

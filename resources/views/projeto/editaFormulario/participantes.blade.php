@@ -281,7 +281,7 @@
                                     @endcomponent
                               </div>
                               <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
-                              <div class="col-6">
+                              <div class="col-12">
                                     @component('componentes.input', ['label' => 'Título'])
                                       <input type="text" class="form-control" value="{{$p->planoTrabalho ? $p->planoTrabalho->titulo : "" }}" name="nomePlanoTrabalho[{{$i}}]"  placeholder="Digite o título do plano de trabalho" >
                                       @error('nomePlanoTrabalho.'.$i)
@@ -312,7 +312,7 @@
                                         <i class="fas fa-file-pdf fa-2x"></i></a>
                                       </div>
                                     </div>
-                                      
+
                                     @endif
                               </div>                              
                             </div>
@@ -342,8 +342,9 @@
                               <div class="col-md-12 mt-3"><h5>Dados do discente</h5></div>
                               <div class="col-6">
                                 @component('componentes.input', ['label' => 'Nome completo'])
-                                  <input type="text" class="form-control " value="{{old('name')[$i] ?? "" }}"  name="name[{{$i}}]" placeholder="Nome Completo"  />
-                                  
+                                  <input type="text" class="form-control " value="{{old('name')[$i] ?? "" }}"  name="name[{{$i}}]" placeholder="Nome Completo" maxlength="150" id="nome{{$i}}"  />
+                                  <span style="color: red; font-size: 12px" id="caracsRestantesnome{{$i}}">
+                                  </span>
                                   @error("name.".$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -353,7 +354,9 @@
                               </div>                              
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'E-mail'])
-                                      <input type="email" class="form-control" value="{{old('email')[$i] ??  "" }}" name="email[{{$i}}]" placeholder="E-mail" />
+                                      <input type="email" class="form-control" value="{{old('email')[$i] ??  "" }}" name="email[{{$i}}]" placeholder="E-mail" maxlength="150" id="email{{$i}}" />
+                                      <span style="color: red; font-size: 12px" id="caracsRestantesemail{{$i}}">
+                                      </span>
                                       @error('email.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
@@ -431,7 +434,9 @@
                               </div>                              
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'Cidade'])
-                                      <input type="text" class="form-control" value="{{old('cidade')[$i] ??  "" }}" name="cidade[{{$i}}]"  placeholder="Cidade" />
+                                      <input type="text" class="form-control" value="{{old('cidade')[$i] ??  "" }}" name="cidade[{{$i}}]"  placeholder="Cidade" maxlength="50" id="cidade{{$i}}" />
+                                      <span style="color: red; font-size: 12px" id="caracsRestantescidade{{$i}}">
+                                      </span>
                                       @error('cidade.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
@@ -441,7 +446,9 @@
                               </div>                              
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'Bairro'])
-                                      <input type="text" class="form-control" value="{{old('bairro')[$i] ??  "" }}" name="bairro[{{$i}}]"  placeholder="Bairro" />
+                                      <input type="text" class="form-control" value="{{old('bairro')[$i] ??  "" }}" name="bairro[{{$i}}]"  placeholder="Bairro" maxlength="50" id="bairro{{$i}}"/>
+                                      <span style="color: red; font-size: 12px" id="caracsRestantesbairro{{$i}}">
+                                      </span>
                                       @error('bairro.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
@@ -451,7 +458,9 @@
                               </div>                              
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'Rua'])
-                                      <input type="text" class="form-control" value="{{old('rua')[$i] ??  "" }}" name="rua[{{$i}}]" placeholder="Rua" />
+                                      <input type="text" class="form-control" value="{{old('rua')[$i] ??  "" }}" name="rua[{{$i}}]" placeholder="Rua" maxlength="100" id="rua{{$i}}" />
+                                      <span style="color: red; font-size: 12px" id="caracsRestantesrua{{$i}}">
+                                      </span>
                                       @error('rua.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
@@ -472,8 +481,10 @@
                               <div class="col-12">
                                 <div class="form-group">
                                   <label class=" control-label" for="firstname">Complemento</label>
-                                  <input type="text" class="form-control" value="{{old('complemento')[$i] ??  "" }}" name="complemento[{{$i}}]"    placeholder="Complemento" />
-                                    @error('complemento.'.$i)
+                                  <input type="text" class="form-control" value="{{old('complemento')[$i] ??  "" }}" name="complemento[{{$i}}]" placeholder="Complemento" maxlength="75" id="complemento{{$i}}" />
+                                  <span style="color: red; font-size: 12px" id="caracsRestantescomplemento{{$i}}">
+                                  </span>  
+                                  @error('complemento.'.$i)
                                       <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                         <strong>{{ $message }}</strong>
                                       </span>
@@ -573,9 +584,11 @@
                                     @endcomponent
                               </div>
                               <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
-                              <div class="col-6">
+                              <div class="col-12">
                                     @component('componentes.input', ['label' => 'Título'])
-                                      <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ??  "" }}" name="nomePlanoTrabalho[{{$i}}]"  placeholder="Digite o título do plano de trabalho" >
+                                      <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ??  "" }}" name="nomePlanoTrabalho[{{$i}}]"  placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$i}}">
+                                      <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$i}}">
+                                    </span>
                                       @error('nomePlanoTrabalho.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
