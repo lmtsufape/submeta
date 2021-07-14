@@ -321,15 +321,16 @@ class TrabalhoController extends Controller
     public function show($id)
     {
         
-        $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
-        if(Auth::user()->tipo == 'administrador'){
-          $projeto = Trabalho::find($id);
-        }
-        if(!$projeto){
-          // $projeto = Auth::user()->coordenadorComissao->trabalho()->where('id', $id)->first();
+        // $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        // if(Auth::user()->tipo == 'administrador'){
+        //   $projeto = Trabalho::find($id);
+        // }
+        // if(!$projeto){
+        //   // $projeto = Auth::user()->coordenadorComissao->trabalho()->where('id', $id)->first();
          
-          return back()->withErrors(['Proposta não encontrada!']);
-        }
+        //   return back()->withErrors(['Proposta não encontrada!']);
+        // }
+        $projeto = Trabalho::find($id);
         $edital = Evento::find($projeto->evento_id);
         $grandeAreas = GrandeArea::all();
         $areas = Area::all();
