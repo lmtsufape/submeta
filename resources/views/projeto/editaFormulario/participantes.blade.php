@@ -7,9 +7,9 @@
       <div class="d-flex justify-content-between align-items-center">
         <div><h5 style="color: #1492E6; margin-top:0.5rem">Discente(s)</h5></div>
         <div>
-          <button type="button" class="btn btn-light" id="buttonMais" >Adicionar discente </button>
+          {{-- <button type="button" class="btn btn-light" id="buttonMais" >Adicionar discente </button> --}}
           {{-- <button type="button" class="btn btn-light" id="buttonMenos" >Remover participante</button> --}}
-          
+          <span>Marque a caixa ao lado do discente que queira adicionar</span>
         </div>
       </div>
       <div  style="margin-top:-10px"><hr style="border-top: 1px solid#1492E6"></div>
@@ -191,8 +191,10 @@
                               <div class="col-md-12"><h5>Dados do curso</h5></div>                               
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'Universidade'])
-                                      <input type="text" class="form-control" value="{{old('instituicao')[$i] ?? $p->user->instituicao }}" name="instituicao[{{$i}}]"  placeholder="Universidade" />
-                                      @error('instituicao.'.$i)
+                                        <select style="display: inline" class="form-control" name="instituicao[{{$i}}]">
+                                          <option selected value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
+                                        </select>                                      
+                                        @error('instituicao.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
                                         </span>
@@ -201,7 +203,16 @@
                               </div>                              
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'Curso'])
-                                      <input type="text" class="form-control" value="{{old('curso')[$i] ?? $p->curso }}" name="curso[{{$i}}]"  placeholder="Curso" />
+                                    <select style="display: inline" class="form-control" name="curso[{{$i}}]">
+                                        <option value="" disabled selected hidden>-- Selecione uma opção--</option>
+                                        <option @if(old('curso')[$i] ?? $p->curso == 'Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
+                                        <option @if(old('curso')[$i] ?? $p->curso == 'Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
+                                        <option @if(old('curso')[$i] ?? $p->curso == 'Bacharelado em Engenharia de Alimentos' ) selected @endif value="Bacharelado em Engenharia de Alimentos">Bacharelado em Engenharia de Alimentos</option>
+                                        <option @if(old('curso')[$i] ?? $p->curso == 'Bacharelado em Medicina Veterinária' ) selected @endif value="Bacharelado em Medicina Veterinária">Bacharelado em Medicina Veterinária</option>
+                                        <option @if(old('curso')[$i] ?? $p->curso == 'Bacharelado em Zootecnia' ) selected @endif value="Bacharelado em Zootecnia">Bacharelado em Zootecnia</option>
+                                        <option @if(old('curso')[$i] ?? $p->curso == 'Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
+                                        <option @if(old('curso')[$i] ?? $p->curso == 'Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
+                                    </select>
                                       @error('curso.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
@@ -494,7 +505,9 @@
                               <div class="col-md-12"><h5>Dados do curso</h5></div>                               
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'Universidade'])
-                                      <input type="text" class="form-control" value="{{old('instituicao')[$i] ??  "" }}" name="instituicao[{{$i}}]"  placeholder="Universidade" />
+                                      <select style="display: inline" class="form-control" name="instituicao[{{$i}}]">
+                                        <option selected value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
+                                      </select>
                                       @error('instituicao.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
@@ -504,7 +517,16 @@
                               </div>                              
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'Curso'])
-                                      <input type="text" class="form-control" value="{{old('curso')[$i] ??  "" }}" name="curso[{{$i}}]"  placeholder="Curso" />
+                                      <select style="display: inline" class="form-control" name="curso[{{$i}}]">
+                                          <option value="" disabled selected hidden>-- Selecione uma opção--</option>
+                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
+                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
+                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Engenharia de Alimentos' ) selected @endif value="Bacharelado em Engenharia de Alimentos">Bacharelado em Engenharia de Alimentos</option>
+                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Medicina Veterinária' ) selected @endif value="Bacharelado em Medicina Veterinária">Bacharelado em Medicina Veterinária</option>
+                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Zootecnia' ) selected @endif value="Bacharelado em Zootecnia">Bacharelado em Zootecnia</option>
+                                          <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
+                                          <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
+                                      </select>
                                       @error('curso.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>

@@ -175,14 +175,14 @@
                                 @endcomponent
                           </div>
                           <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
-                          <div class="col-6">
+                          <div class="col-12">
                             {{-- @dd($arquivos) --}}
                                 @component('componentes.input', ['label' => 'Título'])
                                   <input type="text" class="form-control" value="{{$p->planoTrabalho ? $p->planoTrabalho->titulo : "  " }}" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" disabled>
                                 @endcomponent
                           </div>                              
                           <div class="col-6">
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-start">
                               <div class="col-4">
                                   @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                                   @endcomponent
