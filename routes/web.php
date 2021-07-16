@@ -33,7 +33,8 @@ Auth::routes(['verify' => true]);
 
 
 
-
+//Rota para avaliador atualizar perfil, deixando de ser usuario temporario
+Route::post('/perfil-usuario',                 'UserController@editarPerfil'      )->name('perfil.edit')->middleware(['auth', 'verified']);
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   //######### Proponente  ########################################
@@ -47,7 +48,6 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   
   //######### Rotas Administrador #################################
   Route::get('/perfil-usuario',                  'UserController@minhaConta'        )->name('user.perfil')->middleware(['auth', 'verified']);
-  Route::post('/perfil-usuario',                 'UserController@editarPerfil'      )->name('perfil.edit')->middleware(['auth', 'verified']);
 
   //######## Rotas Avaliador  ####################################
   Route::prefix('avaliador')->name('avaliador.')->group(function(){

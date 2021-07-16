@@ -229,6 +229,19 @@
 
 <script>
   
+  $('input').on("input", function(){
+    var maxlength = $(this).attr("maxlength");
+    var currentLength = $(this).val().length;
+    var idInput = $(this).attr("id");
+    if( currentLength >= maxlength ){
+      $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
+    }else if(currentLength == 0){
+      $("#caracsRestantes"+idInput).html("");
+    }else{
+      $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
+    }
+  });
+
   $( document ).ready( function () {
 
     $('#nomeParticipante').keyup(function () {
@@ -247,7 +260,7 @@
     });
 
     $('input.cep:text').mask('00000-000');
-    // $('.cpf').mask('000.000.000-00');
+    //$('input.cpf:text').mask('000.000.000-00');
     $('.numero').mask('0000000000000');
     var SPMaskBehavior = function (val) {
         return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';

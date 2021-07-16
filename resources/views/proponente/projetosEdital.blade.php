@@ -93,7 +93,7 @@
                         <td style="color: rgb(6, 85, 6); text-align: center">Avaliado</td>
                       @elseif($projeto->status == 'Submetido' || $projeto->status == 'submetido')
                         <td style="color: rgb(0, 0, 0); text-align: center">Submetido</td>
-                      @elseif($projeto->status == 'Rascunho')
+                      @elseif($projeto->status == 'Rascunho' || $projeto->status == 'rascunho')
                         <td style="color: rgb(0, 0, 0); text-align: center">Rascunho</td>
                       @endif
                       <td>

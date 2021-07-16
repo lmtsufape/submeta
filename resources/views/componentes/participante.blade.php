@@ -19,7 +19,9 @@
             <div class="col-md-12 mt-3"><h5>Dados do discente</h5></div>
             <div class="col-6">
                   @component('componentes.input', ['label' => 'Nome completo'])
-                    <input type="text" class="form-control "   name="name[]" placeholder="Nome Completo"  />
+                    <input type="text" class="form-control "   name="name[]" placeholder="Nome Completo" maxlength="150" id="nome1"  />
+                    <span style="color: red; font-size: 12px" id="caracsRestantesnome1">
+                    </span>
                     @error('name.*')
                       <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                         <strong>{{ $message }}</strong>
@@ -247,7 +249,7 @@
                   @endcomponent
             </div>
             <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
-            <div class="col-6">
+            <div class="col-12">
                   @component('componentes.input', ['label' => 'Título'])
                     <input type="text" class="form-control" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" >
                     @error('nomePlanoTrabalho.*')

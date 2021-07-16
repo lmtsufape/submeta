@@ -55,7 +55,7 @@
               </div>
               @if($projeto->anexoPlanilhaPontuacao)
                 <div class="col-2 ">
-                  <a href="{{ route('baixar.anexo.planilha', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                  <a href="{{ route('baixar.anexo.planilha', ['id' => $projeto->id]) }}"><i class="fas fa-file-excel fa-2x"></i></a>
                 </div>
               @else
                 <div class="col-2 text-danger">
