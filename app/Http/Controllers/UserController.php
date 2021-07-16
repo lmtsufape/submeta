@@ -51,18 +51,18 @@ class UserController extends Controller
 
         return view('user.perfilUser',['user'=>$user]);
     }
+    
     function editarPerfil(Request $request){
         $id = Auth()->user()->id;
         $user = User::find($id);
         if ($request->tipo != "proponente") {
+            
             $validated = $request->validate([
-                'name' => 'required',
-                'tipo' => 'required',
-                'email' => 'required',
+                'name' => ['required', 'string', 'max:255'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
-                'celular' => 'required',
-                'cpf' => 'required|cpf',
+                'celular' =>  ['required', 'string'],
+                'cpf' => ['required', 'cpf'],
             ]);
         } else {
             $validated = $request->validate([
@@ -102,7 +102,7 @@ class UserController extends Controller
             }
         
         }
-        if(Auth()->user()->avaliadors != null && $request->area != null && Auth()->user()->tipo != "avaliador"){
+        if($user->avaliadors != null && $request->area != null && $user->tipo == "avaliador"){
           $avaliador = Avaliador::where('user_id', '=', $id)->first();
           $avaliador->user_id = $user->id;
           $avaliador->area_id = $request->area;
@@ -119,6 +119,9 @@ class UserController extends Controller
                 $avaliador = Avaliador::where('user_id', '=', $id)->first();
                 $avaliador->user_id = $user->id;
                 $avaliador->area_id = $request->area;
+                if($user->usuarioTemp == true){
+                    $user->usuarioTemp = false;
+                  }
                 $avaliador->update();
                 break;
             case "proponente":
