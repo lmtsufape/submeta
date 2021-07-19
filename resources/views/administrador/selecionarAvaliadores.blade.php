@@ -142,6 +142,21 @@
             <label for="exampleInputEmail1">Email <span style="color: red;">*</span></label>
             <input type="email" class="form-control" name="emailAvaliador" id="exampleInputEmail1">            
           </div>
+
+          <div class="form-group">
+          <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
+              <select class="form-control" id="grandeArea" name="grande_area_id" onchange="areas()" >
+                <option value="" disabled selected hidden>-- Grande Área --</option>
+                @foreach($grandeAreas as $grandeArea)
+                <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                @endforeach
+              </select>
+
+              <label for="area" class="col-form-label">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
+              <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" >
+                <option value="" disabled selected hidden>-- Área --</option>
+              </select>
+          </div>
           <div class="form-group">
             <label for="exampleFormControlSelect1">Tipo</label>
             <select class="form-control" name="tipo" id="exampleFormControlSelect1" disabled>
@@ -187,5 +202,41 @@
       }
     }
   }
+
+  function areas() {
+      var grandeArea = $('#grandeArea').val();
+      $.ajax({
+          type: 'POST',
+          url: '{{ route('area.consulta') }}',
+          data: 'id='+grandeArea ,
+          headers:
+          {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: (dados) => {
+
+          if (dados.length > 0) {
+            if($('#oldArea').val() == null || $('#oldArea').val() == ""){
+              var option = '<option selected disabled>-- Área --</option>';
+            }
+            $.each(dados, function(i, obj) {
+              if($('#oldArea').val() != null && $('#oldArea').val() == obj.id){
+                option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+              }else{
+                option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+              }
+            })
+          } else {
+            var option = "<option selected disabled>-- Área --</option>";
+          }
+          $('#area').html(option).show();
+          subareas();
+        },
+          error: (data) => {
+              console.log(data);
+          }
+
+      })
+    }
 </script>
 @endsection

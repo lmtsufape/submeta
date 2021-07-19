@@ -55,7 +55,7 @@
               <tbody>
                 @foreach ($trabalhos as $trabalho)
                   <tr>
-                    <td>{{ $trabalho->titulo }}</td>
+                    <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
                     <td style="text-align: center">{{ $trabalho->created_at->format('d/m/Y') }}</td>
                     <td style="text-align: center">
                       {{--  --}}

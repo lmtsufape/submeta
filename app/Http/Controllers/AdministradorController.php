@@ -7,8 +7,10 @@ use App\Administrador;
 use App\User;
 use App\Avaliador;
 use App\AdministradorResponsavel;
+use App\Area;
 use App\Participante;
 use App\Proponente;
+use App\GrandeArea;
 use App\Natureza;
 use App\Trabalho;
 use App\FuncaoParticipantes;
@@ -363,7 +365,7 @@ class AdministradorController extends Controller
     public function selecionar(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-
+        $grandeAreas = GrandeArea::orderBy('nome')->get();
         $avalSelecionados = $evento->avaliadors;
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
         $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
@@ -371,7 +373,8 @@ class AdministradorController extends Controller
         return view('administrador.selecionarAvaliadores', [
                                                             'evento'=> $evento,
                                                             'avaliadores'=>$avaliadores,
-                                                            'avalSelecionados'=>$avalSelecionados
+                                                            'avalSelecionados'=>$avalSelecionados,
+                                                            'grandeAreas' => $grandeAreas
                                                            ]);
     }
     public function projetos(Request $request){
@@ -455,6 +458,7 @@ class AdministradorController extends Controller
         $nomeAvaliador = $request->nomeAvaliador;
         $emailAvaliador = $request->emailAvaliador;
         $tipo = $request->tipo;
+        $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador )->first();
 
         //existe o caso de enviar o convite de novo para um mesmo usuário
@@ -485,6 +489,7 @@ class AdministradorController extends Controller
 
         $avaliador = new Avaliador();
         $avaliador->save();
+        $avaliador->area()->associate($area);
         $avaliador->user()->associate($user);
         $avaliador->eventos()->attach($evento);
 
