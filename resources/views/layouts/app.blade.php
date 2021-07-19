@@ -266,8 +266,8 @@
               <div class="col-sm-4 form-group"  style="margin-top: 0.5rem; color:#909090">
                     <div style="margin-top: 5px; margin-bottom:5px">Desenvolvido por:</div>
                     <div class="row justify-content-center">
-                        <div class="col-sm-2"> 
-                            <a href="http://ufape.edu.br/" target="_blank"><img src="{{ asset('img/icons/logo_ufape_blue.png') }}" alt="Logo" width="30px;"></a>
+                        <div class="col-sm-5" style="margin-right: 0.5rem;"> 
+                            <a href="http://ufape.edu.br/" target="_blank"><img src="{{ asset('img\icons\Logo_UFAPE_Colorida_com_Lettering.png') }}" alt="Logo" width="170px;" style="margin-right: 0.5rem;"></a>
                         </div>
                         <div class="col-sm-5"> 
                             <a href="http://lmts.uag.ufrpe.br/" target="_blank"><img src="{{ asset('img/icons/logo_ufape_color.png') }}" alt="Logo" width="160px;"></a>
