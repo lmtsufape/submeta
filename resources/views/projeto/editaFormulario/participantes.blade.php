@@ -190,7 +190,7 @@
                               </div>
                               <div class="col-md-12"><h5>Dados do curso</h5></div>                               
                               <div class="col-6">
-                                    @component('componentes.input', ['label' => 'Universidade'])
+                                    @component('componentes.input', ['label' => 'Instituição de Ensino'])
                                         <select style="display: inline" class="form-control" name="instituicao[{{$i}}]">
                                           <option selected value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                                         </select>                                      
@@ -504,7 +504,7 @@
                               </div>
                               <div class="col-md-12"><h5>Dados do curso</h5></div>                               
                               <div class="col-6">
-                                    @component('componentes.input', ['label' => 'Universidade'])
+                                    @component('componentes.input', ['label' => 'Instituição de Ensino'])
                                       <select style="display: inline" class="form-control" name="instituicao[{{$i}}]">
                                         <option selected value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                                       </select>

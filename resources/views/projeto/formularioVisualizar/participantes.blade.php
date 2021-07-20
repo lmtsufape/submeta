@@ -116,7 +116,7 @@
                           </div>
                           <div class="col-md-12"><h5>Dados do curso</h5></div>                               
                           <div class="col-6">
-                                @component('componentes.input', ['label' => 'Universidade'])
+                                @component('componentes.input', ['label' => 'Instituição de Ensino'])
                                   <input type="text" class="form-control" value="{{ $p->user->instituicao }}" name="universidade[]" placeholder="Universidade" disabled/>
                                 @endcomponent
                           </div>                              
