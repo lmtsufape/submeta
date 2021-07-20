@@ -39,17 +39,35 @@ class EmailParaUsuarioNaoCadastrado extends Mailable
      */
     public function build()
     {
-        return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
-                    ->subject($this->subject)
-                    ->view('emails.usuarioNaoCadastrado')
-                    ->with([
-                        'nomeUsuarioPai' => $this->nomeUsuarioPai,
-                        'nomeTrabalho' => $this->nomeTrabalho,    
-                        'nomeFuncao' => $this->nomeFuncao,      
-                        'nomeEvento' => $this->nomeEvento,      
-                        'senhaTemporaria' => $this->senhaTemporaria
-                        
-                    ]);
+        if($this->nomeFuncao != 'Participante'){
+            $file = public_path().'/ModeloFormularioAvaliadorExternoPIBIC.docx';
+            return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
+                        ->subject($this->subject)
+                        ->view('emails.usuarioNaoCadastrado')
+                        ->with([
+                            'nomeUsuarioPai' => $this->nomeUsuarioPai,
+                            'nomeTrabalho' => $this->nomeTrabalho,    
+                            'nomeFuncao' => $this->nomeFuncao,      
+                            'nomeEvento' => $this->nomeEvento,      
+                            'senhaTemporaria' => $this->senhaTemporaria
+                            
+                        ])->attach($file, [
+                            'as' => 'ModeloFormularioAvaliadorExternoPIBIC.docx',
+                            'mime' => 'application/docx',
+                        ]);
+        }else{
+            return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
+                        ->subject($this->subject)
+                        ->view('emails.usuarioNaoCadastrado')
+                        ->with([
+                            'nomeUsuarioPai' => $this->nomeUsuarioPai,
+                            'nomeTrabalho' => $this->nomeTrabalho,    
+                            'nomeFuncao' => $this->nomeFuncao,      
+                            'nomeEvento' => $this->nomeEvento,      
+                            'senhaTemporaria' => $this->senhaTemporaria
+                            
+                        ]);
+        }
     
     }
 }

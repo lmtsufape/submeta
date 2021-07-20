@@ -10,7 +10,7 @@
 		<p>
 			Agradecemos seu aceite para participar do Comitê Externo do {{$nomeEvento}} da Universidade Federal do Agreste de Pernambuco (UFAPE).
 			<br>Solicitamos gentilmente que acesse o sistema Submeta através do <a href="{{ url('http://sistemas.ufape.edu.br/submeta/') }}">LINK</a>  e da senha {{$senhaTemporaria}} para concluir seu cadastro e receber os projetos para avaliação.
-			<br>Aproveitamos para enviar o <a href="{{route('baixarModelo')}}">Formulário de Avaliação</a> que deverá ser anexado ao sistema com o seu parecer. 
+			<br>Aproveitamos para enviar o formulário de avaliação que deverá ser anexado ao sistema com o seu parecer. 
 			<br><br>Desde já, a UFAPE agradece toda a atenção dispensada por Vossa Senhoria.
 			<br>Karla Andrade
 			<br>Comitê Interno PIBIC/PIC - UFAPE
@@ -31,7 +31,7 @@
 		<p>
 			Agradecemos seu aceite para participar do Comitê Externo do {{$nomeEvento}} da Universidade Federal do Agreste de Pernambuco (UFAPE).
 			<br>Solicitamos gentilmente que acesse o sistema Submeta através do <a href="{{ url('http://sistemas.ufape.edu.br/submeta/') }}">LINK</a>.
-			<br>Aproveitamos para enviar o <a href="{{route('baixarModelo')}}">Formulário de Avaliação</a> que deverá ser anexado ao sistema com o seu parecer. 
+			<br>Aproveitamos para enviar o formulário de avaliação que deverá ser anexado ao sistema com o seu parecer. 
 			<br><br>Desde já, a UFAPE agradece toda a atenção dispensada por Vossa Senhoria.
 			<br>Karla Andrade
 			<br>Comitê Interno PIBIC/PIC - UFAPE
