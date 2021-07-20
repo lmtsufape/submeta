@@ -22,6 +22,7 @@ Route::get('/email', function (Request $request) {
   // Auth::user()->notify(new SubmissaoTrabalho('teste'));
 });
 
+Route::get('/baixarModeloAvaliacao', 'AdministradorController@baixarModeloAvaliacao')->name('baixarModelo');
 Route::get('/', 'UserController@index'                                            )->name('home-user');
 Route::get('/', 'UserController@inicial'                                          )->name('inicial');
 Route::get('/home', 'HomeController@index'                                        )->name('home')->middleware('verified');

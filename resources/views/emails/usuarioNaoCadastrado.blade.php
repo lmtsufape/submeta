@@ -6,11 +6,14 @@
 <body>
 	@if($nomeFuncao == "Avaliador")
 	
-		<h3>Prezado(a) Pesquisador(a)</h3>
+		<h3>Prezado(a) Avaliador(a), saudações!</h3>
 		<p>
-			A Universidade Federal do Agreste de Pernambuco (UFAPE) convida Vossa Senhoria para participar como Avaliador de projetos do Edital {{ $nomeEvento }}.
-			Caso concorde em participar, segue a senha para se cadastrar no Sistema de Submissão de Projetos (Submeta). senha: {{$senhaTemporaria}} e o link: <a href="{{ url('http://sistemas.ufape.edu.br/submeta/') }}">Submeta</a> 
-			<br>Desde já, a UFAPE agradece toda a atenção dispensada por Vossa Senhoria.
+			Agradecemos seu aceite para participar do Comitê Externo do {{$nomeEvento}} da Universidade Federal do Agreste de Pernambuco (UFAPE).
+			<br>Solicitamos gentilmente que acesse o sistema Submeta através do <a href="{{ url('http://sistemas.ufape.edu.br/submeta/') }}">LINK</a>  e da senha {{$senhaTemporaria}} para concluir seu cadastro e receber os projetos para avaliação.
+			<br>Aproveitamos para enviar o <a href="{{route('baixarModelo')}}">Formulário de Avaliação</a> que deverá ser anexado ao sistema com o seu parecer. 
+			<br><br>Desde já, a UFAPE agradece toda a atenção dispensada por Vossa Senhoria.
+			<br>Karla Andrade
+			<br>Comitê Interno PIBIC/PIC - UFAPE
 		</p>
 	@endif
 	@if($nomeFuncao == "Participante")
@@ -24,11 +27,14 @@
 	@endif
 	@if($nomeFuncao == "Avaliador-Cadastrado")
 	
-		<h3>Prezado(a)</h3>
+		<h3>Prezado(a) Avaliador(a), saudações!</h3>
 		<p>
-			{{ $nomeUsuarioPai }} convida Vossa Senhoria para participar como Avaliador de projetos do Edital {{ $nomeEvento }}.
-			Caso concorde em participar, segue o link: <a href="{{ url('http://sistemas.ufape.edu.br/submeta/') }}">Submeta</a> para confirmar o convite.
-			<br>Desde já, a UFAPE agradece toda a atenção dispensada por Vossa Senhoria.
+			Agradecemos seu aceite para participar do Comitê Externo do {{$nomeEvento}} da Universidade Federal do Agreste de Pernambuco (UFAPE).
+			<br>Solicitamos gentilmente que acesse o sistema Submeta através do <a href="{{ url('http://sistemas.ufape.edu.br/submeta/') }}">LINK</a>.
+			<br>Aproveitamos para enviar o <a href="{{route('baixarModelo')}}">Formulário de Avaliação</a> que deverá ser anexado ao sistema com o seu parecer. 
+			<br><br>Desde já, a UFAPE agradece toda a atenção dispensada por Vossa Senhoria.
+			<br>Karla Andrade
+			<br>Comitê Interno PIBIC/PIC - UFAPE
 		</p>
 	@endif
 	
