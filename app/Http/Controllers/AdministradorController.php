@@ -22,6 +22,8 @@ use Illuminate\Validation\Rule;
 use App\Mail\EmailParaUsuarioNaoCadastrado;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EventoCriado;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Response;
 
 class AdministradorController extends Controller
 {
@@ -502,5 +504,13 @@ class AdministradorController extends Controller
     // public function baixarAnexo(Request $request) {
     //   return Storage::download($request->anexo);
     // }
+
+    public function baixarModeloAvaliacao(){
+
+        $file = public_path().'/ModeloFormularioAvaliadorExternoPIBIC.docx';
+        $headers = array('Content-Type: application/docx',);
+        ob_end_clean();
+        return response()->download($file, 'ModeloFormularioAvaliadorExternoPIBIC.docx', $headers);
+    }
 
 }
