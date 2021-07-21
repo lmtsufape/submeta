@@ -11,18 +11,13 @@
 
           <div class="form-group col-md-12" style="margin-top: 15px">
             <label for="nomeCompletoProponente1">Proponente</label>
-            <input class="form-control" type="text" id="nomeCompletoProponente1" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
+            <input class="form-control" type="text" id="nomeCompletoProponente1" name="nomeCoordenador" disabled="disabled" value="{{ $projeto->proponente->user->name }}">
           
           </div>
 
           <div class="form-group col-md-6">
             <label for="linkLattesEstudante">Link do currículo Lattes<span style="color: red; font-weight:bold">*</span></label>
-            <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante" 
-            @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
-              value="{{ Auth()->user()->proponentes->linkLattes }}"
-            @else
-            value=""
-            @endif disabled >
+            <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante" value="{{$projeto->linkLattesEstudante}}" disabled >
             <small>Ex.: http://lattes.cnpq.br/8363536830656923</small>
             @error('linkLattesEstudante')
             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
