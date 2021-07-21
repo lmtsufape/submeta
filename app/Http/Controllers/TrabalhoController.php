@@ -773,9 +773,21 @@ class TrabalhoController extends Controller
             $data['numero'] = $request->numero[$part];
             $data['bairro'] = $request->bairro[$part];
             $data['complemento'] = $request->complemento[$part];
-            $data['instituicao'] = $request->instituicao[$part];
+
+            if($request->instituicao[$part] != "Outra"){
+              $data['instituicao'] = $request->instituicao[$part];
+            }else{
+              $data['instituicao'] = $request->outrainstituicao[$part];
+            }
+
             $data['total_periodos'] = $request->total_periodos[$part];
-            $data['curso'] = $request->curso[$part];
+
+            if($request->curso[$part] != "Outro"){
+              $data['curso'] = $request->curso[$part];
+            }else{
+              $data['curso'] = $request->outrocurso[$part];
+            }
+
             $data['turno'] = $request->turno[$part];
             $data['periodo_atual'] = $request->periodo_atual[$part];
             $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
@@ -908,9 +920,21 @@ class TrabalhoController extends Controller
             $data['numero'] = $request->numero[$part];
             $data['bairro'] = $request->bairro[$part];
             $data['complemento'] = $request->complemento[$part];
-            $data['instituicao'] = $request->instituicao[$part];
+
+            if($request->instituicao[$part] != "Outra"){
+              $data['instituicao'] = $request->instituicao[$part];
+            }else{
+              $data['instituicao'] = $request->outrainstituicao[$part];
+            }
+
             $data['total_periodos'] = $request->total_periodos[$part];
-            $data['curso'] = $request->curso[$part];
+
+            if($request->curso[$part] != "Outro"){
+              $data['curso'] = $request->curso[$part];
+            }else{
+              $data['curso'] = $request->outrocurso[$part];
+            }
+
             $data['turno'] = $request->turno[$part];
             $data['periodo_atual'] = $request->periodo_atual[$part];
             $data['ordem_prioridade'] = $request->ordem_prioridade[$part];

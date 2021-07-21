@@ -707,5 +707,35 @@
     }
     input.value = resultado;
   }
+
+  function showInstituicao(instituicao){
+        var instituicaoSelect = instituicao;
+        var idSelect = instituicaoSelect.name;
+        var instituicao = document.getElementById('outra'+idSelect);
+        var display = document.getElementById('display'+idSelect);
+
+        if(instituicaoSelect.value === "Outra"){        
+            display.style.display = "block";
+            instituicao.parentElement.style.display = '';
+            instituicao.value="";
+        }else if(instituicaoSelect.value === "UFAPE"){
+            display.style.display = "none";
+        }
+    }
+
+    function showCurso(curso){
+        var cursoSelect = curso;
+        var idSelect = cursoSelect.name;
+        var curso = document.getElementById('outro'+idSelect);
+        var displayCurso = document.getElementById('display'+idSelect);
+
+        if(cursoSelect.value === "Outro"){        
+            displayCurso.style.display = "block";
+            curso.parentElement.style.display = '';
+            curso.value="";
+        }else{
+            displayCurso.style.display = "none";
+        }
+    }
 </script>
 @endsection
