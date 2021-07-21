@@ -136,10 +136,10 @@
                             @endcomponent
                           </div>
                           @php
-                            $options = array('6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
+                            $options = array('3' => 3, '4' => 4,'5' => 5,'6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
                           @endphp                              
                           <div class="col-6">
-                            @component('componentes.select', ['label' => 'Total de períodos do curso'])
+                            @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
                               <select name="total_periodos[]"  class="form-control" onchange="gerarPeriodo(this)" disabled>
                                 <option value="" disabled selected>-- Selecione uma opção --</option>
                                 @foreach ($options as $key => $value)
@@ -149,7 +149,7 @@
                             @endcomponent
                           </div>                              
                           <div class="col-6">
-                            @component('componentes.select', ['label' => 'Período atual'])
+                            @component('componentes.select', ['label' => 'Período/Ano atual'])
                               <select name="periodo_atual[]"  class="form-control" disabled >
                                 <option value="" disabled selected>-- Selecione uma opção --</option>
                                 <option selected  value="{{ $p->periodo_atual }}">{{ $p->periodo_atual }}</option>

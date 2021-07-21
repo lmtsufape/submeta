@@ -259,10 +259,10 @@
                             @endcomponent
                           </div>
                           @php
-                            $options = array('6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
+                            $options = array('3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
                           @endphp                              
                           <div class="col-6">
-                            @component('componentes.select', ['label' => 'Total de períodos do curso'])
+                            @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
                               <select  name="total_periodos[{{$i}}]"   class="form-control" onchange="gerarPeriodo(this)" >
                                 <option value=""  selected>-- Selecione uma opção --</option>
                                 @foreach ($options as $key => $value)

@@ -259,10 +259,10 @@
                                 @endcomponent
                               </div>
                               @php
-                                $options = array('6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
+                                $options = array('3' => 3, '4' => 4,'5' => 5,'6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
                               @endphp                              
                               <div class="col-6">
-                                @component('componentes.select', ['label' => 'Total de períodos do curso'])
+                                @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
                                   <select  name="total_periodos[{{$i}}]"   class="form-control" onchange="gerarPeriodo(this)" >
                                     <option value=""  selected>-- Selecione uma opção --</option>
                                     @foreach ($options as $key => $value)
@@ -527,35 +527,58 @@
                               </div>
                               <div class="col-md-12"><h5>Dados do curso</h5></div>                               
                               <div class="col-6">
-                                    @component('componentes.input', ['label' => 'Instituição de Ensino'])
-                                      <select style="display: inline" class="form-control" name="instituicao[{{$i}}]">
-                                        <option selected value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
-                                      </select>
-                                      @error('instituicao.'.$i)
-                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                          <strong>{{ $message }}</strong>
-                                        </span>
-                                      @enderror
-                                    @endcomponent
-                              </div>                              
+                                @component('componentes.input', ['label' => 'Instituição de Ensino'])
+                                  <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao[{{$i}}]">
+                                        <option value="" disabled selected hidden>-- Instituição --</option>
+                                        <option @if(old('instituicao')[$i] ?? "" == 'UFAPE' ) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
+                                        <option @if(old('instituicao')[$i] ?? "" == 'Outra' ) selected @endif value="Outra" >Outra</option>
+                                  </select>
+                                  @error('instituicao.'.$i)
+                                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                                  @enderror
+                                @endcomponent
+                          </div>
+                          <div class="col-6" id="displayinstituicao[{{$i}}]" style='display:none'>
+                                @component('componentes.input', ['label' => 'Digite a Instituição'])
+                                    <input id="outrainstituicao[{{$i}}]" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="outrainstituicao[{{$i}}]" value="{{ old('outrainstituicao')[$i] ?? "" }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
+                                    @error('outrainstituicao.'.$i)
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                @endcomponent
+                          </div>                             
                               <div class="col-6">
                                     @component('componentes.input', ['label' => 'Curso'])
-                                      <select style="display: inline" class="form-control" name="curso[{{$i}}]">
-                                          <option value="" disabled selected hidden>-- Selecione uma opção--</option>
-                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
-                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
-                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Engenharia de Alimentos' ) selected @endif value="Bacharelado em Engenharia de Alimentos">Bacharelado em Engenharia de Alimentos</option>
-                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Medicina Veterinária' ) selected @endif value="Bacharelado em Medicina Veterinária">Bacharelado em Medicina Veterinária</option>
-                                          <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Zootecnia' ) selected @endif value="Bacharelado em Zootecnia">Bacharelado em Zootecnia</option>
-                                          <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
-                                          <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
-                                      </select>
+                                    <select style="display: inline" class="form-control" name="curso[{{$i}}]" onchange="showCurso(this)">
+                                        <option value="" disabled selected hidden>-- Selecione uma opção--</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Engenharia de Alimentos' ) selected @endif value="Bacharelado em Engenharia de Alimentos">Bacharelado em Engenharia de Alimentos</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Medicina Veterinária' ) selected @endif value="Bacharelado em Medicina Veterinária">Bacharelado em Medicina Veterinária</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Zootecnia' ) selected @endif value="Bacharelado em Zootecnia">Bacharelado em Zootecnia</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Outro' ) selected @endif value="Outro" >Outro</option>
+                                    </select>
                                       @error('curso.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
                                         </span>
                                       @enderror
                                     @endcomponent
+                              </div>   
+                              <div class="col-6" id="displaycurso[{{$i}}]" style='display:none'>
+                                @component('componentes.input', ['label' => 'Digite o nome do curso'])
+                                    <input id="outrocurso[{{$i}}]" type="text" class="form-control" name="outrocurso[{{$i}}]" value="{{ old('outrocurso')[$i] ?? "" }}" placeholder="Digite o nome do curso" autocomplete="curso" autofocus>
+                                    @error('outrocurso.'.$i)
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                @endcomponent
                               </div>                              
                               <div class="col-6">
                                 @component('componentes.select', ['label' => 'Turno'])
@@ -573,10 +596,9 @@
                                 @endcomponent
                               </div>
                               @php
-                                $options = array('6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
-                              @endphp                              
+                                $options = array('3' => 3, '4' => 4,'5' => 5,'6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12);                              @endphp                              
                               <div class="col-6">
-                                @component('componentes.select', ['label' => 'Total de períodos do curso'])
+                                @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
                                   <select  name="total_periodos[{{$i}}]"   class="form-control" onchange="gerarPeriodo(this)" >
                                     <option value=""  selected>-- Selecione uma opção --</option>
                                     @foreach ($options as $key => $value)
@@ -591,7 +613,7 @@
                                 @endcomponent
                               </div>                              
                               <div class="col-6">
-                                @component('componentes.select', ['label' => 'Período atual'])
+                                @component('componentes.select', ['label' => 'Período/Ano atual'])
                                   <select name="periodo_atual[]"  class="form-control"  >
                                     <option selected value="{{ old('periodo_atual')[$i]  ?? "" }}">{{ old('periodo_atual')[$i]  ??  "" }}</option>
                                   </select>
