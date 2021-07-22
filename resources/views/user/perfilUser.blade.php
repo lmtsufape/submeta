@@ -103,7 +103,7 @@
                                     @enderror
                                 </div>
                             </div>
-                        @isset($avaliador)
+                        @if(Auth()->user()->tipo == 'avaliador')
                             <div class="col-md-6">
                             <label for="area" class="col-form-label">{{ __('Área:') }}</label>
                             <select style="display: inline"  class="form-control @error('area') is-invalid @enderror" name="area" id="area">
