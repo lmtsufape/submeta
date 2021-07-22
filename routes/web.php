@@ -175,6 +175,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/removerAvalEvento',          'AdministradorController@remover'          )->name('remover');
   Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicaoProjeto')->name('atribuicao.projeto');
   Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
+  Route::post('/reenviarConviteAvaliador',     'AdministradorController@reenviarConvite'    )->name('reenviarConvite');
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
   Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');

@@ -410,7 +410,11 @@ class AdministradorController extends Controller
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $aval->eventos()->attach($evento);
         $aval->save();
+        $user = $aval->user()->first();
 
+        $subject = "Convite para avaliar projetos da UFAPE";
+            Mail::to($user->email)
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, ' ', $subject, $evento->tipo));
 
         return redirect()->back();
 
@@ -472,13 +476,13 @@ class AdministradorController extends Controller
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
 
         }else{
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
             $user = User::create([
               'email' => $emailAvaliador,
               'password' => bcrypt($passwordTemporario),
@@ -488,18 +492,38 @@ class AdministradorController extends Controller
             ]);
         }
 
-
-        $avaliador = new Avaliador();
-        $avaliador->save();
-        $avaliador->area()->associate($area);
-        $avaliador->user()->associate($user);
-        $avaliador->eventos()->attach($evento);
-
-        $user->save();
-        $avaliador->save();
+        if($user->avaliadors == null){
+            $avaliador = new Avaliador();
+            $avaliador->save();
+            $avaliador->area()->associate($area);
+            $avaliador->user()->associate($user);
+            $avaliador->eventos()->attach($evento);
+    
+            $user->save();
+            $avaliador->save();
+        }else{
+            $avaliador = $user->avaliadors;
+            $avaliador->eventos()->attach($evento);
+            $user->save();
+            $avaliador->save();
+        }
 
         return redirect()->back();
     }
+
+    public function reenviarConvite(Request $request){
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $avaliador = Avaliador::where('id', $request->avaliador_id)->first();
+        $user = $avaliador->user()->first();
+
+        $subject = "Convite para avaliar projetos da UFAPE - Reenvio";
+            Mail::to($user->email)
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, '', $subject, $evento->tipo));
+        
+        
+        return redirect()->back();
+    }
+
 
     // public function baixarAnexo(Request $request) {
     //   return Storage::download($request->anexo);

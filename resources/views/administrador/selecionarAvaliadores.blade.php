@@ -102,13 +102,19 @@
           @endif
           
 
-          <td style="text-align:center">
+          <td @if($avaliador->eventos->where('id', $evento->id)->first()->pivot->convite  != null) style="text-align:center" @endif style="text-align:center; display:flex; justify-content: space-evenly">
             <form action="{{ route('admin.remover') }}" method="POST">
               @csrf
               <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
               <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
               <button type="submit" class="btn btn-danger" @if($avaliador->trabalhos->where('evento_id', $evento->id)->count()  != 0) disabled="disabled" @endif >Remover</button>
-            </form>   
+            </form> 
+            <form action="{{ route('admin.reenviarConvite') }}" method="POST">
+              @csrf
+              <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
+              <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
+              <button type="submit" class="btn btn-secondary" @if($avaliador->eventos->where('id', $evento->id)->first()->pivot->convite  != null) disabled hidden @endif >Reenviar convite</button>
+            </form>    
           </td>
         </tr>
       @endforeach
