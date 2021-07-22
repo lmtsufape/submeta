@@ -103,6 +103,38 @@
                                     @enderror
                                 </div>
                             </div>
+                        @if(Auth()->user()->tipo == 'avaliador')
+                            <div class="col-md-6">
+                            <label for="area" class="col-form-label">{{ __('Área:') }}</label>
+                            <select style="display: inline"  class="form-control @error('area') is-invalid @enderror" name="area" id="area">
+                                @if(Auth()->user()->avaliadors->area_id == null)
+                                    <option value="" selected>Indefinida</option>
+                                    @foreach (App\Area::all() as $area)
+                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
+                                        <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
+                                    @else
+                                        <option value="{{ $area->id }}" >{{ $area->nome }}</option>
+                                    @endif
+                                    @endforeach
+                                @else
+                                    @foreach (App\Area::all() as $area)
+                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
+                                        <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
+                                    @else
+                                        <option value="{{ $area->id }}" >{{ $area->nome }}</option>
+                                    @endif
+                                    @endforeach
+                                @endif
+
+                            </select>
+
+                            @error('area')
+                                <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </div>
+                        @else
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="cargo" class="col-form-label">{{ __('Cargo*') }}</label>
@@ -304,6 +336,7 @@
                                     </div>
                                 </div>
                             </div>
+                        @endisset
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-between align-items-center" style="margin-bottom:-0.3rem">
                                     <h5 class="card-title" style="font-size:20px; font-family:Arial, Helvetica, sans-serif; font-family:Arial, Helvetica, sans-serif; ">Acesso ao sistema</h5>

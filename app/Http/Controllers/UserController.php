@@ -118,7 +118,7 @@ class UserController extends Controller
             case "avaliador":
                 $avaliador = Avaliador::where('user_id', '=', $id)->first();
                 $avaliador->user_id = $user->id;
-                //$avaliador->area_id = $request->area;
+                $avaliador->area_id = $request->area;
                 if($user->usuarioTemp == true){
                     $user->usuarioTemp = false;
                   }

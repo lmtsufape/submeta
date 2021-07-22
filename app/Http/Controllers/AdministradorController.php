@@ -486,10 +486,12 @@ class AdministradorController extends Controller
             $user = User::create([
               'email' => $emailAvaliador,
               'password' => bcrypt($passwordTemporario),
-              'usuarioTemp' => true,
+              'usuarioTemp' => false,
               'name' => $nomeAvaliador,
               'tipo' => 'avaliador',
             ]);
+
+            $user->markEmailAsVerified();
         }
 
         if($user->avaliadors == null){
