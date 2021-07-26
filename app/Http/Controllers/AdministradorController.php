@@ -52,14 +52,19 @@ class AdministradorController extends Controller
     public function pareceres(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos->where('status', 'Submetido');;
+        $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
+        $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
+        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados);
 
         return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
     }
     public function analisar(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos->where('status', 'Submetido');
+        $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
+        $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
+        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados);
+
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
         // $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
@@ -433,6 +438,16 @@ class AdministradorController extends Controller
 
 
     }
+
+    public function removerProjAval(Request $request){
+        $aval = Avaliador::where('id', $request->avaliador_id)->first();
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+        $aval->trabalhos()->detach($trabalho);
+        $aval->save();
+
+        return redirect()->back();
+    }
+
     public function buscar(Request $request){
 
         $trabalho = Trabalho::where('id', $request->item)->first();

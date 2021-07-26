@@ -173,10 +173,12 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/selecionarProjetos',          'AdministradorController@projetos'         )->name('projetos');
   Route::post('/adicionarAvalEvento',        'AdministradorController@adicionar'        )->name('adicionar');
   Route::post('/removerAvalEvento',          'AdministradorController@remover'          )->name('remover');
+  Route::get('/removerProjAval',          'AdministradorController@removerProjAval'  )->name('removerProjAval');
   Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicaoProjeto')->name('atribuicao.projeto');
   Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
   Route::post('/reenviarConviteAvaliador',     'AdministradorController@reenviarConvite'    )->name('reenviarConvite');
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
+  Route::get('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
   Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
   Route::get('/showrProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
