@@ -80,7 +80,7 @@ class AvaliadorController extends Controller
     	}else{
           $anexoParecer = $request->anexoParecer;
           $path = 'anexoParecer/' . $avaliador->id . $trabalho->id . '/';
-          $nome = "parecer.pdf";
+          $nome = $anexoParecer->getClientOriginalName();
           Storage::putFileAs($path, $anexoParecer, $nome);  
           $anexoParecer = $path . $nome;   
 
