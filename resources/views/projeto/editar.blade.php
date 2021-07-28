@@ -745,7 +745,7 @@
             display.style.display = "block";
             instituicao.parentElement.style.display = '';
             //instituicao.value="";
-        }else if(instituicaoSelect.value === "UFAPE"){
+        }else{
             display.style.display = "none";
         }
     }

@@ -194,7 +194,10 @@
                                   <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao[{{$i}}]">
                                         <option value="" disabled selected hidden>-- Instituição --</option>
                                         <option @if(old('instituicao')[$i] ?? $p->user->instituicao == 'UFAPE' ) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
-                                        <option @if(old('instituicao')[$i] ?? $p->user->instituicao != 'UFAPE' ) selected @endif value="Outra" >Outra</option>
+                                        <option @if(old('instituicao')[$i] ?? $p->user->instituicao != 'Outra' ) selected @endif value="Outra" >Outra</option>
+                                        @if($p->user->instituicao != 'UFAPE')
+                                        <option selected value="{{$p->user->instituicao}}" >{{$p->user->instituicao}}</option>
+                                        @endif
                                   </select>
                                   @error('instituicao.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -225,7 +228,10 @@
                                         <option @if(old('curso')[$i] ?? $p->curso == 'Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
                                         <option @if(old('curso')[$i] ?? $p->curso == 'Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
                                         <option @if(old('curso')[$i] ?? ($p->curso != 'Bacharelado em Agronomia' && $p->curso != 'Bacharelado em Ciência da Computação' && $p->curso != 'Bacharelado em Engenharia de Alimentos' && $p->curso != 'Bacharelado em Medicina Veterinária' && $p->curso != 'Bacharelado em Zootecnia' && $p->curso != 'Licenciatura em Letras' && $p->curso != 'Licenciatura em Pedagogia') ) selected @endif value="Outro" >Outro</option>
-                                    </select>
+                                        @if($p->curso != 'Bacharelado em Agronomia' && $p->curso != 'Bacharelado em Ciência da Computação' && $p->curso != 'Bacharelado em Engenharia de Alimentos' && $p->curso != 'Bacharelado em Medicina Veterinária' && $p->curso != 'Bacharelado em Zootecnia' && $p->curso != 'Licenciatura em Letras' && $p->curso != 'Licenciatura em Pedagogia' && $p->curso != 'Outro')
+                                        <option selected value="{{$p->curso}}" >{{$p->curso}}</option>
+                                        @endif
+                                      </select>
                                       @error('curso.'.$i)
                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                           <strong>{{ $message }}</strong>
@@ -532,6 +538,7 @@
                                         <option value="" disabled selected hidden>-- Instituição --</option>
                                         <option @if(old('instituicao')[$i] ?? "" == 'UFAPE' ) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                                         <option @if(old('instituicao')[$i] ?? "" == 'Outra' ) selected @endif value="Outra" >Outra</option>
+                                        
                                   </select>
                                   @error('instituicao.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
