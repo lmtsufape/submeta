@@ -28,7 +28,7 @@
                 {{ $evento->nome }}
             </a>
           </td>
-          <td>{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
+          <td>{{ date('d/m/Y \à\s H:i\h', strtotime($evento->created_at)) }}</td>
           <td>
             <div class="btn-group dropright dropdown-options">
                 <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

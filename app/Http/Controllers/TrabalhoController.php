@@ -822,14 +822,12 @@ class TrabalhoController extends Controller
             $data['media_do_curso'] = $request->media_do_curso[$part];
             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
 
-            $participante = Participante::find($request->participante_id[$part]);
+            // $participante = Participante::find($request->participante_id[$part]);
+            $user = User::where('email', $data['email'])->first();
 
-            if (!$participante){
+            if ($user == null){
               $data['usuarioTemp'] = true;
-              $user = User::updateOrCreate(
-                ['email' => $data['email']], 
-                $data
-              );
+              $user = User::create($data);
               $endereco = Endereco::create($data);
               $endereco->user()->save($user);
               $participante = Participante::create($data);
@@ -837,16 +835,19 @@ class TrabalhoController extends Controller
               $trabalho->participantes()->save($participante);
 
             }else{
-              $user = $participante->user;
+              // $user = $participante->user;
               $user->update($data);
               $endereco =  $user->endereco;
               $endereco->update($data);
-              $participante = $user->participantes->where('trabalho_id', $trabalho->id)->first();
-              if (!$participante){
+              $participante = $user->participantes->where('trabalho_id', $trabalho->id)->where('id', $request->participante_id[$part])->first();
+              // dd($participante);
+              if ($participante == null){
+                // dd('part null');
                 $participante = Participante::create($data);
                 $user->participantes()->save($participante);
                 $trabalho->participantes()->save($participante);
               }else{
+                // dd('part update');
                 $participante->update($data);
               }
               
@@ -970,20 +971,22 @@ class TrabalhoController extends Controller
             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
     
             $user = User::where('email' , $data['email'])->first();
-            if (!$user){
+            if ($user == null){
               $data['usuarioTemp'] = true;
               $user = User::create($data);
               $endereco = Endereco::create($data);
               $endereco->user()->save($user);
             }
-            $participante = $user->participantes->where('trabalho_id', $trabalho->id)->first();
-            if (!$participante){
-              $participante = Participante::create($data);
-            }
-    
+            // $participante = $user->participantes->where('trabalho_id', $trabalho->id)->first();
+            // if ($participante == null){
+            //   $participante = Participante::create($data);
+            // }
+            $participante = Participante::create($data);
             $user->participantes()->save($participante);
-            $trabalho->participantes()->save($participante);
-    
+
+            $participante->trabalho_id = $trabalho->id;
+            $participante->save();
+   
             if ( $request->has('anexoPlanoTrabalho') ) {
               $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id .'/';
               $nome =  $data['nomePlanoTrabalho'] .".pdf";

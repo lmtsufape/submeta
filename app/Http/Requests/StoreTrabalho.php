@@ -27,26 +27,7 @@ class StoreTrabalho extends FormRequest
     public function rules()
     {
         
-        $evento = Evento::find($this->editalId);
-        $rules = [
-            'editalId'                => ['required', 'string'],
-            'marcado.*'                => ['required'],
-            'titulo'                => ['required', 'string'],
-            'grande_area_id'              => ['required', 'string'],
-            'area_id'                    => ['required', 'string'],
-            'linkLattesEstudante'         => ['required', 'string'],
-            'pontuacaoPlanilha'       => ['required', 'string'],
-            'linkGrupoPesquisa'               => ['required', 'string'],
-            'anexoProjeto'     => ['required', 'mimes:pdf'],
-            'anexoDecisaoCONSU'     => [Rule::requiredIf($evento->consu), 'mimes:pdf'],
-            'anexoPlanilhaPontuacao'     => ['required'],
-            'anexoLattesCoordenador'     => ['required', 'mimes:pdf'],
-            'anexoGrupoPesquisa'     => ['required', 'mimes:pdf'],
-            'anexoAutorizacaoComiteEtica'     => [Rule::requiredIf($this->justificativaAutorizacaoEtica == null)],
-            'justificativaAutorizacaoEtica'         => [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null)],
-            
-
-        ];
+        $rules = [];
         if($this->has('marcado')){
             foreach ($this->get('marcado') as $key => $value) {
                 if( intval($value)  == $key){
@@ -81,10 +62,25 @@ class StoreTrabalho extends FormRequest
         }
 
         if ($this->has('rascunho')) {
-            return [
-                
-            ];
+            return $rules;
         }else{
+            $evento = Evento::find($this->editalId);
+            $rules['editalId']                     = ['required', 'string'];
+            $rules['marcado.*']                    = ['required'];
+            $rules['titulo']                       = ['required', 'string'];
+            $rules['grande_area_id']               = ['required', 'string'];
+            $rules['area_id']                      = ['required', 'string'];
+            $rules['linkLattesEstudante']          = ['required', 'string'];
+            $rules['pontuacaoPlanilha']            = ['required', 'string'];
+            $rules['linkGrupoPesquisa']            = ['required', 'string'];
+            $rules['anexoProjeto']                 = ['required', 'mimes:pdf'];
+            $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu), 'mimes:pdf'];
+            $rules['anexoPlanilhaPontuacao']       = ['required'];
+            $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
+            $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
+            $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->justificativaAutorizacaoEtica == null)];
+            $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null)];
+
             return $rules;
         }
         

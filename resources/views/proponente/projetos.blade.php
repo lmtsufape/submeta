@@ -75,7 +75,7 @@
                       <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">
                         {{ $projeto->titulo }}
                       </td>
-                      <td style="text-align: center">{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>
+                      <td style="text-align: center">{{ date('d-m-Y \à\s H:i\h', strtotime($projeto->updated_at)) }}</td>
                       @if($projeto->status == 'avaliado')
                         <td style="color: rgb(6, 85, 6); text-align: center">Avaliado</td>
                       @elseif($projeto->status == 'submetido' || $projeto->status == 'submetido')
