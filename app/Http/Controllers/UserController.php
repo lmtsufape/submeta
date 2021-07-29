@@ -191,6 +191,7 @@ class UserController extends Controller
 
         return view('user.meusTrabalhos',[
                                            'trabalhos'           => $trabalhos,
+                                           'agora'           => now(),
                                         ]);
     }
 
