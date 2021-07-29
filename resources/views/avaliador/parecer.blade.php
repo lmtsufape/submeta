@@ -7,7 +7,7 @@
 	
 	<div class="row justify-content-center" style="margin-top: 3rem;">
 	  <div class="col-md-11" style="margin-bottom: -3rem">
-		<div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px;">
+		<div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px; overflow:auto">
 		  <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
 			<div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:-1rem">
 			  <div class="bottomVoltar" style="margin-top: -20px">
@@ -37,13 +37,8 @@
 				<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer" placeholder="Digite aqui o seu parecer">{{ $trabalho->pivot->parecer }}</textarea>
 				</div>
 				<select class="custom-select" name="recomendacao" >
-					@foreach($recomendacaos as $recomendacao)
-						@if($trabalho->pivot->recomendacao == $recomendacao->nome)
-							<option selected value="{{ $recomendacao->nome  }}" >{{ $recomendacao->nome }}</option>
-						@else
-							<option value="{{ $recomendacao->nome }}">{{ $recomendacao->nome }}</option>
-						@endif													  
-					@endforeach												  
+						<option  @if($trabalho->pivot->recomendacao =='RECOMENDADO' ) selected @endif value="RECOMENDADO">RECOMENDADO</option>	
+						<option @if($trabalho->pivot->recomendacao =='NAO-RECOMENDADO' ) selected @endif value="NAO-RECOMENDADO">NAO-RECOMENDADO</option>												  
 				</select>
 				<div class="form-group  mt-3 md-3">
 					@if($trabalho->pivot->AnexoParecer == null)

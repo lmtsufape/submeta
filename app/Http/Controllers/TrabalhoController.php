@@ -44,7 +44,35 @@ use Illuminate\Support\Facades\Notification;
 
 class TrabalhoController extends Controller
 {
+    ###### Prototipo troca de participantes ######
 
+    public function telaTrocaPart(Request $request){
+        $projeto = Trabalho::find($request->projeto_id);
+        $edital = Evento::find($projeto->evento_id);
+
+        $participantes = $projeto->participantes;
+        $participantesUsersIds = Participante::where('trabalho_id', $projeto->id)->select('user_id')->get();
+
+        $participantesExcluidos = Participante::onlyTrashed()->where('trabalho_id', $projeto->id);
+        $participantesExcluidosUsersIds = Participante::onlyTrashed()->where('trabalho_id', $projeto->id)->select('user_id');
+        
+        $users = User::whereIn('id', $participantesUsersIds)->get();
+        $usersExcluidos = User::whereIn('id', $participantesExcluidosUsersIds)->get();
+        
+        $arquivos = Arquivo::where('trabalhoId', $projeto->id)->get();
+
+        return view('trocarParti')->with(['projeto' => $projeto,
+                                                'edital'     => $edital,
+                                                'users'      => $users,
+                                                'usersExcluidos' => $usersExcluidos,
+                                                'participantes' => $participantes,
+                                                'participantesExcluidos' => $participantesExcluidos,
+                                                'arquivos'   => $arquivos,
+                                                'estados'    => $this->estados,
+                                                'enum_turno' => Participante::ENUM_TURNO,
+                                           ]);
+    }
+    ##############################################
     public $estados = array(
       'AC' => 'Acre',
       'AL' => 'Alagoas',
@@ -186,7 +214,7 @@ class TrabalhoController extends Controller
         $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador,  "Lattes_Coordenador.pdf");
       }
       if (!(is_null($request->anexoPlanilhaPontuacao))) {
-        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao,  "Planilha.". $request->file('anexoPlanilhaPontuacao')->extension());
+        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao,  "Planilha.". $request->file('anexoPlanilhaPontuacao')->getClientOriginalExtension());
       }
 
       $trabalho->update();
@@ -263,7 +291,7 @@ class TrabalhoController extends Controller
               Storage::delete($trabalho->anexoPlanilhaPontuacao);
             }
            
-            $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao, "Planilha.". $request->file('anexoPlanilhaPontuacao')->extension());
+            $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao, "Planilha.". $request->file('anexoPlanilhaPontuacao')->getClientOriginalExtension());
           }
 
           // Anexo grupo pesquisa
@@ -307,7 +335,7 @@ class TrabalhoController extends Controller
 
       //Anexo Planilha
       if( isset($request->anexoPlanilhaPontuacao)){
-        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao, "Planilha.". $request->file('anexoPlanilhaPontuacao')->extension());
+        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao, "Planilha.". $request->file('anexoPlanilhaPontuacao')->getClientOriginalExtension());
       }
 
       // Anexo grupo pesquisa
@@ -773,9 +801,21 @@ class TrabalhoController extends Controller
             $data['numero'] = $request->numero[$part];
             $data['bairro'] = $request->bairro[$part];
             $data['complemento'] = $request->complemento[$part];
-            $data['instituicao'] = $request->instituicao[$part];
+
+            if($request->instituicao[$part] != "Outra"){
+              $data['instituicao'] = $request->instituicao[$part];
+            }else{
+              $data['instituicao'] = $request->outrainstituicao[$part];
+            }
+
             $data['total_periodos'] = $request->total_periodos[$part];
-            $data['curso'] = $request->curso[$part];
+
+            if($request->curso[$part] != "Outro"){
+              $data['curso'] = $request->curso[$part];
+            }else{
+              $data['curso'] = $request->outrocurso[$part];
+            }
+
             $data['turno'] = $request->turno[$part];
             $data['periodo_atual'] = $request->periodo_atual[$part];
             $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
@@ -908,9 +948,21 @@ class TrabalhoController extends Controller
             $data['numero'] = $request->numero[$part];
             $data['bairro'] = $request->bairro[$part];
             $data['complemento'] = $request->complemento[$part];
-            $data['instituicao'] = $request->instituicao[$part];
+
+            if($request->instituicao[$part] != "Outra"){
+              $data['instituicao'] = $request->instituicao[$part];
+            }else{
+              $data['instituicao'] = $request->outrainstituicao[$part];
+            }
+
             $data['total_periodos'] = $request->total_periodos[$part];
-            $data['curso'] = $request->curso[$part];
+
+            if($request->curso[$part] != "Outro"){
+              $data['curso'] = $request->curso[$part];
+            }else{
+              $data['curso'] = $request->outrocurso[$part];
+            }
+
             $data['turno'] = $request->turno[$part];
             $data['periodo_atual'] = $request->periodo_atual[$part];
             $data['ordem_prioridade'] = $request->ordem_prioridade[$part];

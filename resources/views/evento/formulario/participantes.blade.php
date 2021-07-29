@@ -7,9 +7,9 @@
       <div class="d-flex justify-content-between align-items-center">
         <div><h5 style="color: #1492E6; margin-top:0.5rem">Discente(s)</h5></div>
         <div>
-          <button type="button" class="btn btn-light" id="buttonMais" >Adicionar discente </button>
+          {{-- <button type="button" class="btn btn-light" id="buttonMais" >Adicionar discente </button> -- }}
           {{-- <button type="button" class="btn btn-light" id="buttonMenos" >Remover participante</button> --}}
-          
+          <span>Marque a caixa ao lado do discente que queira adicionar</span>
         </div>
       </div>
       <div  style="margin-top:-10px"><hr style="border-top: 1px solid#1492E6"></div>
@@ -39,8 +39,9 @@
                           <div class="col-md-12 mt-3"><h5>Dados do discente</h5></div>
                           <div class="col-6">
                             @component('componentes.input', ['label' => 'Nome completo'])
-                              <input type="text" class="form-control " value="{{old('name')[$i] ?? "" }}"  name="name[{{$i}}]" placeholder="Nome Completo"  />
-                              
+                              <input type="text" class="form-control " value="{{old('name')[$i] ?? "" }}"  name="name[{{$i}}]" placeholder="Nome Completo" maxlength="150" id="nome{{$i}}"/>
+                              <span style="color: red; font-size: 12px" id="caracsRestantesnome{{$i}}">
+                              </span>
                               @error("name.".$i)
                                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                   <strong>{{ $message }}</strong>
@@ -50,7 +51,9 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'E-mail'])
-                                  <input type="email" class="form-control" value="{{old('email')[$i] ?? "" }}" name="email[{{$i}}]" placeholder="E-mail" />
+                                  <input type="email" class="form-control" value="{{old('email')[$i] ?? "" }}" name="email[{{$i}}]" placeholder="E-mail" maxlength="150" id="email{{$i}}" />
+                                  <span style="color: red; font-size: 12px" id="caracsRestantesemail{{$i}}">
+                                  </span>
                                   @error('email.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -128,7 +131,9 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'Cidade'])
-                                  <input type="text" class="form-control" value="{{old('cidade')[$i] ?? "" }}" name="cidade[{{$i}}]"  placeholder="Cidade" />
+                                  <input type="text" class="form-control" value="{{old('cidade')[$i] ?? "" }}" name="cidade[{{$i}}]"  placeholder="Cidade" maxlength="50" id="cidade{{$i}}" />
+                                  <span style="color: red; font-size: 12px" id="caracsRestantescidade{{$i}}">
+                                  </span>
                                   @error('cidade.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -138,7 +143,9 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'Bairro'])
-                                  <input type="text" class="form-control" value="{{old('bairro')[$i] ?? "" }}" name="bairro[{{$i}}]"  placeholder="Bairro" />
+                                  <input type="text" class="form-control" value="{{old('bairro')[$i] ?? "" }}" name="bairro[{{$i}}]"  placeholder="Bairro" maxlength="50" id="bairro{{$i}}" />
+                                  <span style="color: red; font-size: 12px" id="caracsRestantesbairro{{$i}}">
+                                  </span>
                                   @error('bairro.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -148,7 +155,9 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'Rua'])
-                                  <input type="text" class="form-control" value="{{old('rua')[$i] ?? "" }}" name="rua[{{$i}}]" placeholder="Rua" />
+                                  <input type="text" class="form-control" value="{{old('rua')[$i] ?? "" }}" name="rua[{{$i}}]" placeholder="Rua" maxlength="100" id="rua{{$i}}" />
+                                  <span style="color: red; font-size: 12px" id="caracsRestantesrua{{$i}}">
+                                  </span>
                                   @error('rua.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -169,8 +178,10 @@
                           <div class="col-12">
                             <div class="form-group">
                               <label class=" control-label" for="firstname">Complemento</label>
-                              <input type="text" class="form-control" value="{{old('complemento')[$i] ?? "" }}" name="complemento[{{$i}}]"    placeholder="Complemento" />
-                                @error('complemento.'.$i)
+                              <input type="text" class="form-control" value="{{old('complemento')[$i] ?? "" }}" name="complemento[{{$i}}]"    placeholder="Complemento" maxlength="75" id="complemento{{$i}}"/>
+                              <span style="color: red; font-size: 12px" id="caracsRestantescomplemento{{$i}}">
+                              </span>
+                              @error('complemento.'.$i)
                                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                     <strong>{{ $message }}</strong>
                                   </span>
@@ -179,25 +190,59 @@
                           </div>
                           <div class="col-md-12"><h5>Dados do curso</h5></div>                               
                           <div class="col-6">
-                                @component('componentes.input', ['label' => 'Universidade'])
-                                  <input type="text" class="form-control" value="{{old('instituicao')[$i] ?? "" }}" name="instituicao[{{$i}}]"  placeholder="Universidade" />
+                                @component('componentes.input', ['label' => 'Instituição de Ensino'])
+                                  <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao[{{$i}}]">
+                                        <option value="" disabled selected hidden>-- Instituição --</option>
+                                        <option @if(old('instituicao')[$i] ?? "" == 'UFAPE' ) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
+                                        <option @if(old('instituicao')[$i] ?? "" == 'Outra' ) selected @endif value="Outra" >Outra</option>
+                                  </select>
                                   @error('instituicao.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
                                     </span>
                                   @enderror
                                 @endcomponent
+                          </div>
+                          <div class="col-6" id="displayinstituicao[{{$i}}]" style='display:none'>
+                                @component('componentes.input', ['label' => 'Digite a Instituição'])
+                                    <input id="outrainstituicao[{{$i}}]" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="outrainstituicao[{{$i}}]" value="{{ old('outrainstituicao')[$i] ?? "" }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
+                                    @error('outrainstituicao.'.$i)
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                @endcomponent
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'Curso'])
-                                  <input type="text" class="form-control" value="{{old('curso')[$i] ?? "" }}" name="curso[{{$i}}]"  placeholder="Curso" />
+                                  <select style="display: inline" class="form-control" name="curso[{{$i}}]" onchange="showCurso(this)">
+                                        <option value="" disabled selected hidden>-- Selecione uma opção--</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Engenharia de Alimentos' ) selected @endif value="Bacharelado em Engenharia de Alimentos">Bacharelado em Engenharia de Alimentos</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Medicina Veterinária' ) selected @endif value="Bacharelado em Medicina Veterinária">Bacharelado em Medicina Veterinária</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Zootecnia' ) selected @endif value="Bacharelado em Zootecnia">Bacharelado em Zootecnia</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
+                                        <option @if(old('curso')[$i] ?? "" == 'Outro' ) selected @endif value="Outro" >Outro</option>
+                                  </select>
                                   @error('curso.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
                                     </span>
                                   @enderror
                                 @endcomponent
-                          </div>                              
+                          </div> 
+                          <div class="col-6" id="displaycurso[{{$i}}]" style='display:none'>
+                                @component('componentes.input', ['label' => 'Digite o nome do curso'])
+                                    <input id="outrocurso[{{$i}}]" type="text" class="form-control" name="outrocurso[{{$i}}]" value="{{ old('outrocurso')[$i] ?? "" }}" placeholder="Digite o nome do curso" autocomplete="curso" autofocus>
+                                    @error('outrocurso.'.$i)
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                @endcomponent
+                          </div>                             
                           <div class="col-6">
                             @component('componentes.select', ['label' => 'Turno'])
                               <select  name="turno[{{$i}}]"  class="form-control" >
@@ -214,10 +259,10 @@
                             @endcomponent
                           </div>
                           @php
-                            $options = array('6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
+                            $options = array('3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12); 
                           @endphp                              
                           <div class="col-6">
-                            @component('componentes.select', ['label' => 'Total de períodos do curso'])
+                            @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
                               <select  name="total_periodos[{{$i}}]"   class="form-control" onchange="gerarPeriodo(this)" >
                                 <option value=""  selected>-- Selecione uma opção --</option>
                                 @foreach ($options as $key => $value)
@@ -232,7 +277,7 @@
                             @endcomponent
                           </div>                              
                           <div class="col-6">
-                            @component('componentes.select', ['label' => 'Período atual'])
+                            @component('componentes.select', ['label' => 'Período/Ano atual'])
                               <select name="periodo_atual[]"  class="form-control"  >
                                 <option value=""  selected>-- Selecione uma opção --</option>
                                 
@@ -271,9 +316,11 @@
                                 @endcomponent
                           </div>
                           <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
-                          <div class="col-6">
+                          <div class="col-12">
                                 @component('componentes.input', ['label' => 'Título'])
-                                  <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ?? "" }}" name="nomePlanoTrabalho[{{$i}}]"  placeholder="Digite o título do plano de trabalho" >
+                                  <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ?? "" }}" name="nomePlanoTrabalho[{{$i}}]"  placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$i}}">
+                                  <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$i}}">
+                                  </span>
                                   @error('nomePlanoTrabalho.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -282,7 +329,7 @@
                                 @endcomponent
                           </div>                              
                           <div class="col-6">
-                                @component('componentes.input', ['label' => 'Anexo(.pdf)'])
+                                @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                                   <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]"  accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
                                   @error('anexoPlanoTrabalho.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">

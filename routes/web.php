@@ -22,6 +22,7 @@ Route::get('/email', function (Request $request) {
   // Auth::user()->notify(new SubmissaoTrabalho('teste'));
 });
 
+Route::get('/baixarModeloAvaliacao', 'AdministradorController@baixarModeloAvaliacao')->name('baixarModelo');
 Route::get('/', 'UserController@index'                                            )->name('home-user');
 Route::get('/', 'UserController@inicial'                                          )->name('inicial');
 Route::get('/home', 'HomeController@index'                                        )->name('home')->middleware('verified');
@@ -33,7 +34,8 @@ Auth::routes(['verify' => true]);
 
 
 
-
+//Rota para avaliador atualizar perfil, deixando de ser usuario temporario
+Route::post('/perfil-usuario',                 'UserController@editarPerfil'      )->name('perfil.edit')->middleware(['auth', 'verified']);
 
 Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   //######### Proponente  ########################################
@@ -47,7 +49,6 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   
   //######### Rotas Administrador #################################
   Route::get('/perfil-usuario',                  'UserController@minhaConta'        )->name('user.perfil')->middleware(['auth', 'verified']);
-  Route::post('/perfil-usuario',                 'UserController@editarPerfil'      )->name('perfil.edit')->middleware(['auth', 'verified']);
 
   //######## Rotas Avaliador  ####################################
   Route::prefix('avaliador')->name('avaliador.')->group(function(){
@@ -172,9 +173,12 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/selecionarProjetos',          'AdministradorController@projetos'         )->name('projetos');
   Route::post('/adicionarAvalEvento',        'AdministradorController@adicionar'        )->name('adicionar');
   Route::post('/removerAvalEvento',          'AdministradorController@remover'          )->name('remover');
+  Route::get('/removerProjAval',          'AdministradorController@removerProjAval'  )->name('removerProjAval');
   Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicaoProjeto')->name('atribuicao.projeto');
   Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
+  Route::post('/reenviarConviteAvaliador',     'AdministradorController@reenviarConvite'    )->name('reenviarConvite');
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
+  Route::get('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
   Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
   Route::get('/showrProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');

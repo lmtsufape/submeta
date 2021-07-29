@@ -150,7 +150,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<h6>Nº total de usuários:</h6>
+							<h6>Nº total de projetos:</h6>
 						</div>
 					</div>
 					@php

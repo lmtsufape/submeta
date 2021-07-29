@@ -202,7 +202,19 @@
 
 
 <script>
-  
+  $('input').on("input", function(){
+    var maxlength = $(this).attr("maxlength");
+    var currentLength = $(this).val().length;
+    var idInput = $(this).attr("id");
+    if( currentLength >= maxlength ){
+      $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
+    }else if(currentLength == 0){
+      $("#caracsRestantes"+idInput).html("");
+    }else{
+      $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
+    }
+  });
+
   $( document ).ready( function () {
 
     $('#nomeParticipante').keyup(function () {
@@ -220,8 +232,8 @@
         return this.optional(element) || value == value.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/);
     });
 
-    $('.cep').mask('00000000');
-    // $('.cpf').mask('000.000.000-00');
+    $('input.cep:text').mask('00000-000');
+    $('input.cpf:text').mask('000.000.000-00');
     $('.numero').mask('0000000000000');
     var SPMaskBehavior = function (val) {
         return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
@@ -695,5 +707,35 @@
     }
     input.value = resultado;
   }
+
+  function showInstituicao(instituicao){
+        var instituicaoSelect = instituicao;
+        var idSelect = instituicaoSelect.name;
+        var instituicao = document.getElementById('outra'+idSelect);
+        var display = document.getElementById('display'+idSelect);
+
+        if(instituicaoSelect.value === "Outra"){        
+            display.style.display = "block";
+            instituicao.parentElement.style.display = '';
+            instituicao.value="";
+        }else if(instituicaoSelect.value === "UFAPE"){
+            display.style.display = "none";
+        }
+    }
+
+    function showCurso(curso){
+        var cursoSelect = curso;
+        var idSelect = cursoSelect.name;
+        var curso = document.getElementById('outro'+idSelect);
+        var displayCurso = document.getElementById('display'+idSelect);
+
+        if(cursoSelect.value === "Outro"){        
+            displayCurso.style.display = "block";
+            curso.parentElement.style.display = '';
+            curso.value="";
+        }else{
+            displayCurso.style.display = "none";
+        }
+    }
 </script>
 @endsection

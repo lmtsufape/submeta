@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Trabalho;
 use App\Evento;
 use App\Recomendacao;
@@ -46,9 +46,8 @@ class AvaliadorController extends Controller
       $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
       $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
       $evento = Evento::find($request->evento);
-      $recomendacaos = Recomendacao::all();
       
-    	return view('avaliador.parecer', ['trabalho'=>$trabalho, 'evento'=>$evento, 'recomendacaos'=>$recomendacaos]);
+    	return view('avaliador.parecer', ['trabalho'=>$trabalho, 'evento'=>$evento]);
     }
 
     public function parecerPlano(Request $request){
@@ -61,6 +60,7 @@ class AvaliadorController extends Controller
       // dd($plano);
     	return view('avaliador.parecerPlano', ['plano'=>$plano, 'evento'=>$evento, 'recomendacaos'=>$recomendacaos]);
     }
+
     public function enviarParecer(Request $request){
 
         $user = User::find(Auth::user()->id);
@@ -80,7 +80,7 @@ class AvaliadorController extends Controller
     	}else{
           $anexoParecer = $request->anexoParecer;
           $path = 'anexoParecer/' . $avaliador->id . $trabalho->id . '/';
-          $nome = "parecer.pdf";
+          $nome = $anexoParecer->getClientOriginalName();
           Storage::putFileAs($path, $anexoParecer, $nome);  
           $anexoParecer = $path . $nome;   
 

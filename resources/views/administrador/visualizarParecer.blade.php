@@ -7,6 +7,7 @@
         <div class="col-sm-12">
             <div class="card" style="margin-top:50px">
                 <div class="card-body">
+                <a href="{{url()->previous()}}" class="btn btn-primary mb-2"> Voltar</a>
                   <h5 class="card-title">Parecer do avaliador: {{ $avaliador->user->name }}</h5>
                   <h6 class="card-title">Trabalho: {{ $trabalho->titulo }}</h6>
                   <p class="card-text">
@@ -23,8 +24,6 @@
                         <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                     </a>
 									  </div>
-										<a href="{{url()->previous()}}" class="btn btn-primary"> Voltar</a>
-
                 </div>
               </div>
         </div>

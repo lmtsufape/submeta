@@ -103,12 +103,44 @@
                                     @enderror
                                 </div>
                             </div>
+                        @if(Auth()->user()->tipo == 'avaliador')
+                            <div class="col-md-6">
+                            <label for="area" class="col-form-label">{{ __('Área:') }}</label>
+                            <select style="display: inline"  class="form-control @error('area') is-invalid @enderror" name="area" id="area">
+                                @if(Auth()->user()->avaliadors->area_id == null)
+                                    <option value="" selected>Indefinida</option>
+                                    @foreach (App\Area::all() as $area)
+                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
+                                        <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
+                                    @else
+                                        <option value="{{ $area->id }}" >{{ $area->nome }}</option>
+                                    @endif
+                                    @endforeach
+                                @else
+                                    @foreach (App\Area::all() as $area)
+                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
+                                        <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
+                                    @else
+                                        <option value="{{ $area->id }}" >{{ $area->nome }}</option>
+                                    @endif
+                                    @endforeach
+                                @endif
+
+                            </select>
+
+                            @error('area')
+                                <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </div>
+                        @else
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="cargo" class="col-form-label">{{ __('Cargo*') }}</label>
                                     <select id="cargo" name="cargo" class="form-control @error('cargo') is-invalid @enderror" onchange="">
                                         <option value="" disabled selected hidden>-- Cargo --</option>
-                                        @if ($proponente != null)
+                                        @isset($proponente)
                                             <option @if( $proponente->cargo =='Professor' ) selected @endif value="Professor">Professor</option>
                                             <option @if( $proponente->cargo =='Técnico' ) selected @endif value="Técnico">Técnico</option>
                                             <option @if( $proponente->cargo =='Outro' ) selected @endif value="Outro">Outro</option>
@@ -116,7 +148,7 @@
                                             <option value="Professor">Professor</option>
                                             <option value="Técnico">Técnico</option>
                                             <option value="Outro">Outro</option>
-                                        @endif
+                                        @endisset
                                     </select>
 
                                     @error('cargo')
@@ -131,7 +163,7 @@
                                     <label for="vinculo" class="col-form-label">{{ __('Vínculo*') }}</label>
                                     <select name="vinculo" id="vinculo" class="form-control @error('vinculo') is-invalid @enderror" onchange="outroVinculo()">
                                         <option value="" disabled selected hidden>-- Vínculo --</option>
-                                        @if ($proponente != null)
+                                        @isset($proponente)
                                             <option @if($proponente->vinculo =='Servidor na ativa' ) selected @endif value="Servidor na ativa">Servidor na ativa</option>
                                             <option @if($proponente->vinculo =='Servidor aposentado' ) selected @endif value="Servidor aposentado">Servidor aposentado</option>
                                             <option @if($proponente->vinculo =='Professor visitante' ) selected @endif value="Professor visitante">Professor visitante</option>
@@ -146,7 +178,7 @@
                                             <option value="Professor visitante">Professor visitante</option>
                                             <option value="Pós-doutorando">Pós-doutorando</option>
                                             <option value="Outro">Outro</option>
-                                        @endif
+                                        @endisset
                                     </select>
 
                                     @error('vinculo')
@@ -175,7 +207,7 @@
                                             <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima*') }}</label>
                                             <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome">
                                                 <option value="" disabled selected hidden>-- Titulação --</option>
-                                                @if ($proponente != null) 
+                                                @isset($proponente)
                                                     <option @if( $proponente->titulacaoMaxima =='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
                                                     <option @if( $proponente->titulacaoMaxima =='Mestrado' ) selected @endif value="Mestrado">Mestrado</option>
                                                     <option @if( $proponente->titulacaoMaxima =='Especialização' ) selected @endif value="Especialização">Especialização</option>
@@ -187,7 +219,7 @@
                                                     <option value="Especialização">Especialização</option>
                                                     <option value="Graduação">Graduação</option>
                                                     <option value="Técnico">Técnico</option>
-                                                @endif
+                                                @endisset
                                             </select>
 
                                             @error('titulacaoMaxima')
@@ -200,7 +232,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="anoTitulacao" class="col-form-label">{{ __('Ano da Titulação*') }}</label>
-                                            <input id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" value="@if($proponente != null){{$proponente->anoTitulacao}}@endif" autocomplete="nome">
+                                            <input id="anoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" value="@isset($proponente){{$proponente->anoTitulacao}}@endisset" autocomplete="nome">
 
                                             @error('anoTitulacao')
                                                 <span class="invalid-feedback" role="alert">
@@ -212,7 +244,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="areaFormacao" class="col-form-label">{{ __('Área de Formação*') }}</label>
-                                            <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="@if($proponente != null){{$proponente->areaFormacao}}@endif" autocomplete="nome">
+                                            <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" value="@isset($proponente){{$proponente->areaFormacao}}@endisset" autocomplete="nome">
 
                                             @error('areaFormacao')
                                                 <span class="invalid-feedback" role="alert">
@@ -224,7 +256,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
-                                            <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="@if($proponente != null){{$proponente->SIAPE}}@endif" autocomplete="nome">
+                                            <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" value="@isset($proponente){{$proponente->SIAPE}}@endisset" autocomplete="nome">
 
                                             @error('SIAPE')
                                                 <span class="invalid-feedback" role="alert">
@@ -236,7 +268,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="linkLattes" class="col-form-label">{{ __('Link do currículo Lattes*') }}</label>
-                                            <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="@if($proponente != null){{$proponente->linkLattes}}@endif" autocomplete="nome">
+                                            <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" value="@isset($proponente){{$proponente->linkLattes}}@endisset" autocomplete="nome">
 
                                             @error('linkLattes')
                                                 <span class="invalid-feedback" role="alert">
@@ -250,13 +282,13 @@
                                             <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade*') }}</label><br>
                                             <select name="bolsistaProdutividade" id="bolsistaProdutividade" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" onchange="mudarNivel()">
                                                 <option value="" disabled selected hidden>-- Bolsista --</option>
-                                                @if ($proponente != null) 
+                                                @isset($proponente)
                                                     <option @if( $proponente->bolsistaProdutividade =='nao' ) selected @endif value="nao">Não</option>
                                                     <option @if( $proponente->bolsistaProdutividade =='sim' ) selected @endif value="sim">Sim</option>
                                                 @else 
                                                     <option value="nao">Não</option>
                                                     <option value="sim">Sim</option>
-                                                @endif
+                                                @endisset
                                             </select>
                                             @error('bolsistaProdutividade')
                                                 <span class="invalid-feedback" role="alert">
@@ -266,7 +298,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        @if ($proponente != null && $proponente->bolsistaProdutividade =='sim')
+                                        @if(isset($proponente) && $proponente->bolsistaProdutividade =='sim')
                                             <div class="form-group" id="nivelInput" style="display: block;">
                                                 <label for="nivel" class="col-form-label">{{ __('Nível*') }}</label>
                                                 <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
@@ -304,6 +336,7 @@
                                     </div>
                                 </div>
                             </div>
+                        @endisset
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-between align-items-center" style="margin-bottom:-0.3rem">
                                     <h5 class="card-title" style="font-size:20px; font-family:Arial, Helvetica, sans-serif; font-family:Arial, Helvetica, sans-serif; ">Acesso ao sistema</h5>

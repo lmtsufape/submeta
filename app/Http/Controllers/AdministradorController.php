@@ -7,8 +7,10 @@ use App\Administrador;
 use App\User;
 use App\Avaliador;
 use App\AdministradorResponsavel;
+use App\Area;
 use App\Participante;
 use App\Proponente;
+use App\GrandeArea;
 use App\Natureza;
 use App\Trabalho;
 use App\FuncaoParticipantes;
@@ -20,6 +22,8 @@ use Illuminate\Validation\Rule;
 use App\Mail\EmailParaUsuarioNaoCadastrado;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EventoCriado;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Response;
 
 class AdministradorController extends Controller
 {
@@ -48,14 +52,19 @@ class AdministradorController extends Controller
     public function pareceres(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos->where('status', 'Submetido');;
+        $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
+        $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
+        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados);
 
         return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
     }
     public function analisar(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos->where('status', 'Submetido');
+        $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
+        $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
+        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados);
+
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
         // $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
@@ -363,7 +372,7 @@ class AdministradorController extends Controller
     public function selecionar(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-
+        $grandeAreas = GrandeArea::orderBy('nome')->get();
         $avalSelecionados = $evento->avaliadors;
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
         $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
@@ -371,7 +380,8 @@ class AdministradorController extends Controller
         return view('administrador.selecionarAvaliadores', [
                                                             'evento'=> $evento,
                                                             'avaliadores'=>$avaliadores,
-                                                            'avalSelecionados'=>$avalSelecionados
+                                                            'avalSelecionados'=>$avalSelecionados,
+                                                            'grandeAreas' => $grandeAreas
                                                            ]);
     }
     public function projetos(Request $request){
@@ -405,7 +415,11 @@ class AdministradorController extends Controller
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $aval->eventos()->attach($evento);
         $aval->save();
+        $user = $aval->user()->first();
 
+        $subject = "Convite para avaliar projetos da UFAPE";
+            Mail::to($user->email)
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, ' ', $subject, $evento->tipo));
 
         return redirect()->back();
 
@@ -424,6 +438,16 @@ class AdministradorController extends Controller
 
 
     }
+
+    public function removerProjAval(Request $request){
+        $aval = Avaliador::where('id', $request->avaliador_id)->first();
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+        $aval->trabalhos()->detach($trabalho);
+        $aval->save();
+
+        return redirect()->back();
+    }
+
     public function buscar(Request $request){
 
         $trabalho = Trabalho::where('id', $request->item)->first();
@@ -455,6 +479,7 @@ class AdministradorController extends Controller
         $nomeAvaliador = $request->nomeAvaliador;
         $emailAvaliador = $request->emailAvaliador;
         $tipo = $request->tipo;
+        $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador )->first();
 
         //existe o caso de enviar o convite de novo para um mesmo usuário
@@ -466,36 +491,67 @@ class AdministradorController extends Controller
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
 
         }else{
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
             $user = User::create([
               'email' => $emailAvaliador,
               'password' => bcrypt($passwordTemporario),
-              'usuarioTemp' => true,
+              'usuarioTemp' => false,
               'name' => $nomeAvaliador,
               'tipo' => 'avaliador',
             ]);
+
+            $user->markEmailAsVerified();
         }
 
-
-        $avaliador = new Avaliador();
-        $avaliador->save();
-        $avaliador->user()->associate($user);
-        $avaliador->eventos()->attach($evento);
-
-        $user->save();
-        $avaliador->save();
+        if($user->avaliadors == null){
+            $avaliador = new Avaliador();
+            $avaliador->save();
+            $avaliador->area()->associate($area);
+            $avaliador->user()->associate($user);
+            $avaliador->eventos()->attach($evento);
+    
+            $user->save();
+            $avaliador->save();
+        }else{
+            $avaliador = $user->avaliadors;
+            $avaliador->eventos()->attach($evento);
+            $user->save();
+            $avaliador->save();
+        }
 
         return redirect()->back();
     }
 
+    public function reenviarConvite(Request $request){
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $avaliador = Avaliador::where('id', $request->avaliador_id)->first();
+        $user = $avaliador->user()->first();
+
+        $subject = "Convite para avaliar projetos da UFAPE - Reenvio";
+            Mail::to($user->email)
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, '', $subject, $evento->tipo));
+        
+        
+        return redirect()->back();
+    }
+
+
     // public function baixarAnexo(Request $request) {
     //   return Storage::download($request->anexo);
     // }
+
+    public function baixarModeloAvaliacao(){
+
+        $file = public_path().'/ModeloFormularioAvaliadorExternoPIBIC.docx';
+        $headers = array('Content-Type: application/docx',);
+        ob_end_clean();
+        return response()->download($file, 'ModeloFormularioAvaliadorExternoPIBIC.docx', $headers);
+    }
 
 }

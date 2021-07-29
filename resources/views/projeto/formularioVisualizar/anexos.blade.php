@@ -55,7 +55,7 @@
               </div>
               @if($projeto->anexoPlanilhaPontuacao)
                 <div class="col-2 ">
-                  <a href="{{ route('baixar.anexo.planilha', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                  <a href="{{ route('baixar.anexo.planilha', ['id' => $projeto->id]) }}"><i class="fas fa-file-excel fa-2x"></i></a>
                 </div>
               @else
                 <div class="col-2 text-danger">
@@ -119,9 +119,9 @@
                     <label for="botao" class="col-form-label @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="margin-right: 15px;">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
                   </div>
                   <div class="col-12">
-                    <input type="radio" @if($projeto->anexoAutorizacaoComiteEtica) checked @endif  id="radioSim"  onchange="displayAutorizacoesEspeciais('sim')">
+                    <input type="radio" @if($projeto->anexoAutorizacaoComiteEtica) checked @endif  id="radioSim"  onchange="displayAutorizacoesEspeciais('sim')" disabled>
                     <label for="radioSim" style="margin-right: 5px">Sim</label>
-                    <input type="radio" id="radioNao" @if($projeto->justificativaAutorizacaoEtica) checked @endif onchange="displayAutorizacoesEspeciais('nao')">
+                    <input type="radio" id="radioNao" @if($projeto->justificativaAutorizacaoEtica) checked @endif onchange="displayAutorizacoesEspeciais('nao')" disabled>
                     <label for="radioNao" style="margin-right: 5px">Não</label><br>
                   </div>
                 </div>

@@ -28,13 +28,13 @@
                 <div class="card-body">
                     <div class="form-row">
                       
-                      <div class="col-md-12" style="margin-bottom: 1.5rem">
-                        <h5 class="card-title mb-0" style="font-size:35px; font-family:Arial, Helvetica, sans-serif; color:#0842A0; font-weight:bold">{{$evento->nome}}</h5>
+                      <div class="col-md-12" style="margin-bottom: 0.5rem">
+                        <h5 class="card-title mb-0" style="font-size:30px; font-family:Arial, Helvetica, sans-serif; color:#0842A0; font-weight:bold">{{$evento->nome}}</h5>
                       </div>
 
                       <div class="col-md-12" style="margin-top: 5px">
-                        <div><h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6;">Descrição</h5></div>
-                        <div style="margin-top: 10px"><h5 style="font-size: 17px; font-weight:normal; text-align:justify; font-family:Arial, Helvetica, sans-serif">{{$evento->descricao}}</h5></div>
+                        <div><h5 class="card-title mb-0" style="font-size:20px; font-family:Arial, Helvetica, sans-serif; color:#1492E6;">Descrição</h5></div>
+                        <div style="margin-top: 10px"><h5 style="font-size: 16px; font-weight:normal; text-align:justify; font-family:Arial, Helvetica, sans-serif">{{$evento->descricao}}</h5></div>
                       </div>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                   <div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px;">
                       <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
                           <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
-                            <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Datas importantes</h5>
+                            <h5 class="card-title mb-0" style="font-size:22px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Datas importantes</h5>
                           </div>
                       </div>
                       <div class="card-body">
@@ -170,8 +170,8 @@
                                 <img class="" src="{{asset('img/icons/icon_submissao.png')}}" alt="" width="40px">
                               </div>
                                 <div class="form-group">
-                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:19px">Submissão</h5></div>
-                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicioSubmissao))}} - {{date('d/m/Y',strtotime($evento->fimSubmissao))}}</h5></div>
+                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:17px">Submissão</h5></div>
+                                  <div><h5 style="font-size:17px; font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicioSubmissao))}} - {{date('d/m/Y',strtotime($evento->fimSubmissao))}}</h5></div>
                                 </div>
                             </div>
                           </div>
@@ -182,8 +182,8 @@
                                 <img class="" src="{{asset('img/icons/icon_revisao.png')}}" alt="" width="40px">
                               </div>
                                 <div class="form-group">
-                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:19px">Revisão</h5></div>
-                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}</h5></div>
+                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:17px">Revisão</h5></div>
+                                  <div><h5 style="font-size:17px; font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicioRevisao))}} - {{date('d/m/Y',strtotime($evento->fimRevisao))}}</h5></div>
                                 </div>
                             </div>
                           </div>
@@ -194,8 +194,8 @@
                                 <img class="" src="{{asset('img/icons/icon_resultado_preliminar.png')}}" alt="" width="40px">
                               </div>
                                 <div class="form-group">
-                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:19px">Resultado preliminar</h5></div>
-                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->resultado_preliminar))}}</h5></div>
+                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:17px">Resultado preliminar</h5></div>
+                                  <div><h5 style="font-size:17px;; font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->resultado_preliminar))}}</h5></div>
                                 </div>
                             </div>
                           </div>
@@ -206,8 +206,8 @@
                                 <img class="" src="{{asset('img/icons/icon_recurso.png')}}" alt="" width="40px">
                               </div>
                                 <div class="form-group">
-                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:19px">Recurso</h5></div>
-                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicio_recurso))}} - {{date('d/m/Y',strtotime($evento->fim_recurso))}}</h5></div>
+                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:17px">Recurso</h5></div>
+                                  <div><h5 style="font-size:17px; font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->inicio_recurso))}} - {{date('d/m/Y',strtotime($evento->fim_recurso))}}</h5></div>
                                 </div>
                             </div>
                           </div>
@@ -218,8 +218,8 @@
                                 <img class="" src="{{asset('img/icons/icon_resultado_final.png')}}" alt="" width="40px">
                               </div>
                                 <div class="form-group">
-                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:19px">Resultado final</h5></div>
-                                  <div><h5 style="font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->resultado_final))}}</h5></div>
+                                  <div style="margin-bottom: -8px;"><h5 style=" font-size:17px">Resultado final</h5></div>
+                                  <div><h5 style="font-size:17px; font-weight: normal; color:#909090">{{date('d/m/Y',strtotime($evento->resultado_final))}}</h5></div>
                                 </div>
                             </div>
                           </div>
@@ -232,7 +232,7 @@
                 <div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px;">
                     <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
                         <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:6px">
-                          <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Documentos</h5>
+                          <h5 class="card-title mb-0" style="font-size:22px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Documentos</h5>
                         </div>
                     </div>
                     <div class="card-body">
@@ -245,7 +245,7 @@
                             </div>
                             <div class="form-group" style="width: 100%">
                               <div class="d-flex justify-content-between" style="width: 100%">
-                                <div><h5 style=" font-size:19px; margin-top:18px">Edital</h5></div>
+                                <div><h5 style=" font-size:17px; margin-top:18px">Edital</h5></div>
                                 <div style="float: right"><a class="btn btn-light" href="{{route('baixar.edital', ['id' => $evento->id])}}" target="_new" style="" >
                                   <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px"><br>
                                   Baixar</a></div>
@@ -263,7 +263,7 @@
                             </div>
                             <div class="form-group" style="width: 100%">
                               <div class="d-flex justify-content-between" style="width: 100%">
-                                <div><h5 style=" font-size:19px; margin-top:9px">Outros<br>documentos</h5></div>
+                                <div><h5 style=" font-size:17px; margin-top:9px">Outros<br>documentos</h5></div>
                                 <div>
                                     <a class="btn btn-light" href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="" >
                                     <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px"><br>
