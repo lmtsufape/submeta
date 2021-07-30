@@ -86,7 +86,7 @@
                         <form action="{{ route('avaliador.parecer', ['evento' => $evento]) }}" method="POST">
                           @csrf
                           <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
-                          @if($trabalho->pivot->parecer == null)
+                          @if($trabalho->pivot->AnexoParecer == null)
                             <button type="submit" class="btn btn-primary mr-2 ml-2" >
                                 Parecer
                             </button>
