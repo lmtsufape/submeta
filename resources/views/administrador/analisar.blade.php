@@ -223,7 +223,45 @@
                                   </div>
                               </div>
                           </div>
-
+                        <hr>
+                        <h4>Avaliadores</h4>
+                        <table class="table table-bordered" style="margin-top:20px">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">E-mail</th>
+                                <th scope="col">Status avaliação</th>
+                                <th scope="col" style="text-align:center">Ação</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($trabalho->avaliadors as $avaliador)
+                                <tr>
+                                    <td>{{$avaliador->user->name}}</td>
+                                    <td>{{$avaliador->user->email}}</td>
+                                    <td>@if($avaliador->pivot->parecer == null) Pendente @else Avaliado @endif</td>
+                                    <td> 
+                                        <div class="btn-group dropright dropdown-options">
+                                            <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                                            </a>
+                                            <div class="dropdown-menu">
+                                            @if($avaliador->pivot->parecer != null)
+                                                <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                                                    Vizualizar Parecer
+                                                </a>
+                                            @else
+                                                <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                                                    Desatribuir Avaliador
+                                                </a>
+                                            @endif
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                       </p>
                   </div>
               {{-- </div> --}}
