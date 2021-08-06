@@ -79,6 +79,10 @@
                           Analisar projetos
                         </a>
                         <hr class="dropdown-hr">
+                        <a href="{{route('admin.showResultados', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
+                          Resultados
+                        </a>
+                        <hr class="dropdown-hr">
                           <!-- Button trigger modal -->
                           <button type="button" class="dropdown-item dropdown-item-delete text-center" data-toggle="modal" data-target="#exampleModal{{ $evento->id }}">
                             <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar

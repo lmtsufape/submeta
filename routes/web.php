@@ -119,16 +119,16 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/trabalho/submeter/{id}',  'TrabalhoController@index'                      )->name('trabalho.index');
   // Route::get(   '/trabalho/visualizar/{id}','TrabalhoController@show'                       )->name('trabalho.show');
   Route::post(  '/trabalho/novaVersao',     'TrabalhoController@novaVersao'                 )->name('trabalho.novaVersao');
-  Route::post(  '/trabalho/criar',          'TrabalhoController@salvar'                      )->name('trabalho.store');
+  Route::post(  '/trabalho/criar',          'TrabalhoController@salvar'                     )->name('trabalho.store');
   Route::post(  '/trabalho/criarRascunho',  'TrabalhoController@storeParcial'               )->name('trabalho.storeParcial');
   Route::get(   '/edital/{id}/projetos',    'TrabalhoController@projetosDoEdital'           )->name('projetos.edital');
   Route::get(   '/projeto/visualizar/{id}', 'TrabalhoController@show'                       )->name('trabalho.show');
   Route::get(   '/projeto/{id}/editar',     'TrabalhoController@edit'                       )->name('trabalho.editar');
-  Route::post(   '/projeto/{id}/atualizar', 'TrabalhoController@update'                  )->name('trabalho.update');
+  Route::post(  '/projeto/{id}/atualizar', 'TrabalhoController@update'                      )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
   Route::get(   '/projeto/exportar/{id}','TrabalhoController@exportProjeto'                 )->name('exportar.projeto');
-
+  Route::get(   '/projeto/substituirParticipante', 'TrabalhoController@telaTrocaPart'       )->name('trabalho.trocaParticipante');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
@@ -182,6 +182,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
   Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
   Route::get('/showrProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
+  Route::get('/showResultados',             'AdministradorController@showResultados'    )->name('showResultados');
 });
 
 Route::prefix('naturezas')->group(function(){
