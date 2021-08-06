@@ -450,6 +450,12 @@ class AdministradorController extends Controller
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         $aval->trabalhos()->detach($trabalho);
+        
+        if($trabalho->status === 'avaliado'){
+            $trabalho->status = 'submetido';
+            $trabalho->save();
+        }
+
         $aval->save();
 
         return redirect()->back();
