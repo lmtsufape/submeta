@@ -102,12 +102,13 @@
                                 <hr class="dropdown-hr">
                                 {{-- <a href="" class="dropdown-item" style="text-align: center">
                                   Recorrer
-                                </a> --}}
-                              @if($projeto->evento->resultado_preliminar <= $hoje)
-                                <a href="" class="dropdown-item" style="text-align: center" data-toggle="modal" data-target="#modalResult{{$projeto->id}}">
-                                  Resultado
-                                </a>
-                              @endif
+                                </a> 
+                                @if($projeto->evento->resultado_preliminar <= $hoje)
+                                  <a href="" class="dropdown-item" style="text-align: center" data-toggle="modal" data-target="#modalResult{{$projeto->id}}">
+                                    Resultado
+                                  </a>
+                                @endif
+                                --}}
 
                                 <!-- Button trigger modal deletar -->
                                 <button type="button" class="dropdown-item dropdown-item-delete" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
