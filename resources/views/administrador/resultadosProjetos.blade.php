@@ -34,10 +34,10 @@
                 <thead>
                 <tr>
                     <th scope="col" style="width: 100%;">Nome do projeto</th>
-                    <th scope="col">Autor</th>
+                    <th scope="col">Proponente</th>
                     <th scope="col">Área</th>
                     <th scope="col">N. Planos</th>
-                    <th scope="col">Av. Externo</th>
+                    <th scope="col">Avaliador Externo</th>
                     <th scope="col">Status</th>
                 </tr>
                 </thead>
@@ -61,16 +61,9 @@
                                     {{$trabalho->avaliadors->first()->user->name}}
                                 @endif
                             </td>
-                            @if($trabalho->avaliadors->first()->pivot->recomendacao == 'RECOMENDADO')
-                                <td style="color:rgb(6, 85, 6)">
-                                    APROVADO
-                                </td>
-                            @elseif($trabalho->avaliadors->first()->pivot->recomendacao == 'NAO-RECOMENDADO')
-                                <td style="color: darkred">
-                                    REPROVADO
-                                </td>
-                            @else
+                            @if($trabalho->avaliadors->count() > 0)
                                 <td>
+                                    {{$trabalho->avaliadors->first()->pivot->recomendacao}}
                                 </td>
                             @endif
                         </tr>

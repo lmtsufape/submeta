@@ -197,13 +197,15 @@
                             </div>
                             <div class="row">
                               <div class="col-12">
+                              @if($projeto->avaliadors->count() > 0)
                                 @if($projeto->avaliadors->first()->pivot->recomendacao == 'RECOMENDADO')
-                                  <input type="text" class="form-control" value="APROVADO" disabled style="color:rgb(6, 85, 6)">
+                                  <input type="text" class="form-control" value="RECOMENDADO" disabled style="color:rgb(6, 85, 6)">
                                 @elseif($projeto->avaliadors->first()->pivot->recomendacao == 'NAO-RECOMENDADO')
-                                  <input type="text" class="form-control" value="REPROVADO" disabled style="color: darkred">
+                                  <input type="text" class="form-control" value="NAO-RECOMENDADO" disabled style="color: darkred">
                                 @else
                                   <input type="text" class="form-control" value="" disabled>
                                 @endif
+                              @endif
                               </div>
                             </div>
 
