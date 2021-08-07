@@ -82,6 +82,13 @@ class AdministradorController extends Controller
         return view('administrador.listaProjetos', compact('projetos', 'evento','editais'));
     }
 
+    public function showResultados(Request $request){
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $trabalhos = $evento->trabalhos;
+
+        return view('administrador.resultadosProjetos')->with(['evento' => $evento, 'trabalhos' => $trabalhos]);
+    }
+
     public function visualizarParecer(Request $request){
 
         $avaliador = Avaliador::find($request->avaliador_id);
@@ -443,6 +450,12 @@ class AdministradorController extends Controller
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         $aval->trabalhos()->detach($trabalho);
+        
+        if($trabalho->status === 'avaliado'){
+            $trabalho->status = 'submetido';
+            $trabalho->save();
+        }
+
         $aval->save();
 
         return redirect()->back();
