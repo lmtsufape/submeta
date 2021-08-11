@@ -58,12 +58,16 @@
                             </td>
                             <td>
                                 @if($trabalho->avaliadors->count() > 0)
-                                    {{$trabalho->avaliadors->first()->user->name}}
+                                    @foreach($trabalho->avaliadors as $avaliador)
+                                        {{$avaliador->user->name}}<br>
+                                    @endforeach
                                 @endif
                             </td>
                             @if($trabalho->avaliadors->count() > 0)
                                 <td>
-                                    {{$trabalho->avaliadors->first()->pivot->recomendacao}}
+                                    @foreach($trabalho->avaliadors as $avaliador)
+                                        {{$avaliador->pivot->recomendacao}}<br>
+                                    @endforeach
                                 </td>
                             @endif
                         </tr>
