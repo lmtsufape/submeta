@@ -129,6 +129,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
   Route::get(   '/projeto/exportar/{id}','TrabalhoController@exportProjeto'                 )->name('exportar.projeto');
   Route::get(   '/projeto/substituirParticipante', 'TrabalhoController@telaTrocaPart'       )->name('trabalho.trocaParticipante');
+  Route::post(  '/projeto/substituirParticipante', 'TrabalhoController@trocaParticipante'   )->name('trabalho.infoTrocaParticipante');
 
   //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');

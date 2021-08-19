@@ -44,35 +44,6 @@ use Illuminate\Support\Facades\Notification;
 
 class TrabalhoController extends Controller
 {
-    ###### Prototipo troca de participantes ######
-
-    public function telaTrocaPart(Request $request){
-        $projeto = Trabalho::find($request->projeto_id);
-        $edital = Evento::find($projeto->evento_id);
-
-        $participantes = $projeto->participantes;
-        $participantesUsersIds = Participante::where('trabalho_id', $projeto->id)->select('user_id')->get();
-
-        $participantesExcluidos = Participante::onlyTrashed()->where('trabalho_id', $projeto->id);
-        $participantesExcluidosUsersIds = Participante::onlyTrashed()->where('trabalho_id', $projeto->id)->select('user_id');
-        
-        $users = User::whereIn('id', $participantesUsersIds)->get();
-        $usersExcluidos = User::whereIn('id', $participantesExcluidosUsersIds)->get();
-        
-        $arquivos = Arquivo::where('trabalhoId', $projeto->id)->get();
-
-        return view('trocarParti')->with(['projeto' => $projeto,
-                                                'edital'     => $edital,
-                                                'users'      => $users,
-                                                'usersExcluidos' => $usersExcluidos,
-                                                'participantes' => $participantes,
-                                                'participantesExcluidos' => $participantesExcluidos,
-                                                'arquivos'   => $arquivos,
-                                                'estados'    => $this->estados,
-                                                'enum_turno' => Participante::ENUM_TURNO,
-                                           ]);
-    }
-    ##############################################
     public $estados = array(
       'AC' => 'Acre',
       'AL' => 'Alagoas',
@@ -460,14 +431,16 @@ class TrabalhoController extends Controller
     }
 
     public function excluirParticipante($id){
-      $participante = Participante::where('user_id', Auth()->user()->id)
-                                  ->where('trabalho_id', $id)->first();
+      $participante = Participante::where('id', $id)->first();
+      //$participante = Participante::where('user_id', Auth()->user()->id)
+      //                            ->where('trabalho_id', $id)->first();
 
-      $participante->trabalhos()->detach($id);
+      //$participante->trabalhos()->detach($id);
       $participante->delete();
 
       return redirect()->back();
     }
+
 
     public function novaVersao(Request $request){
       $mytime = Carbon::now('America/Recife');
@@ -1378,4 +1351,142 @@ class TrabalhoController extends Controller
 
       return redirect(route('proponente.projetos'))->with(['mensagem' => 'Projeto atualizado com sucesso!']);
     }
+
+
+    public function telaTrocaPart(Request $request){
+      $projeto = Trabalho::find($request->projeto_id);
+      $edital = Evento::find($projeto->evento_id);
+
+      $participantes = $projeto->participantes;
+      $participantesExcluidos = Participante::onlyTrashed()->where('trabalho_id', $projeto->id)->get();
+      
+    
+
+      return view('administrador.substituirParticipante')->with(['projeto' => $projeto,
+                                              'edital'     => $edital,
+                                              'participantes' => $participantes,
+                                              'participantesExcluidos' => $participantesExcluidos,
+                                              'estados'    => $this->estados,
+                                              'enum_turno' => Participante::ENUM_TURNO,
+                                         ]);
+  }
+
+  public function trocaParticipante(Request $request){
+    try{
+      DB::beginTransaction();
+      $trabalho = Trabalho::find($request->projetoId);
+      $evento = Evento::find($request->editalId);
+      $participanteSubstituido = Participante::where('id', $request->participanteId)->first();
+      $planoAntigo = Arquivo::where('id', $participanteSubstituido->planoTrabalho->id)->first();
+
+      $passwordTemporario = Str::random(8);
+      $data['name'] = $request->name;
+      $data['email'] = $request->email;
+      $data['password'] = bcrypt($passwordTemporario);
+      $data['data_de_nascimento'] = $request->data_de_nascimento;
+      $data['cpf'] = $request->cpf;
+      $data['tipo'] = 'participante';
+      $data['funcao_participante_id'] = 4;
+      $data['rg'] = $request->rg;
+      $data['celular'] = $request->celular;
+      $data['cep'] = $request->cep;
+      $data['uf'] = $request->uf;
+      $data['cidade'] = $request->cidade;
+      $data['rua'] = $request->rua;
+      $data['numero'] = $request->numero;
+      $data['bairro'] = $request->bairro;
+      $data['complemento'] = $request->complemento;
+
+      if($request->instituicao != "Outra"){
+        $data['instituicao'] = $request->instituicao;
+      }else{
+        $data['instituicao'] = $request->outrainstituicao;
+      }
+
+      $data['total_periodos'] = $request->total_periodos;
+
+      if($request->curso != "Outro"){
+        $data['curso'] = $request->curso;
+      }else{
+        $data['curso'] = $request->outrocurso;
+      }
+
+      $data['turno'] = $request->turno;
+      $data['periodo_atual'] = $request->periodo_atual;
+      $data['ordem_prioridade'] = $request->ordem_prioridade;
+      $data['media_do_curso'] = $request->media_do_curso;
+      $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
+
+      if($request->substituirApenasPlanoCheck == 'check'){
+        if ( $request->has('anexoPlanoTrabalho') ) {
+          $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id .'/';
+          $nome =  $data['nomePlanoTrabalho'] .".pdf";
+          $file = $request->anexoPlanoTrabalho;
+          Storage::putFileAs($path, $file, $nome);
+          $arquivo = new Arquivo();
+          $arquivo->titulo = $data['nomePlanoTrabalho'];
+          $arquivo->nome = $path . $nome;
+          $arquivo->trabalhoId = $trabalho->id;
+          $arquivo->data = now();
+          $participanteSubstituido->planoTrabalho()->delete();
+          $arquivo->participanteId = $participanteSubstituido->id;
+          $arquivo->versaoFinal = true;
+          $arquivo->save();
+              
+        }
+      }else{
+        $participanteSubstituido->delete();
+    
+        $user = User::where('email' , $data['email'])->first();
+        if (!$user){
+          $data['usuarioTemp'] = true;
+          $user = User::create($data);
+          $endereco = Endereco::create($data);
+          $endereco->user()->save($user);
+        }
+        $participante = $user->participantes->where('trabalho_id', $trabalho->id)->first();
+        if (!$participante){
+          $participante = Participante::create($data);
+        }
+    
+        $user->participantes()->save($participante);
+        $trabalho->participantes()->save($participante);
+        
+        if($request->manterPlanoCheck == 'check'){
+          $planoAntigo->participanteId = $participante->id;
+          $planoAntigo->save();
+        }else{
+
+          if ( $request->has('anexoPlanoTrabalho') ) {
+            $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id .'/';
+            $nome =  $data['nomePlanoTrabalho'] .".pdf";
+            $file = $request->anexoPlanoTrabalho;
+            Storage::putFileAs($path, $file, $nome);
+            $arquivo = new Arquivo();
+            $arquivo->titulo = $data['nomePlanoTrabalho'];
+            $arquivo->nome = $path . $nome;
+            $arquivo->trabalhoId = $trabalho->id;
+            $arquivo->data = now();
+            $arquivo->participanteId = $participante->id;
+            $arquivo->versaoFinal = true;
+            $arquivo->save();
+                
+          }
+
+        }
+      }
+
+      $evento->trabalhos()->save($trabalho);
+      $trabalho->save();
+
+      DB::commit();
+
+      return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['sucesso' => 'Troca de participantes realizada com sucesso!']);
+    }catch (\Throwable $th) {
+      DB::rollback();
+      return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => $th->getMessage()]);
+    }
+
+  }
+
 }
