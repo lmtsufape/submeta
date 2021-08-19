@@ -248,13 +248,12 @@
                                             <div class="dropdown-menu">
                                             @if($avaliador->pivot->parecer != null)
                                                 <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                                                    Vizualizar Parecer
+                                                Vizualizar Parecer
                                                 </a>
-                                            @else
+                                            @endif
                                                 <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
                                                     Desatribuir Avaliador
                                                 </a>
-                                            @endif
                                             </div>
                                         </div>
                                     </td>
