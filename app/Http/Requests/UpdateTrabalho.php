@@ -29,28 +29,7 @@ class UpdateTrabalho extends FormRequest
     {
         $projeto = Trabalho::find($this->id);
         $evento = Evento::find($this->editalId);
-        $rules = [
-            'editalId'                => ['required', 'string'],
-            'marcado.*'                => ['required'],
-            'titulo'                => ['required', 'string'],
-            'grande_area_id'              => ['required', 'string'],
-            'area_id'                    => ['required', 'string'],
-            'linkLattesEstudante'         => ['required', 'string'],
-            'pontuacaoPlanilha'       => ['required', 'string'],
-            'linkGrupoPesquisa'               => ['required', 'string'],
-            'anexoProjeto'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoProjeto == null)], 'mimes:pdf'],
-            'anexoDecisaoCONSU'     => [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'],
-            'anexoPlanilhaPontuacao'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoPlanilhaPontuacao == null)]],
-            'anexoLattesCoordenador'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoLattesCoordenador == null)], 'mimes:pdf'],
-            'anexoGrupoPesquisa'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoGrupoPesquisa == null)], 'mimes:pdf'],
-            'anexoAutorizacaoComiteEtica'     => [
-                Rule::requiredIf((!$this->has('rascunho') && $projeto->justificativaAutorizacaoEtica == null && $projeto->anexoAutorizacaoComiteEtica == null) )
-            ],
-            'justificativaAutorizacaoEtica'   => [
-                Rule::requiredIf((!$this->has('rascunho') && $projeto->anexoAutorizacaoComiteEtica == null && $projeto->justificativaAutorizacaoEtica == null))
-            ],
-            
-        ];
+        
         if($this->has('marcado')){
             foreach ($this->get('marcado') as $key => $value) {
                 if( intval($value)  == $key){
@@ -84,10 +63,31 @@ class UpdateTrabalho extends FormRequest
         }
         // dd($this->all());
         if ($this->has('rascunho')) {
-            return [
+            $rules = [];
+            return $rules;
+        }else{
+            $rules = [
+                'editalId'                => ['required', 'string'],
+                'marcado.*'                => ['required'],
+                'titulo'                => ['required', 'string'],
+                'grande_area_id'              => ['required', 'string'],
+                'area_id'                    => ['required', 'string'],
+                'linkLattesEstudante'         => ['required', 'string'],
+                'pontuacaoPlanilha'       => ['required', 'string'],
+                'linkGrupoPesquisa'               => ['required', 'string'],
+                'anexoProjeto'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoProjeto == null)], 'mimes:pdf'],
+                'anexoDecisaoCONSU'     => [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'],
+                'anexoPlanilhaPontuacao'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoPlanilhaPontuacao == null)]],
+                'anexoLattesCoordenador'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoLattesCoordenador == null)], 'mimes:pdf'],
+                'anexoGrupoPesquisa'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoGrupoPesquisa == null)], 'mimes:pdf'],
+                'anexoAutorizacaoComiteEtica'     => [
+                    Rule::requiredIf((!$this->has('rascunho') && $projeto->justificativaAutorizacaoEtica == null && $projeto->anexoAutorizacaoComiteEtica == null) )
+                ],
+                'justificativaAutorizacaoEtica'   => [
+                    Rule::requiredIf((!$this->has('rascunho') && $projeto->anexoAutorizacaoComiteEtica == null && $projeto->justificativaAutorizacaoEtica == null))
+                ],
                 
             ];
-        }else{
             return $rules;
         }
     }

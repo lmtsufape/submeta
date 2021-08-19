@@ -35,7 +35,7 @@
               @elseif($projeto->status == 'Submetido')
                 <td style="color: rgb(0, 0, 0)">Submetido</td>
               @endif
-              <td>{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>   
+              <td>{{ date('d-m-Y \à\s H:i\h', strtotime($projeto->updated_at)) }}</td>   
               <td>
                 <div class="btn-group dropright dropdown-options">
                     <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

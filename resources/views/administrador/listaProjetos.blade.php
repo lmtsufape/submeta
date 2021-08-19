@@ -58,7 +58,7 @@
                         </td>
                         <td>{{ $projeto->proponente->user->name }}</td>
                         <td>{{ $projeto->proponente->user->email }}</td>
-                        <td>{{ date('d/m/Y', strtotime($projeto->created_at)) }}</td>
+                        <td>{{ date('d/m/Y \à\s H:i\h', strtotime($projeto->created_at)) }}</td>
                         
                         <td>{{ $projeto->status }}</td>
                         <td>

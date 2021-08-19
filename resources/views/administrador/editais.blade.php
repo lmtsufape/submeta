@@ -55,7 +55,7 @@
                     {{ $evento->nome }}
                 </a>
               </td>
-              <td>{{ date('d/m/Y', strtotime($evento->created_at)) }}</td>
+              <td>{{ date('d/m/Y \à\s H:i\h', strtotime($evento->created_at)) }}</td>
               <td>
                 @if(auth()->user()->id == $evento->criador_id)
                 <div class="btn-group dropright dropdown-options">
