@@ -107,22 +107,28 @@
                                     Editar
                                   </a>
                                   <hr class="dropdown-hr">
-                                @elseif($projeto->evento->fimSubmissao <= $hoje)
-                                  <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">Substituir participante</a>
-                                @endif
+                                  {{--
+                                  @elseif($projeto->evento->fimSubmissao <= $hoje)
+                                    <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
+                                      Substituir participante
+                                    </a>
+                                  @endif
+                                  --}}
+                                  @endif
                                 <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                                   Visualizar
                                 </a>
                                 <hr class="dropdown-hr">
                                 {{-- <a href="" class="dropdown-item" style="text-align: center">
                                   Recorrer
-                                </a> --}}
+                                </a> 
 
                                 @if($projeto->evento->resultado_preliminar <= $hoje)
                                 <a href="" class="dropdown-item" style="text-align: center" data-toggle="modal" data-target="#modalResult{{$projeto->id}}">
                                   Resultado
                                 </a>
                                 @endif
+                                --}}
 
                                 <!-- Button trigger modal -->
                                 <button type="button" class="dropdown-item dropdown-item-delete" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
@@ -210,13 +216,15 @@
                             </div>
                             <div class="row">
                               <div class="col-12">
+                              @if($projeto->avaliadors->count() > 0)
                                 @if($projeto->avaliadors->first()->pivot->recomendacao == 'RECOMENDADO')
-                                  <input type="text" class="form-control" value="APROVADO" disabled style="color:rgb(6, 85, 6)">
+                                  <input type="text" class="form-control" value="RECOMENDADO" disabled style="color:rgb(6, 85, 6)">
                                 @elseif($projeto->avaliadors->first()->pivot->recomendacao == 'NAO-RECOMENDADO')
-                                  <input type="text" class="form-control" value="REPROVADO" disabled style="color: darkred">
+                                  <input type="text" class="form-control" value="NAO-RECOMENDADO" disabled style="color: darkred">
                                 @else
                                   <input type="text" class="form-control" value="" disabled>
                                 @endif
+                              @endif
                               </div>
                             </div>
 
