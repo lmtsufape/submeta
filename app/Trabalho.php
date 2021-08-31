@@ -97,4 +97,8 @@ class Trabalho extends Model
   public function avaliadors(){
       return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
   }
+
+  public function substituicaos(){
+      return $this->hasMany('App\Substituicao');
+  }
 }

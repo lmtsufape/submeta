@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Arquivo extends Model
 {
@@ -11,6 +12,8 @@ class Arquivo extends Model
    *
    * @var array
    */
+
+  use SoftDeletes;
   protected $fillable = [
       'nome','titulo', 'versao', 'versaoFinal', 'data', 'trabalhoId', 'participanteId'
   ];
@@ -19,6 +22,10 @@ class Arquivo extends Model
       return $this->belongsTo('App\Trabalho', 'trabalhoId');
   }
 
+  public function substituicaos(){
+      return $this->hasMany('App\Substituicao');
+  }
+  
   public function participante() {
       return $this->belongsTo('App\Participante', 'participanteId');
   }
