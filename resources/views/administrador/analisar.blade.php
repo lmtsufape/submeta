@@ -149,7 +149,9 @@
 
                           <hr>
                           <h4>Discentes</h4>
-
+                            <a href="{{route('trabalho.telaAnaliseSubstituicoes', ['trabalho_id' => $trabalho->id])}}" class="">
+                                Substituições
+                            </a>
                           {{-- Participantes  --}}
                           <div class="row" style="margin-top:20px">
                               <div class="col-sm-12">

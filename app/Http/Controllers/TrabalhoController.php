@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\EmailParaUsuarioNaoCadastrado;
 use App\Notifications\SubmissaoNotification;
+use App\Substituicao;
 use Illuminate\Support\Facades\Notification;
 
 class TrabalhoController extends Controller
@@ -1362,13 +1363,16 @@ class TrabalhoController extends Controller
 
       $participantes = $projeto->participantes;
       $participantesExcluidos = Participante::onlyTrashed()->where('trabalho_id', $projeto->id)->get();
-      
-    
+      $substituicoesPendentes = Substituicao::where('trabalho_id', $projeto->id)->where('status', 'Em Aguardo')->get();
+      $substituicoesFinalizadas = Substituicao::where([['trabalho_id', '=', $projeto->id],['status', '=', 'Finalizada']]);
+      $substituicoesNegadas = Substituicao::where('trabalho_id', $projeto->id)->where('status', 'Negada')->get();
 
       return view('administrador.substituirParticipante')->with(['projeto' => $projeto,
                                               'edital'     => $edital,
                                               'participantes' => $participantes,
                                               'participantesExcluidos' => $participantesExcluidos,
+                                              'substituicoesPendentes' => $substituicoesPendentes,
+                                              'substituicoesNegadas' => $substituicoesNegadas,
                                               'estados'    => $this->estados,
                                               'enum_turno' => Participante::ENUM_TURNO,
                                          ]);
@@ -1421,6 +1425,8 @@ class TrabalhoController extends Controller
       $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
 
       if($request->substituirApenasPlanoCheck == 'check'){
+        $substituicao = new Substituicao();
+
         if ( $request->has('anexoPlanoTrabalho') ) {
           $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id .'/';
           $nome =  $data['nomePlanoTrabalho'] .".pdf";
@@ -1431,15 +1437,22 @@ class TrabalhoController extends Controller
           $arquivo->nome = $path . $nome;
           $arquivo->trabalhoId = $trabalho->id;
           $arquivo->data = now();
-          $participanteSubstituido->planoTrabalho()->delete();
           $arquivo->participanteId = $participanteSubstituido->id;
           $arquivo->versaoFinal = true;
           $arquivo->save();
-              
+          
+          $substituicao->status = 'Em Aguardo';
+          $substituicao->tipo = 'TrocarPlano';
+          $substituicao->participanteSubstituido_id = $participanteSubstituido->id;
+          $substituicao->participanteSubstituto_id = $participanteSubstituido->id;
+          $substituicao->planoSubstituto_id = $arquivo->id;
+          $substituicao->trabalho_id = $trabalho->id;
+          $substituicao->save();
         }
       }else{
-        $participanteSubstituido->delete();
-    
+        //$participanteSubstituido->delete();
+        $substituicao = new Substituicao();
+
         $user = User::where('email' , $data['email'])->first();
         if (!$user){
           $data['usuarioTemp'] = true;
@@ -1453,11 +1466,21 @@ class TrabalhoController extends Controller
         }
     
         $user->participantes()->save($participante);
-        $trabalho->participantes()->save($participante);
+        //$trabalho->participantes()->save($participante);
         
         if($request->manterPlanoCheck == 'check'){
+          $substituicao->status = 'Em Aguardo';
+          $substituicao->tipo = 'ManterPlano';
+          $substituicao->participanteSubstituido_id = $participanteSubstituido->id;
+          $substituicao->participanteSubstituto_id = $participante->id;
+          $substituicao->trabalho_id = $trabalho->id;
+          $substituicao->planoSubstituto_id = $planoAntigo->id;
+
           $planoAntigo->participanteId = $participante->id;
+
+          $substituicao->save();
           $planoAntigo->save();
+
         }else{
 
           if ( $request->has('anexoPlanoTrabalho') ) {
@@ -1474,6 +1497,13 @@ class TrabalhoController extends Controller
             $arquivo->versaoFinal = true;
             $arquivo->save();
                 
+            $substituicao->status = 'Em Aguardo';
+            $substituicao->tipo = 'Completa';
+            $substituicao->participanteSubstituido_id = $participanteSubstituido->id;
+            $substituicao->participanteSubstituto_id = $participante->id;
+            $substituicao->trabalho_id = $trabalho->id;
+            $substituicao->planoSubstituto_id = $arquivo->id;
+            $substituicao->save();
           }
 
         }
@@ -1484,11 +1514,101 @@ class TrabalhoController extends Controller
 
       DB::commit();
 
-      return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['sucesso' => 'Troca de participantes realizada com sucesso!']);
+      return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['sucesso' => 'Pedido de substituição enviado com sucesso!']);
     }catch (\Throwable $th) {
       DB::rollback();
       return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => $th->getMessage()]);
     }
+
+  }
+
+
+  public function telaShowSubst(Request $request){
+    $trabalho = Trabalho::find($request->trabalho_id);
+    $subsPendentes = Substituicao::where('trabalho_id', $trabalho->id)->where('status', 'Em Aguardo')->get();
+    $participantesExcluidos = Participante::onlyTrashed()->where('trabalho_id', $trabalho->id)->get();
+    return view('administrador.analiseSubstituicoes')->with(['participantesExcluidos'     => $participantesExcluidos,
+                                                              'subsPendentes' => $subsPendentes,
+                                                            'trabalho' => $trabalho]);
+  }
+
+  public function aprovarSubstituicao(Request $request){
+    $substituicao = Substituicao::find($request->substituicaoID);
+    if($request->aprovar == 'true'){
+      try{
+        if($substituicao->tipo == 'TrocarPlano'){
+          $substituicao->participanteSubstituido->planoTrabalho()->where('id', '!=', $substituicao->planoSubstituto->id)->delete();
+          $substituicao->status = 'Finalizada';
+          $substituicao->justificativa = $request->textJustificativa;
+          $substituicao->causa = $request->selectJustificativa;
+    
+          $substituicao->concluida_em = now();
+          $substituicao->save();
+
+        }else{
+          $substituicao->participanteSubstituido->delete();
+          $trabalho = Trabalho::find($substituicao->trabalho->id);
+          $trabalho->participantes()->save($substituicao->participanteSubstituto);
+
+          $substituicao->status = 'Finalizada';
+          $substituicao->justificativa = $request->textJustificativa;
+          $substituicao->causa = $request->selectJustificativa;
+          $substituicao->concluida_em = now();
+
+          $substituicao->save();
+        }
+    
+        return redirect()->back()->with(['sucesso' => 'Substituição concluida!']);
+      }catch(\Throwable $th){
+        return redirect()->back()->with(['erro' => $th->getMessage()]);
+      }
+
+
+    }else{
+
+
+      try{
+
+
+        if($substituicao->tipo == 'TrocarPlano'){
+          $substituicao->participanteSubstituido->planoTrabalho()->where('id', '=', $substituicao->planoSubstituto->id)->delete();
+          $substituicao->status = 'Negada';
+          $substituicao->justificativa = $request->textJustificativa;
+          $substituicao->causa = $request->selectJustificativa;
+
+          $substituicao->concluida_em = now();
+          $substituicao->save();
+        }elseif($substituicao->tipo == 'ManterPlano'){
+          $substituicao->planoSubstituto->participanteId = $substituicao->participanteSubstituido->id;
+          $substituicao->planoSubstituto->save();
+          $substituicao->participanteSubstituto->delete();
+
+          $substituicao->status = 'Negada';
+          $substituicao->justificativa = $request->textJustificativa;
+          $substituicao->causa = $request->selectJustificativa;
+          $substituicao->concluida_em = now();
+
+          $substituicao->save();
+        }else{
+          $substituicao->participanteSubstituto->delete();
+
+          $substituicao->status = 'Negada';
+          $substituicao->justificativa = $request->textJustificativa;
+          $substituicao->causa = $request->selectJustificativa;
+          $substituicao->concluida_em = now();
+
+          $substituicao->save();
+        }
+
+        return redirect()->back()->with(['sucesso' => 'Substituição cancelada com sucesso!']);
+      }catch(\Throwable $th){
+
+        return redirect()->back()->with(['erro' => $th->getMessage()]);
+
+      }
+    }
+
+
 
   }
 

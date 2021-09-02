@@ -88,6 +88,118 @@
                             </div>
                         </div>
 
+                        @if($substituicoesPendentes->count() > 0)
+                        <h4 style="margin-top: 50px">Substituições Pendentes</h4>
+                        <div style="margin-top: 20px">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Participante Substituido
+                                        </h5>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Participante Substituto
+                                        </h5>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Tipo
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                    @foreach($substituicoesPendentes as $substituicao)
+                                        <div class="row"style="margin-bottom: 20px;">
+                                            <div class="col-4">
+                                                <h4 style="font-size:18px">{{$substituicao->participanteSubstituido->user->name}}</h4>                                            </div>
+                                            <div class="col-4">
+                                                <h4 style="font-size:18px">{{$substituicao->participanteSubstituto->user->name}}</h4>
+                                            </div>
+                                            <div class="col-4">
+                                                @if($substituicao->tipo == 'ManterPlano')
+                                                    <h5>Manter Plano</h5>
+                                                @elseif($substituicao->tipo == 'TrocarPlano')
+                                                    <h5>Alterar Plano</h5> 
+                                                @elseif($substituicao->tipo == 'Completa')
+                                                    <h5>Completa</h5> 
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        @if($substituicoesNegadas->count() > 0)
+                        <h4 style="margin-top: 50px">Substituições Negadas</h4>
+                        <div style="margin-top: 20px">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Participante Substituido
+                                        </h5>
+                                    </div>
+                                    <div class="col-3">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Participante Substituto
+                                        </h5>
+                                    </div>
+                                    <div class="col-2">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Tipo
+                                        </h5>
+                                    </div>
+                                    <div class="col-2">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Justificativa
+                                        </h5>
+                                    </div>
+                                    <div class="col-2">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Data
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                    @foreach($substituicoesNegadas as $substituicao)
+                                        <div class="row"style="margin-bottom: 20px;">
+                                            <div class="col-3">
+                                                @if($substituicao->participanteSubstituido()->first() != null)
+                                                    <h4 style="font-size:18px">{{$substituicao->participanteSubstituido->user->name}}</h4>
+                                                @else
+                                                    <h4 style="font-size:18px">{{$substituicao->participanteSubstituido()->withTrashed()->first()->user->name}}</h4>
+                                                @endif
+                                            </div>
+                                            <div class="col-3">
+                                                <h4 style="font-size:18px">{{$substituicao->participanteSubstituto()->withTrashed()->first()->user->name}}</h4>
+                                            </div>
+                                            <div class="col-2">
+                                                @if($substituicao->tipo == 'ManterPlano')
+                                                    <h5>Manter Plano</h5>
+                                                @elseif($substituicao->tipo == 'TrocarPlano')
+                                                    <h5>Alterar Plano</h5> 
+                                                @elseif($substituicao->tipo == 'Completa')
+                                                    <h5>Completa</h5> 
+                                                @endif
+                                            </div>
+                                            <div class="col-2">
+                                                <p style="max-height: 60px; overflow:auto">{{$substituicao->justificativa}}</p>
+                                            </div>
+                                            <div class="col-2">
+                                                <p>{{$substituicao->concluida_em}}</p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+
                         <h4 style="margin-top: 50px">Histórico de participantes</h4>
                         <div style="margin-top: 20px">
                             <div class="card-header">
