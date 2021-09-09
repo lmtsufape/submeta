@@ -58,7 +58,7 @@
                               </div>
                               <div class="col-sm-4">
                                   <label for="subArea" class="col-form-label">{{ __('Sub Área:') }}</label>
-                                  <span  class="form-control" id="subArea" name="subArea">{{App\SubArea::where('id', $trabalho->sub_area_id)->first()->nome}}</span>
+                                  <span  class="form-control" id="subArea" name="subArea">@if(App\SubArea::where('id', $trabalho->sub_area_id)->first() != null){{App\SubArea::where('id', $trabalho->sub_area_id)->first()->nome}}@endif</span>
                               </div>
                           </div>
 

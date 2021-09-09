@@ -94,9 +94,10 @@
                                   Editar
                                   </a>
                                   <hr class="dropdown-hr">
-                                @elseif($projeto->evento->fimSubmissao <= $hoje)
-                                <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">Substituir participante</a>
-                                @endif
+                              @elseif($projeto->evento->fimSubmissao <= $hoje)
+                                <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
+                                Substituir participante</a>
+                              @endif 
                                 <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                                   Visualizar
                                 </a>
@@ -104,11 +105,6 @@
                                 {{-- <a href="" class="dropdown-item" style="text-align: center">
                                   Recorrer
                                 </a> 
-                                @if($projeto->evento->resultado_preliminar <= $hoje)
-                                  <a href="" class="dropdown-item" style="text-align: center" data-toggle="modal" data-target="#modalResult{{$projeto->id}}">
-                                    Resultado
-                                  </a>
-                                @endif
                                 --}}
 
                                 <!-- Button trigger modal deletar -->
@@ -143,81 +139,6 @@
                       </div>
                     </div>
                   </div>
-
-
-                  <!-- Modal Resultado -->
-                  <div class="modal fade" id="modalResult{{$projeto->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
-
-                        <div class="modal-header" style="overflow-x:auto">
-                          <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Resultado Do Projeto: {{$projeto->titulo}}</h5>
-
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-
-                        <div class="modal-body">
-                          <div class="container-fluid">
-                            <div class="row">
-                              <div class="col-4">
-                                <label class="control-label">Área</label>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-12">
-                              <input type="text" class="form-control" value="{{$projeto->area->nome}}" disabled>
-                              </div>
-                            </div>
-
-                            <div class="row mt-2" >
-                              <div class="col-6">
-                                <label class="control-label">N. Planos</label>
-                              </div>
-                              <div class="col-6">
-                                <label class="control-label">Avaliador Externo</label>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-6">
-                                <input type="text" class="form-control" value="{{$projeto->participantes->count()}}" disabled>
-                              </div>
-                              <div class="col-6">
-                                @if($projeto->avaliadors->count() > 0)
-                                <input type="text" class="form-control" value="{{$projeto->avaliadors->first()->user->name}}" disabled>
-                                @else
-                                <input type="text" class="form-control" value="" disabled>
-                                @endif 
-                              </div>
-                            </div>
-
-                            <div class="row">
-                              <div class="col-4">
-                                <label class="control-label mt-2">Status</label>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-12">
-                              @if($projeto->avaliadors->count() > 0)
-                                @if($projeto->avaliadors->first()->pivot->recomendacao == 'RECOMENDADO')
-                                  <input type="text" class="form-control" value="RECOMENDADO" disabled style="color:rgb(6, 85, 6)">
-                                @elseif($projeto->avaliadors->first()->pivot->recomendacao == 'NAO-RECOMENDADO')
-                                  <input type="text" class="form-control" value="NAO-RECOMENDADO" disabled style="color: darkred">
-                                @else
-                                  <input type="text" class="form-control" value="" disabled>
-                                @endif
-                              @endif
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-
 
                 @endforeach
               </tbody>
