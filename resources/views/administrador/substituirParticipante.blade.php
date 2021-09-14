@@ -269,6 +269,18 @@
                 $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
             }
         });
+
+        $("input[type='file']").on("change", function () {
+            if(this.files[0].type.split('/')[1] == "pdf") {
+                if(this.files[0].size > 20000000){
+                    alert("O arquivo possui o tamanho superior a 2MB!");
+                    $(this).val('');
+                }
+            }else{
+                alert("O arquivo não é de tipo PDF!");
+                $(this).val('');
+            }
+        });
     });
 
     function manterPlano(checkBox){
@@ -305,6 +317,7 @@
         inputsForm.push(document.getElementById('rg'+idParticipante));
         inputsForm.push(document.getElementById('cep'+idParticipante));
         inputsForm.push(document.getElementById('celular'+idParticipante));
+        inputsForm.push(document.getElementById('linkLattes'+idParticipante));
         inputsForm.push(document.getElementById('estado'+idParticipante));
         inputsForm.push(document.getElementById('cidade'+idParticipante));
         inputsForm.push(document.getElementById('bairro'+idParticipante));
@@ -329,6 +342,9 @@
         inputsForm.push(document.getElementById('periodo'+idParticipante));
         inputsForm.push(document.getElementById('ordem'+idParticipante));
         inputsForm.push(document.getElementById('media'+idParticipante));
+
+        inputsForm.push(document.getElementById('anexoTermoCompromisso'+idParticipante));
+        inputsForm.push(document.getElementById('anexoComprovanteMatricula'+idParticipante));
 
         if(checkboxInput.checked){
             inputsForm.forEach(function(item,indice,array){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Evento;
 use App\Trabalho;
@@ -74,5 +75,14 @@ class ParticipanteController extends Controller
 
         $funcao->delete();
         return redirect()->back()->with(['mensagem' => 'Função de participante deletada com sucesso!']);
+    }
+
+    public function baixarDocumento(Request $request) {
+
+        if (Storage::disk()->exists($request->pathDocumento)) {
+            ob_end_clean();
+            return Storage::download($request->pathDocumento);
+        }
+        return abort(404);
     }
 }
