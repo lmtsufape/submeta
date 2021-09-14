@@ -1465,6 +1465,11 @@ class TrabalhoController extends Controller
           $participante = Participante::create($data);
         }
     
+        $pasta = 'participantes/' . $participante->id;
+        $participante->anexoTermoCompromisso = Storage::putFileAs($pasta, $request->anexoTermoCompromisso,  "Termo_de_Compromisso.pdf");
+        $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->anexoComprovanteMatricula,  "Comprovante_de_Matricula.pdf");
+        $participante->anexoLattes = Storage::putFileAs($pasta, $request->anexoCurriculoLattes,  "Curriculo_Lattes.pdf");
+        
         $user->participantes()->save($participante);
         //$trabalho->participantes()->save($participante);
         
