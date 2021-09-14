@@ -497,7 +497,42 @@
                 @endcomponent
             </div>
 
-            <div class="col-12 mb-3">
+            <div class="col-md-12">
+                <h5>Documentação Complementar</h5>
+            </div>
+
+            <div class="col-6">
+                @component('componentes.input', ['label' => 'Termo de Compromisso (.pdf)'])
+                <input type="file" class="input-group-text" value="" name="anexoTermoCompromisso" accept=".pdf" placeholder="Anexo do Termo de Compromisso" id="anexoTermoCompromisso{{$participante->id}}" required />
+                @error('anexoTermoCompromisso')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                @endcomponent
+            </div>
+            <div class="col-6">
+                @component('componentes.input', ['label' => 'Comprovante de Matrícula (.pdf)'])
+                <input type="file" class="input-group-text" value="" name="anexoComprovanteMatricula" accept=".pdf" placeholder="Anexo do Comprovante de Matrícula" id="anexoComprovanteMatricula{{$participante->id}}" required />
+                @error('anexoComprovanteMatrícula')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                @endcomponent
+            </div>
+            <div class="col-6">
+                @component('componentes.input', ['label' => 'Currículo Lattes (.pdf)'])
+                <input type="file" class="input-group-text" value="" name="anexoCurriculoLattes" accept=".pdf" placeholder="Anexo do Currículo Lattes" id="anexoCurriculoLattes{{$participante->id}}" required />
+                @error('anexoCurriculoLattes')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                @endcomponent
+            </div>
+
+            <div class="col-12 mb-3 mt-3">
                 <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="check" id="{{$participante->id}}" name="manterPlanoCheck" onchange="manterPlano(this)">
                 <label class="form-check-label" for="{{$participante->id}}">
@@ -530,15 +565,10 @@
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-                @error('anexoPlanoTrabalho')
-                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
                 @endcomponent
             </div>
 
-            <div class="col-12">
+            <div class="col-12 mt-4">
                 <button type="submit" class="btn btn-success" id="idButtonSubmitParticipante">Salvar</button>
 
             </div>
