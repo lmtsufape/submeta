@@ -175,7 +175,15 @@
     </div>
 </div>
 
+
+
+
+
 @else
+
+
+
+
 
 <div class="container-fluid">
     <div class="row">
@@ -332,6 +340,61 @@
             @endcomponent
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Documentos Complementares</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            @component('componentes.input', ['label' => 'Termo de Compromisso (.pdf)'])
+                  
+            @endcomponent
+        </div>
+        @if($subs->participanteSubstituto->anexoTermoCompromisso)
+        <div class="col-1">
+            <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $subs->participanteSubstituto->anexoTermoCompromisso]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+        </div>
+        @else
+        <div class="col-1 text-danger">
+            <p><i class="fas fa-times-circle fa-2x"></i></p>
+        </div>
+        @endif
+
+        <div class="col-5">
+            @component('componentes.input', ['label' => 'Comprovante de Matrícula (.pdf)'])
+                  
+            @endcomponent
+        </div>
+        @if($subs->participanteSubstituto->anexoComprovanteMatricula)
+        <div class="col-1">
+            <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $subs->participanteSubstituto->anexoComprovanteMatricula]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+        </div>
+        @else
+        <div class="col-1 text-danger">
+            <p><i class="fas fa-times-circle fa-2x"></i></p>
+        </div>
+        @endif
+    </div>
+    <div class="row">
+        <div class="col-5">
+                @component('componentes.input', ['label' => 'Curriculo Lattes (.pdf)'])
+                    
+                @endcomponent
+        </div>
+        @if($subs->participanteSubstituto->anexoLattes)
+        <div class="col-1">
+            <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $subs->participanteSubstituto->anexoLattes]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+        </div>
+        @else
+        <div class="col-1 text-danger">
+            <p><i class="fas fa-times-circle fa-2x"></i></p>
+        </div>
+        @endif
+    </div>
+
+
     <div class="row">
         <div class="col-md-12">
             <h5>Plano de trabalho</h5>
