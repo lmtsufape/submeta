@@ -276,6 +276,18 @@
                 @enderror
                 @endcomponent
             </div>
+            <div class="form-group col-md-6">
+                @component('componentes.input', ['label' => 'Link do currículo Lattes'])                
+                <input class="form-control @error('linkLattes') is-invalid @enderror" type="text" name="linkLattes" placeholder="Link do currículo Lattes do estudante" id="linkLattes{{$participante->id}}" required >
+                <small>Ex.: http://lattes.cnpq.br/8363536830656923</small>
+                @error('linkLattes')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                @endcomponent
+            </div>
+
             <div class="col-md-12">
                 <h5>Endereço</h5>
             </div>
@@ -530,6 +542,16 @@
                 </span>
                 @enderror
                 @endcomponent
+            </div>
+            <div class="col-6">
+                <label class="control-label">Autorização dos Pais (.pdf)</label>
+                <input type="file" class="input-group-text" value="" name="anexoAutorizacaoPais" accept=".pdf" placeholder="Anexo da Autorização dos Pais" id="anexoAutorizacaoPais{{$participante->id}}" />
+                @error('anexoAutorizacaoPais')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                <span style="font-size:small">Anexo obrigatório para discentes menores de 18 anos</span>
             </div>
 
             <div class="col-12 mb-3 mt-3">
