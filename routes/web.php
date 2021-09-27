@@ -130,7 +130,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/projeto/exportar/{id}','TrabalhoController@exportProjeto'                 )->name('exportar.projeto');
   Route::get(   '/projeto/substituirParticipante', 'TrabalhoController@telaTrocaPart'       )->name('trabalho.trocaParticipante');
   Route::post(  '/projeto/substituirParticipante', 'TrabalhoController@trocaParticipante'   )->name('trabalho.infoTrocaParticipante');
-  Route::get(   '/showSubstituicoes', 'TrabalhoController@telaShowSubst'                    )->name('trabalho.telaAnaliseSubstituicoes');
+  Route::get(   '/showSubstituicoes', 'TrabalhoController@telaShowSubst'                    )->name('trabalho.telaAnaliseSubstituicoes')->middleware('checkRoles:coordenador,administrador');
   Route::post(  '/aprovarSubstituicao', 'TrabalhoController@aprovarSubstituicao'            )->name('trabalho.aprovarSubstituicao');
 
   //#########  Atribuição  #######################################

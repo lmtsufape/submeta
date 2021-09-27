@@ -39,6 +39,7 @@ use App\Http\Requests\UpdateTrabalho;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\EmailParaUsuarioNaoCadastrado;
+use App\Mail\SolicitacaoSubstituicao;
 use App\Notifications\SubmissaoNotification;
 use App\Substituicao;
 use Illuminate\Support\Facades\Notification;
@@ -1362,17 +1363,12 @@ class TrabalhoController extends Controller
       $edital = Evento::find($projeto->evento_id);
 
       $participantes = $projeto->participantes;
-      $participantesExcluidos = Participante::onlyTrashed()->where('trabalho_id', $projeto->id)->get();
-      $substituicoesPendentes = Substituicao::where('trabalho_id', $projeto->id)->where('status', 'Em Aguardo')->get();
-      $substituicoesFinalizadas = Substituicao::where([['trabalho_id', '=', $projeto->id],['status', '=', 'Finalizada']]);
-      $substituicoesNegadas = Substituicao::where('trabalho_id', $projeto->id)->where('status', 'Negada')->get();
+      $substituicoesProjeto = Substituicao::where('trabalho_id', $projeto->id)->orderBy('created_at', 'DESC')->get();
 
       return view('administrador.substituirParticipante')->with(['projeto' => $projeto,
                                               'edital'     => $edital,
                                               'participantes' => $participantes,
-                                              'participantesExcluidos' => $participantesExcluidos,
-                                              'substituicoesPendentes' => $substituicoesPendentes,
-                                              'substituicoesNegadas' => $substituicoesNegadas,
+                                              'substituicoesProjeto' => $substituicoesProjeto,
                                               'estados'    => $this->estados,
                                               'enum_turno' => Participante::ENUM_TURNO,
                                          ]);
@@ -1396,6 +1392,7 @@ class TrabalhoController extends Controller
       $data['funcao_participante_id'] = 4;
       $data['rg'] = $request->rg;
       $data['celular'] = $request->celular;
+      $data['linkLattes'] = $request->linkLattes;
       $data['cep'] = $request->cep;
       $data['uf'] = $request->uf;
       $data['cidade'] = $request->cidade;
@@ -1469,7 +1466,8 @@ class TrabalhoController extends Controller
         $participante->anexoTermoCompromisso = Storage::putFileAs($pasta, $request->anexoTermoCompromisso,  "Termo_de_Compromisso.pdf");
         $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->anexoComprovanteMatricula,  "Comprovante_de_Matricula.pdf");
         $participante->anexoLattes = Storage::putFileAs($pasta, $request->anexoCurriculoLattes,  "Curriculo_Lattes.pdf");
-        
+        $participante->anexoAutorizacaoPais = Storage::putFileAs($pasta, $request->anexoAutorizacaoPais,  "Autorização_dos_Pais.pdf");
+
         $user->participantes()->save($participante);
         //$trabalho->participantes()->save($participante);
         
@@ -1519,6 +1517,8 @@ class TrabalhoController extends Controller
 
       DB::commit();
 
+      Mail::to($evento->coordenadorComissao->user->email)->send(new SolicitacaoSubstituicao($evento, $trabalho));
+
       return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['sucesso' => 'Pedido de substituição enviado com sucesso!']);
     }catch (\Throwable $th) {
       DB::rollback();
@@ -1530,15 +1530,18 @@ class TrabalhoController extends Controller
 
   public function telaShowSubst(Request $request){
     $trabalho = Trabalho::find($request->trabalho_id);
-    $subsPendentes = Substituicao::where('trabalho_id', $trabalho->id)->where('status', 'Em Aguardo')->get();
-    $participantesExcluidos = Participante::onlyTrashed()->where('trabalho_id', $trabalho->id)->get();
-    return view('administrador.analiseSubstituicoes')->with(['participantesExcluidos'     => $participantesExcluidos,
-                                                              'subsPendentes' => $subsPendentes,
+    $substituicoesProjeto = Substituicao::where('trabalho_id', $trabalho->id)->orderBy('created_at', 'DESC')->get();
+    $substituicoesPendentes = Substituicao::where('trabalho_id', $trabalho->id)->where('status', 'Em Aguardo')->orderBy('created_at', 'DESC')->get();
+
+    return view('administrador.analiseSubstituicoes')->with([ 'substituicoesPendentes' => $substituicoesPendentes,
+                                                              'substituicoesProjeto' => $substituicoesProjeto,
                                                             'trabalho' => $trabalho]);
   }
 
   public function aprovarSubstituicao(Request $request){
     $substituicao = Substituicao::find($request->substituicaoID);
+    $trabalho = Trabalho::find($substituicao->trabalho->id);
+
     if($request->aprovar == 'true'){
       try{
         if($substituicao->tipo == 'TrocarPlano'){
@@ -1552,7 +1555,6 @@ class TrabalhoController extends Controller
 
         }else{
           $substituicao->participanteSubstituido->delete();
-          $trabalho = Trabalho::find($substituicao->trabalho->id);
           $trabalho->participantes()->save($substituicao->participanteSubstituto);
 
           $substituicao->status = 'Finalizada';
@@ -1562,7 +1564,8 @@ class TrabalhoController extends Controller
 
           $substituicao->save();
         }
-    
+
+        Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado'));
         return redirect()->back()->with(['sucesso' => 'Substituição concluida!']);
       }catch(\Throwable $th){
         return redirect()->back()->with(['erro' => $th->getMessage()]);
@@ -1605,6 +1608,8 @@ class TrabalhoController extends Controller
           $substituicao->save();
         }
 
+        $trabalho = Trabalho::find($substituicao->trabalho->id);
+        Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado'));
         return redirect()->back()->with(['sucesso' => 'Substituição cancelada com sucesso!']);
       }catch(\Throwable $th){
 
