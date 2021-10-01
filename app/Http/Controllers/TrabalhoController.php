@@ -1468,8 +1468,12 @@ class TrabalhoController extends Controller
         $participante->anexoTermoCompromisso = Storage::putFileAs($pasta, $request->anexoTermoCompromisso,  "Termo_de_Compromisso.pdf");
         $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->anexoComprovanteMatricula,  "Comprovante_de_Matricula.pdf");
         $participante->anexoLattes = Storage::putFileAs($pasta, $request->anexoCurriculoLattes,  "Curriculo_Lattes.pdf");
-        $participante->anexoAutorizacaoPais = Storage::putFileAs($pasta, $request->anexoAutorizacaoPais,  "Autorização_dos_Pais.pdf");
-        $participante->anexoComprovanteBancario = Storage::putFileAs($pasta, $request->anexoComprovanteBancario,  "Comprovante_Bancario.".$request->file('anexoComprovanteBancario')->getClientOriginalExtension());
+        if($request->anexoAutorizacaoPais != null) {
+            $participante->anexoAutorizacaoPais = Storage::putFileAs($pasta, $request->anexoAutorizacaoPais, "Autorização_dos_Pais.pdf");
+        }
+        if($request->anexoComprovanteBancario != null){
+            $participante->anexoComprovanteBancario = Storage::putFileAs($pasta, $request->anexoComprovanteBancario,  "Comprovante_Bancario.".$request->file('anexoComprovanteBancario')->getClientOriginalExtension());
+        }
 
         $user->participantes()->save($participante);
         //$trabalho->participantes()->save($participante);
