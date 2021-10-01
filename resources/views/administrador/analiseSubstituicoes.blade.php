@@ -72,7 +72,7 @@
                                                                 <textarea class="form-control" id="justificativaTextArea" rows="3" name="textJustificativa" ></textarea>
                                                             </div>
                                                             <select class="custom-select" name="selectJustificativa" >
-                                                                <option value="DESISTENCIA">DESISTÊNCIA</option>													  
+                                                                <option value="DESISTENCIA">DESISTÊNCIA</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -113,7 +113,7 @@
                                                                 <textarea class="form-control" id="justificativaTextArea" rows="3" name="textJustificativa" ></textarea>
                                                             </div>
                                                             <select class="custom-select" name="selectJustificativa" >
-                                                                <option value="DESISTENCIA">DESISTÊNCIA</option>													  
+                                                                <option value="DESISTENCIA">DESISTÊNCIA</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -127,7 +127,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Modal vizualizar info participante substituido -->
                                 <div class="modal fade" id="modalVizuParticipante{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -217,18 +217,18 @@
                                                 @if($subs->tipo == 'ManterPlano')
                                                     <h5>Manter Plano</h5>
                                                 @elseif($subs->tipo == 'TrocarPlano')
-                                                    <h5>Alterar Plano</h5> 
+                                                    <h5>Alterar Plano</h5>
                                                 @elseif($subs->tipo == 'Completa')
-                                                    <h5>Completa</h5> 
+                                                    <h5>Completa</h5>
                                                 @endif
                                             </div>
                                             <div class="col-2">
                                                 @if($subs->status == 'Finalizada')
                                                     <h5>Concluída</h5>
                                                 @elseif($subs->status == 'Negada')
-                                                    <h5>Negada</h5> 
+                                                    <h5>Negada</h5>
                                                 @elseif($subs->status == 'Em Aguardo')
-                                                    <h5>Pendente</h5> 
+                                                    <h5>Pendente</h5>
                                                 @endif
                                             </div>
                                     </div>

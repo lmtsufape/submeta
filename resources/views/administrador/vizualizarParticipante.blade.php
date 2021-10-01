@@ -233,9 +233,7 @@
     </div>
     <div class="row">
         <div class="col-5">
-            @component('componentes.input', ['label' => 'Comprovante Bancário (.pdf, .jpg, .jpeg, .png)'])
-
-            @endcomponent
+            <label class="control-label">Comprovante Bancário (.pdf, .jpg, .jpeg, .png)</label>
         </div>
         @if($subs->participanteSubstituto()->withTrashed()->first()->anexoComprovanteBancario)
             <div class="col-1">
@@ -512,9 +510,7 @@
     </div>
     <div class="row">
         <div class="col-5">
-            @component('componentes.input', ['label' => 'Comprovante Bancário (.pdf, .jpg, .jpeg, .png)'])
-
-            @endcomponent
+            <label class="control-label">Comprovante Bancário (.pdf, .jpg, .jpeg, .png)</label>
         </div>
         @if($subs->participanteSubstituto()->withTrashed()->first()->anexoComprovanteBancario)
             <div class="col-1">
@@ -546,6 +542,18 @@
             <p><i class="fas fa-times-circle fa-2x"></i></p>
         </div>
         @endif
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Observações</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg">
+            <label for="observacaoTextArea">Observação:</label>
+            <textarea class="form-control" id="observacaoTextArea" rows="3" name="textObservacao" placeholder="{{$subs->observacao}}" disabled></textarea>
+        </div>
     </div>
 </div>
 @endif
