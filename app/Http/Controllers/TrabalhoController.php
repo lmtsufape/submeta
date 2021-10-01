@@ -1467,6 +1467,7 @@ class TrabalhoController extends Controller
         $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->anexoComprovanteMatricula,  "Comprovante_de_Matricula.pdf");
         $participante->anexoLattes = Storage::putFileAs($pasta, $request->anexoCurriculoLattes,  "Curriculo_Lattes.pdf");
         $participante->anexoAutorizacaoPais = Storage::putFileAs($pasta, $request->anexoAutorizacaoPais,  "Autorização_dos_Pais.pdf");
+        $participante->anexoComprovanteBancario = Storage::putFileAs($pasta, $request->anexoComprovanteBancario,  "Comprovante_Bancario.pdf");
 
         $user->participantes()->save($participante);
         //$trabalho->participantes()->save($participante);
