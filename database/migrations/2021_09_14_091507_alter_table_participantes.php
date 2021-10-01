@@ -17,6 +17,7 @@ class AlterTableParticipantes extends Migration
             $table->string('anexoTermoCompromisso')->nullable();
             $table->string('anexoComprovanteMatricula')->nullable();
             $table->string('anexoLattes')->nullable();
+            $table->string('anexoComprovanteBancario')->nullable();
         });
     }
 
@@ -31,6 +32,7 @@ class AlterTableParticipantes extends Migration
             $table->dropColumn('anexoTermoCompromisso');
             $table->dropColumn('anexoComprovanteMatricula');
             $table->dropColumn('anexoLattes');
+            $table->dropColumn('anexoComprovanteBancario');
         });
     }
 }
