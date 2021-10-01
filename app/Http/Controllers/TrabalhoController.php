@@ -1440,6 +1440,7 @@ class TrabalhoController extends Controller
           
           $substituicao->status = 'Em Aguardo';
           $substituicao->tipo = 'TrocarPlano';
+          $substituicao->observacao = $request->textObservacao;
           $substituicao->participanteSubstituido_id = $participanteSubstituido->id;
           $substituicao->participanteSubstituto_id = $participanteSubstituido->id;
           $substituicao->planoSubstituto_id = $arquivo->id;
@@ -1449,6 +1450,7 @@ class TrabalhoController extends Controller
       }else{
         //$participanteSubstituido->delete();
         $substituicao = new Substituicao();
+        $substituicao->observacao = $request->textObservacao;
 
         $user = User::where('email' , $data['email'])->first();
         if (!$user){
@@ -1475,6 +1477,7 @@ class TrabalhoController extends Controller
         if($request->manterPlanoCheck == 'check'){
           $substituicao->status = 'Em Aguardo';
           $substituicao->tipo = 'ManterPlano';
+          $substituicao->observacao = $request->textObservacao;
           $substituicao->participanteSubstituido_id = $participanteSubstituido->id;
           $substituicao->participanteSubstituto_id = $participante->id;
           $substituicao->trabalho_id = $trabalho->id;
@@ -1503,6 +1506,7 @@ class TrabalhoController extends Controller
                 
             $substituicao->status = 'Em Aguardo';
             $substituicao->tipo = 'Completa';
+            $substituicao->observacao = $request->textObservacao;
             $substituicao->participanteSubstituido_id = $participanteSubstituido->id;
             $substituicao->participanteSubstituto_id = $participante->id;
             $substituicao->trabalho_id = $trabalho->id;
@@ -1550,7 +1554,7 @@ class TrabalhoController extends Controller
           $substituicao->status = 'Finalizada';
           $substituicao->justificativa = $request->textJustificativa;
           $substituicao->causa = $request->selectJustificativa;
-    
+
           $substituicao->concluida_em = now();
           $substituicao->save();
 
