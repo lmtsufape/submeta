@@ -515,7 +515,7 @@
 
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Termo de Compromisso (.pdf)'])
-                <input type="file" class="input-group-text" value="" name="anexoTermoCompromisso" accept=".pdf" placeholder="Anexo do Termo de Compromisso" id="anexoTermoCompromisso{{$participante->id}}" required />
+                <input type="file" class="input-group-text pdf" value="" name="anexoTermoCompromisso" accept=".pdf" placeholder="Anexo do Termo de Compromisso" id="anexoTermoCompromisso{{$participante->id}}" required />
                 @error('anexoTermoCompromisso')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -525,7 +525,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Comprovante de Matrícula (.pdf)'])
-                <input type="file" class="input-group-text" value="" name="anexoComprovanteMatricula" accept=".pdf" placeholder="Anexo do Comprovante de Matrícula" id="anexoComprovanteMatricula{{$participante->id}}" required />
+                <input type="file" class="input-group-text pdf" value="" name="anexoComprovanteMatricula" accept=".pdf" placeholder="Anexo do Comprovante de Matrícula" id="anexoComprovanteMatricula{{$participante->id}}" required />
                 @error('anexoComprovanteMatrícula')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -535,7 +535,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Currículo Lattes (.pdf)'])
-                <input type="file" class="input-group-text" value="" name="anexoCurriculoLattes" accept=".pdf" placeholder="Anexo do Currículo Lattes" id="anexoCurriculoLattes{{$participante->id}}" required />
+                <input type="file" class="input-group-text pdf" value="" name="anexoCurriculoLattes" accept=".pdf" placeholder="Anexo do Currículo Lattes" id="anexoCurriculoLattes{{$participante->id}}" required />
                 @error('anexoCurriculoLattes')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -545,7 +545,7 @@
             </div>
             <div class="col-6">
                 <label class="control-label">Autorização dos Pais (.pdf)</label>
-                <input type="file" class="input-group-text" value="" name="anexoAutorizacaoPais" accept=".pdf" placeholder="Anexo da Autorização dos Pais" id="anexoAutorizacaoPais{{$participante->id}}" />
+                <input type="file" class="input-group-text pdf" value="" name="anexoAutorizacaoPais" accept=".pdf" placeholder="Anexo da Autorização dos Pais" id="anexoAutorizacaoPais{{$participante->id}}" />
                 @error('anexoAutorizacaoPais')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -555,7 +555,7 @@
             </div>
             <div class="col-6">
                 <label class="control-label">Comprovante Bancário (.pdf, .jpg, .jpeg, .png)</label>
-                <input type="file" class="input-group-text" value="" name="anexoComprovanteBancario" accept=".pdf,.jpg,.jpeg,.png" placeholder="Anexo do Comprovante Bancário" id="anexoComprovanteBancario{{$participante->id}}"/>
+                <input type="file" class="input-group-text" value="" name="anexoComprovanteBancario" accept=".jpeg,.jpg,.png,.pdf" placeholder="Anexo do Comprovante Bancário" id="anexoComprovanteBancario{{$participante->id}}"/>
                 <small>Anexo obrigatório para bolsistas, mas não obrigatório para voluntários</small>
                 @error('anexoComprovanteBancario')
                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
