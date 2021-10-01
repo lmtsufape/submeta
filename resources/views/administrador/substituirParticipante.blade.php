@@ -216,7 +216,7 @@
             }
         });
 
-        $("input[type='file']").on("change", function () {
+        $("input.pdf").on("change", function () {
             if(this.files[0].type.split('/')[1] == "pdf") {
                 if(this.files[0].size > 20000000){
                     alert("O arquivo possui o tamanho superior a 2MB!");
@@ -224,6 +224,21 @@
                 }
             }else{
                 alert("O arquivo não é de tipo PDF!");
+                $(this).val('');
+            }
+        });
+
+        $("input[name='anexoComprovanteBancario']").on("change", function () {
+            if(this.files[0].type.split('/')[1] == "pdf"
+            || this.files[0].type.split('/')[1] == "jpeg"
+            || this.files[0].type.split('/')[1] == "jpg"
+            || this.files[0].type.split('/')[1] == "png") {
+                if(this.files[0].size > 20000000){
+                    alert("O arquivo possui o tamanho superior a 2MB!");
+                    $(this).val('');
+                }
+            }else{
+                alert("O arquivo não é do tipo Correto!");
                 $(this).val('');
             }
         });
