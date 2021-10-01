@@ -17,7 +17,7 @@
             @endcomponent
         </div>
     </div>
-    <div class="row"> 
+    <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'Data de nascimento'])
             <input type="date" class="form-control" value="{{$subs->participanteSubstituido()->withTrashed()->first()->data_de_nascimento}}" name="data_de_nascimento" placeholder="Data de nascimento" disabled />
@@ -171,7 +171,7 @@
     <div class="row">
         <div class="col-5">
             @component('componentes.input', ['label' => 'Termo de Compromisso (.pdf)'])
-                  
+
             @endcomponent
         </div>
         @if($subs->participanteSubstituto()->withTrashed()->first()->anexoTermoCompromisso)
@@ -186,7 +186,7 @@
 
         <div class="col-5">
             @component('componentes.input', ['label' => 'Comprovante de Matrícula (.pdf)'])
-                  
+
             @endcomponent
         </div>
         @if($subs->participanteSubstituto()->withTrashed()->first()->anexoComprovanteMatricula)
@@ -202,7 +202,7 @@
     <div class="row">
         <div class="col-5">
                 @component('componentes.input', ['label' => 'Curriculo Lattes (.pdf)'])
-                    
+
                 @endcomponent
         </div>
         @if($subs->participanteSubstituto()->withTrashed()->first()->anexoLattes)
@@ -217,7 +217,7 @@
 
         <div class="col-5">
                 @component('componentes.input', ['label' => 'Autorização dos Pais (.pdf)'])
-                    
+
                 @endcomponent
         </div>
 
@@ -229,6 +229,22 @@
         <div class="col-1 text-danger">
             <p><i class="fas fa-times-circle fa-2x"></i></p>
         </div>
+        @endif
+    </div>
+    <div class="row">
+        <div class="col-5">
+            @component('componentes.input', ['label' => 'Comprovante Bancário (.pdf, .jpg, .jpeg, .png)'])
+
+            @endcomponent
+        </div>
+        @if($subs->participanteSubstituto()->withTrashed()->first()->anexoComprovanteBancario)
+            <div class="col-1">
+                <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $subs->participanteSubstituido()->withTrashed()->first()->anexoComprovanteBancario]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+            </div>
+        @else
+            <div class="col-1 text-danger">
+                <p><i class="fas fa-times-circle fa-2x"></i></p>
+            </div>
         @endif
     </div>
 
@@ -281,7 +297,7 @@
             @endcomponent
         </div>
     </div>
-    <div class="row"> 
+    <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'Data de nascimento'])
             <input type="date" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->data_de_nascimento}}" name="data_de_nascimento" placeholder="Data de nascimento" disabled />
@@ -434,7 +450,7 @@
     <div class="row">
         <div class="col-5">
             @component('componentes.input', ['label' => 'Termo de Compromisso (.pdf)'])
-                  
+
             @endcomponent
         </div>
         @if($subs->participanteSubstituto()->withTrashed()->first()->anexoTermoCompromisso)
@@ -449,7 +465,7 @@
 
         <div class="col-5">
             @component('componentes.input', ['label' => 'Comprovante de Matrícula (.pdf)'])
-                  
+
             @endcomponent
         </div>
         @if($subs->participanteSubstituto()->withTrashed()->first()->anexoComprovanteMatricula)
@@ -465,7 +481,7 @@
     <div class="row">
         <div class="col-5">
                 @component('componentes.input', ['label' => 'Curriculo Lattes (.pdf)'])
-                    
+
                 @endcomponent
         </div>
         @if($subs->participanteSubstituto()->withTrashed()->first()->anexoLattes)
@@ -480,7 +496,7 @@
 
         <div class="col-5">
                 @component('componentes.input', ['label' => 'Autorização dos Pais (.pdf)'])
-                    
+
                 @endcomponent
         </div>
 
@@ -492,6 +508,22 @@
         <div class="col-1 text-danger">
             <p><i class="fas fa-times-circle fa-2x"></i></p>
         </div>
+        @endif
+    </div>
+    <div class="row">
+        <div class="col-5">
+            @component('componentes.input', ['label' => 'Comprovante Bancário (.pdf, .jpg, .jpeg, .png)'])
+
+            @endcomponent
+        </div>
+        @if($subs->participanteSubstituto()->withTrashed()->first()->anexoComprovanteBancario)
+            <div class="col-1">
+                <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $subs->participanteSubstituto()->withTrashed()->first()->anexoComprovanteBancario]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+            </div>
+        @else
+            <div class="col-1 text-danger">
+                <p><i class="fas fa-times-circle fa-2x"></i></p>
+            </div>
         @endif
     </div>
 

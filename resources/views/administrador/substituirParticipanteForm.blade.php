@@ -19,7 +19,7 @@
             @endcomponent
         </div>
     </div>
-    <div class="row"> 
+    <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'Data de nascimento'])
             <input type="date" class="form-control" value="{{$participante->data_de_nascimento}}" name="data_de_nascimento" placeholder="Data de nascimento" disabled />
@@ -277,7 +277,7 @@
                 @endcomponent
             </div>
             <div class="form-group col-md-6">
-                @component('componentes.input', ['label' => 'Link do currículo Lattes'])                
+                @component('componentes.input', ['label' => 'Link do currículo Lattes'])
                 <input class="form-control @error('linkLattes') is-invalid @enderror" type="text" name="linkLattes" placeholder="Link do currículo Lattes do estudante" id="linkLattes{{$participante->id}}" required >
                 <small>Ex.: http://lattes.cnpq.br/8363536830656923</small>
                 @error('linkLattes')
@@ -552,6 +552,17 @@
                 </span>
                 @enderror
                 <span style="font-size:small">Anexo obrigatório para discentes menores de 18 anos</span>
+            </div>
+            <div class="col-6">
+                <label class="control-label">Comprovante Bancário (.pdf, .jpg, .jpeg, .png)</label>
+                <input type="file" class="input-group-text" value="" name="anexoComprovanteBancario" accept=".pdf,.jpg,.jpeg,.png" placeholder="Anexo do Comprovante Bancário" id="anexoComprovanteBancario{{$participante->id}}"/>
+                <small>Anexo obrigatório para bolsistas, mas não obrigatório para voluntários</small>
+                @error('anexoComprovanteBancario')
+                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
             </div>
 
             <div class="col-12 mb-3 mt-3">

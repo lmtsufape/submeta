@@ -39,7 +39,7 @@
                                         <div class="col-2 align-self-center">
                                             <div class="row justify-content-around">
                                                 <a href="" data-toggle="modal" data-target="#modalSubParticipante{{$participante->id}}" class="button"><i class="fas fa-exchange-alt fa-2x"></i><a>
-                                                <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a> 
+                                                <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a>
                                             </div>
                                         </div>
 
@@ -130,18 +130,18 @@
                                                 @if($subs->tipo == 'ManterPlano')
                                                     <h5>Manter Plano</h5>
                                                 @elseif($subs->tipo == 'TrocarPlano')
-                                                    <h5>Alterar Plano</h5> 
+                                                    <h5>Alterar Plano</h5>
                                                 @elseif($subs->tipo == 'Completa')
-                                                    <h5>Completa</h5> 
+                                                    <h5>Completa</h5>
                                                 @endif
                                             </div>
                                             <div class="col-2">
                                                 @if($subs->status == 'Finalizada')
                                                     <h5>Concluída</h5>
                                                 @elseif($subs->status == 'Negada')
-                                                    <h5>Negada</h5> 
+                                                    <h5>Negada</h5>
                                                 @elseif($subs->status == 'Em Aguardo')
-                                                    <h5>Pendente</h5> 
+                                                    <h5>Pendente</h5>
                                                 @endif
                                             </div>
                                     </div>
@@ -293,6 +293,7 @@
         inputsForm.push(document.getElementById('anexoComprovanteMatricula'+idParticipante));
         inputsForm.push(document.getElementById('anexoCurriculoLattes'+idParticipante));
         inputsForm.push(document.getElementById('anexoAutorizacaoPais'+idParticipante));
+        inputsForm.push(document.getElementById('anexoComprovanteBancario'+idParticipante));
 
         if(checkboxInput.checked){
             inputsForm.forEach(function(item,indice,array){
@@ -317,7 +318,7 @@
         var instituicao = document.getElementById('outra'+idSelect);
         var display = document.getElementById('display'+idSelect);
 
-        if(instituicaoSelect.value === "Outra"){        
+        if(instituicaoSelect.value === "Outra"){
             display.style.display = "block";
             instituicao.parentElement.style.display = '';
             instituicao.value="";
@@ -332,7 +333,7 @@
         var curso = document.getElementById('outro'+idSelect);
         var displayCurso = document.getElementById('display'+idSelect);
 
-        if(cursoSelect.value === "Outro"){        
+        if(cursoSelect.value === "Outro"){
             displayCurso.style.display = "block";
             curso.parentElement.style.display = '';
             curso.value="";
