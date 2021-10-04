@@ -19,7 +19,7 @@
             @endcomponent
         </div>
     </div>
-    <div class="row"> 
+    <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'Data de nascimento'])
             <input type="date" class="form-control" value="{{$participante->data_de_nascimento}}" name="data_de_nascimento" placeholder="Data de nascimento" disabled />
@@ -277,7 +277,7 @@
                 @endcomponent
             </div>
             <div class="form-group col-md-6">
-                @component('componentes.input', ['label' => 'Link do currículo Lattes'])                
+                @component('componentes.input', ['label' => 'Link do currículo Lattes'])
                 <input class="form-control @error('linkLattes') is-invalid @enderror" type="text" name="linkLattes" placeholder="Link do currículo Lattes do estudante" id="linkLattes{{$participante->id}}" required >
                 <small>Ex.: http://lattes.cnpq.br/8363536830656923</small>
                 @error('linkLattes')
@@ -515,7 +515,7 @@
 
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Termo de Compromisso (.pdf)'])
-                <input type="file" class="input-group-text" value="" name="anexoTermoCompromisso" accept=".pdf" placeholder="Anexo do Termo de Compromisso" id="anexoTermoCompromisso{{$participante->id}}" required />
+                <input type="file" class="input-group-text pdf" value="" name="anexoTermoCompromisso" accept=".pdf" placeholder="Anexo do Termo de Compromisso" id="anexoTermoCompromisso{{$participante->id}}" required />
                 @error('anexoTermoCompromisso')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -525,7 +525,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Comprovante de Matrícula (.pdf)'])
-                <input type="file" class="input-group-text" value="" name="anexoComprovanteMatricula" accept=".pdf" placeholder="Anexo do Comprovante de Matrícula" id="anexoComprovanteMatricula{{$participante->id}}" required />
+                <input type="file" class="input-group-text pdf" value="" name="anexoComprovanteMatricula" accept=".pdf" placeholder="Anexo do Comprovante de Matrícula" id="anexoComprovanteMatricula{{$participante->id}}" required />
                 @error('anexoComprovanteMatrícula')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -535,7 +535,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Currículo Lattes (.pdf)'])
-                <input type="file" class="input-group-text" value="" name="anexoCurriculoLattes" accept=".pdf" placeholder="Anexo do Currículo Lattes" id="anexoCurriculoLattes{{$participante->id}}" required />
+                <input type="file" class="input-group-text pdf" value="" name="anexoCurriculoLattes" accept=".pdf" placeholder="Anexo do Currículo Lattes" id="anexoCurriculoLattes{{$participante->id}}" required />
                 @error('anexoCurriculoLattes')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -545,13 +545,24 @@
             </div>
             <div class="col-6">
                 <label class="control-label">Autorização dos Pais (.pdf)</label>
-                <input type="file" class="input-group-text" value="" name="anexoAutorizacaoPais" accept=".pdf" placeholder="Anexo da Autorização dos Pais" id="anexoAutorizacaoPais{{$participante->id}}" />
+                <input type="file" class="input-group-text pdf" value="" name="anexoAutorizacaoPais" accept=".pdf" placeholder="Anexo da Autorização dos Pais" id="anexoAutorizacaoPais{{$participante->id}}" />
                 @error('anexoAutorizacaoPais')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
                 <span style="font-size:small">Anexo obrigatório para discentes menores de 18 anos</span>
+            </div>
+            <div class="col-6">
+                <label class="control-label">Comprovante Bancário (.pdf, .jpg, .jpeg, .png)</label>
+                <input type="file" class="input-group-text" value="" name="anexoComprovanteBancario" accept=".jpeg,.jpg,.png,.pdf" placeholder="Anexo do Comprovante Bancário" id="anexoComprovanteBancario{{$participante->id}}"/>
+                <small>Anexo obrigatório para bolsistas, mas não obrigatório para voluntários</small>
+                @error('anexoComprovanteBancario')
+                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
             </div>
 
             <div class="col-12 mb-3 mt-3">
@@ -590,6 +601,13 @@
                 @endcomponent
             </div>
 
+            <div class="col-md-12">
+                <h5>Observações</h5>
+            </div>
+            <div class="col-12">
+                <label for="observacaoTextArea">Observação:</label>
+                <textarea class="form-control" id="observacaoTextArea" rows="3" name="textObservacao" ></textarea>
+            </div>
             <div class="col-12 mt-4">
                 <button type="submit" class="btn btn-success" id="idButtonSubmitParticipante">Salvar</button>
 

@@ -19,6 +19,7 @@ class CreateSubstituicaosTable extends Migration
             $table->enum('tipo', ['Completa', 'TrocarPlano', 'ManterPlano']);
             $table->text('justificativa')->nullable();
             $table->string('causa')->nullable();
+            $table->text('observacao')->nullable();
 
             $table->unsignedBigInteger('trabalho_id');
             $table->unsignedBigInteger('participanteSubstituido_id');

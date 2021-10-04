@@ -13,6 +13,7 @@ class Substituicao extends Model
         'tipo',
         'justificativa',
         'causa',
+        'observacao',
         'participanteSubstituido_id',
         'participanteSubstituto_id'
     ];
