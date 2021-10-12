@@ -605,7 +605,6 @@
                 <h5>Observações</h5>
             </div>
             <div class="col-12">
-                <label for="observacaoTextArea">Observação:</label>
                 <textarea class="form-control" id="observacaoTextArea" rows="3" name="textObservacao" ></textarea>
             </div>
             <div class="col-12 mt-4">

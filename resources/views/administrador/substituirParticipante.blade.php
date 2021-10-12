@@ -94,7 +94,7 @@
                                 <div class="row">
                                         <div class="col-4">
                                             <h5 class="card-title" style= "color:#1492E6">
-                                                Participante Substituido
+                                                Participante Substituído
                                             </h5>
                                         </div>
                                         <div class="col-4">

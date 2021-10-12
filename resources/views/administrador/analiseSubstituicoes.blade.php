@@ -26,7 +26,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th scope="col">Participante Substituido</th>
+                                <th scope="col">Participante Substituído</th>
                                 <th scope="col">Participante Substituto</th>
                                 <th scope="col">Plano Substituto</th>
                                 <th scope="col">Opção</th>
@@ -181,7 +181,7 @@
                                 <div class="row">
                                         <div class="col-4">
                                             <h5 class="card-title" style= "color:#1492E6">
-                                                Participante Substituido
+                                                Participante Substituído
                                             </h5>
                                         </div>
                                         <div class="col-4">

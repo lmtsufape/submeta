@@ -551,7 +551,6 @@
     </div>
     <div class="row">
         <div class="col-lg">
-            <label for="observacaoTextArea">Observação:</label>
             <textarea class="form-control" id="observacaoTextArea" rows="3" name="textObservacao" placeholder="{{$subs->observacao}}" disabled></textarea>
         </div>
     </div>

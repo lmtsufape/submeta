@@ -174,7 +174,7 @@
                                 <input type="number" class="form-control media" value="{{ $p->media_do_curso }}" name="media_geral_curso[]" min="0" max="10" step="0.01"  disabled>
                                 @endcomponent
                           </div>
-                          <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
+                          <div class="col-md-12"><h5>Plano de trabalho</h5></div>
                           <div class="col-12">
                             {{-- @dd($arquivos) --}}
                                 @component('componentes.input', ['label' => 'Título'])
