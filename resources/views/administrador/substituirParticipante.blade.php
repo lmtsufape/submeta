@@ -249,19 +249,31 @@
         var idParticipante = checkboxInput.id;
         var tituloPlano = document.getElementById('nomePlanoTrabalho'+idParticipante);
         var anexoPlano = document.getElementById('anexoPlanoTrabalho'+idParticipante);
+        var planoAtual =<?php echo json_encode($participantes->first()->planoTrabalho) ?>;
+        var arquivo = document.getElementById('arquivo'+idParticipante);
 
         if(checkboxInput.checked){
+            tituloPlano.setAttribute('value', planoAtual.titulo);
             tituloPlano.setAttribute('disabled', 'disabled');
             tituloPlano.removeAttribute('required');
 
             anexoPlano.setAttribute('disabled', 'disabled');
             anexoPlano.removeAttribute('required');
+
+            document.getElementById("arqParticipantes").hidden=true;
+            document.getElementById("arqAtual").hidden=false;
+
+            arquivo.href = "/baixar/plano-de-trabalho/"+planoAtual.id;
         }else if(!checkboxInput.checked){
+            tituloPlano.setAttribute('value','');
             tituloPlano.removeAttribute('disabled');
             tituloPlano.setAttribute('required', 'required');
 
             anexoPlano.removeAttribute('disabled');
             anexoPlano.setAttribute('required', 'required');
+
+            document.getElementById("arqParticipantes").hidden=false;
+            document.getElementById("arqAtual").hidden=true;
         }
     }
 
