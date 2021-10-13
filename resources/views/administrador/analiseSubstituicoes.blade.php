@@ -69,7 +69,7 @@
                                                         <div class="col-12">
                                                             <div class="form-group">
                                                                 <label for="justificativaTextArea">Justificativa:</label>
-                                                                <textarea class="form-control" id="justificativaTextArea" rows="3" name="textJustificativa" minlength="20" >Substituição cumpre com todos os requisitos</textarea>
+                                                                <textarea class="form-control" id="justificativaTextArea" rows="3" name="textJustificativa" minlength="20" required>Substituição cumpre com todos os requisitos</textarea>
                                                             </div>
                                                             <select class="custom-select" name="selectJustificativa" >
                                                                 <option value="DESISTENCIA">DESISTÊNCIA</option>
@@ -110,7 +110,7 @@
                                                         <div class="col-12">
                                                             <div class="form-group">
                                                                 <label for="justificativaTextArea">Justificativa:</label>
-                                                                <textarea class="form-control" id="justificativaTextArea" rows="3" name="textJustificativa" minlength="20"></textarea>
+                                                                <textarea class="form-control" id="justificativaTextArea" rows="3" name="textJustificativa" minlength="20" required></textarea>
                                                             </div>
                                                             <select class="custom-select" name="selectJustificativa" >
                                                                 <option value="DESISTENCIA">DESISTÊNCIA</option>
