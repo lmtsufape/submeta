@@ -577,7 +577,7 @@
             <div class="col-md-12">
                 <h5>Plano de trabalho</h5>
             </div>
-            <div class="col-12">
+            <div class="col-12" id="arqParticipante">
                 @component('componentes.input', ['label' => 'Título'])
                 <input type="text" class="form-control" value="" name="nomePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$participante->id}}" required>
                 <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$participante->id}}">
@@ -590,7 +590,7 @@
                 @endcomponent
             </div>
 
-            <div class="col-6">
+            <div class="col-6" id="arqParticipantes">
                 @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                 <input type="file" class="input-group-text" value="" name="anexoPlanoTrabalho" accept=".pdf" placeholder="Anexo do Plano de Trabalho" id="anexoPlanoTrabalho{{$participante->id}}" required />
                 @error('anexoPlanoTrabalho')
@@ -600,7 +600,12 @@
                 @enderror
                 @endcomponent
             </div>
-
+            <div class="col-6" id="arqAtual" hidden>
+                @component('componentes.input', ['label' => 'Anexo (.pdf)'])
+                    <a href="" id="arquivo{{$participante->id}}" style="padding-left: 20px"><i class="fas fa-file-pdf fa-2x"></i></a>
+                @endcomponent
+            </div>
+            <h1 id="teste"></h1>
             <div class="col-md-12">
                 <h5>Observações</h5>
             </div>
