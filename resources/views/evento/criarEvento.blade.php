@@ -236,7 +236,7 @@
                         <a id="pdfEditalTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'pdfEdital' ])}}">Arquivo atual</a>
                     @endif
                     <input type="hidden" id="pdfEditalPreenchido" name="pdfEditalPreenchido" value="{{ old('pdfEditalPreenchido') }}" >               
-                    <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital" onchange="exibirAnexoTemp(this)">
+                    <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfEdital')
                         <span class="invalid-feedback" role="alert">
@@ -293,5 +293,26 @@
         modeloDocumentoPreenchido.value = "sim";
         }
     }
+
+    $("input[type='file']").on("change", function () {
+        if(this.files[0].size > 2000000) {
+            //  console.log($(this).parents( ".col-sm-5" ))
+            alert("O tamanho do arquivo deve ser menor que 2MB!");
+            $(this).val('');
+
+        }
+    });
+
+    $("input.pdf").on("change", function () {
+        if(this.files[0].type.split('/')[1] == "pdf") {
+            if(this.files[0].size > 20000000){
+                alert("O arquivo possui o tamanho superior a 2MB!");
+                $(this).val('');
+            }
+        }else{
+            alert("O arquivo não é de tipo PDF!");
+            $(this).val('');
+        }
+    });
 </script>
 @endsection
