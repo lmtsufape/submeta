@@ -245,15 +245,17 @@
                 @endcomponent
             </div>
 
-            <div class="col-6">
+            <div class="col-6 {{ $errors->has('cpf') ? ' has-error' : '' }}">
                 @component('componentes.input', ['label' => 'CPF'])
-                <input type="text" class="form-control cpf" value="" name="cpf" placeholder="CPF" id="cpf{{$participante->id}}" required />
+                    <input type="text" class="form-control cpf @error('cpf') is-invalid @enderror" value=""
+                           onchange="checarCPFdoCampo(this)"
+                           name="cpf" placeholder="CPF" id="cpf{{$participante->id}}" required autofocus autocomplete="cpf"/>
 
-                @error('cpf')
-                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
+                    @error('cpf')
+                    <span class="help-block">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                    @enderror
                 @endcomponent
             </div>
             <div class="col-6">
