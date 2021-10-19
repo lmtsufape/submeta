@@ -777,6 +777,11 @@
     //var emailInput = document.getElementById('email');
     //emailInput.disabled = true;
 
+    $(document).ready(function() {
+        $('#cpf').mask('000.000.000-00');
+        $('#celular').mask('(00) 00000-0000');
+    });
+
     function limpa_formulário_cep() {
             //Limpa valores do formulário de cep.
             document.getElementById('rua').value=("");
