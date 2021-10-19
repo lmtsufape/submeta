@@ -33,8 +33,9 @@
 				<input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
 				<input type="hidden" name="evento_id" value="{{ $evento->id }}" >
 				<div class="form-group">
-				<label for="exampleFormControlTextarea1">Parecer:</label>
-				<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer" placeholder="Digite aqui o seu parecer">{{ $trabalho->pivot->parecer }}</textarea>
+					@component('componentes.input', ['label' => 'Parecer'])
+						<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer" placeholder="Digite aqui o seu parecer" required>{{ $trabalho->pivot->parecer }}</textarea>
+					@endcomponent
 				</div>
 				<select class="custom-select" name="recomendacao" >
 						<option  @if($trabalho->pivot->recomendacao =='RECOMENDADO' ) selected @endif value="RECOMENDADO">RECOMENDADO</option>	
@@ -42,8 +43,9 @@
 				</select>
 				<div class="form-group  mt-3 md-3">
 					@if($trabalho->pivot->AnexoParecer == null)
-						<label for="exampleFormControlFile1">Anexo do Parecer:</label>
-					<input type="file" class="form-control-file" id="exampleFormControlFile1" name="anexoParecer">
+						@component('componentes.input', ['label' => 'Anexo do Parecer'])
+							<input type="file" class="form-control-file" id="exampleFormControlFile1" name="anexoParecer" required>
+						@endcomponent
 
 					@else
 					<div class="form-row">
