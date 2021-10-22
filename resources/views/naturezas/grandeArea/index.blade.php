@@ -18,15 +18,24 @@
           Voltar
         </a>
      </div>
-      <div class="col-sm-9" style="text-align: center;">
+      {{-- <div class="col-sm-9" style="text-align: center;">
         <h2 class="titulo-table">{{ __('Grandes áreas') }}</h2>
       </div>
       <div class="col-sm-2">
         <a href="{{route('grandearea.criar')}}" class="btn btn-info" style="float: right;">{{ __('Criar grande área') }}</a>
-      </div>
+      </div> --}}
     </div>
     <hr>
-  <table class="table table-bordered">
+
+    <div class="row">
+        <div class="col">
+            @include('naturezas.grandeArea.collapse-grande-area')
+        </div>
+    </div>
+    
+
+      
+  {{-- <table class="table table-bordered">
     <thead>
       <tr>   
         <th scope="col">Nome</th>
@@ -68,7 +77,7 @@
         </tr>
       @endforeach
     </tbody>
-  </table>
+  </table> --}}
 </div>
 
 @endsection
