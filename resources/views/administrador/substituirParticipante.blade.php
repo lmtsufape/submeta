@@ -233,6 +233,7 @@
         $('input.cep:text').mask('00000-000');
         $('input.cpf:text').mask('000.000.000-00');
         $('input.celular').mask('(00) 00000-0000');
+        $('input.rg:text').mask('00.000.000-0');
 
         $('input').on("input", function(){
             var maxlength = $(this).attr("maxlength");

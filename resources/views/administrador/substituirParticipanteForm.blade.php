@@ -260,7 +260,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'RG'])
-                <input type="number" class="form-control" min="1" maxlength="12" value="" name="rg" placeholder="RG" id="rg{{$participante->id}}" required />
+                <input type="text" class="form-control rg" value="" name="rg" placeholder="RG" id="rg{{$participante->id}}" required />
                 @error('rg')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
