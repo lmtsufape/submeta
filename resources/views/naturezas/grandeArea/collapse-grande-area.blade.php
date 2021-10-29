@@ -18,15 +18,15 @@
             <h5 class="mb-0">
                 <div class="row">
                     <div class="col-11">
-                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ $grandeArea->id }}" aria-expanded="true" aria-controls="collapseOne">
+                        <button class="btn btn-link font-size-naturezas" data-toggle="collapse" data-target="#collapse{{ $grandeArea->id }}" aria-expanded="true" aria-controls="collapseOne" >
                             <i class="fas fa-sort-down fa-1x"></i> {{ $grandeArea->nome }}
                         </button>
                     </div>
                     <div class="col-1 text-center">
-                        <div class=" dropright mt-2 ">
+                        <div class=" dropright mt-2 text-center">
                             <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{-- <i class="fas fa-cogs"></i> --}}
-                                <i class="fas fa-cog"></i>
+                                <i class="fas fa-cog fa-1x"></i>
                             </a>
                             <div class="dropdown-menu">
                                 <a href="{{ route('grandearea.show', ['id' => $grandeArea->id ]) }}" class="dropdown-item text-center">

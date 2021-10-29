@@ -27,8 +27,8 @@
     </div>
     <hr>
 
-    <div class="row">
-        <div class="col">
+    <div class="row" >
+        <div class="col" >
             @include('naturezas.grandeArea.collapse-grande-area')
         </div>
     </div>

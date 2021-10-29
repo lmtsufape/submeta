@@ -1,7 +1,7 @@
 <div id="accordion2">
     @foreach ($grandeArea->areas as $area)
     <h5 class="mb-0 ml-2">
-        <button class="btn btn-link mb-0" data-toggle="collapse" data-target="#collapse{{ $area->id }}" aria-expanded="true" aria-controls="collapseOne">
+        <button class="btn btn-link mb-0 font-size-naturezas" data-toggle="collapse" data-target="#collapse{{ $area->id }}" aria-expanded="true" aria-controls="collapseOne" >
             <i class="fas fa-sort-down fa-1x"></i>{{ $area->nome }}
         </button>
     </h5>
