@@ -223,6 +223,42 @@
         <hr>
         <div class="row subtitulo">
             <div class="col-sm-12">
+                <p>Relatório</p>
+            </div>
+        </div>
+        <div class="row justify-content-left">
+            <div class="col-sm-6">
+
+                @component('componentes.input', ['label' => 'Inicio da Submissão:'])
+                    <input id="dt_inicioRelatorio" type="date" class="form-control @error('dt_inicioRelatorio') is-invalid @enderror" name="dt_inicioRelatorio" value="{{ old('dt_inicioRelatorio') }}" required autocomplete="dt_inicioRelatorio" autofocus
+                           title="Inicio para o periodo do envio do relatório">
+                    @error('dt_inicioRelatorio')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>Apenas será aceita data posterior ao dia do Resultado Final</strong>
+                    </span>
+                    @enderror
+                @endcomponent
+
+
+
+            </div>
+            <div class="col-sm-6">
+
+                @component('componentes.input', ['label' => 'Fim da Submissão:'])
+                    <input id="dt_fimRelatorio" type="date" class="form-control @error('dt_fimRelatorio') is-invalid @enderror" name="dt_fimRelatorio" value="{{ old('dt_fimRelatorio') }}" required autocomplete="dt_fimRelatorio" autofocus
+                           title="Final do periodo do envio do relatório">
+                    @error('dt_fimRelatorio')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>A data deve ser igual ou posterior a data de inicio</strong>
+                    </span>
+                    @enderror
+                @endcomponent
+            </div>
+        </div>
+
+        <hr>
+        <div class="row subtitulo">
+            <div class="col-sm-12">
                 <p>Documentos</p>
             </div>
         </div>
