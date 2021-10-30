@@ -84,7 +84,7 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'RG'])
-                                  <input type="number" class="form-control"  min="1" maxlength="12" value="{{old('rg')[$i] ?? "" }}" name="rg[{{$i}}]"  placeholder="RG" />
+                                  <input type="text" class="form-control rg"  min="9" maxlength="9" value="{{old('rg')[$i] ?? "" }}" name="rg[{{$i}}]"  placeholder="RG" />
                                   @error('rg.'.$i)
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                       <strong>{{ $message }}</strong>
@@ -359,5 +359,8 @@
 
   </div>
 </div>
+<script>
+    $("input.rg:text").mask('00.000.000-0');
+</script>
 <!--X Participantes X-->
 
