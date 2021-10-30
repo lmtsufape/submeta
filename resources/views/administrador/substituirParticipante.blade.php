@@ -39,7 +39,7 @@
                                         <div class="col-2 align-self-center">
                                             <div class="row justify-content-around">
                                                 <a href="" data-toggle="modal" data-target="#modalSubParticipante{{$participante->id}}" class="button"
-                                                   @if($substituicoesProjeto->first()->status == 'Em Aguardo') style="pointer-events: none; cursor: default;" @endif>
+                                                   @if(($substituicoesProjeto->first() != null) && ($substituicoesProjeto->first()->status == 'Em Aguardo')) style="pointer-events: none; cursor: default;" @endif>
                                                     <i class="fas fa-exchange-alt fa-2x"></i></a>
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a>
                                             </div>
