@@ -87,6 +87,10 @@
         color: white;
         margin: 0.5rem;
       }
+
+      .font-size-naturezas {
+          font-size: 1.2rem;
+      }
     </style>
 </head>
 

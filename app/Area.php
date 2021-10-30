@@ -40,4 +40,8 @@ class Area extends Model
   public function grandeArea() {
     return $this->belongsTo('App\GrandeArea', 'grande_area_id');
   }
+
+  public function subAreas() {
+    return $this->hasMany('App\SubArea');
+  }
 }
