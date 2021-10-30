@@ -44,7 +44,7 @@ class AdministradorController extends Controller
     public function editais(){
     	//$admin = Administrador::with('user')->where('user_id', Auth()->user()->id)->first();
     	//$eventos = Evento::where('coordenadorId',$admin->id )->get();
-        $eventos = Evento::all();
+        $eventos = Evento::all()->sortBy('nome');
 
     	return view('administrador.editais', ['eventos'=> $eventos]);
     }
@@ -63,7 +63,7 @@ class AdministradorController extends Controller
         $evento = Evento::where('id', $request->evento_id)->first();
         $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
         $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
-        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados);
+        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados)->sortBy('titulo');
 
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();

@@ -32,7 +32,7 @@ class EventoController extends Controller
     public function index(Request $request)
     {
         if($request->buscar == null){
-          $eventos = Evento::all();
+          $eventos = Evento::all()->sortBy('nome');
           // $comissaoEvento = ComissaoEvento::all();
           // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
           $hoje = Carbon::today('America/Recife');
@@ -51,7 +51,7 @@ class EventoController extends Controller
     public function listar()
     {
         //
-        $eventos = Evento::all();
+        $eventos = Evento::all()->sortBy('nome');
         // $comissaoEvento = ComissaoEvento::all();
         // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
 
