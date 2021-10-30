@@ -133,7 +133,11 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/showSubstituicoes', 'TrabalhoController@telaShowSubst'                    )->name('trabalho.telaAnaliseSubstituicoes')->middleware('checkRoles:coordenador,administrador');
   Route::post(  '/aprovarSubstituicao', 'TrabalhoController@aprovarSubstituicao'            )->name('trabalho.aprovarSubstituicao');
 
-  //#########  Atribuição  #######################################
+  //##########  Relatórios
+  Route::get(   '/projeto/planosTrabalho/{id}', 'ArquivoController@listar'                  )->name('planos.listar');
+  Route::post(   '/projeto/planosTrabalho/anexarRelatorio', 'ArquivoController@anexarRelatorio' )->name('planos.anexar.relatorio');
+
+    //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
   Route::get(   '/atribuirPorArea',       'AtribuicaoController@distribuicaoPorArea'      )->name('distribuicaoAutomaticaPorArea');
   Route::post(  '/distribuicaoManual',    'AtribuicaoController@distribuicaoManual'       )->name('distribuicaoManual');
