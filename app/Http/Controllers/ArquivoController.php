@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Arquivo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 
 class ArquivoController extends Controller
 {
@@ -92,5 +93,27 @@ class ArquivoController extends Controller
             return Storage::download($arquivo->nome);
         }
         return abort(404);
+    }
+
+    public function listar($id){
+        $arquivos = Arquivo::where('trabalhoId',$id)->get();
+        return view('planosTrabalho.listar')->with(['arquivos' => $arquivos]);
+    }
+
+    public function anexarRelatorio(Request $request){
+        try{
+            $arquivo = Arquivo::where('id',$request->arqId)->first();
+            $pasta = 'planoTrabalho/' . $arquivo->id;
+            if($request->relatorioParcial != null) {
+                $arquivo->relatorioParcial = Storage::putFileAs($pasta, $request->relatorioParcial, "RelatorioParcial.pdf");
+            }
+            if($request->relatorioFinal != null) {
+                $arquivo->relatorioFinal = Storage::putFileAs($pasta, $request->relatorioFinal, "RelatorioFinal.pdf");
+            }
+            $arquivo->save();
+            return redirect(route('planos.listar', ['id' => $request->projId]));
+        }catch (Exception $th){
+
+        }
     }
 }
