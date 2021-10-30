@@ -13,6 +13,8 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
+    public static $rules=['cpf' =>'required'];
+    public static $messages=['cpf'=>'erro cpf'];
     /**
      * The attributes that are mass assignable.
      *

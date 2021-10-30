@@ -105,7 +105,7 @@ class ProponenteController extends Controller
     }
     public function projetosEdital($id) {
       $edital = Evento::find($id);
-      $projetos = Trabalho::where('evento_id', '=', $id)->get();
+      $projetos = Trabalho::where('evento_id', '=', $id)->orderBy('titulo')->get();
       $hoje = Carbon::today('America/Recife');
       $hoje = $hoje->toDateString();
 

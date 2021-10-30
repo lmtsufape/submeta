@@ -30,7 +30,7 @@
                                 </h5>
                             </div>
                             <div class="card-body">
-                                @foreach($participantes as $participante)
+                            @foreach($participantes as $participante)
                                     <div class="row"style="margin-bottom: 20px;">
                                         <div class="col-10">
                                             <h4 style="font-size:20px">{{$participante->user->name}}</h4>
@@ -38,7 +38,9 @@
                                         </div>
                                         <div class="col-2 align-self-center">
                                             <div class="row justify-content-around">
-                                                <a href="" data-toggle="modal" data-target="#modalSubParticipante{{$participante->id}}" class="button"><i class="fas fa-exchange-alt fa-2x"></i><a>
+                                                <a href="" data-toggle="modal" data-target="#modalSubParticipante{{$participante->id}}" class="button"
+                                                   @if(($substituicoesProjeto->first() != null) && ($substituicoesProjeto->first()->status == 'Em Aguardo')) style="pointer-events: none; cursor: default;" @endif>
+                                                    <i class="fas fa-exchange-alt fa-2x"></i></a>
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a>
                                             </div>
                                         </div>
@@ -92,12 +94,12 @@
                         <div style="margin-top: 20px">
                             <div class="card-header">
                                 <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <h5 class="card-title" style= "color:#1492E6">
-                                                Participante Substituido
+                                                Participante Substituído
                                             </h5>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <h5 class="card-title" style= "color:#1492E6">
                                                 Participante Substituto
                                             </h5>
@@ -112,17 +114,22 @@
                                                 Status
                                             </h5>
                                         </div>
+                                        <div class="col-2">
+                                            <h5 class="card-title" style= "color:#1492E6">
+                                                Justificativa
+                                            </h5>
+                                        </div>
                                 </div>
                             </div>
 
                             <div class="card-body">
                                 @foreach($substituicoesProjeto as $subs)
                                     <div class="row"style="margin-bottom: 20px;">
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" class="button"><h4 style="font-size:18px">{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</h4></a>
                                                 <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->created_at))}} - @if($subs->participanteSubstituido()->withTrashed()->first()->deleted_at == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->deleted_at))}} @endif</h5>
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" class="button"><h4 style="font-size:18px">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</h4></a>
                                                 <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->created_at))}} - @if($subs->participanteSubstituto()->withTrashed()->first()->deleted_at == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->deleted_at))}} @endif</h5>
                                             </div>
@@ -144,6 +151,30 @@
                                                     <h5>Pendente</h5>
                                                 @endif
                                             </div>
+                                            <div class="col-2">
+                                                @if($subs->status == 'Em Aguardo')
+                                                    <h5>Pendente</h5>
+                                                @else
+                                                    <a href="" data-toggle="modal" data-target="#modalVizuJustificativa{{$subs->id}}" class="button"><h4 style="font-size:18px">Visualizar</h4></a>
+                                                @endif
+                                            </div>
+                                    </div>
+
+                                    <!-- Modal vizualizar justificativa -->
+                                    <div class="modal fade" id="modalVizuJustificativa{{$subs->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="overflow-x:auto">
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Justificativa</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h4 style="font-size:18px">{{$subs->justificativa}}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Modal vizualizar info participante substituido -->
@@ -202,6 +233,7 @@
         $('input.cep:text').mask('00000-000');
         $('input.cpf:text').mask('000.000.000-00');
         $('input.celular').mask('(00) 00000-0000');
+        $('input.rg:text').mask('00.000.000-0');
 
         $('input').on("input", function(){
             var maxlength = $(this).attr("maxlength");
@@ -249,19 +281,31 @@
         var idParticipante = checkboxInput.id;
         var tituloPlano = document.getElementById('nomePlanoTrabalho'+idParticipante);
         var anexoPlano = document.getElementById('anexoPlanoTrabalho'+idParticipante);
+        var planoAtual =<?php echo json_encode($participantes->first()->planoTrabalho) ?>;
+        var arquivo = document.getElementById('arquivo'+idParticipante);
 
         if(checkboxInput.checked){
+            tituloPlano.setAttribute('value', planoAtual.titulo);
             tituloPlano.setAttribute('disabled', 'disabled');
             tituloPlano.removeAttribute('required');
 
             anexoPlano.setAttribute('disabled', 'disabled');
             anexoPlano.removeAttribute('required');
+
+            document.getElementById("arqParticipantes").hidden=true;
+            document.getElementById("arqAtual").hidden=false;
+
+            arquivo.href = "/baixar/plano-de-trabalho/"+planoAtual.id;
         }else if(!checkboxInput.checked){
+            tituloPlano.setAttribute('value','');
             tituloPlano.removeAttribute('disabled');
             tituloPlano.setAttribute('required', 'required');
 
             anexoPlano.removeAttribute('disabled');
             anexoPlano.setAttribute('required', 'required');
+
+            document.getElementById("arqParticipantes").hidden=false;
+            document.getElementById("arqAtual").hidden=true;
         }
     }
 

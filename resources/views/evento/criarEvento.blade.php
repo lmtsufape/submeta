@@ -223,6 +223,42 @@
         <hr>
         <div class="row subtitulo">
             <div class="col-sm-12">
+                <p>Relatório</p>
+            </div>
+        </div>
+        <div class="row justify-content-left">
+            <div class="col-sm-6">
+
+                @component('componentes.input', ['label' => 'Inicio da Submissão:'])
+                    <input id="dt_inicioRelatorio" type="date" class="form-control @error('dt_inicioRelatorio') is-invalid @enderror" name="dt_inicioRelatorio" value="{{ old('dt_inicioRelatorio') }}" required autocomplete="dt_inicioRelatorio" autofocus
+                           title="Inicio para o periodo do envio do relatório">
+                    @error('dt_inicioRelatorio')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>Apenas será aceita data posterior ao dia do Resultado Final</strong>
+                    </span>
+                    @enderror
+                @endcomponent
+
+
+
+            </div>
+            <div class="col-sm-6">
+
+                @component('componentes.input', ['label' => 'Fim da Submissão:'])
+                    <input id="dt_fimRelatorio" type="date" class="form-control @error('dt_fimRelatorio') is-invalid @enderror" name="dt_fimRelatorio" value="{{ old('dt_fimRelatorio') }}" required autocomplete="dt_fimRelatorio" autofocus
+                           title="Final do periodo do envio do relatório">
+                    @error('dt_fimRelatorio')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>A data deve ser igual ou posterior a data de inicio</strong>
+                    </span>
+                    @enderror
+                @endcomponent
+            </div>
+        </div>
+
+        <hr>
+        <div class="row subtitulo">
+            <div class="col-sm-12">
                 <p>Documentos</p>
             </div>
         </div>
@@ -236,7 +272,7 @@
                         <a id="pdfEditalTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'pdfEdital' ])}}">Arquivo atual</a>
                     @endif
                     <input type="hidden" id="pdfEditalPreenchido" name="pdfEditalPreenchido" value="{{ old('pdfEditalPreenchido') }}" >               
-                    <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital" onchange="exibirAnexoTemp(this)">
+                    <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfEdital')
                         <span class="invalid-feedback" role="alert">
@@ -293,5 +329,26 @@
         modeloDocumentoPreenchido.value = "sim";
         }
     }
+
+    $("input[type='file']").on("change", function () {
+        if(this.files[0].size > 2000000) {
+            //  console.log($(this).parents( ".col-sm-5" ))
+            alert("O tamanho do arquivo deve ser menor que 2MB!");
+            $(this).val('');
+
+        }
+    });
+
+    $("input.pdf").on("change", function () {
+        if(this.files[0].type.split('/')[1] == "pdf") {
+            if(this.files[0].size > 20000000){
+                alert("O arquivo possui o tamanho superior a 2MB!");
+                $(this).val('');
+            }
+        }else{
+            alert("O arquivo não é de tipo PDF!");
+            $(this).val('');
+        }
+    });
 </script>
 @endsection

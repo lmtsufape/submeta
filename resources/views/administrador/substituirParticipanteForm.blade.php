@@ -245,20 +245,22 @@
                 @endcomponent
             </div>
 
-            <div class="col-6">
+            <div class="col-6 {{ $errors->has('cpf') ? ' has-error' : '' }}">
                 @component('componentes.input', ['label' => 'CPF'])
-                <input type="text" class="form-control cpf" value="" name="cpf" placeholder="CPF" id="cpf{{$participante->id}}" required />
+                    <input type="text" class="form-control cpf @error('cpf') is-invalid @enderror" value=""
+                           onchange="checarCPFdoCampo(this)"
+                           name="cpf" placeholder="CPF" id="cpf{{$participante->id}}" required autofocus autocomplete="cpf"/>
 
-                @error('cpf')
-                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
+                    @error('cpf')
+                    <span class="help-block">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                    @enderror
                 @endcomponent
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'RG'])
-                <input type="number" class="form-control" min="1" maxlength="12" value="" name="rg" placeholder="RG" id="rg{{$participante->id}}" required />
+                <input type="text" class="form-control rg" value="" name="rg" placeholder="RG" id="rg{{$participante->id}}" required />
                 @error('rg')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -577,7 +579,7 @@
             <div class="col-md-12">
                 <h5>Plano de trabalho</h5>
             </div>
-            <div class="col-12">
+            <div class="col-12" id="arqParticipante">
                 @component('componentes.input', ['label' => 'Título'])
                 <input type="text" class="form-control" value="" name="nomePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$participante->id}}" required>
                 <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$participante->id}}">
@@ -590,7 +592,7 @@
                 @endcomponent
             </div>
 
-            <div class="col-6">
+            <div class="col-6" id="arqParticipantes">
                 @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                 <input type="file" class="input-group-text" value="" name="anexoPlanoTrabalho" accept=".pdf" placeholder="Anexo do Plano de Trabalho" id="anexoPlanoTrabalho{{$participante->id}}" required />
                 @error('anexoPlanoTrabalho')
@@ -600,12 +602,16 @@
                 @enderror
                 @endcomponent
             </div>
-
+            <div class="col-6" id="arqAtual" hidden>
+                @component('componentes.input', ['label' => 'Anexo (.pdf)'])
+                    <a href="" id="arquivo{{$participante->id}}" style="padding-left: 20px"><i class="fas fa-file-pdf fa-2x"></i></a>
+                @endcomponent
+            </div>
+            <h1 id="teste"></h1>
             <div class="col-md-12">
                 <h5>Observações</h5>
             </div>
             <div class="col-12">
-                <label for="observacaoTextArea">Observação:</label>
                 <textarea class="form-control" id="observacaoTextArea" rows="3" name="textObservacao" ></textarea>
             </div>
             <div class="col-12 mt-4">

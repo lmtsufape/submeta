@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use App;
 use Auth;
 use App\Area;
 use App\User;
@@ -1452,6 +1453,7 @@ class TrabalhoController extends Controller
         $substituicao = new Substituicao();
         $substituicao->observacao = $request->textObservacao;
 
+        \App\Validator\CpfValidator::validate ($request->all());
         $user = User::where('email' , $data['email'])->first();
         if (!$user){
           $data['usuarioTemp'] = true;
@@ -1529,6 +1531,9 @@ class TrabalhoController extends Controller
       Mail::to($evento->coordenadorComissao->user->email)->send(new SolicitacaoSubstituicao($evento, $trabalho));
 
       return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['sucesso' => 'Pedido de substituição enviado com sucesso!']);
+    }catch (\App\Validator\ValidationException $th){
+        DB::rollback();
+        return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => "Cpf inválido"]);
     }catch (\Throwable $th) {
       DB::rollback();
       return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => $th->getMessage()]);

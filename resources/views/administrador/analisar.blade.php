@@ -218,6 +218,32 @@
                                                       </div>
                                                       @endif
                                                   @endforeach
+                                                  <h5>Relatórios</h5>
+                                                  <div class="row">
+                                                      <div class="col-sm-12">
+                                                          <div id="relatorios">
+                                                              <div class="row">
+                                                                  <div class="col-sm-4">
+                                                                      <label for="dt_inicioRelatorio" class="col-form-label">{{ __('Inicio da Submissão:') }}</label>
+                                                                      <input id="dt_inicioRelatorio{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorio" value="{{$evento->dt_inicioRelatorio}}" required autocomplete="dt_inicioRelatorio" disabled autofocus>
+
+                                                                  </div>
+                                                                  <div class="col-sm-4">
+                                                                      <label for="dt_fimRelatorio" class="col-form-label">{{ __('Fim da Submissão:') }}</label>
+                                                                      <input id="dt_fimRelatorio{{$evento->id}}" type="date" class="form-control" name="dt_fimRelatorio" value="{{$evento->dt_fimRelatorio}}" required autocomplete="dt_fimRelatorio" disabled autofocus>
+
+                                                                  </div>
+                                                          </div>
+                                                      </div>
+                                                      <div>
+                                                          <br>
+                                                          <a href="{{route('planos.listar', ['id' => $trabalho->id])}}" class="">
+                                                              Lista de Relatórios
+                                                          </a>
+
+                                                      </div>
+                                                  </div>
+                                                  </div>
                                               </div>
                                               {{-- @endif --}}
                                           {{-- @endforeach --}}

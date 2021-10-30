@@ -72,7 +72,7 @@
 
         <div class="card-body" >
           @if(count($projetos)>0)
-            <table class="table table-bordered table-hover" style="display: block; overflow-x: auto; white-space: nowrap; border-radius:10px; margin-bottom:0px">
+            <table class="table table-bordered table-hover" style="display: block; overflow-x: visible; white-space: nowrap; border-radius:10px; margin-bottom:0px">
               <thead>
                 <tr>
                   <th scope="col" style="width:100%">Nome do projeto</th>
@@ -111,10 +111,19 @@
                                   <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
                                     Substituir participante
                                   </a>
+                                  <hr class="dropdown-hr">
                                 @endif
                                 <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                                   Visualizar
                                 </a>
+                                @if(($edital->dt_inicioRelatorio != null && $edital->dt_fimRelatorio !=null) &&
+                                    ($edital->dt_inicioRelatorio <= $hoje && $hoje <= $edital->dt_fimRelatorio))
+
+                                    <hr class="dropdown-hr">
+                                    <a href="{{route('planos.listar', ['id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
+                                        Relatórios
+                                    </a>
+                                @endif
                                 <hr class="dropdown-hr">
                                 {{-- <a href="" class="dropdown-item" style="text-align: center">
                                   Recorrer
