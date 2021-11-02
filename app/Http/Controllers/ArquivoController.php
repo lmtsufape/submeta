@@ -6,6 +6,7 @@ use App\Arquivo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
+use Carbon\Carbon;
 
 class ArquivoController extends Controller
 {
@@ -97,7 +98,9 @@ class ArquivoController extends Controller
 
     public function listar($id){
         $arquivos = Arquivo::where('trabalhoId',$id)->get();
-        return view('planosTrabalho.listar')->with(['arquivos' => $arquivos]);
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+        return view('planosTrabalho.listar')->with(['arquivos' => $arquivos, 'hoje' => $hoje]);
     }
 
     public function anexarRelatorio(Request $request){
