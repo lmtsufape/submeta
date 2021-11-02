@@ -14,8 +14,10 @@ class AlterTableEventos2 extends Migration
     public function up()
     {
         Schema::table('eventos', function (Blueprint $table) {
-            $table->date('dt_inicioRelatorio')->nullable();
-            $table->date('dt_fimRelatorio')->nullable();
+            $table->date('dt_inicioRelatorioParcial')->nullable();
+            $table->date('dt_fimRelatorioParcial')->nullable();
+            $table->date('dt_inicioRelatorioFinal')->nullable();
+            $table->date('dt_fimRelatorioFinal')->nullable();
         });
     }
 
@@ -27,8 +29,10 @@ class AlterTableEventos2 extends Migration
     public function down()
     {
         Schema::table('eventos', function (Blueprint $table) {
-            $table->dropColumn('dt_inicioRelatorio');
-            $table->dropColumn('dt_fimRelatorio');
+            $table->dropColumn('dt_inicioRelatorioParcial');
+            $table->dropColumn('dt_fimRelatorioParcial');
+            $table->dropColumn('dt_inicioRelatorioFinal');
+            $table->dropColumn('dt_fimRelatorioFinal');
         });
     }
 }
