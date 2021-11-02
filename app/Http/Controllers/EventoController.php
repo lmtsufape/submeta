@@ -122,8 +122,10 @@ class EventoController extends Controller
             'fim_recurso'         => ['required', 'date'],
             'resultado_final'     => ['required', 'date'],
             'resultado_preliminar'=> ['required', 'date'],
-            'dt_inicioRelatorio'  => ['required', 'date'],
-            'dt_fimRelatorio'     => ['required', 'date'],
+            'dt_inicioRelatorioParcial'  => ['required', 'date'],
+            'dt_fimRelatorioParcial'     => ['required', 'date'],
+            'dt_inicioRelatorioFinal'  => ['required', 'date'],
+            'dt_fimRelatorioFinal'     => ['required', 'date'],
             'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
             //'modeloDocumento'     => [],
           ]);
@@ -148,8 +150,10 @@ class EventoController extends Controller
           'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
           'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
           'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
-          'dt_inicioRelatorio'  => ['required', 'date', 'after:resultado_final'],
-          'dt_fimRelatorio'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorio'],
+          'dt_inicioRelatorioParcial'  => ['required', 'date', 'after:resultado_final'],
+          'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
+          'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
+          'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
           'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
           //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
@@ -167,8 +171,10 @@ class EventoController extends Controller
         $evento['fim_recurso']         = $request->fim_recurso;
         $evento['resultado_preliminar']= $request->resultado_preliminar;
         $evento['resultado_final']     = $request->resultado_final;
-        $evento['dt_inicioRelatorio']  = $request->dt_inicioRelatorio;
-        $evento['dt_fimRelatorio']     = $request->dt_fimRelatorio;
+        $evento['dt_inicioRelatorioParcial']  = $request->dt_inicioRelatorioParcial;
+        $evento['dt_fimRelatorioParcial']     = $request->dt_fimRelatorioParcial;
+        $evento['dt_inicioRelatorioFinal']  = $request->dt_inicioRelatorioFinal;
+        $evento['dt_fimRelatorioFinal']     = $request->dt_fimRelatorioFinal;
         $evento['coordenadorId']       = $request->coordenador_id;
         $evento['criador_id']          = $user_id;
         $evento['numParticipantes']    = $request->numParticipantes;
@@ -366,8 +372,10 @@ class EventoController extends Controller
             'inicio_recurso'      => ['required', 'date'],
             'fim_recurso'         => ['required', 'date'],
             'resultado_final'     => ['required', 'date'],
-            'dt_inicioRelatorio'  => ['required', 'date'],
-            'dt_fimRelatorio'     => ['required', 'date'],
+            'dt_inicioRelatorioParcial'  => ['required', 'date'],
+            'dt_fimRelatorioParcial'     => ['required', 'date'],
+            'dt_inicioRelatorioFinal'  => ['required', 'date'],
+            'dt_fimRelatorioFinal'     => ['required', 'date'],
             'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
             'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
           ]);
@@ -387,8 +395,10 @@ class EventoController extends Controller
           'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
           'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
           'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
-          'dt_inicioRelatorio'  => ['required', 'date', 'after:resultado_final'],
-          'dt_fimRelatorio'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorio'],
+          'dt_inicioRelatorioParcial'  => ['required', 'date', 'after:resultado_final'],
+          'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
+          'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
+          'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
           'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
 
@@ -405,8 +415,10 @@ class EventoController extends Controller
         $evento->fim_recurso          = $request->fim_recurso;
         $evento->resultado_preliminar = $request->resultado_preliminar;
         $evento->resultado_final      = $request->resultado_final;
-        $evento->dt_inicioRelatorio   = $request->dt_inicioRelatorio;
-        $evento->dt_fimRelatorio      = $request->dt_fimRelatorio;
+        $evento->dt_inicioRelatorioParcial   = $request->dt_inicioRelatorioParcial;
+        $evento->dt_fimRelatorioParcial      = $request->dt_fimRelatorioParcial;
+        $evento->dt_inicioRelatorioFinal   = $request->dt_inicioRelatorioFinal;
+        $evento->dt_fimRelatorioFinal      = $request->dt_fimRelatorioFinal;
         $evento->coordenadorId        = $request->coordenador_id;
         $evento->consu                = $request->has('consu');
         if($request->pdfEdital != null){
