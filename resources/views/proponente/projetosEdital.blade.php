@@ -116,14 +116,12 @@
                                 <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                                   Visualizar
                                 </a>
-                                @if(($edital->dt_inicioRelatorio != null && $edital->dt_fimRelatorio !=null) &&
-                                    ($edital->dt_inicioRelatorio <= $hoje && $hoje <= $edital->dt_fimRelatorio))
 
-                                    <hr class="dropdown-hr">
-                                    <a href="{{route('planos.listar', ['id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
-                                        Relatórios
-                                    </a>
-                                @endif
+                                <hr class="dropdown-hr">
+                                <a href="{{route('planos.listar', ['id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
+                                    Relatórios
+                                </a>
+
                                 <hr class="dropdown-hr">
                                 {{-- <a href="" class="dropdown-item" style="text-align: center">
                                   Recorrer

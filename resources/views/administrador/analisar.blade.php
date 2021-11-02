@@ -224,16 +224,28 @@
                                                           <div id="relatorios">
                                                               <div class="row">
                                                                   <div class="col-sm-4">
-                                                                      <label for="dt_inicioRelatorio" class="col-form-label">{{ __('Inicio da Submissão:') }}</label>
-                                                                      <input id="dt_inicioRelatorio{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorio" value="{{$evento->dt_inicioRelatorio}}" required autocomplete="dt_inicioRelatorio" disabled autofocus>
+                                                                      <label for="dt_inicioRelatorioParcial" class="col-form-label">{{ __('Início do Relatório Parcial:') }}</label>
+                                                                      <input id="dt_inicioRelatorioParcial{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorioParcial" value="{{$evento->dt_inicioRelatorioParcial}}" required autocomplete="dt_inicioRelatorioParcial" disabled autofocus>
 
                                                                   </div>
                                                                   <div class="col-sm-4">
-                                                                      <label for="dt_fimRelatorio" class="col-form-label">{{ __('Fim da Submissão:') }}</label>
-                                                                      <input id="dt_fimRelatorio{{$evento->id}}" type="date" class="form-control" name="dt_fimRelatorio" value="{{$evento->dt_fimRelatorio}}" required autocomplete="dt_fimRelatorio" disabled autofocus>
+                                                                      <label for="dt_fimRelatorioParcial" class="col-form-label">{{ __('Fim do Relatório Parcial:') }}</label>
+                                                                      <input id="dt_fimRelatorioParcial{{$evento->id}}" type="date" class="form-control" name="dt_fimRelatorioParcial" value="{{$evento->dt_fimRelatorioParcial}}" required autocomplete="dt_fimRelatorioParcial" disabled autofocus>
 
                                                                   </div>
-                                                          </div>
+                                                              </div>
+                                                              <div class="row">
+                                                                  <div class="col-sm-4">
+                                                                      <label for="dt_inicioRelatorioFinal" class="col-form-label">{{ __('Início do Relatório Final:') }}</label>
+                                                                      <input id="dt_inicioRelatorioFinal{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorioFinal" value="{{$evento->dt_inicioRelatorioFinal}}" required autocomplete="dt_inicioRelatorioFinal" disabled autofocus>
+
+                                                                  </div>
+                                                                  <div class="col-sm-4">
+                                                                      <label for="dt_fimRelatorioFinal" class="col-form-label">{{ __('Fim do Relatório Final:') }}</label>
+                                                                      <input id="dt_fimRelatorioFinal{{$evento->id}}" type="date" class="form-control" name="dt_fimRelatorioFinal" value="{{$evento->dt_fimRelatorioFinal}}" required autocomplete="dt_fimRelatorioFinal" disabled autofocus>
+
+                                                                  </div>
+                                                              </div>
                                                       </div>
                                                       <div>
                                                           <br>
