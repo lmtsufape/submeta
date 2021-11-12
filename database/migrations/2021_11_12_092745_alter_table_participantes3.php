@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterTableParticipantes extends Migration
+class AlterTableParticipantes3 extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,9 @@ class AlterTableParticipantes extends Migration
     public function up()
     {
         Schema::table('participantes', function (Blueprint $table) {
-            $table->string('anexoTermoCompromisso')->nullable();
-            $table->string('anexoComprovanteMatricula')->nullable();
-            $table->string('anexoLattes')->nullable();
+            $table->string('anexoComprovanteBancario')->nullable();
         });
+
     }
 
     /**
@@ -28,9 +27,7 @@ class AlterTableParticipantes extends Migration
     public function down()
     {
         Schema::table('participantes', function (Blueprint $table) {
-            $table->dropColumn('anexoTermoCompromisso');
-            $table->dropColumn('anexoComprovanteMatricula');
-            $table->dropColumn('anexoLattes');
+            $table->dropColumn('anexoComprovanteBancario');
         });
     }
 }

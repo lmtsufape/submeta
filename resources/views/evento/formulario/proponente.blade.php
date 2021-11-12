@@ -34,7 +34,7 @@
           <div class="form-group col-md-6">
             <label for="linkGrupo">Link do grupo de pesquisa</label>
             <input class="form-control @error('linkGrupoPesquisa') is-invalid @enderror" type="url" name="linkGrupoPesquisa"
-                    value="{{old('linkGrupoPesquisa')}}" >
+                    value="" >
 
             <small>Ex.: http://dgp.cnpq.br/dgp/espelhogrupo/228363</small>
             @error('linkGrupoPesquisa')
@@ -46,7 +46,7 @@
           <div class="form-group col-md-6">
             <label for="pontuacaoPlanilha">Valor da planilha de pontuação <span style="color: red; font-weight:bold">*</span></label>
             <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" min="0"   step=".01" name="pontuacaoPlanilha"
-            value="{{old('pontuacaoPlanilha')}}" >
+            value="" >
 
             @error('pontuacaoPlanilha')
             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">

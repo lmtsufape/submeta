@@ -75,7 +75,7 @@
                           <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                           <div class="form-group">
                             <label for="exampleFormControlSelect2">Selecione o(s) avaliador(es) para esse projeto</label>
-                            <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2">
+                            <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2" required>
                               @foreach ($trabalho->aval as $avaliador)
                                 <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{$avaliador->area->nome ?? 'Indefinida'}}) </option>
                               @endforeach
