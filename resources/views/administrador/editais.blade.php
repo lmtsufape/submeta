@@ -20,12 +20,15 @@
       </div>
       <div class="col-sm-1">
       </div>
-      <div class="col-sm-5" style="float: center;">
+      <div class="col-sm-4" style="float: center;">
         <h4 class="titulo-table">Editais</h4>
       </div>
       <div class="col-sm-2">
           <a href="{{route('evento.criar')}}" class="btn btn-info" style="float: right;">Criar Edital</a>
       </div>
+        <div class="col-sm-1">
+            <a href="{{route('bolsas.listar')}}" class="btn btn-info" style="float: right;">Bolsas</a>
+        </div>
     </div>
   <hr>
   @if(session('mensagem'))
