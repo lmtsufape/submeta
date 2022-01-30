@@ -46,7 +46,12 @@
               <td>
                 {{ $user->name }}
               </td>
-              <td>{{ $user->tipo }}</td>
+              @if($user->tipo != "avaliador")
+                <td>{{ $user->tipo }}</td>
+              @else
+                <td>{{ $user->tipo }} - {{ $user->avaliadors->tipo }} </td>
+              @endif
+
               <td>{{ $user->creaet_at }}</td>
               <td>
                 <div class="btn-group dropright dropdown-options">
