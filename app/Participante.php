@@ -10,7 +10,9 @@ class Participante extends Model
     use SoftDeletes;
     public const ENUM_TURNO = ['Matutino',  'Vespertino', 'Noturno', 'Integral'];
 
-	protected $fillable = ['rg', 'data_de_nascimento', 'curso', 'participante_id', 'turno', 'ordem_prioridade', 'periodo_atual', 'total_periodos', 'media_do_curso', 'linkLattes'];
+	protected $fillable = ['rg', 'data_de_nascimento', 'curso', 'participante_id', 'turno',
+        'ordem_prioridade', 'periodo_atual', 'total_periodos', 'media_do_curso', 'linkLattes',
+        'tipoBolsa'];
 
     public function user(){
         return $this->belongsTo('App\User');
