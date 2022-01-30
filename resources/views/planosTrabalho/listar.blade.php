@@ -23,7 +23,7 @@
                         <tbody>
 
 						<td style="text-align: center;">{{$arquivo->titulo}}</td>
-						<td style="text-align: center;">{{$arquivo->participante->user->name}} {{$arquivo->trabalho->evento->nome}}</td>
+						<td style="text-align: center;">{{$arquivo->participante->user->name}}</td>
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
