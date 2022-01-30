@@ -110,6 +110,7 @@
     <thead>
       <tr>
         <th scope="col">Nome do Usuário</th>
+        <th scope="col">Tipo</th>
         <th scope="col">E-mail</th>
         <th scope="col">Status</th>
         <th scope="col" style="text-align:center">Ação</th>
@@ -125,6 +126,7 @@
         @endforeach
         <tr>
           <td>{{ $avaliador->user->name }}</td>
+          <td>{{ $avaliador->tipo }}</td>
           <td>{{ $avaliador->user->email }}</td>
           <td>{{ $contador }} / {{ $avaliador->planoTrabalhos->count() }}</td>
           <td style="text-align:center"> ...</td>
