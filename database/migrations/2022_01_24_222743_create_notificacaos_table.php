@@ -19,9 +19,8 @@ class CreateNotificacaosTable extends Migration
             $table->integer('remetente_id');
             $table->integer('destinatario_id');
             $table->integer('trabalho_id');
-            $table->integer('perfil_id')->nullable();
             $table->boolean('lido');
-            $table->integer('tipo');  //1 para pediu acesso, 2 para recebeu acesso, 3 para objetivo, 4 atividade, 5 sugestao
+            $table->integer('tipo');
 
             $table->foreign('remetente_id')->references('id')->on('users');
             $table->foreign('trabalho_id')->references('id')->on('trabalhos');
