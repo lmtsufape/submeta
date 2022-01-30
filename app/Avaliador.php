@@ -13,6 +13,7 @@ class Avaliador extends Model
       'parecer', 
       'AnexoParecer',
       'pivot',
+      'tipo',
   ];
     public function user(){
         return $this->belongsTo('App\User');
