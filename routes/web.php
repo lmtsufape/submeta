@@ -61,6 +61,10 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
     Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'        )->name('enviarParecer')->middleware('auth');
     Route::post('/Enviarparecer/plano', 'AvaliadorController@enviarParecerPlano'   )->name('enviarParecerPlano')->middleware('auth');
     Route::get('/Resposta', 'AvaliadorController@conviteResposta'            )->name('conviteResposta')->middleware('auth');
+
+      Route::post('/parecerInterno',       'AvaliadorController@parecerInterno'              )->name('parecerInterno')->middleware('auth');
+      Route::post('/EnviarparecerInterno', 'AvaliadorController@enviarParecerInterno'        )->name('enviarParecerInterno')->middleware('auth');
+
   });
 
 
@@ -190,6 +194,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/reenviarConviteAvaliador',     'AdministradorController@reenviarConvite'    )->name('reenviarConvite');
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
+  Route::get('/visualizarParecerInterno',    'AdministradorController@visualizarParecerInterno')->name('visualizarParecerInterno');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
   Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
   Route::get('/showrProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
