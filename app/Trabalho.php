@@ -106,4 +106,7 @@ class Trabalho extends Model
     return $this->hasMany(ParecerInterno::class, 'trab_id', 'id');
   }
 
+  public function notificacoes(){
+      return $this->hasMany(Notificacao::class, 'trabalho_id', 'id');
+  }
 }
