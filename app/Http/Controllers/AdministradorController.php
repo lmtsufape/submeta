@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Administrador;
 use App\User;
+use App\ParecerInterno;
 use App\Avaliador;
 use App\AdministradorResponsavel;
 use App\Area;
@@ -97,6 +98,17 @@ class AdministradorController extends Controller
 
         //dd($parecer);
         return view('administrador.visualizarParecer')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador]);
+    }
+
+    public function visualizarParecerInterno(Request $request){
+
+        $avaliador = Avaliador::find($request->avaliador_id);
+        $trabalho = $avaliador->trabalhos->where('id', $request->trabalho_id)->first();
+        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+        $evento = Evento::find($trabalho->evento_id);
+
+        //dd($parecer);
+        return view('administrador.visualizarParecerInterno')->with(['parecer' => $parecerInterno, 'avaliador' => $avaliador,'trabalho' => $trabalho,'evento' => $evento]);
     }
 
     public function create() {
