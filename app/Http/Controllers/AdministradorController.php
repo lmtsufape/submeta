@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Substituicao;
 use Illuminate\Http\Request;
 use App\Administrador;
 use App\User;
@@ -76,11 +77,10 @@ class AdministradorController extends Controller
 
     public function showProjetos(Request $request){
 
-        $evento = Evento::where('id', $request->evento_id)->first();
-        $editais = Evento::with('trabalhos')->get();
-        $projetos = Trabalho::all();
+        $projetos = Trabalho::all()->where('status','submetido');
+        $funcaoParticipantes = FuncaoParticipantes::all();
 
-        return view('administrador.listaProjetos', compact('projetos', 'evento','editais'));
+        return view('administrador.listaProjetos')->with(['projetos'=>$projetos,'funcaoParticipantes'=>$funcaoParticipantes]);
     }
 
     public function showResultados(Request $request){
