@@ -982,8 +982,18 @@ class TrabalhoController extends Controller
     
           }
         }
-        $evento->trabalhos()->save($trabalho);
-  
+          $notificacao = App\Notificacao::create([
+              'remetente_id' => Auth::user()->id,
+              'destinatario_id' => $evento->coordenadorComissao->user_id,
+              'trabalho_id' => $trabalho->id,
+              'lido' => false,
+              'tipo' => 1,
+          ]);
+          $notificacao->save();
+
+
+          $evento->trabalhos()->save($trabalho);
+
         $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
         $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
         $trabalho->save();
@@ -1534,6 +1544,15 @@ class TrabalhoController extends Controller
       $evento->trabalhos()->save($trabalho);
       $trabalho->save();
 
+        $notificacao = App\Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $evento->coordenadorComissao->user_id,
+            'trabalho_id' => $trabalho->id,
+            'lido' => false,
+            'tipo' => 2,
+        ]);
+        $notificacao->save();
+
       DB::commit();
 
       Mail::to($evento->coordenadorComissao->user->email)->send(new SolicitacaoSubstituicao($evento, $trabalho));
@@ -1643,4 +1662,9 @@ class TrabalhoController extends Controller
 
   }
 
-}
+    public function aprovarProposta(Request $request,$id){
+        $trabalho = Trabalho::find($id);
+        $trabalho->status = $request->statusProb;
+        $trabalho->save();
+
+}}

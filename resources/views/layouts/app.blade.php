@@ -182,7 +182,9 @@
                             @if(Auth::user()->administradors != null)
                                 <a href="{{route('admin.editais')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Editais</a>
                                 <a href="{{route('admin.showProjetos')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);" >Projetos</a>
+                                <a href="{{route('notificacao.listar')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);" >Notificações</a>
                             @else
+                                <a href="{{route('notificacao.listarTrab')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);" >Notificações</a>
                                 <a href="{{route('coord.home')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Editais</a>
                             @endif
                             <a id="navbarDropdown" class="btn navbar-text negrito dropdown-toggle" style="color: rgb(0, 140, 255);" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
