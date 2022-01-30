@@ -132,6 +132,9 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/projeto/substituirParticipante', 'TrabalhoController@trocaParticipante'   )->name('trabalho.infoTrocaParticipante');
   Route::get(   '/showSubstituicoes', 'TrabalhoController@telaShowSubst'                    )->name('trabalho.telaAnaliseSubstituicoes')->middleware('checkRoles:coordenador,administrador');
   Route::post(  '/aprovarSubstituicao', 'TrabalhoController@aprovarSubstituicao'            )->name('trabalho.aprovarSubstituicao');
+  //##########  Bolsas
+  Route::get(   '/bolsas', 'ParticipanteController@listarParticipanteEdital'                  )->name('bolsas.listar');
+  Route::get(  '/bolsas/alteracao/{id}/{tipo}', 'ParticipanteController@alterarBolsa'                    )->name('bolsa.alterar');
 
   //##########  Relatórios
   Route::get(   '/projeto/planosTrabalho/{id}', 'ArquivoController@listar'                  )->name('planos.listar');
