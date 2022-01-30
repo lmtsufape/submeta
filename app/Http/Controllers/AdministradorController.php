@@ -75,6 +75,24 @@ class AdministradorController extends Controller
         return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes]);
     }
 
+    public function analisarProposta(Request $request){
+
+        $trabalho = Trabalho::where('id',$request->id)->first();
+        $evento = Evento::where('id', $trabalho->evento_id)->first();
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        $substituicoesProjeto = Substituicao::where('trabalho_id', $trabalho->id)->orderBy('created_at', 'DESC')->get();
+        $substituicoesPendentes = Substituicao::where('trabalho_id', $trabalho->id)->where('status', 'Em Aguardo')->orderBy('created_at', 'DESC')->get();
+
+
+
+        return view('administrador.analisarProposta')->with(
+            [   'trabalho' => $trabalho,
+                'funcaoParticipantes' => $funcaoParticipantes,
+                'evento' => $evento,
+                'substituicoesPendentes' => $substituicoesPendentes,
+                'substituicoesProjeto' => $substituicoesProjeto,]);
+    }
+
     public function showProjetos(Request $request){
 
         $projetos = Trabalho::all()->where('status','submetido');
