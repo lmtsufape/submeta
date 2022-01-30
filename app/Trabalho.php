@@ -101,4 +101,9 @@ class Trabalho extends Model
   public function substituicaos(){
       return $this->hasMany('App\Substituicao');
   }
+
+  public function parecer_internos(){
+    return $this->hasMany(ParecerInterno::class, 'trab_id', 'id');
+  }
+
 }

@@ -30,5 +30,8 @@ class Avaliador extends Model
     public function area(){
         return $this->belongsTo('App\Area');
     }
+    public function parecer_internos(){
+        return $this->hasMany(ParecerInterno::class, 'avali_id', 'id');
+    }
 
 }
