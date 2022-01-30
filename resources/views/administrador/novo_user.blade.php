@@ -64,7 +64,7 @@
             </div> 
             <div class="col-md-4">
                 <label for="tipo" class="col-form-label">{{ __('Tipo*') }}</label>
-                <select name="tipo" id="tipo" onchange="mudar()" class="form-control">
+                <select name="tipo" id="tipo" onchange="mudar(); avaliadorCheck();" class="form-control">
                     @if(auth()->user()->tipo == 'administrador')
                         <option @if ( old('tipo') == "administradorResponsavel" ) required @endif value="administradorResponsavel">Administrador responsável</option>
                     @endif
@@ -73,7 +73,16 @@
                     <option @if ( old('tipo') == "proponente" ) required @endif value="proponente">Proponente</option>
                     <option @if ( old('tipo') == "participante" ) required @endif value="participante">Discente</option>
                 </select>
-            </div>        
+            </div>
+
+            <div >
+                <label id="labTipoAvaliador" style="display: none" for="tipoAvaliador" class="col-form-label">{{ __('Avaliador*') }}</label>
+                <select id="tipoAvaliador" style="display: none" name="tipoAvaliador"  class="form-control">
+                    <option @if ( old('tipo') == "Externo" )  @endif value="Externo">Externo</option>
+                    <option @if ( old('tipo') == "Interno" )  @endif value="Interno">Interno</option>
+                </select>
+            </div>
+
             <div class="col-md-2">
                 <label for="celular" class="col-form-label">{{ __('Celular*') }}</label>
                 <input id="celular" type="text" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ old('celular') }}" required autocomplete="celular" autofocus>
@@ -355,6 +364,22 @@
         }else if(instituicaoSelect.value === "UFAPE"){
             instituicaoSelect.parentElement.className = 'col-md-6';
             instituicao.parentElement.style.display = 'none';
+        }
+    }
+    function avaliadorCheck() {
+        var tipoUser = document.getElementById('tipo');
+        var tipoAval = document.getElementById("tipoAvaliador");
+        var labAval = document.getElementById("labTipoAvaliador")
+        if (tipo.value == "avaliador") {
+            tipoAval.style.display = "";
+            labAval.style.display = "";
+            tipo.parentElement.className = 'col-md-2'
+        } else {
+            tipo.parentElement.className = 'col-md-4'
+            labAval.parentElement.className = ''
+            tipoAval.parentElement.className = ''
+            tipoAval.style.display = "none";
+            labAval.style.display = "none";
         }
     }
     window.onload = showInstituicao();

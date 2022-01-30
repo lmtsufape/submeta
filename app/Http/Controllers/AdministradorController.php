@@ -182,6 +182,7 @@ class AdministradorController extends Controller
             case "avaliador":
                 $avaliador = new Avaliador();
                 $avaliador->user_id = $user->id;
+                $avaliador->tipo = $request->tipoAvaliador;
                 $avaliador->save();
                 break;
             case "proponente":
