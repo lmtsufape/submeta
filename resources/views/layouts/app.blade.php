@@ -171,6 +171,14 @@
                             </div>
                             <a href="{{ route('register') }}" class="btn navbar-text btn-azul-destaque negrito" style="color:  rgb(0, 140, 255);">{{ __('Cadastre-se') }}</a>
                         @else
+                            @if(Auth::user()->avaliadors != null)
+                                @if(Auth::user()->avaliadors->tipo == "Interno")
+                                    <a href="" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);pointer-events: none;" >Comissão Interna</a>
+                                @else
+                                    <a href="" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);pointer-events: none;" >Comissão Externa</a>
+                                @endif
+                            @endif
+
                             @if(Auth::user()->administradors != null)
                                 <a href="{{route('admin.editais')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Editais</a>
                             @else 
