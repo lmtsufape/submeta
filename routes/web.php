@@ -67,6 +67,9 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   });
 
+    Route::get('/notificacao/listar', 'NotificacaoController@listar')->name('notificacao.listar')->middleware('auth');
+    Route::get('/notificacao/lista', 'NotificacaoController@listarTrab')->name('notificacao.listarTrab')->middleware('auth');
+
 
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
 
