@@ -34,7 +34,7 @@
                                     <div class="row"style="margin-bottom: 20px;">
                                         <div class="col-10">
                                             <h4 style="font-size:20px">{{$participante->user->name}}</h4>
-                                            <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($participante->created_at))}} - Atualmente</h5>
+                                            <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($participante->data_entrada))}} - Atualmente</h5>
                                         </div>
                                         <div class="col-2 align-self-center">
                                             <div class="row justify-content-around">
@@ -127,11 +127,11 @@
                                     <div class="row"style="margin-bottom: 20px;">
                                             <div class="col-3">
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" class="button"><h4 style="font-size:18px">{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</h4></a>
-                                                <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->created_at))}} - @if($subs->participanteSubstituido()->withTrashed()->first()->deleted_at == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->deleted_at))}} @endif</h5>
+                                                <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->data_entrada))}} - @if($subs->participanteSubstituido()->withTrashed()->first()->data_saida == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->data_saida))}} @endif</h5>
                                             </div>
                                             <div class="col-3">
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" class="button"><h4 style="font-size:18px">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</h4></a>
-                                                <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->created_at))}} - @if($subs->participanteSubstituto()->withTrashed()->first()->deleted_at == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->deleted_at))}} @endif</h5>
+                                                <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->data_entrada))}} - @if($subs->participanteSubstituto()->withTrashed()->first()->data_saida == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->data_saida))}} @endif</h5>
                                             </div>
                                             <div class="col-2">
                                                 @if($subs->tipo == 'ManterPlano')
@@ -318,6 +318,7 @@
         inputsForm.push(document.getElementById('nome'+idParticipante));
         inputsForm.push(document.getElementById('email'+idParticipante));
         inputsForm.push(document.getElementById('nascimento'+idParticipante));
+        inputsForm.push(document.getElementById('dt_entrada'+idParticipante));
         inputsForm.push(document.getElementById('cpf'+idParticipante));
         inputsForm.push(document.getElementById('rg'+idParticipante));
         inputsForm.push(document.getElementById('cep'+idParticipante));

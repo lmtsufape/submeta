@@ -278,6 +278,16 @@
                 @enderror
                 @endcomponent
             </div>
+            <div class="col-6">
+                @component('componentes.input', ['label' => 'Data de Entrada'])
+                    <input type="date" class="form-control" value="" name="data_entrada" placeholder="Data de Entrada" id="dt_entrada{{$participante->id}}" required />
+                    @error('data_entrada')
+                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                </span>
+                    @enderror
+                @endcomponent
+            </div>
             <div class="form-group col-md-6">
                 @component('componentes.input', ['label' => 'Link do currículo Lattes'])
                 <input class="form-control @error('linkLattes') is-invalid @enderror" type="text" name="linkLattes" placeholder="Link do currículo Lattes do estudante" id="linkLattes{{$participante->id}}" required >

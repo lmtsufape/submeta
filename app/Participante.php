@@ -12,7 +12,7 @@ class Participante extends Model
 
 	protected $fillable = ['rg', 'data_de_nascimento', 'curso', 'participante_id', 'turno',
         'ordem_prioridade', 'periodo_atual', 'total_periodos', 'media_do_curso', 'linkLattes',
-        'tipoBolsa'];
+        'tipoBolsa', 'data_entrada', 'data_saida'];
 
     public function user(){
         return $this->belongsTo('App\User');
