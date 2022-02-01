@@ -126,7 +126,7 @@
   function gerarPeriodo(e){
     var select = e.parentElement.parentElement.nextElementSibling;
     selectPeriodos = select.children[0].children[1];
-    var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
+    var html = `<option value="" disabled selected>-- TOTAL DE PERÍODOS --</option>`;
     for(var i = 0; i < parseInt(e.value); i++) {
       html += `<option value="${i+1}">${i+1}º</option>`;
     }

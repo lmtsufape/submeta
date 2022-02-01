@@ -26,7 +26,7 @@
                         <div style="margin-top: 20px">
                             <div class="card-header">
                                 <h5 class="card-title" style= "color:#1492E6">
-                                    Nome/Periodo
+                                    Nome/Período
                                 </h5>
                             </div>
                             <div class="card-body">

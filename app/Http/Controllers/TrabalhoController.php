@@ -1465,7 +1465,7 @@ class TrabalhoController extends Controller
         $substituicao = new Substituicao();
         $substituicao->observacao = $request->textObservacao;
         if($participanteSubstituido->data_saida <= $request->data_entrada){
-            return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => "Escolha uma data de entrada posterior a entrada do discente substituido"]);
+            return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => "Escolha uma data de entrada posterior a entrada do discente substituído"]);
         }
 
         $participanteSubstituido->data_saida = $request->data_entrada;
