@@ -9,25 +9,25 @@
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
                         <div class="form-row mt-3">
-                            <div class="col-md-12"><h5 style="color: #1492E6; font-size: 26px;">Edital - {{$evento->nome}}</h5></div>
-                            <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold; font-size: 18px;">Propostas submetidas</h6></div>
+                            <div class="col-md-12"><h5 style="color: #1492E6; font-size: 20px;">Edital - {{$evento->nome}}</h5></div>
+                            <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold; font-size: 14px;">Propostas Submetidas</h6></div>
                         </div>
                     </div>
                     <hr>
                     <div class="container">
                         <div class="row">
                             @foreach( $trabalhos as $trabalho )
-                                <div onclick="myFunc({{$trabalho->id}})" class="col-md-6 card" style="border: groove;border-color:#1492E6;border-radius: 10px; margin-top: 10px;">
+                                <div onclick="myFunc({{$trabalho->id}})" class="col-md-6 card" style="border-color:#1492E6;border-radius: 10px; margin-top: 10px;">
                                     <a href="{{route('admin.analisarProposta',['id'=>$trabalho->id])}}" id="vizuProposta{{$trabalho->id}}" hidden>teste visual de proposta</a>
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <h6 style="color: #1492E6; font-size: 18px;">{{ $trabalho->titulo }}</h6>
-                                            <h6 style="color: #234B8B; font-weight: bold;">Proponente:
+                                            <h6 style="color: #1492E6; font-size: 16px;">{{ $trabalho->titulo }}</h6>
+                                            <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">Proponente:
                                                 @foreach($trabalho->participantes as $participante)
                                                      {{$participante->user->name}};
                                                 @endforeach
                                             </h6>
-                                            <h6 style="color: #234B8B; font-weight: bold;">Data: {{ date('d/m/Y', strtotime($trabalho->created_at)) }}</h6>
+                                            <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">Data: {{ date('d/m/Y', strtotime($trabalho->created_at)) }}</h6>
                                         </div>
 
                                         <div class="col-md-2">
@@ -52,13 +52,13 @@
             <div class="row" >
                 <div class="col-sm-10">
                     <br>
-                    <h6 style="color: #234B8B; font-weight: bold;">
+                    <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">
                         <img src="{{asset('img/icons/pendente.png')}}" style="width: 30px"/>
                         Proposta Pendente</h6>
-                    <h6 style="color: #234B8B; font-weight: bold;">
+                    <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">
                         <img src="{{asset('img/icons/aprovado.png')}}" style="width: 30px"/>
                         Proposta Aprovada</h6>
-                    <h6 style="color: #234B8B; font-weight: bold;">
+                    <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">
                         <img src="{{asset('img/icons/negado.png')}}" style="width: 30px"/>
                         Proposta Negada</h6>
                 </div>
