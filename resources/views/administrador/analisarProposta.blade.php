@@ -433,7 +433,7 @@
                                         <div class="card-body" id="tela2" style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
                                             <div class="" id="tela2">
                                                 <div class="justify-content-start" id="tela2" style="alignment: center">
-                                                    @foreach($substituicoesPendentes as $subs)
+                                                    @foreach($substituicoesProjeto as $subs)
                                                         <div class="row">
                                                             <div class="col-md-9">
                                                                 <h5 style="color: #234B8B; font-weight: bold" class="col-md-12">Substituição</h5>
