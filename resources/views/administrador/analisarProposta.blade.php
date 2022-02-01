@@ -45,6 +45,7 @@
                         <div class="form-row mt-3">
                             <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Informações do Proponente</h5></div>
                         </div>
+                        <hr style="border-top: 1px solid#1492E6">
                         <div class="form-row mt-3">
                             <div class="col-md-12">
                                 <p style="color: #4D4D4D; padding: 0px"><b>Nome:</b> {{ App\Proponente::find($trabalho->proponente_id)->user->name }}</p>
@@ -217,6 +218,7 @@
                         <div class="form-row mt-3">
                             <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Anexos</h5></div>
                         </div>
+                        <hr style="border-top: 1px solid#1492E6">
 
                         {{-- Anexo do Projeto --}}
                         <div class="row justify-content-center">
