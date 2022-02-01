@@ -83,6 +83,9 @@ class AdministradorController extends Controller
         $substituicoesProjeto = Substituicao::where('trabalho_id', $trabalho->id)->orderBy('created_at', 'DESC')->get();
         $substituicoesPendentes = Substituicao::where('trabalho_id', $trabalho->id)->where('status', 'Em Aguardo')->orderBy('created_at', 'DESC')->get();
 
+        $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
+        $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
+        $trabalho->aval = $avalProjeto;
 
 
         return view('administrador.analisarProposta')->with(

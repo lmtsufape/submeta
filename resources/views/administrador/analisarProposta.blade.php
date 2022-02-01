@@ -284,7 +284,48 @@
                     <div class="container">
                         <div class="form-row mt-3">
                             <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Avaliadores</h5></div>
-                            <div class="col-md-1 text-sm-right"><img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt=""></div>
+                            <div class="col-md-1 text-sm-right">
+                                <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#avaliadorModalCenter{{ $trabalho->id }}">
+                                    <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
+                                </a>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="avaliadorModalCenter{{ $trabalho->id }}" tabindex="-1" role="dialog" aria-labelledby="avaliadorModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content modal-submeta">
+                                        <div class="modal-header modal-header-submeta">
+                                            <h5 class="modal-title titulo-table" id="avaliadorModalLongTitle">Selecione o(s) avaliador(es)</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"  style="color: rgb(182, 182, 182)">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form action="{{ route('admin.atribuicao.projeto') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
+                                                <input type="hidden" name="evento_id" value="{{ $evento->id }}">
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect2">Selecione o(s) avaliador(es) para esse projeto</label>
+                                                    <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2" required>
+                                                        @foreach ($trabalho->aval as $avaliador)
+                                                            <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{$avaliador->area->nome ?? 'Indefinida'}}) </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
+                                                </div>
+
+                                                <div>
+                                                    <button type="submit" class="btn btn-info" style="width: 100%">Atribuir</button>
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
                         <div class="row justify-content-center" style="alignment: center">
@@ -495,6 +536,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <hr>
                                                     @endforeach
                                                 </div>
                                             </div>
