@@ -63,18 +63,18 @@
                                                 <div class="modal-body">
                                                     <div class="row">
                                                         <div class="col-4">
-                                                            <button  style="float: right;" type="button" id="btnSubmitDiscente" class="btn btn-info" onclick="subsDiscenteDados({{$participante->id}})">
-                                                                Novo Discente
+                                                            <button  style="float: right; width:220px;" type="button" id="btnSubmitDiscente" class="btn btn-info" onclick="subsDiscenteDados({{$participante->id}})">
+                                                                Substituir Participante
                                                             </button>
                                                         </div>
                                                         <div class="col-4" style="text-align: center">
-                                                            <button type="button" id="btnSubmitManter" class="btn btn-info" onclick="subsDiscentePlano({{$participante->id}})">
-                                                                Plano de Trabalho
+                                                            <button style=" width:220px;" type="button" id="btnSubmitManter" class="btn btn-info" onclick="subsDiscentePlano({{$participante->id}})">
+                                                                Substituir Plano de Trabalho
                                                             </button>
                                                         </div>
                                                         <div class="col-4">
-                                                            <button style="float: left;" type="button" id="btnSubmitCompleto" class="btn btn-info" onclick="subsDiscenteCompleto({{$participante->id}})">
-                                                                Completo
+                                                            <button style="float: left; width:220px;" type="button" id="btnSubmitCompleto" class="btn btn-info" onclick="subsDiscenteCompleto({{$participante->id}})">
+                                                                Substituir Ambos
                                                             </button>
                                                         </div>
                                                     </div>
