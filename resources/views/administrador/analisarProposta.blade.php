@@ -295,7 +295,7 @@
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
                             <div class="col-sm-3">
-                                <label for="dt_inicioRelatorioParcial" class="col-form-label" style="font-weight: bold">{{ __('inicio do Relatório Parcial: ') }}</label>
+                                <label for="dt_inicioRelatorioParcial" class="col-form-label" style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_inicioRelatorioParcial{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorioParcial" value="{{$evento->dt_inicioRelatorioParcial}}" required autocomplete="dt_inicioRelatorioParcial" disabled autofocus>
