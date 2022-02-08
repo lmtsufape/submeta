@@ -78,7 +78,6 @@
                   <th scope="col" style="width:100%">Nome do projeto</th>
                   <th scope="col">Data de Criação</th>
                   <th scope="col" style="text-align:center">Status</th>
-                  <th scope="col">Opção</th>
                 </tr>
               </thead>
               <tbody id="projetos">
