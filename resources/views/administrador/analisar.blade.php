@@ -33,8 +33,8 @@
                                         <div class="col-md-2">
                                             @if($trabalho->status == "aprovado")
                                                 <img src="{{asset('img/icons/aprovado.png')}}" style="width: 60%;margin: auto;display: flex;margin-top: 5px;justify-content: center;align-items: center;" alt="">
-                                            @elseif($trabalho->status == "negado")
-                                                <img src="{{asset('img/icons/pendente.png')}}" style="width: 60%;margin: auto;display: flex;margin-top: 5px;justify-content: center;align-items: center;" alt="">
+                                            @elseif($trabalho->status == "reprovado")
+                                                <img src="{{asset('img/icons/negado.png')}}" style="width: 60%;margin: auto;display: flex;margin-top: 5px;justify-content: center;align-items: center;" alt="">
                                             @else
                                                 <img src="{{asset('img/icons/pendente.png')}}" style="width: 60%;margin: auto;display: flex;margin-top: 5px;justify-content: center;align-items: center;" alt="">
                                             @endif
