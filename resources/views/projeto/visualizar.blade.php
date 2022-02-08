@@ -29,6 +29,12 @@
       
       @component('projeto.formularioVisualizar.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno, 'projeto' => $projeto, 'participantes' => $participantes, 'arquivos' =>$arquivos])
       @endcomponent
+
+      @if($projeto->comentario != null)
+          @component('projeto.formularioVisualizar.resultado',
+                    ['projeto' => $projeto])
+          @endcomponent
+      @endif
       
       {{-- @component('projeto.formularioVisualizar.finalizar', ['projeto' => $projeto])
       @endcomponent --}}

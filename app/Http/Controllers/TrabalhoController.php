@@ -1664,7 +1664,15 @@ class TrabalhoController extends Controller
 
     public function aprovarProposta(Request $request,$id){
         $trabalho = Trabalho::find($id);
-        $trabalho->status = $request->statusProb;
+        $trabalho->status = $request->statusProp;
+        $trabalho->comentario = $request->comentario;
         $trabalho->save();
+        if($request->statusProp=="aprovado"){
+            return redirect()->back()->with(['sucesso' => 'Projeto aprovado com sucesso']);
+        } elseif($request->statusProp=="reprovado"){
+            return redirect()->back()->with(['sucesso' => 'Projeto reprovado com sucesso']);
+        } else{
+            return redirect()->back()->with(['sucesso' => 'Projeto parcialmente aprovado com sucesso']);
+        }
 
 }}

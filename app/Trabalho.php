@@ -18,7 +18,8 @@ class Trabalho extends Model
       'decisaoCONSU',      
       'pontuacaoPlanilha', 
       'linkGrupoPesquisa',
-      'linkLattesEstudante',      
+      'linkLattesEstudante',
+      'comentario',
 
       'anexoDecisaoCONSU',
       'anexoAutorizacaoComiteEtica',
