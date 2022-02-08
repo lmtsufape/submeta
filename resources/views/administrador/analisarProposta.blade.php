@@ -5,6 +5,11 @@
     <div class="row justify-content-center" style="margin-top: 100px;">
         <!--Titulos -->
         <div class="col-md-10">
+            @if (session('sucesso'))
+                <div class="alert alert-success">
+                    <strong>{{ session('sucesso') }}</strong>
+                </div>
+            @endif
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -413,16 +418,22 @@
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
                         <form  action="{{ route('trabalho.aprovarProposta', ['id' => $trabalho->id]) }}" method="post">
+                            @csrf
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-9">
                                     <a class="col-md-12 text-left" style="padding-left: 0px;color: #234B8B; font-weight: bold;">Comentário</a>
-                                    <textarea class="col-md-12" id="comentario" style="border-radius:5px 5px 0 0"></textarea>
+                                    <textarea class="col-md-12" id="comentario" name="comentario" style="border-radius:5px 5px 0 0;height: 71px;" required
+                                    >@if($trabalho->comentario != null){{$trabalho->comentario}}@endif</textarea>
                                 </div>
-                                <div class="col-md-2" style="margin-top: 15px">
-                                    <input class="col-md-6" type="radio" id="aprova" name="statusProp" value="aprovado" required>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 20px;">Aprovar</a>
-                                    <input class="col-md-6" type="radio" id="reprova" name="statusProp" value="negado">
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 20px;">Negar</a>
+                                <div class="col-md-3" style="margin-top: 15px">
+                                    <input class="col-md-1" type="radio" id="aprovado" name="statusProp" value="aprovado" required>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Aprovado</a>
+                                    <br>
+                                    <input class="col-md-1" type="radio" id="parcialAprovado" name="statusProp" value="corrigido" required>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Parcialmente Aprovado</a>
+                                    <br>
+                                    <input class="col-md-1" type="radio" id="reprovado" name="statusProp" value="reprovado" required>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Aprovado</a>
                                 </div>
                             </div>
 
@@ -481,7 +492,7 @@
                                                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
                                                                     </div>
                                                                     <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a id="teste" name="#modalVizuParticipante{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" class="button">{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</a>
+                                                                        <a onclick="vizuParticipante({{$subs->participanteSubstituido()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</a>
                                                                     </div>
                                                                     <div class="col-md-1 text-left" style="padding-left: 0px;">
                                                                         <img src="{{asset('img/seta.png')}}" style="width:40px;margin-left: 5px;margin-right: 10px;" alt="">
@@ -490,7 +501,7 @@
                                                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
                                                                     </div>
                                                                     <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a id="teste2" name="#modalVizuParticipante{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
+                                                                        <a onclick="vizuParticipante({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
 
                                                                     </div>
                                                                 </div>
@@ -533,7 +544,7 @@
                                                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
                                                                     </div>
                                                                     <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a id="teste3" name="#modalVizuParticipante{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" class="button">{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</a>
+                                                                        <a onclick="vizuParticipante({{$subs->participanteSubstituido()->withTrashed()->first()->id}})" class="button tiro">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
                                                                     </div>
                                                                     <div class="col-md-1 text-left" style="padding-left: 0px;">
                                                                         <img src="{{asset('img/seta.png')}}" style="width:40px;margin-left: 5px;margin-right: 10px;" alt="">
@@ -542,7 +553,7 @@
                                                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
                                                                     </div>
                                                                     <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a id="teste4" name="#modalVizuParticipante{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
+                                                                        <a onclick="vizuParticipante({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
 
                                                                     </div>
                                                                 </div>
@@ -565,27 +576,12 @@
                                                                 @if($subs->status == 'Em Aguardo')
                                                                     <h5 style="color: #234B8B; " class="col-md-12 text-center">Pendente</h5>
                                                                 @else
-                                                                    <a href="" data-toggle="modal" data-target="#modalVizuJustificativa{{$subs->id}}" class="button"><h5 style="color: #234B8B; " class="col-md-12 text-center">Visualizar</h5></a>
+                                                                    <a onclick="vizuJustificativa('{{$subs->justificativa}}')" class="button"><h5 style="color: #234B8B; " class="col-md-12 text-center">Visualizar</h5></a>
                                                                 @endif
 
                                                             </div>
                                                         </div>
-                                                        <!-- Modal vizualizar justificativa -->
-                                                        <div class="modal fade" id="modalVizuJustificativa{{$subs->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header" style="overflow-x:auto">
-                                                                        <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Justificativa</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <h4 style="font-size:18px">{{$subs->justificativa}}</h4>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+
                                                         <hr>
                                                     @endforeach
                                                 </div>
@@ -603,6 +599,23 @@
                 {{--<div class="modal-body">
                     @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1])
                 </div> --}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal vizualizar justificativa -->
+    <div class="modal fade" id="modalVizuJustificativa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="overflow-x:auto">
+                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Justificativa</h5>
+                    <button type="button" class="close" onclick="closeJustificativa()" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 style="font-size:18px" id="conteudoJustificativa"></h4>
+                </div>
             </div>
         </div>
     </div>
@@ -644,7 +657,43 @@
                 $("#tela2").hide();
                 $("#tela1").show();
             });
+
+            let textTemp = document.getElementById("comentario").innerHTML;
+
+            document.getElementById("aprovado").onclick = function () {
+                var s = document.getElementById("comentario");
+                s.innerHTML = 'Proposta cumpriu todos os requisitos estabelecidos no edital';
+            };
+            document.getElementById("reprovado").onclick = function () {
+                var s = document.getElementById("comentario");
+                s.innerHTML = textTemp;
+            };
+            document.getElementById("parcialAprovado").onclick = function () {
+                var s = document.getElementById("comentario");
+                s.innerHTML = textTemp;
+            };
+
+
         });
+    </script>
+    <script>
+
+        function  vizuParticipante(id){
+            $("#modalVizuSubstituicao").modal('hide');
+            setTimeout(() => {  $("#modalVizuParticipante"+id).modal(); }, 500);
+        }
+
+        function  vizuJustificativa(texto){
+            $("#modalVizuSubstituicao").modal('hide');
+            setTimeout(() => {  $("#modalVizuJustificativa").modal(); }, 500);
+            document.getElementById("conteudoJustificativa").innerHTML = texto;
+        }
+
+        function  closeJustificativa(){
+            $("#modalVizuJustificativa").modal('hide');
+            setTimeout(() => {  $("#modalVizuSubstituicao").modal(); }, 500);
+        }
+
     </script>
 
     <script type="text/javascript">
