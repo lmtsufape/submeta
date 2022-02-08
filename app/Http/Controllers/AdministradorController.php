@@ -65,7 +65,12 @@ class AdministradorController extends Controller
         $evento = Evento::where('id', $request->evento_id)->first();
         $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
         $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
-        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados)->sortBy('titulo');
+        $trabalhosAprovados = $evento->trabalhos->Where('status', 'aprovado');
+        $trabalhosReprovados = $evento->trabalhos->Where('status', 'reprovado');
+        $trabalhosCorrigidos = $evento->trabalhos->Where('status', 'corrigido');
+        $trabalhos = $trabalhosSubmetidos
+            ->merge($trabalhosAvaliados)->merge($trabalhosAprovados)
+            ->merge($trabalhosReprovados)->merge($trabalhosCorrigidos)->sortBy('titulo');
 
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
@@ -98,7 +103,7 @@ class AdministradorController extends Controller
 
     public function showProjetos(Request $request){
 
-        $projetos = Trabalho::all()->where('status','submetido');
+        $projetos = Trabalho::all()->where('status','<>','rascunho');
         $funcaoParticipantes = FuncaoParticipantes::all();
 
         return view('administrador.listaProjetos')->with(['projetos'=>$projetos,'funcaoParticipantes'=>$funcaoParticipantes]);
