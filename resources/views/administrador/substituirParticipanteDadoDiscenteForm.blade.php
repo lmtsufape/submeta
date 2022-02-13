@@ -384,7 +384,8 @@
 
             </div>
 
-            <div class="col-12 mb-3 mt-3" hidden>
+            <div hidden>
+            <div class="col-12 mb-3 mt-3">
                 <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="check" id="{{$participante->id}}" name="manterPlanoCheck" checked>
                 <label class="form-check-label" for="{{$participante->id}}">
@@ -393,12 +394,12 @@
                 </div>
             </div>
 
-            <div class="col-md-12" hidden>
-                <h5>Plano de trabalhos</h5>
+            <div class="col-md-12" >
+                <h5>Plano de trabalho</h5>
             </div>
-            <div class="col-12" id="arqParticipante" hidden>
+            <div class="col-12" id="arqParticipante" >
                 @component('componentes.input', ['label' => 'Título'])
-                <input type="text" class="form-control" value="{{$participantes->first()->planoTrabalho->titulo}}" name="nomeDiscentePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomeDiscentePlanoTrabalho{{$participante->id}}" disabled>
+                <input type="text" class="form-control" value="" name="nomeDiscentePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomeDiscentePlanoTrabalho{{$participante->id}}" disabled>
                 <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$participante->id}}">
                 </span>
                 @error('nomeDiscentePlanoTrabalho')
@@ -408,11 +409,13 @@
                 @enderror
                 @endcomponent
             </div>
-            <div class="col-6" id="arqDiscenteAtual" hidden>
+            <div class="col-6" id="arqDiscenteAtual" >
                 @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                     <a href="" id="arquivo{{$participante->id}}" style="padding-left: 20px"><i class="fas fa-file-pdf fa-2x"></i></a>
                 @endcomponent
             </div>
+            </div>
+
             <h1 id="teste"></h1>
             <div class="col-md-12">
                 <h5>Observações</h5>
