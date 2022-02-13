@@ -56,14 +56,20 @@
                                 <p style="color: #4D4D4D; padding: 0px"><b>Nome:</b> {{ App\Proponente::find($trabalho->proponente_id)->user->name }}</p>
                             </div>
                             <div class="col-md-12">
-                                <p style="color: #4D4D4D; padding: 0px"><b>Lattes:</b>
-                                    @if(App\Proponente::where('id', $trabalho->proponente_id)->first()->linkLattes != null)
-                                        {{ App\Proponente::where('id', $trabalho->proponente_id)->first()->linkLattes }}
-                                    @endif
-                                </p>
+                                <b style="color: #4D4D4D;">Lattes:</b>
+                                @if(App\Proponente::where('id', $trabalho->proponente_id)->first()->linkLattes != null)
+                                    <a style="color: #4D4D4D;" href="{{ App\Proponente::where('id', $trabalho->proponente_id)->first()->linkLattes }}"
+                                       target="_blank"
+                                    >{{ App\Proponente::where('id', $trabalho->proponente_id)->first()->linkLattes }}</a>
+                                @endif
                             </div>
+
                             <div class="col-md-12">
-                                <p style="color: #4D4D4D; padding: 0px"><b>Grupo de Pesquisa:</b> {{ $trabalho->linkGrupoPesquisa }}</p>
+                                <br>
+                                <b style="color: #4D4D4D;">Grupo de Pesquisa: </b>
+                                <a style="color: #4D4D4D;" href="{{ $trabalho->linkGrupoPesquisa }}"
+                                   target="_blank"
+                                >{{ $trabalho->linkGrupoPesquisa }}</a>
                             </div>
                         </div>
                     </div>
@@ -81,15 +87,17 @@
                         <div class="form-row mt-3">
                             <div class="col-sm-9"><h5 style="color: #234B8B; font-weight: bold">Discentes</h5></div>
                             <div class="col-sm-3 text-sm-right" >
-                                <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições Pendentes</a>
                                 @if($substituicoesPendentes->count() > 0)
+                                    <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições Pendentes</a>
                                     <img class="" src="{{asset('img/icons/warning.ico')}}" style="width:15px" alt="">
+                                @else
+                                    <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições</a>
                                 @endif
                             </div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
 
-                        <div class="row justify-content-center" style="alignment: center">
+                        <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->participantes as $participante)
                                 <div class="col-sm-1">
                                     <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
@@ -124,6 +132,48 @@
                                         </div>
                                     </div>
                                 </div>
+                                @foreach($substituicoesProjeto as $subs)
+
+                                <!-- Modal vizualizar info participante substituido -->
+                                    <div class="modal fade" id="modalVizuParticipanteSub{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header" style="overflow-x:auto">
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    @include('administrador.vizualizarParticipante', ['visualizarSubstituido' => 1])
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal vizualizar info participante substituto -->
+                                    <div class="modal fade" id="modalVizuParticipanteSub{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header" style="overflow-x:auto">
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    @include('administrador.vizualizarParticipante')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
 
                                 <!-- Modal reprovar substituição -->
                                 <div class="modal fade" id="modalCancelarSubst" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -230,21 +280,20 @@
                             {{-- Arquivo  --}}
                             <div class="col-sm-4">
                                 <label for="anexoProjeto" class="col-form-label" style="font-weight: bold">{{ __('Projeto: ') }}</label>
-                                <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}">Arquivo</a>
-                                <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:20px" alt="">
+                                <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+
                             </div>
 
                             <div class="col-sm-4">
                                 <label for="anexoLatterCoordenador" class="col-form-label" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
-                                <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> Arquivo</a>
-                                <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:20px" alt="">
+                                <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+
                             </div>
 
                             <div class="col-sm-4">
                                 <label for="nomeTrabalho" class="col-form-label" style="font-weight: bold">{{ __('Autorização do Comitê de Ética: ') }}</label>
                                 @if($trabalho->anexoAutorizacaoComiteEtica != null)
-                                    <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> Arquivo</a>
-                                    <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:20px" alt="">
+                                    <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
                                     -
                                 @endif
@@ -252,15 +301,14 @@
 
                             <div class="col-sm-4">
                                 <label for="anexoPlanilha" class="col-form-label" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
-                                <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"> Arquivo</a>
-                                <img class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:20px" alt="">
+                                <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:40px" alt=""></a>
+
                             </div>
 
                             <div class="col-sm-4">
                                 <label for="nomeTrabalho" class="col-form-label" style="font-weight: bold">{{ __('Justificativa: ') }}</label>
                                 @if($trabalho->justificativaAutorizacaoEtica != null)
-                                    <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"> Arquivo</a>
-                                    <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:20px" alt="">
+                                    <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
                                     -
                                 @endif
@@ -270,9 +318,7 @@
                                 {{-- Decisão do CONSU --}}
                                 <div class="col-sm-4">
                                     <label for="anexoCONSU" class="col-form-label" style="font-weight: bold">{{ __('Decisão do CONSU: ') }}</label>
-                                    <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"> Arquivo</a>
-                                    <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:20px" alt="">
-
+                                    <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 </div>
                             @endif
 
@@ -292,7 +338,7 @@
                         <div class="form-row mt-3">
                             <div class="col-sm-9"><h5 style="color: #234B8B; font-weight: bold">Relatórios</h5></div>
                             <div class="col-sm-3 text-sm-right" >
-                                <a href="{{route('planos.listar', ['id' => $trabalho->id])}}"  class="button">Lista de Relatórios</a>
+                                <a href="{{route('planos.listar', ['id' => $trabalho->id])}}"  class="button">Listar Relatórios</a>
                             </div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
@@ -383,7 +429,7 @@
 
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
-                        <div class="row justify-content-center" style="alignment: center">
+                        <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
                                 <div class="col-sm-1">
                                     <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
@@ -412,9 +458,6 @@
                     <div class="container">
                         <div class="form-row mt-3">
                             <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Aprovação</h5></div>
-                            <div class="col-md-1 text-sm-right">
-                                <h5 style="color: #234B8B; font-weight: bold" class="col-md-12 text-center">1/3</h5>
-                            </div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
                         <form  action="{{ route('trabalho.aprovarProposta', ['id' => $trabalho->id]) }}" method="post">
@@ -477,7 +520,7 @@
                             </ul>
                         </div>
                         <div id="content">
-                            <div class="justify-content-center conteudo" id="tela1" style="margin-top: 0px;border: none;">
+                            <div class="justify-content-center conteudo" id="tela1" style="margin-top: 0px;border: none;overflow-x: auto;">
                                 <div class="col-md-12" id="tela1" style="padding: 0px">
                                     <div class="card" id="tela1" style="border-radius: 5px">
                                         <div class="card-body" id="tela1" style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
@@ -529,7 +572,7 @@
                                 </div>
                             </div>
 
-                            <div class="justify-content-center conteudo" id="tela2" style="margin-top: 0px;border: none;">
+                            <div class="justify-content-center conteudo" id="tela2" style="margin-top: 0px;border: none;overflow-x: auto;">
                                 <div class="col-md-12" id="tela2" style="padding: 0px">
                                     <div class="card" id="tela2" style="border-radius: 5px">
                                         <div class="card-body" id="tela2" style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
@@ -544,7 +587,7 @@
                                                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
                                                                     </div>
                                                                     <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a onclick="vizuParticipante({{$subs->participanteSubstituido()->withTrashed()->first()->id}})" class="button tiro">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
+                                                                        <a onclick="vizuPartici({{$subs->participanteSubstituido()->withTrashed()->first()->id}})" class="button tiro">{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</a>
                                                                     </div>
                                                                     <div class="col-md-1 text-left" style="padding-left: 0px;">
                                                                         <img src="{{asset('img/seta.png')}}" style="width:40px;margin-left: 5px;margin-right: 10px;" alt="">
@@ -553,7 +596,7 @@
                                                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
                                                                     </div>
                                                                     <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a onclick="vizuParticipante({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
+                                                                        <a onclick="vizuPartici({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
 
                                                                     </div>
                                                                 </div>
@@ -681,6 +724,10 @@
         function  vizuParticipante(id){
             $("#modalVizuSubstituicao").modal('hide');
             setTimeout(() => {  $("#modalVizuParticipante"+id).modal(); }, 500);
+        }
+        function  vizuPartici(id){
+            $("#modalVizuSubstituicao").modal('hide');
+            setTimeout(() => {  $("#modalVizuParticipanteSub"+id).modal(); }, 500);
         }
 
         function  vizuJustificativa(texto){
