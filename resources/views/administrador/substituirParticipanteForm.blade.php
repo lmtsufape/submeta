@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'RG'])
-            <input type="number" class="form-control" min="1" maxlength="12" value="{{$participante->rg}}" name="rg" placeholder="RG" disabled />
+            <input type="text" class="form-control" min="1" maxlength="12" value="{{$participante->rg}}" name="rg" placeholder="RG" disabled />
             @endcomponent
         </div>
         <div class="col-6">
