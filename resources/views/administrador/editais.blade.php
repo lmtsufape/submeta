@@ -70,16 +70,16 @@
                           Editar Edital
                         </a>
                         <hr class="dropdown-hr">
+                        <a href="{{route('admin.analisar', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
+                            Visualizar Projetos
+                        </a>
+                        <hr class="dropdown-hr">
                         <a href="{{route('admin.atribuir', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
                             Atribuir Avaliadores
                         </a>
                         <hr class="dropdown-hr">
                         <a href="{{route('admin.pareceres', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
                             Visualizar Pareceres
-                        </a>
-                        <hr class="dropdown-hr">
-                        <a href="{{route('admin.analisar', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
-                          Analisar projetos
                         </a>
                         <hr class="dropdown-hr">
                         <a href="{{route('admin.showResultados', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">

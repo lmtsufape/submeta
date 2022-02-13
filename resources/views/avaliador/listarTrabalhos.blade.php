@@ -42,7 +42,7 @@
         
 
         <div class="card-body" >
-            <table class="table table-bordered table-hover" style="display: block; overflow-x: auto; white-space: nowrap; border-radius:10px; margin-bottom:0px">
+            <table class="table table-bordered table-hover" style="display: block; white-space: nowrap; border-radius:10px; margin-bottom:0px">
               <thead>
                 <tr>
                   <th scope="col" style="width:100%">Nome do Projeto</th>
@@ -89,7 +89,7 @@
                           @endforeach
                         </td>
                         <td>
-                          <div class="row">
+                          <div class="row justify-content-center">
                             <form action="{{ route('avaliador.parecer', ['evento' => $evento]) }}" method="POST">
                               @csrf
                               <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
@@ -114,7 +114,7 @@
                               @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Sem Parecer @endif
                           </td>
                           <td>
-                              <div class="row">
+                              <div class="row justify-content-center">
                                   <form action="{{ route('avaliador.parecerInterno', ['evento' => $evento]) }}" method="POST">
                                       @csrf
                                       <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
