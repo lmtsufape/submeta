@@ -1464,7 +1464,7 @@ class TrabalhoController extends Controller
         //$participanteSubstituido->delete();
         $substituicao = new Substituicao();
         $substituicao->observacao = $request->textObservacao;
-        if($participanteSubstituido->data_saida <= $request->data_entrada){
+        if($participanteSubstituido->data_entrada > $request->data_entrada){
             return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => "Escolha uma data de entrada posterior a entrada do discente substituído"]);
         }
 
@@ -1667,12 +1667,7 @@ class TrabalhoController extends Controller
         $trabalho->status = $request->statusProp;
         $trabalho->comentario = $request->comentario;
         $trabalho->save();
-        if($request->statusProp=="aprovado"){
-            return redirect()->back()->with(['sucesso' => 'Projeto aprovado com sucesso']);
-        } elseif($request->statusProp=="reprovado"){
-            return redirect()->back()->with(['sucesso' => 'Projeto reprovado com sucesso']);
-        } else{
-            return redirect()->back()->with(['sucesso' => 'Projeto parcialmente aprovado com sucesso']);
-        }
+
+        return redirect()->back()->with(['sucesso' => 'Proposta avaliada com sucesso']);
 
 }}
