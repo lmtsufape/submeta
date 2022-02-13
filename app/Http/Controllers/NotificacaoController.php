@@ -85,7 +85,7 @@ class NotificacaoController extends Controller
 
     public function listar()
     {
-        $notificacoes = Notificacao::all()->sortBy('created_at');
+        $notificacoes = Notificacao::all()->sortByDesc('created_at');
         return view('notificacao.listar',['notificacoes'=>$notificacoes]);
     }
 
@@ -93,7 +93,7 @@ class NotificacaoController extends Controller
     {
         $destinatarios =  Notificacao::where('destinatario_id',Auth()->user()->id)->get();
         $remetentes =  Notificacao::where('remetente_id',Auth()->user()->id)->get();
-        $notificacoes = $destinatarios->merge($remetentes);
+        $notificacoes = $destinatarios->merge($remetentes)->sortByDesc('created_at');
         return view('notificacao.listar',['notificacoes'=>$notificacoes]);
     }
 }
