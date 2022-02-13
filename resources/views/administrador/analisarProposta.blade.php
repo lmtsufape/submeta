@@ -436,7 +436,14 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <h5>{{$avaliador->user->name}}</h5>
-                                    <h9>@if($avaliador->pivot->parecer == null) Pendente @else <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
+                                    @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
+                                        <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null) Pendente @else <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
+                                    @else
+                                        @php
+                                            $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                        @endphp
+                                        <h9>@if($parecerInterno == null) Pendente @else <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
+                                    @endif
                                     <br>
                                     <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
                                         Remover
