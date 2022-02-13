@@ -7,7 +7,7 @@
     <div class="row justify-content-center titulo-menu mb-0">
 		<h4>Dados Bolsa </h4>
 	</div>
-	<div class="card-body" style="width: 75% !important;margin: auto;">
+	<div class="card-body" style="width: 80% !important;margin: auto;">
 			<table class="table table-bordered table-hover" style="display: block; overflow-x: visible; white-space: nowrap; border-radius:10px; margin-bottom:0px">
 
                 <thead>
@@ -23,12 +23,12 @@
 					@foreach($trabalho->participantes as $participante)
 						<tbody>
 
-							<td style="text-align: center;">{{$trabalho->evento->nome}}</td>
-							<td style="text-align: center;">{{$trabalho->titulo}}</td>
-							<td style="text-align: center;">{{$trabalho->status}}</td>
-							<td style="text-align: center;">{{$participante->user->name}}</td>
+							<td style="text-align: center;" title="{{$trabalho->evento->nome}}">{{$trabalho->evento->nome}}</td>
+							<td style="text-align: center;" title="{{$trabalho->titulo}}">{{$trabalho->titulo}}</td>
+							<td style="text-align: center; text-transform: capitalize;" >{{$trabalho->status}}</td>
+							<td style="text-align: center;" title="{{$participante->user->name}}">{{$participante->user->name}}</td>
 							<td style="text-align: center;">
-								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirm{{$participante->id}}">
+								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirm{{$participante->id}}" @if($trabalho->status!="aprovado")disabled="disabled" @endif>
 									@if($participante->tipoBolsa==null)
 										Não Definida
 									@elseif($participante->tipoBolsa == "Voluntario")
@@ -98,5 +98,13 @@
 	</div>
 </div>
 
+<style>
+	td {
+		max-width: 25ch;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+</style>
 
 @endsection

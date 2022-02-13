@@ -22,8 +22,8 @@
 					@foreach($arquivos as $arquivo)
                         <tbody>
 
-						<td style="text-align: center;">{{$arquivo->titulo}}</td>
-						<td style="text-align: center;">{{$arquivo->participante->user->name}}</td>
+						<td style="text-align: center;" title="{{$arquivo->titulo}}">{{$arquivo->titulo}}</td>
+						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}">{{$arquivo->participante->user->name}}</td>
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
@@ -34,7 +34,7 @@
 							@else
 								<!-- Button trigger modal -->
 								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">
-									Visualizar
+									@if($arquivo->relatorioParcial!=null)Visualizar @else Pendente @endif
 								</button>
 							@endif
 						</td>
@@ -49,7 +49,7 @@
 							@else
 								<!-- Button trigger modal -->
 									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">
-										Visualizar
+										@if($arquivo->relatorioFinal!=null)Visualizar @else Pendente @endif
 									</button>
 								@endif
 						</td>
@@ -191,6 +191,14 @@
 	</div>
 </div>
 
+	<style>
+		td {
+			max-width: 25ch;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	</style>
 
 
 @endsection
