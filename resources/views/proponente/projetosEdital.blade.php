@@ -106,7 +106,8 @@
                                     Editar
                                   </a>
                                   <hr class="dropdown-hr">
-                                @elseif($projeto->evento->resultado_final <= $hoje)
+                                @endif
+                                @if( $projeto->status== 'aprovado')
                                   <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
                                     Solicitar Substituições
                                   </a>
