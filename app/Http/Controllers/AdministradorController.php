@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Substituicao;
 use Illuminate\Http\Request;
 use App\Administrador;
 use App\User;
+use App\ParecerInterno;
 use App\Avaliador;
 use App\AdministradorResponsavel;
 use App\Area;
@@ -63,7 +65,12 @@ class AdministradorController extends Controller
         $evento = Evento::where('id', $request->evento_id)->first();
         $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
         $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
-        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados)->sortBy('titulo');
+        $trabalhosAprovados = $evento->trabalhos->Where('status', 'aprovado');
+        $trabalhosReprovados = $evento->trabalhos->Where('status', 'reprovado');
+        $trabalhosCorrigidos = $evento->trabalhos->Where('status', 'corrigido');
+        $trabalhos = $trabalhosSubmetidos
+            ->merge($trabalhosAvaliados)->merge($trabalhosAprovados)
+            ->merge($trabalhosReprovados)->merge($trabalhosCorrigidos)->sortBy('titulo');
 
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
@@ -73,13 +80,33 @@ class AdministradorController extends Controller
         return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes]);
     }
 
+    public function analisarProposta(Request $request){
+
+        $trabalho = Trabalho::where('id',$request->id)->first();
+        $evento = Evento::where('id', $trabalho->evento_id)->first();
+        $funcaoParticipantes = FuncaoParticipantes::all();
+        $substituicoesProjeto = Substituicao::where('trabalho_id', $trabalho->id)->orderBy('created_at', 'DESC')->get();
+        $substituicoesPendentes = Substituicao::where('trabalho_id', $trabalho->id)->where('status', 'Em Aguardo')->orderBy('created_at', 'DESC')->get();
+
+        $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
+        $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
+        $trabalho->aval = $avalProjeto;
+
+
+        return view('administrador.analisarProposta')->with(
+            [   'trabalho' => $trabalho,
+                'funcaoParticipantes' => $funcaoParticipantes,
+                'evento' => $evento,
+                'substituicoesPendentes' => $substituicoesPendentes,
+                'substituicoesProjeto' => $substituicoesProjeto,]);
+    }
+
     public function showProjetos(Request $request){
 
-        $evento = Evento::where('id', $request->evento_id)->first();
-        $editais = Evento::with('trabalhos')->get();
-        $projetos = Trabalho::all();
+        $projetos = Trabalho::all()->where('status','<>','rascunho');
+        $funcaoParticipantes = FuncaoParticipantes::all();
 
-        return view('administrador.listaProjetos', compact('projetos', 'evento','editais'));
+        return view('administrador.listaProjetos')->with(['projetos'=>$projetos,'funcaoParticipantes'=>$funcaoParticipantes]);
     }
 
     public function showResultados(Request $request){
@@ -97,6 +124,17 @@ class AdministradorController extends Controller
 
         //dd($parecer);
         return view('administrador.visualizarParecer')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador]);
+    }
+
+    public function visualizarParecerInterno(Request $request){
+
+        $avaliador = Avaliador::find($request->avaliador_id);
+        $trabalho = $avaliador->trabalhos->where('id', $request->trabalho_id)->first();
+        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+        $evento = Evento::find($trabalho->evento_id);
+
+        //dd($parecer);
+        return view('administrador.visualizarParecerInterno')->with(['parecer' => $parecerInterno, 'avaliador' => $avaliador,'trabalho' => $trabalho,'evento' => $evento]);
     }
 
     public function create() {
@@ -182,6 +220,7 @@ class AdministradorController extends Controller
             case "avaliador":
                 $avaliador = new Avaliador();
                 $avaliador->user_id = $user->id;
+                $avaliador->tipo = $request->tipoAvaliador;
                 $avaliador->save();
                 break;
             case "proponente":

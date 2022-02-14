@@ -18,7 +18,8 @@ class Trabalho extends Model
       'decisaoCONSU',      
       'pontuacaoPlanilha', 
       'linkGrupoPesquisa',
-      'linkLattesEstudante',      
+      'linkLattesEstudante',
+      'comentario',
 
       'anexoDecisaoCONSU',
       'anexoAutorizacaoComiteEtica',
@@ -100,5 +101,13 @@ class Trabalho extends Model
 
   public function substituicaos(){
       return $this->hasMany('App\Substituicao');
+  }
+
+  public function parecer_internos(){
+    return $this->hasMany(ParecerInterno::class, 'trab_id', 'id');
+  }
+
+  public function notificacoes(){
+      return $this->hasMany(Notificacao::class, 'trabalho_id', 'id');
   }
 }

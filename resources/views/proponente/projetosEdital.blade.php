@@ -78,7 +78,6 @@
                   <th scope="col" style="width:100%">Nome do projeto</th>
                   <th scope="col">Data de Criação</th>
                   <th scope="col" style="text-align:center">Status</th>
-                  <th scope="col">Opção</th>
                 </tr>
               </thead>
               <tbody id="projetos">
@@ -107,9 +106,10 @@
                                     Editar
                                   </a>
                                   <hr class="dropdown-hr">
-                                @elseif($projeto->evento->resultado_final <= $hoje)
+                                @endif
+                                @if( $projeto->status== 'aprovado')
                                   <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
-                                    Substituir participante
+                                    Solicitar Substituições
                                   </a>
                                   <hr class="dropdown-hr">
                                 @endif

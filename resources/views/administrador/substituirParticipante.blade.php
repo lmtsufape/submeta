@@ -26,7 +26,7 @@
                         <div style="margin-top: 20px">
                             <div class="card-header">
                                 <h5 class="card-title" style= "color:#1492E6">
-                                    Nome/Periodo
+                                    Nome/Período
                                 </h5>
                             </div>
                             <div class="card-body">
@@ -34,11 +34,11 @@
                                     <div class="row"style="margin-bottom: 20px;">
                                         <div class="col-10">
                                             <h4 style="font-size:20px">{{$participante->user->name}}</h4>
-                                            <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($participante->created_at))}} - Atualmente</h5>
+                                            <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($participante->data_entrada))}} - Atualmente</h5>
                                         </div>
                                         <div class="col-2 align-self-center">
                                             <div class="row justify-content-around">
-                                                <a href="" data-toggle="modal" data-target="#modalSubParticipante{{$participante->id}}" class="button"
+                                                <a href="" data-toggle="modal" data-target="#modalTestSubParticipante{{$participante->id}}" class="button"
                                                    @if(($substituicoesProjeto->first() != null) && ($substituicoesProjeto->first()->status == 'Em Aguardo')) style="pointer-events: none; cursor: default;" @endif>
                                                     <i class="fas fa-exchange-alt fa-2x"></i></a>
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a>
@@ -47,13 +47,55 @@
 
                                     </div>
 
-                                    <!-- Modal substituir participante -->
-                                    <div class="modal fade" id="modalSubParticipante{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <!-- Modal TESTE substituir participante -->
+                                    <div class="modal fade" id="modalTestSubParticipante{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
                                                 <div class="modal-header" style="overflow-x:auto">
-                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Novo participante</h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Tipo de substituição</h5>
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <button  style="float: right; width:220px;" type="button" id="btnSubmitDiscente" class="btn btn-info" onclick="subsDiscenteDados({{$participante->id}})">
+                                                                Substituir Participante
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-4" style="text-align: center">
+                                                            <button style=" width:220px;" type="button" id="btnSubmitManter" class="btn btn-info" onclick="subsDiscentePlano({{$participante->id}})">
+                                                                Substituir Plano de Trabalho
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button style="float: left; width:220px;" type="button" id="btnSubmitCompleto" class="btn btn-info" onclick="subsDiscenteCompleto({{$participante->id}})">
+                                                                Substituir Ambos
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">
+                                                        Cancelar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal substituir participante Completo -->
+                                    <div class="modal fade" id="modalSubParticipanteCompleto{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header" style="overflow-x:auto">
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Novo Participante</h5>
 
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
                                                         <span aria-hidden="true">&times;</span>
@@ -61,7 +103,46 @@
                                                 </div>
 
                                                 <div class="modal-body px-1">
-                                                    @include('administrador.substituirParticipanteForm')
+                                                    @include('administrador.substituirParticipanteCompletoForm')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal substituir participante Dados -->
+                                    <div class="modal fade" id="modalSubParticipanteDado{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header" style="overflow-x:auto">
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Novo Participante</h5>
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body px-1">
+                                                    @include('administrador.substituirParticipanteDadoDiscenteForm')
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal substituir participante Plano -->
+                                    <div class="modal fade" id="modalSubParticipantePlano{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header" style="overflow-x:auto">
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Novo Plano</h5>
+
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body px-1">
+                                                    @include('administrador.substituirParticipantePlanoForm')
                                                 </div>
                                             </div>
                                         </div>
@@ -127,11 +208,11 @@
                                     <div class="row"style="margin-bottom: 20px;">
                                             <div class="col-3">
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" class="button"><h4 style="font-size:18px">{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</h4></a>
-                                                <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->created_at))}} - @if($subs->participanteSubstituido()->withTrashed()->first()->deleted_at == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->deleted_at))}} @endif</h5>
+                                                <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->data_entrada))}} - @if($subs->participanteSubstituido()->withTrashed()->first()->data_saida == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->data_saida))}} @endif</h5>
                                             </div>
                                             <div class="col-3">
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" class="button"><h4 style="font-size:18px">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</h4></a>
-                                                <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->created_at))}} - @if($subs->participanteSubstituto()->withTrashed()->first()->deleted_at == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->deleted_at))}} @endif</h5>
+                                                <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->data_entrada))}} - @if($subs->participanteSubstituto()->withTrashed()->first()->data_saida == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->data_saida))}} @endif</h5>
                                             </div>
                                             <div class="col-2">
                                                 @if($subs->tipo == 'ManterPlano')
@@ -318,6 +399,7 @@
         inputsForm.push(document.getElementById('nome'+idParticipante));
         inputsForm.push(document.getElementById('email'+idParticipante));
         inputsForm.push(document.getElementById('nascimento'+idParticipante));
+        inputsForm.push(document.getElementById('dt_entrada'+idParticipante));
         inputsForm.push(document.getElementById('cpf'+idParticipante));
         inputsForm.push(document.getElementById('rg'+idParticipante));
         inputsForm.push(document.getElementById('cep'+idParticipante));
@@ -411,6 +493,19 @@
         $(selectPeriodos).html('');
         $(selectPeriodos).append(html);
 
+    }
+
+    function subsDiscenteCompleto(discenteId){
+        $("#modalTestSubParticipante"+discenteId).modal('hide');
+        setTimeout(() => {  $("#modalSubParticipanteCompleto"+discenteId).modal(); }, 500);
+    }
+    function subsDiscenteDados(discenteId){
+        $("#modalTestSubParticipante"+discenteId).modal('hide');
+        setTimeout(() => {  $("#modalSubParticipanteDado"+discenteId).modal(); }, 500);
+    }
+    function subsDiscentePlano(discenteId){
+        $("#modalTestSubParticipante"+discenteId).modal('hide');
+        setTimeout(() => {  $("#modalSubParticipantePlano"+discenteId).modal(); }, 500);
     }
 </script>
 @endsection

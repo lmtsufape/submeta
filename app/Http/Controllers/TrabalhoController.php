@@ -958,6 +958,7 @@ class TrabalhoController extends Controller
             //   $participante = Participante::create($data);
             // }
             $participante = Participante::create($data);
+            $participante->data_entrada = $participante->created_at;
             $user->participantes()->save($participante);
 
             $participante->trabalho_id = $trabalho->id;
@@ -981,8 +982,18 @@ class TrabalhoController extends Controller
     
           }
         }
-        $evento->trabalhos()->save($trabalho);
-  
+          $notificacao = App\Notificacao::create([
+              'remetente_id' => Auth::user()->id,
+              'destinatario_id' => $evento->coordenadorComissao->user_id,
+              'trabalho_id' => $trabalho->id,
+              'lido' => false,
+              'tipo' => 1,
+          ]);
+          $notificacao->save();
+
+
+          $evento->trabalhos()->save($trabalho);
+
         $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
         $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
         $trabalho->save();
@@ -1388,6 +1399,7 @@ class TrabalhoController extends Controller
       $data['email'] = $request->email;
       $data['password'] = bcrypt($passwordTemporario);
       $data['data_de_nascimento'] = $request->data_de_nascimento;
+      $data['data_entrada'] = $request->data_entrada;
       $data['cpf'] = $request->cpf;
       $data['tipo'] = 'participante';
       $data['funcao_participante_id'] = 4;
@@ -1452,6 +1464,11 @@ class TrabalhoController extends Controller
         //$participanteSubstituido->delete();
         $substituicao = new Substituicao();
         $substituicao->observacao = $request->textObservacao;
+        if($participanteSubstituido->data_entrada > $request->data_entrada){
+            return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => "Escolha uma data de entrada posterior a entrada do discente substituído"]);
+        }
+
+        $participanteSubstituido->data_saida = $request->data_entrada;
 
         \App\Validator\CpfValidator::validate ($request->all());
         $user = User::where('email' , $data['email'])->first();
@@ -1464,6 +1481,7 @@ class TrabalhoController extends Controller
         $participante = $user->participantes->where('trabalho_id', $trabalho->id)->first();
         if (!$participante){
           $participante = Participante::create($data);
+          $participanteSubstituido->save();
         }
     
         $pasta = 'participantes/' . $participante->id;
@@ -1526,10 +1544,18 @@ class TrabalhoController extends Controller
       $evento->trabalhos()->save($trabalho);
       $trabalho->save();
 
+        $notificacao = App\Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $evento->coordenadorComissao->user_id,
+            'trabalho_id' => $trabalho->id,
+            'lido' => false,
+            'tipo' => 2,
+        ]);
+        $notificacao->save();
+
       DB::commit();
 
       Mail::to($evento->coordenadorComissao->user->email)->send(new SolicitacaoSubstituicao($evento, $trabalho));
-
       return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['sucesso' => 'Pedido de substituição enviado com sucesso!']);
     }catch (\App\Validator\ValidationException $th){
         DB::rollback();
@@ -1636,4 +1662,12 @@ class TrabalhoController extends Controller
 
   }
 
-}
+    public function aprovarProposta(Request $request,$id){
+        $trabalho = Trabalho::find($id);
+        $trabalho->status = $request->statusProp;
+        $trabalho->comentario = $request->comentario;
+        $trabalho->save();
+
+        return redirect()->back()->with(['sucesso' => 'Proposta avaliada com sucesso']);
+
+}}

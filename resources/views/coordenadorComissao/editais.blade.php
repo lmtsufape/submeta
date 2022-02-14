@@ -35,8 +35,9 @@
                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                 </a>
                 <div class="dropdown-menu">
-                  <a href="{{ route('evento.editar', ['id' => $evento->id]) }}" class="dropdown-item text-center">
-                    Editar Edital
+                  <hr class="dropdown-hr">
+                  <a href="{{route('admin.analisar', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
+                    Visualizar Projetos
                   </a>
                   <hr class="dropdown-hr">
                   <a href="{{route('admin.atribuir', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
@@ -45,10 +46,6 @@
                   <hr class="dropdown-hr">
                   <a href="{{route('admin.pareceres', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
                       Visualizar Pareceres
-                  </a>
-                  <hr class="dropdown-hr">
-                  <a href="{{route('admin.analisar', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
-                    Analisar projetos
                   </a>
                   <hr class="dropdown-hr">
                   <a href="{{route('admin.showResultados', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">

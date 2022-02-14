@@ -85,4 +85,29 @@ class ParticipanteController extends Controller
         }
         return abort(404);
     }
+
+    public function listarParticipanteEdital(){
+        $participantes = Participante::all();
+        $trabalhos = Trabalho::all();
+        return view('administrador.listarBolsas')->with(['participantes' => $participantes, 'trabalhos' => $trabalhos]);
+    }
+
+    public function alterarBolsa($id,$tipo){
+        $participante = Participante::find($id);
+        if($participante->tipoBolsa ==null){
+            if($tipo==1){
+                $participante->tipoBolsa = "Voluntario";
+            }else{
+                $participante->tipoBolsa = "Bolsista";
+            }
+        }else{
+            if($participante->tipoBolsa == "Bolsista"){
+                $participante->tipoBolsa = "Voluntario";
+            }else{
+                $participante->tipoBolsa = "Bolsista";
+            }
+        }
+        $participante->save();
+        return redirect()->back()->with(['mensagem' => 'Alteração da bolsa realizada com sucesso!']);
+    }
 }

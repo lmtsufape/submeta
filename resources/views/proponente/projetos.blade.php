@@ -82,7 +82,11 @@
                         <td style="color: rgb(0, 0, 0); text-align: center">Submetido</td>
                       @elseif($projeto->status == 'rascunho')
                         <td style="color: rgb(0, 0, 0); text-align: center">Rascunho</td>
-                      @endif
+                      @elseif($projeto->status == 'aprovado')
+                            <td style="color: rgb(0, 0, 0); text-align: center">Aprovado</td>
+                        @elseif($projeto->status == 'negado')
+                            <td style="color: rgb(0, 0, 0); text-align: center">Negado</td>
+                        @endif
                       <td>
                         <div class="dropright dropdown-options" style="width: 100%; text-align:center; float:none">
                             <a id="options" class="dropdown-toggle btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -94,9 +98,9 @@
                                   Editar
                                   </a>
                                   <hr class="dropdown-hr">
-                              @elseif($projeto->evento->resultado_final <= $hoje)
+                              @elseif($projeto->evento->resultado_final <= $hoje || $projeto->status== 'aprovado')
                                 <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
-                                Substituir participante</a>
+                                Solicitar Substituição</a>
                               @endif 
                                 <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                                   Visualizar

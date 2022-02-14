@@ -44,6 +44,7 @@
         <th scope="col">Nome do Usuário</th>
         <th scope="col">Email</th>
         <th scope="col">Área</th>
+        <th scope="col">Tipo</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
     </thead>
@@ -59,6 +60,13 @@
               {{ $avaliador->area->nome }}
             @endif
             
+          </td>
+          <td>
+            @if($avaliador->tipo == null)
+              Externo
+            @else
+              {{$avaliador->tipo}}
+            @endif
           </td>
           <td style="text-align:center">
             <form action="{{ route('admin.adicionar') }}" method="POST">
@@ -83,6 +91,7 @@
     <thead>
       <tr>   
         <th scope="col">Nome do Usuário</th>
+        <th scope="col">Tipo</th>
         <th scope="col">Email</th>
         <th scope="col">Status</th>
         <th scope="col" style="text-align:center">Ação</th>
@@ -92,6 +101,7 @@
       @foreach ($avalSelecionados as $avaliador)
         <tr>
           <td>{{ $avaliador->user->name }}</td>
+          <td>{{ $avaliador->tipo }}</td>
           <td>{{ $avaliador->user->email }}</td>
           @if($avaliador->eventos->where('id', $evento->id)->first()->pivot->convite == true)
             <td style="color: rgb(3, 189, 3);">Aceito</td>

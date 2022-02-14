@@ -111,6 +111,7 @@
     <thead>
       <tr>
         <th scope="col">Nome do Usuário</th>
+        <th scope="col">Tipo</th>
         <th scope="col">E-mail</th>
         <th scope="col">Titulo do projeto</th>
         <th scope="col">Status avaliação</th>
@@ -126,28 +127,56 @@
           @endif
           <tr>
           <td>{{ $avaliador->user->name }}</td>
+          <td>{{ $avaliador->tipo }}</td>
           <td>{{ $avaliador->user->email }}</td>
           <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
           {{-- <td>{{ $contador }} / {{ $avaliador->trabalhos->where('evento_id', $evento->id)->count() }}</td> --}}
-          <td>@if($trabalho->pivot->parecer == null) Pendente @else Avaliado @endif</td>
-          <td> 
-                <div class="btn-group dropright dropdown-options">
-                    <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
-                    </a>
-                    <div class="dropdown-menu">
-                      @if($trabalho->pivot->parecer != null)
-                        <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                          Vizualizar Parecer
-                        </a>
-                      @endif
-                        <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                            Desatribuir Avaliador
-                        </a>
+          @if($avaliador->tipo=="Externo" || $avaliador->tipo=null)
+            <td>@if($trabalho->pivot->parecer == null) Pendente @else Avaliado @endif</td>
+            <td>
+                  <div class="btn-group dropright dropdown-options">
+                      <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                      </a>
+                      <div class="dropdown-menu">
+                        @if($trabalho->pivot->parecer != null)
+                          <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                            Vizualizar Parecer
+                          </a>
+                        @endif
+                          <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                              Desatribuir Avaliador
+                          </a>
 
-                    </div>
+                      </div>
+                  </div>
+            </td>
+            @else
+              @php
+                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+              @endphp
+              <td>
+                @if($parecer == null) Pendente @else Avaliado @endif
+              </td>
+              <td>
+                <div class="btn-group dropright dropdown-options">
+                  <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                  </a>
+                  <div class="dropdown-menu">
+                    @if($parecer != null)
+                      <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                        Vizualizar Parecer
+                      </a>
+                    @endif
+                    <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                      Desatribuir Avaliador
+                    </a>
+
+                  </div>
                 </div>
-          </td>
+              </td>
+            @endif
         </tr>
         @endforeach
       @endforeach

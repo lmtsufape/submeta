@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
+use App\Arquivo;
+use App\FuncaoParticipantes;
+use App\GrandeArea;
+use App\ParecerInterno;
+use App\Participante;
+use App\SubArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Trabalho;
@@ -14,6 +21,36 @@ use Illuminate\Support\Facades\Storage;
 
 class AvaliadorController extends Controller
 {
+    public $estados = array(
+        'AC' => 'Acre',
+        'AL' => 'Alagoas',
+        'AP' => 'Amapá',
+        'AM' => 'Amazonas',
+        'BA' => 'Bahia',
+        'CE' => 'Ceará',
+        'DF' => 'Distrito Federal',
+        'ES' => 'Espirito Santo',
+        'GO' => 'Goiás',
+        'MA' => 'Maranhão',
+        'MS' => 'Mato Grosso do Sul',
+        'MT' => 'Mato Grosso',
+        'MG' => 'Minas Gerais',
+        'PA' => 'Pará',
+        'PB' => 'Paraíba',
+        'PR' => 'Paraná',
+        'PE' => 'Pernambuco',
+        'PI' => 'Piauí',
+        'RJ' => 'Rio de Janeiro',
+        'RN' => 'Rio Grande do Norte',
+        'RS' => 'Rio Grande do Sul',
+        'RO' => 'Rondônia',
+        'RR' => 'Roraima',
+        'SC' => 'Santa Catarina',
+        'SP' => 'São Paulo',
+        'SE' => 'Sergipe',
+        'TO' => 'Tocantins',
+    );
+
 	public function index(){
 
     	return view('avaliador.index');
@@ -48,6 +85,86 @@ class AvaliadorController extends Controller
       $evento = Evento::find($request->evento);
       
     	return view('avaliador.parecer', ['trabalho'=>$trabalho, 'evento'=>$evento]);
+    }
+
+    public function parecerInterno(Request $request){
+
+        $user = User::find(Auth::user()->id);
+        $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
+        $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $evento = Evento::find($request->evento);
+        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+        //Gerais
+        $grandeAreas = GrandeArea::all();
+        $areas = Area::all();
+        $subareas = Subarea::all();
+        //
+        $participantes = $trabalho->participantes;
+        $arquivos = Arquivo::where('trabalhoId', $trabalho->id)->get();
+
+        return view('avaliador.parecerInterno',
+            ['trabalho'=>$trabalho,
+            'evento'=>$evento,
+            'parecer'=>$parecerInterno,
+            'grandeAreas' => $grandeAreas,
+            'areas' => $areas,
+            'subAreas' => $subareas,
+            'participantes' => $participantes,
+            'enum_turno'         => Participante::ENUM_TURNO,
+            'arquivos' => $arquivos,
+            'estados' => $this->estados,
+            ]);
+    }
+
+    public function enviarParecerInterno(Request $request){
+        $user = User::find(Auth::user()->id);
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
+        $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
+        $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+        $statusParecer = "NAO-RECOMENDADO";
+        if(
+            $request->anexoLinkLattes=='aceito' && $request->anexoGrupoPesquisa=='aceito' && $request->anexoProjeto=='aceito' &&
+            $request->anexoConsu=='aceito' && $request->anexoPlanilha=='aceito' && $request->anexoLattesCoordenador=='aceito' &&
+            $request->anexoGrupoPesquisa=='aceito' && $request->anexoComiteEtica=='aceito' && $request->anexoJustificativa=='aceito' &&
+            $request->anexoPlano=='aceito'){
+                $statusParecer = "RECOMENDADO";
+        }
+        if($parecerInterno == null) {
+
+            $parecerInterno = ParecerInterno::create([
+                'statusLinkLattesProponente' => $request->anexoLinkLattes,
+                'statusLinkGrupoPesquisa' => $request->anexoGrupoPesquisa,
+                'statusAnexoProjeto' => $request->anexoProjeto,
+                'statusAnexoDecisaoCONSU' => $request->anexoConsu,
+                'statusAnexoPlanilhaPontuacao' => $request->anexoPlanilha,
+                'statusAnexoLattesCoordenador' => $request->anexoLattesCoordenador,
+                'statusAnexoGrupoPesquisa' => $request->anexoGrupoPesquisa,
+                'statusAnexoAtuorizacaoComiteEtica' => $request->anexoComiteEtica,
+                'statusJustificativaAutorizacaoEtica' => $request->anexoJustificativa,
+                'statusPlanoTrabalho' => $request->anexoPlano,
+                'statusParecer' => $statusParecer,
+                'trabalho_id' => $request->trabalho_id,
+                'avaliador_id' => $request->avaliador_id,
+            ]);
+            $parecerInterno->save();
+        }else{
+            $parecerInterno->statusLinkLattesProponente = $request->anexoLinkLattes;
+            $parecerInterno->statusLinkGrupoPesquisa = $request->anexoGrupoPesquisa;
+            $parecerInterno->statusAnexoProjeto = $request->anexoProjeto;
+            $parecerInterno->statusAnexoDecisaoCONSU = $request->anexoConsu;
+            $parecerInterno->statusAnexoPlanilhaPontuacao = $request->anexoPlanilha;
+            $parecerInterno->statusAnexoLattesCoordenador = $request->anexoLattesCoordenador;
+            $parecerInterno->statusAnexoGrupoPesquisa = $request->anexoLinkLattes;
+            $parecerInterno->statusAnexoAtuorizacaoComiteEtica = $request->anexoComiteEtica;
+            $parecerInterno->statusJustificativaAutorizacaoEtica = $request->anexoJustificativa;
+            $parecerInterno->statusPlanoTrabalho = $request->anexoPlano;
+            $parecerInterno->statusParecer = $statusParecer;
+            $parecerInterno->update();
+        }
+
+        return view('avaliador.listarTrabalhos', ['trabalhos'=>$trabalhos, 'evento'=>$evento]);
     }
 
     public function parecerPlano(Request $request){

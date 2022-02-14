@@ -61,7 +61,14 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
     Route::post('/Enviarparecer', 'AvaliadorController@enviarParecer'        )->name('enviarParecer')->middleware('auth');
     Route::post('/Enviarparecer/plano', 'AvaliadorController@enviarParecerPlano'   )->name('enviarParecerPlano')->middleware('auth');
     Route::get('/Resposta', 'AvaliadorController@conviteResposta'            )->name('conviteResposta')->middleware('auth');
+
+      Route::post('/parecerInterno',       'AvaliadorController@parecerInterno'              )->name('parecerInterno')->middleware('auth');
+      Route::post('/EnviarparecerInterno', 'AvaliadorController@enviarParecerInterno'        )->name('enviarParecerInterno')->middleware('auth');
+
   });
+
+    Route::get('/notificacao/listar', 'NotificacaoController@listar')->name('notificacao.listar')->middleware('auth');
+    Route::get('/notificacao/lista', 'NotificacaoController@listarTrab')->name('notificacao.listarTrab')->middleware('auth');
 
 
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
@@ -132,6 +139,11 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/projeto/substituirParticipante', 'TrabalhoController@trocaParticipante'   )->name('trabalho.infoTrocaParticipante');
   Route::get(   '/showSubstituicoes', 'TrabalhoController@telaShowSubst'                    )->name('trabalho.telaAnaliseSubstituicoes')->middleware('checkRoles:coordenador,administrador');
   Route::post(  '/aprovarSubstituicao', 'TrabalhoController@aprovarSubstituicao'            )->name('trabalho.aprovarSubstituicao');
+  Route::post(  '/aprovarProposta/{id}', 'TrabalhoController@aprovarProposta'            )->name('trabalho.aprovarProposta');
+
+  //##########  Bolsas
+  Route::get(   '/bolsas', 'ParticipanteController@listarParticipanteEdital'                  )->name('bolsas.listar');
+  Route::get(  '/bolsas/alteracao/{id}/{tipo}', 'ParticipanteController@alterarBolsa'                    )->name('bolsa.alterar');
 
   //##########  Relatórios
   Route::get(   '/projeto/planosTrabalho/{id}', 'ArquivoController@listar'                  )->name('planos.listar');
@@ -187,9 +199,11 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/reenviarConviteAvaliador',     'AdministradorController@reenviarConvite'    )->name('reenviarConvite');
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
+  Route::get('/visualizarParecerInterno',    'AdministradorController@visualizarParecerInterno')->name('visualizarParecerInterno');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
   Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
-  Route::get('/showrProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
+  Route::get('/analisarProposta',            'AdministradorController@analisarProposta'         )->name('analisarProposta');
+  Route::get('/showProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
   Route::get('/showResultados',             'AdministradorController@showResultados'    )->name('showResultados');
 });
 

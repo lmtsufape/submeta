@@ -46,7 +46,7 @@
               <thead>
                 <tr>
                   <th scope="col" style="width:100%">Nome do Edital</th>
-                  <th scope="col">Data de Inicio da Revisão</th>
+                  <th scope="col">Data de Início da Revisão</th>
                   <th scope="col" style="text-align: center">Data de Fim da Revisão</th>
                   <th scope="col">Opção</th>
                 </tr>

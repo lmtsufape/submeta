@@ -1,196 +1,3 @@
-<!-- Verificação para definir se a informação do modal será o formulário para substituição ou apenas visualização-->
-@if($visualizarOnly ?? '')
-<!-- Apenas visualização-->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12 mt-3">
-            <h5>Dados do discente</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Nome completo'])
-            <input type="text" class="form-control " value="{{$participante->user->name}}" name="name" placeholder="Nome Completo" maxlength="150" id="nome{{$participante->id}}" disabled />
-            @endcomponent
-        </div>
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'E-mail'])
-            <input type="email" class="form-control" value="{{$participante->user->email}}" name="email" placeholder="E-mail" maxlength="150" id="email{{$participante->id}}" disabled />
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Data de nascimento'])
-            <input type="date" class="form-control" value="{{$participante->data_de_nascimento}}" name="data_de_nascimento" placeholder="Data de nascimento" disabled />
-            @endcomponent
-        </div>
-
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'CPF'])
-            <input type="text" class="form-control cpf" value="{{$participante->user->cpf}}" name="cpf" placeholder="CPF" disabled />
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'RG'])
-            <input type="text" class="form-control" min="1" maxlength="12" value="{{$participante->rg}}" name="rg" placeholder="RG" disabled />
-            @endcomponent
-        </div>
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Celular'])
-            <input type="tel" class="form-control celular" value="{{$participante->user->celular}}" name="celular" placeholder="Celular" id="inputCelular" disabled />
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h5>Endereço</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'CEP'])
-            <input type="text" class="form-control cep" value="{{$participante->user->endereco->cep}}" name="cep" placeholder="CEP" disabled />
-            @endcomponent
-        </div>
-        <div class="col-6">
-            @component('componentes.select', ['label' => 'Estado'])
-            <select name="uf" id="estado" class="form-control" style="visibility: visible" disabled>
-                <option value="{{$participante->user->endereco->uf}}" selected>{{$participante->user->endereco->uf}}</option>
-            </select>
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Cidade'])
-            <input type="text" class="form-control" value="{{$participante->user->endereco->cidade}}" name="cidade" placeholder="Cidade" maxlength="50" id="cidade{{$participante->id}}" disabled />
-            @endcomponent
-        </div>
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Bairro'])
-            <input type="text" class="form-control" value="{{$participante->user->endereco->bairro}}" name="bairro" placeholder="Bairro" maxlength="50" id="bairro{{$participante->id}}" disabled />
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Rua'])
-            <input type="text" class="form-control" value="{{$participante->user->endereco->rua}}" name="rua" placeholder="Rua" maxlength="100" id="rua{{$participante->id}}" disabled />
-            @endcomponent
-        </div>
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Número'])
-            <input type="text" class="form-control" value="{{$participante->user->endereco->numero}}" name="numero" placeholder="Número" disabled />
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="form-group">
-                <label class=" control-label" for="firstname">Complemento</label>
-                <input type="text" class="form-control" value="{{$participante->user->endereco->complemento}}" name="complemento" placeholder="Complemento" maxlength="75" id="complemento{{$participante->id}}" disabled />
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h5>Dados do curso</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Instituição de Ensino'])
-            <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao" id="instituicao[{{$participante->id}}]" disabled>
-                <option value="{{$participante->user->instituicao}}" disabled selected hidden>{{$participante->user->instituicao}}</option>
-            </select>
-            @endcomponent
-        </div>
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Curso'])
-            <select style="display: inline" class="form-control" name="curso" onchange="showCurso(this)" id="curso[{{$participante->id}}]" disabled>
-                <option value="{{$participante->curso}}" disabled selected hidden>{{$participante->curso}}</option>
-            </select>
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.select', ['label' => 'Turno'])
-            <select name="turno" class="form-control" disabled>
-                <option value="{{$participante->turno}}" selected>{{$participante->turno}}</option>
-            </select>
-            @endcomponent
-        </div>
-        <div class="col-6">
-            @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
-            <select name="total_periodos" class="form-control" onchange="gerarPeriodo(this)" disabled>
-                <option value="{{$participante->total_periodos}}" selected>{{$participante->total_periodos}}</option>
-            </select>
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.select', ['label' => 'Período/Ano atual'])
-            <select name="periodo_atual" class="form-control" disabled>
-                <option value="{{$participante->periodo_atual}}" selected>{{$participante->periodo_atual}}</option>
-            </select>
-            @endcomponent
-        </div>
-
-        <div class="col-6">
-            @component('componentes.select', ['label' => 'Ordem de prioridade'])
-            <select name="ordem_prioridade" class="form-control" disabled>
-                <option value="{{$participante->ordem_prioridade}}" selected>{{$participante->ordem_prioridade}}</option>
-            </select>
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @component('componentes.input', ['label' => 'Coeficiente de rendimento'])
-            <input type="number" class="form-control media" value="{{$participante->media_do_curso}}" name="media_do_curso" min="0" max="10" step="0.01" disabled>
-            @endcomponent
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h5>Plano de trabalho</h5>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        @if($participante->planoTrabalho)
-        <div class="col-6">
-            <h6>{{$participante->planoTrabalho->titulo}}</h6>
-        </div>
-        <div class="col-6">
-            <a href="{{ route('baixar.plano', ['id' => $participante->planoTrabalho->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
-        </div>
-        @else
-        <div class="col-3 text-danger">
-            <p><i class="fas fa-times-circle fa-2x"></i></p>
-        </div>
-        @endif
-    </div>
-</div>
-
-
-
-
-
-
-
-@else
-
-
-
-
-
-
-
 <form method="POST" id="SubParticForm" action="{{route('trabalho.infoTrocaParticipante')}}" enctype="multipart/form-data">
     @csrf
     <input type="hidden" name="editalId" value="{{$edital->id}}">
@@ -199,7 +6,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 mb-3">
+            <div class="col-12 mb-3" hidden>
                 <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="check" id="apenasPlano{{$participante->id}}" name="substituirApenasPlanoCheck" onchange="substituirApenasPlano(this)">
                 <label class="form-check-label" for="apenasPlano{{$participante->id}}">
@@ -577,46 +384,38 @@
 
             </div>
 
+            <div hidden>
             <div class="col-12 mb-3 mt-3">
                 <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="check" id="{{$participante->id}}" name="manterPlanoCheck" onchange="manterPlano(this)">
+                <input class="form-check-input" type="checkbox" value="check" id="{{$participante->id}}" name="manterPlanoCheck" checked>
                 <label class="form-check-label" for="{{$participante->id}}">
                     Manter o plano de trabalho
                 </label>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12" >
                 <h5>Plano de trabalho</h5>
             </div>
-            <div class="col-12" id="arqParticipante">
+            <div class="col-12" id="arqParticipante" >
                 @component('componentes.input', ['label' => 'Título'])
-                <input type="text" class="form-control" value="" name="nomePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$participante->id}}" required>
+                <input type="text" class="form-control" value="" name="nomeDiscentePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomeDiscentePlanoTrabalho{{$participante->id}}" disabled>
                 <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$participante->id}}">
                 </span>
-                @error('nomePlanoTrabalho')
+                @error('nomeDiscentePlanoTrabalho')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
                 @endcomponent
             </div>
-
-            <div class="col-6" id="arqParticipantes">
-                @component('componentes.input', ['label' => 'Anexo (.pdf)'])
-                <input type="file" class="input-group-text" value="" name="anexoPlanoTrabalho" accept=".pdf" placeholder="Anexo do Plano de Trabalho" id="anexoPlanoTrabalho{{$participante->id}}" required />
-                @error('anexoPlanoTrabalho')
-                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-                @endcomponent
-            </div>
-            <div class="col-6" id="arqAtual" hidden>
+            <div class="col-6" id="arqDiscenteAtual" >
                 @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                     <a href="" id="arquivo{{$participante->id}}" style="padding-left: 20px"><i class="fas fa-file-pdf fa-2x"></i></a>
                 @endcomponent
             </div>
+            </div>
+
             <h1 id="teste"></h1>
             <div class="col-md-12">
                 <h5>Observações</h5>
@@ -632,4 +431,3 @@
         </div>
     </div>
 </form>
-@endif

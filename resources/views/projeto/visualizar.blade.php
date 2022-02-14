@@ -29,6 +29,12 @@
       
       @component('projeto.formularioVisualizar.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno, 'projeto' => $projeto, 'participantes' => $participantes, 'arquivos' =>$arquivos])
       @endcomponent
+
+      @if($projeto->comentario != null)
+          @component('projeto.formularioVisualizar.resultado',
+                    ['projeto' => $projeto])
+          @endcomponent
+      @endif
       
       {{-- @component('projeto.formularioVisualizar.finalizar', ['projeto' => $projeto])
       @endcomponent --}}
@@ -121,7 +127,7 @@
   function gerarPeriodo(e){
     var select = e.parentElement.parentElement.nextElementSibling;
     selectPeriodos = select.children[0].children[1];
-    var html = `<option value="" disabled selected>-- TOTAL DE PERIODOS --</option>`;
+    var html = `<option value="" disabled selected>-- TOTAL DE PERÍODOS --</option>`;
     for(var i = 0; i < parseInt(e.value); i++) {
       html += `<option value="${i+1}">${i+1}º</option>`;
     }
