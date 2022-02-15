@@ -126,9 +126,9 @@ class AvaliadorController extends Controller
         $statusParecer = "NAO-RECOMENDADO";
         if(
             $request->anexoLinkLattes=='aceito' && $request->anexoGrupoPesquisa=='aceito' && $request->anexoProjeto=='aceito' &&
-            $request->anexoConsu=='aceito' && $request->anexoPlanilha=='aceito' && $request->anexoLattesCoordenador=='aceito' &&
-            $request->anexoGrupoPesquisa=='aceito' && $request->anexoComiteEtica=='aceito' && $request->anexoJustificativa=='aceito' &&
-            $request->anexoPlano=='aceito'){
+            $request->anexoConsu=='aceito' && $request->anexoLattesCoordenador=='aceito' && $request->anexoPlano=='aceito' &&
+            $request->anexoGrupoPesquisa=='aceito' && $request->anexoComiteEtica=='aceito' && $request->anexoJustificativa=='aceito'
+            ){
                 $statusParecer = "RECOMENDADO";
         }
         if($parecerInterno == null) {

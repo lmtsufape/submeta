@@ -77,15 +77,14 @@
                         </div>
 
                         <div class="col-sm-3">
-                            <label for="anexoPlanilha" class="col-form-label">{{ __('Planilha de Pontuação: ') }}</label>
-                            <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}">Arquivo</a>
+                            <label for="anexoPlanilha" class="col-form-label">{{ __('Pontuação calculada: ') }}</label>
                         </div>
                         <div class="col-sm-3" style="top: 5px; text-align: right">
-                            <label for="aceito" style="left: auto">{{ __('Aceito') }}</label>
-                            <input type="radio" name="anexoPlanilha" value="aceito" @if($parecer!=null && $parecer->statusAnexoPlanilhaPontuacao =='aceito' ) checked @else disabled @endif required>
-
-                            <label for="recusado">{{ __('Recusado') }}</label>
-                            <input type="radio" name="anexoPlanilha" value="recusado" @if($parecer!=null && $parecer->statusAnexoPlanilhaPontuacao =='recusado' ) checked @else disabled @endif>
+                            <input type="number" min="0" step=".01" name="anexoPlanilha"
+                                   @if($parecer!=null && $parecer->statusAnexoPlanilhaPontuacao !=null)
+                                   @if(is_numeric($parecer->statusAnexoPlanilhaPontuacao)) value="{{$parecer->statusAnexoPlanilhaPontuacao}}"
+                                   @else value="0"
+                                   @endif @endif disabled>
                         </div>
 
                         @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM')
