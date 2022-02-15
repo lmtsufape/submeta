@@ -84,6 +84,7 @@
 
 				</div>
 
+				<br>
 				<h3>Anexos</h3>
 
 				{{-- Anexo do Projeto --}}
@@ -176,6 +177,15 @@
 						<input type="radio" name="anexoPlano" value="recusado" @if($parecer!=null && $parecer->statusPlanoTrabalho =='recusado' ) checked @endif>
 					</div>
 
+				</div>
+
+				<br>
+				<h3>Comentário</h3>
+				<div class="row">
+					<div class="col-md-9">
+						<textarea class="col-md-12" minlength="20" id="comentario" name="comentario" style="border-radius:5px 5px 0 0;height: 71px;" required
+						>@if($parecer!=null && $parecer->comentario !=null ) {{$parecer->comentario}} @endif</textarea>
+					</div>
 				</div>
 				<div><hr></div>
 				<div class="d-flex justify-content-end">
