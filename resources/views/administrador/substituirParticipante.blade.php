@@ -153,7 +153,7 @@
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
-                                                <div class="modal-header" style="overflow-x:auto">
+                                                <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
@@ -263,7 +263,7 @@
                                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                                 <div class="modal-content">
 
-                                                    <div class="modal-header" style="overflow-x:auto">
+                                                    <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                         <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
@@ -283,7 +283,7 @@
                                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                                 <div class="modal-content">
 
-                                                    <div class="modal-header" style="overflow-x:auto">
+                                                    <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                         <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
