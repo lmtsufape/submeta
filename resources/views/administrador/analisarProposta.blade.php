@@ -279,19 +279,19 @@
                         <div class="row justify-content-center">
                             {{-- Arquivo  --}}
                             <div class="col-sm-4">
-                                <label for="anexoProjeto" class="col-form-label" style="font-weight: bold">{{ __('Projeto: ') }}</label>
+                                <label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold">{{ __('Projeto: ') }}</label>
                                 <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="anexoLatterCoordenador" class="col-form-label" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
+                                <label for="anexoLatterCoordenador" class="col-form-label font-tam" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
                                 <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="nomeTrabalho" class="col-form-label" style="font-weight: bold">{{ __('Autorização do Comitê de Ética: ') }}</label>
+                                <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização do Comitê de Ética: ') }}</label>
                                 @if($trabalho->anexoAutorizacaoComiteEtica != null)
                                     <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
@@ -300,13 +300,13 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="anexoPlanilha" class="col-form-label" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
+                                <label for="anexoPlanilha" class="col-form-label font-tam" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
                                 <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:40px" alt=""></a>
 
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="nomeTrabalho" class="col-form-label" style="font-weight: bold">{{ __('Justificativa: ') }}</label>
+                                <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Justificativa: ') }}</label>
                                 @if($trabalho->justificativaAutorizacaoEtica != null)
                                     <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
@@ -317,7 +317,7 @@
                             @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM')
                                 {{-- Decisão do CONSU --}}
                                 <div class="col-sm-4">
-                                    <label for="anexoCONSU" class="col-form-label" style="font-weight: bold">{{ __('Decisão do CONSU: ') }}</label>
+                                    <label for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão do CONSU: ') }}</label>
                                     <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 </div>
                             @endif
@@ -346,26 +346,26 @@
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
                             <div class="col-sm-3">
-                                <label for="dt_inicioRelatorioParcial" class="col-form-label" style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
+                                <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_inicioRelatorioParcial{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorioParcial" value="{{$evento->dt_inicioRelatorioParcial}}" required autocomplete="dt_inicioRelatorioParcial" disabled autofocus>
                             </div>
                             <div class="col-sm-3">
-                                <label for="dt_fimRelatorioParcial" class="col-form-label" style="font-weight: bold">{{ __('Fim do Relatório Parcial: ') }}</label>
+                                <label for="dt_fimRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Fim do Relatório Parcial: ') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_fimRelatorioParcial{{$evento->id}}" type="date" class="form-control" name="dt_fimRelatorioParcial" value="{{$evento->dt_fimRelatorioParcial}}" required autocomplete="dt_fimRelatorioParcial" disabled autofocus>
                             </div>
                             {{-- Relatório Final --}}
                             <div class="col-sm-3">
-                                <label for="dt_inicioRelatorioFinal" class="col-form-label" style="font-weight: bold">{{ __('Início do Relatório Final:') }}</label>
+                                <label for="dt_inicioRelatorioFinal" class="col-form-label font-tam" style="font-weight: bold">{{ __('Início do Relatório Final:') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_inicioRelatorioFinal{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorioFinal" value="{{$evento->dt_inicioRelatorioFinal}}" required autocomplete="dt_inicioRelatorioFinal" disabled autofocus>
                             </div>
                             <div class="col-sm-3">
-                                <label for="dt_fimRelatorioFinal" class="col-form-label" style="font-weight: bold">{{ __('Fim do Relatório Final:') }}</label>
+                                <label for="dt_fimRelatorioFinal" class="col-form-label font-tam" style="font-weight: bold">{{ __('Fim do Relatório Final:') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_fimRelatorioFinal{{$evento->id}}" type="date" class="form-control" name="dt_fimRelatorioFinal" value="{{$evento->dt_fimRelatorioFinal}}" required autocomplete="dt_fimRelatorioFinal" disabled autofocus>
@@ -793,4 +793,12 @@
         }
     </script>
 
+    <style>
+        h6, a, b, p, .font-tam{
+            font-size: 16.4px;
+        }
+        h5{
+            font-size: 20px;
+        }
+    </style>
 @endsection
