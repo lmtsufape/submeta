@@ -306,7 +306,7 @@
                             @endcomponent
                           </div>                              
                           <div class="col-6">
-                                @component('componentes.input', ['label' => 'Coeficiente de rendimento'])
+                                @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
                                 <input type="number" class="form-control media" value="{{old('media_do_curso')[$i] ?? "" }}" name="media_do_curso[{{$i}}]"  min="0" max="10" step="0.01"  >
                                 @error('media_do_curso.'.$i)
                                   <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">

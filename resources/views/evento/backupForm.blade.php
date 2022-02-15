@@ -681,7 +681,7 @@ function blocoDeCodigo(valor){
                                   </select>
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="coeficienteDeRendimento${valor}">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
+                            <label for="coeficienteDeRendimento${valor}">Coeficiente de rendimento (média geral) <span style="color: red; font-weight:bold">*</span></label>
                             <input type="number" class="form-control media" id="coeficienteDeRendimento${valor}" min="0" max="10" step="0.01" value="00.00" name="media_geral_curso[]" >
                             @error('coeficienteDeRendimento${valor}')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
