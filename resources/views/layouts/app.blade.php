@@ -174,7 +174,7 @@
                             @if(Auth::user()->avaliadors != null)
                                 @if(Auth::user()->avaliadors->tipo == "Interno")
                                     <a href="" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);pointer-events: none;" >Comissão Interna</a>
-                                @else
+                                @elseif(Auth::user()->avaliadors->tipo == "Externo")
                                     <a href="" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);pointer-events: none;" >Comissão Externa</a>
                                 @endif
                             @endif
@@ -182,7 +182,7 @@
                             @if(Auth::user()->administradors != null)
                                 <a href="{{route('admin.editais')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Editais</a>
                                 <!--<a href="{{route('admin.showProjetos')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);" >Projetos</a> -->
-                                <a href="{{route('notificacao.listar')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);" >Notificações</a>
+                                <a href="{{route('notificacao.listarTrab')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);" >Notificações</a>
                             @else
                                 <a href="{{route('notificacao.listarTrab')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);" >Notificações</a>
                                 <a href="{{route('coord.home')}}" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);">Editais</a>
