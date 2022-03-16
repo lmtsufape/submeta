@@ -206,7 +206,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/visualizarParecerInterno',    'AdministradorController@visualizarParecerInterno')->name('visualizarParecerInterno');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
-  Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
+  Route::get('/analisarProjetos/{column?}',   'AdministradorController@analisar'         )->name('analisar');
   Route::get('/analisarProposta',            'AdministradorController@analisarProposta'         )->name('analisarProposta');
   Route::get('/showProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
   Route::get('/showResultados',             'AdministradorController@showResultados'    )->name('showResultados');

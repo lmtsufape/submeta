@@ -66,26 +66,25 @@ class AdministradorController extends Controller
         return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
     }
     public function analisar(Request $request){
-
-        $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
-        $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
-        $trabalhosAprovados = $evento->trabalhos->Where('status', 'aprovado');
-        $trabalhosReprovados = $evento->trabalhos->Where('status', 'reprovado');
-        $trabalhosCorrigidos = $evento->trabalhos->Where('status', 'corrigido');
-        $trabalhos =  $this->paginate($trabalhosSubmetidos);
-        $trabalhos =  $this->paginate($trabalhosSubmetidos
-            ->merge($trabalhosAvaliados)->merge($trabalhosAprovados)
-            ->merge($trabalhosReprovados)->merge($trabalhosCorrigidos)->sortBy('titulo'))
-            ->withPath('/usuarios/analisarProjetos?evento_id='.$evento->id);
-
+        $evento = Evento::find($request->evento_id);
+        $status = ['submetido', 'avaliado', 'aprovado', 'reprovado', 'corrigido'];
+        $withPath = '/usuarios/analisarProjetos?evento_id='.$evento->id;
+        if($request->column != null ) {
+            $status = [$request->column];
+            $withPath = '/usuarios/analisarProjetos/'.$request->column.'?evento_id='.$evento->id;
+        }
+        $trabalhos = Trabalho::where('evento_id', $evento->id)
+            ->whereIn('status', $status)
+            ->orderBy('titulo')
+            ->paginate(5)
+            ->withPath($withPath);
 
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
         // $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         // $participantes = User::whereIn('id', $participantesUsersIds)->get();
 
-        return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes]);
+        return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes, 'column' => $request->column]);
     }
 
     // Utilizado para paginação de Collection

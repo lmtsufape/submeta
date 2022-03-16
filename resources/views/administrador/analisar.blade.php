@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="row justify-content-center" style="margin-top: 100px; overflow-x: hidden;overflow-y:hidden">
+    <div class="row justify-content-center" style="margin-top: 100px;">
         <div class="col-md-11">
             <div class="row">
                 <div class="col-sm-7">
@@ -29,7 +29,35 @@
                     </h6>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-sm-1 mt-5">
+                    <div class="btn-group dropup">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Filtro @isset ($column) - {{$column}} @endisset
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id])}}">
+                                Todos
+                            </a>
+                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'aprovado'])}}">
+                                Aprovados
+                            </a>
+                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'reprovado'])}}">
+                                Reprovados
+                            </a>
+                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'submetido'])}}">
+                                Submetidos
+                            </a>
+                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'avaliado'])}}">
+                                Avaliados
+                            </a>
+                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'corrigido'])}}">
+                                Corrigidos
+                            </a>
+                        </div>
+                      </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -50,7 +78,7 @@
                                                                 @if($trabalho->status == "aprovado")
                                                                     <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
                                                                 @elseif($trabalho->status == "reprovado")
-                                                                    <img src="{{asset('img/icons/negado.png')}}" style="width: 60%;margin: auto;display: flex;margin-top: 5px;justify-content: center;align-items: center;" alt="">
+                                                                    <img src="{{asset('img/icons/negado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 5px;justify-content: center;align-items: center;" alt="">
                                                                 @elseif($trabalho->status == "corrigido")
                                                                     <img src="{{asset('img/icons/parcialmenteAprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
                                                                 @else
