@@ -50,7 +50,7 @@
                                                                 @if($trabalho->status == "aprovado")
                                                                     <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
                                                                 @elseif($trabalho->status == "reprovado")
-                                                                    <img src="{{asset('img/icons/negado.png')}}" style="width: 60%;margin: auto;display: flex;margin-top: 5px;justify-content: center;align-items: center;" alt="">
+                                                                    <img src="{{asset('img/icons/negado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
                                                                 @elseif($trabalho->status == "corrigido")
                                                                     <img src="{{asset('img/icons/parcialmenteAprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
                                                                 @else
