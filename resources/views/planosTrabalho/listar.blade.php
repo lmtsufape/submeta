@@ -3,6 +3,11 @@
 @section('content')
 
 <div class="container">
+	@if (session('sucesso'))
+		<div class="alert alert-success" role="alert">
+			{{ session('sucesso') }}
+		</div>
+	@endif
 
     <div class="row justify-content-center titulo-menu mb-0">
 		<h4>Planos de Trabalho </h4>
