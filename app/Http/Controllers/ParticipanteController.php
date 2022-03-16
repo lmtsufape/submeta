@@ -92,6 +92,13 @@ class ParticipanteController extends Controller
         return view('administrador.listarBolsas')->with(['participantes' => $participantes, 'trabalhos' => $trabalhos]);
     }
 
+    public function listarParticipanteProjeto(Request $request){
+        $trabalho = Trabalho::find($request->projeto_id);
+        $participantes = $trabalho->participantes;
+
+        return view('documentacaoComplementar.listar')->with(['participantes' => $participantes, 'trabalho' => $trabalho]);
+    }
+
     public function alterarBolsa($id,$tipo){
         $participante = Participante::find($id);
         if($participante->tipoBolsa ==null){

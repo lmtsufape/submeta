@@ -33,4 +33,8 @@ class Participante extends Model
     public function planoTrabalho() {
         return $this->hasOne('App\Arquivo', 'participanteId');
     }
+
+    public function documentacaoComplementar() {
+        return $this->hasOne('App\DocumentacaoComplementar', 'participante_id');
+    }
 }
