@@ -118,7 +118,7 @@
 						<label for="anexoPlanilha" class="col-form-label">{{ __('Pontuação calculada: ') }}</label>
 					</div>
 					<div class="col-sm-3" style="top: 5px; text-align: right">
-						<input type="number" min="0" step=".01" name="anexoPlanilha"
+						<input type="number" min="0" step=".01" name="anexoPlanilha" style="width: 60px"
 							   @if($parecer!=null && $parecer->statusAnexoPlanilhaPontuacao !=null)
 							   	@if(is_numeric($parecer->statusAnexoPlanilhaPontuacao)) value="{{$parecer->statusAnexoPlanilhaPontuacao}}"
 							    @else value="0"
