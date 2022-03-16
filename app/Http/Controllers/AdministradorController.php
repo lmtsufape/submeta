@@ -537,7 +537,19 @@ class AdministradorController extends Controller
         $trabalho->avaliadors()->attach($avaliadores);
         $evento->avaliadors()->syncWithoutDetaching($avaliadores);
         $trabalho->save();
-        
+
+        foreach ($avaliadores as $avaliador){
+            $notificacao = Notificacao::create([
+                'remetente_id' => Auth::user()->id,
+                'destinatario_id' => $avaliador->user_id,
+                'trabalho_id' => $request->trabalho_id,
+                'lido' => false,
+                'tipo' => 5,
+            ]);
+            $notificacao->save();
+        }
+
+
         return redirect()->back();
 
     }
