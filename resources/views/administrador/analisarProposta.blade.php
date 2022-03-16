@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $grandesAreas = \App\GrandeArea::all();
+    @endphp
 
     <div class="row justify-content-center" style="margin-top: 100px;">
         <!--Titulos -->
@@ -126,7 +129,7 @@
                                                 </button>
                                             </div>
 
-                                            <div class="modal-body">
+                                            <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                 @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1])
                                             </div>
                                         </div>
@@ -147,7 +150,7 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                     @include('administrador.vizualizarParticipante', ['visualizarSubstituido' => 1])
                                                 </div>
                                             </div>
@@ -167,7 +170,7 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                     @include('administrador.vizualizarParticipante')
                                                 </div>
                                             </div>
@@ -392,7 +395,7 @@
                             </div>
                             <!-- Modal -->
                             <div class="modal fade" id="avaliadorModalCenter{{ $trabalho->id }}" tabindex="-1" role="dialog" aria-labelledby="avaliadorModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content modal-submeta">
                                         <div class="modal-header modal-header-submeta">
                                             <h5 class="modal-title titulo-table" id="avaliadorModalLongTitle">Selecione o(s) avaliador(es)</h5>
@@ -407,10 +410,34 @@
                                                 <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                                                 <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                                                 <div class="form-group">
-                                                    <label for="exampleFormControlSelect2">Selecione o(s) avaliador(es) para esse projeto</label>
+                                                    <div class="row" style="margin-left: 2px;margin-bottom: 1px">
+
+                                                        <div class="col-md-6">
+                                                    <label for="exampleFormControlSelect2">Seleciones o(s) avaliador(es) para esse projeto</label>
+                                                        </div>
+
+
+                                                        <div class="col-md-3" style="text-align: center;overflow-y:  auto;overflow-x:  auto">
+
+                                                            <select class="form-control" id="grandeArea" name="grande_area_id" onchange="areas()" >
+                                                                <option value="" disabled selected hidden>-- Grande Área --</option>
+                                                                @foreach($grandesAreas as $grandeArea)
+                                                                    <option title="{{$grandeArea->nome}}" value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-3" style="text-align: center;overflow-y:  auto;overflow-x:  auto">
+                                                            <input type="hidden" id="oldArea" value="{{ old('area') }}" >
+                                                            <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" onchange="subareas()" >
+                                                                <option value="" disabled selected hidden>-- Área --</option>
+                                                            </select>
+                                                        </div>
+                                                        
+                                                    </div>
                                                     <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2" required>
                                                         @foreach ($trabalho->aval as $avaliador)
-                                                            <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{$avaliador->area->nome ?? 'Indefinida'}}) </option>
+                                                            <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}} > {{$avaliador->area->nome ?? 'Indefinida'}} > {{$avaliador->user->email}}</option>
                                                         @endforeach
                                                     </select>
                                                     <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
@@ -429,26 +456,57 @@
 
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
+                        <!--Comissão Externa-->
+                        <div class="row justify-content-start" style="alignment: center">
+                            <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores - Externos</h6></div>
+                        </div>
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
-                                <div class="col-sm-1">
-                                    <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
-                                </div>
-                                <div class="col-sm-5">
-                                    <h5>{{$avaliador->user->name}}</h5>
-                                    @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
-                                        <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null) Pendente @else <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
-                                    @else
+                                @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
+                                    <div class="col-sm-1">
+                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <h5>{{$avaliador->user->name}}</h5>
+                                        @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
+                                            <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null) Pendente @else <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
+                                        @else
+                                            @php
+                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                            @endphp
+                                            <h9>@if($parecerInterno == null) Pendente @else <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
+                                        @endif
+                                       {{-- <br>
+                                        <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
+                                            Remover
+                                        </a>--}}
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                        <br>
+                        <!--Comissão Interna-->
+                        <div class="row justify-content-start" style="alignment: center">
+                            <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores - Internos</h6></div>
+                        </div>
+                        <div class="row justify-content-start" style="alignment: center">
+                            @foreach($trabalho->avaliadors as $avaliador)
+                                @if($avaliador->tipo == 'Interno')
+                                    <div class="col-sm-1">
+                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <h5>{{$avaliador->user->name}}</h5>
                                         @php
                                             $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                         @endphp
                                         <h9>@if($parecerInterno == null) Pendente @else <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
-                                    @endif
-                                    <br>
-                                    <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
-                                        Remover
-                                    </a>
-                                </div>
+                                        <br>
+                                       {{-- <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
+                                            Remover
+                                        </a>--}}
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     </div>
@@ -750,6 +808,15 @@
 
     </script>
 
+    <style>
+        h6, a, b, p, .font-tam{
+            font-size: 16.4px;
+        }
+        h5{
+            font-size: 20px;
+        }
+    </style>
+
     <script type="text/javascript">
         var e = document.getElementById("submeter");
         e.onclick = function(){myFunction(e.value)};
@@ -791,14 +858,42 @@
                 $("#modalCancelarSubst").modal();
             }
         }
+
+        function areas() {
+            var grandeArea = $('#grandeArea').val();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('area.consulta') }}',
+                data: 'id='+grandeArea ,
+                headers:
+                    {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                success: (dados) => {
+
+                    if (dados.length > 0) {
+                        if($('#oldArea').val() == null || $('#oldArea').val() == ""){
+                            var option = '<option selected disabled>-- Área --</option>';
+                        }
+                        $.each(dados, function(i, obj) {
+                            if($('#oldArea').val() != null && $('#oldArea').val() == obj.id){
+                                option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+                            }else{
+                                option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+                            }
+                        })
+                    } else {
+                        var option = "<option selected disabled>-- Área --</option>";
+                    }
+                    $('#area').html(option).show();
+                    subareas();
+                },
+                error: (data) => {
+                    console.log(data);
+                }
+
+            })
+        }
     </script>
 
-    <style>
-        h6, a, b, p, .font-tam{
-            font-size: 16.4px;
-        }
-        h5{
-            font-size: 20px;
-        }
-    </style>
 @endsection
