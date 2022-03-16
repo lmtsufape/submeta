@@ -161,7 +161,7 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                     @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1])
                                                 </div>
                                             </div>
@@ -271,7 +271,7 @@
                                                         </button>
                                                     </div>
 
-                                                    <div class="modal-body">
+                                                    <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                         @include('administrador.vizualizarParticipante', ['visualizarSubstituido' => 1])
                                                     </div>
                                                 </div>
@@ -291,7 +291,7 @@
                                                         </button>
                                                     </div>
 
-                                                    <div class="modal-body">
+                                                    <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                         @include('administrador.vizualizarParticipante')
                                                     </div>
                                                 </div>

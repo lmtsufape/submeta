@@ -141,7 +141,7 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                     @include('administrador.vizualizarParticipante', ['visualizarSubstituido' => 1])
                                                 </div>
                                             </div>
@@ -157,13 +157,13 @@
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
-                                                        <span aria-hidden="true">&times;</span>
+                                                   <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                     @include('administrador.vizualizarParticipante')
-                                                </div>
+                                                     </div>
                                             </div>
                                         </div>
                                 </div>
@@ -275,7 +275,7 @@
                                                         </button>
                                                     </div>
 
-                                                    <div class="modal-body">
+                                                    <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                         @include('administrador.vizualizarParticipante', ['visualizarSubstituido' => 1])
                                                     </div>
                                                 </div>
@@ -295,7 +295,7 @@
                                                         </button>
                                                     </div>
 
-                                                    <div class="modal-body">
+                                                    <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                         @include('administrador.vizualizarParticipante')
                                                     </div>
                                                 </div>
