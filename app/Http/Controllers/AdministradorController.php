@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\EventoCriado;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Response;
+use App\Mail\EmailLembrete;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -533,7 +534,23 @@ class AdministradorController extends Controller
 
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         $evento = Evento::where('id', $request->evento_id)->first();
-        $avaliadores = Avaliador::whereIn('id', $request->avaliadores_id)->get();
+        
+        if($request->avaliadores_internos_id == null){
+            $avaliadoresInternos = [];
+        }else{
+            $avaliadoresInternos = $request->avaliadores_internos_id;
+        }
+
+        if($request->avaliadores_externos_id == null){
+            $avaliadoresExternos = [];
+        }else{
+            $avaliadoresExternos = $request->avaliadores_externos_id;
+        }
+        $idsAvaliadores = array_merge($avaliadoresInternos, $avaliadoresExternos);
+        if($idsAvaliadores == null){
+            redirect()->back()->with(['error' => 'Selecione ao menos um avaliador.', 'trabalho' => $trabalho->id]);
+        }
+        $avaliadores = Avaliador::whereIn('id', $idsAvaliadores)->get();
         $trabalho->avaliadors()->attach($avaliadores);
         $evento->avaliadors()->syncWithoutDetaching($avaliadores);
         $trabalho->save();
@@ -554,6 +571,33 @@ class AdministradorController extends Controller
 
     }
 
+    public function reenviarConviteAtribuicaoProjeto(Request $request){
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $avaliador = Avaliador::where('id', $request->avaliador_id)->first();
+        if($avaliador->user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite != true){
+            $avaliador->user->avaliadors->eventos()->updateExistingPivot($evento->id, ['convite'=> null]);
+        }
+
+        $notificacao = Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $avaliador->user_id,
+            'trabalho_id' => $request->trabalho_id,
+            'lido' => false,
+            'tipo' => 5,
+        ]);
+        $notificacao->save();
+
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+        $subject = "Trabalho atribuido";
+        $informacoes = $trabalho->titulo;
+        //REFAZER EMAIL
+        Mail::to($avaliador->user->email)
+            ->send(new EmailLembrete($avaliador->user, $subject, $informacoes));
+
+        return redirect()->back();
+
+    }
+
     public function enviarConvite(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
@@ -562,6 +606,14 @@ class AdministradorController extends Controller
         $tipo = $request->tipo;
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador )->first();
+
+        if($request->instituicao == "ufape"){
+            $nomeInstituicao = "Universidade Federal do Agreste de Pernambuco";
+            $externoInterno = "Interno";
+        }else{
+            $nomeInstituicao = $request->outra;
+            $externoInterno = "Externo";
+        }
 
         //existe o caso de enviar o convite de novo para um mesmo usuário
         // if(isset($user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) ){
@@ -585,6 +637,7 @@ class AdministradorController extends Controller
               'usuarioTemp' => false,
               'name' => $nomeAvaliador,
               'tipo' => 'avaliador',
+              'instituicao' => $nomeInstituicao,
             ]);
 
             $user->markEmailAsVerified();
@@ -592,6 +645,7 @@ class AdministradorController extends Controller
 
         if($user->avaliadors == null){
             $avaliador = new Avaliador();
+            $avaliador->tipo = $externoInterno;
             $avaliador->save();
             $avaliador->area()->associate($area);
             $avaliador->user()->associate($user);
