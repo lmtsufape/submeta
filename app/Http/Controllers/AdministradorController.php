@@ -607,6 +607,14 @@ class AdministradorController extends Controller
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador )->first();
 
+        if($request->instituicao == "ufape"){
+            $nomeInstituicao = "Universidade Federal do Agreste de Pernambuco";
+            $externoInterno = "Interno";
+        }else{
+            $nomeInstituicao = $request->outra;
+            $externoInterno = "Externo";
+        }
+
         //existe o caso de enviar o convite de novo para um mesmo usuário
         // if(isset($user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) ){
         //     return redirect()->back()->with(['mensagem' => 'Usuário já recebeu um convite e está pendente']);
@@ -629,6 +637,7 @@ class AdministradorController extends Controller
               'usuarioTemp' => false,
               'name' => $nomeAvaliador,
               'tipo' => 'avaliador',
+              'instituicao' => $nomeInstituicao,
             ]);
 
             $user->markEmailAsVerified();
@@ -636,6 +645,7 @@ class AdministradorController extends Controller
 
         if($user->avaliadors == null){
             $avaliador = new Avaliador();
+            $avaliador->tipo = $externoInterno;
             $avaliador->save();
             $avaliador->area()->associate($area);
             $avaliador->user()->associate($user);

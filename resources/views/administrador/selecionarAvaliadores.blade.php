@@ -152,16 +152,16 @@
           <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
           <div class="form-group">
             <label for="exampleInputEmail1">Nome Completo <span style="color: red;">*</span></label>
-            <input type="text" class="form-control" name="nomeAvaliador" id="exampleInputNome1">            
+            <input type="text" class="form-control" name="nomeAvaliador" id="exampleInputNome1" required>            
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Email <span style="color: red;">*</span></label>
-            <input type="email" class="form-control" name="emailAvaliador" id="exampleInputEmail1">            
+            <input type="email" class="form-control" name="emailAvaliador" id="exampleInputEmail1" required>            
           </div>
 
           <div class="form-group">
           <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
-              <select class="form-control" id="grandeArea" name="grande_area_id" onchange="areas()" >
+              <select class="form-control" id="grandeArea" name="grande_area_id" onchange="areas()" required>
                 <option value="" disabled selected hidden>-- Grande Área --</option>
                 @foreach($grandeAreas as $grandeArea)
                 <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
@@ -169,7 +169,7 @@
               </select>
 
               <label for="area" class="col-form-label">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
-              <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" >
+              <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" required>
                 <option value="" disabled selected hidden>-- Área --</option>
               </select>
           </div>
@@ -178,6 +178,25 @@
             <select class="form-control" name="tipo" id="exampleFormControlSelect1" disabled>
               <option value="avaliador" >Avaliador</option>
             </select>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Instituição <span style="color: red; font-weight:bold">*</span></label>
+            <select class="form-control" name="instituicao" id="membro" required onchange="mostrarDiv(this)">
+              <option value="" disabled>-- Selecione a instituição --</option>
+              <option value="ufape" >Universidade Federal do Agreste de Pernambuco</option>
+              <option value="outra" >Outra</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="div-outra" style="@if(old('instituicao') != null && old('instituicao') == "outra") display: block; @else display: none; @endif">
+            <label for="outra">{{ __('Digite o nome da instituição') }}<span style="color: red; font-weight: bold;"> *</span></label>
+            <input id="outra" class="form-control @error('outra') is-invalid @enderror" type="text" name="outra" value="{{old('outra')}}" autocomplete="outra" placeholder="Universidade Federal ...">
+            @error('outra')
+                <div id="validationServer03Feedback" class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
           </div>
 
           <div class="form-group" style="margin-top: 40px; margin-bottom: 40px;">
@@ -254,5 +273,15 @@
 
       })
     }
+    function mostrarDiv(select) {
+      if(select.value == "outra") {
+          document.getElementById('div-outra').style.display = "block";
+          $("#outra").prop('required',true);
+      }else if(select.value == "ufape"){
+        document.getElementById('div-outra').style.display = "none";
+        $("#outra").prop('required',false);
+      }
+    }
+        
 </script>
 @endsection
