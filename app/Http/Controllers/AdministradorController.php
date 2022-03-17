@@ -534,7 +534,23 @@ class AdministradorController extends Controller
 
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         $evento = Evento::where('id', $request->evento_id)->first();
-        $avaliadores = Avaliador::whereIn('id', $request->avaliadores_id)->get();
+        
+        if($request->avaliadores_internos_id == null){
+            $avaliadoresInternos = [];
+        }else{
+            $avaliadoresInternos = $request->avaliadores_internos_id;
+        }
+
+        if($request->avaliadores_externos_id == null){
+            $avaliadoresExternos = [];
+        }else{
+            $avaliadoresExternos = $request->avaliadores_externos_id;
+        }
+        $idsAvaliadores = array_merge($avaliadoresInternos, $avaliadoresExternos);
+        if($idsAvaliadores == null){
+            redirect()->back()->with(['error' => 'Selecione ao menos um avaliador.', 'trabalho' => $trabalho->id]);
+        }
+        $avaliadores = Avaliador::whereIn('id', $idsAvaliadores)->get();
         $trabalho->avaliadors()->attach($avaliadores);
         $evento->avaliadors()->syncWithoutDetaching($avaliadores);
         $trabalho->save();
