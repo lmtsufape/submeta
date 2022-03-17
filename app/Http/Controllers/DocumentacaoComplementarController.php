@@ -17,9 +17,10 @@ class DocumentacaoComplementarController extends Controller
             $docComp = DocumentacaoComplementar::find($request->docId);
         }else{
             $docComp = new DocumentacaoComplementar;
+            $docComp->save();
         }
 
-        $pasta = 'docComplementar/' . Auth::user()->id;
+        $pasta = 'docComplementar/' . $docComp->id;
 
         $docComp->termoCompromisso = Storage::putFileAs($pasta, $request->termoCompromisso, "Termo De Compromisso.pdf");
         $docComp->comprovanteMatricula = Storage::putFileAs($pasta, $request->comprovanteMatricula, "Comprovante De Matricula.pdf");
@@ -27,11 +28,9 @@ class DocumentacaoComplementarController extends Controller
         $docComp->termoCompromisso = Storage::putFileAs($pasta, $request->termoCompromisso, "TermoDeCompromisso.pdf");
         $docComp->participante_id = $request->partcipanteId;
         $docComp->linkLattes = $request->linkLattes;
-        if($request->docId != null){
-            $docComp->update();
-        }else{
-            $docComp->save();
-        }
+
+        $docComp->update();
+
 
         return redirect()->back()->with(['sucesso' => "Documentação complementar enviada com sucesso"]);
 

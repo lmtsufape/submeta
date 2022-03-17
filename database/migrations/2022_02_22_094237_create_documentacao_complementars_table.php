@@ -15,10 +15,10 @@ class CreateDocumentacaoComplementarsTable extends Migration
     {
         Schema::create('documentacao_complementars', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('termoCompromisso');
-            $table->string('comprovanteMatricula');
-            $table->string('pdfLattes');
-            $table->string('linkLattes');
+            $table->string('termoCompromisso')->nullable();
+            $table->string('comprovanteMatricula')->nullable();
+            $table->string('pdfLattes')->nullable();
+            $table->string('linkLattes')->nullable();
 
             $table->integer('participante_id')->nullable();
             $table->foreign('participante_id')->references('id')->on('participantes');
