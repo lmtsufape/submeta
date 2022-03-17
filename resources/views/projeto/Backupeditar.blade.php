@@ -606,7 +606,7 @@
                               </select>
                             </div>
                             <div class="form-group col-md-6">
-                              <label for="coeficienteDeRendimento1">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
+                              <label for="coeficienteDeRendimento1">Coeficiente de rendimento (média geral) <span style="color: red; font-weight:bold">*</span></label>
                               <input type="number" class="form-control" id="coeficienteDeRendimento1" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_um){{$participantes[0]->media_do_curso}}@endif">
                               @error('coeficienteDeRendimento1')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -866,7 +866,7 @@
                               </select>
                           </div>
                           <div class="form-group col-md-6">
-                            <label for="coeficienteDeRendimento2">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
+                            <label for="coeficienteDeRendimento2">Coeficiente de rendimento (média geral) <span style="color: red; font-weight:bold">*</span></label>
                             <input type="number" class="form-control media" id="coeficienteDeRendimento2" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_dois){{$participantes[1]->media_do_curso}}@endif">
                             @error('coeficienteDeRendimento2')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -1124,7 +1124,7 @@
                                     </select>
                             </div>
                             <div class="form-group col-md-6">
-                              <label for="coeficienteDeRendimento3">Coeficiente de rendimento <span style="color: red; font-weight:bold">*</span></label>
+                              <label for="coeficienteDeRendimento3">Coeficiente de rendimento (média geral) <span style="color: red; font-weight:bold">*</span></label>
                               <input type="number" class="form-control media" id="coeficienteDeRendimento3" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_tres){{$participantes[2]->media_do_curso}}@endif">
                               @error('coeficienteDeRendimento3')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">

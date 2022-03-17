@@ -78,6 +78,7 @@
                   <th scope="col" style="width:100%">Nome do projeto</th>
                   <th scope="col">Data de Criação</th>
                   <th scope="col" style="text-align:center">Status</th>
+                    <th scope="col" style="text-align:center">Opção</th>
                 </tr>
               </thead>
               <tbody id="projetos">
@@ -88,13 +89,12 @@
                         {{ $projeto->titulo }}
                       </td>
                       <td style="text-align: center">{{ date('d-m-Y', strtotime($projeto->updated_at)) }}</td>
-                      @if($projeto->status == 'Avaliado'  || $projeto->status == 'avaliado')
-                        <td style="color: rgb(6, 85, 6); text-align: center">Avaliado</td>
-                      @elseif($projeto->status == 'Submetido' || $projeto->status == 'submetido')
+                      @if($projeto->status !=null)
+                        <td style="color: rgb(6, 85, 6); text-align: center;text-transform: capitalize;">{{$projeto->status}}</td>
+                      @else
                         <td style="color: rgb(0, 0, 0); text-align: center">Submetido</td>
-                      @elseif($projeto->status == 'Rascunho' || $projeto->status == 'rascunho')
-                        <td style="color: rgb(0, 0, 0); text-align: center">Rascunho</td>
                       @endif
+
                       <td>
                         <div class="dropright dropdown-options" style="width: 100%; text-align:center; float:none">
                             <a id="options" class="dropdown-toggle btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -112,6 +112,17 @@
                                     Solicitar Substituições
                                   </a>
                                   <hr class="dropdown-hr">
+
+                                  <a href="{{route('docComplementar.listar', ['projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
+                                    Documentos Complementares
+                                  </a>
+                                  <hr class="dropdown-hr">
+
+                                  <a href="" class="dropdown-item" style="text-align: center">
+                                      Solicitar Certificado
+                                  </a>
+                                  <hr class="dropdown-hr">
+
                                 @endif
                                 <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                                   Visualizar
@@ -129,9 +140,16 @@
                                 --}}
 
                                 <!-- Button trigger modal -->
-                                <button type="button" class="dropdown-item dropdown-item-delete" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
-                                  <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar
-                                </button>
+
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col text-center" style="margin-left: 20px">
+                                                <button type="button" class="dropdown-item dropdown-item-delete" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
+                                                  <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                       </td>

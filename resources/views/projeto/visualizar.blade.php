@@ -14,27 +14,28 @@
             {{ session('mensagem') }}
         </div>
     @endif
-    <div class="row justify-content-center">
 
-      @component('projeto.formularioVisualizar.projeto', 
-                ['grandeAreas' => $grandeAreas, 'projeto' => $projeto,
-                 'areas' => $areas, 'subareas' => $subAreas])
-      @endcomponent
-      
-      @component('projeto.formularioVisualizar.proponente', ['projeto' => $projeto])
-      @endcomponent
-      
-      @component('projeto.formularioVisualizar.anexos', ['projeto' => $projeto])
-      @endcomponent
-      
-      @component('projeto.formularioVisualizar.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno, 'projeto' => $projeto, 'participantes' => $participantes, 'arquivos' =>$arquivos])
+    <div class="row justify-content-center" style="margin-top: 4rem">
+
+      @component('projeto.formularioVisualizar.projeto2',
+                ['edital' => $edital, 'projeto' => $projeto])
       @endcomponent
 
-      @if($projeto->comentario != null)
-          @component('projeto.formularioVisualizar.resultado',
+      @component('projeto.formularioVisualizar.proponente2', ['projeto' => $projeto])
+      @endcomponent
+
+      @component('projeto.formularioVisualizar.anexos2', ['edital' => $edital,'projeto' => $projeto])
+      @endcomponent
+      
+      @component('projeto.formularioVisualizar.participantes2', ['projeto' => $projeto])
+      @endcomponent
+
+      @component('projeto.formularioVisualizar.relatório',['edital' => $edital,'projeto' => $projeto])
+      @endcomponent
+
+      @component('projeto.formularioVisualizar.resultado2',
                     ['projeto' => $projeto])
-          @endcomponent
-      @endif
+      @endcomponent
       
       {{-- @component('projeto.formularioVisualizar.finalizar', ['projeto' => $projeto])
       @endcomponent --}}

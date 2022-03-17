@@ -76,46 +76,63 @@
                         {{ $projeto->titulo }}
                       </td>
                       <td style="text-align: center">{{ date('d-m-Y \à\s H:i\h', strtotime($projeto->updated_at)) }}</td>
-                      @if($projeto->status == 'avaliado')
-                        <td style="color: rgb(6, 85, 6); text-align: center">Avaliado</td>
-                      @elseif($projeto->status == 'submetido' || $projeto->status == 'submetido')
-                        <td style="color: rgb(0, 0, 0); text-align: center">Submetido</td>
-                      @elseif($projeto->status == 'rascunho')
-                        <td style="color: rgb(0, 0, 0); text-align: center">Rascunho</td>
-                      @elseif($projeto->status == 'aprovado')
-                            <td style="color: rgb(0, 0, 0); text-align: center">Aprovado</td>
-                        @elseif($projeto->status == 'negado')
-                            <td style="color: rgb(0, 0, 0); text-align: center">Negado</td>
-                        @endif
+                      @if($projeto->status !=null)
+                        <td style="color: rgb(6, 85, 6); text-align: center;text-transform: capitalize;">{{$projeto->status}}</td>
+                      @else
+                            <td style="color: rgb(0, 0, 0); text-align: center">Submetido</td>
+                      @endif
                       <td>
                         <div class="dropright dropdown-options" style="width: 100%; text-align:center; float:none">
                             <a id="options" class="dropdown-toggle btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                             </a>
                             <div class="dropdown-menu">
-                              @if($projeto->evento->inicioSubmissao <= $hoje && $hoje <= $projeto->evento->fimSubmissao)
-                                <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
-                                  Editar
-                                  </a>
-                                  <hr class="dropdown-hr">
-                              @elseif($projeto->evento->resultado_final <= $hoje || $projeto->status== 'aprovado')
-                                <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
-                                Solicitar Substituição</a>
-                              @endif 
-                                <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
-                                  Visualizar
-                                </a>
-                                <hr class="dropdown-hr">
-                                {{-- <a href="" class="dropdown-item" style="text-align: center">
-                                  Recorrer
-                                </a> 
-                                --}}
 
-                                <!-- Button trigger modal deletar -->
-                                <button type="button" class="dropdown-item dropdown-item-delete" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
-                                  <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar
-                                </button>
+                                @if( $projeto->status== 'aprovado')
+                                    <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
+                                        Solicitar Substituições
+                                    </a>
+                                    <hr class="dropdown-hr">
+
+                                    <a href="{{route('docComplementar.listar', ['projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
+                                        Documentos Complementares
+                                    </a>
+                                    <hr class="dropdown-hr">
+
+                                    <a href="" class="dropdown-item" style="text-align: center">
+                                        Solicitar Certificado
+                                    </a>
+                                    <hr class="dropdown-hr">
+
+                                @endif
+                                <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                                    Visualizar
+                                </a>
+
+                                <hr class="dropdown-hr">
+                                <a href="{{route('planos.listar', ['id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
+                                    Relatórios
+                                </a>
+
+                                <hr class="dropdown-hr">
+                            {{-- <a href="" class="dropdown-item" style="text-align: center">
+                              Recorrer
+                            </a>
+                            --}}
+
+                            <!-- Button trigger modal -->
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col text-center" style="margin-left: 20px">
+                                            <button type="button" class="dropdown-item dropdown-item-delete" data-toggle="modal" data-target="#modal{{$projeto->id}}" style="text-align: center">
+                                                <img src="{{asset('img/icons/logo_lixeira.png')}}" alt=""> Deletar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                       </td>
                     </tr>

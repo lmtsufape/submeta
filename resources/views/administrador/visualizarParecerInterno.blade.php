@@ -45,6 +45,7 @@
 
                     </div>
 
+                    <br>
                     <h3>Anexos</h3>
 
                     {{-- Anexo do Projeto --}}
@@ -77,15 +78,14 @@
                         </div>
 
                         <div class="col-sm-3">
-                            <label for="anexoPlanilha" class="col-form-label">{{ __('Planilha de Pontuação: ') }}</label>
-                            <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}">Arquivo</a>
+                            <label for="anexoPlanilha" class="col-form-label">{{ __('Pontuação calculada: ') }}</label>
                         </div>
                         <div class="col-sm-3" style="top: 5px; text-align: right">
-                            <label for="aceito" style="left: auto">{{ __('Aceito') }}</label>
-                            <input type="radio" name="anexoPlanilha" value="aceito" @if($parecer!=null && $parecer->statusAnexoPlanilhaPontuacao =='aceito' ) checked @else disabled @endif required>
-
-                            <label for="recusado">{{ __('Recusado') }}</label>
-                            <input type="radio" name="anexoPlanilha" value="recusado" @if($parecer!=null && $parecer->statusAnexoPlanilhaPontuacao =='recusado' ) checked @else disabled @endif>
+                            <input type="number" min="0" step=".01" name="anexoPlanilha" style="width: 60px"
+                                   @if($parecer!=null && $parecer->statusAnexoPlanilhaPontuacao !=null)
+                                   @if(is_numeric($parecer->statusAnexoPlanilhaPontuacao)) value="{{$parecer->statusAnexoPlanilhaPontuacao}}"
+                                   @else value="0"
+                                   @endif @endif disabled>
                         </div>
 
                         @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM')
@@ -150,6 +150,16 @@
 
                             <label for="recusado">{{ __('Recusado') }}</label>
                             <input type="radio" name="anexoPlano" value="recusado" @if($parecer!=null && $parecer->statusPlanoTrabalho =='recusado' ) checked @else disabled @endif>
+                        </div>
+                    </div>
+
+                        <br>
+                        <h3>Comentário</h3>
+                        <div class="row">
+                            <div class="col-md-9">
+						<textarea class="col-md-12" minlength="20" id="comentario" name="comentario" style="border-radius:5px 5px 0 0;height: 71px;" disabled
+                                  >@if($parecer!=null && $parecer->comentario !=null ){{$parecer->comentario}} @endif</textarea>
+                            </div>
                         </div>
 
                         {{--Modal planos de trabalho--}}

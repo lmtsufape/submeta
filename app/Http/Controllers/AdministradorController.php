@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notificacao;
 use App\Substituicao;
 use Illuminate\Http\Request;
 use App\Administrador;
@@ -16,6 +17,7 @@ use App\GrandeArea;
 use App\Natureza;
 use App\Trabalho;
 use App\FuncaoParticipantes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Evento;
@@ -26,6 +28,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\EventoCriado;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Response;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdministradorController extends Controller
 {
@@ -54,9 +59,9 @@ class AdministradorController extends Controller
     public function pareceres(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
-        $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
-        $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados);
+        $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
+       // $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
+       // $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados);
 
         return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
     }
@@ -68,9 +73,12 @@ class AdministradorController extends Controller
         $trabalhosAprovados = $evento->trabalhos->Where('status', 'aprovado');
         $trabalhosReprovados = $evento->trabalhos->Where('status', 'reprovado');
         $trabalhosCorrigidos = $evento->trabalhos->Where('status', 'corrigido');
-        $trabalhos = $trabalhosSubmetidos
+        $trabalhos =  $this->paginate($trabalhosSubmetidos);
+        $trabalhos =  $this->paginate($trabalhosSubmetidos
             ->merge($trabalhosAvaliados)->merge($trabalhosAprovados)
-            ->merge($trabalhosReprovados)->merge($trabalhosCorrigidos)->sortBy('titulo');
+            ->merge($trabalhosReprovados)->merge($trabalhosCorrigidos)->sortBy('titulo'))
+            ->withPath('/usuarios/analisarProjetos?evento_id='.$evento->id);
+
 
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
@@ -78,6 +86,15 @@ class AdministradorController extends Controller
         // $participantes = User::whereIn('id', $participantesUsersIds)->get();
 
         return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes]);
+    }
+
+    // Utilizado para paginação de Collection
+    public function paginate($items, $perPage = 5, $page = null, $options = [])
+    {
+
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
     public function analisarProposta(Request $request){
@@ -520,6 +537,18 @@ class AdministradorController extends Controller
         $trabalho->avaliadors()->attach($avaliadores);
         $evento->avaliadors()->syncWithoutDetaching($avaliadores);
         $trabalho->save();
+
+        foreach ($avaliadores as $avaliador){
+            $notificacao = Notificacao::create([
+                'remetente_id' => Auth::user()->id,
+                'destinatario_id' => $avaliador->user_id,
+                'trabalho_id' => $request->trabalho_id,
+                'lido' => false,
+                'tipo' => 5,
+            ]);
+            $notificacao->save();
+        }
+
 
         return redirect()->back();
 

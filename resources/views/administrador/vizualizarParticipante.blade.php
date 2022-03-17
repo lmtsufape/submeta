@@ -157,7 +157,7 @@
     </div>
     <div class="row">
         <div class="col-6">
-            @component('componentes.input', ['label' => 'Coeficiente de rendimento'])
+            @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
             <input type="number" class="form-control media" value="{{$subs->participanteSubstituido()->withTrashed()->first()->media_do_curso}}" name="media_do_curso" min="0" max="10" step="0.01" disabled>
             @endcomponent
         </div>
@@ -434,7 +434,7 @@
     </div>
     <div class="row">
         <div class="col-6">
-            @component('componentes.input', ['label' => 'Coeficiente de rendimento'])
+            @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
             <input type="number" class="form-control media" value="{{$subs->participanteSubstituto()->withTrashed()->first()->media_do_curso}}" name="media_do_curso" min="0" max="10" step="0.01" disabled>
             @endcomponent
         </div>

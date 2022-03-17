@@ -32,18 +32,18 @@ class EventoController extends Controller
     public function index(Request $request)
     {
         if($request->buscar == null){
-          $eventos = Evento::all()->sortBy('nome');
-          // $comissaoEvento = ComissaoEvento::all();
-          // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
-          $hoje = Carbon::today('America/Recife');
-          $hoje = $hoje->toDateString();
+            $eventos = Evento::all()->sortBy('nome');
+            // $comissaoEvento = ComissaoEvento::all();
+            // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
+            $hoje = Carbon::today('America/Recife');
+            $hoje = $hoje->toDateString();
 
-          return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>'', 'flag'=>'false']);
+            return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>'', 'flag'=>'false']);
         }else{
-          $eventos = Evento::where('nome','ilike','%'.$request->buscar.'%')->get();
-          $hoje = Carbon::today('America/Recife');
-          $hoje = $hoje->toDateString();
-          return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>$request->buscar, 'flag'=>'true']);
+            $eventos = Evento::where('nome','ilike','%'.$request->buscar.'%')->get();
+            $hoje = Carbon::today('America/Recife');
+            $hoje = $hoje->toDateString();
+            return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>$request->buscar, 'flag'=>'true']);
         }
 
     }
@@ -90,9 +90,9 @@ class EventoController extends Controller
 
         //dd($user_id);
         if(isset($request->modeloDocumento)){
-          $request->validate([
-            'modeloDocumento' => ['file', 'max:2048', new ExcelRule($request->file('modeloDocumento'))],
-          ]);
+            $request->validate([
+                'modeloDocumento' => ['file', 'max:2048', new ExcelRule($request->file('modeloDocumento'))],
+            ]);
         }
 
         //--Salvando os anexos da submissão temporariamente
@@ -100,62 +100,68 @@ class EventoController extends Controller
 
         // validar datas nulas antes, pois pode gerar um bug
         if(
-          $request->inicioSubmissao == null ||
-          $request->fimSubmissao == null    ||
-          $request->inicioRevisao == null   ||
-          $request->fimRevisao == null      ||
-          $request->resultado == null
+            $request->inicioSubmissao == null ||
+            $request->fimSubmissao == null    ||
+            $request->inicioRevisao == null   ||
+            $request->fimRevisao == null      ||
+            $request->resultado == null
 
         ){
-          $validatedData = $request->validate([
-            'nome'                => ['required', 'string'],
-            'descricao'           => ['required', 'string'],
-            'tipo'                => ['required', 'string'],
-            'natureza'            => ['required'],
-            'coordenador_id'      => ['required'],
-            'numParticipantes'    => ['required'],
-            'inicioSubmissao'     => ['required', 'date'],
-            'fimSubmissao'        => ['required', 'date'],
-            'inicioRevisao'       => ['required', 'date'],
-            'fimRevisao'          => ['required', 'date'],
-            'inicio_recurso'      => ['required', 'date'],
-            'fim_recurso'         => ['required', 'date'],
-            'resultado_final'     => ['required', 'date'],
-            'resultado_preliminar'=> ['required', 'date'],
-            'dt_inicioRelatorioParcial'  => ['required', 'date'],
-            'dt_fimRelatorioParcial'     => ['required', 'date'],
-            'dt_inicioRelatorioFinal'  => ['required', 'date'],
-            'dt_fimRelatorioFinal'     => ['required', 'date'],
-            'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-            //'modeloDocumento'     => [],
-          ]);
+            $validatedData = $request->validate([
+                'nome'                => ['required', 'string'],
+                'descricao'           => ['required', 'string'],
+                'tipo'                => ['required', 'string'],
+                'natureza'            => ['required'],
+                'coordenador_id'      => ['required'],
+                'numParticipantes'    => ['required'],
+                'inicioSubmissao'     => ['required', 'date'],
+                'fimSubmissao'        => ['required', 'date'],
+                'inicioRevisao'       => ['required', 'date'],
+                'fimRevisao'          => ['required', 'date'],
+                'inicio_recurso'      => ['required', 'date'],
+                'fim_recurso'         => ['required', 'date'],
+                'resultado_final'     => ['required', 'date'],
+                'resultado_preliminar'=> ['required', 'date'],
+                'dt_inicioRelatorioParcial'  => ['required', 'date'],
+                'dt_fimRelatorioParcial'     => ['required', 'date'],
+                'dt_inicioRelatorioFinal'  => ['required', 'date'],
+                'dt_fimRelatorioFinal'     => ['required', 'date'],
+                'pdfFormAvalExterno' => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+                'pdfFormAvalInterno' => [($request->pdfFormAvalInternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'] ,
+
+                'pdfFormAvalInterno'     => ['required', 'file'],
+                'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+                //'modeloDocumento'     => [],
+            ]);
         }
 
         // validacao normal
         //after   = depois
         //before  = antes
         $validatedData = $request->validate([
-          'nome'                => ['required', 'string'],
-          'descricao'           => ['required', 'string','max:1500'],
-          'tipo'                => ['required', 'string'],
-          'natureza'            => ['required'],
-          'coordenador_id'      => ['required'],
-          'numParticipantes'      => ['required'],
-          #----------------------------------------------
-          'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
-          'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-          'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
-          'fimRevisao'          => ['required', 'date', 'after:inicioRevisao', 'after:fimSubmissao'],
-          'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
-          'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
-          'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
-          'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
-          'dt_inicioRelatorioParcial'  => ['required', 'date', 'after:resultado_final'],
-          'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
-          'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
-          'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
-          'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-          //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
+            'nome'                => ['required', 'string'],
+            'descricao'           => ['required', 'string','max:1500'],
+            'tipo'                => ['required', 'string'],
+            'natureza'            => ['required'],
+            'coordenador_id'      => ['required'],
+            'numParticipantes'      => ['required'],
+            #----------------------------------------------
+            'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
+            'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
+            'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
+            'fimRevisao'          => ['required', 'date', 'after:inicioRevisao', 'after:fimSubmissao'],
+            'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
+            'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
+            'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
+            'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
+            'dt_inicioRelatorioParcial'  => ['required', 'date', 'after:resultado_final'],
+            'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
+            'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
+            'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
+            'pdfFormAvalExterno'           => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+            'pdfFormAvalInterno'           => [($request->pdfFormAvalInternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+            'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+            //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
 
         //$evento = Evento::create([
@@ -197,21 +203,41 @@ class EventoController extends Controller
         //-- Salvando anexos finais
 
         if(isset($request->pdfEdital)){
-          $pdfEdital = $request->pdfEdital;
-          $path = 'pdfEdital/' . $evento->id . '/';
-          $nome = "edital.pdf";
-          Storage::putFileAs($path, $pdfEdital, $nome);
-          $evento->pdfEdital = $path . $nome;
+            $pdfEdital = $request->pdfEdital;
+            $path = 'pdfEdital/' . $evento->id . '/';
+            $nome = "edital.pdf";
+            Storage::putFileAs($path, $pdfEdital, $nome);
+            $evento->pdfEdital = $path . $nome;
         }
 
         if(isset($request->modeloDocumento)){
-          $modeloDocumento = $request->modeloDocumento;
-          $extension = $modeloDocumento->extension();
-          $path = 'modeloDocumento/' . $evento->id . '/';
-          $nome = "modelo" . "." . $extension;
-          Storage::putFileAs($path, $modeloDocumento, $nome);
+            $modeloDocumento = $request->modeloDocumento;
+            $extension = $modeloDocumento->extension();
+            $path = 'modeloDocumento/' . $evento->id . '/';
+            $nome = "modelo" . "." . $extension;
+            Storage::putFileAs($path, $modeloDocumento, $nome);
 
-          $evento->modeloDocumento = $path . $nome;
+            $evento->modeloDocumento = $path . $nome;
+        }
+
+        if(isset($request->pdfFormAvalInterno)){
+            $pdfFormAvalInterno = $request->pdfFormAvalInterno;
+            $extension = $pdfFormAvalInterno->extension();
+            $path = 'pdfFormAvalInterno/' . $evento->id . '/';
+            $nome = "formulario de avaliação interno" . "." . $extension;
+            Storage::putFileAs($path, $pdfFormAvalInterno, $nome);
+
+            $evento->formAvaliacaoInterno = $path . $nome;
+        }
+
+        if(isset($request->pdfFormAvalExterno)){
+            $pdfFormAvalExterno = $request->pdfFormAvalExterno;
+            $extension = $pdfFormAvalExterno->extension();
+            $path = 'pdfFormAvalExterno/' . $evento->id . '/';
+            $nome = "formulario de avaliação externo" . "." . $extension;
+            Storage::putFileAs($path, $pdfFormAvalExterno, $nome);
+
+            $evento->formAvaliacaoExterno = $path . $nome;
         }
 
         $evento->update();
@@ -226,31 +252,39 @@ class EventoController extends Controller
 
     public function armazenarAnexosTemp(Request $request){
 
-      //---Anexos do Projeto
-      $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
-                                ->orderByDesc('updated_at')->first();
+        //---Anexos do Projeto
+        $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
+            ->orderByDesc('updated_at')->first();
 
-      if($eventoTemp == null){
-        $eventoTemp = new Evento();
-        $eventoTemp->criador_id = Auth::user()->id;
-        $eventoTemp->anexosStatus = 'temporario';
-        $eventoTemp->save();
-      }
+        if($eventoTemp == null){
+            $eventoTemp = new Evento();
+            $eventoTemp->criador_id = Auth::user()->id;
+            $eventoTemp->anexosStatus = 'temporario';
+            $eventoTemp->save();
+        }
 
-      if(!(is_null($request->pdfEdital)) ) {
-        $pasta = 'pdfEdital/' . $eventoTemp->id;
-        $eventoTemp->pdfEdital = Storage::putFileAs($pasta, $request->pdfEdital, 'edital.pdf');
-      }
-      if (!(is_null($request->modeloDocumento))) {
-        $extension = $request->modeloDocumento->extension();
-        $path = 'modeloDocumento/' . $eventoTemp->id;
-        $nome = "modelo" . "." . $extension;
-        $eventoTemp->modeloDocumento = Storage::putFileAs($path, $request->modeloDocumento, $nome);
-      }
+        if(!(is_null($request->pdfEdital)) ) {
+            $pasta = 'pdfEdital/' . $eventoTemp->id;
+            $eventoTemp->pdfEdital = Storage::putFileAs($pasta, $request->pdfEdital, 'edital.pdf');
+        }
+        if (!(is_null($request->modeloDocumento))) {
+            $extension = $request->modeloDocumento->extension();
+            $path = 'modeloDocumento/' . $eventoTemp->id;
+            $nome = "modelo" . "." . $extension;
+            $eventoTemp->modeloDocumento = Storage::putFileAs($path, $request->modeloDocumento, $nome);
+        }
+        if(!(is_null($request->pdfFormAvalExterno)) ) {
+            $pasta = 'pdfFormAvalExterno/' . $eventoTemp->id;
+            $eventoTemp->formAvaliacaoExterno = Storage::putFileAs($pasta, $request->pdfFormAvalExterno, 'formulario de avaliação externo.pdf');
+        }
+        if(!(is_null($request->pdfFormAvalInterno)) ) {
+            $pasta = 'pdfFormAvalInterno/' . $eventoTemp->id;
+            $eventoTemp->formAvaliacaoInterno = Storage::putFileAs($pasta, $request->pdfFormAvalInterno, 'formulario de avaliação interno.pdf');
+        }
 
-      $eventoTemp->update();
+        $eventoTemp->update();
 
-      return $eventoTemp;
+        return $eventoTemp;
     }
 
     /**
@@ -264,20 +298,20 @@ class EventoController extends Controller
         $evento = Evento::find($id);
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
         if($proponente != null){
-          $hasTrabalho = false;
-          $hasFile = false;
-          $trabalhos = $proponente->trabalhos()->where('evento_id', $evento->id )->get();
-          $trabalhosCount = $proponente->trabalhos()->where('evento_id', $evento->id )->count();
+            $hasTrabalho = false;
+            $hasFile = false;
+            $trabalhos = $proponente->trabalhos()->where('evento_id', $evento->id )->get();
+            $trabalhosCount = $proponente->trabalhos()->where('evento_id', $evento->id )->count();
 
-          if($trabalhosCount != 0){
-            $hasTrabalho = true;
-            $hasFile = true;
-          }
+            if($trabalhosCount != 0){
+                $hasTrabalho = true;
+                $hasFile = true;
+            }
         }else{
-          $hasTrabalho = false;
-          $hasFile = false;
-          $trabalhos = 0;
-          $trabalhosCount = 0;
+            $hasTrabalho = false;
+            $hasFile = false;
+            $trabalhos = 0;
+            $trabalhosCount = 0;
         }
 
         $trabalhosId = Trabalho::where('evento_id', $evento->id)->select('id')->get();
@@ -285,14 +319,14 @@ class EventoController extends Controller
         $mytime = Carbon::now('America/Recife');
         // dd(false);
         return view('evento.visualizarEvento', [
-                                                'evento'              => $evento,
-                                                'trabalhos'           => $trabalhos,
-                                                // 'trabalhosCoautor'    => $trabalhosCoautor,
-                                                'hasTrabalho'         => $hasTrabalho,
-                                                // 'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
-                                                'hasFile'             => $hasFile,
-                                                'mytime'              => $mytime
-                                               ]);
+            'evento'              => $evento,
+            'trabalhos'           => $trabalhos,
+            // 'trabalhosCoautor'    => $trabalhosCoautor,
+            'hasTrabalho'         => $hasTrabalho,
+            // 'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
+            'hasFile'             => $hasFile,
+            'mytime'              => $mytime
+        ]);
     }
 
     public function showNaoLogado($id)
@@ -307,14 +341,14 @@ class EventoController extends Controller
         $mytime = Carbon::now('America/Recife');
         // dd(false);
         return view('evento.visualizarEvento', [
-                                                'evento'              => $evento,
-                                                'trabalhos'           => $trabalhos,
-                                                'trabalhosCoautor'    => $trabalhosCoautor,
-                                                'hasTrabalho'         => $hasTrabalho,
-                                                'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
-                                                'hasFile'             => $hasFile,
-                                                'mytime'              => $mytime
-                                               ]);
+            'evento'              => $evento,
+            'trabalhos'           => $trabalhos,
+            'trabalhosCoautor'    => $trabalhosCoautor,
+            'hasTrabalho'         => $hasTrabalho,
+            'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
+            'hasFile'             => $hasFile,
+            'mytime'              => $mytime
+        ]);
     }
 
     /**
@@ -332,9 +366,9 @@ class EventoController extends Controller
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
         return view('evento.editarEvento',['evento'=>$evento,
-                                           'coordenadores'=>$coordenadors,
-                                           'naturezas'=>$naturezas,
-                                           'ontem'=>$yesterday]);
+            'coordenadores'=>$coordenadors,
+            'naturezas'=>$naturezas,
+            'ontem'=>$yesterday]);
     }
 
     /**
@@ -351,55 +385,59 @@ class EventoController extends Controller
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
         if(
-          $request->inicioSubmissao == null ||
-          $request->fimSubmissao == null    ||
-          $request->inicioRevisao == null   ||
-          $request->fimRevisao == null      ||
-          $request->resultado == null
+            $request->inicioSubmissao == null ||
+            $request->fimSubmissao == null    ||
+            $request->inicioRevisao == null   ||
+            $request->fimRevisao == null      ||
+            $request->resultado == null
 
         ){
-          $validatedData = $request->validate([
-            'nome'                => ['required', 'string'],
-            'descricao'           => ['required', 'string'],
-            'tipo'                => ['required', 'string'],
-            'natureza'            => ['required'],
-            'numParticipantes'    => ['required'],
-            'inicioSubmissao'     => ['required', 'date'],
-            'fimSubmissao'        => ['required', 'date'],
-            'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
-            'fimRevisao'          => ['required', 'date'],
-            'resultado_preliminar'=> ['required', 'date'],
-            'inicio_recurso'      => ['required', 'date'],
-            'fim_recurso'         => ['required', 'date'],
-            'resultado_final'     => ['required', 'date'],
-            'dt_inicioRelatorioParcial'  => ['required', 'date'],
-            'dt_fimRelatorioParcial'     => ['required', 'date'],
-            'dt_inicioRelatorioFinal'  => ['required', 'date'],
-            'dt_fimRelatorioFinal'     => ['required', 'date'],
-            'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
-            'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
-          ]);
+            $validatedData = $request->validate([
+                'nome'                => ['required', 'string'],
+                'descricao'           => ['required', 'string'],
+                'tipo'                => ['required', 'string'],
+                'natureza'            => ['required'],
+                'numParticipantes'    => ['required'],
+                'inicioSubmissao'     => ['required', 'date'],
+                'fimSubmissao'        => ['required', 'date'],
+                'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
+                'fimRevisao'          => ['required', 'date'],
+                'resultado_preliminar'=> ['required', 'date'],
+                'inicio_recurso'      => ['required', 'date'],
+                'fim_recurso'         => ['required', 'date'],
+                'resultado_final'     => ['required', 'date'],
+                'dt_inicioRelatorioParcial'  => ['required', 'date'],
+                'dt_fimRelatorioParcial'     => ['required', 'date'],
+                'dt_inicioRelatorioFinal'  => ['required', 'date'],
+                'dt_fimRelatorioFinal'     => ['required', 'date'],
+                'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
+                'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
+                'pdfFormAvalExterno'           => ['file', 'mimes:pdf', 'max:2048'],
+                'pdfFormAvalInterno'           => ['file', 'mimes:pdf', 'max:2048'],
+            ]);
         }
 
         $validated = $request->validate([
-          'nome'                => ['required', 'string'],
-          'descricao'           => ['required', 'string', 'max:1500'],
-          'tipo'                => ['required', 'string'],
-          'natureza'            => ['required'],
-          'numParticipantes'    => ['required'],
-          'inicioSubmissao'     => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-          'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-          'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
-          'fimRevisao'          => ['required', 'date', 'after:inicioRevisao'],
-          'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
-          'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
-          'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
-          'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
-          'dt_inicioRelatorioParcial'  => ['required', 'date', 'after:resultado_final'],
-          'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
-          'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
-          'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
-          'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
+            'nome'                => ['required', 'string'],
+            'descricao'           => ['required', 'string', 'max:1500'],
+            'tipo'                => ['required', 'string'],
+            'natureza'            => ['required'],
+            'numParticipantes'    => ['required'],
+            'inicioSubmissao'     => ['required', 'date', 'after_or_equal:inicioSubmissao'],
+            'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
+            'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
+            'fimRevisao'          => ['required', 'date', 'after:inicioRevisao'],
+            'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
+            'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
+            'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
+            'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
+            'dt_inicioRelatorioParcial'  => ['required', 'date', 'after:resultado_final'],
+            'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
+            'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
+            'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
+            'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
+            'pdfFormAvalExterno'           => ['file', 'mimes:pdf', 'max:2048'],
+            'pdfFormAvalInterno'           => ['file', 'mimes:pdf', 'max:2048'],
         ]);
 
         $evento->nome                 = $request->nome;
@@ -422,19 +460,39 @@ class EventoController extends Controller
         $evento->coordenadorId        = $request->coordenador_id;
         $evento->consu                = $request->has('consu');
         if($request->pdfEdital != null){
-          $pdfEdital = $request->pdfEdital;
-          $path = 'pdfEdital/' . $evento->id . '/';
-          $nome = "edital.pdf";
-          Storage::putFileAs($path, $pdfEdital, $nome);
+            $pdfEdital = $request->pdfEdital;
+            $path = 'pdfEdital/' . $evento->id . '/';
+            $nome = "edital.pdf";
+            Storage::putFileAs($path, $pdfEdital, $nome);
         }
 
         if($request->modeloDocumento != null){
-          $modeloDocumento = $request->modeloDocumento;
-          $extension = $modeloDocumento->extension();
-          $path = 'modeloDocumento/' . $evento->id . '/';
-          $nome = "modelo" . "." . $extension;
-          Storage::putFileAs($path, $modeloDocumento, $nome);
-          $evento->modeloDocumento = $path . $nome;
+            $modeloDocumento = $request->modeloDocumento;
+            $extension = $modeloDocumento->extension();
+            $path = 'modeloDocumento/' . $evento->id . '/';
+            $nome = "modelo" . "." . $extension;
+            Storage::putFileAs($path, $modeloDocumento, $nome);
+            $evento->modeloDocumento = $path . $nome;
+        }
+
+        if(isset($request->pdfFormAvalInterno)){
+            $pdfFormAvalInterno = $request->pdfFormAvalInterno;
+            $extension = $pdfFormAvalInterno->extension();
+            $path = 'pdfFormAvalInterno/' . $evento->id . '/';
+            $nome = "formulario de avaliação interno" . "." . $extension;
+            Storage::putFileAs($path, $pdfFormAvalInterno, $nome);
+
+            $evento->formAvaliacaoInterno = $path . $nome;
+        }
+
+        if(isset($request->pdfFormAvalExterno)){
+            $pdfFormAvalExterno = $request->pdfFormAvalExterno;
+            $extension = $pdfFormAvalExterno->extension();
+            $path = 'pdfFormAvalExterno/' . $evento->id . '/';
+            $nome = "formulario de avaliação externo" . "." . $extension;
+            Storage::putFileAs($path, $pdfFormAvalExterno, $nome);
+
+            $evento->formAvaliacaoExterno = $path . $nome;
         }
 
         $evento->update();
@@ -464,17 +522,17 @@ class EventoController extends Controller
         //     $areas->delete();
         // }
         if(isset($atividades)){
-          $atividades->delete();
+            $atividades->delete();
         }
         if(isset($comissao)){
-          $comissao->delete();
+            $comissao->delete();
         }
         if(isset($revisores)){
-          $revisores->delete();
+            $revisores->delete();
         }
         if(isset($trabalhos)){
-          $trabalhos->delete();
-          Trabalho::withTrashed()->where('evento_id', $id)->update(['evento_id' => null]);
+            $trabalhos->delete();
+            Trabalho::withTrashed()->where('evento_id', $id)->update(['evento_id' => null]);
         }
 
         Storage::deleteDirectory('pdfEdital/' . $evento->id );
@@ -493,7 +551,7 @@ class EventoController extends Controller
         // dd($ComissaoEventos);
         $ids = [];
         foreach($ComissaoEvento as $ce){
-          array_push($ids,$ce->userId);
+            array_push($ids,$ce->userId);
         }
         $users = User::find($ids);
 
@@ -515,128 +573,128 @@ class EventoController extends Controller
         $revs = Revisor::where('eventoId', $evento->id)->with('user')->get();
 
         return view('coordenador.detalhesEvento', [
-                                                    'evento'                  => $evento,
-                                                    'areas'                   => $areas,
-                                                    'revisores'               => $revisores,
-                                                    'revs'                    => $revs,
-                                                    'users'                   => $users,
-                                                    'modalidades'             => $modalidades,
-                                                    'areaModalidades'         => $areaModalidades,
-                                                    'trabalhos'               => $trabalhos,
-                                                    'trabalhosEnviados'       => $trabalhosEnviados,
-                                                    'trabalhosAvaliados'      => $trabalhosAvaliados,
-                                                    'trabalhosPendentes'      => $trabalhosPendentes,
-                                                    'numeroRevisores'         => $numeroRevisores,
-                                                    'numeroComissao'          => $numeroComissao
-                                                  ]);
+            'evento'                  => $evento,
+            'areas'                   => $areas,
+            'revisores'               => $revisores,
+            'revs'                    => $revs,
+            'users'                   => $users,
+            'modalidades'             => $modalidades,
+            'areaModalidades'         => $areaModalidades,
+            'trabalhos'               => $trabalhos,
+            'trabalhosEnviados'       => $trabalhosEnviados,
+            'trabalhosAvaliados'      => $trabalhosAvaliados,
+            'trabalhosPendentes'      => $trabalhosPendentes,
+            'numeroRevisores'         => $numeroRevisores,
+            'numeroComissao'          => $numeroComissao
+        ]);
     }
 
     public function numTrabalhos(Request $request){
-      $evento = Evento::find($request->eventoId);
-      $this->authorize('isCoordenador', $evento);
-      $validatedData = $request->validate([
-        'eventoId'                => ['required', 'integer'],
-        'trabalhosPorAutor'       => ['required', 'integer'],
-        'numCoautor'              => ['required', 'integer']
-      ]);
+        $evento = Evento::find($request->eventoId);
+        $this->authorize('isCoordenador', $evento);
+        $validatedData = $request->validate([
+            'eventoId'                => ['required', 'integer'],
+            'trabalhosPorAutor'       => ['required', 'integer'],
+            'numCoautor'              => ['required', 'integer']
+        ]);
 
-      $evento->numMaxTrabalhos = $request->trabalhosPorAutor;
-      $evento->numMaxCoautores = $request->numCoautor;
-      $evento->save();
+        $evento->numMaxTrabalhos = $request->trabalhosPorAutor;
+        $evento->numMaxCoautores = $request->numCoautor;
+        $evento->save();
 
-      return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
+        return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
     }
 
     public function setResumo(Request $request){
-      $evento = Evento::find($request->eventoId);
-      $this->authorize('isCoordenador', $evento);
-      $validatedData = $request->validate([
-        'eventoId'                => ['required', 'integer'],
-        'hasResumo'               => ['required', 'string']
-      ]);
-      if($request->hasResumo == 'true'){
-        $evento->hasResumo = true;
-      }
-      else{
-        $evento->hasResumo = false;
-      }
+        $evento = Evento::find($request->eventoId);
+        $this->authorize('isCoordenador', $evento);
+        $validatedData = $request->validate([
+            'eventoId'                => ['required', 'integer'],
+            'hasResumo'               => ['required', 'string']
+        ]);
+        if($request->hasResumo == 'true'){
+            $evento->hasResumo = true;
+        }
+        else{
+            $evento->hasResumo = false;
+        }
 
-      $evento->save();
-      return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
+        $evento->save();
+        return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
     }
 
     public function setFotoEvento(Request $request){
-      $evento = Evento::find($request->eventoId);
-      $this->authorize('isCoordenador', $evento);
-      // dd($request);
-      $validatedData = $request->validate([
-        'eventoId'                => ['required', 'integer'],
-        'fotoEvento'              => ['required', 'file', 'mimes:png']
-      ]);
+        $evento = Evento::find($request->eventoId);
+        $this->authorize('isCoordenador', $evento);
+        // dd($request);
+        $validatedData = $request->validate([
+            'eventoId'                => ['required', 'integer'],
+            'fotoEvento'              => ['required', 'file', 'mimes:png']
+        ]);
 
-      $file = $request->fotoEvento;
-      $path = 'public/eventos/' . $evento->id;
-      $nome = '/logo.png';
-      Storage::putFileAs($path, $file, $nome);
-      $evento->fotoEvento = $path . $nome;
-      $evento->save();
-      return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
+        $file = $request->fotoEvento;
+        $path = 'public/eventos/' . $evento->id;
+        $nome = '/logo.png';
+        Storage::putFileAs($path, $file, $nome);
+        $evento->fotoEvento = $path . $nome;
+        $evento->save();
+        return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
     }
 
     public function areaParticipante() {
 
-      $eventos = Evento::all();
+        $eventos = Evento::all();
 
-      return view('user.areaParticipante',['eventos'=>$eventos]);
+        return view('user.areaParticipante',['eventos'=>$eventos]);
 
     }
 
     public function listComissao() {
 
-      $comissaoEvento = ComissaoEvento::where('userId', Auth::user()->id)->get();
-      $eventos = Evento::all();
-      $evnts = [];
+        $comissaoEvento = ComissaoEvento::where('userId', Auth::user()->id)->get();
+        $eventos = Evento::all();
+        $evnts = [];
 
-      foreach ($comissaoEvento as $comissao) {
-        foreach ($eventos as $evento) {
-          if($comissao->eventosId == $evento->id){
-            array_push($evnts,$evento);
-          }
+        foreach ($comissaoEvento as $comissao) {
+            foreach ($eventos as $evento) {
+                if($comissao->eventosId == $evento->id){
+                    array_push($evnts,$evento);
+                }
+            }
         }
-      }
 
-      return view('user.comissoes',['eventos'=>$evnts]);
+        return view('user.comissoes',['eventos'=>$evnts]);
 
     }
 
     public function listComissaoTrabalhos(Request $request) {
 
-      $evento = Evento::find($request->eventoId);
-      $areasId = Area::where('eventoId', $evento->id)->select('id')->get();
-      $trabalhos = Trabalho::whereIn('areaId', $areasId)->orderBy('id')->get();
+        $evento = Evento::find($request->eventoId);
+        $areasId = Area::where('eventoId', $evento->id)->select('id')->get();
+        $trabalhos = Trabalho::whereIn('areaId', $areasId)->orderBy('id')->get();
 
-      return view('user.areaComissao', ['trabalhos' => $trabalhos]);
+        return view('user.areaComissao', ['trabalhos' => $trabalhos]);
     }
 
     public function baixarEdital($id) {
-      $evento = Evento::find($id);
+        $evento = Evento::find($id);
 
-      if (Storage::disk()->exists($evento->pdfEdital)) {
-        ob_end_clean();
-        return Storage::download($evento->pdfEdital);
-      }
+        if (Storage::disk()->exists($evento->pdfEdital)) {
+            ob_end_clean();
+            return Storage::download($evento->pdfEdital);
+        }
 
-      return abort(404);
+        return abort(404);
     }
 
     public function baixarModelos($id) {
-      $evento = Evento::find($id);
+        $evento = Evento::find($id);
 
-      if (Storage::disk()->exists($evento->modeloDocumento)) {
-        ob_end_clean();
-        return Storage::download($evento->modeloDocumento);
-      }
+        if (Storage::disk()->exists($evento->modeloDocumento)) {
+            ob_end_clean();
+            return Storage::download($evento->modeloDocumento);
+        }
 
-      return abort(404);
+        return abort(404);
     }
 }

@@ -69,6 +69,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
     Route::get('/notificacao/listar', 'NotificacaoController@listar')->name('notificacao.listar')->middleware('auth');
     Route::get('/notificacao/lista', 'NotificacaoController@listarTrab')->name('notificacao.listarTrab')->middleware('auth');
+    Route::get('/notificacao/ler/{id}', 'NotificacaoController@ler')->name('notificacao.ler');
 
 
   Route::get('/home/edital',                        'EventoController@index'              )->name('visualizarEvento');
@@ -148,6 +149,10 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   //##########  Relatórios
   Route::get(   '/projeto/planosTrabalho/{id}', 'ArquivoController@listar'                  )->name('planos.listar');
   Route::post(   '/projeto/planosTrabalho/anexarRelatorio', 'ArquivoController@anexarRelatorio' )->name('planos.anexar.relatorio');
+
+  //########## Documentação Complementar
+    Route::get(   '/documentacaoComplementar', 'ParticipanteController@listarParticipanteProjeto'                  )->name('docComplementar.listar');
+    Route::post(   '/documentacaoComplementar/enviar', 'DocumentacaoComplementarController@criar')->name('docComplementar.enviar');
 
     //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');

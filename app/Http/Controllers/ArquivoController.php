@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Arquivo;
+use App\Notificacao;
+use App\User;
+use Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
 use Carbon\Carbon;
+use App\Notifications\RelatorioRecebimentoNotification;
+use App\Administrador;
+
 
 class ArquivoController extends Controller
 {
@@ -109,12 +116,67 @@ class ArquivoController extends Controller
             $pasta = 'planoTrabalho/' . $arquivo->id;
             if($request->relatorioParcial != null) {
                 $arquivo->relatorioParcial = Storage::putFileAs($pasta, $request->relatorioParcial, "RelatorioParcial.pdf");
+                //Coordenador
+                $userTemp = User::find($arquivo->trabalho->evento->coordenadorComissao->user_id);
+                $notificacao = Notificacao::create([
+                    'remetente_id' => Auth::user()->id,
+                    'destinatario_id' => $arquivo->trabalho->evento->coordenadorComissao->user_id,
+                    'trabalho_id' => $arquivo->trabalho->id,
+                    'lido' => false,
+                    'tipo' => 3,
+                ]);
+                $notificacao->save();
+                Notification::send($userTemp, new RelatorioRecebimentoNotification($arquivo->trabalho->id,$userTemp,
+                $arquivo->trabalho->evento->nome,$arquivo->trabalho->titulo,'Parcial'));
+                //Admins
+                $admins = Administrador::all();
+                foreach ($admins as $admin) {
+                    $userTemp = User::find($admin->user_id);
+                    $notificacao = Notificacao::create([
+                        'remetente_id' => Auth::user()->id,
+                        'destinatario_id' => $admin->user_id,
+                        'trabalho_id' => $arquivo->trabalho->id,
+                        'lido' => false,
+                        'tipo' => 3,
+                    ]);
+                    $notificacao->save();
+                    Notification::send($userTemp, new RelatorioRecebimentoNotification($arquivo->trabalho->id,$userTemp,
+                    $arquivo->trabalho->evento->nome,$arquivo->trabalho->titulo,'Parcial'));
+                }
+
             }
             if($request->relatorioFinal != null) {
                 $arquivo->relatorioFinal = Storage::putFileAs($pasta, $request->relatorioFinal, "RelatorioFinal.pdf");
+                //Coordenador
+                $userTemp = User::find($arquivo->trabalho->evento->coordenadorComissao->user_id);
+                $notificacao = Notificacao::create([
+                    'remetente_id' => Auth::user()->id,
+                    'destinatario_id' => $arquivo->trabalho->evento->coordenadorComissao->user_id,
+                    'trabalho_id' => $arquivo->trabalho->id,
+                    'lido' => false,
+                    'tipo' => 4,
+                ]);
+                $notificacao->save();
+                Notification::send($userTemp, new RelatorioRecebimentoNotification($arquivo->trabalho->id,$userTemp,
+                    $arquivo->trabalho->evento->nome,$arquivo->trabalho->titulo,'Final'));
+                //Admins
+                $admins = Administrador::all();
+                foreach ($admins as $admin) {
+                    $userTemp = User::find($admin->user_id);
+                    $notificacao = Notificacao::create([
+                        'remetente_id' => Auth::user()->id,
+                        'destinatario_id' => $admin->user_id,
+                        'trabalho_id' => $arquivo->trabalho->id,
+                        'lido' => false,
+                        'tipo' => 4,
+                    ]);
+                    $notificacao->save();
+                    Notification::send($userTemp, new RelatorioRecebimentoNotification($arquivo->trabalho->id,$userTemp,
+                        $arquivo->trabalho->evento->nome,$arquivo->trabalho->titulo,'Final'));
+                }
             }
             $arquivo->save();
-            return redirect(route('planos.listar', ['id' => $request->projId]));
+            return redirect(route('planos.listar', ['id' => $request->projId]))->with(['sucesso' => "Relatório enviado com sucesso"]);
         }catch (Exception $th){
 
         }

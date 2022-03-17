@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $grandesAreas = \App\GrandeArea::all();
+    @endphp
 
     <div class="row justify-content-center" style="margin-top: 100px;">
         <!--Titulos -->
@@ -118,7 +121,7 @@
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                         <div class="modal-content">
 
-                                            <div class="modal-header" style="overflow-x:auto">
+                                            <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                 <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
@@ -126,7 +129,7 @@
                                                 </button>
                                             </div>
 
-                                            <div class="modal-body">
+                                            <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                 @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1])
                                             </div>
                                         </div>
@@ -139,7 +142,7 @@
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
-                                                <div class="modal-header" style="overflow-x:auto">
+                                                <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
@@ -147,7 +150,7 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                     @include('administrador.vizualizarParticipante', ['visualizarSubstituido' => 1])
                                                 </div>
                                             </div>
@@ -159,7 +162,7 @@
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
-                                                <div class="modal-header" style="overflow-x:auto">
+                                                <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
@@ -167,7 +170,7 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                     @include('administrador.vizualizarParticipante')
                                                 </div>
                                             </div>
@@ -279,19 +282,19 @@
                         <div class="row justify-content-center">
                             {{-- Arquivo  --}}
                             <div class="col-sm-4">
-                                <label for="anexoProjeto" class="col-form-label" style="font-weight: bold">{{ __('Projeto: ') }}</label>
+                                <label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold">{{ __('Projeto: ') }}</label>
                                 <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="anexoLatterCoordenador" class="col-form-label" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
+                                <label for="anexoLatterCoordenador" class="col-form-label font-tam" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
                                 <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="nomeTrabalho" class="col-form-label" style="font-weight: bold">{{ __('Autorização do Comitê de Ética: ') }}</label>
+                                <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização do Comitê de Ética: ') }}</label>
                                 @if($trabalho->anexoAutorizacaoComiteEtica != null)
                                     <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
@@ -300,13 +303,13 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="anexoPlanilha" class="col-form-label" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
+                                <label for="anexoPlanilha" class="col-form-label font-tam" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
                                 <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:40px" alt=""></a>
 
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="nomeTrabalho" class="col-form-label" style="font-weight: bold">{{ __('Justificativa: ') }}</label>
+                                <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Justificativa: ') }}</label>
                                 @if($trabalho->justificativaAutorizacaoEtica != null)
                                     <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
@@ -317,7 +320,7 @@
                             @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM')
                                 {{-- Decisão do CONSU --}}
                                 <div class="col-sm-4">
-                                    <label for="anexoCONSU" class="col-form-label" style="font-weight: bold">{{ __('Decisão do CONSU: ') }}</label>
+                                    <label for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão do CONSU: ') }}</label>
                                     <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 </div>
                             @endif
@@ -346,26 +349,26 @@
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
                             <div class="col-sm-3">
-                                <label for="dt_inicioRelatorioParcial" class="col-form-label" style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
+                                <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_inicioRelatorioParcial{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorioParcial" value="{{$evento->dt_inicioRelatorioParcial}}" required autocomplete="dt_inicioRelatorioParcial" disabled autofocus>
                             </div>
                             <div class="col-sm-3">
-                                <label for="dt_fimRelatorioParcial" class="col-form-label" style="font-weight: bold">{{ __('Fim do Relatório Parcial: ') }}</label>
+                                <label for="dt_fimRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Fim do Relatório Parcial: ') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_fimRelatorioParcial{{$evento->id}}" type="date" class="form-control" name="dt_fimRelatorioParcial" value="{{$evento->dt_fimRelatorioParcial}}" required autocomplete="dt_fimRelatorioParcial" disabled autofocus>
                             </div>
                             {{-- Relatório Final --}}
                             <div class="col-sm-3">
-                                <label for="dt_inicioRelatorioFinal" class="col-form-label" style="font-weight: bold">{{ __('Início do Relatório Final:') }}</label>
+                                <label for="dt_inicioRelatorioFinal" class="col-form-label font-tam" style="font-weight: bold">{{ __('Início do Relatório Final:') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_inicioRelatorioFinal{{$evento->id}}" type="date" class="form-control" name="dt_inicioRelatorioFinal" value="{{$evento->dt_inicioRelatorioFinal}}" required autocomplete="dt_inicioRelatorioFinal" disabled autofocus>
                             </div>
                             <div class="col-sm-3">
-                                <label for="dt_fimRelatorioFinal" class="col-form-label" style="font-weight: bold">{{ __('Fim do Relatório Final:') }}</label>
+                                <label for="dt_fimRelatorioFinal" class="col-form-label font-tam" style="font-weight: bold">{{ __('Fim do Relatório Final:') }}</label>
                             </div>
                             <div class="col-sm-3">
                                 <input id="dt_fimRelatorioFinal{{$evento->id}}" type="date" class="form-control" name="dt_fimRelatorioFinal" value="{{$evento->dt_fimRelatorioFinal}}" required autocomplete="dt_fimRelatorioFinal" disabled autofocus>
@@ -392,7 +395,7 @@
                             </div>
                             <!-- Modal -->
                             <div class="modal fade" id="avaliadorModalCenter{{ $trabalho->id }}" tabindex="-1" role="dialog" aria-labelledby="avaliadorModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content modal-submeta">
                                         <div class="modal-header modal-header-submeta">
                                             <h5 class="modal-title titulo-table" id="avaliadorModalLongTitle">Selecione o(s) avaliador(es)</h5>
@@ -407,10 +410,34 @@
                                                 <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                                                 <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                                                 <div class="form-group">
-                                                    <label for="exampleFormControlSelect2">Selecione o(s) avaliador(es) para esse projeto</label>
+                                                    <div class="row" style="margin-left: 2px;margin-bottom: 1px">
+
+                                                        <div class="col-md-6">
+                                                    <label for="exampleFormControlSelect2">Seleciones o(s) avaliador(es) para esse projeto</label>
+                                                        </div>
+
+
+                                                        <div class="col-md-3" style="text-align: center;overflow-y:  auto;overflow-x:  auto">
+
+                                                            <select class="form-control" id="grandeArea" name="grande_area_id" onchange="areas()" >
+                                                                <option value="" disabled selected hidden>-- Grande Área --</option>
+                                                                @foreach($grandesAreas as $grandeArea)
+                                                                    <option title="{{$grandeArea->nome}}" value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-3" style="text-align: center;overflow-y:  auto;overflow-x:  auto">
+                                                            <input type="hidden" id="oldArea" value="{{ old('area') }}" >
+                                                            <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" onchange="subareas()" >
+                                                                <option value="" disabled selected hidden>-- Área --</option>
+                                                            </select>
+                                                        </div>
+                                                        
+                                                    </div>
                                                     <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2" required>
                                                         @foreach ($trabalho->aval as $avaliador)
-                                                            <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{$avaliador->area->nome ?? 'Indefinida'}}) </option>
+                                                            <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}} > {{$avaliador->area->nome ?? 'Indefinida'}} > {{$avaliador->user->email}}</option>
                                                         @endforeach
                                                     </select>
                                                     <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
@@ -429,26 +456,57 @@
 
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
+                        <!--Comissão Externa-->
+                        <div class="row justify-content-start" style="alignment: center">
+                            <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores - Externos</h6></div>
+                        </div>
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
-                                <div class="col-sm-1">
-                                    <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
-                                </div>
-                                <div class="col-sm-5">
-                                    <h5>{{$avaliador->user->name}}</h5>
-                                    @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
-                                        <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null) Pendente @else <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
-                                    @else
+                                @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
+                                    <div class="col-sm-1">
+                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <h5>{{$avaliador->user->name}}</h5>
+                                        @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
+                                            <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null) Pendente @else <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
+                                        @else
+                                            @php
+                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                            @endphp
+                                            <h9>@if($parecerInterno == null) Pendente @else <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
+                                        @endif
+                                       {{-- <br>
+                                        <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
+                                            Remover
+                                        </a>--}}
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                        <br>
+                        <!--Comissão Interna-->
+                        <div class="row justify-content-start" style="alignment: center">
+                            <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores - Internos</h6></div>
+                        </div>
+                        <div class="row justify-content-start" style="alignment: center">
+                            @foreach($trabalho->avaliadors as $avaliador)
+                                @if($avaliador->tipo == 'Interno')
+                                    <div class="col-sm-1">
+                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <h5>{{$avaliador->user->name}}</h5>
                                         @php
                                             $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                         @endphp
                                         <h9>@if($parecerInterno == null) Pendente @else <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif</h9>
-                                    @endif
-                                    <br>
-                                    <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
-                                        Remover
-                                    </a>
-                                </div>
+                                        <br>
+                                       {{-- <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
+                                            Remover
+                                        </a>--}}
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     </div>
@@ -750,6 +808,15 @@
 
     </script>
 
+    <style>
+        h6, a, b, p, .font-tam{
+            font-size: 16.4px;
+        }
+        h5{
+            font-size: 20px;
+        }
+    </style>
+
     <script type="text/javascript">
         var e = document.getElementById("submeter");
         e.onclick = function(){myFunction(e.value)};
@@ -790,6 +857,42 @@
                 $("#modalVizuSubstituicao").modal('hide');
                 $("#modalCancelarSubst").modal();
             }
+        }
+
+        function areas() {
+            var grandeArea = $('#grandeArea').val();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('area.consulta') }}',
+                data: 'id='+grandeArea ,
+                headers:
+                    {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                success: (dados) => {
+
+                    if (dados.length > 0) {
+                        if($('#oldArea').val() == null || $('#oldArea').val() == ""){
+                            var option = '<option selected disabled>-- Área --</option>';
+                        }
+                        $.each(dados, function(i, obj) {
+                            if($('#oldArea').val() != null && $('#oldArea').val() == obj.id){
+                                option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+                            }else{
+                                option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+                            }
+                        })
+                    } else {
+                        var option = "<option selected disabled>-- Área --</option>";
+                    }
+                    $('#area').html(option).show();
+                    subareas();
+                },
+                error: (data) => {
+                    console.log(data);
+                }
+
+            })
         }
     </script>
 

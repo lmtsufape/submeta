@@ -64,7 +64,7 @@
                           </div>                              
                           <div class="col-6">
                                 @component('componentes.input', ['label' => 'RG'])
-                                  <input type="number" class="form-control" value="{{ $p->rg }}" min="1" maxlength="12" name="rg[]" placeholder="RG" disabled/>
+                                  <input type="text" class="form-control" value="{{ $p->rg }}" min="1" maxlength="12" name="rg[]" placeholder="RG" disabled/>
                                 @endcomponent
                           </div>                              
                           <div class="col-6">
@@ -170,7 +170,7 @@
                                 @endcomponent
                           </div>                              
                           <div class="col-6">
-                                @component('componentes.input', ['label' => 'Coeficiente de rendimento'])
+                                @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
                                 <input type="number" class="form-control media" value="{{ $p->media_do_curso }}" name="media_geral_curso[]" min="0" max="10" step="0.01"  disabled>
                                 @endcomponent
                           </div>

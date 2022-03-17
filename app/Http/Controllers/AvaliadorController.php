@@ -126,9 +126,9 @@ class AvaliadorController extends Controller
         $statusParecer = "NAO-RECOMENDADO";
         if(
             $request->anexoLinkLattes=='aceito' && $request->anexoGrupoPesquisa=='aceito' && $request->anexoProjeto=='aceito' &&
-            $request->anexoConsu=='aceito' && $request->anexoPlanilha=='aceito' && $request->anexoLattesCoordenador=='aceito' &&
-            $request->anexoGrupoPesquisa=='aceito' && $request->anexoComiteEtica=='aceito' && $request->anexoJustificativa=='aceito' &&
-            $request->anexoPlano=='aceito'){
+            $request->anexoConsu=='aceito' && $request->anexoLattesCoordenador=='aceito' && $request->anexoPlano=='aceito' &&
+            $request->anexoGrupoPesquisa=='aceito' && $request->anexoComiteEtica=='aceito' && $request->anexoJustificativa=='aceito'
+            ){
                 $statusParecer = "RECOMENDADO";
         }
         if($parecerInterno == null) {
@@ -145,6 +145,7 @@ class AvaliadorController extends Controller
                 'statusJustificativaAutorizacaoEtica' => $request->anexoJustificativa,
                 'statusPlanoTrabalho' => $request->anexoPlano,
                 'statusParecer' => $statusParecer,
+                'comentario' => $request->comentario,
                 'trabalho_id' => $request->trabalho_id,
                 'avaliador_id' => $request->avaliador_id,
             ]);
@@ -160,6 +161,7 @@ class AvaliadorController extends Controller
             $parecerInterno->statusAnexoAtuorizacaoComiteEtica = $request->anexoComiteEtica;
             $parecerInterno->statusJustificativaAutorizacaoEtica = $request->anexoJustificativa;
             $parecerInterno->statusPlanoTrabalho = $request->anexoPlano;
+            $parecerInterno->comentario = $request->comentario;
             $parecerInterno->statusParecer = $statusParecer;
             $parecerInterno->update();
         }
