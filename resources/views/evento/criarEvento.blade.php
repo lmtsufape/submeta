@@ -25,13 +25,13 @@
                 </span>
                 @enderror
             </div>
-         
+
             <div class="col-sm-5">
                 <label for="tipo" class="col-form-label">{{ __('Tipo*:') }}</label>
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required>
                   <option @if(old('tipo')=='PIBIC' ) selected @endif value="PIBIC">PIBIC</option>
                   <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
-                  <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>                  
+                  <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
                 </select>
 
                 @error('tipo')
@@ -45,8 +45,8 @@
                 <label for="natureza" class="col-form-label">{{ __('Natureza*:') }}</label>
                 <select id="natureza" type="text" class="form-control @error('natureza') is-invalid @enderror" name="natureza" value="{{ old('natureza') }}" required>
                   @foreach ($naturezas as $natureza)
-                    <option @if(old('natureza')==$natureza->id ) selected @endif value="{{ $natureza->id }}">{{ $natureza->nome }}</option>  
-                  @endforeach              
+                    <option @if(old('natureza')==$natureza->id ) selected @endif value="{{ $natureza->id }}">{{ $natureza->nome }}</option>
+                  @endforeach
                 </select>
 
                 @error('natureza')
@@ -57,7 +57,7 @@
             </div>
             <div class="col-sm-2">
                 <label for="numParticipantes" class="col-form-label">{{ __('Nº de Participantes*:') }}</label>
-                
+
                 <input id="numParticipantes" type="number" min="1" max="20" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ old('numParticipantes') }}" required autocomplete="numParticipantes" autofocus>
 
                 @error('numParticipantes')
@@ -127,10 +127,10 @@
                 <span class="invalid-feedback" role="alert">
                     <strong>
                         @if ($message != null)
-                            @for ($i = 0; $i < 9; $i++) 
+                            @for ($i = 0; $i < 9; $i++)
                                 @if ($i < 8)
                                     {{ explode(" ", $message)[$i] }}
-                                @else 
+                                @else
                                     {{ date('d/m/Y', strtotime(explode(" ", $message)[$i])) }}
                                 @endif
                             @endfor
@@ -195,7 +195,7 @@
               </span>
               @enderror
           </div>
-          
+
         </div>
         <div class="row justify-content-left">
           <div class="col-sm-6">
@@ -208,7 +208,7 @@
               </span>
               @enderror
           </div>
-          
+
           <div class="col-sm-6">
               <label for="resultado_final" class="col-form-label">{{ __('Resultado Final*:') }}</label>
               <input id="resultado_final" type="date" class="form-control @error('resultado_final') is-invalid @enderror" name="resultado_final" value="{{ old('resultado_final') }}" required autocomplete="resultado" autofocus>
@@ -288,11 +288,11 @@
         <div class="row justify-content-center" style="margin-top:10px">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">Anexar edital*:</label>    
+                    <label for="pdfEdital">Anexar edital*:</label>
                     @if(old('pdfEditalPreenchido') != null)
                         <a id="pdfEditalTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'pdfEdital' ])}}">Arquivo atual</a>
                     @endif
-                    <input type="hidden" id="pdfEditalPreenchido" name="pdfEditalPreenchido" value="{{ old('pdfEditalPreenchido') }}" >               
+                    <input type="hidden" id="pdfEditalPreenchido" name="pdfEditalPreenchido" value="{{ old('pdfEditalPreenchido') }}" >
                     <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfEdital')
@@ -302,7 +302,7 @@
                     @enderror
                     </div>
             </div>
-        
+
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="modeloDocumento">Anexar arquivo com os modelos de documentos do edital:</label>
@@ -319,7 +319,40 @@
                     @enderror
                     </div>
             </div>
-        </div>      
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="pdfFormAvalExterno">Formulário de avaliação externo:</label>
+                    @if(old('pdfFormAvalExternoPreenchido') != null)
+                        <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoExterno' ])}}">Arquivo atual</a>
+                    @endif
+                    <input type="hidden" id="pdfFormAvalExternoPreenchido" name="pdfFormAvalExternoPreenchido" value="{{ old('pdfFormAvalExternoPreenchido') }}" >
+                    <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('pdfFormAvalExterno')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="pdfFormAvalExterno">Formulário de avaliação interno:</label>
+                    @if(old('pdfFormAvalInternoPreenchido') != null)
+                        <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoInterno' ])}}">Arquivo atual</a>
+                    @endif
+                    <input type="hidden" id="pdfFormAvalInternoPreenchido" name="pdfFormAvalInternoPreenchido" value="{{ old('pdfFormAvalInternoPreenchido') }}" >
+                    <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfFormAvalInterno') is-invalid @enderror" name="pdfFormAvalInterno" value="{{ old('pdfFormAvalInterno') }}" id="pdfFormAvalInterno" onchange="exibirAnexoTemp(this)">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('pdfFormAvalInterno')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+        </div>
 
         <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
@@ -348,6 +381,14 @@
         if(file.id === "modeloDocumento"){
         var modeloDocumentoPreenchido = document.getElementById('modeloDocumentoPreenchido');
         modeloDocumentoPreenchido.value = "sim";
+        }
+        if(file.id === "pdfFormAvalExterno"){
+            var pdfFormAvalExternoPreenchido = document.getElementById('pdfFormAvalExternoPreenchido');
+            pdfFormAvalExternoPreenchido.value = "sim";
+        }
+        if(file.id === "pdfFormAvalInterno"){
+            var pdfFormAvalInternoPreenchido = document.getElementById('pdfFormAvalInternoPreenchido');
+            pdfFormAvalInternoPreenchido.value = "sim";
         }
     }
 

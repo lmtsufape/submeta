@@ -311,6 +311,38 @@
                     @enderror
                     </div>
             </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="pdfEdital">Formulário de avaliação externo:</label>
+                    <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                    </a>
+                    <input type="file" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('pdfFormAvalExterno')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="pdfEdital">Formulário de avaliação interno:</label>
+                    <a href="{{route('download', ['file' => $evento->formAvaliacaoInterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                    </a>
+                    <input type="file" class="form-control-file @error('pdfFormAvalInterno') is-invalid @enderror" name="pdfFormAvalInterno" value="{{ old('pdfFormAvalInterno') }}" id="pdfFormAvalInterno">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('pdfFormAvalInterno')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
         </div>
        
 
