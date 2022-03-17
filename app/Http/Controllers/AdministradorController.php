@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\EventoCriado;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Response;
+use App\Mail\EmailLembrete;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -549,6 +550,33 @@ class AdministradorController extends Controller
             $notificacao->save();
         }
 
+
+        return redirect()->back();
+
+    }
+
+    public function reenviarConviteAtribuicaoProjeto(Request $request){
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $avaliador = Avaliador::where('id', $request->avaliador_id)->first();
+        if($avaliador->user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite != true){
+            $avaliador->user->avaliadors->eventos()->updateExistingPivot($evento->id, ['convite'=> null]);
+        }
+
+        $notificacao = Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $avaliador->user_id,
+            'trabalho_id' => $request->trabalho_id,
+            'lido' => false,
+            'tipo' => 5,
+        ]);
+        $notificacao->save();
+
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+        $subject = "Trabalho atribuido";
+        $informacoes = $trabalho->titulo;
+        //REFAZER EMAIL
+        Mail::to($avaliador->user->email)
+            ->send(new EmailLembrete($avaliador->user, $subject, $informacoes));
 
         return redirect()->back();
 

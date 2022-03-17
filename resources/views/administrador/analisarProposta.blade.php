@@ -480,6 +480,10 @@
                                         <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
                                             Remover
                                         </a>--}}
+                                        <br>
+                                        <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                            Reenviar Convite
+                                        </a>
                                     </div>
                                 @endif
                             @endforeach
