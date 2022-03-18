@@ -34,7 +34,9 @@
 							<td style="text-align: center;" title="{{$participante->user->name}}">{{$participante->user->name}}</td>
 							<td style="text-align: center;">
 								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirm{{$participante->id}}" @if($trabalho->status!="aprovado")disabled="disabled" @endif>
-									@if($participante->documentacaoComplementar==null)
+									@if($participante->anexoComprovanteMatricula==null || $participante->anexoTermoCompromisso==null
+									||  $participante->anexoLattes==null || $participante->linkLattes==null  )
+
 										Pendente
                                     @else
                                         Visualizar
@@ -43,7 +45,7 @@
 							</td>
 						</tbody>
 
-						<div class="modal fade" id="modalConfirm{{$participante->id}}" tabindex="-1" role="dialog"
+						<div class="modal fade" id="modalConfirm{{$participante->id}}" tabindex="-1" role="odialg"
 							 aria-labelledby="modalConfirmLabel" aria-hidden="true">
 							<div class="modal-dialog modal-lg" role="document">
 								<div class="modal-content">
@@ -57,7 +59,11 @@
 										<input type="hidden" value="{{$participante->id}}" name="partcipanteId">
 										<div class="row col-md-12">
 											<div class="col-md-6">
-													<label class="control-label ">Termo de Compromisso</label>
+													<label class="control-label ">Termo de Compromisso @if($participante->anexoTermoCompromisso) :
+														<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoTermoCompromisso]) }}">Arquivo atual</a>
+														@endif
+													</label>
+
 												<br>
 												<input type="file" class="input-group-text" value="" name="termoCompromisso" accept=".pdf" id="termoCompromisso{{$participante->id}}" required
 												/>
@@ -69,7 +75,11 @@
 												<br>
 											</div>
 											<div class="col-md-6">
-													<label class="control-label ">Comprovante de Matricula</label>
+													<label class="control-label ">Comprovante de Matricula @if($participante->anexoComprovanteMatricula) :
+														<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoComprovanteMatricula]) }}">Arquivo atual</a>
+														@endif
+													</label>
+
 													<br>
 													<input type="file" class="input-group-text" value="" name="comprovanteMatricula" accept=".pdf" id="comprovanteMatricula{{$participante->id}}" required/>
 													@error('comprovanteMatricula')
@@ -81,7 +91,10 @@
 											</div>
 
 											<div class="col-md-6">
-												<label class="control-label ">PDF Lattes</label>
+												<label class="control-label ">PDF Lattes @if($participante->anexoLattes) :
+													<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoLattes]) }}">Arquivo atual</a>
+													@endif
+												</label>
 												<br>
 												<input type="file" class="input-group-text" value="" name="pdfLattes" accept=".pdf" id="pdfLattes{{$participante->id}}"
 													   required/>
@@ -92,10 +105,10 @@
 												@enderror
 											</div>
 											<div class="col-md-6">
-												<label class="control-label ">Link Lattes</label>
+												<label class="control-label ">Link Lattes </label>
 												<br>
 												<input type="text" class="input-group-text col-md-12" name="linkLattes"  placeholder="Link Lattes" id="linkLattes{{$participante->id}}"
-													   required/>
+													   required @if($participante->linkLattes) value="{{$participante->linkLattes}}" @endif/>
 												@error('linkLattes')
 												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
