@@ -117,4 +117,16 @@ class ParticipanteController extends Controller
         $participante->save();
         return redirect()->back()->with(['mensagem' => 'Alteração da bolsa realizada com sucesso!']);
     }
+
+    public function atualizarDocComplementar(Request $request){
+        $participante = Participante::find($request->partcipanteId);
+        $pasta = 'participantes/' . $participante->id;
+        $participante->anexoTermoCompromisso = Storage::putFileAs($pasta, $request->termoCompromisso, "Termo_de_Compromisso.pdf");
+        $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->comprovanteMatricula, "Comprovante_de_Matricula.pdf");
+        $participante->anexoLattes = Storage::putFileAs($pasta, $request->pdfLattes, "Curriculo_Lattes.pdf");
+        $participante->linkLattes = $request->linkLattes;
+        $participante->update();
+
+        return redirect()->back()->with(['sucesso'=>"Documentação complementar enviada com sucesso"]);
+    }
 }
