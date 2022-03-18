@@ -124,7 +124,7 @@
                                             <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                 <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                <button type="button" class="close" aria-label="Close" style="padding-top: 8px; color:#1492E6" onclick="abrirHistorico({{$participante->id}}, 0)">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -138,14 +138,14 @@
                                 @foreach($substituicoesProjeto as $subs)
 
                                 <!-- Modal vizualizar info participante substituido -->
-                                    <div class="modal fade" id="modalVizuParticipanteSub{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="modalVizuParticipanteSubstituido{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
                                                 <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                    <button type="button" class="close" aria-label="Close" style="padding-top: 8px; color:#1492E6" onclick="abrirHistorico({{$subs->participanteSubstituido()->withTrashed()->first()->id}}, 1)">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
@@ -158,14 +158,14 @@
                                     </div>
 
                                     <!-- Modal vizualizar info participante substituto -->
-                                    <div class="modal fade" id="modalVizuParticipanteSub{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="modalVizuParticipanteSubstituto{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
                                                 <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                    <button type="button" class="close" aria-label="Close" style="padding-top: 8px; color:#1492E6" onclick="abrirHistorico({{$subs->participanteSubstituto()->withTrashed()->first()->id}}, 2)">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
@@ -638,8 +638,7 @@
                                                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
                                                                     </div>
                                                                     <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a onclick="vizuParticipante({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
-
+                                                                        <a onclick="fecharModalSubstituto({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -667,7 +666,7 @@
                             </div>
 
                             <div class="justify-content-center conteudo" id="tela2" style="margin-top: 0px;border: none;overflow-x: auto;">
-                                <div class="col-md-12" id="tela2" style="padding: 0px">
+                                {{--<div class="col-md-12" id="tela2" style="padding: 0px">
                                     <div class="card" id="tela2" style="border-radius: 5px">
                                         <div class="card-body" id="tela2" style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
                                             <div class="" id="tela2">
@@ -724,6 +723,77 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>--}}
+                                <div style="margin-top: 5px">
+                                    <div class="card-header">
+                                        <div class="row">
+                                                <div class="col-3">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Participante Substituído
+                                                    </h6>
+                                                </div>
+                                                <div class="col-3">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Participante Substituto
+                                                    </h6>
+                                                </div>
+                                                <div class="col-2">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Tipo
+                                                    </h6>
+                                                </div>
+                                                <div class="col-2">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Status
+                                                    </h6>
+                                                </div>
+                                                <div class="col-2">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Justificativa
+                                                    </h6>
+                                                </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        @foreach($substituicoesProjeto as $subs)
+                                            <div class="row" style="margin-bottom: 20px;">
+                                                <div class="col-3">
+                                                    <a href="" data-toggle="modal" class="button" onclick="fecharModalSubstituido({{$subs->participanteSubstituido()->withTrashed()->first()->id}})"><h6 style="font-size:18px;  color: black" >{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</h6></a>
+                                                    <h6 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->data_entrada))}} - @if($subs->participanteSubstituido()->withTrashed()->first()->data_saida == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->data_saida))}} @endif</h6>
+                                                </div>
+                                                <div class="col-3">
+                                                    <a href="" data-toggle="modal" class="button" onclick="fecharModalSubstituto({{$subs->participanteSubstituto()->withTrashed()->first()->id}})"><h6 style="font-size:18px;  color: black">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</h6></a>
+                                                    <h6 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->data_entrada))}} - @if($subs->participanteSubstituto()->withTrashed()->first()->data_saida == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->data_saida))}} @endif</h6>
+                                                </div>
+                                                <div class="col-2">
+                                                    @if($subs->tipo == 'ManterPlano')
+                                                        <h6>Manter Plano</h6>
+                                                    @elseif($subs->tipo == 'TrocarPlano')
+                                                        <h6>Alterar Plano</h6>
+                                                    @elseif($subs->tipo == 'Completa')
+                                                        <h6>Completa</h6>
+                                                    @endif
+                                                </div>
+                                                <div class="col-2">
+                                                    @if($subs->status == 'Finalizada')
+                                                        <h6>Concluída</h6>
+                                                    @elseif($subs->status == 'Negada')
+                                                        <h6>Negada</h6>
+                                                    @elseif($subs->status == 'Em Aguardo')
+                                                        <h6>Pendente</h6>
+                                                    @endif
+                                                </div>
+                                                <div class="col-2">
+                                                    @if($subs->status == 'Em Aguardo')
+                                                        <h6>Pendente</h6>
+                                                    @else
+                                                        <a href="" data-toggle="modal" data-target="#modalVizuJustificativa{{$subs->id}}" class="button"><h5 style="font-size:18px">Visualizar</h5></a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -821,7 +891,7 @@
         }
         function  vizuPartici(id){
             $("#modalVizuSubstituicao").modal('hide');
-            setTimeout(() => {  $("#modalVizuParticipanteSub"+id).modal(); }, 500);
+            setTimeout(() => {  $("#modalVizuParticipanteSubstituto"+id).modal(); }, 500);
         }
 
         function  vizuJustificativa(texto){
@@ -931,6 +1001,28 @@
             $(document).ready(function(){
                 $('#avaliadorModalCenter').modal('show');
             });
+        }
+    </script>
+
+    <script>
+        function fecharModalSubstituido(id){
+            $('#modalVizuSubstituicao').modal('toggle');
+            setTimeout(() => {  $("#modalVizuParticipanteSubstituido"+id).modal(); }, 500);
+        }
+        function fecharModalSubstituto(id){
+            $('#modalVizuSubstituicao').modal('toggle');
+            setTimeout(() => {  $("#modalVizuParticipanteSubstituto"+id).modal(); }, 500);
+        }
+
+        function abrirHistorico(id, modal){
+            if(modal == 1){
+                $('#modalVizuParticipanteSubstituido'+id).modal('hide');
+            }else if(modal == 2){
+                $('#modalVizuParticipanteSubstituto'+id).modal('hide');
+            }else if(modal == 0){
+                $('#modalVizuParticipante'+id).modal('hide');
+            }
+            setTimeout(() => {  $("#modalVizuSubstituicao").modal(); }, 500);
         }
     </script>
 @endsection
