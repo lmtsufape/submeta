@@ -126,6 +126,10 @@ class NotificacaoController extends Controller
             } else {
                 return redirect()->route('avaliador.editais');
             }
+        }elseif ($notificacao->tipo == 7) {
+            if ($notificacao->destinatario_id == Auth()->user()->id && Auth()->user()->tipo != 'proponente') {
+                return redirect()->route('admin.analisarProposta', ['id' => $notificacao->trabalho->id]);
+            }
         } elseif ($notificacao->tipo == 6) {
             $trabalho = $notificacao->trabalho;
             return view('administrador.visualizarSolicitacaoCertificado', compact('notificacao', 'trabalho'));

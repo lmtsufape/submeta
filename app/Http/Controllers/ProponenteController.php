@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Desligamento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -10,7 +11,12 @@ use App\User;
 use App\Trabalho;
 use App\Proponente;
 use App\Evento;
+use App\Mail\SolicitacaoDesligamento;
+use App\Mail\SolicitacaoSubstituicao;
+use App\Notificacao;
+use App\Participante;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class ProponenteController extends Controller
 {
@@ -110,5 +116,36 @@ class ProponenteController extends Controller
       $hoje = $hoje->toDateString();
 
       return view('proponente.projetosEdital')->with(['edital' => $edital, 'projetos' => $projetos, 'hoje'=>$hoje]);
+    }
+
+    public function solicitarDesligamento(Request $request){
+        $participante = Participante::find($request->participante);
+
+        $request->validate([
+            'justificativa' => 'required|max:5000|min:5',
+        ]);
+
+        $desligamento = new Desligamento();
+        $desligamento->status = Desligamento::STATUS_ENUM['solicitado'];
+        $desligamento->justificativa = $request->justificativa;
+        $desligamento->trabalho_id = $request->trabalho;
+        $desligamento->participante_id = $participante->id;
+
+        $desligamento->save();
+
+        $trabalho = Trabalho::find($request->trabalho);
+
+        $notificacao = Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $trabalho->evento->coordenadorComissao->user_id,
+            'trabalho_id' => $trabalho->id,
+            'lido' => false,
+            'tipo' => 6,
+        ]);
+        $notificacao->save();
+
+        Mail::to($trabalho->evento->coordenadorComissao->user->email)->send(new SolicitacaoDesligamento($trabalho->evento, $trabalho));
+
+        return redirect()->back()->with(['sucesso' => 'Solicitação de desligamento feita com sucesso.']);
     }
 }

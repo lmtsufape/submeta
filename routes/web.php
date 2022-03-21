@@ -45,6 +45,8 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get( '/proponente/editais',    'ProponenteController@editais'                )->name('proponente.editais');
   Route::get( '/projetos-submetidos',   'ProponenteController@projetosDoProponente'   )->name('proponente.projetos');
   Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital')->middleware('auth');
+  Route::post('/proponente/edital/{edital_id}/projeto/{projeto_id}/solicitar_desligamento/{participante_id}',   'ProponenteController@solicitarDesligamento')->name('proponente.solicitar.desligamento');
+
   
   
   //######### Rotas Administrador #################################
@@ -302,4 +304,7 @@ Route::prefix('coordenador')->name('coordenador.')->group(function(){
   Route::post('/retornoDetalhes',             'CoordenadorComissaoController@retornoDetalhes'       )->name('retornoDetalhes');
   Route::post('/atribuirAvaliadorTrabalho',   'TrabalhoController@atribuirAvaliadorTrabalho'        )->name('atribuirAvaliadorTrabalho');
   Route::post('/atribuir',                    'TrabalhoController@atribuir'                         )->name('atribuir');
+  Route::post('/atribuir',                    'TrabalhoController@atribuir'                         )->name('atribuir');
+  Route::post('/resposta-solicitacao-desligamento/{desligamento_id}',   'CoordenadorComissaoController@respostaDesligamento')->name('resposta.desligamento');
+
 });
