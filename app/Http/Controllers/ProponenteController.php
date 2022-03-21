@@ -140,7 +140,7 @@ class ProponenteController extends Controller
             'destinatario_id' => $trabalho->evento->coordenadorComissao->user_id,
             'trabalho_id' => $trabalho->id,
             'lido' => false,
-            'tipo' => 6,
+            'tipo' => 7,
         ]);
         $notificacao->save();
 
