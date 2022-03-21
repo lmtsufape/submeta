@@ -1,4 +1,4 @@
-  <?php
+<?php
 
 use App\Http\Middleware\checkCoordenador;
 use App\Trabalho;
@@ -135,12 +135,15 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/projeto/{id}/atualizar', 'TrabalhoController@update'                      )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
+  Route::post(   '/projeto/{trabalho}/solicitarCertificado','TrabalhoController@solicitarCertificado')->name('trabalho.solicitarCertificado');
   Route::get(   '/projeto/exportar/{id}','TrabalhoController@exportProjeto'                 )->name('exportar.projeto');
   Route::get(   '/projeto/substituirParticipante', 'TrabalhoController@telaTrocaPart'       )->name('trabalho.trocaParticipante');
   Route::post(  '/projeto/substituirParticipante', 'TrabalhoController@trocaParticipante'   )->name('trabalho.infoTrocaParticipante');
   Route::get(   '/showSubstituicoes', 'TrabalhoController@telaShowSubst'                    )->name('trabalho.telaAnaliseSubstituicoes')->middleware('checkRoles:coordenador,administrador');
   Route::post(  '/aprovarSubstituicao', 'TrabalhoController@aprovarSubstituicao'            )->name('trabalho.aprovarSubstituicao');
   Route::post(  '/aprovarProposta/{id}', 'TrabalhoController@aprovarProposta'            )->name('trabalho.aprovarProposta');
+
+  Route::post(  '/certificado/{certificado}', 'CertificadoController@update'            )->name('certificado.update');
 
   //##########  Bolsas
   Route::get(   '/bolsas', 'ParticipanteController@listarParticipanteEdital'                  )->name('bolsas.listar');
