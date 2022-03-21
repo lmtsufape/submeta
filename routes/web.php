@@ -243,6 +243,8 @@ Route::prefix('naturezas')->group(function(){
   Route::post('/area/atualizar/{id}',   'AreaController@update'                     )->name('area.atualizar')->middleware('checkAdministrador');
   Route::post('/area/excluir/{id}',     'AreaController@destroy'                    )->name('area.deletar')->middleware('checkAdministrador');
   Route::post('/areas/',                 'AreaController@consulta'                   )->name('area.consulta');
+  Route::post('/avalConExterno/',                 'AvaliadorController@consultaExterno'                   )->name('aval.consultaExterno');
+  Route::post('/avalConInterno/',                 'AvaliadorController@consultaInterno'                   )->name('aval.consultaInterno');
 
   //### Rotas das subareas, id's de nova e salvar são os ids da área a qual a nova subárea pertence #####
   Route::get('/subareas',                 'SubAreaController@index'                   )->name('subarea.index')->middleware('checkAdministrador');

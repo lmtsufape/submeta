@@ -436,7 +436,7 @@
 
                                                         <div class="col-md-3" style="text-align: center;overflow-y:  auto;overflow-x:  auto">
                                                             <input type="hidden" id="oldArea" value="{{ old('area') }}" >
-                                                            <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" onchange="subareas()" >
+                                                            <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" onchange="(consultaExterno(),consultaInterno())" >
                                                                 <option value="" disabled selected hidden>-- Área --</option>
                                                             </select>
                                                         </div>
@@ -445,6 +445,9 @@
                                                     <div class="col-md-6">
                                                         <label style="font-weight: bold">Externos</label>
                                                     </div>
+
+                                                    <input type="hidden" id="trab" value="{{$trabalho->id}}">
+                                                    <input type="hidden" id="oldAvalExterno" value="{{ old('exampleFormControlSelect3') }}" >
                                                     <select  name="avaliadores_externos_id[]" multiple class="form-control" id="exampleFormControlSelect3">
                                                         @foreach ($trabalho->aval as $avaliador)
                                                             @if($avaliador->tipo == "Externo")
@@ -455,6 +458,7 @@
                                                     <div class="col-md-6">
                                                         <label style="font-weight: bold">Internos</label>
                                                     </div>
+                                                    <input type="hidden" id="oldAvalInterno" value="{{ old('exampleFormControlSelect2') }}" >
                                                     <select  name="avaliadores_internos_id[]" multiple class="form-control" id="exampleFormControlSelect2">
                                                         @foreach ($trabalho->aval as $avaliador)
                                                             @if($avaliador->tipo == "Interno")
@@ -916,6 +920,77 @@
                     }
                     $('#area').html(option).show();
                     subareas();
+                },
+                error: (data) => {
+                    console.log(data);
+                }
+
+            })
+        }
+    </script>
+    <script>
+        function consultaExterno() {
+            var area = $('#area').val();
+            var job = $('#trab').val();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('aval.consultaExterno') }}',
+                data: 'id='+area+"&trabalho_id="+job ,
+                headers:
+                    {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                success: (dados) => {
+
+                    if (dados.length > 0) {
+                        $.each(dados, function(i, obj) {
+
+                                if(obj.instituicao==null){
+                                    option += '<option value="' + obj.id + '">' + obj.name+' > '+'Instituição indefinida'+' > '+obj.nome+' > '+ obj.email+'</option>';
+                                } else{
+                                    option += '<option value="' + obj.id + '">' + obj.name+' > '+ obj.instituicao +' > '+obj.nome+' > '+ obj.email+'</option>';
+
+                            }
+                        })
+                    } else {
+                        var option = "<option selected disabled>Sem Resultado</option>";
+                    }
+                    $('#exampleFormControlSelect3').html(option).show();
+                },
+                error: (data) => {
+                    console.log(data);
+                }
+
+            })
+        }
+
+        function consultaInterno() {
+            var area = $('#area').val();
+            var job = $('#trab').val();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('aval.consultaInterno') }}',
+                data: 'id='+area+"&trabalho_id="+job ,
+                headers:
+                    {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                success: (dados) => {
+
+                    if (dados.length > 0) {
+                        $.each(dados, function(i, obj) {
+
+                                if(obj.instituicao==null){
+                                    option += '<option value="' + obj.id + '">' + obj.name+' > '+'Instituição indefinida'+' > '+obj.nome+' > '+ obj.email+'</option>';
+                                } else{
+                                    option += '<option value="' + obj.id + '">' + obj.name+' > '+ obj.instituicao +' > '+obj.nome+' > '+ obj.email+'</option>';
+                                }
+
+                        })
+                    } else {
+                        var option = "<option selected disabled>Sem Resultado</option>";
+                    }
+                    $('#exampleFormControlSelect2').html(option).show();
                 },
                 error: (data) => {
                     console.log(data);
