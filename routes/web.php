@@ -154,7 +154,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //########## Documentação Complementar
     Route::get(   '/documentacaoComplementar', 'ParticipanteController@listarParticipanteProjeto'                  )->name('docComplementar.listar');
-    Route::post(   '/documentacaoComplementar/enviar', 'DocumentacaoComplementarController@criar')->name('docComplementar.enviar');
+    Route::post(   '/documentacaoComplementar/enviar', 'ParticipanteController@atualizarDocComplementar')->name('docComplementar.enviar');
 
     //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
