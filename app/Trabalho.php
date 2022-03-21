@@ -110,4 +110,9 @@ class Trabalho extends Model
   public function notificacoes(){
       return $this->hasMany(Notificacao::class, 'trabalho_id', 'id');
   }
+
+  public function solicitacoesCertificados()
+  {
+      return $this->hasMany(Certificado::class, 'trabalho_id');
+  }
 }

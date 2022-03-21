@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Certificado;
 use App\Notificacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,6 +126,9 @@ class NotificacaoController extends Controller
             } else {
                 return redirect()->route('avaliador.editais');
             }
+        } elseif ($notificacao->tipo == 6) {
+            $trabalho = $notificacao->trabalho;
+            return view('administrador.visualizarSolicitacaoCertificado', compact('notificacao', 'trabalho'));
         }
     }
 
