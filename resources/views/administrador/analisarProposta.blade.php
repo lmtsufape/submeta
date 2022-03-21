@@ -389,12 +389,12 @@
                         <div class="form-row mt-3">
                             <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Avaliadores</h5></div>
                             <div class="col-md-1 text-sm-right">
-                                <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#avaliadorModalCenter{{ $trabalho->id }}">
+                                <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#avaliadorModalCenter">
                                     <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
                                 </a>
                             </div>
                             <!-- Modal -->
-                            <div class="modal fade" id="avaliadorModalCenter{{ $trabalho->id }}" tabindex="-1" role="dialog" aria-labelledby="avaliadorModalCenterTitle" aria-hidden="true">
+                            <div class="modal fade" id="avaliadorModalCenter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content modal-submeta">
                                         <div class="modal-header modal-header-submeta">
@@ -404,6 +404,13 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
+                                            @if (session('error'))
+                                                <div class="col-md-12">
+                                                    <div class="alert alert-danger" role="alert">
+                                                        <p>{{ session('error') }}</p>
+                                                    </div>
+                                                </div>
+                                            @endif
 
                                             <form action="{{ route('admin.atribuicao.projeto') }}" method="POST">
                                                 @csrf
@@ -435,9 +442,24 @@
                                                         </div>
                                                         
                                                     </div>
-                                                    <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2" required>
+                                                    <div class="col-md-6">
+                                                        <label style="font-weight: bold">Externos</label>
+                                                    </div>
+                                                    <select  name="avaliadores_externos_id[]" multiple class="form-control" id="exampleFormControlSelect3">
                                                         @foreach ($trabalho->aval as $avaliador)
-                                                            <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}} > {{$avaliador->area->nome ?? 'Indefinida'}} > {{$avaliador->user->email}}</option>
+                                                            @if($avaliador->tipo == "Externo")
+                                                                <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}} > {{$avaliador->area->nome ?? 'Indefinida'}} > {{$avaliador->user->email}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                    <div class="col-md-6">
+                                                        <label style="font-weight: bold">Internos</label>
+                                                    </div>
+                                                    <select  name="avaliadores_internos_id[]" multiple class="form-control" id="exampleFormControlSelect2">
+                                                        @foreach ($trabalho->aval as $avaliador)
+                                                            @if($avaliador->tipo == "Interno")
+                                                                <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}} > {{$avaliador->area->nome ?? 'Indefinida'}} > {{$avaliador->user->email}}</option>
+                                                            @endif
                                                         @endforeach
                                                     </select>
                                                     <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
@@ -480,6 +502,10 @@
                                         <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
                                             Remover
                                         </a>--}}
+                                        <br>
+                                        <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                            Reenviar convite
+                                        </a>
                                     </div>
                                 @endif
                             @endforeach
@@ -505,6 +531,9 @@
                                        {{-- <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
                                             Remover
                                         </a>--}}
+                                        <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                            Reenviar convite
+                                        </a>
                                     </div>
                                 @endif
                             @endforeach
@@ -895,5 +924,13 @@
             })
         }
     </script>
-
+    
+    <script>
+        if({!! json_encode(session('error'), JSON_HEX_TAG) !!})
+        {
+            $(document).ready(function(){
+                $('#avaliadorModalCenter').modal('show');
+            });
+        }
+    </script>
 @endsection

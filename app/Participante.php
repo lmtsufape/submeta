@@ -34,7 +34,4 @@ class Participante extends Model
         return $this->hasOne('App\Arquivo', 'participanteId');
     }
 
-    public function documentacaoComplementar() {
-        return $this->hasOne('App\DocumentacaoComplementar', 'participante_id');
-    }
 }

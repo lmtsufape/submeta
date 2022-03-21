@@ -155,7 +155,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //########## Documentação Complementar
     Route::get(   '/documentacaoComplementar', 'ParticipanteController@listarParticipanteProjeto'                  )->name('docComplementar.listar');
-    Route::post(   '/documentacaoComplementar/enviar', 'DocumentacaoComplementarController@criar')->name('docComplementar.enviar');
+    Route::post(   '/documentacaoComplementar/enviar', 'ParticipanteController@atualizarDocComplementar')->name('docComplementar.enviar');
 
     //#########  Atribuição  #######################################
   Route::get(   '/atribuir',              'AtribuicaoController@distribuicaoAutomatica'   )->name('distribuicao');
@@ -203,6 +203,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/removerAvalEvento',          'AdministradorController@remover'          )->name('remover');
   Route::get('/removerProjAval',          'AdministradorController@removerProjAval'  )->name('removerProjAval');
   Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicaoProjeto')->name('atribuicao.projeto');
+  Route::get('/reenviarConviteAtribuicaoProjeto',   'AdministradorController@reenviarConviteAtribuicaoProjeto')->name('reenviar.atribuicao.projeto');
   Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
   Route::post('/reenviarConviteAvaliador',     'AdministradorController@reenviarConvite'    )->name('reenviarConvite');
   Route::post('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
