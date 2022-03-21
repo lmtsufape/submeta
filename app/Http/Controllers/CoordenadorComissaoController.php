@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Evento;
 use App\CoordenadorComissao;
 use App\Avaliador;
+use App\Desligamento;
+use App\Mail\SolicitacaoDesligamento;
+use App\Notificacao;
 use App\Proponente;
 use App\Participante;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CoordenadorComissaoController extends Controller
 {
@@ -114,7 +119,30 @@ class CoordenadorComissaoController extends Controller
         
         
     }
-    
 
-    
+    public function respostaDesligamento(Request $request)
+    {
+        $desligamento = Desligamento::find($request->desligamento);
+        $desligamento->status = intval($request->opcao); 
+        $desligamento->update();
+
+        if($desligamento->status == Desligamento::STATUS_ENUM['aceito']){
+            $desligamento->participante->delete();
+        }
+
+        $notificacao = Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $desligamento->trabalho->proponente_id,
+            'trabalho_id' => $desligamento->trabalho->id,
+            'lido' => false,
+            'tipo' => 6,
+        ]);
+        $notificacao->save();
+
+        Mail::to($desligamento->trabalho->proponente->user->email)->send(new SolicitacaoDesligamento($desligamento->trabalho->evento, $desligamento->trabalho, "resultado"));
+
+        return redirect()->back()->with(['sucesso' => 'Desligamento '.$desligamento->getStatus().' com sucesso.']);
+
+    }
+
 }

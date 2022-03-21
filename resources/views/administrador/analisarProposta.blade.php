@@ -94,7 +94,7 @@
                                     <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições Pendentes</a>
                                     <img class="" src="{{asset('img/icons/warning.ico')}}" style="width:15px" alt="">
                                 @else
-                                    <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições</a>
+                                    <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições/Desligamentos</a>
                                 @endif
                             </div>
                         </div>
@@ -611,6 +611,11 @@
                                         <span> Histórico</span>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="aba3 aba">
+                                        <span> Desligamentos</span>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <div id="content">
@@ -789,11 +794,61 @@
                                                     @if($subs->status == 'Em Aguardo')
                                                         <h6>Pendente</h6>
                                                     @else
-                                                        <a href="" data-toggle="modal" data-target="#modalVizuJustificativa{{$subs->id}}" class="button"><h5 style="font-size:18px">Visualizar</h5></a>
+                                                        <a href="" data-toggle="modal" class="button" onclick="vizuJustificativa('{{$subs->justificativa}}')"><h5 style="font-size:18px">Visualizar</h5></a>
                                                     @endif
                                                 </div>
                                             </div>
                                         @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="justify-content-center conteudo" id="tela3" style="margin-top: 0px;border: none;overflow-x: auto;">
+                                <div class="col-md-12" style="padding: 0px">
+                                    <div class="card" style="border-radius: 5px">
+                                        <div class="card-body"  style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
+                                            <div class="">
+                                                <div class="justify-content-start" style="alignment: center">
+                                                    @foreach($trabalho->desligamentos as $desligamento)
+                                                        <div class="row justify-content-between">
+                                                            <div class="col-md-9">
+                                                                <h5 style="color: #234B8B; font-weight: bold" class="col-md-12">Desligamento</h5>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="col-md-2">
+                                                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="" class="img-flex">
+                                                                    </div>
+                                                                    <div class="col-md-10" >
+                                                                        <a onclick="vizuParticipante({{$desligamento->participante()->withTrashed()->first()->id}})" class="button">{{$desligamento->participante()->withTrashed()->first()->user->name}}</a>
+                                                                        <br><label for="justificativa">Justificativa: </label>
+                                                                        {{$desligamento->justificativa}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                @if($desligamento->status == \App\Desligamento::STATUS_ENUM['solicitado'])
+                                                                    <h5 style="color: #234B8B; font-weight: bold" class="col-md-12 text-center"> Ações</h5>
+                                                                    <div class="col-md-12 text-center" style="border: solid#1111; padding: 10px; ">
+                                                                        <form id="resposta-desligamento{{$desligamento->id}}" method="POST" action="{{route('coordenador.resposta.desligamento', ['desligamento_id' => $desligamento->id]) }}">
+                                                                            @csrf
+                                                                            <input type="hidden" id="desligamento" name="desligamento" value="{{$desligamento->id}}">
+                                                                            <input type="radio" id="aceitar{{$desligamento->id}}" name="opcao" value="{{\App\Desligamento::STATUS_ENUM['aceito']}}"> Aprovar
+                                                                            <input type="radio" id="negar{{$desligamento->id}}" name="opcao" value="{{\App\Desligamento::STATUS_ENUM['recusado']}}"> Negar
+                                                                            <br>
+                                                                            <button type="submit" class="btn btn-primary" form="resposta-desligamento{{$desligamento->id}}">Submeter</button>
+                                                                        </form>
+                                                                    </div>
+                                                                @else
+                                                                    <h5 style="color: #234B8B; font-weight: bold" class="col-md-12 text-center"> Status</h5>
+                                                                    <div class="col-md-12 text-center" style="border: solid#1111; padding: 10px; ">
+                                                                        {{$desligamento->getStatus()}}
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -854,15 +909,27 @@
             $(".abas li:first div").addClass("selected");
             $(".aba2").click(function(){
                 $(".aba1").removeClass("selected");
+                $(".aba3").removeClass("selected");
                 $(this).addClass("selected");
                 $("#tela1").hide();
+                $("#tela3").hide();
                 $("#tela2").show();
             });
             $(".aba1").click(function(){
                 $(".aba2").removeClass("selected");
+                $(".aba3").removeClass("selected");
                 $(this).addClass("selected");
                 $("#tela2").hide();
+                $("#tela3").hide();
                 $("#tela1").show();
+            });
+            $(".aba3").click(function(){
+                $(".aba2").removeClass("selected");
+                $(".aba1").removeClass("selected");
+                $(this).addClass("selected");
+                $("#tela2").hide();
+                $("#tela1").hide();
+                $("#tela3").show();
             });
 
             let textTemp = document.getElementById("comentario").innerHTML;
@@ -894,10 +961,10 @@
             setTimeout(() => {  $("#modalVizuParticipanteSubstituto"+id).modal(); }, 500);
         }
 
-        function  vizuJustificativa(texto){
+        function vizuJustificativa(texto){
             $("#modalVizuSubstituicao").modal('hide');
-            setTimeout(() => {  $("#modalVizuJustificativa").modal(); }, 500);
             document.getElementById("conteudoJustificativa").innerHTML = texto;
+            setTimeout(() => {  $("#modalVizuJustificativa").modal(); }, 500);
         }
 
         function  closeJustificativa(){

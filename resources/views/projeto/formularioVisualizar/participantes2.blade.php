@@ -7,7 +7,7 @@
                         <div class="col-sm-9"><h5 style="color: #234B8B; font-weight: bold">Discentes</h5></div>
                         <div class="col-sm-3 text-sm-right" >
                             <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}"
-                               class="button">Solicitar Substituições</a>
+                               class="button">Solicitar Substituições/Desligamentos</a>
                         </div>
                     </div>
                     <hr style="border-top: 1px solid#1492E6">

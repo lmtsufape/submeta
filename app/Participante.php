@@ -37,4 +37,8 @@ class Participante extends Model
     public function documentacaoComplementar() {
         return $this->hasOne('App\DocumentacaoComplementar', 'participante_id');
     }
+
+    public function desligamentos() {
+        return $this->hasMany('App\Desligamento', 'participante_id')->orderBy('created_at', 'DESC');
+    }
 }
