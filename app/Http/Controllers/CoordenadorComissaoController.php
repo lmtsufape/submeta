@@ -135,7 +135,7 @@ class CoordenadorComissaoController extends Controller
             'destinatario_id' => $desligamento->trabalho->proponente_id,
             'trabalho_id' => $desligamento->trabalho->id,
             'lido' => false,
-            'tipo' => 6,
+            'tipo' => 7,
         ]);
         $notificacao->save();
 
