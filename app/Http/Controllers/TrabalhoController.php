@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use PDF;
 use App;
+use App\Administrador;
 use Auth;
 use App\Area;
 use App\User;
@@ -23,6 +24,7 @@ use App\Modalidade;
 use App\Proponente;
 use App\Participante;
 use App\AreaModalidade;
+use App\Certificado;
 use Illuminate\Http\File;
 use App\Mail\EventoCriado;
 use Illuminate\Support\Str;
@@ -41,8 +43,12 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\EmailParaUsuarioNaoCadastrado;
 use App\Mail\SolicitacaoSubstituicao;
+use App\Notificacao;
+use App\Notifications\SolicitacaoCertificadoNotification;
 use App\Notifications\SubmissaoNotification;
 use App\Notifications\SubmissaoRecebidaNotification;
+use App\SolicitacaoCertificado;
+use App\SolicitacaoParticipante;
 use App\Substituicao;
 use Illuminate\Support\Facades\Notification;
 
@@ -445,6 +451,42 @@ class TrabalhoController extends Controller
         $participante->delete();
 
         return redirect()->back();
+    }
+
+    public function solicitarCertificado(Trabalho $trabalho, Request $request)
+    {
+        $users = User::find($request->users);
+        $coord = $trabalho->coordenador;
+        $SolicitacaoCertificado = SolicitacaoCertificado::create();
+        Notificacao::create([
+            'remetente_id' => auth()->user()->id,
+            'destinatario_id' => $coord->user_id,
+            'solicitacao_certificado_id' => $SolicitacaoCertificado->id,
+            'trabalho_id' => $trabalho->id,
+            'lido' => false,
+            'tipo' => 6
+        ]);
+        foreach ($users as $user) {
+            SolicitacaoParticipante::create([
+                'user_id' => $user->id,
+                'solicitacao_certificado_id' => $SolicitacaoCertificado->id,
+            ]);
+        }
+        $admins = Administrador::all();
+        foreach ($admins as $admin) {
+            $userTemp = User::find($admin->user_id);
+            Notificacao::create([
+                'remetente_id' => auth()->user()->id,
+                'destinatario_id' => $admin->user_id,
+                'solicitacao_certificado_id' => $SolicitacaoCertificado->id,
+                'trabalho_id' => $trabalho->id,
+                'lido' => false,
+                'tipo' => 6,
+            ]);
+        }
+        $destinatarios = $admins->map(function($admin) {return $admin->user;})->push($coord->user);
+        Notification::send($destinatarios, new SolicitacaoCertificadoNotification($trabalho->proponente, $trabalho, $userTemp, $users));
+        return redirect()->route('trabalho.show', ['id' => $trabalho->id])->with('sucesso', 'Solicitação de certificado/declaração efetuada com sucesso!');
     }
 
 

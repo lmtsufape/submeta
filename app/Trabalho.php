@@ -115,4 +115,8 @@ class Trabalho extends Model
       return $this->hasMany(Desligamento::class, 'trabalho_id', 'id')->orderBy('created_at', 'DESC');
   }
 
+  public function solicitacoesCertificados()
+  {
+      return $this->hasMany(Certificado::class, 'trabalho_id');
+  }
 }
