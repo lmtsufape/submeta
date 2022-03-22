@@ -205,6 +205,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/removerAvalEvento',          'AdministradorController@remover'          )->name('remover');
   Route::get('/removerProjAval',          'AdministradorController@removerProjAval'  )->name('removerProjAval');
   Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicaoProjeto')->name('atribuicao.projeto');
+  Route::post('/enviarConviteEAtribuirProjeto',   'AdministradorController@enviarConviteEAtribuir')->name('convite.atribuicao.projeto');
   Route::get('/reenviarConviteAtribuicaoProjeto',   'AdministradorController@reenviarConviteAtribuicaoProjeto')->name('reenviar.atribuicao.projeto');
   Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
   Route::post('/reenviarConviteAvaliador',     'AdministradorController@reenviarConvite'    )->name('reenviarConvite');

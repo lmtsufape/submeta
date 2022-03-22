@@ -4,11 +4,11 @@
             <div class="card-body" style="padding-top: 0.2rem;">
                 <div class="container">
                     <div class="form-row mt-3">
-                        <div class="col-sm-6"><h5 style="color: #234B8B; font-weight: bold">Discentes</h5></div>
+                        <div class="col-sm-4"><h5 style="color: #234B8B; font-weight: bold">Discentes</h5></div>
                         <div class="col-sm-4 text-sm-right" >
                             <a href="" data-toggle="modal" data-target="#modalSelecionarDiscentes" class="button">Solicitar certificado/declaração</a>
                         </div>
-                        <div class="col-sm-2 text-sm-right" >
+                        <div class="col-sm-4 text-sm-right" >
                             <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}"
                                class="button">Solicitar Substituições/Desligamentos</a>
                         </div>
