@@ -439,7 +439,7 @@
 
                                                         <div class="col-md-3" style="text-align: center;overflow-y:  auto;overflow-x:  auto">
 
-                                                            <select class="form-control" id="grandeArea" name="grande_area_id" onchange="areas()" >
+                                                            <select class="form-control" id="grandeArea" name="grande_area_id" onchange="areasFiltro()" >
                                                                 <option value="" disabled selected hidden>-- Grande Área --</option>
                                                                 @foreach($grandesAreas as $grandeArea)
                                                                     <option title="{{$grandeArea->nome}}" value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
@@ -1122,7 +1122,7 @@
             }
         }
 
-        function areas() {
+        function areasFiltro() {
             var grandeArea = $('#grandeArea').val();
             $.ajax({
                 type: 'POST',
