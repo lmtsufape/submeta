@@ -4,7 +4,7 @@
     <div class="card-body" style="padding-top: 0.2rem;">
       <div class="container">
         <div class="form-row mt-3">
-          <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Aprovação</h5></div>
+          <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Recomendação</h5></div>
         </div>
         <hr style="border-top: 1px solid#1492E6">
           <div class="row">
@@ -16,15 +16,15 @@
             <div class="col-md-3" style="margin-top: 15px">
               <input class="col-md-1" type="radio" id="aprovado" name="statusProp" value="aprovado" required disabled
               @if($projeto->status=="aprovado") checked @endif>
-              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Aprovado</a>
+              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendado</a>
               <br>
               <input class="col-md-1" type="radio" id="parcialAprovado" name="statusProp" value="corrigido" required disabled
               @if($projeto->status=="corrigido") checked @endif>
-              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Parcialmente Aprovado</a>
+              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Parcialmente Recomendado</a>
               <br>
               <input class="col-md-1" type="radio" id="reprovado" name="statusProp" value="reprovado" required disabled
               @if($projeto->status=="reprovado") checked @endif>
-              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Aprovado</a>
+              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Recomendado</a>
             </div>
           </div>
       </div>

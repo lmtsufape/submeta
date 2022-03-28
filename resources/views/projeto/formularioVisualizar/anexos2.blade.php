@@ -25,7 +25,7 @@
             </div>
 
             <div class="col-sm-4">
-              <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização do Comitê de Ética: ') }}</label>
+              <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
               @if($projeto->anexoAutorizacaoComiteEtica != null)
                 <a href="{{ route('baixar.anexo.comite', ['id' => $projeto->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
               @else
@@ -40,9 +40,9 @@
             </div>
 
             <div class="col-sm-4">
-              <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Justificativa: ') }}</label>
-              @if($projeto->justificativaAutorizacaoEtica != null)
-                <a href="{{ route('baixar.anexo.justificativa', ['id' => $projeto->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+              <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
+              @if($projeto->anexoGrupoPesquisa != null)
+                <a href="{{ route('baixar.anexoGrupoPesquisa', ['id' => $projeto->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
               @else
                 -
               @endif
