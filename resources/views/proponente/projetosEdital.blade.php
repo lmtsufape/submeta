@@ -116,11 +116,11 @@
                                   <a href="{{route('docComplementar.listar', ['projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
                                     Documentos Complementares
                                   </a>
-                                  <hr class="dropdown-hr">
+                                  {{--<hr class="dropdown-hr">
 
                                   <a href="" class="dropdown-item" style="text-align: center">
                                       Solicitar Certificado
-                                  </a>
+                                  </a>--}}
                                   <hr class="dropdown-hr">
 
                                 @endif
