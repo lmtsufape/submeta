@@ -125,6 +125,13 @@ class ParticipanteController extends Controller
         $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->comprovanteMatricula, "Comprovante_de_Matricula.pdf");
         $participante->anexoLattes = Storage::putFileAs($pasta, $request->pdfLattes, "Curriculo_Lattes.pdf");
         $participante->linkLattes = $request->linkLattes;
+        if($request->comprovanteBancario != null){
+            $participante->anexoComprovanteBancario = Storage::putFileAs($pasta, $request->comprovanteBancario, "Comprovante_Bancario." . $request->file('comprovanteBancario')->getClientOriginalExtension());
+        }
+        if($request->autorizacaoPais != null){
+            $participante->anexoAutorizacaoPais = Storage::putFileAs($pasta, $request->autorizacaoPais, "Autorização_dos_Pais.pdf");
+        }
+
         $participante->update();
 
         return redirect()->back()->with(['sucesso'=>"Documentação complementar enviada com sucesso"]);

@@ -58,8 +58,8 @@
 										@csrf
 										<input type="hidden" value="{{$participante->id}}" name="partcipanteId">
 										<div class="row col-md-12">
-											<div class="col-md-6">
-													<label class="control-label ">Termo de Compromisso @if($participante->anexoTermoCompromisso) :
+											<div class="col-md-6" style="margin-top: 15px">
+													<label class="control-label ">Termo de Compromisso <span style="color: red">*</span>@if($participante->anexoTermoCompromisso) :
 														<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoTermoCompromisso]) }}">Arquivo atual</a>
 														@endif
 													</label>
@@ -74,8 +74,8 @@
 												@enderror
 												<br>
 											</div>
-											<div class="col-md-6">
-													<label class="control-label ">Comprovante de Matricula @if($participante->anexoComprovanteMatricula) :
+											<div class="col-md-6" style="margin-top: 15px">
+													<label class="control-label ">Comprovante de Matricula <span style="color: red">*</span>@if($participante->anexoComprovanteMatricula) :
 														<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoComprovanteMatricula]) }}">Arquivo atual</a>
 														@endif
 													</label>
@@ -91,7 +91,7 @@
 											</div>
 
 											<div class="col-md-6">
-												<label class="control-label ">PDF Lattes @if($participante->anexoLattes) :
+												<label class="control-label ">PDF Lattes <span style="color: red">*</span>@if($participante->anexoLattes) :
 													<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoLattes]) }}">Arquivo atual</a>
 													@endif
 												</label>
@@ -105,11 +105,38 @@
 												@enderror
 											</div>
 											<div class="col-md-6">
-												<label class="control-label ">Link Lattes </label>
+												<label class="control-label " content="required">Link Lattes <span style="color: red">*</span> : </label>
 												<br>
 												<input type="text" class="input-group-text col-md-12" name="linkLattes"  placeholder="Link Lattes" id="linkLattes{{$participante->id}}"
 													   required @if($participante->linkLattes) value="{{$participante->linkLattes}}" @endif/>
 												@error('linkLattes')
+												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+											<div class="col-md-6" style="margin-top: 15px">
+												<label class="control-label ">Comprovante Bancário @if($participante->anexoComprovanteBancario) :
+													<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoComprovanteBancario]) }}">Arquivo atual</a>
+													@endif
+												</label>
+												<br>
+												<input type="file" class="input-group-text" value="" name="comprovanteBancario" accept=".pdf,.jpg, .jpeg, .png" id="comprovanteBancario{{$participante->id}}"/>
+												@error('comprovanteBancario')
+												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+														<strong>{{ $message }}</strong>
+													</span>
+												@enderror
+											</div>
+
+											<div class="col-md-6" style="margin-top: 15px">
+												<label class="control-label ">Autorização dos Pais @if($participante->anexoAutorizacaoPais) :
+													<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoAutorizacaoPais]) }}">Arquivo atual</a>
+													@endif
+												</label>
+												<br>
+												<input type="file" class="input-group-text" value="" name="autorizacaoPais" accept=".pdf" id="autorizacaoPais{{$participante->id}}"/>
+												@error('autorizacaoPais	')
 												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
 													</span>
