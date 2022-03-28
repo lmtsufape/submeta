@@ -116,6 +116,7 @@
                                                 <div class="col-sm-11">
                                                     <h6 style="font-size: 18px">Solicitação de desligamento
                                                         para {{$notificacao->trabalho->evento->nome}}</h6>
+                                            @endif
                                         {{-- Certificado --}}
                                     @elseif ($notificacao->tipo == 6)
                                         <div class="row">

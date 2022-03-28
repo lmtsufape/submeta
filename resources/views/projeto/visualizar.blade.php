@@ -135,6 +135,22 @@
 
 @section('javascript')
 
+    <style>
+        body{font-family:Calibri, Tahoma, Arial}
+        .TabControl{ width:100%; overflow:hidden; height:400px}
+        .TabControl #header{ width:100%; overflow:hidden}
+        .TabControl #content{ width:100%; overflow:hidden; height:100%; }
+        .TabControl .abas{display:inline;}
+        .TabControl .abas li{float:left}
+        .aba{width:100px; height:30px; border-radius:5px 5px 0 0;
+            text-align:center; padding-top:5px;}
+        .ativa{width:100px; height:30px; border-radius:5px 5px 0 0;
+            text-align:center; padding-top:5px; background:#27408B;}
+        .ativa span, .selected span{color:#fff}
+        .TabControl .conteudo{width:100%; display:none; height:100%;}
+        .selected{width:100px; height:30px; border-radius:5px 5px 0 0;
+            text-align:center; padding-top:5px; background:#27408B}
+    </style>
 
 <script>
 

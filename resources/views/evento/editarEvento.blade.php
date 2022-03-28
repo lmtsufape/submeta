@@ -312,9 +312,9 @@
                     </div>
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="form-group">
-                    <label for="pdfEdital">Formulário de avaliação externo:</label>
+                    <label for="pdfEdital">Formulário de avaliação externa:</label>
                     <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                         <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                     </a>
@@ -327,24 +327,7 @@
                     @enderror
                 </div>
             </div>
-
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="pdfEdital">Formulário de avaliação interno:</label>
-                    <a href="{{route('download', ['file' => $evento->formAvaliacaoInterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
-                    <input type="file" class="form-control-file @error('pdfFormAvalInterno') is-invalid @enderror" name="pdfFormAvalInterno" value="{{ old('pdfFormAvalInterno') }}" id="pdfFormAvalInterno">
-                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
-                    @error('pdfFormAvalInterno')
-                    <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
         </div>
-       
 
         <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 

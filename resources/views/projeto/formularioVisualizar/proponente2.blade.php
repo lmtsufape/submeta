@@ -27,6 +27,13 @@
                target="_blank"
             >{{ $projeto->linkGrupoPesquisa }}</a>
           </div>
+
+          <div class="col-md-12">
+            <br>
+            <b style="color: #4D4D4D;">Valor da Planilha de Pontuação: </b>
+            <a style="color: #4D4D4D;">{{$projeto->pontuacaoPlanilha}}</a>
+          </div>
+
         </div>
       </div>
     </div>

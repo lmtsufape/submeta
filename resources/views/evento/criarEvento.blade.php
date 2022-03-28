@@ -319,9 +319,9 @@
                     @enderror
                     </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="form-group">
-                    <label for="pdfFormAvalExterno">Formulário de avaliação externo:</label>
+                    <label for="pdfFormAvalExterno">Formulário de avaliação externa:</label>
                     @if(old('pdfFormAvalExternoPreenchido') != null)
                         <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoExterno' ])}}">Arquivo atual</a>
                     @endif
@@ -329,23 +329,6 @@
                     <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfFormAvalExterno')
-                    <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="pdfFormAvalExterno">Formulário de avaliação interno:</label>
-                    @if(old('pdfFormAvalInternoPreenchido') != null)
-                        <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoInterno' ])}}">Arquivo atual</a>
-                    @endif
-                    <input type="hidden" id="pdfFormAvalInternoPreenchido" name="pdfFormAvalInternoPreenchido" value="{{ old('pdfFormAvalInternoPreenchido') }}" >
-                    <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfFormAvalInterno') is-invalid @enderror" name="pdfFormAvalInterno" value="{{ old('pdfFormAvalInterno') }}" id="pdfFormAvalInterno" onchange="exibirAnexoTemp(this)">
-                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
-                    @error('pdfFormAvalInterno')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

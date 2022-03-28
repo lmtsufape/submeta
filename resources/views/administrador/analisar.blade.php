@@ -10,52 +10,50 @@
                         <div class="container">
                             <div class="form-row mt-3">
                                 <div class="col-md-12"><h5 style="color: #1492E6; font-size: 20px;">Edital - {{$evento->nome}}</h5></div>
-                                <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold; font-size: 14px;">Propostas Submetidas</h6></div>
+                                <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold; font-size: 14px;">Propostas Submetidas</h6><br></div>
+                                <div class="col-md-12">
+                                    <div class="btn-group dropup">
+                                        <button type="button" style="text-transform: capitalize;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Filtro @isset ($column) - {{$column}} @endisset
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id])}}">
+                                                Todos
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'aprovado'])}}">
+                                                Recomendados
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'reprovado'])}}">
+                                                Não Recomendados
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'submetido'])}}">
+                                                Submetidos
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'avaliado'])}}">
+                                                Avaliado
+                                            </a>
+                                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'corrigido'])}}">
+                                                Parcialmente Recomendados
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-5" style="top: 40px; text-align: end">
-                    <h6 style="color: #234B8B; font-weight: bold;font-size: 13px; text-align: right">
+                <div class="col-sm-5" style="top: 40px; text-align: end;">
+                    <h6 style="color: #234B8B; font-weight: bold;font-size: 13px; text-align: right;padding-bottom: 35px">
                         <img src="{{asset('img/icons/pendente.png')}}" style="width: 22px"/>
                         Proposta Pendente
                         <img src="{{asset('img/icons/aprovado.png')}}" style="width: 22px"/>
-                        Proposta Aprovada
+                        Proposta Recomendada
                         <img src="{{asset('img/icons/negado.png')}}" style="width: 22px"/>
                         Proposta Negada
                         <br>
                         <img src="{{asset('img/icons/parcialmenteAprovado.png')}}" style="width: 22px"/>
-                        Proposta Parcialmente Aprovada
+                        Proposta Parcialmente Recomendada
                     </h6>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-1 mt-5">
-                    <div class="btn-group dropup">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Filtro @isset ($column) - {{$column}} @endisset
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id])}}">
-                                Todos
-                            </a>
-                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'aprovado'])}}">
-                                Aprovados
-                            </a>
-                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'reprovado'])}}">
-                                Reprovados
-                            </a>
-                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'submetido'])}}">
-                                Submetidos
-                            </a>
-                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'avaliado'])}}">
-                                Avaliados
-                            </a>
-                            <a class="dropdown-item" href="{{route('admin.analisar', ['evento_id' => $evento->id, 'column' => 'corrigido'])}}">
-                                Corrigidos
-                            </a>
-                        </div>
-                      </div>
                 </div>
             </div>
         </div>
@@ -73,7 +71,7 @@
                                                 <div class="card-body" style="padding-top: 0.2rem;">
                                                     <div class="container">
                                                         <div class="form-row mt-3">
-                                                            <div class="col-md-10"><h5 style="color: #234B8B; font-weight: bold">Titulo: {{ $trabalho->titulo }}</h5></div>
+                                                            <div class="col-md-10"><h5 style="color: #234B8B; font-weight: bold">Título: {{ $trabalho->titulo }}</h5></div>
                                                             <div class="col-md-2">
                                                                 @if($trabalho->status == "aprovado")
                                                                     <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">

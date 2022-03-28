@@ -17,6 +17,7 @@ use App\Recomendacao;
 use App\User;
 use App\Avaliador;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AvaliadorController extends Controller
@@ -264,5 +265,37 @@ class AvaliadorController extends Controller
     	//	dd($trabalho);
 
     	return view('avaliador.listarPlanos', ['planos'=>$planos, 'evento'=>$evento ]);
+    }
+
+    public function consultaExterno(Request $request) {
+        $id = json_decode($request->id) ;
+        $trabalho_id = json_decode($request->trabalho_id) ;
+        $trabalho = Trabalho::where('id',$trabalho_id)->first();
+        $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
+
+        $avaliadores = DB::Table('avaliadors')->join('users','avaliadors.user_id','=','users.id')
+            ->join('areas','avaliadors.area_id','=','areas.id')
+            ->select('avaliadors.id','areas.nome','users.name','users.instituicao','users.email')
+           ->where('avaliadors.area_id', $id)
+            ->where('avaliadors.tipo','Externo')
+            ->whereNotIn('avaliadors.id', $avalSelecionadosId)->get();
+        return response()->json($avaliadores);
+        return $avaliadores->toJson();
+    }
+
+    public function consultaInterno(Request $request) {
+        $id = json_decode($request->id) ;
+        $trabalho_id = json_decode($request->trabalho_id) ;
+        $trabalho = Trabalho::where('id',$trabalho_id)->first();
+        $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
+
+        $avaliadores = DB::Table('avaliadors')->join('users','avaliadors.user_id','=','users.id')
+            ->join('areas','avaliadors.area_id','=','areas.id')
+            ->select('avaliadors.id','areas.nome','users.name','users.instituicao','users.email')
+            ->where('avaliadors.area_id', $id)
+            ->where('avaliadors.tipo','Interno')
+            ->whereNotIn('avaliadors.id', $avalSelecionadosId)->get();
+        return response()->json($avaliadores);
+        return $avaliadores->toJson();
     }
 }
