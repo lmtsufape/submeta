@@ -127,9 +127,6 @@ class EventoController extends Controller
                 'dt_inicioRelatorioFinal'  => ['required', 'date'],
                 'dt_fimRelatorioFinal'     => ['required', 'date'],
                 'pdfFormAvalExterno' => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-                'pdfFormAvalInterno' => [($request->pdfFormAvalInternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'] ,
-
-                'pdfFormAvalInterno'     => ['required', 'file'],
                 'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
                 //'modeloDocumento'     => [],
             ]);
@@ -159,7 +156,6 @@ class EventoController extends Controller
             'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
             'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
             'pdfFormAvalExterno'           => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-            'pdfFormAvalInterno'           => [($request->pdfFormAvalInternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
             'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
             //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
@@ -220,15 +216,6 @@ class EventoController extends Controller
             $evento->modeloDocumento = $path . $nome;
         }
 
-        if(isset($request->pdfFormAvalInterno)){
-            $pdfFormAvalInterno = $request->pdfFormAvalInterno;
-            $extension = $pdfFormAvalInterno->extension();
-            $path = 'pdfFormAvalInterno/' . $evento->id . '/';
-            $nome = "formulario de avaliação interno" . "." . $extension;
-            Storage::putFileAs($path, $pdfFormAvalInterno, $nome);
-
-            $evento->formAvaliacaoInterno = $path . $nome;
-        }
 
         if(isset($request->pdfFormAvalExterno)){
             $pdfFormAvalExterno = $request->pdfFormAvalExterno;
@@ -277,10 +264,7 @@ class EventoController extends Controller
             $pasta = 'pdfFormAvalExterno/' . $eventoTemp->id;
             $eventoTemp->formAvaliacaoExterno = Storage::putFileAs($pasta, $request->pdfFormAvalExterno, 'formulario de avaliação externo.pdf');
         }
-        if(!(is_null($request->pdfFormAvalInterno)) ) {
-            $pasta = 'pdfFormAvalInterno/' . $eventoTemp->id;
-            $eventoTemp->formAvaliacaoInterno = Storage::putFileAs($pasta, $request->pdfFormAvalInterno, 'formulario de avaliação interno.pdf');
-        }
+
 
         $eventoTemp->update();
 
@@ -413,7 +397,6 @@ class EventoController extends Controller
                 'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
                 'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
                 'pdfFormAvalExterno'           => ['file', 'mimes:pdf', 'max:2048'],
-                'pdfFormAvalInterno'           => ['file', 'mimes:pdf', 'max:2048'],
             ]);
         }
 
@@ -437,7 +420,6 @@ class EventoController extends Controller
             'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
             'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
             'pdfFormAvalExterno'           => ['file', 'mimes:pdf', 'max:2048'],
-            'pdfFormAvalInterno'           => ['file', 'mimes:pdf', 'max:2048'],
         ]);
 
         $evento->nome                 = $request->nome;
@@ -475,15 +457,6 @@ class EventoController extends Controller
             $evento->modeloDocumento = $path . $nome;
         }
 
-        if(isset($request->pdfFormAvalInterno)){
-            $pdfFormAvalInterno = $request->pdfFormAvalInterno;
-            $extension = $pdfFormAvalInterno->extension();
-            $path = 'pdfFormAvalInterno/' . $evento->id . '/';
-            $nome = "formulario de avaliação interno" . "." . $extension;
-            Storage::putFileAs($path, $pdfFormAvalInterno, $nome);
-
-            $evento->formAvaliacaoInterno = $path . $nome;
-        }
 
         if(isset($request->pdfFormAvalExterno)){
             $pdfFormAvalExterno = $request->pdfFormAvalExterno;
