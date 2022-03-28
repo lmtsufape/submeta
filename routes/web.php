@@ -210,7 +210,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
   Route::get('/analisarProposta',            'AdministradorController@analisarProposta'         )->name('analisarProposta');
   Route::get('/showProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
-  Route::get('/showResultados',             'AdministradorController@showResultados'    )->name('showResultados');
+  Route::get('/showResultados',             'AdministradorController@showResultados'    )->name('showResultados')->middleware(['auth', 'verified']);
 });
 
 Route::prefix('naturezas')->group(function(){

@@ -130,6 +130,24 @@ class AdministradorController extends Controller
     public function showResultados(Request $request){
         $evento = Evento::where('id', $request->evento_id)->first();
         $trabalhos = $evento->trabalhos;
+        //foreach($trabalho->avaliadors as $avaliador)
+        foreach($trabalhos as $trabalho){
+            $trabalho->pontuacao = 0;
+            foreach($trabalho->avaliadors as $avaliador){
+                if($avaliador->tipo == "Interno"){
+                    $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                    if($parecerInterno != null){
+                        $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                    }
+                }
+            }
+        }
+
+        $trabalhos = $trabalhos->sort(function ($item, $next) {
+            return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+        });
+        $trabalhos = $this->paginate($trabalhos)
+            ->withPath('/usuarios/showResultados?evento_id='.$evento->id);;
 
         return view('administrador.resultadosProjetos')->with(['evento' => $evento, 'trabalhos' => $trabalhos]);
     }
