@@ -42,6 +42,7 @@
                                                    @if(($substituicoesProjeto->first() != null) && ($substituicoesProjeto->first()->status == 'Em Aguardo')) style="pointer-events: none; cursor: default;" @endif>
                                                     <i class="fas fa-exchange-alt fa-2x"></i></a>
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a>
+                                                <a href="" data-toggle="modal" data-target="#modalSolicitarDesligamentoParticipante{{$participante->id}}" class="button">Solicitar desligamento</a>
                                             </div>
                                         </div>
 
@@ -163,6 +164,44 @@
 
                                                 <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
                                                     @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1])
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal solicitar desligamento participante -->
+                                    <div class="modal fade" id="modalSolicitarDesligamentoParticipante{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="overflow-x:auto;">
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Desligar Participante</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="solicitar-desligamento{{$participante->id}}" method="POST" action="{{route('proponente.solicitar.desligamento', ['edital_id' => $projeto->evento->id, 'projeto_id' => $projeto->id, 'participante_id' => $participante->id]) }}">
+                                                        @csrf
+                                                        <input type="hidden" id="participante{{$participante->id}}" name="participante" value="{{$participante->id}}">
+                                                        <input type="hidden" id="trabalho" name="trabalho" value="{{$projeto->id}}">
+                                                        <h6>Tem certeza que deseja solicitar o desligamento do participante <span style="font-weight: bold">{{$participante->user->name}}</span>?</h6>
+                                                        <div class="form-row">
+                                                            <div class="col-md-12 form-group">
+                                                                <label for="justificativa">{{ __('Justificativa') }}<span style="color: red; font-weight: bold;"> *</span></label>
+                                                                <textarea class="form-control @error('justificativa') is-invalid @enderror" type="text" name="justificativa" id="justificativa" cols="30" rows="5" placeholder="Digite a justificativa para o desligamento do participante" required>{{old('justificativa')}}</textarea>
+                                                                @error('justificativa')
+                                                                    <div id="validationServer03Feedback" class="invalid-feedback">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                    @if($participante->desligamentos->first() == null || ($participante->desligamentos->first() != null && $participante->desligamentos->first()->status != \App\Desligamento::STATUS_ENUM['solicitado']))
+                                                        <button type="submit" class="btn btn-success" form="solicitar-desligamento{{$participante->id}}">Confirmar</button>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -301,6 +340,45 @@
                             </div>
                         </div>
 
+                        <h4 style="margin-top: 50px">Desligamentos</h4>
+                        <div style="margin-top: 20px">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Participante
+                                        </h5>
+                                    </div>
+                                    <div class="col-2" style="text-align: center">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Status
+                                        </h5>
+                                    </div>
+                                    <div class="col-6" style="text-align: center">
+                                        <h5 class="card-title" style= "color:#1492E6">
+                                            Justificativa
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                @foreach($projeto->desligamentos as $desligamento)
+                                    <div class="row"style="margin-bottom: 20px;">
+                                        <div class="col-4">
+                                            <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$desligamento->participante()->withTrashed()->first()->id}}" class="button"><h4 style="font-size:18px">{{$desligamento->participante()->withTrashed()->first()->user->name}}</h4></a>
+                                            <h5 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($desligamento->created_at))}}</h5>
+                                        </div>
+                                        <div class="col-2" style="text-align: center">
+                                            <h5>{{$desligamento->getStatus()}}</h5>
+                                        </div>
+                                        <div class="col-6" style="text-align: center">
+                                            <h5>{{$desligamento->justificativa}}</h5>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

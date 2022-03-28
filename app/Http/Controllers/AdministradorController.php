@@ -67,26 +67,25 @@ class AdministradorController extends Controller
         return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
     }
     public function analisar(Request $request){
-
-        $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhosSubmetidos = $evento->trabalhos->where('status', 'submetido');
-        $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
-        $trabalhosAprovados = $evento->trabalhos->Where('status', 'aprovado');
-        $trabalhosReprovados = $evento->trabalhos->Where('status', 'reprovado');
-        $trabalhosCorrigidos = $evento->trabalhos->Where('status', 'corrigido');
-        $trabalhos =  $this->paginate($trabalhosSubmetidos);
-        $trabalhos =  $this->paginate($trabalhosSubmetidos
-            ->merge($trabalhosAvaliados)->merge($trabalhosAprovados)
-            ->merge($trabalhosReprovados)->merge($trabalhosCorrigidos)->sortBy('titulo'))
-            ->withPath('/usuarios/analisarProjetos?evento_id='.$evento->id);
-
+        $evento = Evento::find($request->evento_id);
+        $status = ['submetido', 'avaliado', 'aprovado', 'reprovado', 'corrigido'];
+        $withPath = '/usuarios/analisarProjetos?evento_id='.$evento->id;
+        if($request->column != null ) {
+            $status = [$request->column];
+            $withPath = '/usuarios/analisarProjetos/'.$request->column.'?evento_id='.$evento->id;
+        }
+        $trabalhos = Trabalho::where('evento_id', $evento->id)
+            ->whereIn('status', $status)
+            ->orderBy('titulo')
+            ->paginate(5)
+            ->withPath($withPath);
 
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
         // $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         // $participantes = User::whereIn('id', $participantesUsersIds)->get();
 
-        return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes]);
+        return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes, 'column' => $request->column]);
     }
 
     // Utilizado para paginação de Collection
@@ -110,13 +109,15 @@ class AdministradorController extends Controller
         $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
         $trabalho->aval = $avalProjeto;
 
+        $grandeAreas = GrandeArea::orderBy('nome')->get();
 
         return view('administrador.analisarProposta')->with(
             [   'trabalho' => $trabalho,
                 'funcaoParticipantes' => $funcaoParticipantes,
                 'evento' => $evento,
                 'substituicoesPendentes' => $substituicoesPendentes,
-                'substituicoesProjeto' => $substituicoesProjeto,]);
+                'substituicoesProjeto' => $substituicoesProjeto,
+                'grandeAreas' => $grandeAreas,]);
     }
 
     public function showProjetos(Request $request){
@@ -588,6 +589,78 @@ class AdministradorController extends Controller
         return redirect()->back();
 
     }
+
+    public function enviarConviteEAtribuir(Request $request)
+    {
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $nomeAvaliador = $request->nomeAvaliador;
+        $emailAvaliador = $request->emailAvaliador;
+        $area = Area::where('id', $request->area_id)->first();
+        $user = User::where('email', $emailAvaliador )->first();
+
+        if($request->instituicao == "ufape"){
+            $nomeInstituicao = "Universidade Federal do Agreste de Pernambuco";
+            $externoInterno = "Interno";
+        }else{
+            $nomeInstituicao = $request->outra;
+            $externoInterno = "Externo";
+        }
+        if(isset($user)){
+            $passwordTemporario = Str::random(8);
+            $subject = "Convite para avaliar projetos da UFAPE";
+            Mail::to($emailAvaliador)
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
+
+        }else{
+            $passwordTemporario = Str::random(8);
+            $subject = "Convite para avaliar projetos da UFAPE";
+            Mail::to($emailAvaliador)
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
+            $user = User::create([
+              'email' => $emailAvaliador,
+              'password' => bcrypt($passwordTemporario),
+              'usuarioTemp' => false,
+              'name' => $nomeAvaliador,
+              'tipo' => 'avaliador',
+              'instituicao' => $nomeInstituicao,
+            ]);
+
+            $user->markEmailAsVerified();
+        }
+
+        if($user->avaliadors == null){
+            $avaliador = new Avaliador();
+            $avaliador->tipo = $externoInterno;
+            $avaliador->save();
+            $avaliador->area()->associate($area);
+            $avaliador->user()->associate($user);
+            $avaliador->eventos()->attach($evento);
+            $user->save();
+            $avaliador->save();
+        }else{
+            $avaliador = $user->avaliadors;
+            $avaliador->eventos()->attach($evento);
+            $user->save();
+            $avaliador->save();
+        }
+
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+
+        $trabalho->avaliadors()->attach($avaliador);
+        $evento->avaliadors()->syncWithoutDetaching($avaliador);
+        $trabalho->save();
+
+        $notificacao = Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $avaliador->user_id,
+            'trabalho_id' => $request->trabalho_id,
+            'lido' => false,
+            'tipo' => 5,
+        ]);
+        $notificacao->save();
+        return redirect()->back();
+    }
+
 
     public function reenviarConviteAtribuicaoProjeto(Request $request){
         $evento = Evento::where('id', $request->evento_id)->first();

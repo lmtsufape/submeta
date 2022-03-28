@@ -1,4 +1,4 @@
-  <?php
+<?php
 
 use App\Http\Middleware\checkCoordenador;
 use App\Trabalho;
@@ -45,6 +45,8 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get( '/proponente/editais',    'ProponenteController@editais'                )->name('proponente.editais');
   Route::get( '/projetos-submetidos',   'ProponenteController@projetosDoProponente'   )->name('proponente.projetos');
   Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital')->middleware('auth');
+  Route::post('/proponente/edital/{edital_id}/projeto/{projeto_id}/solicitar_desligamento/{participante_id}',   'ProponenteController@solicitarDesligamento')->name('proponente.solicitar.desligamento');
+
   
   
   //######### Rotas Administrador #################################
@@ -135,12 +137,15 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::post(  '/projeto/{id}/atualizar', 'TrabalhoController@update'                      )->name('trabalho.update');
   Route::get(   '/projeto/{id}/excluir',    'TrabalhoController@destroy'                    )->name('trabalho.destroy');
   Route::get(   '/projeto/{id}/excluirParticipante','TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
+  Route::post(   '/projeto/{trabalho}/solicitarCertificado','TrabalhoController@solicitarCertificado')->name('trabalho.solicitarCertificado');
   Route::get(   '/projeto/exportar/{id}','TrabalhoController@exportProjeto'                 )->name('exportar.projeto');
   Route::get(   '/projeto/substituirParticipante', 'TrabalhoController@telaTrocaPart'       )->name('trabalho.trocaParticipante');
   Route::post(  '/projeto/substituirParticipante', 'TrabalhoController@trocaParticipante'   )->name('trabalho.infoTrocaParticipante');
   Route::get(   '/showSubstituicoes', 'TrabalhoController@telaShowSubst'                    )->name('trabalho.telaAnaliseSubstituicoes')->middleware('checkRoles:coordenador,administrador');
   Route::post(  '/aprovarSubstituicao', 'TrabalhoController@aprovarSubstituicao'            )->name('trabalho.aprovarSubstituicao');
   Route::post(  '/aprovarProposta/{id}', 'TrabalhoController@aprovarProposta'            )->name('trabalho.aprovarProposta');
+
+  Route::post(  '/certificado/{certificado}', 'CertificadoController@update'            )->name('certificado.update');
 
   //##########  Bolsas
   Route::get(   '/bolsas', 'ParticipanteController@listarParticipanteEdital'                  )->name('bolsas.listar');
@@ -200,6 +205,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::post('/removerAvalEvento',          'AdministradorController@remover'          )->name('remover');
   Route::get('/removerProjAval',          'AdministradorController@removerProjAval'  )->name('removerProjAval');
   Route::post('/atribuirAvaliadorProjeto',   'AdministradorController@atribuicaoProjeto')->name('atribuicao.projeto');
+  Route::post('/enviarConviteEAtribuirProjeto',   'AdministradorController@enviarConviteEAtribuir')->name('convite.atribuicao.projeto');
   Route::get('/reenviarConviteAtribuicaoProjeto',   'AdministradorController@reenviarConviteAtribuicaoProjeto')->name('reenviar.atribuicao.projeto');
   Route::post('/enviarConviteAvaliador',     'AdministradorController@enviarConvite'    )->name('enviarConvite');
   Route::post('/reenviarConviteAvaliador',     'AdministradorController@reenviarConvite'    )->name('reenviarConvite');
@@ -207,7 +213,7 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/visualizarParecerInterno',    'AdministradorController@visualizarParecerInterno')->name('visualizarParecerInterno');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
-  Route::get('/analisarProjetos',            'AdministradorController@analisar'         )->name('analisar');
+  Route::get('/analisarProjetos/{column?}',   'AdministradorController@analisar'         )->name('analisar');
   Route::get('/analisarProposta',            'AdministradorController@analisarProposta'         )->name('analisarProposta');
   Route::get('/showProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
   Route::get('/showResultados',             'AdministradorController@showResultados'    )->name('showResultados')->middleware(['auth', 'verified']);
@@ -301,4 +307,7 @@ Route::prefix('coordenador')->name('coordenador.')->group(function(){
   Route::post('/retornoDetalhes',             'CoordenadorComissaoController@retornoDetalhes'       )->name('retornoDetalhes');
   Route::post('/atribuirAvaliadorTrabalho',   'TrabalhoController@atribuirAvaliadorTrabalho'        )->name('atribuirAvaliadorTrabalho');
   Route::post('/atribuir',                    'TrabalhoController@atribuir'                         )->name('atribuir');
+  Route::post('/atribuir',                    'TrabalhoController@atribuir'                         )->name('atribuir');
+  Route::post('/resposta-solicitacao-desligamento/{desligamento_id}',   'CoordenadorComissaoController@respostaDesligamento')->name('resposta.desligamento');
+
 });

@@ -100,7 +100,7 @@
                                     <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições Pendentes</a>
                                     <img class="" src="{{asset('img/icons/warning.ico')}}" style="width:15px" alt="">
                                 @else
-                                    <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições</a>
+                                    <a href="" data-toggle="modal" data-target="#modalVizuSubstituicao" class="button">Substituições/Desligamentos</a>
                                 @endif
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                                             <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                 <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                <button type="button" class="close" aria-label="Close" style="padding-top: 8px; color:#1492E6" onclick="abrirHistorico({{$participante->id}}, 0)">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -144,14 +144,14 @@
                                 @foreach($substituicoesProjeto as $subs)
 
                                 <!-- Modal vizualizar info participante substituido -->
-                                    <div class="modal fade" id="modalVizuParticipanteSub{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="modalVizuParticipanteSubstituido{{$subs->participanteSubstituido()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
                                                 <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                    <button type="button" class="close" aria-label="Close" style="padding-top: 8px; color:#1492E6" onclick="abrirHistorico({{$subs->participanteSubstituido()->withTrashed()->first()->id}}, 1)">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
@@ -164,14 +164,14 @@
                                     </div>
 
                                     <!-- Modal vizualizar info participante substituto -->
-                                    <div class="modal fade" id="modalVizuParticipanteSub{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="modalVizuParticipanteSubstituto{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
                                                 <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Participante</h5>
 
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                    <button type="button" class="close" aria-label="Close" style="padding-top: 8px; color:#1492E6" onclick="abrirHistorico({{$subs->participanteSubstituto()->withTrashed()->first()->id}}, 2)">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
@@ -404,10 +404,17 @@
                                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content modal-submeta">
                                         <div class="modal-header modal-header-submeta">
-                                            <h5 class="modal-title titulo-table" id="avaliadorModalLongTitle">Selecione o(s) avaliador(es)</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"  style="color: rgb(182, 182, 182)">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                            <div class="col-md-8">
+                                                <h5 class="modal-title titulo-table" id="avaliadorModalLongTitle">Selecione o(s) avaliador(es)</h5>
+                                            </div>
+                                            <div class="col-md-4" style="text-align: right">
+                                                <button type="button" id="enviarConviteButton" class="btn btn-info" data-toggle="modal" onclick="abrirModalConvite()">
+                                                    Enviar Convite
+                                                </button>
+                                                <button type="button" class="close" aria-label="Close" data-dismiss="modal" style="color: rgb(182, 182, 182)">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
                                         </div>
                                         <div class="modal-body">
                                             @if (session('error'))
@@ -624,6 +631,11 @@
                                         <span> Histórico</span>
                                     </div>
                                 </li>
+                                <li>
+                                    <div class="aba3 aba">
+                                        <span> Desligamentos</span>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <div id="content">
@@ -651,8 +663,7 @@
                                                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
                                                                     </div>
                                                                     <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a onclick="vizuParticipante({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
-
+                                                                        <a onclick="fecharModalSubstituto({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -680,7 +691,7 @@
                             </div>
 
                             <div class="justify-content-center conteudo" id="tela2" style="margin-top: 0px;border: none;overflow-x: auto;">
-                                <div class="col-md-12" id="tela2" style="padding: 0px">
+                                {{--<div class="col-md-12" id="tela2" style="padding: 0px">
                                     <div class="card" id="tela2" style="border-radius: 5px">
                                         <div class="card-body" id="tela2" style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
                                             <div class="" id="tela2">
@@ -738,6 +749,127 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>--}}
+                                <div style="margin-top: 5px">
+                                    <div class="card-header">
+                                        <div class="row">
+                                                <div class="col-3">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Participante Substituído
+                                                    </h6>
+                                                </div>
+                                                <div class="col-3">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Participante Substituto
+                                                    </h6>
+                                                </div>
+                                                <div class="col-2">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Tipo
+                                                    </h6>
+                                                </div>
+                                                <div class="col-2">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Status
+                                                    </h6>
+                                                </div>
+                                                <div class="col-2">
+                                                    <h6 class="card-title" style= "color:#234B8B">
+                                                        Justificativa
+                                                    </h6>
+                                                </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        @foreach($substituicoesProjeto as $subs)
+                                            <div class="row" style="margin-bottom: 20px;">
+                                                <div class="col-3">
+                                                    <a href="" data-toggle="modal" class="button" onclick="fecharModalSubstituido({{$subs->participanteSubstituido()->withTrashed()->first()->id}})"><h6 style="font-size:18px;  color: black" >{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</h6></a>
+                                                    <h6 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->data_entrada))}} - @if($subs->participanteSubstituido()->withTrashed()->first()->data_saida == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituido()->withTrashed()->first()->data_saida))}} @endif</h6>
+                                                </div>
+                                                <div class="col-3">
+                                                    <a href="" data-toggle="modal" class="button" onclick="fecharModalSubstituto({{$subs->participanteSubstituto()->withTrashed()->first()->id}})"><h6 style="font-size:18px;  color: black">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</h6></a>
+                                                    <h6 style= "color:grey; font-size:medium">{{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->data_entrada))}} - @if($subs->participanteSubstituto()->withTrashed()->first()->data_saida == null) Atualmente @else {{date('d-m-Y', strtotime($subs->participanteSubstituto()->withTrashed()->first()->data_saida))}} @endif</h6>
+                                                </div>
+                                                <div class="col-2">
+                                                    @if($subs->tipo == 'ManterPlano')
+                                                        <h6>Manter Plano</h6>
+                                                    @elseif($subs->tipo == 'TrocarPlano')
+                                                        <h6>Alterar Plano</h6>
+                                                    @elseif($subs->tipo == 'Completa')
+                                                        <h6>Completa</h6>
+                                                    @endif
+                                                </div>
+                                                <div class="col-2">
+                                                    @if($subs->status == 'Finalizada')
+                                                        <h6>Concluída</h6>
+                                                    @elseif($subs->status == 'Negada')
+                                                        <h6>Negada</h6>
+                                                    @elseif($subs->status == 'Em Aguardo')
+                                                        <h6>Pendente</h6>
+                                                    @endif
+                                                </div>
+                                                <div class="col-2">
+                                                    @if($subs->status == 'Em Aguardo')
+                                                        <h6>Pendente</h6>
+                                                    @else
+                                                        <a href="" data-toggle="modal" class="button" onclick="vizuJustificativa('{{$subs->justificativa}}')"><h5 style="font-size:18px">Visualizar</h5></a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="justify-content-center conteudo" id="tela3" style="margin-top: 0px;border: none;overflow-x: auto;">
+                                <div class="col-md-12" style="padding: 0px">
+                                    <div class="card" style="border-radius: 5px">
+                                        <div class="card-body"  style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
+                                            <div class="">
+                                                <div class="justify-content-start" style="alignment: center">
+                                                    @foreach($trabalho->desligamentos as $desligamento)
+                                                        <div class="row justify-content-between">
+                                                            <div class="col-md-9">
+                                                                <h5 style="color: #234B8B; font-weight: bold" class="col-md-12">Desligamento</h5>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="col-md-2">
+                                                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="" class="img-flex">
+                                                                    </div>
+                                                                    <div class="col-md-10" >
+                                                                        <a onclick="vizuParticipante({{$desligamento->participante()->withTrashed()->first()->id}})" class="button">{{$desligamento->participante()->withTrashed()->first()->user->name}}</a>
+                                                                        <br><label for="justificativa">Justificativa: </label>
+                                                                        {{$desligamento->justificativa}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                @if($desligamento->status == \App\Desligamento::STATUS_ENUM['solicitado'])
+                                                                    <h5 style="color: #234B8B; font-weight: bold" class="col-md-12 text-center"> Ações</h5>
+                                                                    <div class="col-md-12 text-center" style="border: solid#1111; padding: 10px; ">
+                                                                        <form id="resposta-desligamento{{$desligamento->id}}" method="POST" action="{{route('coordenador.resposta.desligamento', ['desligamento_id' => $desligamento->id]) }}">
+                                                                            @csrf
+                                                                            <input type="hidden" id="desligamento" name="desligamento" value="{{$desligamento->id}}">
+                                                                            <input type="radio" id="aceitar{{$desligamento->id}}" name="opcao" value="{{\App\Desligamento::STATUS_ENUM['aceito']}}"> Aprovar
+                                                                            <input type="radio" id="negar{{$desligamento->id}}" name="opcao" value="{{\App\Desligamento::STATUS_ENUM['recusado']}}"> Negar
+                                                                            <br>
+                                                                            <button type="submit" class="btn btn-primary" form="resposta-desligamento{{$desligamento->id}}">Submeter</button>
+                                                                        </form>
+                                                                    </div>
+                                                                @else
+                                                                    <h5 style="color: #234B8B; font-weight: bold" class="col-md-12 text-center"> Status</h5>
+                                                                    <div class="col-md-12 text-center" style="border: solid#1111; padding: 10px; ">
+                                                                        {{$desligamento->getStatus()}}
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -770,6 +902,83 @@
         </div>
     </div>
 
+    <!-- Modal enviar convite e atribuir -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content modal-submeta">
+            <div class="modal-header modal-header-submeta">
+              <h5 class="modal-title titulo-table" id="exampleModalLongTitle" style="font-size: 20px;">Enviar Convite</h5>
+              <button type="button" class="close"  onclick="fecharModalConvite()" aria-label="Close" style="color: rgb(182, 182, 182)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="margin-left: 20px; margin-right: 20px;">
+      
+              <form action="{{ route('admin.convite.atribuicao.projeto') }}" method="POST" class="labels-blue">
+                @csrf
+                <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
+                <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Nome Completo <span style="color: red;">*</span></label>
+                  <input type="text" class="form-control" name="nomeAvaliador" id="exampleInputNome1" required>            
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email <span style="color: red;">*</span></label>
+                  <input type="email" class="form-control" name="emailAvaliador" id="exampleInputEmail1" required>            
+                </div>
+      
+                <div class="form-group">
+                <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
+                    <select class="form-control" id="grandeAreaConvite" name="grande_area_id" onchange="areas()" required>
+                      <option value="" disabled selected hidden>-- Grande Área --</option>
+                      @foreach($grandeAreas as $grandeArea)
+                      <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                      @endforeach
+                    </select>
+      
+                    <label for="area" class="col-form-label">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
+                    <select class="form-control @error('area') is-invalid @enderror" id="areaConvite" name="area_id" required>
+                      <option value="" disabled selected hidden>-- Área --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Tipo</label>
+                  <select class="form-control" name="tipo" id="exampleFormControlSelect1" disabled>
+                    <option value="avaliador" >Avaliador</option>
+                  </select>
+                </div>
+      
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Instituição <span style="color: red; font-weight:bold">*</span></label>
+                  <select class="form-control" name="instituicao" id="membro" required onchange="mostrarDiv(this)">
+                    <option value="" disabled>-- Selecione a instituição --</option>
+                    <option value="ufape" >Universidade Federal do Agreste de Pernambuco</option>
+                    <option value="outra" >Outra</option>
+                  </select>
+                </div>
+      
+                <div class="form-group" id="div-outra" style="@if(old('instituicao') != null && old('instituicao') == "outra") display: block; @else display: none; @endif">
+                  <label for="outra">{{ __('Digite o nome da instituição') }}<span style="color: red; font-weight: bold;"> *</span></label>
+                  <input id="outra" class="form-control @error('outra') is-invalid @enderror" type="text" name="outra" value="{{old('outra')}}" autocomplete="outra" placeholder="Universidade Federal ...">
+                  @error('outra')
+                      <div id="validationServer03Feedback" class="invalid-feedback">
+                          {{ $message }}
+                      </div>
+                  @enderror
+                </div>
+      
+                <div class="form-group" style="margin-top: 40px; margin-bottom: 40px;">
+                  <button type="submit" class="btn btn-info" style="width: 100%">Enviar</button>
+                </div> 
+                <div class="form-group texto-info">
+                  O convite será enviador por e-mail e o preenchimento dos dados será de inteira responsabilidade do usuário convidado.
+                </div>
+              </form>
+      
+            </div>
+          </div>
+        </div>
+    </div>
 
     <style>
         body{font-family:Calibri, Tahoma, Arial}
@@ -797,15 +1006,27 @@
             $(".abas li:first div").addClass("selected");
             $(".aba2").click(function(){
                 $(".aba1").removeClass("selected");
+                $(".aba3").removeClass("selected");
                 $(this).addClass("selected");
                 $("#tela1").hide();
+                $("#tela3").hide();
                 $("#tela2").show();
             });
             $(".aba1").click(function(){
                 $(".aba2").removeClass("selected");
+                $(".aba3").removeClass("selected");
                 $(this).addClass("selected");
                 $("#tela2").hide();
+                $("#tela3").hide();
                 $("#tela1").show();
+            });
+            $(".aba3").click(function(){
+                $(".aba2").removeClass("selected");
+                $(".aba1").removeClass("selected");
+                $(this).addClass("selected");
+                $("#tela2").hide();
+                $("#tela1").hide();
+                $("#tela3").show();
             });
 
             let textTemp = document.getElementById("comentario").innerHTML;
@@ -834,13 +1055,13 @@
         }
         function  vizuPartici(id){
             $("#modalVizuSubstituicao").modal('hide');
-            setTimeout(() => {  $("#modalVizuParticipanteSub"+id).modal(); }, 500);
+            setTimeout(() => {  $("#modalVizuParticipanteSubstituto"+id).modal(); }, 500);
         }
 
-        function  vizuJustificativa(texto){
+        function vizuJustificativa(texto){
             $("#modalVizuSubstituicao").modal('hide');
-            setTimeout(() => {  $("#modalVizuJustificativa").modal(); }, 500);
             document.getElementById("conteudoJustificativa").innerHTML = texto;
+            setTimeout(() => {  $("#modalVizuJustificativa").modal(); }, 500);
         }
 
         function  closeJustificativa(){
@@ -1015,6 +1236,86 @@
             $(document).ready(function(){
                 $('#avaliadorModalCenter').modal('show');
             });
+        }
+    </script>
+
+    <script>
+        function fecharModalSubstituido(id){
+            $('#modalVizuSubstituicao').modal('toggle');
+            setTimeout(() => {  $("#modalVizuParticipanteSubstituido"+id).modal(); }, 500);
+        }
+        function fecharModalSubstituto(id){
+            $('#modalVizuSubstituicao').modal('toggle');
+            setTimeout(() => {  $("#modalVizuParticipanteSubstituto"+id).modal(); }, 500);
+        }
+
+        function abrirHistorico(id, modal){
+            if(modal == 1){
+                $('#modalVizuParticipanteSubstituido'+id).modal('hide');
+            }else if(modal == 2){
+                $('#modalVizuParticipanteSubstituto'+id).modal('hide');
+            }else if(modal == 0){
+                $('#modalVizuParticipante'+id).modal('hide');
+            }
+            setTimeout(() => {  $("#modalVizuSubstituicao").modal(); }, 500);
+        }
+    </script>
+
+    <script>
+        function abrirModalConvite(){
+            $("#avaliadorModalCenter").modal('toggle');
+            setTimeout(() => {  $("#exampleModalCenter").modal(); }, 500);
+            $('#exampleModalCenter').focus();
+        }
+
+        function fecharModalConvite(){
+            $('#exampleModalCenter').modal('toggle');
+            setTimeout(() => {  $("#avaliadorModalCenter").modal(); }, 500);
+            $('#avaliadorModalCenter').focus();
+        }
+
+        function areas() {
+            var grandeArea = $('#grandeAreaConvite').val();
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('area.consulta') }}',
+                data: 'id='+grandeArea ,
+                headers:
+                {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: (dados) => {
+
+                if (dados.length > 0) {
+                if($('#oldArea').val() == null || $('#oldArea').val() == ""){
+                    var option = '<option selected disabled>-- Área --</option>';
+                }
+                $.each(dados, function(i, obj) {
+                    if($('#oldArea').val() != null && $('#oldArea').val() == obj.id){
+                    option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+                    }else{
+                    option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+                    }
+                })
+                } else {
+                var option = "<option selected disabled>-- Área --</option>";
+                }
+                $('#areaConvite').html(option).show();
+            },
+                error: (data) => {
+                    console.log(data);
+                }
+
+            })
+        }
+        function mostrarDiv(select) {
+            if(select.value == "outra") {
+                document.getElementById('div-outra').style.display = "block";
+                $("#outra").prop('required',true);
+            }else if(select.value == "ufape"){
+            document.getElementById('div-outra').style.display = "none";
+            $("#outra").prop('required',false);
+            }
         }
     </script>
 @endsection

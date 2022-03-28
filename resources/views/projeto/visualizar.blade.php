@@ -43,6 +43,43 @@
     </div>
   </div>
   </form>
+  <div class="modal fade" id="modalSelecionarDiscentes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
+                <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Selecione os discentes que dejesa solicitar certificado/declaração</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
+                <form id="certificadoForm" action="{{route('trabalho.solicitarCertificado', $projeto)}}" method="POST">
+                    @csrf
+                    <div class="form-check">
+                      <input name="users[]" class="form-check-input" type="checkbox" value="{{$projeto->proponente->user->id}}" id="pa-{{$projeto->proponente->user->id}}">
+                      <label class="form-check-label" for="pa-{{$projeto->proponente->user->id}}">
+                          {{$projeto->proponente->user->name}}
+                      </label>
+                  </div>
+                    @foreach ($projeto->participantes as $participante)
+                        <div class="form-check">
+                            <input name="users[]" class="form-check-input" type="checkbox" value="{{$participante->user->id}}" id="pa-{{$participante->user->id}}">
+                            <label class="form-check-label" for="pa-{{$participante->user->id}}">
+                                {{$participante->user->name}}
+                            </label>
+                        </div>
+                    @endforeach
+                </form>
+            </div>
+            <div class="modal-footer d-flex justify-content-between px-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="submit" form="certificadoForm" class="btn btn-primary">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
   <div id="participanteFirst" >
     @component('componentes.participante', ['enum_turno' => $enum_turno,'estados' => $estados, ])
       
