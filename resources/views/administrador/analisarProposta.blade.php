@@ -74,6 +74,12 @@
                                    target="_blank"
                                 >{{ $trabalho->linkGrupoPesquisa }}</a>
                             </div>
+
+                            <div class="col-md-12">
+                                <br>
+                                <b style="color: #4D4D4D;">Valor da Planilha de Pontuação: </b>
+                                <a style="color: #4D4D4D;">{{$trabalho->pontuacaoPlanilha}}</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,7 +300,7 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização do Comitê de Ética: ') }}</label>
+                                <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
                                 @if($trabalho->anexoAutorizacaoComiteEtica != null)
                                     <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
@@ -309,9 +315,9 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Justificativa: ') }}</label>
-                                @if($trabalho->justificativaAutorizacaoEtica != null)
-                                    <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
+                                @if($trabalho->anexoGrupoPesquisa != null)
+                                    <a href="{{ route('baixar.anexoGrupoPesquisa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
                                     -
                                 @endif
@@ -555,7 +561,7 @@
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
                         <div class="form-row mt-3">
-                            <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Aprovação</h5></div>
+                            <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Recomendação</h5></div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
                         <form  action="{{ route('trabalho.aprovarProposta', ['id' => $trabalho->id]) }}" method="post">
@@ -567,19 +573,22 @@
                                     >@if($trabalho->comentario != null){{$trabalho->comentario}}@endif</textarea>
                                 </div>
                                 <div class="col-md-3" style="margin-top: 15px">
-                                    <input class="col-md-1" type="radio" id="aprovado" name="statusProp" value="aprovado" required>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Aprovado</a>
+                                    <input class="col-md-1" type="radio" id="aprovado" name="statusProp" value="aprovado" required
+                                           @if($trabalho->status=="aprovado") checked @endif>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendado</a>
                                     <br>
-                                    <input class="col-md-1" type="radio" id="parcialAprovado" name="statusProp" value="corrigido" required>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Parcialmente Aprovado</a>
+                                    <input class="col-md-1" type="radio" id="parcialAprovado" name="statusProp" value="corrigido" required
+                                           @if($trabalho->status=="corrigido") checked @endif>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Parcialmente Recomendado</a>
                                     <br>
-                                    <input class="col-md-1" type="radio" id="reprovado" name="statusProp" value="reprovado" required>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Aprovado</a>
+                                    <input class="col-md-1" type="radio" id="reprovado" name="statusProp" value="reprovado" required
+                                           @if($trabalho->status=="reprovado") checked @endif>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Recomendado</a>
                                 </div>
                             </div>
 
                             <button id="enviar" name="enviar" type="submit" class="btn btn-primary" style="padding: 5px 10px;font-size: 18px;">
-                                Enviar
+                                Salvar
                             </button>
                         </form>
                     </div>
@@ -710,7 +719,7 @@
                                                                 @if($subs->status == 'Finalizada')
                                                                     <h5 style="color: #234B8B; " class="col-md-12 text-center">Status: Concluída</h5>
                                                                 @elseif($subs->status == 'Negada')
-                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Status: Negada</>
+                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Status: Negada</h5>
                                                                 @elseif($subs->status == 'Em Aguardo')
                                                                     <h5 style="color: #234B8B; " class="col-md-12 text-center">Status: Pendente</h5>
                                                                 @endif
