@@ -5,19 +5,29 @@
 </head>
 <body>
 	@if($tipo == 'resultado')
-        <h4>Resultado pedido de substituição</h4>
-        <p>A sua solicitação de substituição no projeto <strong>{{$projeto->titulo}}</strong> foi analisada e o resultado você pode conferir <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}">aqui.</a></p>
+        <h4>Saudações</h4>
+        <p>O pedido de substituição de estudante no projeto {{$projeto->titulo}} foi analisado e obteve o seguinte resultado: {{$status}}</p>
+        <p>O resultado também pode conferir-se <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}">aqui.</a></p>
 
         <p>
 			Atenciosamente,
 			<br>
-			Equipe submeta.
+            Universidade Federal do Agreste de Pernambuco.
         </p>	
     @else
-        <h4>Um pedido de substituição foi solicitado</h4>
-        <p>O proponente <strong>{{$projeto->proponente->user->name}}</strong> solicitou uma substituição no projeto <strong>{{$projeto->titulo}}</strong> do edital <strong>{{$edital->nome}}</strong> </p>
+        <h4>Saudações</h4>
 
-        <p><a href="{{route('trabalho.telaAnaliseSubstituicoes', ['trabalho_id' => $projeto->id])}}" class="">Clique aqui</a> para analisar.</p>
+        <p>O(A) proponente / coordenador(a) solicitou a substituição de
+            @if($sub=="TrocarPlano")plano de trabalho @elseif(
+            $sub=="ManterPLano")participante @else
+                participante e plano de trabalho @endif
+            no projeto {{$projeto->titulo}} do edital {{$edital->nome}}.</p>
+        <p>Solicitamos gentilmente que acesse o sistema Submeta através do <a href="{{route('trabalho.telaAnaliseSubstituicoes', ['trabalho_id' => $projeto->id])}}">LINK</a> para avaliar a solicitação.</p>
+        <p>
+            Atenciosamente,
+            <br>
+            Universidade Federal do Agreste de Pernambuco.
+        </p>
     @endif
 </body>
 </html>

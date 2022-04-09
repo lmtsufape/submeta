@@ -44,9 +44,8 @@
 {{ $salutation }}
 @else
 <br>@lang('Atenciosamente'),<br>
-{{ config('app.name') }}<br><br>
-Laboratório Multidisciplinar de Tecnologias Sociais<br>
-Universidade Federal do Agreste de Pernambuco
+{{--{{ config('app.name') }}<br><br>--}}
+Universidade Federal do Agreste de Pernambuco<br>
 @endif
 
 {{-- Subcopy --}}

@@ -28,7 +28,7 @@ class RelatorioRecebimentoNotification extends Notification
         $this->trabalhoNome = $trabalhoTitulo;
         $this->user = $usuario;
         $this->tipo = $tipoRelatorio;
-        $this->subject ="Recebimento de Relatório {$this->tipo}";
+        $this->subject ="Sistema Submeta - Recebimento de Relatório {$this->tipo}";
 
     }
 
@@ -53,10 +53,10 @@ class RelatorioRecebimentoNotification extends Notification
     {
         return (new MailMessage)
                     ->subject($this->subject)
-                    ->greeting("Olá, {$this->user->name}!")
-                    ->action('Acessar Relatórios', $this->url )
-                    ->line("O projeto {$this->trabalhoNome} pertencente ao edital {$this->editalNome} do Submeta, registrou um novo envio de Relatório {$this->tipo} em {$this->data}.")
-                    ->line('Obrigado por usar o nosso sistema.')
+                    ->greeting("Saudações!")
+                    ->line("O(A) proponente / coordenador(a) do projeto {$this->trabalhoNome} vinculado ao edital {$this->editalNome} do Submeta submeteu Relatório {$this->tipo} para avaliação.")
+                    ->line("Solicitamos gentilmente que acesse o sistema Submeta para avaliar o documento.")
+                    ->action('Acessar Relatório', $this->url )
                     ->markdown('vendor.notifications.email');
     }
 

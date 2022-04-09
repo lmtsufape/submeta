@@ -19,11 +19,12 @@ class SubmissaoNotification extends Notification
      *
      * @return void
      */
-    public function __construct($id)
+    public function __construct($id,$titulo)
     {
         $this->data =  date('d/m/Y \à\s  H:i\h', strtotime(now()));
         $url = "/projeto/visualizar/".$id;
         $this->url = url($url);
+        $this->titulo = $titulo;
     }
 
     /**
@@ -47,11 +48,10 @@ class SubmissaoNotification extends Notification
     {
         $user = Auth::user();
         return (new MailMessage)
-                    ->subject('Submissão de Proposta')
-                    ->greeting("Olá, {$user->name}!")
-                    ->action('Acessar Formulário', $this->url )
-                    ->line("O sistema de recepção de formulários eletrônicos do Submeta registra que em {$this->data}, o formulário identificado acima foi recebido e reconhecido no Submeta")
-                    ->line('Obrigado por usar o nosso sistema.')
+                    ->subject('Sistema Submeta - Submissão de proposta / projeto')
+                    ->greeting("Saudações!")
+                    ->line("O sistema Submeta recebeu o envio de sua proposta / projeto intitulada(o) {$this->titulo}.")
+                    ->action('Acessar Proposta', $this->url )
                     ->markdown('vendor.notifications.email');
     }
 
