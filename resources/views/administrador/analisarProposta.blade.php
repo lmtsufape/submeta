@@ -285,7 +285,7 @@
                         <hr style="border-top: 1px solid#1492E6">
 
                         {{-- Anexo do Projeto --}}
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-start">
                             {{-- Arquivo  --}}
                             <div class="col-sm-4">
                                 <label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold">{{ __('Projeto: ') }}</label>
@@ -293,12 +293,15 @@
 
                             </div>
 
+                            @if($evento->tipo != "PIBEX")
                             <div class="col-sm-4">
                                 <label for="anexoLatterCoordenador" class="col-form-label font-tam" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
                                 <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
                             </div>
+                            @endif
 
+                            @if($evento->tipo != "PIBEX")
                             <div class="col-sm-4">
                                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
                                 @if($trabalho->anexoAutorizacaoComiteEtica != null)
@@ -307,13 +310,17 @@
                                     -
                                 @endif
                             </div>
+                            @endif
 
+                            @if($evento->tipo != "PIBEX")
                             <div class="col-sm-4">
                                 <label for="anexoPlanilha" class="col-form-label font-tam" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
                                 <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:40px" alt=""></a>
 
                             </div>
+                            @endif
 
+                            @if($evento->tipo != "PIBEX")
                             <div class="col-sm-4">
                                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
                                 @if($trabalho->anexoGrupoPesquisa != null)
@@ -322,11 +329,12 @@
                                     -
                                 @endif
                             </div>
+                            @endif
 
-                            @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM')
+                            @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX")
                                 {{-- Decisão do CONSU --}}
                                 <div class="col-sm-4">
-                                    <label for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão do CONSU: ') }}</label>
+                                    <label for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão do CONSEPE: ') }}</label>
                                     <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 </div>
                             @endif
@@ -400,18 +408,18 @@
                                 </a>
                             </div>
                             <!-- Modal -->
-                            <div class="modal fade" id="avaliadorModalCenter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                    <div class="modal-content modal-submeta">
+                            <div class="modal fade" id="avaliadorModalCenter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="overflow-y: hidden">
+                                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                    <div class="modal-content modal-submeta modal-xl">
                                         <div class="modal-header modal-header-submeta">
-                                            <div class="col-md-8">
-                                                <h5 class="modal-title titulo-table" id="avaliadorModalLongTitle">Selecione o(s) avaliador(es)</h5>
+                                            <div class="col-md-8" style="padding-left: 0px">
+                                                <h5 class="modal-title titulo-table" id="avaliadorModalLongTitle">Seleciones o(s) avaliador(es)</h5>
                                             </div>
                                             <div class="col-md-4" style="text-align: right">
                                                 <button type="button" id="enviarConviteButton" class="btn btn-info" data-toggle="modal" onclick="abrirModalConvite()">
-                                                    Enviar Convite
+                                                    Enviar Convites
                                                 </button>
-                                                <button type="button" class="close" aria-label="Close" data-dismiss="modal" style="color: rgb(182, 182, 182)">
+                                                <button type="button" class="close" aria-label="Close" data-dismiss="modal" style="color: rgb(182, 182, 182);padding-right: 0px;">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -433,7 +441,7 @@
                                                     <div class="row" style="margin-left: 2px;margin-bottom: 1px">
 
                                                         <div class="col-md-6">
-                                                    <label for="exampleFormControlSelect2">Seleciones o(s) avaliador(es) para esse projeto</label>
+                                                    <label for="exampleFormControlSelect2"  style="font-size: 16px;">Selecione o(s) avaliador(es) para esse projeto</label>
                                                         </div>
 
 
@@ -456,12 +464,12 @@
                                                         
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label style="font-weight: bold">Externos</label>
+                                                        <label style="font-weight: bold;font-size: 18px">Externos</label>
                                                     </div>
 
                                                     <input type="hidden" id="trab" value="{{$trabalho->id}}">
                                                     <input type="hidden" id="oldAvalExterno" value="{{ old('exampleFormControlSelect3') }}" >
-                                                    <select  name="avaliadores_externos_id[]" multiple class="form-control" id="exampleFormControlSelect3">
+                                                    <select  name="avaliadores_externos_id[]" multiple class="form-control" id="exampleFormControlSelect3" style="height: 200px;font-size:15px">
                                                         @foreach ($trabalho->aval as $avaliador)
                                                             @if($avaliador->tipo == "Externo")
                                                                 <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}} > {{$avaliador->area->nome ?? 'Indefinida'}} > {{$avaliador->user->email}}</option>
@@ -469,10 +477,10 @@
                                                         @endforeach
                                                     </select>
                                                     <div class="col-md-6">
-                                                        <label style="font-weight: bold">Internos</label>
+                                                        <label style="font-weight: bold;font-size: 18px">Internos</label>
                                                     </div>
                                                     <input type="hidden" id="oldAvalInterno" value="{{ old('exampleFormControlSelect2') }}" >
-                                                    <select  name="avaliadores_internos_id[]" multiple class="form-control" id="exampleFormControlSelect2">
+                                                    <select  name="avaliadores_internos_id[]" multiple class="form-control" id="exampleFormControlSelect2" style="height: 200px;font-size: 15px">
                                                         @foreach ($trabalho->aval as $avaliador)
                                                             @if($avaliador->tipo == "Interno")
                                                                 <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}} > {{$avaliador->area->nome ?? 'Indefinida'}} > {{$avaliador->user->email}}</option>
