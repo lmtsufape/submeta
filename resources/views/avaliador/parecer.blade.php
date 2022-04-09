@@ -10,7 +10,7 @@
 		@endcomponent
 	</div>
 
-	<!--Anecos do Projeto-->
+	<!--Anexos do Projeto-->
 	<div class="col-md-10"  style="margin-top:20px">
 		<div class="card" style="border-radius: 5px">
 			<div class="card-body" style="padding-top: 0.2rem;">
@@ -23,13 +23,14 @@
 					{{-- Anexo do Projeto --}}
 					<div class="row justify-content-left">
 						{{-- Arquivo  --}}
-						<div class="col-sm-4">
+						<div class="col-sm-12">
 							<label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold">{{ __('Projeto: ') }}</label>
 							<a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
 						</div>
+						<br>
 						{{-- Autorização Especial --}}
-						<div class="col-sm-4">
+						<div class="col-sm-12">
 							<label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
 							@if($trabalho->anexoAutorizacaoComiteEtica != null)
 								<a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
@@ -37,6 +38,7 @@
 								-
 							@endif
 						</div>
+						<br>
 						{{-- Anexo(s) do Plano(s) de Trabalho  --}}
 						@foreach( $trabalho->participantes as $participante)
 							@php
@@ -46,12 +48,12 @@
                                   $planoTrabalhoTemp = null;
                                 }
 							@endphp
-							<div class="col-sm-4">
-								<label for="anexoProjeto" class="col-form-label font-tam limit" style="font-weight: bold"
+							<div class="col-sm-12">
+								<label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold"
 								title="{{$participante->planoTrabalho->titulo}}">{{ __('Projeto: ') }}{{$participante->planoTrabalho->titulo}}</label>
 
 								@if($planoTrabalhoTemp != null)
-									<a href="{{route('download', ['file' => $planoTrabalhoTemp])}}"><img src="{{asset('img/icons/pdf.ico')}}" style="width:40px;margin-bottom: 35px" alt=""></a>
+									<a href="{{route('download', ['file' => $planoTrabalhoTemp])}}"><img src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 								@endif
 							</div>
 						@endforeach
@@ -92,6 +94,22 @@
 						<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer" placeholder="Digite aqui o seu parecer" required>{{ $trabalho->pivot->parecer }}</textarea>
 					@endcomponent
 				</div>
+
+				<div class="form-group">
+					<div class="row justify-content-start">
+						<div class="col-sm-3">
+							@component('componentes.input', ['label' => 'Pontuação calculada'])
+							<input type="number" min="0" step="1" name="pontuacao" style="width: 70px"
+								   @if($trabalho->pivot!=null && $trabalho->pivot->pontuacao !=null )
+								   value="{{$trabalho->pivot->pontuacao}}"
+								   @else value="0"
+								   @endif required>
+							@endcomponent
+						</div>
+					</div>
+				</div>
+
+
 				<select class="custom-select" name="recomendacao" >
 						<option  @if($trabalho->pivot->recomendacao =='RECOMENDADO' ) selected @endif value="RECOMENDADO">RECOMENDADO</option>	
 						<option @if($trabalho->pivot->recomendacao =='NAO-RECOMENDADO' ) selected @endif value="NAO-RECOMENDADO">NAO-RECOMENDADO</option>												  
@@ -145,14 +163,6 @@
 	</div>
 
 @endsection
-<style>
-	.limit {
-		max-width: 35ch;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-</style>
 
 @section('javascript')
 <script type="text/javascript">
