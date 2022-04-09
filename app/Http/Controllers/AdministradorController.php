@@ -32,6 +32,8 @@ use App\Mail\EmailLembrete;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AtribuicaoAvaliadorExternoNotification;
 
 class AdministradorController extends Controller
 {
@@ -147,8 +149,6 @@ class AdministradorController extends Controller
         $trabalhos = $trabalhos->sort(function ($item, $next) {
             return $item->pontuacao >= $next->pontuacao ? -1 : 1;
         });
-        $trabalhos = $this->paginate($trabalhos)
-            ->withPath('/usuarios/showResultados?evento_id='.$evento->id);;
 
         return view('administrador.resultadosProjetos')->with(['evento' => $evento, 'trabalhos' => $trabalhos]);
     }
@@ -575,6 +575,9 @@ class AdministradorController extends Controller
         $trabalho->save();
 
         foreach ($avaliadores as $avaliador){
+
+            $userTemp = User::find($avaliador->user->id);
+
             $notificacao = Notificacao::create([
                 'remetente_id' => Auth::user()->id,
                 'destinatario_id' => $avaliador->user_id,
@@ -583,6 +586,9 @@ class AdministradorController extends Controller
                 'tipo' => 5,
             ]);
             $notificacao->save();
+            if($avaliador->tipo == "Externo"){
+                Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp,$trabalho));
+            }
         }
 
 
