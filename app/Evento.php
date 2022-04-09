@@ -17,7 +17,8 @@ class Evento extends Model
       'resultado_final','resultado_preliminar', 'coordenadorId',
       'numMaxTrabalhos', 'numMaxCoautores', 'hasResumo', 'criador_id', 'numParticipantes',
       'dt_inicioRelatorioParcial', 'dt_fimRelatorioParcial', 'dt_inicioRelatorioFinal', 'dt_fimRelatorioFinal',
-      'formAvaliacaoExterno', 'formAvaliacaoInterno'
+      'formAvaliacaoExterno', 'formAvaliacaoInterno',
+      'cotaDoutor'
   ];
 
   public function endereco(){
