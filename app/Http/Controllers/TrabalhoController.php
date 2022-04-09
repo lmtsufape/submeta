@@ -234,14 +234,15 @@ class TrabalhoController extends Controller
             }
 
             //Anexo Decisão CONSU
-            if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
+           // if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
                 if (isset($request->anexoDecisaoCONSU)) {
+                    dd($request->anexoDecisaoCONSU);
                     if (Storage::disk()->exists($trabalho->anexoDecisaoCONSU)) {
                         Storage::delete($trabalho->anexoDecisaoCONSU);
                     }
                     $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'CONSU.pdf');
                 }
-            }
+           // }
 
             //Autorização ou Justificativa
             if (isset($request->anexoAutorizacaoComiteEtica)) {
@@ -293,11 +294,11 @@ class TrabalhoController extends Controller
         }
 
         //Anexo Decisão CONSU
-        if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
+        //if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
             if (isset($request->anexoDecisaoCONSU)) {
                 $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'CONSU.pdf');
             }
-        }
+        //}
 
         //Autorização ou Justificativa
         if (isset($request->anexoAutorizacaoComiteEtica)) {
@@ -924,7 +925,7 @@ class TrabalhoController extends Controller
 
             DB::commit();
             if (!$request->has('rascunho')) {
-                Notification::send(Auth::user(), new SubmissaoNotification($id));
+                Notification::send(Auth::user(), new SubmissaoNotification($id,$trabalho->titulo));
             } else {
 
             }
@@ -954,12 +955,21 @@ class TrabalhoController extends Controller
 
             DB::beginTransaction();
 
-            $trabalho = Auth::user()->proponentes->trabalhos()
+            if($evento->tipo=="PIBEX"){
+                $trabalho = Auth::user()->proponentes->trabalhos()
+                    ->create($request->except([
+                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade'
+                    ]));
+            }else{
+                $trabalho = Auth::user()->proponentes->trabalhos()
                 ->create($request->except([
                     'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                     'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica'
+                    'justificativaAutorizacaoEtica','modalidade'
                 ]));
+            }
+
+
             if ($request->has('marcado')) {
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
@@ -999,7 +1009,9 @@ class TrabalhoController extends Controller
                     $data['turno'] = $request->turno[$part];
                     $data['periodo_atual'] = $request->periodo_atual[$part];
                     $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
-                    $data['media_do_curso'] = $request->media_do_curso[$part];
+                    if($evento->tipo!="PIBEX") {
+                        $data['media_do_curso'] = $request->media_do_curso[$part];
+                    }
                     $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
 
                     $user = User::where('email', $data['email'])->first();
@@ -1043,6 +1055,7 @@ class TrabalhoController extends Controller
 
             $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
+            $trabalho->modalidade = $request->modalidade;
             $trabalho->save();
 
             DB::commit();
@@ -1058,7 +1071,7 @@ class TrabalhoController extends Controller
                     'tipo' => 1,
                 ]);
                 $notificacao->save();
-                Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id,$evento->nome,$userTemp));
+                Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id,$trabalho->titulo,$userTemp));
                 //Proponente
                 $notificacao = App\Notificacao::create([
                     'remetente_id' => Auth::user()->id,
@@ -1068,7 +1081,7 @@ class TrabalhoController extends Controller
                     'tipo' => 1,
                 ]);
                 $notificacao->save();
-                Notification::send(Auth::user(), new SubmissaoNotification($trabalho->id));
+                Notification::send(Auth::user(), new SubmissaoNotification($trabalho->id,$trabalho->titulo));
                 //Admins
                 $admins = App\Administrador::all();
                 foreach ($admins as $admin) {
@@ -1081,7 +1094,7 @@ class TrabalhoController extends Controller
                         'tipo' => 1,
                     ]);
                     $notificacao->save();
-                    Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id,$evento->nome,$userTemp));
+                    Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id,$trabalho->titulo,$userTemp));
 
                 }
 
@@ -1643,7 +1656,7 @@ class TrabalhoController extends Controller
 
             DB::commit();
 
-            Mail::to($evento->coordenadorComissao->user->email)->send(new SolicitacaoSubstituicao($evento, $trabalho));
+            Mail::to($evento->coordenadorComissao->user->email)->send(new SolicitacaoSubstituicao($evento, $trabalho,'',$substituicao->tipo,$substituicao->status));
             return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['sucesso' => 'Pedido de substituição enviado com sucesso!']);
         } catch (\App\Validator\ValidationException $th) {
             DB::rollback();
@@ -1695,7 +1708,7 @@ class TrabalhoController extends Controller
                     $substituicao->save();
                 }
 
-                Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado'));
+                Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado',$substituicao->tipo,$substituicao->status));
                 return redirect()->back()->with(['sucesso' => 'Substituição concluida!']);
             } catch (\Throwable $th) {
                 return redirect()->back()->with(['erro' => $th->getMessage()]);
@@ -1739,7 +1752,7 @@ class TrabalhoController extends Controller
                 }
 
                 $trabalho = Trabalho::find($substituicao->trabalho->id);
-                Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado'));
+                Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado',$substituicao->tipo,$substituicao->status));
                 return redirect()->back()->with(['sucesso' => 'Substituição cancelada com sucesso!']);
             } catch (\Throwable $th) {
 

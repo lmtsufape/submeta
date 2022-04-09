@@ -52,7 +52,7 @@ class StoreTrabalho extends FormRequest
                     $rules['ordem_prioridade.'.$value] = ['required', 'string'];
                     $rules['periodo_atual.'.$value] = ['required', 'string'];
                     $rules['total_periodos.'.$value] = ['required', 'string'];
-                    $rules['media_do_curso.'.$value] = ['required', 'string'];
+                    $rules['media_do_curso.'.$value] = ['string'];
                     $rules['anexoPlanoTrabalho.'.$value] = ['required'];
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
     
@@ -65,21 +65,24 @@ class StoreTrabalho extends FormRequest
             return $rules;
         }else{
             $evento = Evento::find($this->editalId);
+            if($evento->tipo!="PIBEX"){
+                $rules['anexoPlanilhaPontuacao']       = ['required'];
+                $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
+                $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
+                $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->justificativaAutorizacaoEtica == null)];
+                $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null)];
+                $rules['pontuacaoPlanilha']            = ['required', 'string'];
+                $rules['linkGrupoPesquisa']            = ['required', 'string'];
+            }
             $rules['editalId']                     = ['required', 'string'];
             $rules['marcado.*']                    = ['required'];
             $rules['titulo']                       = ['required', 'string'];
             $rules['grande_area_id']               = ['required', 'string'];
             $rules['area_id']                      = ['required', 'string'];
             $rules['linkLattesEstudante']          = ['required', 'string'];
-            $rules['pontuacaoPlanilha']            = ['required', 'string'];
-            $rules['linkGrupoPesquisa']            = ['required', 'string'];
+
             $rules['anexoProjeto']                 = ['required', 'mimes:pdf'];
             $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu), 'mimes:pdf'];
-            $rules['anexoPlanilhaPontuacao']       = ['required'];
-            $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
-            $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
-            $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->justificativaAutorizacaoEtica == null)];
-            $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null)];
 
             return $rules;
         }
