@@ -298,7 +298,7 @@
                                 @component('componentes.select', ['label' => 'Ordem de prioridade'])
                                   <select name="ordem_prioridade[]"  class="form-control" >
                                     <option value=""  selected>-- ORDEM --</option>
-                                    @for($j = 1; $j <= 3; $j++)
+                                    @for($j = 1; $j <= $edital->numParticipantes; $j++)
                                       <option @if(old('ordem_prioridade')[$i]  ?? $p->ordem_prioridade == $j ) selected @endif value="{{ $j }}">{{ $j }}</option>  
                                     @endfor
     
@@ -635,7 +635,7 @@
                                 @component('componentes.select', ['label' => 'Ordem de prioridade'])
                                   <select name="ordem_prioridade[]"  class="form-control" >
                                     <option value=""  selected>-- ORDEM --</option>
-                                    @for($j = 1; $j <= 3; $j++)
+                                    @for($j = 1; $j <= $edital->numParticipantes; $j++)
                                       <option @if(old('ordem_prioridade')[$i]  ??  "" == $j ) selected @endif value="{{ $j }}">{{ $j }}</option>  
                                     @endfor
     
