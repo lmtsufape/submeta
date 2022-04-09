@@ -20,6 +20,7 @@ class Trabalho extends Model
       'linkGrupoPesquisa',
       'linkLattesEstudante',
       'comentario',
+      'modalidade',
 
       'anexoDecisaoCONSU',
       'anexoAutorizacaoComiteEtica',
@@ -96,7 +97,7 @@ class Trabalho extends Model
       return $this->belongsTo('App\CoordenadorComissao');
   }
   public function avaliadors(){
-      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
+      return $this->belongsToMany('App\Avaliador')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at','pontuacao');
   }
 
   public function substituicaos(){
