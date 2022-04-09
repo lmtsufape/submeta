@@ -92,7 +92,7 @@ class ProponenteController extends Controller
         if($request->buscar == null){
             $proponente = Proponente::where('user_id', Auth()->user()->id)->first();
 
-            $projetos = Trabalho::where('proponente_id', $proponente->id)->get();
+            $projetos = Trabalho::where('proponente_id', $proponente->id)->paginate(10);
             $hoje = Carbon::today('America/Recife');
             $hoje = $hoje->toDateString();
 
@@ -100,7 +100,7 @@ class ProponenteController extends Controller
         }else{
             $proponente = Proponente::where('user_id', Auth()->user()->id)->first();
             
-            $projetos = Trabalho::where('proponente_id','=',$proponente->id)->where('titulo','ilike','%'.$request->buscar.'%')->get();
+            $projetos = Trabalho::where('proponente_id','=',$proponente->id)->where('titulo','ilike','%'.$request->buscar.'%')->paginate(10);
             
             $hoje = Carbon::today('America/Recife');
             $hoje = $hoje->toDateString();
@@ -111,7 +111,7 @@ class ProponenteController extends Controller
     }
     public function projetosEdital($id) {
       $edital = Evento::find($id);
-      $projetos = Trabalho::where('evento_id', '=', $id)->orderBy('titulo')->get();
+      $projetos = Trabalho::where('evento_id', '=', $id)->orderBy('titulo')->paginate(10);
       $hoje = Carbon::today('America/Recife');
       $hoje = $hoje->toDateString();
 
