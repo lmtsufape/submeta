@@ -1,16 +1,14 @@
 <!-- Finalizar -->
-<div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">5º Passo</h4></div>
-<div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Finalizar</h5></div>
-<div class="col-md-10">
-  <div class="card" style="border-radius: 12px">
-  <div class="card-body">
-    <div class="container">
-      <div class="form-row mt-3">
-        <div class="col-md-12"><h5 style="color: #1492E6; margin-bottom:-0.4rem">Finalizar</h5></div>
-        <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
-      </div>
+<div class="col-md-12" style="margin-top: 20px">
+  <div class="card" style="border-radius: 5px">
+    <div class="card-body" style="padding-top: 0.2rem;">
+      <div class="container">
+        <div class="form-row mt-3">
+          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Finalizar</h5></div>
+        </div>
+        <hr style="border-top: 1px solid#1492E6">
       <div class=" d-flex justify-content-between align-items-center" style="margin-top: 15px; margin-bottom:18px">
-        <h6 style="font-family:Arial, Helvetica, sans-serif; margin-right:15px"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
+        <h6 style="font-weight: bold"><span style="color: red; font-weight:bold">*</span> Campos obrigatórios</h6>
         <button id="submeterFormProposta" type="submit" style="display: none;"></button>
         <button type="submit" class="btn btn-primary " id="idButtonSubmitRascunho" >{{ __('Salvar como rascunho') }}</button>
         <button type="submit" class="btn btn-success" id="idButtonSubmitProjeto" >{{ __('Submeter projeto') }}</button>

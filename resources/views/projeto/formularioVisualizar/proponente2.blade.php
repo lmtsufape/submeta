@@ -20,6 +20,8 @@
             @endif
           </div>
 
+          @if( (Auth::user()->avaliadors != null) && (Auth::user()->avaliadors->tipo != 'Externo' || Auth::user()->avaliadors->tipo == null))
+
           <div class="col-md-12">
             <br>
             <b style="color: #4D4D4D;">Grupo de Pesquisa: </b>
@@ -33,6 +35,18 @@
             <b style="color: #4D4D4D;">Valor da Planilha de Pontuação: </b>
             <a style="color: #4D4D4D;">{{$projeto->pontuacaoPlanilha}}</a>
           </div>
+          @endif
+          @if($projeto->modalidade!=null)
+            <div class="col-md-12">
+              <br>
+              <b style="color: #4D4D4D;">Modalidade: </b>
+              @if($projeto->modalidade=="RecemDoutor")
+                <a style="color: #4D4D4D;">Recém Doutor</a>
+              @else
+                <a style="color: #4D4D4D;">Ampla Concorrência</a>
+              @endif
+            </div>
+          @endif
 
         </div>
       </div>
