@@ -27,7 +27,7 @@
         </div>
     @endif
     
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" style="margin-top: 35px">
 
       @include('evento.formulario.projeto')
       
@@ -37,12 +37,12 @@
       
       @include('evento.formulario.anexos')
       
-      
+
       @include('evento.formulario.participantes')
-      
-      
+
+
       @include('evento.formulario.finalizar')
-      
+
 
     </div>
   </div>

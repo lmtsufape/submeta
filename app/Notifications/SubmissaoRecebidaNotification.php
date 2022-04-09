@@ -24,7 +24,7 @@ class SubmissaoRecebidaNotification extends Notification
         $this->data =  date('d/m/Y \à\s  H:i\h', strtotime(now()));
         $url = "/usuarios/analisarProposta?id=".$id;
         $this->url = url($url);
-        $this->editalNome = $titulo;
+        $this->titulo = $titulo;
         $this->user = $usuario;
     }
 
@@ -48,11 +48,10 @@ class SubmissaoRecebidaNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Recebimento de Submissão de Proposta')
-                    ->greeting("Olá, {$this->user->name}!")
+                    ->subject('Sistema Submeta - Submissão de proposta / projeto')
+                    ->greeting("Saudações!")
+                    ->line("O sistema Submeta recebeu o envio de sua proposta / projeto intitulada(o) {$this->titulo}.")
                     ->action('Acessar Formulário', $this->url )
-                    ->line("O edital {$this->editalNome} do Submeta registrou uma nova submissão em {$this->data}.")
-                    ->line('Obrigado por usar o nosso sistema.')
                     ->markdown('vendor.notifications.email');
     }
 

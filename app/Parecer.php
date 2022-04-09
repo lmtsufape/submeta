@@ -12,7 +12,7 @@ class Parecer extends Model
    * @var array
    */
   protected $fillable = [
-      'resultado', 'revisorId', 'trabalhoId',
+      'resultado', 'revisorId', 'trabalhoId'
   ];
 
   public function user(){

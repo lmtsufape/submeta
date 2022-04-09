@@ -306,7 +306,7 @@
                 @component('componentes.select', ['label' => 'Ordem de prioridade'])
                 <select name="ordem_prioridade" class="form-control" id="ordem{{$participante->id}}" required>
                     <option value="" selected>-- ORDEM --</option>
-                    @for($j = 1; $j <= 3; $j++) <option value="{{ $j }}">{{ $j }}</option>
+                    @for($j = 1; $j <= $edital->numParticipantes; $j++) <option value="{{ $j }}">{{ $j }}</option>
                         @endfor
 
                 </select>

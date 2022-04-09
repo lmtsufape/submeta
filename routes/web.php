@@ -149,7 +149,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //##########  Bolsas
   Route::get(   '/bolsas', 'ParticipanteController@listarParticipanteEdital'                  )->name('bolsas.listar');
-  Route::get(  '/bolsas/alteracao/{id}/{tipo}', 'ParticipanteController@alterarBolsa'                    )->name('bolsa.alterar');
+  Route::post(  '/bolsas/alteracao', 'ParticipanteController@alterarBolsa'                    )->name('bolsa.alterar');
 
   //##########  Relatórios
   Route::get(   '/projeto/planosTrabalho/{id}', 'ArquivoController@listar'                  )->name('planos.listar');

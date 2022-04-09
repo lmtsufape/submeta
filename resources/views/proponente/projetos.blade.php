@@ -191,6 +191,9 @@
             @endif
           @endif
         </div>
+          <div class="col-md-12" style="padding-left: 20px">
+              {{ $projetos->links() }}
+          </div>
       </div>
     </div>
   </div>

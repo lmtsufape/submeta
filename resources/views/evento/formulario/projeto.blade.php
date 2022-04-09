@@ -1,17 +1,16 @@
 <!-- projeto -->
-<div class="col-md-10" style="text-align: center; margin-top:2rem"><h4 style="margin-top: 1rem;">1º Passo</h4></div>
-<div class="col-md-10" style="text-align: center;"><h5 style="margin-bottom:1rem;color:#909090">Preencha os campos com as informações do projeto</h5></div>
-<div class="col-md-10">
-  <div class="card" style="border-radius: 12px">
-    
-    <div class="card-body">
+<div class="col-md-12" style="margin-top: 20px">
+  <div class="card" style="border-radius: 5px">
+    <div class="card-body" style="padding-top: 0.2rem;">
       <div class="container">
         <div class="form-row mt-3">
-          <div class="col-md-12"><h5 style="color: #1492E6; margin-bottom:-0.4rem">Informações do projeto</h5></div>
-          <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
+          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Informações do Projeto</h5></div>
+        </div>
+        <hr style="border-top: 1px solid#1492E6">
 
+      <div class="row">
           <div class="form-group col-md-12" style="margin-top: 10px">
-              <label for="titulo" class="col-form-label">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
+              <label for="titulo" class="col-form-label" style="font-weight: bold">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
               <input id="titulo" type="text" class="form-control @error('titulo') is-invalid @enderror" name="titulo" placeholder="Digite o nome do projeto" value="" autocomplete="titulo" maxlength="255" >
               <span style="color: red; font-size: 12px" id="caracsRestantestitulo">
               </span>
@@ -21,9 +20,11 @@
               </span>
               @enderror
           </div>
+    </div>
 
+        <div class="row">
           <div class="form-group col-md-4">
-            <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
+            <label for="grandeArea" class="col-form-label" style="font-weight: bold">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
               <select class="form-control @error('grandeArea') is-invalid @enderror" id="grandeArea" name="grande_area_id" onchange="areas()" >
                 <option value="" disabled selected hidden>-- Grande Área --</option>
                 @foreach($grandeAreas as $grandeArea)
@@ -38,7 +39,7 @@
               @enderror
           </div>
           <div class="form-group col-md-4">
-            <label for="area" class="col-form-label">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
+            <label for="area" class="col-form-label" style="font-weight: bold">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
               <input type="hidden" id="oldArea" value="{{ old('area') }}" >
               <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" onchange="subareas()" >
                 <option value="" disabled selected hidden>-- Área --</option>
@@ -50,7 +51,7 @@
               @enderror
           </div>
           <div class="form-group col-md-4">
-            <label for="subArea" class="col-form-label">{{ __('Subárea') }} </label>
+            <label for="subArea" class="col-form-label" style="font-weight: bold">{{ __('Subárea') }} </label>
               <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}" >
               <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="sub_area_id" >
                 <option value="" disabled selected hidden>-- Subárea --</option>
@@ -66,10 +67,10 @@
               </span>
               @enderror
           </div>
+        </div>
           
         </div>
     </div>
     </div>
   </div>
-</div>
 <!--X projeto X-->

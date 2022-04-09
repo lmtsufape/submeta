@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class RelatorioRecebimentoNotification extends Notification
+class AtribuicaoAvaliadorExternoNotification extends Notification
 {
     use Queueable;
 
@@ -19,17 +19,14 @@ class RelatorioRecebimentoNotification extends Notification
      *
      * @return void
      */
-    public function __construct($id,$usuario,$eventoTitulo,$trabalhoTitulo,$tipoRelatorio)
+    public function __construct($usuario,$trabalho)
     {
         $this->data =  date('d/m/Y \à\s  H:i\h', strtotime(now()));
-        $url = "/projeto/planosTrabalho/".$id;
+        $url = "/avaliador/editais";
         $this->url = url($url);
-        $this->editalNome = $eventoTitulo;
-        $this->trabalhoNome = $trabalhoTitulo;
         $this->user = $usuario;
-        $this->tipo = $tipoRelatorio;
-        $this->subject ="Sistema Submeta - Recebimento de Relatório {$this->tipo}";
-
+        $this->titulo = $trabalho->titulo;
+        $this->trabalho = $trabalho;
     }
 
     /**
@@ -52,11 +49,11 @@ class RelatorioRecebimentoNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject($this->subject)
+                    ->subject('Sistema Submeta - Avaliar proposta / projeto')
                     ->greeting("Saudações!")
-                    ->line("O(A) proponente / coordenador(a) do projeto {$this->trabalhoNome} vinculado ao edital {$this->editalNome} do Submeta submeteu Relatório {$this->tipo} para avaliação.")
-                    ->line("Solicitamos gentilmente que acesse o sistema Submeta para avaliar o documento.")
-                    ->action('Acessar Relatório', $this->url )
+                    ->line("Prezado avaliador, você foi convidado a avaliar a proposta / projeto intitulada(o) {$this->titulo}.")
+                    ->action('Acessar', $this->url )
+                    ->attach(storage_path() . "/app/pdfFormAvalExterno/{$this->trabalho->evento_id}/formulario de avaliação externo.pdf")
                     ->markdown('vendor.notifications.email');
     }
 

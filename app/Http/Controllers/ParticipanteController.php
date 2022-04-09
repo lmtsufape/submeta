@@ -99,23 +99,11 @@ class ParticipanteController extends Controller
         return view('documentacaoComplementar.listar')->with(['participantes' => $participantes, 'trabalho' => $trabalho]);
     }
 
-    public function alterarBolsa($id,$tipo){
-        $participante = Participante::find($id);
-        if($participante->tipoBolsa ==null){
-            if($tipo==1){
-                $participante->tipoBolsa = "Voluntario";
-            }else{
-                $participante->tipoBolsa = "Bolsista";
-            }
-        }else{
-            if($participante->tipoBolsa == "Bolsista"){
-                $participante->tipoBolsa = "Voluntario";
-            }else{
-                $participante->tipoBolsa = "Bolsista";
-            }
-        }
+    public function alterarBolsa(Request $request){
+        $participante = Participante::find($request->id);
+        $participante->tipoBolsa = $request->tipo;
         $participante->save();
-        return redirect()->back()->with(['mensagem' => 'Alteração da bolsa realizada com sucesso!']);
+        return redirect()->back()->with(['sucesso' => 'Definição da bolsa realizada com sucesso!']);
     }
 
     public function atualizarDocComplementar(Request $request){
