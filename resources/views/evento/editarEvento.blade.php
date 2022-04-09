@@ -34,6 +34,7 @@
                     <option value="PIBIC" {{ $evento->tipo == "PIBIC" ? 'selected' :'' }}>PIBIC</option>
                     <option value="PIBIC-EM" {{ $evento->tipo == "PIBIC-EM" ?  'selected' :'' }}>PIBIC-EM</option>
                     <option value="PIBITI" {{ $evento->tipo == "PIBITI" ?  'selected' :'' }}>PIBITI</option>
+                    <option value="PIBEX" {{ $evento->tipo == "PIBEX" ?  'selected' :'' }}>PIBEX</option>
                 </select>
                 @error('tipo')
                 <span class="invalid-feedback" role="alert">
@@ -61,7 +62,7 @@
                 @enderror
             </div>
             <div class="col-sm-2">
-                <label for="numParticipantes" class="col-form-label">{{ __('Nº de Discentes*:') }}</label>
+                <label for="numParticipantes" class="col-form-label">{{ __('Nº de Bolsistas*:') }}</label>
                 <input id="numParticipantes" type="number" min="1" max="20" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ $evento->numParticipantes }}" required autocomplete="numParticipantes" autofocus>
 
                 @error('numParticipantes')
@@ -71,12 +72,22 @@
                 @enderror
             </div>
             <div class="col-sm-3">
-                <label for="consu" class="col-form-label">{{ __('Consu obrigatório?*') }}</label>
-                <br>
+                <label for="consu" class="col-form-label">{{ __('CONSEPE obrigatório?*') }}</label>
                 <input type="checkbox" @if($evento->consu) checked @endif name="consu" id="consu">
                 {{-- <input id="consu" type="checkbox" class="form-control @error('consu') is-invalid @enderror" name="consu" @if(old('consu')) checked @endif required autocomplete="consu" autofocus> --}}
 
                 @error('consu')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+
+                <br>
+
+                <label for="cotaDoutor" class="col-form-label">{{ __('Cota para recém doutor?') }}</label>
+                <input type="checkbox" @if($evento->cotaDoutor) checked @endif name="cotaDoutor" id="cotaDoutor">
+
+                @error('cotaDoutor')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>

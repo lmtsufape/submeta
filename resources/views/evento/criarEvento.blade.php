@@ -32,6 +32,7 @@
                   <option @if(old('tipo')=='PIBIC' ) selected @endif value="PIBIC">PIBIC</option>
                   <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
                   <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
+                  <option @if(old('tipo')=='PIBEX' ) selected @endif value="PIBEX">PIBEX</option>
                 </select>
 
                 @error('tipo')
@@ -56,7 +57,7 @@
                 @enderror
             </div>
             <div class="col-sm-2">
-                <label for="numParticipantes" class="col-form-label">{{ __('Nº de Participantes*:') }}</label>
+                <label for="numParticipantes" class="col-form-label">{{ __('Nº de Bolsistas*:') }}</label>
 
                 <input id="numParticipantes" type="number" min="1" max="20" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ old('numParticipantes') }}" required autocomplete="numParticipantes" autofocus>
 
@@ -67,12 +68,21 @@
                 @enderror
             </div>
             <div class="col-sm-3">
-                <label for="consu" class="col-form-label">{{ __('Consu obrigatório?*') }}</label>
-                <br>
+                <label for="consu" class="col-form-label">{{ __('CONSEPE obrigatório?*') }}</label>
                 <input type="checkbox" name="consu" id="consu">
                 {{-- <input id="consu" type="checkbox" class="form-control @error('consu') is-invalid @enderror" name="consu" @if(old('consu')) checked @endif required autocomplete="consu" autofocus> --}}
 
                 @error('consu')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+                <br>
+
+                <label for="cotaDoutor" class="col-form-label">{{ __('Cota para recém doutor?') }}</label>
+                <input type="checkbox" name="cotaDoutor" id="cotaDoutor">
+
+                @error('cotaDoutor')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
