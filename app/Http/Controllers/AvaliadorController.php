@@ -194,18 +194,27 @@ class AvaliadorController extends Controller
         $trabalho->save();
         $data = Carbon::now('America/Recife');
     	if($request->anexoParecer == ''){  
-
+    	    if($evento->tipo == "PIBEX"){
                 $avaliador->trabalhos()
-                ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
+                    ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data, 'pontuacao' => $request->pontuacao]);
+            }else{
+                $avaliador->trabalhos()
+                    ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
+            }
     	}else{
           $anexoParecer = $request->anexoParecer;
           $path = 'anexoParecer/' . $avaliador->id . $trabalho->id . '/';
           $nome = $anexoParecer->getClientOriginalName();
-          Storage::putFileAs($path, $anexoParecer, $nome);  
-          $anexoParecer = $path . $nome;   
+          Storage::putFileAs($path, $anexoParecer, $nome);
+          $anexoParecer = $path . $nome;
 
-			$avaliador->trabalhos()
-                ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $anexoParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
+          if($evento->tipo == "PIBEX"){
+              $avaliador->trabalhos()
+                  ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $anexoParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data, 'pontuacao' => $request->pontuacao]);
+          }else{
+              $avaliador->trabalhos()
+                  ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $anexoParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
+          }
     	}
     	
   

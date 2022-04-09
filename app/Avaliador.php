@@ -19,7 +19,7 @@ class Avaliador extends Model
         return $this->belongsTo('App\User');
     }
     public function trabalhos(){
-        return $this->belongsToMany('App\Trabalho')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
+        return $this->belongsToMany('App\Trabalho')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at','pontuacao');
     }
     public function planoTrabalhos(){
         return $this->belongsToMany('App\Arquivo', 'avaliadors_plano_trabalho')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
