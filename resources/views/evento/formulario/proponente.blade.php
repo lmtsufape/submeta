@@ -59,7 +59,7 @@
           <div class="col-md-9">
             <br>
             <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" min="0"   step=".01" name="pontuacaoPlanilha"
-                   value="" >
+                   value="" style="width: 100px">
             @error('pontuacaoPlanilha')
             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
               <strong>{{ $message }}</strong>
