@@ -64,10 +64,10 @@
                             <!--Informações Proponente-->
                                     <div class="row justify-content-center" style="margin-top: 20px;">
                                         <br>
-                                        <div class="col-md-11"  onclick="myFunc({{$trabalho->id}})">
+                                        <div class="col-md-12 "  onclick="myFunc({{$trabalho->id}})">
                                             <a href="{{route('admin.analisarProposta',['id'=>$trabalho->id])}}" id="vizuProposta{{$trabalho->id}}" hidden></a>
 
-                                            <div class="card" style="border-radius: 5px;">
+                                            <div class="card" style="border-radius: 5px;margin-left: 25px;margin-right: 25 px">
                                                 <div class="card-body" style="padding-top: 0.2rem;">
                                                     <div class="container">
                                                         <div class="form-row mt-3">
@@ -97,7 +97,7 @@
                                                             </div>
 
                                                             <div class="col-md-12">
-                                                                <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">Data: {{ date('d/m/Y', strtotime($trabalho->created_at)) }}</h6>
+                                                                <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">{{$trabalho->grandeArea->nome}} > {{$trabalho->area->nome}} > {{$trabalho->subArea->nome}}</h6>
                                                             </div>
 
 
