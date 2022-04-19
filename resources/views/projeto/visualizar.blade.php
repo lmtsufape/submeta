@@ -150,6 +150,10 @@
         .TabControl .conteudo{width:100%; display:none; height:100%;}
         .selected{width:100px; height:30px; border-radius:5px 5px 0 0;
             text-align:center; padding-top:5px; background:#27408B}
+
+        .card:hover{
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+        }
     </style>
 
 <script>
