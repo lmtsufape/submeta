@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="container">
+	
 	@if (session('sucesso'))
 		<div class="alert alert-success" role="alert">
 			{{ session('sucesso') }}
@@ -17,7 +18,7 @@
 
                 <thead>
                     <tr>
-						<th scope="col" style="width:200px; text-align: center;">Título</th>
+						<th scope="col" style="width:400px; text-align: center;">Título</th>
 						<th scope="col" style="width:200px; text-align: center;">Discente</th>
                         <th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
                         <th scope="col" style="width:200px; text-align: center;">Relatório Final</th>
@@ -193,7 +194,12 @@
 					@endforeach
 
 			</table>
+
+			<div style= "margin-top:10px">
+				<a class="btn btn-primary" href="{{ url()->previous() }}">Cancelar</a> 
+			</div>
 	</div>
+
 </div>
 
 	<style>
