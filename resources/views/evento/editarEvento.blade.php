@@ -111,19 +111,70 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-sm-12">
-                <label for="coordenador_id" class="col-form-label">{{ __('Coordenador*:') }}</label>
-                <select class="form-control @error('funcaoParticipante') is-invalid @enderror" id="coordenador_id" name="coordenador_id">
-                    <option value="" disabled selected hidden>-- Coordenador da Comissão Avaliadora --</option>
-                    @foreach($coordenadores as $coordenador)
-                        @if ($coordenador->id === $evento->coordenadorId)
-                            <option value="{{$coordenador->id}}" selected>{{$coordenador->user->name}}</option>
-                        @else
-                            <option value="{{$coordenador->id}}">{{$coordenador->user->name}}</option>
-                        @endif
-                    @endforeach
-                </select>
+                <div class="row">
+                    <div class="col-md-11">
+                        <label for="coordenador_id" class="col-form-label">{{ __('Coordenador*: ') }}</label>
+
+                    </div>
+                    <div class="col-md-1 text-sm-right">
+                        <a type="button" value="Selecionar" data-toggle="modal" data-target="#modalCoord">
+                            <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
+                        </a>
+                    </div>
+                </div>
+                <input id="coordenador_id" name="coordenador_id" class="form-control" value="{{$evento->coordenadorId}}" hidden>
+                <input style="margin-top: 5px" id="coordenador_name" name="coordenador_name" class="form-control @error('coordenador_id') is-invalid @enderror" value="{{$coordEvent->user->name}}" placeholder="Selecione um Coordenador" required readonly>
             </div>
         </div>
+
+        <!-- Modal Coordenador -->
+        <div class="modal fade" id="modalCoord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header" style="overflow-x:auto">
+                        <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">Coordenadores</h5>
+                        <button type="button" class="close" aria-label="Close" data-dismiss="modal" style="padding-top: 8px; color:#1492E6">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <table class="table table-bordered" >
+                            <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Celular</th>
+                                <th scope="col">Instituição</th>
+                                <th scope="col">Seleção</th>
+                            </tr>
+                            </thead>
+                            <tbody id="projetos">
+                            @foreach($coordenadores as $coordenador)
+                                <tr>
+                                    <td>{{$coordenador->user->name}}</td>
+                                    <td>{{$coordenador->user->email}}</td>
+                                    @if($coordenador->user->instituicao |= null)
+                                        <td>{{$coordenador->user->celular}}</td>
+                                    @else
+                                        <td>Não Definido</td>
+                                    @endif
+                                    @if($coordenador->user->instituicao |= null)
+                                        <td>{{$coordenador->user->instituicao}}</td>
+                                    @else
+                                        <td>Não Definida</td>
+                                    @endif
+                                    <td style="text-align-last:center"><input  type="button" class="btn-primary btn" value="Definir" onclick="defCoord({{$coordenador->id}},'{{$coordenador->user->name}}')" style="width: 100px"></td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <hr>
         <div class="row subtitulo">
             <div class="col-sm-12">
@@ -354,4 +405,16 @@
     </form>
 </div>
 
+
+
+@endsection
+@section('javascript')
+    <script type="text/javascript">
+        function defCoord(data,data2){
+            document.getElementById('coordenador_id').value=data;
+            document.getElementById('coordenador_name').value=data2;
+            $("#modalCoord").modal('hide');
+
+        }
+    </script>
 @endsection

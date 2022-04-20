@@ -97,6 +97,8 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get('/participante/index',         'ParticipanteController@index'          )->name('participante.index');
   Route::get('/participante/edital/{id}',    'ParticipanteController@edital'        )->name('participante.edital');
 
+
+
   //######### Plano de Trablho ########################################
   Route::prefix('/plano/trabalho')->name('plano.trabalho.')->group(function(){
     Route::get('/index/{evento_id}',     'PlanoTrabalhoController@index'        )->name('index');
@@ -150,6 +152,9 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   //##########  Bolsas
   Route::get(   '/bolsas', 'ParticipanteController@listarParticipanteEdital'                  )->name('bolsas.listar');
   Route::post(  '/bolsas/alteracao', 'ParticipanteController@alterarBolsa'                    )->name('bolsa.alterar');
+
+  //######### Imprimir Resultado #################################
+  Route::get('/usuarios/showResultados/imprimir', 'AdministradorController@imprimirResultados')->name('resultados.gerar');
 
   //##########  Relatórios
   Route::get(   '/projeto/planosTrabalho/{id}', 'ArquivoController@listar'                  )->name('planos.listar');

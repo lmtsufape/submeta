@@ -8,17 +8,17 @@
         </div>
     @endif
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center noPrint" id="tudo">
             <div class="col-sm-12">
                 <div class="row" >
                     <div class="col-sm-4">
                         <div class="row">
-                        <div class="col-sm-2 noPrint">
+                        <div class="col-sm-2">
                             <button class="btn" onclick="buscarProjeto(this.parentElement.parentElement.children[1].children[0])">
                             <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
                             </button>
                         </div>
-                        <div class="col-sm-10 noPrint">
+                        <div class="col-sm-10">
                             <input type="text" class="form-control form-control-edit" placeholder="Digite o nome do projeto" onkeyup="buscarProjeto(this)">
                         </div>
                         </div>
@@ -26,19 +26,110 @@
 
                     <div class="col-sm-1">
                     </div>
-                    <div class="col-sm-5 " style="float: center;">
+                    <div class="col-sm-5 noPrint" style="float: center;">
                         <h4 class="titulo-table">Resultados</h4>
                     </div>
-                    <div class="col-sm-2 noPrint">
+                    <div class="col-sm-2">
                         <form>
                             <input type="button" value="Imprimir" class="btn btn-primary float-right"  onclick="window.print()"/>
                         </form>
                     </div>
+                    {{--<div class="col-sm-2">
+                        <form method="GET" action="{{route('resultados.gerar')}}">
+                            @csrf
+                            <input type="hidden" value="{{$evento->id}}" name="id">
+                            <button type="submit" class="btn btn-primary">Imprimir</button>
+                        </form>
+                    </div>--}}
                 </div>
-                <hr>
+                <hr class="noPrint">
+
             </div>
         </div>
 
+        <div class="col-sm-12">
+            <h4 class="titulo-table" style="text-align: center">Recém-Doutor</h4>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <table class="table table-bordered" style="display: block; white-space: nowrap; border-radius:10px; margin-bottom:0px">
+                    <thead>
+                    <tr>
+                        <th scope="col">Posição</th>
+                        <th scope="col">Pontuação</th>
+                        <th scope="col" style="width: 100%;">Nome do projeto</th>
+                        <th scope="col">Proponente</th>
+                        <th scope="col">Área</th>
+                        <th scope="col">N. Planos</th>
+                        <th scope="col">Avaliador</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Bolsas</th>
+                    </tr>
+                    </thead>
+                    <tbody id="projetos">
+                    @php $cont=1;@endphp
+                    @foreach($trabalhosDoutor as $trabalho)
+                        @if($trabalho->status == 'aprovado')
+                            <tr>
+                                <td>{{$cont}}</td>
+                                <td>{{$trabalho->pontuacao}}</td>
+                                <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">
+                                    {{$trabalho->titulo}}
+                                </td>
+                                <td>
+                                    {{$trabalho->proponente->user->name}}
+                                </td>
+                                <td>
+                                    {{$trabalho->area->nome}}
+                                </td>
+                                <td>
+                                    {{$trabalho->participantes->count()}}
+                                </td>
+                                <td>
+                                    @if($trabalho->avaliadors->count() > 0)
+                                        @foreach($trabalho->avaliadors as $avaliador)
+                                            {{$avaliador->user->name}}<br>
+                                        @endforeach
+                                    @else
+                                        Sem Atribuição
+                                    @endif
+                                </td>
+                                @if($trabalho->avaliadors->count() > 0)
+                                    <td>
+                                        @foreach($trabalho->avaliadors as $avaliador)
+                                            @if($avaliador->tipo == "Externo")
+                                                @if($avaliador->pivot->recomendacao != null ){{$avaliador->pivot->recomendacao}} @else Pendente @endif
+                                                <br>
+                                            @else
+                                                @php
+                                                    $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                @else
+                                    <td>Pendente</td>
+                                @endif
+                                <td>
+                                    <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirmTrab{{$trabalho->id}}" >
+                                        Definir
+                                    </button>
+                                </td>
+                            </tr>
+                            @php $cont+=1;@endphp
+                        @endif
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="col-sm-12">
+            <h4 class="titulo-table" style="text-align: center">Ampla Concorrência</h4>
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-12">
             <table class="table table-bordered" style="display: block; white-space: nowrap; border-radius:10px; margin-bottom:0px">
@@ -57,7 +148,7 @@
                 </thead>
                 <tbody id="projetos">
                 @php $cont=1;@endphp
-                    @foreach($trabalhos as $trabalho)
+                    @foreach($trabalhosAmpla as $trabalho)
                         @if($trabalho->status == 'aprovado')
                         <tr>
                             <td>{{$cont}}</td>
@@ -87,7 +178,9 @@
                                 <td>
                                     @foreach($trabalho->avaliadors as $avaliador)
                                         @if($avaliador->tipo == "Externo")
-                                            {{$avaliador->pivot->recomendacao}}<br>
+                                            @if($avaliador->pivot->recomendacao != null ){{$avaliador->pivot->recomendacao}} @else Pendente @endif
+                                            <br>
+                                        @else
                                             @php
                                                 $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
@@ -112,8 +205,46 @@
             </div>
         </div>
 </div>
-{{--Janelas--}}
-@foreach($trabalhos as $trabalho)
+{{--Janelas Cotas--}}
+@foreach($trabalhosDoutor as $trabalho)
+    <div class="modal fade" id="modalConfirmTrab{{$trabalho->id}}" tabindex="-1" role="dialog"
+         aria-labelledby="modalConfirmLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalConfirmLabel" align="center" title="Participantes do {{$trabalho->titulo}}">
+                        Projeto {{$trabalho->titulo}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: rgb(182, 182, 182)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @foreach($trabalho->participantes as $participante)
+                        <div class="row modal-header-submeta">
+                            <div class="col-sm-7" style="padding-left: 0px">
+                                <p style="font-size: 22px">Discente: {{$participante->user->name}}</p>
+                            </div>
+                            <div class="col-sm-5 text-right" style="padding-right: 0px">
+                                <form id="alteracao_bolsa{{$participante->id}}" method="POST" action="{{route('bolsa.alterar')}}">
+                                    @csrf
+                                    <input type="hidden" id="participante_{{$participante->id}}" name="id" value="{{$participante->id}}">
+                                    <input type="radio" id="bolsista{{$participante->id}}" name="tipo" value="Bolsista" required @if($participante->tipoBolsa=='Bolsista') checked @endif> Bolsista
+                                    <input type="radio" id="voluntario{{$participante->id}}" name="tipo" value="Voluntario" required @if($participante->tipoBolsa=='Voluntario') checked @endif> Voluntario
+
+                                    <button type="submit" class="btn btn-primary" form="alteracao_bolsa{{$participante->id}}">Definir</button>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
+
+{{--Janelas Sem Cotas--}}
+@foreach($trabalhosAmpla as $trabalho)
     <div class="modal fade" id="modalConfirmTrab{{$trabalho->id}}" tabindex="-1" role="dialog"
          aria-labelledby="modalConfirmLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -154,6 +285,7 @@
 
 @section('javascript')
 <script>
+
     function buscarProjeto(input) {
         var projetos = document.getElementById('projetos').children;
         if(input.value.length > 2) {
@@ -175,5 +307,7 @@
     function myFunction(data){
         document.getElementById('modalConfirmTrab'+data).modal('hide');
     }
+
 </script>
+
 @endsection

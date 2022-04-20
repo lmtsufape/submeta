@@ -18,6 +18,7 @@ use App\Natureza;
 use App\Trabalho;
 use App\FuncaoParticipantes;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Evento;
@@ -79,7 +80,7 @@ class AdministradorController extends Controller
         $trabalhos = Trabalho::where('evento_id', $evento->id)
             ->whereIn('status', $status)
             ->orderBy('titulo')
-            ->paginate(5)
+            ->paginate(10)
             ->withPath($withPath);
 
         $funcaoParticipantes = FuncaoParticipantes::all();
@@ -131,9 +132,51 @@ class AdministradorController extends Controller
     }
 
     public function showResultados(Request $request){
+        //dd($request);
         $evento = Evento::where('id', $request->evento_id)->first();
+        // Com cotas
+        if ($evento->cotaDoutor) {
+            // Ampla Concorrencia
+            $trabalhosAmpla = Trabalho::where('evento_id',$evento->id)
+                ->where('modalidade','AmplaConcorrencia')->get();
+            foreach($trabalhosAmpla as $trabalho){
+                $trabalho->pontuacao = 0;
+                foreach($trabalho->avaliadors as $avaliador){
+                    if($avaliador->tipo == "Interno"){
+                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                        if($parecerInterno != null){
+                            $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                        }
+                    }
+                }
+            }
+            $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
+                return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+            });
+
+            // Recém Doutor
+            $trabalhosDoutor = Trabalho::where('evento_id',$evento->id)
+                ->where('modalidade','RecemDoutor')->get();
+            foreach($trabalhosDoutor as $trabalho){
+                $trabalho->pontuacao = 0;
+                foreach($trabalho->avaliadors as $avaliador){
+                    if($avaliador->tipo == "Interno"){
+                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                        if($parecerInterno != null){
+                            $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                        }
+                    }
+                }
+            }
+            $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
+                return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+            });
+
+            return view('administrador.resultadosProjetosCotas')->with(['evento' => $evento, 'trabalhosAmpla' => $trabalhosAmpla, 'trabalhosDoutor' => $trabalhosDoutor]);
+        }
+
+        // Sem Cotas
         $trabalhos = $evento->trabalhos;
-        //foreach($trabalho->avaliadors as $avaliador)
         foreach($trabalhos as $trabalho){
             $trabalho->pontuacao = 0;
             foreach($trabalho->avaliadors as $avaliador){
@@ -784,6 +827,50 @@ class AdministradorController extends Controller
         $headers = array('Content-Type: application/docx',);
         ob_end_clean();
         return response()->download($file, 'ModeloFormularioAvaliadorExternoPIBIC.docx', $headers);
+    }
+
+    public function imprimirResultados(Request $request)
+    {
+        $evento = Evento::where('id', $request->id)->first();
+            // Ampla Concorrencia
+            $trabalhosAmpla = Trabalho::where('evento_id',$evento->id)
+                ->where('modalidade','AmplaConcorrencia')->get();
+            foreach($trabalhosAmpla as $trabalho){
+                $trabalho->pontuacao = 0;
+                foreach($trabalho->avaliadors as $avaliador){
+                    if($avaliador->tipo == "Interno"){
+                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                        if($parecerInterno != null){
+                            $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                        }
+                    }
+                }
+            }
+            $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
+                return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+            });
+
+            // Recém Doutor
+            $trabalhosDoutor = Trabalho::where('evento_id',$evento->id)
+                ->where('modalidade','RecemDoutor')->get();
+            foreach($trabalhosDoutor as $trabalho){
+                $trabalho->pontuacao = 0;
+                foreach($trabalho->avaliadors as $avaliador){
+                    if($avaliador->tipo == "Interno"){
+                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                        if($parecerInterno != null){
+                            $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                        }
+                    }
+                }
+            }
+            $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
+                return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+            });
+
+            $pdf = PDF::loadView('/administrador/resultadosProjetosCotas', compact('trabalhosDoutor', 'trabalhosAmpla', 'evento'));
+            return $pdf->setPaper('a4')->stream('Resultados.pdf');
+
     }
 
 }
