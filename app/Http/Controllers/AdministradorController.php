@@ -72,16 +72,11 @@ class AdministradorController extends Controller
     public function analisar(Request $request){
         $evento = Evento::find($request->evento_id);
         $status = ['submetido', 'avaliado', 'aprovado', 'reprovado', 'corrigido'];
-        $withPath = '/usuarios/analisarProjetos?evento_id='.$evento->id;
-        if($request->column != null ) {
-            $status = [$request->column];
-            $withPath = '/usuarios/analisarProjetos/'.$request->column.'?evento_id='.$evento->id;
-        }
+
         $trabalhos = Trabalho::where('evento_id', $evento->id)
             ->whereIn('status', $status)
             ->orderBy('titulo')
-            ->paginate(10)
-            ->withPath($withPath);
+            ->paginate(10);
 
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
@@ -92,13 +87,7 @@ class AdministradorController extends Controller
     }
 
     // Utilizado para paginação de Collection
-    public function paginate($items, $perPage = 5, $page = null, $options = [])
-    {
 
-        $page = $page ?: (Paginator::currentPage() ?: 1);
-        $items = $items instanceof Collection ? $items : Collection::make($items);
-        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
-    }
 
     public function analisarProposta(Request $request){
 
