@@ -72,7 +72,8 @@ class AdministradorController extends Controller
     public function analisar(Request $request){
         $evento = Evento::find($request->evento_id);
         $status = ['submetido', 'avaliado', 'aprovado', 'reprovado', 'corrigido'];
-        $withPath = '/usuarios/analisarProjetos?evento_id='.$evento->id;
+        //$withPath = '/usuarios/analisarProjetos?evento_id='.$evento->id;
+        $withPath = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         if($request->column != null ) {
             $status = [$request->column];
             $withPath = '/usuarios/analisarProjetos/'.$request->column.'?evento_id='.$evento->id;
