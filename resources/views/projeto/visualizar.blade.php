@@ -154,6 +154,12 @@
         .card:hover{
             box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
         }
+        .card-body{
+            font-size:18.4px;
+        }
+        h6,h5{
+            font-size:18.4px;
+        }
     </style>
 
 <script>
