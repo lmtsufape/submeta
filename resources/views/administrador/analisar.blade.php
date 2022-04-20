@@ -114,7 +114,7 @@
     <div class="row justify-content-center" >
         <div class="col-md-11">
             <br>
-            {{ $trabalhos->links() }}
+            {{ $trabalhos->appends(['evento_id' => $evento->id])->links() }}
            
                 </div>
 
