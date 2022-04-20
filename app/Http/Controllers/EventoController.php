@@ -347,13 +347,15 @@ class EventoController extends Controller
         // dd($id);
         $evento = Evento::find($id);
         $coordenadors = CoordenadorComissao::with('user')->get();
+        $coordEvent = CoordenadorComissao::find($evento->coordenadorId);
         $naturezas = Natureza::orderBy('nome')->get();
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
         return view('evento.editarEvento',['evento'=>$evento,
             'coordenadores'=>$coordenadors,
             'naturezas'=>$naturezas,
-            'ontem'=>$yesterday]);
+            'ontem'=>$yesterday,
+            'coordEvent'=>$coordEvent]);
     }
 
     /**
