@@ -236,7 +236,6 @@ class TrabalhoController extends Controller
             //Anexo Decisão CONSU
            // if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
                 if (isset($request->anexoDecisaoCONSU)) {
-                    dd($request->anexoDecisaoCONSU);
                     if (Storage::disk()->exists($trabalho->anexoDecisaoCONSU)) {
                         Storage::delete($trabalho->anexoDecisaoCONSU);
                     }

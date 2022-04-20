@@ -66,28 +66,29 @@ class UpdateTrabalho extends FormRequest
             $rules = [];
             return $rules;
         }else{
-            $rules = [
-                'editalId'                => ['required', 'string'],
-                'marcado.*'                => ['required'],
-                'titulo'                => ['required', 'string'],
-                'grande_area_id'              => ['required', 'string'],
-                'area_id'                    => ['required', 'string'],
-                'linkLattesEstudante'         => ['required', 'string'],
-                'pontuacaoPlanilha'       => ['required', 'string'],
-                'linkGrupoPesquisa'               => ['required', 'string'],
-                'anexoProjeto'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoProjeto == null)], 'mimes:pdf'],
-                'anexoDecisaoCONSU'     => [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'],
-                'anexoPlanilhaPontuacao'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoPlanilhaPontuacao == null)]],
-                'anexoLattesCoordenador'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoLattesCoordenador == null)], 'mimes:pdf'],
-                'anexoGrupoPesquisa'     => [[Rule::requiredIf(!$this->has('rascunho') && $projeto->anexoGrupoPesquisa == null)], 'mimes:pdf'],
-                'anexoAutorizacaoComiteEtica'     => [
-                    Rule::requiredIf((!$this->has('rascunho') && $projeto->justificativaAutorizacaoEtica == null && $projeto->anexoAutorizacaoComiteEtica == null) )
-                ],
-                'justificativaAutorizacaoEtica'   => [
-                    Rule::requiredIf((!$this->has('rascunho') && $projeto->anexoAutorizacaoComiteEtica == null && $projeto->justificativaAutorizacaoEtica == null))
-                ],
-                
-            ];
+
+            $rules = [];
+            if($evento->tipo!="PIBEX"){
+                $rules['anexoPlanilhaPontuacao']       = ['required'];
+                $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
+                $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
+                $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->justificativaAutorizacaoEtica == null)];
+                $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null)];
+                $rules['pontuacaoPlanilha']            = ['required', 'string'];
+                $rules['linkGrupoPesquisa']            = ['required', 'string'];
+            }
+            $rules['editalId']                     = ['required', 'string'];
+            $rules['marcado.*']                    = ['required'];
+            $rules['titulo']                       = ['required', 'string'];
+            $rules['grande_area_id']               = ['required', 'string'];
+            $rules['area_id']                      = ['required', 'string'];
+
+            $rules['linkLattesEstudante']          = ['required', 'string'];
+
+
+            $rules['anexoProjeto']                 = ['required', 'mimes:pdf'];
+            $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu), 'mimes:pdf'];
+
             return $rules;
         }
     }
