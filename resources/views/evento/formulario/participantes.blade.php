@@ -355,7 +355,7 @@
                                                                     <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})">Cancelar</button>
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        <button data-dismiss="modal" type="button" id="guardar{{$i}}" class="btn btn-success float-right" style="font-size: 16px" onclick="marcar({{$i}})">Guardar</button>
+                                                                        <button data-dismiss="modal" type="button" id="adicionar{{$i}}" class="btn btn-success float-right" style="font-size: 16px" onclick="marcar({{$i}})">Adicionar</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -385,7 +385,6 @@
 </div>
 <script>
     $("input.rg:text").mask('00.000.000-0');
-
     function marcar(id){
         document.getElementById("checkB"+id).checked = true;
         document.getElementById("exampleModal"+id).modal('hide');

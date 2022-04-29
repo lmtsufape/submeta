@@ -29,7 +29,7 @@
                         <tbody>
 
 						<td style="text-align: center;" title="{{$arquivo->titulo}}">{{$arquivo->titulo}}</td>
-						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}">{{$arquivo->participante->user->name}}</td>
+						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}" id="td-nomeAluno">{{$arquivo->participante->user->name}}</td>
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
@@ -195,7 +195,7 @@
 
 			</table>
 
-			<div style= "margin-top:10px">
+			<div id="btn-cancelar">
 				<a class="btn btn-primary" href="{{ url()->previous() }}">Cancelar</a> 
 			</div>
 	</div>
@@ -204,11 +204,21 @@
 
 	<style>
 		td {
-			max-width: 25ch;
+			max-width: 40ch; 
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
 		}
+
+		#td-nomeAluno {
+			max-width: 25ch;
+		}
+
+		#btn-cancelar {
+			margin-top: 10px;
+			text-align: right;
+		}
+
 	</style>
 
 

@@ -149,6 +149,8 @@
             @endcomponent
         </div>
     </div>
+    
+    @if($edital->tipo != "PIBEX")
     <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
@@ -156,6 +158,7 @@
             @endcomponent
         </div>
     </div>
+    @endif
     <div class="row">
         <div class="col-md-12">
             <h5>Plano de trabalho</h5>
