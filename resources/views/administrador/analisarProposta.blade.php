@@ -17,6 +17,12 @@
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
                         <div class="form-row mt-3">
+
+                            <div class="col-md-12">
+                                <h5 style="color: #234B8B; font-weight: bold">Informações da Proposta</h5>
+                                <hr style="border-top: 1px solid#1492E6">
+                            </div>
+
                             <div class="col-md-12"><h5 style="color: #1492E6;">{{$trabalho->titulo}}</h5></div>
                             <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold">{{$evento->nome}}</h6></div>
                         </div>
@@ -618,6 +624,9 @@
                     </div>
                 </div>
             </div>
+            
+            <a href="{{ route('admin.analisar', ['evento_id' => $evento->id]) }}" class="btn btn-primary" style="font-size: 16px; float: right; margin-top: 10px;">Voltar</a>
+            
         </div>
     </div>
 

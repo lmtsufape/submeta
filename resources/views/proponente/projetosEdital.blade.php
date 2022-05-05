@@ -29,7 +29,13 @@
             </div>
             <div class="form-group">
               <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Propostas submetidas - {{ $edital->nome }}</h5>
-              <h6 class="titulo-table" style="color: red;">Submissão irá até o dia <span style="color: red">{{ date('d/m/Y', strtotime($edital->fimSubmissao)) }}</span></h6>
+
+              @if($hoje > $edital->fimSubmissao)
+                <h6 class="titulo-table" style="color: red;">Submissão encerrada dia <span style="color: red">{{ date('d/m/Y', strtotime($edital->fimSubmissao)) }}</span></h6>
+              @else
+                <h6 class="titulo-table" style="color: red;">Submissão irá até o dia <span style="color: red">{{ date('d/m/Y', strtotime($edital->fimSubmissao)) }}</span></h6>
+              @endif
+
             </div>
             <div style="margin-top: -2rem">
               
@@ -62,7 +68,9 @@
                     </div>
                   </div>
                 @else
-                <a @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao) href="{{ route('trabalho.index', ['id' => $edital->id] )}}" class="btn btn-info" @else href="#" data-toggle="tooltip" data-placement="top" title="O periodo de submissão foi encerrado." @endif style="position:relative; float: right;">Criar proposta</a>
+
+                @if($hoje <= $edital->fimSubmissao)
+                  <a href="{{ route('trabalho.index', ['id' => $edital->id]) }}" class="btn btn-info" style="position:relative; float: right;">Criar proposta</a>
                 @endif
               </div>
             

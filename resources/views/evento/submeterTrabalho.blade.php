@@ -44,6 +44,12 @@
       @include('evento.formulario.finalizar')
 
 
+    <style>
+      .col-form-label {
+        font-size: 15.5px;
+      }
+    </style>
+
     </div>
   </div>
   </form>
