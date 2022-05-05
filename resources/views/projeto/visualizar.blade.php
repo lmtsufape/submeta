@@ -39,8 +39,12 @@
       
       {{-- @component('projeto.formularioVisualizar.finalizar', ['projeto' => $projeto])
       @endcomponent --}}
-
     </div>
+    
+    <div class="row justify-content-end" style="padding: 15px;">
+      <a href="{{ url()->previous() }}" class="btn btn-primary" style="font-size: 16px;">Voltar</a>
+    </div>
+
   </div>
   </form>
   <div class="modal fade" id="modalSelecionarDiscentes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
