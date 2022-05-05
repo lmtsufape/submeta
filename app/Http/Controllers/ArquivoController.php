@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Arquivo;
 use App\Notificacao;
+use App\Trabalho;
 use App\User;
 use Auth;
 use Illuminate\Support\Facades\Notification;
@@ -104,7 +105,12 @@ class ArquivoController extends Controller
     }
 
     public function listar($id){
-        $arquivos = Arquivo::where('trabalhoId',$id)->get();
+        $trabalho = Trabalho::where('id',$id)->first();
+        $participantes = $trabalho->participantes;
+        $arquivos = [];
+        foreach ($participantes as $participante){
+            array_push($arquivos, $participante->planoTrabalho);
+        }
         $hoje = Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
         return view('planosTrabalho.listar')->with(['arquivos' => $arquivos, 'hoje' => $hoje]);
