@@ -9,7 +9,11 @@
     <div class="card-body" style="padding-top: 0.2rem;">
       <div class="container">
         <div class="form-row mt-3">
-          <div class="col-md-12"><h5 style="color: #1492E6;">{{$projeto->titulo}}</h5></div>
+          <div class="col-md-12">
+            <h5 style="color: #234B8B; font-weight: bold;">Informações da Proposta</h5>
+            <hr style="border-top: 1px solid#1492E6">
+          </div>
+          <div class="col-md-12"><h5 style="color: #1492E6; font-size: 21px;">{{$projeto->titulo}}</h5></div>
           <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold">{{$edital->nome}}</h6></div>
         </div>
       </div>
