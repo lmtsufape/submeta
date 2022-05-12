@@ -12,8 +12,7 @@
           <div class="form-group col-md-12" style="margin-top: 10px">
               <label for="titulo" class="col-form-label" style="font-weight: bold">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
               <input id="titulo" type="text" class="form-control @error('titulo') is-invalid @enderror" name="titulo" placeholder="Digite o nome do projeto" value="" autocomplete="titulo" maxlength="255" >
-              <span style="color: red; font-size: 12px" id="caracsRestantestitulo">
-              </span>
+              
               @error('titulo')
               <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
