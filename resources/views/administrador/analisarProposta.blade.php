@@ -417,11 +417,14 @@
                     <div class="container">
                         <div class="form-row mt-3">
                             <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Avaliadores</h5></div>
-                            <div class="col-md-1 text-sm-right">
-                                <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#avaliadorModalCenter">
-                                    <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
-                                </a>
-                            </div>
+                            <!-- AKI MUDEI (06/05)-->
+                            @if($hoje <= $evento->fimSubmissao)
+                                <div class="col-md-1 text-sm-right">
+                                    <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#avaliadorModalCenter">
+                                        <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
+                                    </a>
+                                </div>
+                            @endif
                             <!-- Modal -->
                             <div class="modal fade" id="avaliadorModalCenter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="overflow-y: hidden">
                                 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
