@@ -35,6 +35,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AtribuicaoAvaliadorExternoNotification;
+use Carbon\Carbon;
 
 class AdministradorController extends Controller
 {
@@ -103,13 +104,17 @@ class AdministradorController extends Controller
 
         $grandeAreas = GrandeArea::orderBy('nome')->get();
 
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+
         return view('administrador.analisarProposta')->with(
             [   'trabalho' => $trabalho,
                 'funcaoParticipantes' => $funcaoParticipantes,
                 'evento' => $evento,
                 'substituicoesPendentes' => $substituicoesPendentes,
                 'substituicoesProjeto' => $substituicoesProjeto,
-                'grandeAreas' => $grandeAreas,]);
+                'grandeAreas' => $grandeAreas,
+                'hoje' => $hoje,]);
     }
 
     public function showProjetos(Request $request){

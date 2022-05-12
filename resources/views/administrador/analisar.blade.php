@@ -5,7 +5,7 @@
     <div class="row justify-content-center" style="margin-top: 100px;">
         <div class="col-md-11">
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-4">
                     <div class="card-body" style="padding-top: 0.2rem;">
                         <div class="container">
                             <div class="form-row mt-3">
@@ -42,6 +42,11 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-sm-3" style="display:flex; align-items: end;">
+                    <input type="text" class="form-control form-control-edit" placeholder="Título do projeto ou nome do Proponente" onkeyup="buscar(this)"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
+                </div>
+
                 <div class="col-sm-5" style="top: 40px; text-align: end;">
                     <h6 style="color: #234B8B; font-weight: bold;font-size: 13px; text-align: right;padding-bottom: 35px">
                         <img src="{{asset('img/icons/pendente.png')}}" style="width: 22px"/>
@@ -58,7 +63,7 @@
             </div>
         </div>
     </div>
-
+                        <div id="projetos">
                             @foreach( $trabalhos as $trabalho )
 
                             <!--Informações Proponente-->
@@ -71,7 +76,7 @@
                                                 <div class="card-body" style="padding-top: 0.2rem; padding-left: 25px;padding-right: 25px;">
 
                                                         <div class="form-row mt-3">
-                                                            <div class="col-md-10"><h5 style="color: #234B8B; font-weight: bold">Título: {{ $trabalho->titulo }}</h5></div>
+                                                            <div class="col-md-10 tituloProj"><h5 style="color: #234B8B; font-weight: bold">Título: {{ $trabalho->titulo }}</h5></div>
                                                             <div class="col-md-2">
                                                                 @if($trabalho->status == "aprovado")
                                                                     <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
@@ -87,7 +92,7 @@
                                                         <hr style="border-top: 1px solid#1492E6">
                                                         <div class="form-row mt-3">
                                                             <div class="col-md-12">
-                                                                <p style="color: #4D4D4D; padding: 0px"><b>Proponente:</b> {{ App\Proponente::find($trabalho->proponente_id)->user->name }}</p>
+                                                                <p class="proponenteProj" style="color: #4D4D4D; padding: 0px"><b>Proponente:</b> {{ App\Proponente::find($trabalho->proponente_id)->user->name }}</p>
                                                             </div>
 
                                                             <div class="col-md-12"> <p style="color: #4D4D4D; padding: 0px"><b>Discentes:</b>
@@ -108,6 +113,7 @@
                                         </div>
                                     </div>
                             @endforeach
+                        </div>
 
 
     <div class="row justify-content-center" >
@@ -127,6 +133,27 @@
 <script type="application/javascript">
     function myFunc(i){
         document.getElementById("vizuProposta"+i).click();
+    }
+
+    function buscar(input) {
+        let trabalhos = document.getElementById("projetos").children;
+
+        if(input.value.length > 2) {  
+            for(let i = 0; i < trabalhos.length; i++){
+                let tituloProjeto = trabalhos[i].getElementsByClassName("tituloProj")[0].textContent
+                let nomeProponente = trabalhos[i].getElementsByClassName("proponenteProj")[0].textContent
+
+                if(tituloProjeto.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0 || nomeProponente.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0) {
+                    trabalhos[i].style.display = "";
+                }else {
+                    trabalhos[i].style.display = "none";
+                }
+            }
+        }else {
+            for(let i = 0; i < trabalhos.length; i++) {
+                trabalhos[i].style.display = "";
+            }
+        }
     }
 </script>
 @endsection
