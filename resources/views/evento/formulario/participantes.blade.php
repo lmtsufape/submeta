@@ -4,7 +4,12 @@
         <div class="card-body" style="padding-top: 0.2rem;">
             <div class="container">
                 <div class="form-row mt-3">
-                    <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Participantes</h5></div>
+                    <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Participantes</h5></div>
+                    <div class="col-md-1 text-sm-right">
+                        <a type="button" value="{{ $edital->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModal0">
+                            <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
+                        </a>
+                    </div>
                 </div>
                 <hr style="border-top: 1px solid#1492E6">
                 <div class="row-cols-sm-12 justify-content-start">
@@ -13,13 +18,18 @@
                             <div style="margin-bottom:15px">
                                 <div id="participante" class="row">
                                     @for($i = 0; $i < $edital->numParticipantes; $i++)
-                                        <div class="form-row mb-1 col-md-3" style="margin-top: 10px">
-                                            <div class="col-md-12">
-                                                <button type="button" class="btn btn-primary justify-content-center" data-toggle="modal" id="button" data-target="#exampleModal{{$i}}">
+
+                                        <div @if(!isset(old('marcado')[$i])) hidden @endif class="form-row mb-1 col-md-3" style="margin-top: 10px" id="part{{$i}}">
+                                            <div class="col-sm-4">
+                                                <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                            </div>
+                                            <div class="col-sm-8" style="display: flex; align-items: center">
+                                                <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}">
                                                     Participante {{$i+1}}
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
+
                                         <div class="modal fade" id="exampleModal{{$i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                                 <div class="modal-content">
@@ -33,8 +43,9 @@
                                                     <div class="modal-body">
                                                         <div class="col-1" style="margin-top:9.3px" hidden>
                                                             {{-- <button type="button" class="btn btn-danger shadow-sm" id="buttonRemover" onclick="removerPart(this)" >X</button> --}}
-                                                            <input type="checkbox" id="checkB{{$i}}" aria-label="Checkbox for following text input" @if(old('name')[$i] ?? "" == $i) checked @endif name="marcado[]" value="{{ $i }}">
+                                                            <input type="checkbox" id="checkB{{$i}}" aria-label="Checkbox for following text input"  @if(isset(old('marcado')[$i])) checked @endif name="marcado[]" value="{{ $i }}">
                                                         </div>
+
 
                                                         <div class="col-md-12">
                                                             <div class="container">
@@ -352,10 +363,10 @@
                                                                         <br>
                                                                     </div>
                                                                     <div class="col-6">
-                                                                    <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})">Cancelar</button>
+                                                                        <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})">Cancelar</button>
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        <button data-dismiss="modal" type="button" id="adicionar{{$i}}" class="btn btn-success float-right" style="font-size: 16px" onclick="marcar({{$i}})">Adicionar</button>
+                                                                        <button data-dismiss="modal" type="button" id="guardar{{$i}}" class="btn btn-success float-right" style="font-size: 16px" onclick="marcar({{$i}})">Salvar</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -385,13 +396,20 @@
 </div>
 <script>
     $("input.rg:text").mask('00.000.000-0');
+
     function marcar(id){
         document.getElementById("checkB"+id).checked = true;
+        $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
+        document.getElementById("part"+id).removeAttribute("hidden");
         document.getElementById("exampleModal"+id).modal('hide');
+
     }
     function desmarcar(id){
         document.getElementById("checkB"+id).checked = false;
+        document.getElementById("part"+id).setAttribute("hidden",true);
+        $("#atribuir1").attr('data-target','#exampleModal'+(id));
         document.getElementById("exampleModal"+id).modal('hide');
     }
+
 </script>
 <!--X Participantes X-->
