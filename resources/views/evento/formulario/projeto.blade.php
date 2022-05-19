@@ -67,6 +67,23 @@
               </span>
               @enderror
           </div>
+            @if($edital->natureza_id ==3 )
+                <div class="form-group col-md-4">
+                    <label for="areaTematica" class="col-form-label" style="font-weight: bold">{{ __('Área Temática') }} <span style="color: red; font-weight:bold">*</span></label>
+                    <select class="form-control @error('area_tematica_id') is-invalid @enderror" id="areaTematica" name="area_tematica_id">
+                        <option value="" disabled selected hidden>-- Área Tematica--</option>
+                        @foreach($areaTematicas as $areaTematica)
+                            <option @if(old('area_tematica_id') !== null ? old('area_tematica_id') : (isset($rascunho) ? $rascunho->area_tematica_id : '')
+                            == $areaTematica->id ) selected @endif value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
+                        @endforeach
+                    </select>
+                    @error('area_tematica_id')
+                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                    @enderror
+                </div>
+            @endif
         </div>
           
         </div>
