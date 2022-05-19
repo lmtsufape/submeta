@@ -68,7 +68,7 @@
                     </div>
                   </div>
                 @else
-                  @if($hoje <= $edital->fimSubmissao)
+                  @if($edital->inicioSubmissao <= $hoje && $hoje <= $edital->fimSubmissao)
                     <a href="{{ route('trabalho.index', ['id' => $edital->id]) }}" class="btn btn-info" style="position:relative; float: right;">Criar proposta</a>
                   @endif
                 @endif
