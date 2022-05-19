@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AreaTematica;
 use Illuminate\Http\Request;
 use App\GrandeArea;
 use App\Area;
@@ -16,7 +17,8 @@ class GrandeAreaController extends Controller
     public function index()
     {
         $grandesAreas = GrandeArea::orderBy('nome')->get();
-        return view('naturezas.grandeArea.index')->with(['grandesAreas' => $grandesAreas]);
+        $areasTematicas = AreaTematica::orderBy('nome')->get();
+        return view('naturezas.grandeArea.index')->with(['grandesAreas' => $grandesAreas, 'areasTematicas' => $areasTematicas]);
     }
 
     /**

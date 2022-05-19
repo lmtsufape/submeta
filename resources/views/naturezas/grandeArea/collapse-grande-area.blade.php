@@ -57,4 +57,56 @@
             </div>
         </div>
     @endforeach
+
+</div>
+<div id="accordion2">
+    <div class="card">
+        <div class="row">
+            <div class="col-11  ">
+                <h2 class="m-2">Áreas Temáticas</h2>
+            </div>
+            <div class="col-1 text-center">
+                <a href="{{route('areaTematica.criar')}}" >
+                    <i class="fas fa-plus-circle fa-2x m-2" style="color: green"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    @foreach ($areasTematicas as $areasTematica)
+        <div class="card">
+            <h5 class="mb-0">
+                <div class="row">
+                    <div class="col-11">
+                        <button class="btn btn-link font-size-naturezas" aria-expanded="true" >
+                            {{ $areasTematica->nome }}
+                        </button>
+                    </div>
+                    <div class="col-1 text-center">
+                        <div class=" dropright mt-2 text-center">
+                            <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{-- <i class="fas fa-cogs"></i> --}}
+                                <i class="fas fa-cog fa-1x"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="{{ route('areaTematica.edit', ['id' => $areasTematica->id]) }}" class="dropdown-item text-center">
+                                    Editar
+                                </a>
+                                <hr class="dropdown-hr">
+                                <form method="POST" action="{{ route('areaTematica.deletar', ['id' => $areasTematica->id]) }}">
+                                    {{ csrf_field() }}
+                                    <button type="submit" class="dropdown-item dropdown-item-delete text-center">
+                                        <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
+                                        Deletar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </h5>
+        </div>
+    @endforeach
 </div>

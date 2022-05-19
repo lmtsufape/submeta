@@ -49,7 +49,7 @@
               @if($user->tipo != "avaliador")
                 <td>{{ $user->tipo }}</td>
               @else
-                <td>{{ $user->tipo }} - {{ $user->avaliadors->tipo }} </td>
+                <td>{{ $user->tipo }} - @if(isset($user->avaliadors->tipo)){{ $user->avaliadors->tipo }} @else Indefinido @endif </td>
               @endif
 
               <td>{{ $user->creaet_at }}</td>

@@ -38,6 +38,7 @@ class Trabalho extends Model
       'coordenador_id',
       'proponente_id',
       'pivot',
+      'area_tematica_id',
   ];
 
 
@@ -62,6 +63,10 @@ class Trabalho extends Model
   }
   public function subArea(){
       return $this->belongsTo('App\SubArea');
+  }
+
+  public function areaTematica(){
+     return $this->belongsTo('App\AreaTematica');
   }
 
   public function autor(){
