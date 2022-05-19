@@ -73,18 +73,28 @@ class AdministradorController extends Controller
     public function analisar(Request $request){
         $evento = Evento::find($request->evento_id);
         $status = ['submetido', 'avaliado', 'aprovado', 'reprovado', 'corrigido'];
+        $aux = Trabalho::where('evento_id', $evento->id)
+            ->whereIn('status', $status)
+            ->pluck('grande_area_id');
+
+        $idArea = Trabalho::where('evento_id', $evento->id)
+            ->whereIn('status', $status)
+            ->pluck('area_id');
 
         $trabalhos = Trabalho::where('evento_id', $evento->id)
             ->whereIn('status', $status)
             ->orderBy('titulo')
             ->paginate(10);
 
+        $grandesAreas = GrandeArea::whereIn('id', $aux)->get();
+        $areas = Area::whereIn('id', $idArea)->get();
+
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
         // $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         // $participantes = User::whereIn('id', $participantesUsersIds)->get();
 
-        return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes, 'column' => $request->column]);
+        return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes, 'column' => $request->column, 'grandesAreas' => $grandesAreas, 'areas' => $areas]);
     }
 
     // Utilizado para paginação de Collection

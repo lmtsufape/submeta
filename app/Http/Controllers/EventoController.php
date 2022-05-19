@@ -104,7 +104,9 @@ class EventoController extends Controller
             $request->fimSubmissao == null    ||
             $request->inicioRevisao == null   ||
             $request->fimRevisao == null      ||
-            $request->resultado == null
+            $request->resultado == null       ||
+            $request->inicioProjeto == null   ||
+            $request->fimProjeto == null
 
         ){
             $validatedData = $request->validate([
@@ -128,6 +130,8 @@ class EventoController extends Controller
                 'dt_fimRelatorioFinal'     => ['required', 'date'],
                 'pdfFormAvalExterno' => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
                 'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+                'inicioProjeto'       => ['required', 'date'],
+                'fimProjeto'          => ['required', 'date'],
                 //'modeloDocumento'     => [],
             ]);
         }
@@ -157,6 +161,8 @@ class EventoController extends Controller
             'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
             'pdfFormAvalExterno'           => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
             'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+            'inicioProjeto'       => ['required', 'date', 'after:yesterday'],
+            'fimProjeto'          => ['required', 'date', 'after_or_equal:fimSubmissao'],
             //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
 
@@ -183,6 +189,8 @@ class EventoController extends Controller
         $evento['consu']               = $request->has('consu');
         $evento['cotaDoutor']               = $request->has('cotaDoutor');
         $evento['anexosStatus']        = 'final';
+        $evento['inicioProjeto']       = $request->inicioProjeto;
+        $evento['fimProjeto']          = $request->fimProjeto;
 
         //dd($evento);
         // $user = User::find($request->coordenador_id);
@@ -376,7 +384,9 @@ class EventoController extends Controller
             $request->fimSubmissao == null    ||
             $request->inicioRevisao == null   ||
             $request->fimRevisao == null      ||
-            $request->resultado == null
+            $request->resultado == null       ||
+            $request->inicioProjeto == null   ||
+            $request->fimProjeto == null
 
         ){
             $validatedData = $request->validate([
@@ -400,6 +410,8 @@ class EventoController extends Controller
                 'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
                 'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
                 'pdfFormAvalExterno'           => ['file', 'mimes:pdf', 'max:2048'],
+                'inicioProjeto'       => ['required', 'date'],
+                'fimProjeto'          => ['required', 'date'],
             ]);
         }
 
@@ -423,6 +435,8 @@ class EventoController extends Controller
             'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
             'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
             'pdfFormAvalExterno'           => ['file', 'mimes:pdf', 'max:2048'],
+            'inicioProjeto'       => ['required', 'date', 'after:resultado_final'],
+            'fimProjeto'          => ['required', 'date', 'after:inicioProjeto'],
         ]);
 
         $evento->nome                 = $request->nome;
@@ -445,6 +459,8 @@ class EventoController extends Controller
         $evento->coordenadorId        = $request->coordenador_id;
         $evento->consu                = $request->has('consu');
         $evento->cotaDoutor                = $request->has('cotaDoutor');
+        $evento->inicioProjeto       = $request->inicioProjeto;
+        $evento->fimProjeto          = $request->fimProjeto;
         if($request->pdfEdital != null){
             $pdfEdital = $request->pdfEdital;
             $path = 'pdfEdital/' . $evento->id . '/';
