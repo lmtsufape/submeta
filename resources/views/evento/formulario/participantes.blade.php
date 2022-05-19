@@ -20,11 +20,11 @@
                                     @for($i = 0; $i < $edital->numParticipantes; $i++)
 
                                         <div @if(!isset(old('marcado')[$i])) hidden @endif class="form-row mb-1 col-md-3" style="margin-top: 10px" id="part{{$i}}">
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-4" style="display: flex; align-items: center;">
                                                 <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                                             </div>
-                                            <div class="col-sm-8" style="display: flex; align-items: center">
-                                                <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}">
+                                            <div class="col-sm-8" style="display: flex; align-items: center;">
+                                                <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">
                                                     Participante {{$i+1}}
                                                 </a>
                                             </div>
@@ -398,10 +398,26 @@
     $("input.rg:text").mask('00.000.000-0');
 
     function marcar(id){
+        let nome = document.getElementById("nome"+id);
+        let linkNome = document.getElementById("nomePart"+(id+1));
+        let linkTituloProj = document.getElementById("tituloProj"+(id+1));
+        let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
+        
+        if(nome.value != ""){
+            if(planoTrabalho.value != ""){
+                linkNome.innerText = `Nome: ${nome.value} \n Título do Plano: ${planoTrabalho.value}`;
+            }else {
+                linkNome.innerText = `Nome: ${nome.value}`;
+            }
+        }
+
+
         document.getElementById("checkB"+id).checked = true;
         $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
         document.getElementById("part"+id).removeAttribute("hidden");
         document.getElementById("exampleModal"+id).modal('hide');
+
+      
 
     }
     function desmarcar(id){
