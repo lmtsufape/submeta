@@ -47,9 +47,19 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get( '/projetos-edital/{id}',       'ProponenteController@projetosEdital'         )->name('proponente.projetosEdital')->middleware('auth');
   Route::post('/proponente/edital/{edital_id}/projeto/{projeto_id}/solicitar_desligamento/{participante_id}',   'ProponenteController@solicitarDesligamento')->name('proponente.solicitar.desligamento');
 
-  
-  
-  //######### Rotas Administrador #################################
+
+
+    //######## Rotas Avaliador  ####################################
+    Route::prefix('avaliacaoRelatorio')->name('avaliacaoRelatorio.')->group(function(){
+        Route::post('/atribuirAvaliadorPlano',   'AvaliacaoRelatorioController@atribuicaoAvaliador')->name('atribuicao.avaliador');
+    });
+    Route::post('/trabalho/planos/avaliacoes',    'AvaliacaoRelatorioController@listarUser')->name('planos.avaliacoesUser');
+    Route::get('/trabalho/planos/avaliacoes/index',    'AvaliacaoRelatorioController@index')->name('planos.avaliacoes.index');
+    Route::post('/trabalho/planos/avaliacoes/criar',    'AvaliacaoRelatorioController@criar')->name('planos.avaliacoesUser.criar');
+
+
+
+    //######### Rotas Administrador #################################
   Route::get('/perfil-usuario',                  'UserController@minhaConta'        )->name('user.perfil')->middleware(['auth', 'verified']);
 
   //######## Rotas Avaliador  ####################################

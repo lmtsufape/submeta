@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AvaliacaoRelatorio;
 use App\Notificacao;
 use App\Substituicao;
 use Illuminate\Http\Request;
@@ -100,7 +101,21 @@ class AdministradorController extends Controller
         $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
         $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
         $trabalho->aval = $avalProjeto;
-
+        // Usuarios que possuem avaliações de relatório
+        //$avaliacoesRelatorio = [];->join('users','users.id','=','candidatos.user_id')
+        $AvalRelatParcial = [];
+        $AvalRelatFinal = [];
+        foreach($trabalho->participantes as $participante) {
+            $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
+            foreach($avals as $aval){
+                if($aval->tipo == "Parcial"){
+                    array_push($AvalRelatParcial,$aval);
+                }else{
+                    array_push($AvalRelatFinal,$aval);
+                }
+            }
+        }
+        //
         $grandeAreas = GrandeArea::orderBy('nome')->get();
 
         return view('administrador.analisarProposta')->with(
@@ -109,7 +124,10 @@ class AdministradorController extends Controller
                 'evento' => $evento,
                 'substituicoesPendentes' => $substituicoesPendentes,
                 'substituicoesProjeto' => $substituicoesProjeto,
-                'grandeAreas' => $grandeAreas,]);
+                'grandeAreas' => $grandeAreas,
+                'AvalRelatParcial' => $AvalRelatParcial,
+                'AvalRelatFinal' => $AvalRelatFinal,
+                ]);
     }
 
     public function showProjetos(Request $request){
