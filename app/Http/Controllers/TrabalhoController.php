@@ -9,6 +9,7 @@ use Auth;
 use App\Area;
 use App\User;
 use App\Evento;
+use App\AreaTematica;
 use App\Arquivo;
 use App\Coautor;
 use App\Revisor;
@@ -88,6 +89,7 @@ class TrabalhoController extends Controller
     {
         $edital = Evento::find($id);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
+        $areaTematicas = AreaTematica::orderBy('nome')->get();
         $funcaoParticipantes = FuncaoParticipantes::orderBy('nome')->get();
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
 
@@ -108,6 +110,7 @@ class TrabalhoController extends Controller
                                             'rascunho'           => $rascunho,
                                             'enum_turno'         => Participante::ENUM_TURNO,
                                             'estados'            => $this->estados,
+                                            'areaTematicas'        => $areaTematicas,
                                             ]);
     }
     
@@ -398,6 +401,7 @@ class TrabalhoController extends Controller
         }
         $edital = Evento::find($projeto->evento_id);
         $grandeAreas = GrandeArea::all();
+        $areaTematicas = AreaTematica::orderBy('nome')->get();
         $areas = Area::all();
         $subareas = Subarea::all();
         $funcaoParticipantes = FuncaoParticipantes::all();
@@ -420,6 +424,7 @@ class TrabalhoController extends Controller
             'arquivos' => $arquivos,
             'enum_turno' => Participante::ENUM_TURNO,
             'estados' => $this->estados,
+            'areaTematicas'        => $areaTematicas,
         ]);
     }
 
