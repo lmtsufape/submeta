@@ -9,7 +9,13 @@
 
         <div class="col-md-12">
             <div class="row justify-content-between">
-                <div class="col-sm"></div>
+                <div class="col-sm">
+                    <select id="" class="form-control select-submeta" onchange="exibirEditais(this)" style="width: 140px;">
+                            <option value="todos" selected>Todos</option>
+                            <option value="aberto">Aberto(s)</option>
+                            <option value="encerrado">Encerrado(s)</option>
+                    </select>
+                </div>
                 <div class="col-sm" style="margin-bottom: 10px">
                     @if($flag == 'false')
                         @if(count($eventos)>0)
@@ -46,9 +52,17 @@
             @foreach ($eventos as $evento)
 
             @if (Auth::check())
-                <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none">
-            @else 
-                <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none">
+                @if($evento->fimSubmissao >= $hoje)
+                    <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none" class="aberto">
+                @else
+                    <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none" class="encerrado">
+                @endif
+            @else
+                @if($evento->fimSubmissao >= $hoje) 
+                    <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none" class="aberto">
+                @else
+                    <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none" class="encerrado">
+                @endif
             @endif
                 <div class="card" style="width: 18rem; border-radius:12px; border-width:0px; margin:10px">
                     @if(isset($evento->fotoEvento))
@@ -64,7 +78,7 @@
                                         <div class="col-sm-12">
                                             <h3 style="color: #01487E; font-family:Arial, Helvetica, sans-serif; font-size:30px; font-weight:bold">{{$evento->nome}}</h3>
                                             {{-- @if(Auth::user()->tipo == "administrador" || Auth::user()->tipo == "administradorResponsavel") --}}
-                                            @can('isCoordenador', $evento)
+                                           {{-- @can('isCoordenador', $evento)
                                                 <div class="btn-group dropright dropdown-options">
                                                     <a id="options" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
@@ -89,7 +103,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                            @endcan
+                                            @endcan --}}
                                         {{--  @endif --}}
                                         </div>
 
@@ -181,4 +195,41 @@
 
 </div>
 
+@endsection
+
+@section('javascript')
+<script>
+    function exibirEditais(select) {
+        let abertos = document.getElementsByClassName("aberto");
+        let encerrados = document.getElementsByClassName("encerrado");
+
+        if(select.value == "todos"){
+            for(let i = 0; i < abertos.length; i++ ){
+                abertos[i].style.display = "";
+            }
+            
+            for(let j = 0; j < encerrados.length; j++ ){
+                encerrados[j].style.display = "";
+            }
+        }else if(select.value == "aberto") {
+            for(let i = 0; i < abertos.length; i++){
+                abertos[i].style.display = "";
+            }
+
+            for(let j = 0; j < encerrados.length; j++ ){
+                encerrados[j].style.display = "none";
+            }
+        }else {
+            for(let i = 0; i < abertos.length; i++){
+                abertos[i].style.display = "none";
+            }
+
+            for(let j = 0; j < encerrados.length; j++ ){
+                encerrados[j].style.display = "";
+            }
+        }
+
+        
+    }
+</script>
 @endsection

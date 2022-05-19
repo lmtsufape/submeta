@@ -9,23 +9,6 @@
   <input type="hidden" name="editalId" value="{{$edital->id}}">
 
   <div class="container">
-    {{-- @dd($errors->get('name.*')) --}}
-    {{-- @dd($errors->has('cpf.*')) --}}
-    {{-- @dd($errors->getBags()['default']->keys()) --}}
-    @if (session('mensagem'))
-        <div class="alert alert-warning" role="alert">
-            {{ session('mensagem') }}
-        </div>
-    @endif
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
     
     <div class="row justify-content-center" style="margin-top: 35px">
 
@@ -208,18 +191,6 @@
 
 
 <script>
-  $('input').on("input", function(){
-    var maxlength = $(this).attr("maxlength");
-    var currentLength = $(this).val().length;
-    var idInput = $(this).attr("id");
-    if( currentLength >= maxlength ){
-      $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
-    }else if(currentLength == 0){
-      $("#caracsRestantes"+idInput).html("");
-    }else{
-      $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
-    }
-  });
 
   $( document ).ready( function () {
 

@@ -37,12 +37,12 @@
           @if($edital->tipo != "PIBEX")
           <div class="col-md-2">
             <br>
-            <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
+            <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}<span style="color: red; font-weight:bold">*</span></label>
           </div>
           <div class="col-md-10">
             <br>
             <input class="form-control @error('linkGrupoPesquisa') is-invalid @enderror" type="url" name="linkGrupoPesquisa"
-                   value="" >
+                   value="{{ old('linkGrupoPesquisa') }}" >
             @error('linkGrupoPesquisa')
             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
               <strong>{{ $message }}</strong>
@@ -54,12 +54,12 @@
           @if($edital->tipo != "PIBEX")
           <div class="col-md-3">
             <br>
-            <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Valor da Planilha de Pontuação: ') }}</label>
+            <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Valor da Planilha de Pontuação: ') }}<span style="color: red; font-weight:bold">*</span></label>
           </div>
           <div class="col-md-9">
             <br>
             <input class="form-control @error('pontuacaoPlanilha') is-invalid @enderror" type="number" min="0"   step=".01" name="pontuacaoPlanilha"
-                   value="" style="width: 100px">
+                   value="{{ old('pontuacaoPlanilha') }}" style="width: 100px">
             @error('pontuacaoPlanilha')
             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
               <strong>{{ $message }}</strong>
