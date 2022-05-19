@@ -79,6 +79,7 @@ class AdministradorController extends Controller
             ->orderBy('titulo')
             ->paginate(10);
 
+
         $funcaoParticipantes = FuncaoParticipantes::all();
         // $participantes = Participante::where('trabalho_id', $id)->get();
         // $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();

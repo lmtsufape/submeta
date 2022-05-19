@@ -18,7 +18,7 @@ class Evento extends Model
       'numMaxTrabalhos', 'numMaxCoautores', 'hasResumo', 'criador_id', 'numParticipantes',
       'dt_inicioRelatorioParcial', 'dt_fimRelatorioParcial', 'dt_inicioRelatorioFinal', 'dt_fimRelatorioFinal',
       'formAvaliacaoExterno', 'formAvaliacaoInterno',
-      'cotaDoutor'
+      'cotaDoutor', 'inicioProjeto', 'fimProjeto'
   ];
 
   public function endereco(){
