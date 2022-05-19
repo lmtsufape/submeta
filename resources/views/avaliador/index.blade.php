@@ -18,7 +18,17 @@
 				</a>
 			</div>
 		  </div>
-		  
+			@if(\App\AvaliacaoRelatorio::where('user_id',Auth::user()->id )->get()->count()!=0)
+				<div class="" style="text-align: center">
+					<div class="form-group imagem_shadow" style="border-radius: 12px; padding:14px; height:200px; width:190px; margin:15px">
+						<a href="{{ route('planos.avaliacoes.index') }}" style="text-decoration:none; color: inherit;">
+							<img src="{{asset('img/icons/icon_meus_editais.png')}}" alt="" width="120px">
+							<h5 style="color: #073763; margin-top:0.5rem; font-size:25px;">Avaliações de Relatórios</h5>
+						</a>
+					</div>
+				</div>
+			@endif
+
 		</div>
 	</div>
 {{--

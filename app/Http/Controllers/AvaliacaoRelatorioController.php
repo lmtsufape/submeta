@@ -27,15 +27,6 @@ class AvaliacaoRelatorioController extends Controller
         $planos = Arquivo::where('trabalhoId',$request->trabalho_id)->get();
         $avaliacoes = AvaliacaoRelatorio::where('user_id',$request->user_id)->get();
         $trabalho = Trabalho::find($request->trabalho_id);
-
-        return view('avaliacaoRelatorio.listar', ["avaliacoes"=>$avaliacoes,"trabalho"=>$trabalho,"planos"=>$planos]);
-    }
-
-    public function listarUser2(Request $request){
-
-        $planos = Arquivo::where('trabalhoId',$request->trabalho_id)->get();
-        $avaliacoes = AvaliacaoRelatorio::where('user_id',$request->user_id)->get();
-        $trabalho = Trabalho::find($request->trabalho_id);
         $evento = $trabalho->evento;
         $hoje = \Carbon\Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
@@ -45,7 +36,7 @@ class AvaliacaoRelatorioController extends Controller
             $tipoRelatorio="Final";
         }
 
-        return view('avaliacaoRelatorio.listar2', ["avaliacoes"=>$avaliacoes,"trabalho"=>$trabalho,"planos"=>$planos,"evento"=>$evento,"tipoRelatorio"=>$tipoRelatorio]);
+        return view('avaliacaoRelatorio.listar', ["avaliacoes"=>$avaliacoes,"trabalho"=>$trabalho,"planos"=>$planos,"evento"=>$evento,"tipoRelatorio"=>$tipoRelatorio]);
     }
 
     public function index(Request $request){
@@ -105,7 +96,7 @@ class AvaliacaoRelatorioController extends Controller
             $tipoRelatorio="Final";
         }
 
-        return view('avaliacaoRelatorio.listar2', ["avaliacoes"=>$avaliacoes,"trabalho"=>$trabalho,"planos"=>$planos,"evento"=>$evento,"tipoRelatorio"=>$tipoRelatorio,
+        return view('avaliacaoRelatorio.listar', ["avaliacoes"=>$avaliacoes,"trabalho"=>$trabalho,"planos"=>$planos,"evento"=>$evento,"tipoRelatorio"=>$tipoRelatorio,
             'sucesso' => 'Avaliação do relatório '.$tipoRelatorio." do plano ".$plano->titulo.' realizada com sucesso.']);
     }
 
