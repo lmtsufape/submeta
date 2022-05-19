@@ -57,6 +57,13 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
     Route::get('/trabalho/planos/avaliacoes/index',    'AvaliacaoRelatorioController@index')->name('planos.avaliacoes.index');
     Route::post('/trabalho/planos/avaliacoes/criar',    'AvaliacaoRelatorioController@criar')->name('planos.avaliacoesUser.criar');
 
+    Route::prefix('areaTematica')->name('areaTematica.')->group(function() {
+        Route::get('/editar/{id}',                'AreaTematicaController@edit'           )->name('edit')->middleware('checkAdministrador');
+        Route::post('/atualizar/{id}','AreaTematicaController@update'          )->name('atualizar')->middleware('checkAdministrador');
+        Route::post('/excluir/{id}',  'AreaTematicaController@destroy'         )->name('deletar')->middleware('checkAdministrador');
+        Route::post('/salvar',        'AreaTematicaController@store'           )->name('salvar')->middleware('checkAdministrador');
+        Route::get('/nova',           'AreaTematicaController@create'          )->name('criar')->middleware('checkAdministrador');
+    });
 
 
     //######### Rotas Administrador #################################
