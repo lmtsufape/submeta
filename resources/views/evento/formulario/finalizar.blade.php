@@ -12,7 +12,13 @@
         <button id="submeterFormProposta" type="submit" style="display: none;"></button>
         <button type="submit" class="btn btn-primary " id="idButtonSubmitRascunho" >{{ __('Salvar como rascunho') }}</button>
         <button type="submit" class="btn btn-success" id="idButtonSubmitProjeto" >{{ __('Submeter projeto') }}</button>
+
       </div>
+      @if($errors->any())             
+        <div class="alert alert-danger">
+          Verifique se todos os campos obrigatórios foram preenchidos!
+        </div>
+      @endif
     </div>
   </div>
   </div>
