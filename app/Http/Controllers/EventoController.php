@@ -376,6 +376,8 @@ class EventoController extends Controller
     public function update(Request $request, $id)
     {
         //dd($request);
+        $tipo_usuario = Auth()->user()->tipo;
+        //dd($tipo_usuario);
         $evento = Evento::find($id);
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
@@ -491,8 +493,14 @@ class EventoController extends Controller
         $evento->update();
 
         $eventos = Evento::orderBy('nome')->get();
+        
+        if($tipo_usuario == 'coordenador'){
+            return redirect( route('coordenador.editais') )->with(['mensagem' => 'Edital salvo com sucesso!', 'eventos'=>$eventos]);
+        }
+
 
         return redirect( route('admin.editais') )->with(['mensagem' => 'Edital salvo com sucesso!', 'eventos'=>$eventos]);
+        
     }
 
     /**

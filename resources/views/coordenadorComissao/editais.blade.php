@@ -12,6 +12,15 @@
     </div>
   </div>
   <hr>
+  @if(session('mensagem'))
+    <div class="row">
+      <div class="col-md-12" style="margin-top: 30px;">
+        <div class="alert alert-success">
+            <p>{{session('mensagem')}}</p>
+        </div>
+      </div>
+    </div>
+  @endif
   <table class="table table-bordered">
     <thead>
       <tr>   
@@ -35,6 +44,9 @@
                      <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px"> 
                 </a>
                 <div class="dropdown-menu">
+                  <a href="{{ route('evento.editar', ['id' => $evento->id]) }}" class="dropdown-item text-center">
+                    Editar Edital
+                  </a>
                   <hr class="dropdown-hr">
                   <a href="{{route('admin.analisar', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
                     Visualizar Projetos
