@@ -67,10 +67,17 @@
                             </a>
                             <div class="dropdown-menu">
                               @if(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == true )
-                                <a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]) }}" class="dropdown-item">
-                                    <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
-                                    Avaliar Propostas
-                                </a>
+                                @if($hoje >= $evento->inicioRevisao && $hoje <= $evento->fimRevisao)
+                                  <a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]) }}" class="dropdown-item">
+                                      <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                                      Avaliar Propostas
+                                  </a>
+                                @else
+                                  <button disabled="disabled" class="dropdown-item">
+                                    Hoje({{ date('d/m/Y', strtotime($hoje)) }}) não faz parte do período de revisão(avaliação)
+                                  </button>
+                                  
+                                @endif
                               @elseif(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == false)
                                 <button disabled="disabled" class="dropdown-item">
                                   Convite recusado
