@@ -14,6 +14,7 @@
                             <option value="todos" selected>Todos</option>
                             <option value="aberto">Aberto(s)</option>
                             <option value="encerrado">Encerrado(s)</option>
+                            <option value="abrira">Abrirão</option>
                     </select>
                 </div>
                 <div class="col-sm" style="margin-bottom: 10px">
@@ -43,25 +44,26 @@
             <hr>
         </div>
     </div>
-    @php
-        $hoje = now();
-    @endphp
+    
     <div class="row justify-content-center">
-
         @if(count($eventos)>0)
             @foreach ($eventos as $evento)
 
             @if (Auth::check())
-                @if($evento->fimSubmissao >= $hoje)
+                @if($evento->fimSubmissao >= $hoje && $hoje >= $evento->inicioSubmissao)
                     <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none" class="aberto">
-                @else
+                @elseif($hoje > $evento->fimSubmissao)
                     <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none" class="encerrado">
+                @else
+                    <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none" class="vaiAbrir">
                 @endif
             @else
-                @if($evento->fimSubmissao >= $hoje) 
+                @if($evento->fimSubmissao >= $hoje && $hoje >= $evento->inicioSubmissao) 
                     <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none" class="aberto">
-                @else
+                @elseif($hoje > $evento->fimSubmissao)
                     <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none" class="encerrado">
+                @else
+                    <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none" class="vaiAbrir">
                 @endif
             @endif
                 <div class="card" style="width: 18rem; border-radius:12px; border-width:0px; margin:10px">
@@ -202,7 +204,9 @@
     function exibirEditais(select) {
         let abertos = document.getElementsByClassName("aberto");
         let encerrados = document.getElementsByClassName("encerrado");
+        let vaiAbrir = document.getElementsByClassName("vaiAbrir");
 
+        
         if(select.value == "todos"){
             for(let i = 0; i < abertos.length; i++ ){
                 abertos[i].style.display = "";
@@ -210,6 +214,10 @@
             
             for(let j = 0; j < encerrados.length; j++ ){
                 encerrados[j].style.display = "";
+            }
+            
+            for(let l = 0; l < vaiAbrir.length; l++ ){
+                vaiAbrir[l].style.display = "";
             }
         }else if(select.value == "aberto") {
             for(let i = 0; i < abertos.length; i++){
@@ -219,9 +227,29 @@
             for(let j = 0; j < encerrados.length; j++ ){
                 encerrados[j].style.display = "none";
             }
+
+            for(let l = 0; l < vaiAbrir.length; l++ ){
+                vaiAbrir[l].style.display = "none";
+            }
+        }else if(select.value == "abrira"){
+            for(let i = 0; i < abertos.length; i++){
+                abertos[i].style.display = "none";
+            }
+
+            for(let j = 0; j < encerrados.length; j++ ){
+                encerrados[j].style.display = "none";
+            }
+
+            for(let l = 0; l < vaiAbrir.length; l++ ){
+                vaiAbrir[l].style.display = "";
+            }
         }else {
             for(let i = 0; i < abertos.length; i++){
                 abertos[i].style.display = "none";
+            }
+
+            for(let l = 0; l < vaiAbrir.length; l++ ){
+                vaiAbrir[l].style.display = "none";
             }
 
             for(let j = 0; j < encerrados.length; j++ ){
