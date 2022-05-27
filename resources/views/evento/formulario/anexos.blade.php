@@ -114,6 +114,23 @@
                   @enderror
               </div>
             </div>
+            @for($i = 0; $i < $edital->numParticipantes; $i++)
+              <div class="form-group col-md-6" hidden id="arquivoPlano{{$i}}">
+                <label id="labelAnexoPlanoTrabalho{{$i}}" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">Plano: </label>
+                <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]" id="anexoPlanoTrabalho[{{$i}}]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
+                  @error('anexoPlanoTrabalho.'.$i)
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                  @enderror
+                  @error('anexoPlanoTrabalho')
+                  <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                  @enderror
+                <br>
+              </div>
+            @endfor
           @endif
         </div>
       </div>
