@@ -419,7 +419,7 @@
                     @enderror
                     </div>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <div class="form-group">
                     <label for="pdfFormAvalExterno">Formulário de avaliação externa:</label>
                     @if(old('pdfFormAvalExternoPreenchido') != null)
@@ -429,6 +429,22 @@
                     <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfFormAvalExterno')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="pdfFormAvalExterno">Formulário de avaliação do relatório:</label>
+                    @if(old('pdfFormAvalRelatorioPreenchido') != null)
+                        <a id="pdfFormAvalRelatorioTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoPlano' ])}}">Arquivo atual</a>
+                    @endif
+                    <input type="hidden" id="pdfFormAvalRelatorioPreenchido" name="pdfFormAvalRelatorioPreenchido" value="{{ old('pdfFormAvalRelatorioPreenchido') }}" >
+                    <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfFormAvalRelatorio') is-invalid @enderror" name="pdfFormAvalRelatorio" value="{{ old('pdfFormAvalRelatorio') }}" id="pdfFormAvalRelatorio" onchange="exibirAnexoTemp(this)">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('pdfFormAvalRelatorio')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -469,9 +485,9 @@
             var pdfFormAvalExternoPreenchido = document.getElementById('pdfFormAvalExternoPreenchido');
             pdfFormAvalExternoPreenchido.value = "sim";
         }
-        if(file.id === "pdfFormAvalInterno"){
-            var pdfFormAvalInternoPreenchido = document.getElementById('pdfFormAvalInternoPreenchido');
-            pdfFormAvalInternoPreenchido.value = "sim";
+        if(file.id === "pdfFormAvalRelatorio"){
+            var pdfFormAvalRelatorioPreenchido = document.getElementById('pdfFormAvalRelatorioPreenchido');
+            pdfFormAvalRelatorioPreenchido.value = "sim";
         }
     }
 
