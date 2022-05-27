@@ -17,11 +17,11 @@
       
       @include('evento.formulario.proponente')
       
-      
-      @include('evento.formulario.anexos')
-      
 
       @include('evento.formulario.participantes')
+
+      
+      @include('evento.formulario.anexos')
 
 
       @include('evento.formulario.finalizar')

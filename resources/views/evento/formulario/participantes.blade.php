@@ -4,7 +4,7 @@
         <div class="card-body" style="padding-top: 0.2rem;">
             <div class="container">
                 <div class="form-row mt-3">
-                    <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Participantes</h5></div>
+                    <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Dados do(s) Discente(s)</h5></div>
                     <div class="col-md-1 text-sm-right">
                         <a type="button" value="{{ $edital->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModal0">
                             <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
@@ -25,7 +25,7 @@
                                             </div>
                                             <div class="col-sm-8" style="display: flex; align-items: center;">
                                                 <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">
-                                                    Participante {{$i+1}}
+                                                    Discente {{$i+1}}
                                                 </a>
                                             </div>
                                         </div>
@@ -34,7 +34,7 @@
                                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Dados do Participante {{$i+1}}</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Dados do Discente {{$i+1}}</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>

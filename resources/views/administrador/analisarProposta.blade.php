@@ -6,10 +6,10 @@
         $hoje = \Carbon\Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
     @endphp
-
-    <div class="row justify-content-center" style="margin-top: 100px;">
+    <div class="container">
+    <div class="row justify-content-center" style="margin-top: 4rem;">
         <!--Titulos -->
-        <div class="col-md-10">
+        <div class="col-md-12">
             @if (session('sucesso'))
                 <div class="alert alert-success">
                     <strong>{{ session('sucesso') }}</strong>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <!--Areas-->
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -58,7 +58,7 @@
     <!--Informações Proponente-->
     <div class="row justify-content-center" style="margin-top: 20px;">
         <br>
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -112,7 +112,7 @@
     </div>
     <!--Discentes-->
     <div class="row justify-content-center" style="margin-top: 20px;">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -340,7 +340,7 @@
 
     <!--Anexos-->
     <div class="row justify-content-center" style="margin-top: 20px;">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -434,7 +434,7 @@
 
     <!--Relatórios-->
     <div class="row justify-content-center" style="margin-top: 20px;">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -693,7 +693,7 @@
 
     <!--Avaliadores-->
     <div class="row justify-content-center" style="margin-top: 20px;">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -780,6 +780,26 @@
                                                         </div>
 
                                                     </div>
+                                                    
+                                                    <div class="col-md-6">
+                                                        <label style="font-weight: bold;font-size: 18px">Internos</label>
+                                                    </div>
+                                                    <input type="hidden" id="oldAvalInterno"
+                                                           value="{{ old('exampleFormControlSelect2') }}">
+                                                    <select name="avaliadores_internos_id[]" multiple
+                                                            class="form-control" id="exampleFormControlSelect2"
+                                                            style="height: 200px;font-size: 15px">
+                                                        @foreach ($trabalho->aval as $avaliador)
+                                                            @if($avaliador->tipo == "Interno")
+                                                                <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
+                                                                    > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
+                                                                    > {{$avaliador->area->nome ?? 'Indefinida'}}
+                                                                    > {{$avaliador->user->email}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+
+
                                                     <div class="col-md-6">
                                                         <label style="font-weight: bold;font-size: 18px">Externos</label>
                                                     </div>
@@ -799,23 +819,7 @@
                                                             @endif
                                                         @endforeach
                                                     </select>
-                                                    <div class="col-md-6">
-                                                        <label style="font-weight: bold;font-size: 18px">Internos</label>
-                                                    </div>
-                                                    <input type="hidden" id="oldAvalInterno"
-                                                           value="{{ old('exampleFormControlSelect2') }}">
-                                                    <select name="avaliadores_internos_id[]" multiple
-                                                            class="form-control" id="exampleFormControlSelect2"
-                                                            style="height: 200px;font-size: 15px">
-                                                        @foreach ($trabalho->aval as $avaliador)
-                                                            @if($avaliador->tipo == "Interno")
-                                                                <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
-                                                                    > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
-                                                                    > {{$avaliador->area->nome ?? 'Indefinida'}}
-                                                                    > {{$avaliador->user->email}}</option>
-                                                            @endif
-                                                        @endforeach
-                                                    </select>
+
                                                     <small id="emailHelp" class="form-text text-muted">Segure SHIFT do
                                                         teclado para selecionar mais de um.</small>
                                                 </div>
@@ -835,6 +839,38 @@
 
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
+                        
+                        <!--Comissão Interna-->
+                        <div class="row justify-content-start" style="alignment: center">
+                            <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores -
+                                    Internos</h6></div>
+                        </div>
+                        <div class="row justify-content-start" style="alignment: center">
+                            @foreach($trabalho->avaliadors as $avaliador)
+                                @if($avaliador->tipo == 'Interno')
+                                    <div class="col-sm-1">
+                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <h5>{{$avaliador->user->name}}</h5>
+                                        @php
+                                            $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                        @endphp
+                                        <h9>@if($parecerInterno == null) Pendente @else <a
+                                                    href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
+                                        </h9>
+                                        <br>
+                                        {{-- <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
+                                             Remover
+                                         </a>--}}
+                                        <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                            Reenviar convite
+                                        </a>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                        <br>
                         <!--Comissão Externa-->
                         <div class="row justify-content-start" style="alignment: center">
                             <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores -
@@ -873,37 +909,6 @@
                                 @endif
                             @endforeach
                         </div>
-                        <br>
-                        <!--Comissão Interna-->
-                        <div class="row justify-content-start" style="alignment: center">
-                            <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores -
-                                    Internos</h6></div>
-                        </div>
-                        <div class="row justify-content-start" style="alignment: center">
-                            @foreach($trabalho->avaliadors as $avaliador)
-                                @if($avaliador->tipo == 'Interno')
-                                    <div class="col-sm-1">
-                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <h5>{{$avaliador->user->name}}</h5>
-                                        @php
-                                            $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                                        @endphp
-                                        <h9>@if($parecerInterno == null) Pendente @else <a
-                                                    href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
-                                        </h9>
-                                        <br>
-                                        {{-- <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
-                                             Remover
-                                         </a>--}}
-                                        <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
-                                            Reenviar convite
-                                        </a>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
                     </div>
                 </div>
             </div>
@@ -912,7 +917,7 @@
 
     <!--Aprovar ou Negar Proposta-->
     <div class="row justify-content-center" style="margin-top: 20px;">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -1418,6 +1423,7 @@
             </div>
         </div>
     </div>
+    </div>
 
     <style>
         body {
@@ -1571,7 +1577,7 @@
 
     <style>
         h6, a, b, p, .font-tam {
-            font-size: 16.4px;
+            font-size: 18.4px;
         }
 
         h5 {

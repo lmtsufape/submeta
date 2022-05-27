@@ -39,6 +39,10 @@
             </div>
         </div>
 
+
+        <div class="col-sm-12">
+            <h4 class="titulo-table" style="text-align: center">Projetos Recomendados</h4>
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-12">
             <table class="table table-bordered" style="display: block; white-space: nowrap; border-radius:10px; margin-bottom:0px">
@@ -59,6 +63,161 @@
                 @php $cont=1;@endphp
                     @foreach($trabalhos as $trabalho)
                         @if($trabalho->status == 'aprovado')
+                        <tr>
+                            <td>{{$cont}}</td>
+                            <td>{{$trabalho->pontuacao}}</td>
+                            <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">
+                                {{$trabalho->titulo}}
+                            </td>
+                            <td>
+                                {{$trabalho->proponente->user->name}}
+                            </td>
+                            <td>
+                                {{$trabalho->area->nome}}
+                            </td>
+                            <td>
+                                {{$trabalho->participantes->count()}}
+                            </td>
+                            <td>
+                                @if($trabalho->avaliadors->count() > 0)
+                                    @foreach($trabalho->avaliadors as $avaliador)
+                                        {{$avaliador->user->name}}<br>
+                                    @endforeach
+                                @else
+                                    Sem Atribuição
+                                @endif
+                            </td>
+                            @if($trabalho->avaliadors->count() > 0)
+                                <td>
+                                    @foreach($trabalho->avaliadors as $avaliador)
+                                        @if($avaliador->tipo == "Externo")
+                                            {{$avaliador->pivot->recomendacao}}<br>
+                                            @php
+                                                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                            @endphp
+                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                        @endif
+                                    @endforeach
+                                </td>
+                            @else
+                                <td>Pendente</td>
+                            @endif
+                            <td>
+                                <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirmTrab{{$trabalho->id}}" >
+                                    Definir
+                                </button>
+                            </td>
+                        </tr>
+                        @php $cont+=1;@endphp
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <br>
+        <div class="col-sm-12">
+            <h4 class="titulo-table" style="text-align: center">Projetos não recomendados</h4>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+            <table class="table table-bordered" style="display: block; white-space: nowrap; border-radius:10px; margin-bottom:0px">
+                <thead>
+                <tr>
+                    <th scope="col">Posição</th>
+                    <th scope="col">Pontuação</th>
+                    <th scope="col" style="width: 100%;">Nome do projeto</th>
+                    <th scope="col">Proponente</th>
+                    <th scope="col">Área</th>
+                    <th scope="col">N. Planos</th>
+                    <th scope="col">Avaliador</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Bolsas</th>
+                </tr>
+                </thead>
+                <tbody id="projetos">
+                @php $cont=1;@endphp
+                    @foreach($trabalhos as $trabalho)
+                        @if($trabalho->status == 'reprovado')
+                        <tr>
+                            <td>{{$cont}}</td>
+                            <td>{{$trabalho->pontuacao}}</td>
+                            <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">
+                                {{$trabalho->titulo}}
+                            </td>
+                            <td>
+                                {{$trabalho->proponente->user->name}}
+                            </td>
+                            <td>
+                                {{$trabalho->area->nome}}
+                            </td>
+                            <td>
+                                {{$trabalho->participantes->count()}}
+                            </td>
+                            <td>
+                                @if($trabalho->avaliadors->count() > 0)
+                                    @foreach($trabalho->avaliadors as $avaliador)
+                                        {{$avaliador->user->name}}<br>
+                                    @endforeach
+                                @else
+                                    Sem Atribuição
+                                @endif
+                            </td>
+                            @if($trabalho->avaliadors->count() > 0)
+                                <td>
+                                    @foreach($trabalho->avaliadors as $avaliador)
+                                        @if($avaliador->tipo == "Externo")
+                                            {{$avaliador->pivot->recomendacao}}<br>
+                                            @php
+                                                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                            @endphp
+                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                        @endif
+                                    @endforeach
+                                </td>
+                            @else
+                                <td>Pendente</td>
+                            @endif
+                            <td>
+                                <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirmTrab{{$trabalho->id}}" >
+                                    Definir
+                                </button>
+                            </td>
+                        </tr>
+                        @php $cont+=1;@endphp
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <!-- TODOS OS PROJETOS SUBMETIDOS -->
+        <br>
+        <div class="col-sm-12">
+            <h4 class="titulo-table" style="text-align: center">Projetos Submetidos</h4>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+            <table class="table table-bordered" style="display: block; white-space: nowrap; border-radius:10px; margin-bottom:0px">
+                <thead>
+                <tr>
+                    <th scope="col">Posição</th>
+                    <th scope="col">Pontuação</th>
+                    <th scope="col" style="width: 100%;">Nome do projeto</th>
+                    <th scope="col">Proponente</th>
+                    <th scope="col">Área</th>
+                    <th scope="col">N. Planos</th>
+                    <th scope="col">Avaliador</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Bolsas</th>
+                </tr>
+                </thead>
+                <tbody id="projetos">
+                @php $cont=1;@endphp
+                    @foreach($trabalhos as $trabalho)
+                        @if($trabalho->status == 'submetido')
                         <tr>
                             <td>{{$cont}}</td>
                             <td>{{$trabalho->pontuacao}}</td>
