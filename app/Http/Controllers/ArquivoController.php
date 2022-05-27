@@ -94,6 +94,21 @@ class ArquivoController extends Controller
         //
     }
 
+    public function arquivar(Request $request){
+
+        $arquivo = Arquivo::find($request->arquivo_id);
+        if($request->arquivar_tipo == 1 ){
+            $arquivo->arquivado = true;
+            $message = "Plano de trabalho ".$arquivo->titulo." arquivado";
+        }else{
+            $arquivo->arquivado = false;
+            $message = "Plano de trabalho ".$arquivo->titulo." desarquivado";
+        }
+        $arquivo->update();
+        return redirect()->back()->with(['sucesso'=>$message ]);
+    }
+
+
     public function baixarPlano($id) {
         $arquivo = Arquivo::find($id);
 

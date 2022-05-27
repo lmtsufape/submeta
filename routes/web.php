@@ -172,6 +172,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
   //##########  Arquivar Projeto e Plano
   Route::get(  '/arquivar/projeto', 'TrabalhoController@arquivar'                    )->name('projeto.arquivar');
+  Route::get(  '/arquivar/plano', 'ArquivoController@arquivar'                    )->name('arquivo.arquivar');
 
     //######### Imprimir Resultado #################################
   Route::get('/usuarios/showResultados/imprimir', 'AdministradorController@imprimirResultados')->name('resultados.gerar');

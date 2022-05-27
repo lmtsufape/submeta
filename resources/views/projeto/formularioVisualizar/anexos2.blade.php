@@ -27,11 +27,16 @@
 
             @if($edital->tipo != "PIBEX")
             <div class="col-sm-4">
-              <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
               @if($projeto->anexoAutorizacaoComiteEtica != null)
+              <label title="Declaração da autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
                 <a href="{{ route('baixar.anexo.comite', ['id' => $projeto->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
               @else
-                -
+                <label title="Declaração de não necessidade de autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Declaração Autorização Especial: ') }}</label>
+                @if($projeto->justificativaAutorizacaoEtica != null)
+                <a href="{{ route('baixar.anexo.justificativa', ['id' => $projeto->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                @else
+                  -
+                @endif
               @endif
             </div>
             @endif

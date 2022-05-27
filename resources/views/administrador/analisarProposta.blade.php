@@ -21,7 +21,26 @@
                         <div class="form-row mt-3">
 
                             <div class="col-md-12">
-                                <h5 style="color: #234B8B; font-weight: bold">Informações da Proposta</h5>
+                                <h5 style="color: #234B8B; font-weight: bold">Informações da Proposta
+                                    @if($trabalho->arquivado == false)
+                                        <a title="Arquivar"  href='javascript:arquivar.submit()' >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>                                        </a>
+                                        <form method="GET" name='arquivar' action='{{route('projeto.arquivar')}}' >
+                                            @csrf
+                                            <input value='{{$trabalho->id}}' name='trabalho_id' type='hidden'/>
+                                            <input value='1' name='arquivar_tipo' type='hidden'/>
+                                        </form>
+                                    @else
+                                        <a title="Desarquivar"  href='javascript:arquivar.submit()'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v11zM9.9 16.1L14 12M9.9 11.9L14 16"/></svg>
+                                        </a>
+                                        <form method="GET" name='arquivar' action='{{route('projeto.arquivar')}}' >
+                                            @csrf
+                                            <input value='{{$trabalho->id}}' name='trabalho_id' type='hidden'/>
+                                            <input value='0' name='arquivar_tipo' type='hidden'/>
+                                        </form>
+                                    @endif
+                                </h5>
                                 <hr style="border-top: 1px solid#1492E6">
                             </div>
 
@@ -155,7 +174,26 @@
 
                                             <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                 <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
-                                                    Informações Participante</h5>
+                                                    Informações Participante
+                                                    @if($participante->planoTrabalho->arquivado == false)
+                                                        <a title="Arquivar"  href='javascript:arquivar2.submit()' >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>                                        </a>
+                                                        <form method="GET" name='arquivar2' action='{{route('arquivo.arquivar')}}' >
+                                                            @csrf
+                                                            <input value='{{$participante->planoTrabalho->id}}' name='arquivo_id' type='hidden'/>
+                                                            <input value='1' name='arquivar_tipo' type='hidden'/>
+                                                        </form>
+                                                    @else
+                                                        <a title="Desarquivar"  href='javascript:arquivar2.submit()'>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v11zM9.9 16.1L14 12M9.9 11.9L14 16"/></svg>
+                                                        </a>
+                                                        <form method="GET" name='arquivar2' action='{{route('arquivo.arquivar')}}' >
+                                                            @csrf
+                                                            <input value='{{$participante->planoTrabalho->id}}' name='arquivo_id' type='hidden'/>
+                                                            <input value='0' name='arquivar_tipo' type='hidden'/>
+                                                        </form>
+                                                    @endif
+                                                </h5>
 
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close" style="padding-top: 8px; color:#1492E6">
@@ -209,7 +247,8 @@
 
                                                 <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                     <h5 class="modal-title" id="exampleModalLabel"
-                                                        style="color:#1492E6">Informações Participante</h5>
+                                                        style="color:#1492E6">Informações Participante
+                                                    </h5>
 
                                                     <button type="button" class="close" aria-label="Close"
                                                             style="padding-top: 8px; color:#1492E6"
@@ -376,14 +415,16 @@
 
                             @if($evento->tipo != "PIBEX")
                                 <div class="col-sm-4">
-                                    <label for="nomeTrabalho" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
                                     @if($trabalho->anexoAutorizacaoComiteEtica != null)
-                                        <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img
-                                                    class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px"
-                                                    alt=""></a>
+                                        <label title="Declaração da autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
+                                        <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                     @else
-                                        -
+                                        <label title="Declaração de não necessidade de autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Declaração Autorização Especial: ') }}</label>
+                                        @if($trabalho->justificativaAutorizacaoEtica != null)
+                                            <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                        @else
+                                            -
+                                        @endif
                                     @endif
                                 </div>
                             @endif
