@@ -113,7 +113,21 @@ class TrabalhoController extends Controller
                                             'areaTematicas'        => $areaTematicas,
                                             ]);
     }
-    
+
+    public function arquivar(Request $request){
+
+        $trabalho = Trabalho::find($request->trabalho_id);
+        if($request->arquivar_tipo == 1 ){
+            $trabalho->arquivado = true;
+            $message = "Projeto ".$trabalho->titulo." arquivado";
+        }else{
+            $trabalho->arquivado = false;
+            $message = "Projeto ".$trabalho->titulo." desarquivado";
+        }
+        $trabalho->update();
+        return redirect()->back()->with(['sucesso'=>$message ]);
+    }
+
     public function storeParcial(Request $request){
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();
