@@ -16,7 +16,7 @@
       </div>
       @if($errors->any())             
         <div class="alert alert-danger">
-          Verifique se todos os campos obrigatórios foram preenchidos!
+          Verifique se todos os campos obrigatórios/Dados do discente foram preenchidos!
         </div>
       @endif
     </div>
