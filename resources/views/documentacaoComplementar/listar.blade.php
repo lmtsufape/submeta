@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container" style="margin-bottom: 279px">
 	@if (session('sucesso'))
 		<div class="alert alert-success" role="alert">
 			{{ session('sucesso') }}
@@ -33,7 +33,7 @@
 							<td style="text-align: center; text-transform: capitalize;" >{{$trabalho->status}}</td>
 							<td style="text-align: center;" title="{{$participante->user->name}}">{{$participante->user->name}}</td>
 							<td style="text-align: center;">
-								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirm{{$participante->id}}" @if($trabalho->status!="aprovado")disabled="disabled" @endif>
+								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirm{{$participante->id}}" >
 									@if($participante->anexoComprovanteMatricula==null || $participante->anexoTermoCompromisso==null
 									||  $participante->anexoLattes==null || $participante->linkLattes==null  )
 
@@ -57,7 +57,7 @@
 									<form id="formDocComplementar" method="post" action="{{route('docComplementar.enviar')}}" enctype="multipart/form-data">
 										@csrf
 										<input type="hidden" value="{{$participante->id}}" name="partcipanteId">
-										<div class="row col-md-12">
+										<div class="row col-md-12" >
 											<div class="col-md-6" style="margin-top: 15px">
 													<label class="control-label ">Termo de Compromisso <span style="color: red">*</span>@if($participante->anexoTermoCompromisso) :
 														<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoTermoCompromisso]) }}">Arquivo atual</a>
@@ -65,7 +65,7 @@
 													</label>
 
 												<br>
-												<input type="file" class="input-group-text" value="" name="termoCompromisso" accept=".pdf" id="termoCompromisso{{$participante->id}}" required
+												<input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="file" class="input-group-text" value="" name="termoCompromisso" accept=".pdf" id="termoCompromisso{{$participante->id}}" required
 												/>
 												@error('termoCompromisso')
 													<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -81,7 +81,7 @@
 													</label>
 
 													<br>
-													<input type="file" class="input-group-text" value="" name="comprovanteMatricula" accept=".pdf" id="comprovanteMatricula{{$participante->id}}" required/>
+													<input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="file" class="input-group-text" value="" name="comprovanteMatricula" accept=".pdf" id="comprovanteMatricula{{$participante->id}}" required/>
 													@error('comprovanteMatricula')
 													<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
@@ -96,7 +96,7 @@
 													@endif
 												</label>
 												<br>
-												<input type="file" class="input-group-text" value="" name="pdfLattes" accept=".pdf" id="pdfLattes{{$participante->id}}"
+												<input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="file" class="input-group-text" value="" name="pdfLattes" accept=".pdf" id="pdfLattes{{$participante->id}}"
 													   required/>
 												@error('pdfLattes')
 												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -107,7 +107,7 @@
 											<div class="col-md-6">
 												<label class="control-label " content="required">Link Lattes <span style="color: red">*</span> : </label>
 												<br>
-												<input type="text" class="input-group-text col-md-12" name="linkLattes"  placeholder="Link Lattes" id="linkLattes{{$participante->id}}"
+												<input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="text" class="input-group-text col-md-12" name="linkLattes"  placeholder="Link Lattes" id="linkLattes{{$participante->id}}"
 													   required @if($participante->linkLattes) value="{{$participante->linkLattes}}" @endif/>
 												@error('linkLattes')
 												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -121,7 +121,7 @@
 													@endif
 												</label>
 												<br>
-												<input type="file" class="input-group-text" value="" name="comprovanteBancario" accept=".pdf,.jpg, .jpeg, .png" id="comprovanteBancario{{$participante->id}}"/>
+												<input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="file" class="input-group-text" value="" name="comprovanteBancario" accept=".pdf,.jpg, .jpeg, .png" id="comprovanteBancario{{$participante->id}}"/>
 												@error('comprovanteBancario')
 												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
@@ -135,7 +135,7 @@
 													@endif
 												</label>
 												<br>
-												<input type="file" class="input-group-text" value="" name="autorizacaoPais" accept=".pdf" id="autorizacaoPais{{$participante->id}}"/>
+												<input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="file" class="input-group-text" value="" name="autorizacaoPais" accept=".pdf" id="autorizacaoPais{{$participante->id}}"/>
 												@error('autorizacaoPais	')
 												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
@@ -150,7 +150,7 @@
 											<button type="button" class="btn btn-danger" data-dismiss="modal">
 												Cancelar
 											</button>
-											<button type="submit" href=""  id="btnSubmit" class="btn btn-info">
+											<button type="submit" href=""  id="btnSubmit" class="btn btn-info" @if($trabalho->status!="aprovado")disabled="disabled" @endif>
 												Salvar
 											</button>
 										</div>
