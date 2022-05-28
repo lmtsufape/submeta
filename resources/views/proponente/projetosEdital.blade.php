@@ -91,7 +91,6 @@
               </thead>
               <tbody id="projetos">
                 @foreach ($projetos as $projeto)
-                  @if (Auth()->user()->proponentes != null && $projeto->proponente_id === Auth()->user()->proponentes->id)
                     <tr>
                       <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">
                         {{ $projeto->titulo }}
@@ -120,6 +119,7 @@
                                     Solicitar Substituições
                                   </a>
                                   <hr class="dropdown-hr">
+                                @endif
 
                                   <a href="{{route('docComplementar.listar', ['projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
                                     Documentos Complementares
@@ -131,7 +131,7 @@
                                   </a>--}}
                                   <hr class="dropdown-hr">
 
-                                @endif
+
                                 <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                                   Visualizar
                                 </a>
@@ -144,7 +144,7 @@
                                 <hr class="dropdown-hr">
                                 {{-- <a href="" class="dropdown-item" style="text-align: center">
                                   Recorrer
-                                </a> 
+                                </a>
                                 --}}
 
                                 <!-- Button trigger modal -->
@@ -162,7 +162,6 @@
                         </div>
                       </td>
                     </tr>
-                  @endif
                   <!-- Modal deletar -->
                   <div class="modal fade" id="modal{{$projeto->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">

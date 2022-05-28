@@ -138,7 +138,6 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-
                     <div class="modal-body">
                         <table class="table table-bordered" >
                             <thead>
@@ -155,12 +154,12 @@
                                 <tr>
                                     <td>{{$coordenador->user->name}}</td>
                                     <td>{{$coordenador->user->email}}</td>
-                                    @if($coordenador->user->instituicao |= null)
+                                    @if($coordenador->user->celular != null)
                                         <td>{{$coordenador->user->celular}}</td>
                                     @else
                                         <td>Não Definido</td>
                                     @endif
-                                    @if($coordenador->user->instituicao |= null)
+                                    @if($coordenador->user->instituicao != null)
                                         <td>{{$coordenador->user->instituicao}}</td>
                                     @else
                                         <td>Não Definida</td>
@@ -400,7 +399,7 @@
                     </div>
             </div>
 
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <div class="form-group">
                     <label for="pdfEdital">Formulário de avaliação externa:</label>
                     <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
@@ -409,6 +408,21 @@
                     <input type="file" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfFormAvalExterno')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="pdfEdital">Formulário de avaliação do relatório:</label>
+                    <a href="{{route('download', ['file' => $evento->formAvaliacaoRelatorio])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                    </a>
+                    <input type="file" class="form-control-file @error('pdfFormAvalRelatorio') is-invalid @enderror" name="pdfFormAvalRelatorio" value="{{ old('pdfFormAvalRelatorio') }}" id="pdfFormAvalRelatorio">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('pdfFormAvalRelatorio')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

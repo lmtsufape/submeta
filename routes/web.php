@@ -170,7 +170,11 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get(   '/bolsas', 'ParticipanteController@listarParticipanteEdital'                  )->name('bolsas.listar');
   Route::post(  '/bolsas/alteracao', 'ParticipanteController@alterarBolsa'                    )->name('bolsa.alterar');
 
-  //######### Imprimir Resultado #################################
+  //##########  Arquivar Projeto e Plano
+  Route::get(  '/arquivar/projeto', 'TrabalhoController@arquivar'                    )->name('projeto.arquivar');
+  Route::get(  '/arquivar/plano', 'ArquivoController@arquivar'                    )->name('arquivo.arquivar');
+
+    //######### Imprimir Resultado #################################
   Route::get('/usuarios/showResultados/imprimir', 'AdministradorController@imprimirResultados')->name('resultados.gerar');
 
   //##########  Relatórios

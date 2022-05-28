@@ -35,12 +35,12 @@
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
 								<!-- Button trigger modal -->
 								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">
-									Enviar
+									@if($arquivo->arquivado) Arquivado @else Enviar @endif
 								</button>
 							@else
 								<!-- Button trigger modal -->
 								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">
-									@if($arquivo->relatorioParcial!=null)Visualizar @else Pendente @endif
+									@if($arquivo->relatorioParcial!=null)Visualizar @elseif($arquivo->arquivado) Arquivado @else Pendente @endif
 								</button>
 							@endif
 						</td>
@@ -50,12 +50,12 @@
 								 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
 								<!-- Button trigger modal -->
 									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">
-										Enviar
+										@if($arquivo->arquivado) Arquivado @else Enviar @endif
 									</button>
 							@else
 								<!-- Button trigger modal -->
 									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">
-										@if($arquivo->relatorioFinal!=null)Visualizar @else Pendente @endif
+										@if($arquivo->relatorioFinal!=null)Visualizar @elseif($arquivo->arquivado) Arquivado @else Pendente @endif
 									</button>
 								@endif
 						</td>
@@ -104,7 +104,7 @@
 
                                             @if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
-												<input type="file" class="input-group-text" value="" name="relatorioParcial" accept=".pdf" placeholder="Relatorio Parcial" id="relatorioParcial{{$arquivo->id}}" required/>
+												<input type="file" class="input-group-text" value="" name="relatorioParcial" accept=".pdf" placeholder="Relatorio Parcial" id="relatorioParcial{{$arquivo->id}}" required @if($arquivo->arquivado) disabled @endif/>
 												@error('relatorioParcial')
 													<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
@@ -117,7 +117,7 @@
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                             @if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
-												<button type="submit" class="btn btn-success">Salvar</button>
+												<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
 											@endif
 										</div>
 
@@ -169,7 +169,7 @@
 											<br>
                                             @if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
-												<input type="file" class="input-group-text" value="" name="relatorioFinal" accept=".pdf" placeholder="Relatorio Final" id="relatorioFinal{{$arquivo->id}}" required/>
+												<input type="file" class="input-group-text" value="" name="relatorioFinal" accept=".pdf" placeholder="Relatorio Final" id="relatorioFinal{{$arquivo->id}}" required @if($arquivo->arquivado) disabled @endif/>
 												@error('relatorioFinal')
 												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
@@ -182,7 +182,7 @@
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                             @if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
-												<button type="submit" class="btn btn-success">Salvar</button>
+												<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
 											@endif
 										</div>
 

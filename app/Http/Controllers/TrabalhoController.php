@@ -113,7 +113,21 @@ class TrabalhoController extends Controller
                                             'areaTematicas'        => $areaTematicas,
                                             ]);
     }
-    
+
+    public function arquivar(Request $request){
+
+        $trabalho = Trabalho::find($request->trabalho_id);
+        if($request->arquivar_tipo == 1 ){
+            $trabalho->arquivado = true;
+            $message = "Projeto ".$trabalho->titulo." arquivado";
+        }else{
+            $trabalho->arquivado = false;
+            $message = "Projeto ".$trabalho->titulo." desarquivado";
+        }
+        $trabalho->update();
+        return redirect()->back()->with(['sucesso'=>$message ]);
+    }
+
     public function storeParcial(Request $request){
       $mytime = Carbon::now('America/Recife');
       $mytime = $mytime->toDateString();
@@ -242,7 +256,7 @@ class TrabalhoController extends Controller
                     if (Storage::disk()->exists($trabalho->anexoDecisaoCONSU)) {
                         Storage::delete($trabalho->anexoDecisaoCONSU);
                     }
-                    $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'CONSU.pdf');
+                    $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'Decisão_da_Câmara_ou_Conselho_Pertinente.pdf');
                 }
            // }
 
@@ -298,7 +312,7 @@ class TrabalhoController extends Controller
         //Anexo Decisão CONSU
         //if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
             if (isset($request->anexoDecisaoCONSU)) {
-                $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'CONSU.pdf');
+                $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'Decisão_da_Câmara_ou_Conselho_Pertinente.pdf');
             }
         //}
 
@@ -897,10 +911,11 @@ class TrabalhoController extends Controller
                             $arquivo = Arquivo::where('participanteId', $participante->id)->first();
                             $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
                             $nome = $data['nomePlanoTrabalho'] . ".pdf";
+                            $titulo = $data['nomePlanoTrabalho'];
                             $file = $request->anexoPlanoTrabalho[$part];
                             Storage::putFileAs($path, $file, $nome);
                             $arquivo->update([
-                                'titulo' => $nome,
+                                'titulo' => $titulo,
                                 'nome' => $path . $nome,
                                 'data' => now(),
                             ]);

@@ -236,6 +236,16 @@ class EventoController extends Controller
             $evento->formAvaliacaoExterno = $path . $nome;
         }
 
+        if(isset($request->pdfFormAvalRelatorio)){
+            $pdfFormAvalRelatorio = $request->pdfFormAvalRelatorio;
+            $extension = $pdfFormAvalRelatorio->extension();
+            $path = 'pdfFormAvalRelatorio/' . $evento->id . '/';
+            $nome = "formulario de avaliação do relatorio" . "." . $extension;
+            Storage::putFileAs($path, $pdfFormAvalRelatorio, $nome);
+
+            $evento->formAvaliacaoRelatorio = $path . $nome;
+        }
+
         $evento->update();
 
         // $user = Auth::user();
@@ -272,6 +282,10 @@ class EventoController extends Controller
         if(!(is_null($request->pdfFormAvalExterno)) ) {
             $pasta = 'pdfFormAvalExterno/' . $eventoTemp->id;
             $eventoTemp->formAvaliacaoExterno = Storage::putFileAs($pasta, $request->pdfFormAvalExterno, 'formulario de avaliação externo.pdf');
+        }
+        if(!(is_null($request->pdfFormAvalRelatorio)) ) {
+            $pasta = 'pdfFormAvalRelatorio/' . $eventoTemp->id;
+            $eventoTemp->formAvaliacaoRelatorio = Storage::putFileAs($pasta, $request->pdfFormAvalRelatorio, 'formulario de avaliação do relatorio.pdf');
         }
 
 
@@ -412,6 +426,7 @@ class EventoController extends Controller
                 'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
                 'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
                 'pdfFormAvalExterno'           => ['file', 'mimes:pdf', 'max:2048'],
+                'pdfFormAvalRelatorio'           => ['file', 'mimes:pdf', 'max:2048'],
                 'inicioProjeto'       => ['required', 'date'],
                 'fimProjeto'          => ['required', 'date'],
             ]);
@@ -437,6 +452,7 @@ class EventoController extends Controller
             'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
             'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
             'pdfFormAvalExterno'           => ['file', 'mimes:pdf', 'max:2048'],
+            'pdfFormAvalRelatorio'           => ['file', 'mimes:pdf', 'max:2048'],
             'inicioProjeto'       => ['required', 'date', 'after:resultado_final'],
             'fimProjeto'          => ['required', 'date', 'after:inicioProjeto'],
         ]);
@@ -488,6 +504,16 @@ class EventoController extends Controller
             Storage::putFileAs($path, $pdfFormAvalExterno, $nome);
 
             $evento->formAvaliacaoExterno = $path . $nome;
+        }
+
+        if(isset($request->pdfFormAvalRelatorio)){
+            $pdfFormAvalRelatorio = $request->pdfFormAvalRelatorio;
+            $extension = $pdfFormAvalRelatorio->extension();
+            $path = 'pdfFormAvalRelatorio/' . $evento->id . '/';
+            $nome = "formulario de avaliação do relatorio" . "." . $extension;
+            Storage::putFileAs($path, $pdfFormAvalRelatorio, $nome);
+
+            $evento->formAvaliacaoRelatorio = $path . $nome;
         }
 
         $evento->update();

@@ -346,22 +346,7 @@
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
-                                                                    <div class="col-12">
-                                                                        @component('componentes.input', ['label' => 'Anexo (.pdf)'])
-                                                                            <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]"  accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
-                                                                            @error('anexoPlanoTrabalho.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
-                                                                            @enderror
-                                                                            @error('anexoPlanoTrabalho')
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
-                                                                            @enderror
-                                                                        @endcomponent
-                                                                        <br>
-                                                                    </div>
+
                                                                     <div class="col-6">
                                                                         <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})">Cancelar</button>
                                                                     </div>
@@ -395,37 +380,7 @@
     </div>
 </div>
 <script>
-    $("input.rg:text").mask('00.000.000-0');
 
-    function marcar(id){
-        let nome = document.getElementById("nome"+id);
-        let linkNome = document.getElementById("nomePart"+(id+1));
-        let linkTituloProj = document.getElementById("tituloProj"+(id+1));
-        let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
-        
-        if(nome.value != ""){
-            if(planoTrabalho.value != ""){
-                linkNome.innerText = `Nome: ${nome.value} \n Título do Plano: ${planoTrabalho.value}`;
-            }else {
-                linkNome.innerText = `Nome: ${nome.value}`;
-            }
-        }
-
-
-        document.getElementById("checkB"+id).checked = true;
-        $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
-        document.getElementById("part"+id).removeAttribute("hidden");
-        document.getElementById("exampleModal"+id).modal('hide');
-
-      
-
-    }
-    function desmarcar(id){
-        document.getElementById("checkB"+id).checked = false;
-        document.getElementById("part"+id).setAttribute("hidden",true);
-        $("#atribuir1").attr('data-target','#exampleModal'+(id));
-        document.getElementById("exampleModal"+id).modal('hide');
-    }
 
 </script>
 <!--X Participantes X-->

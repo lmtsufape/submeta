@@ -28,7 +28,7 @@
 
             <div class="col-md-4">
                 <label for="cpf" class="col-form-label">{{ __('CPF*') }}</label>
-                <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" value="{{ old('cpf') }}" required autocomplete="cpf" autofocus>
+                <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" value="{{ old('cpf') }}" autocomplete="cpf" autofocus>
 
                 @error('cpf')
                 <span class="invalid-feedback" role="alert">
@@ -85,7 +85,7 @@
 
             <div class="col-md-2">
                 <label for="celular" class="col-form-label">{{ __('Celular*') }}</label>
-                <input id="celular" type="text" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ old('celular') }}" required autocomplete="celular" autofocus>
+                <input id="celular" type="text" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ old('celular') }}" autocomplete="celular" autofocus>
 
                 @error('celular')
                 <span class="invalid-feedback" role="alert">

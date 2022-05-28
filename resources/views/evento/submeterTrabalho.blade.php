@@ -185,7 +185,39 @@
     
   });
 
-  
+  $("input.rg:text").mask('00.000.000-0');
+
+  function marcar(id){
+      let nome = document.getElementById("nome"+id);
+      let linkNome = document.getElementById("nomePart"+(id+1));
+      let linkTituloProj = document.getElementById("tituloProj"+(id+1));
+      let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
+
+      if(nome.value != ""){
+          if(planoTrabalho.value != ""){
+              linkNome.innerText = `Nome: ${nome.value} \n Título do Plano: ${planoTrabalho.value}`;
+          }else {
+              linkNome.innerText = `Nome: ${nome.value}`;
+          }
+      }
+
+      document.getElementById("labelAnexoPlanoTrabalho"+id).innerHTML += document.getElementById("nomePlanoTrabalho"+id).value + `<span style="color: red"> *</span>`;
+      document.getElementById("arquivoPlano"+id).removeAttribute("hidden");
+      document.getElementById("checkB"+id).checked = true;
+      $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
+      document.getElementById("part"+id).removeAttribute("hidden");
+      document.getElementById("exampleModal"+id).modal('hide');
+
+
+
+  }
+  function desmarcar(id){
+      document.getElementById("arquivoPlano"+id).setAttribute("hidden", true);
+      document.getElementById("checkB"+id).checked = false;
+      document.getElementById("part"+id).setAttribute("hidden",true);
+      $("#atribuir1").attr('data-target','#exampleModal'+(id));
+      document.getElementById("exampleModal"+id).modal('hide');
+  }
 
 </script>
 

@@ -245,7 +245,19 @@ class AdministradorController extends Controller
 
     public function salvar(Request $request) {
 
-        if ($request->tipo != "proponente") {
+        if($request->tipo == "coordenador") {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'tipo' => ['required'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'senha' => ['required', 'min:8'],
+                'confirmar_senha' => ['required', 'min:8'],
+                'celular' => ($request['celular']!=null ? 'required|string|telefone' : 'nullable'),
+                'cpf' => ($request['cpf']!=null ? 'required|cpf|unique:users' : 'nullable'),
+            ]);
+        }else if ($request->tipo != "proponente") {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
@@ -377,7 +389,18 @@ class AdministradorController extends Controller
     public function update(Request $request, $id) {
         $user = User::find($id);
 
-        if ($request->tipo != "proponente") {
+        if($request->tipo == "coordenador") {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'tipo' => ['required'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'celular' => ($request['celular']!=null ? 'required|string|telefone' : 'nullable'),
+                'cpf' => ($request['cpf']!=null ? 'required|cpf|unique:users' : 'nullable'),
+
+            ]);
+        }else if ($request->tipo != "proponente") {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
