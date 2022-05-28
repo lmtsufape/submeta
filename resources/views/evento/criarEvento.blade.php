@@ -57,7 +57,7 @@
                 @enderror
             </div>
             <div class="col-sm-2">
-                <label for="numParticipantes" class="col-form-label">{{ __('Nº de Bolsistas*:') }}</label>
+                <label for="numParticipantes" class="col-form-label">{{ __('Nº de Discentes*:') }}</label>
 
                 <input id="numParticipantes" type="number" min="1" max="20" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ old('numParticipantes') }}" required autocomplete="numParticipantes" autofocus>
 
