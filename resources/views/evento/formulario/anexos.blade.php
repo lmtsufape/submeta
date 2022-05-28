@@ -50,7 +50,7 @@
 
           @if($edital->consu)
             <div class="form-group col-md-6">
-              <label for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão do CONSEPE: ') }}</label>
+              <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão da Câmara ou Conselho Pertinente: ') }}<span style="color: red; font-weight:bold">*</span></label>
               <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
               @error('anexoDecisaoCONSU')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -60,7 +60,7 @@
             </div>
           @else
             <div class="form-group col-md-6">
-              <label for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão do CONSEPE: ') }}</label>
+              <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão da Câmara ou Conselho Pertinente:') }}</label>
               <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
               @error('anexoDecisaoCONSU')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">

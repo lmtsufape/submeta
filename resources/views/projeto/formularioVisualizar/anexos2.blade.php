@@ -63,7 +63,7 @@
             @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM' || $edital->tipo == "PIBEX")
               {{-- Decisão do CONSU --}}
               <div class="col-sm-4">
-                <label for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão do CONSEPE: ') }}</label>
+                <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Câmara ou Conselho Pertinente: ') }}</label>
                 <a href="{{ route('baixar.anexo.consu', ['id' => $projeto->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
               </div>
             @endif
