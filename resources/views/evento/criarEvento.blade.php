@@ -68,8 +68,8 @@
                 @enderror
             </div>
             <div class="col-sm-3">
-                <label for="consu" class="col-form-label">{{ __('CONSEPE obrigatório?*') }}</label>
-                <input type="checkbox" name="consu" id="consu">
+                <label for="consu" class="col-form-label">{{ __('Decisão da Câmara ou Conselho Pertinente: obrigatório? ') }}<input type="checkbox" name="consu" id="consu"> </label>
+
                 {{-- <input id="consu" type="checkbox" class="form-control @error('consu') is-invalid @enderror" name="consu" @if(old('consu')) checked @endif required autocomplete="consu" autofocus> --}}
 
                 @error('consu')
