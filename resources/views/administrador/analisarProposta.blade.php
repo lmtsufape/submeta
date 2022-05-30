@@ -23,7 +23,7 @@
                             <div class="col-md-12">
                                 <h5 style="color: #234B8B; font-weight: bold">Informações da Proposta
                                     @if($trabalho->arquivado == false)
-                                        <a title="Arquivar"  href='javascript:arquivar.submit()' >
+                                        <a title="Arquivar"  href='javascript:arquivar.submit()'>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>                                        </a>
                                         <form method="GET" name='arquivar' action='{{route('projeto.arquivar')}}' >
                                             @csrf
@@ -32,7 +32,7 @@
                                         </form>
                                     @else
                                         <a title="Desarquivar"  href='javascript:arquivar.submit()'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v11zM9.9 16.1L14 12M9.9 11.9L14 16"/></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v11zM9.9 16.1L14 12M9.9 11.9L14 16"/></svg>
                                         </a>
                                         <form method="GET" name='arquivar' action='{{route('projeto.arquivar')}}' >
                                             @csrf
@@ -171,23 +171,24 @@
                                      role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                         <div class="modal-content">
-
+                                        
                                             <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                 <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
                                                     Informações Participante
                                                     @if($participante->planoTrabalho->arquivado == false)
-                                                        <a title="Arquivar"  href='javascript:arquivar2.submit()' >
+                                                    
+                                                        <a title="Arquivar"  href='javascript:arquivar1{{$participante->id}}.submit()' >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>                                        </a>
-                                                        <form method="GET" name='arquivar2' action='{{route('arquivo.arquivar')}}' >
+                                                        <form method="GET" name='arquivar1{{$participante->id}}' action='{{route('arquivo.arquivar')}}' >
                                                             @csrf
                                                             <input value='{{$participante->planoTrabalho->id}}' name='arquivo_id' type='hidden'/>
                                                             <input value='1' name='arquivar_tipo' type='hidden'/>
                                                         </form>
                                                     @else
-                                                        <a title="Desarquivar"  href='javascript:arquivar2.submit()'>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v11zM9.9 16.1L14 12M9.9 11.9L14 16"/></svg>
+                                                        <a title="Desarquivar"  href='javascript:arquivar2{{$participante->id}}.submit()'>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v11zM9.9 16.1L14 12M9.9 11.9L14 16"/></svg>
                                                         </a>
-                                                        <form method="GET" name='arquivar2' action='{{route('arquivo.arquivar')}}' >
+                                                        <form method="GET" name='arquivar2{{$participante->id}}' action='{{route('arquivo.arquivar')}}' >
                                                             @csrf
                                                             <input value='{{$participante->planoTrabalho->id}}' name='arquivo_id' type='hidden'/>
                                                             <input value='0' name='arquivar_tipo' type='hidden'/>
@@ -901,9 +902,10 @@
                                                     href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
                                         </h9>
                                         <br>
-                                        {{-- <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
-                                             Remover
-                                         </a>--}}
+                                        <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
+                                            Remover
+                                        </a>
+                                        <br>
                                         <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
                                             Reenviar convite
                                         </a>
@@ -938,10 +940,10 @@
                                                         href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
                                             </h9>
                                         @endif
-                                        {{-- <br>
-                                         <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
-                                             Remover
-                                         </a>--}}
+                                        <br>
+                                        <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
+                                            Remover
+                                        </a>
                                         <br>
                                         <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
                                             Reenviar convite
@@ -963,7 +965,7 @@
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
                         <div class="form-row mt-3">
-                            <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Recomendação</h5></div>
+                            <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Recomendação da Proposta</h5></div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
                         <form action="{{ route('trabalho.aprovarProposta', ['id' => $trabalho->id]) }}" method="post">
@@ -982,12 +984,7 @@
                                            @if($trabalho->status=="aprovado") checked @endif>
                                     <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendado</a>
                                     <br>
-                                    <input class="col-md-1" type="radio" id="parcialAprovado" name="statusProp"
-                                           value="corrigido" required
-                                           @if($trabalho->status=="corrigido") checked @endif>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Parcialmente
-                                        Recomendado</a>
-                                    <br>
+
                                     <input class="col-md-1" type="radio" id="reprovado" name="statusProp"
                                            value="reprovado" required
                                            @if($trabalho->status=="reprovado") checked @endif>
