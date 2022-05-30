@@ -195,14 +195,12 @@
 
       if(nome.value != ""){
           if(planoTrabalho.value != ""){
-              linkNome.innerText = `Nome: ${nome.value} \n Título do Plano: ${planoTrabalho.value}`;
+              linkNome.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value}`;
           }else {
               linkNome.innerText = `Nome: ${nome.value}`;
           }
       }
 
-      document.getElementById("labelAnexoPlanoTrabalho"+id).innerHTML += document.getElementById("nomePlanoTrabalho"+id).value + `<span style="color: red"> *</span>`;
-      document.getElementById("arquivoPlano"+id).removeAttribute("hidden");
       document.getElementById("checkB"+id).checked = true;
       $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
       document.getElementById("part"+id).removeAttribute("hidden");

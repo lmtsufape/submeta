@@ -346,6 +346,21 @@
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
+                                                                    <div class="col-12">
+                                                                        @component('componentes.input', ['label' => 'Anexo (.pdf)'])
+                                                                            <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]"  accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
+                                                                            @error('anexoPlanoTrabalho.'.$i)
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                                                                            @enderror
+                                                                            @error('anexoPlanoTrabalho')
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                      <strong>{{ $message }}</strong>
+                                    </span>
+                                                                            @enderror
+                                                                        @endcomponent
+                                                                    </div>
 
                                                                     <div class="col-6">
                                                                         <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})">Cancelar</button>
