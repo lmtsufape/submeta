@@ -39,9 +39,13 @@
 								</button>
 							@else
 								<!-- Button trigger modal -->
-								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">
-									@if($arquivo->relatorioParcial!=null)Visualizar @elseif($arquivo->arquivado) Arquivado @else Pendente @endif
-								</button>
+								@if($arquivo->relatorioParcial != null)
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Visualizar </button>
+								@elseif($arquivo->arquivado)
+									<button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Arquivado </button>
+								@else
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Pendente </button>
+								@endif
 							@endif
 						</td>
 
@@ -54,10 +58,14 @@
 									</button>
 							@else
 								<!-- Button trigger modal -->
-									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">
-										@if($arquivo->relatorioFinal!=null)Visualizar @elseif($arquivo->arquivado) Arquivado @else Pendente @endif
-									</button>
+								@if($arquivo->relatorioParcial != null)
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Visualizar </button>
+								@elseif($arquivo->arquivado)
+									<button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Arquivado </button>
+								@else
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Pendente </button>
 								@endif
+							@endif
 						</td>
 
 						<!-- Modal Relatorio Parcial-->
