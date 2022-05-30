@@ -18,7 +18,7 @@
                                         <option value="reprovado">Não Recomendados</option>
                                         <option value="submetido">Submetidos</option>
                                         <option value="avaliado">Avaliados</option>
-                                        <option value="corrigido">Parcialmente Recomendados</option>
+                                        
                                     
                                         
                                         @foreach($grandesAreas as $grandeArea)
@@ -47,8 +47,8 @@
                     <input type="text" class="form-control form-control-edit" placeholder="Título do projeto ou nome do Proponente" onkeyup="buscar(this)"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
                 </div>
 
-                <div class="col-sm-5" style="top: 40px; text-align: end;">
-                    <h6 style="color: #234B8B; font-weight: bold;font-size: 13px; text-align: right;padding-bottom: 35px">
+                <div class="col-sm-5" style="display:flex; align-items: center;">
+                    <h6 style="color: #234B8B; font-weight: bold; margin-left: 30px;">
                         <img src="{{asset('img/icons/pendente.png')}}" style="width: 22px"/>
                         Proposta Pendente
                         <img src="{{asset('img/icons/aprovado.png')}}" style="width: 22px"/>
@@ -56,8 +56,7 @@
                         <img src="{{asset('img/icons/negado.png')}}" style="width: 22px"/>
                         Proposta Negada
                         <br>
-                        <img src="{{asset('img/icons/parcialmenteAprovado.png')}}" style="width: 22px"/>
-                        Proposta Parcialmente Recomendada
+                        
                     </h6>
                 </div>
             </div>
@@ -82,8 +81,7 @@
                                                                     <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
                                                                 @elseif($trabalho->status == "reprovado")
                                                                     <img src="{{asset('img/icons/negado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
-                                                                @elseif($trabalho->status == "corrigido")
-                                                                    <img src="{{asset('img/icons/parcialmenteAprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
+                                                                
                                                                 @else
                                                                     <img src="{{asset('img/icons/pendente.png')}}" style="width: 20%;margin: auto;display: flex;justify-content: center;align-items: center;" alt="">
                                                                 @endif
