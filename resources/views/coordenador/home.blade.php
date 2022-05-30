@@ -63,7 +63,7 @@
                 @elseif($hoje > $evento->fimSubmissao)
                     <a href="{{  route('evento.visualizarNaoLogado', ['id'=>$evento->id])  }}" style="text-decoration: none" class="encerrado">
                 @else
-                    <a href="{{  route('evento.visualizar',['id'=> $evento->id])  }}" style="text-decoration: none" class="vaiAbrir">
+                    <a href="{{  route('evento.visualizarNaoLogado',['id'=> $evento->id])  }}" style="text-decoration: none" class="vaiAbrir">
                 @endif
             @endif
                 <div class="card" style="width: 18rem; border-radius:12px; border-width:0px; margin:10px">
@@ -232,6 +232,11 @@
                 vaiAbrir[l].style.display = "none";
             }
         }else if(select.value == "abrira"){
+
+            for(let l = 0; l < vaiAbrir.length; l++ ){
+                vaiAbrir[l].style.display = "";
+            }
+
             for(let i = 0; i < abertos.length; i++){
                 abertos[i].style.display = "none";
             }
@@ -240,10 +245,12 @@
                 encerrados[j].style.display = "none";
             }
 
-            for(let l = 0; l < vaiAbrir.length; l++ ){
-                vaiAbrir[l].style.display = "";
-            }
         }else {
+
+            for(let j = 0; j < encerrados.length; j++ ){
+                encerrados[j].style.display = "";
+            }
+
             for(let i = 0; i < abertos.length; i++){
                 abertos[i].style.display = "none";
             }
@@ -252,9 +259,6 @@
                 vaiAbrir[l].style.display = "none";
             }
 
-            for(let j = 0; j < encerrados.length; j++ ){
-                encerrados[j].style.display = "";
-            }
         }
 
         
