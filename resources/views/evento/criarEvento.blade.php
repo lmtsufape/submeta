@@ -163,12 +163,12 @@
                                 <tr>
                                     <td>{{$coordenador->user->name}}</td>
                                     <td>{{$coordenador->user->email}}</td>
-                                    @if($coordenador->user->instituicao |= null)
+                                    @if($coordenador->user->celular != null)
                                         <td>{{$coordenador->user->celular}}</td>
                                     @else
                                         <td>Não Definido</td>
                                     @endif
-                                    @if($coordenador->user->instituicao |= null)
+                                    @if($coordenador->user->instituicao != null)
                                         <td>{{$coordenador->user->instituicao}}</td>
                                     @else
                                         <td>Não Definida</td>
