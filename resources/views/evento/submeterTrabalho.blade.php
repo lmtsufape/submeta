@@ -192,13 +192,15 @@
       let linkNome = document.getElementById("nomePart"+(id+1));
       let linkTituloProj = document.getElementById("tituloProj"+(id+1));
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
-
       if(nome.value != ""){
           if(planoTrabalho.value != ""){
               linkNome.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value}`;
           }else {
               linkNome.innerText = `Nome: ${nome.value}`;
           }
+      }
+      if(id >=1){
+          document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
       }
 
       document.getElementById("checkB"+id).checked = true;
@@ -210,7 +212,9 @@
 
   }
   function desmarcar(id){
-      document.getElementById("arquivoPlano"+id).setAttribute("hidden", true);
+      if(id >= 1){;
+          document.getElementById("cancelar"+(id-1)).removeAttribute("disabled");
+      }
       document.getElementById("checkB"+id).checked = false;
       document.getElementById("part"+id).setAttribute("hidden",true);
       $("#atribuir1").attr('data-target','#exampleModal'+(id));
