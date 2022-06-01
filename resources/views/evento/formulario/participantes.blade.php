@@ -18,7 +18,7 @@
                         <li id="item">
                             <div style="margin-bottom:15px">
                                 <div id="participante" class="row">
-                                    @for($i = 0; $i < 5; $i++)
+                                    @for($i = 0; $i < $edital->numParticipantes; $i++)
 
                                         <div @if(!isset(old('marcado')[$i])) hidden @endif class="form-row mb-1 col-md-3" style="margin-top: 10px" id="part{{$i}}">
                                             <div class="col-sm-4" style="display: flex; align-items: center;">

@@ -805,14 +805,23 @@ class TrabalhoController extends Controller
                 return back()->withErrors(['Proposta não encontrada']);
             }
 
-            $trabalho->update($request->except([
-                'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'justificativaAutorizacaoEtica', 'anexoAutorizacaoComiteEtica'
+            if($evento->tipo=="PIBEX"){
+                $trabalho->update($request->except([
+                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade'
+                    ]));
+            }else{
+                $trabalho->update($request->except([
+                        'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
+                        'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
+                        'justificativaAutorizacaoEtica','modalidade'
+                    ]));
+            }
 
-            ]));
             $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
+
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->save();
+
 
             if ($request->marcado == null) {
                 $idExcluido = $trabalho->participantes->pluck('id');
@@ -883,8 +892,11 @@ class TrabalhoController extends Controller
                         $endereco = Endereco::create($data);
                         $endereco->user()->save($user);
                         $participante = Participante::create($data);
+                        $participante->data_entrada = $participante->created_at;
                         $user->participantes()->save($participante);
                         $trabalho->participantes()->save($participante);
+                        $participante->trabalho_id = $trabalho->id;
+                        $participante->save();
 
                     } else {
                         // $user = $participante->user;
@@ -905,10 +917,9 @@ class TrabalhoController extends Controller
 
                     }
 
-
-                    if ($request->has('anexoPlanoTrabalho') && array_key_exists($part, $request->anexoPlanoTrabalho)) {
+                    if ($request->has('anexoPlanoTrabalho') && array_key_exists($part, $request->anexoPlanoTrabalho) && $request->nomePlanoTrabalho[$part] != null) {
                         if (Arquivo::where('participanteId', $participante->id)->count()) {
-                            $arquivo = Arquivo::where('participanteId', $participante->id)->first();
+                            $arquivo = Arquivo::where('participanteId', $participante->id)->where('trabalhoId', $trabalho->id)->first();
                             $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
                             $nome = $data['nomePlanoTrabalho'] . ".pdf";
                             $titulo = $data['nomePlanoTrabalho'];
