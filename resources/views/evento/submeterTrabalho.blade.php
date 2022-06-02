@@ -198,6 +198,8 @@
           }else {
               linkNome.innerText = `Nome: ${nome.value}`;
           }
+      }else{
+          linkNome.innerText = `Discente `+(id+1);
       }
       if(id >=1){
           document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
