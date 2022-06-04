@@ -128,7 +128,7 @@ class ArquivoController extends Controller
         }
         $hoje = Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
-        return view('planosTrabalho.listar')->with(['arquivos' => $arquivos, 'hoje' => $hoje]);
+        return view('planosTrabalho.listar')->with(['arquivos' => $arquivos, 'hoje' => $hoje, 'trabalho' => $trabalho]);
     }
 
     public function anexarRelatorio(Request $request){
