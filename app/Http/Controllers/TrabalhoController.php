@@ -956,8 +956,6 @@ class TrabalhoController extends Controller
             DB::commit();
             if (!$request->has('rascunho')) {
                 Notification::send(Auth::user(), new SubmissaoNotification($id,$trabalho->titulo));
-            } else {
-
             }
             return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta atualizada!']);
 

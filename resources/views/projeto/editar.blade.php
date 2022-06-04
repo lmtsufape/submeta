@@ -128,7 +128,7 @@
     
   })
   buttonRascunho.addEventListener('click', (e)=>{
-    $('.collapse').addClass('show')
+    $('.collapse').addClass('show');
     const input = '<input id="input_rascunho" type="hidden" name="rascunho" value="true">';
     $("#updateProjetoForm").append(input);
   })
