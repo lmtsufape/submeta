@@ -1,4 +1,5 @@
 <!-- Participantes -->
+@php $cont= 0; @endphp
 <div class="col-md-12" style="margin-top: 20px">
     <div class="card" style="border-radius: 5px">
         <div class="card-body" style="padding-top: 0.2rem;">
@@ -25,7 +26,10 @@
                                             </div>
                                             <div class="col-sm-8" style="display: flex; align-items: center;">
                                                 <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">
-                                                    Discente {{$i+1}}
+                                                    @if(isset(old('marcado')[$i]))
+                                                        @if(isset(old('name')[$i]))Nome: {{old('name')[$i]}} @else Discente {{$i+1}} @endif
+                                                            @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @endif
+                                                    @endif
                                                 </a>
                                             </div>
                                         </div>
@@ -363,7 +367,7 @@
                                                                     </div>
 
                                                                     <div class="col-6">
-                                                                        <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})">Cancelar</button>
+                                                                        <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Cancelar</button>
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <button data-dismiss="modal" type="button" id="guardar{{$i}}" class="btn btn-success float-right" style="font-size: 16px" onclick="marcar({{$i}})">Salvar</button>

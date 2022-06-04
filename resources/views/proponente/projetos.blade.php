@@ -88,24 +88,28 @@
                             </a>
                             <div class="dropdown-menu">
 
+                                @if($projeto->evento->inicioSubmissao <= $hoje && $hoje <= $projeto->evento->fimSubmissao)
+                                    <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
+                                        Editar
+                                    </a>
+                                    <hr class="dropdown-hr">
+                                @endif
+
                                 @if( $projeto->status== 'aprovado')
                                     <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
                                         Solicitar Substituições
                                     </a>
                                     <hr class="dropdown-hr">
 
-                                    <a href="{{route('docComplementar.listar', ['projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
-                                        Documentos Complementares
-                                    </a>
-
                                     {{--<hr class="dropdown-hr">
-
                                     <a href="" class="dropdown-item" style="text-align: center">
                                         Solicitar Certificado
                                     </a>--}}
-                                    <hr class="dropdown-hr">
-
                                 @endif
+                                <a href="{{route('docComplementar.listar', ['projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
+                                        Documentos Complementares
+                                </a>
+                                    <hr class="dropdown-hr">
                                 <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
                                     Visualizar
                                 </a>
@@ -115,7 +119,6 @@
                                     Relatórios
                                 </a>
 
-                                <hr class="dropdown-hr">
                             {{-- <a href="" class="dropdown-item" style="text-align: center">
                               Recorrer
                             </a>
