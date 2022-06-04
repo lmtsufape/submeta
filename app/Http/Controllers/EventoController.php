@@ -323,7 +323,9 @@ class EventoController extends Controller
 
         $trabalhosId = Trabalho::where('evento_id', $evento->id)->select('id')->get();
 
-        $mytime = Carbon::now('America/Recife');
+        
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
         // dd(false);
         return view('evento.visualizarEvento', [
             'evento'              => $evento,
@@ -332,7 +334,7 @@ class EventoController extends Controller
             'hasTrabalho'         => $hasTrabalho,
             // 'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
             'hasFile'             => $hasFile,
-            'mytime'              => $mytime
+            'hoje'              => $hoje
         ]);
     }
 
@@ -345,7 +347,8 @@ class EventoController extends Controller
         $trabalhos = null;
         $trabalhosCoautor = null;
 
-        $mytime = Carbon::now('America/Recife');
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
         // dd(false);
         return view('evento.visualizarEvento', [
             'evento'              => $evento,
@@ -354,7 +357,7 @@ class EventoController extends Controller
             'hasTrabalho'         => $hasTrabalho,
             'hasTrabalhoCoautor'  => $hasTrabalhoCoautor,
             'hasFile'             => $hasFile,
-            'mytime'              => $mytime
+            'hoje'              => $hoje
         ]);
     }
 

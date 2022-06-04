@@ -110,9 +110,9 @@
                       <div class="card-body">
                         <div class="form-row">
                           
-                          @if($evento->inicioSubmissao <= $mytime)
-                            @if($mytime < $evento->fimSubmissao)
-
+                          @if($evento->inicioSubmissao <= $hoje)
+                            @if($hoje <= $evento->fimSubmissao)
+                            
                             <div class="col-md-12" style="margin-bottom:18px">
                               @if(false) {{-- Agendamento para o dia 01/07/2021 as 12:30:00--}}
                                 <a class="btn btn-success" data-toggle="modal" data-target="#exampleModal" style="width:100%; height:50px; padding-top:7px; font-size:20px; color:#fff"><img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
@@ -286,7 +286,7 @@
 
 
 
-<!--
+{{--
     <div class="row justify-content-center" style="margin: 20px 0 20px 0">
 
         <div class="col-md-6 botao-form-left" style="">
@@ -314,7 +314,7 @@
 
     </div>
 
-  -->
+--}}
 
 @endsection
 
