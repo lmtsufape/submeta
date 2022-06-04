@@ -918,7 +918,7 @@ class TrabalhoController extends Controller
                     }
 
                     if ($request->has('anexoPlanoTrabalho') && array_key_exists($part, $request->anexoPlanoTrabalho) && $request->nomePlanoTrabalho[$part] != null) {
-                        if (Arquivo::where('participanteId', $participante->id)->count()) {
+                        if (Arquivo::where('participanteId', $participante->id)->where('trabalhoId', $trabalho->id)->count()) {
                             $arquivo = Arquivo::where('participanteId', $participante->id)->where('trabalhoId', $trabalho->id)->first();
                             $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
                             $nome = $data['nomePlanoTrabalho'] . ".pdf";
