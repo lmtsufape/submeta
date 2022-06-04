@@ -788,7 +788,7 @@
                                                 <div class="form-group">
                                                     <div class="row" style="margin-left: 2px;margin-bottom: 1px">
 
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-4">
                                                             <label for="exampleFormControlSelect2"
                                                                    style="font-size: 16px;">Selecione o(s) avaliador(es)
                                                                 para esse projeto</label>
@@ -810,7 +810,7 @@
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-md-3"
+                                                        <div class="col-md-2"
                                                              style="text-align: center;overflow-y:  auto;overflow-x:  auto">
                                                             <input type="hidden" id="oldArea" value="{{ old('area') }}">
                                                             <select class="form-control @error('area') is-invalid @enderror"
@@ -819,6 +819,10 @@
                                                                 <option value="" disabled selected hidden>-- Área --
                                                                 </option>
                                                             </select>
+                                                        </div>
+                                                        
+                                                        <div class="col-sm-3" style="display:flex; align-items: end;">
+                                                        <input type="text" class="form-control form-control-edit" placeholder="Nome do avaliador" onkeyup="buscar(this)" style="max-width: 200px;"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
                                                         </div>
 
                                                     </div>
@@ -901,10 +905,10 @@
                                         <h9>@if($parecerInterno == null) Pendente @else <a
                                                     href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
                                         </h9>
-                                        {{--<br>
+                                        <br>
                                          <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
                                             Remover
-                                        </a> --}}
+                                        </a>
                                         <br>
                                         <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
                                             Reenviar convite
@@ -940,10 +944,10 @@
                                                         href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
                                             </h9>
                                         @endif
-                                        {{--<br>
+                                        <br>
                                         <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
                                             Remover
-                                        </a> --}}
+                                        </a>
                                         <br>
                                         <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
                                             Reenviar convite
@@ -1880,6 +1884,41 @@
                 document.getElementById('div-outra').style.display = "none";
                 $("#outra").prop('required', false);
             }
+        }
+    </script>
+
+    <script>
+        //let seletor = document.getElementsByClassName('aval1')
+        //console.log(seletor[0].children[0].text)
+
+        function buscar(input) {
+            let seletor1 = document.getElementById('exampleFormControlSelect2').children;
+            let seletor2 = document.getElementById('exampleFormControlSelect3').children;
+
+            for(let i = 0; i < seletor1.length; i++){
+                let nomeAval1 = seletor1[i].textContent
+
+
+                if(nomeAval1.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0){
+                    seletor1[i].style.display = "";
+                }else {
+                    seletor1[i].style.display = "none";
+                }
+
+            }
+
+            for(let j = 0; j < seletor2.length; j++){
+                let nomeAval1 = seletor2[j].textContent
+
+
+                if(nomeAval1.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0){
+                    seletor2[j].style.display = "";
+                }else {
+                    seletor2[j].style.display = "none";
+                }
+
+            }
+            
         }
     </script>
 @endsection
