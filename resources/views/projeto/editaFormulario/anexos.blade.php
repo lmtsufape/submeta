@@ -4,7 +4,7 @@
     <div class="card-body" style="padding-top: 0.2rem;">
       <div class="container">
         <div class="form-row mt-3">
-          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Anexos</h5></div>
+          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Anexos do Projeto</h5></div>
         </div>
         <hr style="border-top: 1px solid#1492E6; margin-bottom: 10px" >
 
