@@ -24,7 +24,7 @@
                         <th scope="col" style="width:200px; text-align: center;">Relatório Final</th>
                     </tr>
 				</thead>
-
+					
 					@foreach($arquivos as $arquivo)
                         <tbody>
 
@@ -34,36 +34,49 @@
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
 								<!-- Button trigger modal -->
-								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">
-									@if($arquivo->arquivado) Arquivado @else Enviar @endif
-								</button>
+								@if($arquivo->arquivado)
+									<button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">Arquivado</button>
+
+								@elseif($trabalho->status == "reprovado")
+									<button type="button"  class="btn btn-danger" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">Reprovado</button>
+								@else
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">Enviar</button>
+								@endif
 							@else
 								<!-- Button trigger modal -->
 								@if($arquivo->relatorioParcial != null)
 									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Visualizar </button>
 								@elseif($arquivo->arquivado)
 									<button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Arquivado </button>
+								@elseif($trabalho->status == "reprovado")
+									<button type="button"  class="btn btn-danger" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}">Reprovado</button>
 								@else
 									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Pendente </button>
 								@endif
 							@endif
 						</td>
-
+						
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioFinal == null) &&
 								 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
 								<!-- Button trigger modal -->
-									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">
-										@if($arquivo->arquivado) Arquivado @else Enviar @endif
-									</button>
+								@if($arquivo->arquivado)
+									<button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">Arquivado</button>
+								@elseif($trabalho->status == "reprovado")
+									<button type="button"  class="btn btn-danger" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">Reprovado</button>
+								@else
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">Enviar</button>
+								@endif
 							@else
 								<!-- Button trigger modal -->
-								@if($arquivo->relatorioParcial != null)
-									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Visualizar </button>
+								@if($arquivo->relatorioFinal != null)
+									<button type="button"  class="btn btn-primary" data-toggle="modal" ddata-target="#modalRelatorioFinal{{ $arquivo->id }}"> Visualizar </button>
 								@elseif($arquivo->arquivado)
-									<button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Arquivado </button>
+									<button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}"> Arquivado </button>
+								@elseif($trabalho->status == "reprovado")
+									<button type="button"  class="btn btn-danger" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">Reprovado</button>
 								@else
-									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioParcial{{ $arquivo->id }}"> Pendente </button>
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}"> Pendente </button>
 								@endif
 							@endif
 						</td>
@@ -125,7 +138,7 @@
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                             @if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
-												<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
+												<button type="submit" class="btn btn-success" @if($arquivo->arquivado || $trabalho->status == "reprovado") disabled @endif >Salvar</button>
 											@endif
 										</div>
 
