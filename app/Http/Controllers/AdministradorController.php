@@ -57,7 +57,7 @@ class AdministradorController extends Controller
     public function editais(){
     	//$admin = Administrador::with('user')->where('user_id', Auth()->user()->id)->first();
     	//$eventos = Evento::where('coordenadorId',$admin->id )->get();
-        $eventos = Evento::all()->sortBy('nome');
+        $eventos = Evento::all()->sortByDesc('created_at');
 
     	return view('administrador.editais', ['eventos'=> $eventos]);
     }
