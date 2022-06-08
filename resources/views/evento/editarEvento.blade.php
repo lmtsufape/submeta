@@ -405,8 +405,8 @@
                     <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                         <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                     </a>
-                    <input type="file" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
-                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    <input type="file" accept=".pdf,.doc,.docx,.xlsx, .xls, .csv" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
+                    <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('pdfFormAvalExterno')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
