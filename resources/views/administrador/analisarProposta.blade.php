@@ -835,19 +835,28 @@
                                                     <select name="avaliadores_internos_id[]" multiple
                                                             class="form-control" id="exampleFormControlSelect2"
                                                             style="height: 200px;font-size: 15px">
-                                                        @foreach ($trabalho->aval as $avaliador)
-                                                            @if($avaliador->tipo == "Interno")
-                                                                <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
+
+                                                        @foreach ($trabalho->avaliadors as $avaliador)
+                                                            @if($avaliador->tipo == "Interno" && $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1)
+                                                                <option value="{{ $avaliador->id }}">{{ $avaliador->user->name }}
                                                                     > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
                                                                     > {{$avaliador->area->nome ?? 'Indefinida'}}
                                                                     > {{$avaliador->user->email}}</option>
                                                             @endif
                                                         @endforeach
+                                                        @foreach ($trabalho->aval as $avaliador)
+                                                            @if($avaliador->tipo == "Interno")
+                                                                <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
+                                                                     > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
+                                                                     > {{$avaliador->area->nome ?? 'Indefinida'}}
+                                                                     > {{$avaliador->user->email}}</option>
+                                                                @endif
+                                                        @endforeach
                                                     </select>
 
 
                                                     <div class="col-md-6">
-                                                        <label style="font-weight: bold;font-size: 18px">Externos</label>
+                                                        <label style="font-weight: bold;font-size: 18px"><i>Ad Hoc</i></label>
                                                     </div>
 
                                                     <input type="hidden" id="trab" value="{{$trabalho->id}}">
@@ -856,13 +865,19 @@
                                                     <select name="avaliadores_externos_id[]" multiple
                                                             class="form-control" id="exampleFormControlSelect3"
                                                             style="height: 200px;font-size:15px">
-                                                        @foreach ($trabalho->aval as $avaliador)
-                                                            @if($avaliador->tipo == "Externo")
-                                                                <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
+                                                        @foreach ($trabalho->avaliadors as $avaliador)
+                                                            @if($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2)
+                                                                <option value="{{ $avaliador->id }}">{{ $avaliador->user->name }}
                                                                     > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
                                                                     > {{$avaliador->area->nome ?? 'Indefinida'}}
                                                                     > {{$avaliador->user->email}}</option>
                                                             @endif
+                                                        @endforeach
+                                                        @foreach ($trabalho->aval as $avaliador)
+                                                                <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
+                                                                    > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
+                                                                    > {{$avaliador->area->nome ?? 'Indefinida'}}
+                                                                    > {{$avaliador->user->email}}</option>
                                                         @endforeach
                                                     </select>
 
@@ -893,7 +908,7 @@
                         </div>
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
-                                @if($avaliador->tipo == 'Interno')
+                                @if($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3))
                                     <div class="col-sm-1">
                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                                     </div>
@@ -921,29 +936,22 @@
                         <!--Comissão Externa-->
                         <div class="row justify-content-start" style="alignment: center">
                             <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores -
-                                    Externos</h6></div>
+                                    <i>Ad Hoc</i></h6></div>
                         </div>
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
-                                @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
+                                @if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) )
                                     <div class="col-sm-1">
                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                                     </div>
                                     <div class="col-sm-5">
                                         <h5>{{$avaliador->user->name}}</h5>
-                                        @if($avaliador->tipo == 'Externo' || $avaliador->tipo == null)
+                                     
                                             <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
                                                     Pendente @else <a
                                                             href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
                                             </h9>
-                                        @else
-                                            @php
-                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                                            @endphp
-                                            <h9>@if($parecerInterno == null) Pendente @else <a
-                                                        href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
-                                            </h9>
-                                        @endif
+
                                         <br>
                                         <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" >
                                             Remover

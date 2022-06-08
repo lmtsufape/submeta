@@ -642,25 +642,47 @@ class AdministradorController extends Controller
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         $evento = Evento::where('id', $request->evento_id)->first();
         
-        if($request->avaliadores_internos_id == null){
-            $avaliadoresInternos = [];
-        }else{
-            $avaliadoresInternos = $request->avaliadores_internos_id;
+        if($request->avaliadores_internos_id != null){
+            foreach ($request->avaliadores_internos_id as $avaliador) {
+                $aval = Avaliador::find($avaliador);
+                if($aval->trabalhos()->where("trabalho_id",$trabalho->id)->first() != null){
+                    $aval->trabalhos()
+                        ->updateExistingPivot($trabalho->id,['acesso'=>3]);
+                }else{
+                    $trabalho->avaliadors()->attach($aval,['acesso'=>2]);
+                    $evento->avaliadors()->syncWithoutDetaching($aval);
+                }
+            }
         }
 
-        if($request->avaliadores_externos_id == null){
-            $avaliadoresExternos = [];
-        }else{
-            $avaliadoresExternos = $request->avaliadores_externos_id;
-        }
-        $idsAvaliadores = array_merge($avaliadoresInternos, $avaliadoresExternos);
-        if($idsAvaliadores == null){
-            redirect()->back()->with(['error' => 'Selecione ao menos um avaliador.', 'trabalho' => $trabalho->id]);
-        }
-        $avaliadores = Avaliador::whereIn('id', $idsAvaliadores)->get();
-        $trabalho->avaliadors()->attach($avaliadores);
-        $evento->avaliadors()->syncWithoutDetaching($avaliadores);
-        $trabalho->save();
+
+      if($request->avaliadores_externos_id != null){
+            foreach ($request->avaliadores_externos_id as $avaliador) {
+
+                $aval = Avaliador::find($avaliador);
+                if(Avaliador::where('id',$avaliador)->where('tipo',"Interno")->count()>0){
+                    if($aval->trabalhos()->where("trabalho_id",$trabalho->id)->first() != null){
+                        $aval->trabalhos()
+                            ->updateExistingPivot($trabalho->id,['acesso'=>3]);
+                    }else{
+                        $trabalho->avaliadors()->attach($aval,['acesso'=>1]);
+                        $evento->avaliadors()->syncWithoutDetaching($aval);
+                    }
+                }else{
+                    $trabalho->avaliadors()->attach($aval,['acesso'=>1]);
+                    $evento->avaliadors()->syncWithoutDetaching($aval);
+                }
+            }
+      }
+
+      if($request->avaliadores_externos_id == null & $request->avaliadores_internos_id == null ){
+          redirect()->back()->with(['error' => 'Selecione ao menos um avaliador.', 'trabalho' => $trabalho->id]);
+      }
+
+      $avaliadores = Avaliador::whereIn('id', (array)$request->avaliadores_externos_id)
+          ->orWhereIn('id', (array)$request->avaliadores_internos_id)->get();
+      $trabalho->save();
+
 
         foreach ($avaliadores as $avaliador){
 

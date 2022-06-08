@@ -71,11 +71,22 @@ class AvaliadorController extends Controller
 
         $user = User::find(Auth::user()->id);
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
+        //$trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
+        $trabalhosEx = [];
+        $trabalhosIn = [];
+        $aval = $user->avaliadors->where('user_id',$user->id)->first();
+        foreach ($aval->trabalhos as $trab){
+            if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 2 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3 ){
+                array_push($trabalhosIn,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+            }
+            if ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 1 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3){
+                array_push($trabalhosEx,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+            }
+        }
 
     	//dd();
 
-    	return view('avaliador.listarTrabalhos', ['trabalhos'=>$trabalhos, 'evento'=>$evento]);
+    	return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'evento'=>$evento]);
 
     }
 
@@ -121,7 +132,18 @@ class AvaliadorController extends Controller
     public function enviarParecerInterno(Request $request){
         $user = User::find(Auth::user()->id);
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
+        //$trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
+        $trabalhosEx = [];
+        $trabalhosIn = [];
+        $aval = $user->avaliadors->where('user_id',$user->id)->first();
+        foreach ($aval->trabalhos as $trab){
+            if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 2 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3 ){
+                array_push($trabalhosIn,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+            }
+            if ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 1 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3){
+                array_push($trabalhosEx,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+            }
+        }
         $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
         $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
         $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
@@ -168,7 +190,7 @@ class AvaliadorController extends Controller
             $parecerInterno->update();
         }
 
-        return view('avaliador.listarTrabalhos', ['trabalhos'=>$trabalhos, 'evento'=>$evento]);
+        return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'evento'=>$evento]);
     }
 
     public function parecerPlano(Request $request){
@@ -188,8 +210,19 @@ class AvaliadorController extends Controller
         
 
         $evento = Evento::find($request->evento_id);
-        $trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
-      	$avaliador = $user->avaliadors->where('user_id',$user->id)->first();
+        //$trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
+        $trabalhosEx = [];
+        $trabalhosIn = [];
+        $aval = $user->avaliadors->where('user_id',$user->id)->first();
+        foreach ($aval->trabalhos as $trab){
+            if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 2 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3 ){
+                array_push($trabalhosIn,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+            }
+            if ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 1 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3){
+                array_push($trabalhosEx,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+            }
+        }
+        $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
       	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
         $trabalho->status = 'avaliado';
         $trabalho->save();
@@ -221,7 +254,7 @@ class AvaliadorController extends Controller
   
     	//	dd($trabalho);
 
-    	return view('avaliador.listarTrabalhos', ['trabalhos'=>$trabalhos, 'evento'=>$evento ]);
+    	return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'evento'=>$evento ]);
     }
     public function conviteResposta(Request $request){
         //dd($request->all());

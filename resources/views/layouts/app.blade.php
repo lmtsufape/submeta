@@ -175,7 +175,7 @@
                                 @if(Auth::user()->avaliadors->tipo == "Interno")
                                     <a href="" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);pointer-events: none;" >Comissão Interna</a>
                                 @elseif(Auth::user()->avaliadors->tipo == "Externo")
-                                    <a href="" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);pointer-events: none;" >Comissão Externa</a>
+                                    <a href="" class="btn navbar-text negrito " style="color: rgb(0, 140, 255);pointer-events: none;" >Comissão <i>Ad Hoc</i></a>
                                 @endif
                             @endif
 

@@ -421,7 +421,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfFormAvalExterno">Formulário de avaliação externa:</label>
+                    <label for="pdfFormAvalExterno">Formulário para avaliador <i>ad hoc</i>:</label>
                     @if(old('pdfFormAvalExternoPreenchido') != null)
                         <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoExterno' ])}}">Arquivo atual</a>
                     @endif

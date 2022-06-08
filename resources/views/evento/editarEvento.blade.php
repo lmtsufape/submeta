@@ -401,7 +401,7 @@
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">Formulário de avaliação externa:</label>
+                    <label for="pdfEdital">Formulário para avaliador <i>ad hoc</i>:</label>
                     <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                         <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                     </a>

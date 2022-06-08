@@ -8,7 +8,7 @@
 		<div class="row justify-content-center" style="margin-top: 2rem;">
 			<div class="col-md-12 form-group" style="text-align: center">
 				<h5 style="color: #1492E6; margin-top:0.5rem; font-size:25px">Página inicial</h5>
-				<h5 style="color: #909090; margin-top:0.7rem; font-size:22px; font-weight:normal">Avaliador {{Auth::user()->avaliadors->tipo}}</h5>
+				<h5 style="color: #909090; margin-top:0.7rem; font-size:22px; font-weight:normal">Avaliador @if(Auth::user()->avaliadors->tipo == "Externo") <i>Ad Hoc</i>@else Interno @endif</h5>
 			</div>
 		  <div class="" style="text-align: center">
 			<div class="form-group imagem_shadow" style="border-radius: 12px; padding:14px; height:200px; width:190px; margin:15px">
