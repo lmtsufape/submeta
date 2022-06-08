@@ -741,8 +741,7 @@
                     <div class="container">
                         <div class="form-row mt-3">
                             <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Avaliadores</h5></div>
-
-                            @if($hoje <= $evento->fimSubmissao)
+                            @if($hoje >= $evento->inicioRevisao && $hoje <= $evento->fimRevisao)
                                 <div class="col-md-1 text-sm-right">
                                     <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#avaliadorModalCenter">
                                         <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
