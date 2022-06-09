@@ -76,10 +76,14 @@ class AvaliadorController extends Controller
         $trabalhosIn = [];
         $aval = $user->avaliadors->where('user_id',$user->id)->first();
         foreach ($aval->trabalhos->where('evento_id',$evento->id) as $trab){
-            if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 2 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3 ){
+            if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 2
+                || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3 ||
+            ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == null && $aval->tipo == "Interno")){
                 array_push($trabalhosIn,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
             }
-            if ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 1 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3){
+            if ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 1 ||
+                $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3 ||
+            ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == null && $aval->tipo == "Externo")){
                 array_push($trabalhosEx,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
             }
         }
