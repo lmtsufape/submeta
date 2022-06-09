@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="col-md-10" style="padding: 0px"
-		@component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho])
+		@component('projeto.formularioVisualizar.proponente2', ['edital' => $trabalho->evento, 'projeto' => $trabalho])
 		@endcomponent
 		</div>
 
