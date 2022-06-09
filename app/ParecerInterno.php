@@ -19,6 +19,7 @@ class ParecerInterno extends Model
         'statusJustificativaAutorizacaoEtica',
         'statusParecer',
         'statusPlanoTrabalho',
+        'comentario',
 
         'trabalho_id',
         'avaliador_id',
