@@ -21,7 +21,7 @@
                 ['edital' => $edital, 'projeto' => $projeto])
       @endcomponent
 
-      @component('projeto.formularioVisualizar.proponente2', ['projeto' => $projeto])
+      @component('projeto.formularioVisualizar.proponente2', ['projeto' => $projeto, 'edital' => $edital, 'areasTematicas' => $areasTematicas])
       @endcomponent
 
       @component('projeto.formularioVisualizar.anexos2', ['edital' => $edital,'projeto' => $projeto])

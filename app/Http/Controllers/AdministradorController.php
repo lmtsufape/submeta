@@ -393,7 +393,7 @@ class AdministradorController extends Controller
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'celular' => ($request['celular']!=null ? 'required|string|telefone' : 'nullable'),

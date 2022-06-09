@@ -257,31 +257,6 @@
 
 <script>
   
-  $('input').on("input", function(){
-    var maxlength = $(this).attr("maxlength");
-    var currentLength = $(this).val().length;
-    var idInput = $(this).attr("id");
-    if( currentLength >= maxlength ){
-      $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
-    }else if(currentLength == 0){
-      $("#caracsRestantes"+idInput).html("");
-    }else{
-      $("#caracsRestantes"+idInput).html("Caracteres restantes: " + (maxlength - this.value.length));
-    }
-  });
-
-  $( document ).ready( function () {
-
-    $('#nomeParticipante').keyup(function () {
-      $('#display').text($(this).val());
-      if($('#nomeParticipante').val() == ""){
-        $('#display').hide();
-        $('#pontos').hide();
-      }else{
-        $('#display').show();
-        $('#pontos').show();
-      }
-    });
 
     $.validator.addMethod("alpha", function(value, element) {
         return this.optional(element) || value == value.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/);

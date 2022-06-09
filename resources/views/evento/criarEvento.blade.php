@@ -95,7 +95,7 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Descrição*:</label>
-                    <textarea class="form-control @error('descricao') is-invalid @enderror" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="3">{{ old('descricao') }}</textarea>
+                    <textarea class="form-control @error('descricao') is-invalid @enderror" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="6">{{ old('descricao') }}</textarea>
                     @error('descricao')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

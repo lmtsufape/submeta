@@ -124,76 +124,69 @@
                                                                     <div class="col-md-12"><h5>Endereço</h5></div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CEP'])
-                                                                            <input type="text" class="form-control cep" value="{{old('cep')[$i] ?? "" }}" name="cep[{{$i}}]"  placeholder="CEP" />
+                                                                            <input name="cep[{{$i}}]" type="text" id="cep{{$i}}" 
+                                                                            value="{{ old('cep')[$i] ?? ''}}" class="form-control cep"
+                                                                            onblur="pesquisacep(this.value, {{$i}})" />
                                                                             @error('cep.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
 
                                                                     <div class="col-6">
-                                                                        @component('componentes.select', ['label' => 'Estado'])
-                                                                            <select name="uf[{{$i}}]"  id="estado" class="form-control"   style="visibility: visible" >
-                                                                                <option value=""  selected>-- Selecione uma opção --</option>
-                                                                                @foreach ($estados as $sigla => $nome)
-                                                                                    <option @if(old('uf')[$i] ?? "" == $sigla ) selected @endif value="{{ $sigla }}">{{ $nome }}</option>
-                                                                                @endforeach
-                                                                            </select>
+                                                                        @component('componentes.input', ['label' => 'Estado'])
+                                                                            <input name="uf[{{$i}}]" type="text" class="form-control"
+                                                                            value="{{ old('uf')[$i] ?? '' }}" id="uf{{$i}}" />
                                                                             @error('uf.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                  <strong>{{ $message }}</strong>
-                                </span>
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
+
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Cidade'])
-                                                                            <input type="text" class="form-control" value="{{old('cidade')[$i] ?? "" }}" name="cidade[{{$i}}]"  placeholder="Cidade" maxlength="50" id="cidade{{$i}}" />
-                                                                            <span style="color: red; font-size: 12px" id="caracsRestantescidade{{$i}}">
-                                  </span>
+                                                                            <input name="cidade[{{$i}}]" type="text" id="cidade{{$i}}" class="form-control"
+                                                                            value="{{ old('cidade')[$i] ?? '' }}" />
                                                                             @error('cidade.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
+
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Bairro'])
-                                                                            <input type="text" class="form-control" value="{{old('bairro')[$i] ?? "" }}" name="bairro[{{$i}}]"  placeholder="Bairro" maxlength="50" id="bairro{{$i}}" />
-                                                                            <span style="color: red; font-size: 12px" id="caracsRestantesbairro{{$i}}">
-                                  </span>
+                                                                            <input name="bairro[{{$i}}]" type="text" id="bairro{{$i}}" class="form-control" 
+                                                                            value="{{ old('bairro')[$i] ?? '' }}" />
                                                                             @error('bairro.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
+
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Rua'])
-                                                                            <input type="text" class="form-control" value="{{old('rua')[$i] ?? "" }}" name="rua[{{$i}}]" placeholder="Rua" maxlength="100" id="rua{{$i}}" />
-                                                                            <span style="color: red; font-size: 12px" id="caracsRestantesrua{{$i}}">
-                                  </span>
+                                                                            <input name="rua[{{$i}}]" type="text" id="rua{{$i}}" class="form-control"
+                                                                            value="{{ old('rua')[$i] ?? '' }}" />
                                                                             @error('rua.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
+
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Número'])
-                                                                            <input type="text" class="form-control" value="{{old('numero')[$i] ?? "" }}" name="numero[{{$i}}]"  placeholder="Número" />
+                                                                            <input name="numero[{{$i}}]" type="text" class="form-control"
+                                                                            value="{{ old('numero')[$i] ?? '' }}" />
                                                                             @error('numero.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                      <strong>{{ $message }}</strong>
-                                    </span>
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
                                                                     <div class="col-12">
                                                                         <div class="form-group">
                                                                             <label class=" control-label" for="firstname">Complemento</label>
@@ -402,4 +395,78 @@
 
 
 </script>
-<!--X Participantes X-->
+  <!-- Adicionando Javascript -->
+  <script>
+    
+    function limpa_formulário_cep(id) {
+            //Limpa valores do formulário de cep.
+            document.getElementById(`rua${id}`).value=("");
+            document.getElementById(`bairro${id}`).value=("");
+            document.getElementById(`cidade${id}`).value=("");
+            document.getElementById(`uf${id}`).value=("");
+            //document.getElementById('ibge').value=("");
+    }
+    
+    let cont = 0; //Esse cont representa a adição de cada aluno
+    function meu_callback(conteudo) {
+        if (!("erro" in conteudo)) {
+            //Atualiza os campos com os valores.
+            document.getElementById(`rua${cont}`).value=(conteudo.logradouro);
+            document.getElementById(`bairro${cont}`).value=(conteudo.bairro);
+            document.getElementById(`cidade${cont}`).value=(conteudo.localidade);
+            document.getElementById(`uf${cont}`).value=(conteudo.uf);
+            
+            
+            //document.getElementById('ibge').value=(conteudo.ibge);
+        } //end if.
+        else {
+            //CEP não Encontrado.
+            limpa_formulário_cep(cont);
+            alert("CEP não encontrado.");
+        }
+    }
+
+    function pesquisacep(valor, id) {
+        //Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+        
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if(validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById(`rua${id}`).value="...";
+                document.getElementById(`bairro${id}`).value="...";
+                document.getElementById(`cidade${id}`).value="...";
+                document.getElementById(`uf${id}`).value="...";
+                //document.getElementById('ibge').value="...";
+
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                cont = id
+                script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep(id);
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep(id);
+        }
+    };
+
+</script>

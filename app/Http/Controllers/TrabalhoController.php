@@ -362,6 +362,7 @@ class TrabalhoController extends Controller
         $grandeAreas = GrandeArea::all();
         $areas = Area::all();
         $subareas = Subarea::all();
+        $areasTematicas = AreaTematica::all();
         $funcaoParticipantes = FuncaoParticipantes::all();
         $participantes = $projeto->participantes;
         $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
@@ -379,6 +380,7 @@ class TrabalhoController extends Controller
             'estados' => $this->estados,
             'visualizar' => true,
             'enum_turno' => Participante::ENUM_TURNO,
+            'areasTematicas' => $areasTematicas,
         ]);
     }
 
