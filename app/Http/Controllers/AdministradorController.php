@@ -57,7 +57,7 @@ class AdministradorController extends Controller
     public function editais(){
     	//$admin = Administrador::with('user')->where('user_id', Auth()->user()->id)->first();
     	//$eventos = Evento::where('coordenadorId',$admin->id )->get();
-        $eventos = Evento::all()->sortBy('nome');
+        $eventos = Evento::all()->sortByDesc('created_at');
 
     	return view('administrador.editais', ['eventos'=> $eventos]);
     }
@@ -393,7 +393,7 @@ class AdministradorController extends Controller
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'celular' => ($request['celular']!=null ? 'required|string|telefone' : 'nullable'),
@@ -611,9 +611,25 @@ class AdministradorController extends Controller
     }
 
     public function removerProjAval(Request $request){
+        //Acesso 1 = Ad Hoc, 2 - Interno, 3 - Interno e Ad Hoc
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
-        $aval->trabalhos()->detach($trabalho);
+        if($request->flag == 0){
+            if($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3){
+                $aval->trabalhos()
+                    ->updateExistingPivot($trabalho->id,['acesso'=>2]);
+            }else{
+                $aval->trabalhos()->detach($trabalho);
+            }
+        }else{
+            if($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3){
+                $aval->trabalhos()
+                    ->updateExistingPivot($trabalho->id,['acesso'=>1]);
+            }else{
+                $aval->trabalhos()->detach($trabalho);
+            }
+        }
+
         
         if($trabalho->status === 'avaliado'){
             $trabalho->status = 'submetido';
@@ -642,25 +658,47 @@ class AdministradorController extends Controller
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         $evento = Evento::where('id', $request->evento_id)->first();
         
-        if($request->avaliadores_internos_id == null){
-            $avaliadoresInternos = [];
-        }else{
-            $avaliadoresInternos = $request->avaliadores_internos_id;
+        if($request->avaliadores_internos_id != null){
+            foreach ($request->avaliadores_internos_id as $avaliador) {
+                $aval = Avaliador::find($avaliador);
+                if($aval->trabalhos()->where("trabalho_id",$trabalho->id)->first() != null){
+                    $aval->trabalhos()
+                        ->updateExistingPivot($trabalho->id,['acesso'=>3]);
+                }else{
+                    $trabalho->avaliadors()->attach($aval,['acesso'=>2]);
+                    $evento->avaliadors()->syncWithoutDetaching($aval);
+                }
+            }
         }
 
-        if($request->avaliadores_externos_id == null){
-            $avaliadoresExternos = [];
-        }else{
-            $avaliadoresExternos = $request->avaliadores_externos_id;
-        }
-        $idsAvaliadores = array_merge($avaliadoresInternos, $avaliadoresExternos);
-        if($idsAvaliadores == null){
-            redirect()->back()->with(['error' => 'Selecione ao menos um avaliador.', 'trabalho' => $trabalho->id]);
-        }
-        $avaliadores = Avaliador::whereIn('id', $idsAvaliadores)->get();
-        $trabalho->avaliadors()->attach($avaliadores);
-        $evento->avaliadors()->syncWithoutDetaching($avaliadores);
-        $trabalho->save();
+
+      if($request->avaliadores_externos_id != null){
+            foreach ($request->avaliadores_externos_id as $avaliador) {
+
+                $aval = Avaliador::find($avaliador);
+                if(Avaliador::where('id',$avaliador)->where('tipo',"Interno")->count()>0){
+                    if($aval->trabalhos()->where("trabalho_id",$trabalho->id)->first() != null){
+                        $aval->trabalhos()
+                            ->updateExistingPivot($trabalho->id,['acesso'=>3]);
+                    }else{
+                        $trabalho->avaliadors()->attach($aval,['acesso'=>1]);
+                        $evento->avaliadors()->syncWithoutDetaching($aval);
+                    }
+                }else{
+                    $trabalho->avaliadors()->attach($aval,['acesso'=>1]);
+                    $evento->avaliadors()->syncWithoutDetaching($aval);
+                }
+            }
+      }
+
+      if($request->avaliadores_externos_id == null & $request->avaliadores_internos_id == null ){
+          redirect()->back()->with(['error' => 'Selecione ao menos um avaliador.', 'trabalho' => $trabalho->id]);
+      }
+
+      $avaliadores = Avaliador::whereIn('id', (array)$request->avaliadores_externos_id)
+          ->orWhereIn('id', (array)$request->avaliadores_internos_id)->get();
+      $trabalho->save();
+
 
         foreach ($avaliadores as $avaliador){
 

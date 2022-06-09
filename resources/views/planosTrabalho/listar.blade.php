@@ -13,21 +13,24 @@
     <div class="row justify-content-center titulo-menu mb-0">
 		<h4>Planos de Trabalho </h4>
 	</div>
-	<div class="card-body" style="width: 75% !important;margin: auto;">
+	<div style=" !important;margin: auto;">
 			<table class="table table-bordered table-hover" style="display: block; overflow-x: visible; white-space: nowrap; border-radius:10px; margin-bottom:0px">
 
                 <thead>
                     <tr>
-						<th scope="col" style="width:400px; text-align: center;">Título</th>
+						<th scope="col" style="width:400px; text-align: center;">Projeto</th>
+						<th scope="col" style="width:400px; text-align: center;">Proponente</th>
+						<th scope="col" style="width:400px; text-align: center;">Título do Plano</th>
 						<th scope="col" style="width:200px; text-align: center;">Discente</th>
                         <th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
                         <th scope="col" style="width:200px; text-align: center;">Relatório Final</th>
                     </tr>
 				</thead>
-					
+
 					@foreach($arquivos as $arquivo)
                         <tbody>
-
+						<td style="text-align: center;" title="{{$arquivo->trabalho->titulo}}">{{$arquivo->trabalho->titulo}}</td>
+						<td style="text-align: center;" title="{{$arquivo->trabalho->proponente->user->name}}">{{$arquivo->trabalho->proponente->user->name}}</td>
 						<td style="text-align: center;" title="{{$arquivo->titulo}}">{{$arquivo->titulo}}</td>
 						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}" id="td-nomeAluno">{{$arquivo->participante->user->name}}</td>
 						<td style="text-align: center;">
@@ -225,7 +228,7 @@
 
 	<style>
 		td {
-			max-width: 40ch; 
+			max-width: 25ch;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;

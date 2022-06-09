@@ -5,7 +5,7 @@
 <div class="row justify-content-center">
 	<!--Proponente Dados-->
 	<div class="col-md-10" style="margin-top:4rem;padding: 0px">
-		@component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho])
+		@component('projeto.formularioVisualizar.proponente2', ['edital' => $trabalho->evento, 'projeto' => $trabalho])
 		@endcomponent
 	</div>
 
@@ -29,15 +29,17 @@
 						</div>
 						<br>
 						{{-- Autorização Especial --}}
-						<div class="col-sm-12">
-							<label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
-							@if($trabalho->anexoAutorizacaoComiteEtica != null)
-								<a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
-							@else
-								-
-							@endif
-						</div>
-						<br>
+						@if($trabalho->evento->natureza_id != 3)
+							<div class="col-sm-12">
+								<label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
+								@if($trabalho->anexoAutorizacaoComiteEtica != null)
+									<a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+								@else
+									-
+								@endif
+							</div>
+							<br>
+						@endif
 						{{-- Anexo(s) do Plano(s) de Trabalho  --}}
 						@foreach( $trabalho->participantes as $participante)
 							@php
@@ -71,9 +73,8 @@
 					<input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
 					<input type="hidden" name="evento_id" value="{{ $evento->id }}" >
 					<div class="form-group">
-						@component('componentes.input', ['label' => 'Parecer'])
-							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer" placeholder="Digite aqui o seu parecer" required>{{ $trabalho->pivot->parecer }}</textarea>
-						@endcomponent
+						<label style="font-weight: bold">Parecer</label>
+							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer" placeholder="Digite aqui o seu parecer" >{{ $trabalho->pivot->parecer }}</textarea>
 					</div>
 					
 					@if($evento->tipo == "PIBEX")

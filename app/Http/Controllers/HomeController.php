@@ -30,7 +30,7 @@ class HomeController extends Controller
         $eventos = \App\Evento::all();        
         
           if(Auth::user()->administradors != null){        
-            $eventos = Evento::orderBy('nome')->get();
+            $eventos = Evento::orderBy('created_at','DESC')->get();
             
             return view('administrador.editais')->with(['eventos' => $eventos]);
           }

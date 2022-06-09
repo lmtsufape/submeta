@@ -95,7 +95,7 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1">Descrição*:</label>
-                    <textarea class="form-control @error('descricao') is-invalid @enderror" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="3">{{ old('descricao') }}</textarea>
+                    <textarea class="form-control @error('descricao') is-invalid @enderror" required autocomplete="descricao" autofocus id="descricao" name="descricao" rows="6">{{ old('descricao') }}</textarea>
                     @error('descricao')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -421,12 +421,12 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfFormAvalExterno">Formulário de avaliação externa:</label>
+                    <label for="pdfFormAvalExterno">Formulário para avaliador <i>ad hoc</i>:</label>
                     @if(old('pdfFormAvalExternoPreenchido') != null)
                         <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoExterno' ])}}">Arquivo atual</a>
                     @endif
                     <input type="hidden" id="pdfFormAvalExternoPreenchido" name="pdfFormAvalExternoPreenchido" value="{{ old('pdfFormAvalExternoPreenchido') }}" >
-                    <input type="file" accept=".pdf,.doc,.docx,.xlsx, .xls, .csv" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
+                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('pdfFormAvalExterno')
                     <span class="invalid-feedback" role="alert">

@@ -30,7 +30,7 @@ class CoordenadorComissaoController extends Controller
     public function editais(){
 
     	$coordenador = CoordenadorComissao::with('user')->where('user_id', Auth()->user()->id)->first();
-    	$eventos = Evento::where('coordenadorId',$coordenador->id )->get();
+    	$eventos = Evento::where('coordenadorId',$coordenador->id )->orderBy('created_at','DESC')->get();
         
         //dd($eventos);
     	return view('coordenadorComissao.editais', ['eventos'=> $eventos]);

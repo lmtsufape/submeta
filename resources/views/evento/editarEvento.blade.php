@@ -401,11 +401,11 @@
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">Formulário de avaliação externa:</label>
+                    <label for="pdfEdital">Formulário para avaliador <i>ad hoc</i>:</label>
                     <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                         <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                     </a>
-                    <input type="file" accept=".pdf,.doc,.docx,.xlsx, .xls, .csv" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
+                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
                     <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('pdfFormAvalExterno')
                     <span class="invalid-feedback" role="alert">
