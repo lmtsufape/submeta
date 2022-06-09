@@ -29,10 +29,10 @@
 
 					@foreach($arquivos as $arquivo)
                         <tbody>
-						<td style="text-align: center;" title="{{$arquivo->trabalho->titulo}}">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx{{$arquivo->trabalho->titulo}}</td>
-						<td style="text-align: center;" title="{{$arquivo->trabalho->proponente->user->name}}">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx{{$arquivo->trabalho->proponente->user->name}}</td>
-						<td style="text-align: center;" title="{{$arquivo->titulo}}">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx{{$arquivo->titulo}}</td>
-						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}" id="td-nomeAluno">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx{{$arquivo->participante->user->name}}</td>
+						<td style="text-align: center;" title="{{$arquivo->trabalho->titulo}}">{{$arquivo->trabalho->titulo}}</td>
+						<td style="text-align: center;" title="{{$arquivo->trabalho->proponente->user->name}}">{{$arquivo->trabalho->proponente->user->name}}</td>
+						<td style="text-align: center;" title="{{$arquivo->titulo}}">{{$arquivo->titulo}}</td>
+						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}" id="td-nomeAluno">{{$arquivo->participante->user->name}}</td>
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))

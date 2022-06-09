@@ -611,9 +611,25 @@ class AdministradorController extends Controller
     }
 
     public function removerProjAval(Request $request){
+        //Acesso 1 = Ad Hoc, 2 - Interno, 3 - Interno e Ad Hoc
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
-        $aval->trabalhos()->detach($trabalho);
+        if($request->flag == 0){
+            if($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3){
+                $aval->trabalhos()
+                    ->updateExistingPivot($trabalho->id,['acesso'=>2]);
+            }else{
+                $aval->trabalhos()->detach($trabalho);
+            }
+        }else{
+            if($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3){
+                $aval->trabalhos()
+                    ->updateExistingPivot($trabalho->id,['acesso'=>1]);
+            }else{
+                $aval->trabalhos()->detach($trabalho);
+            }
+        }
+
         
         if($trabalho->status === 'avaliado'){
             $trabalho->status = 'submetido';
