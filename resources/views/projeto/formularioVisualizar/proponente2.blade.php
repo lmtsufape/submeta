@@ -19,9 +19,10 @@
               >{{ App\Proponente::where('id', $projeto->proponente_id)->first()->linkLattes }}</a>
             @endif
           </div>
-
-          @if( (Auth::user()->avaliadors != null) && (Auth::user()->avaliadors->tipo != 'Externo' || Auth::user()->avaliadors->tipo == null))
-
+          
+          @if( (Auth::user()->avaliadors != null) && (Auth::user()->avaliadors->tipo != 'Externo' || Auth::user()->avaliadors->tipo == null)
+          && ($edital->natureza_id != 3 || $projeto->status != "rascunho"))
+          <!-- só pagar oq tem dps do || para funcionar para submetido e rascunho! EXTENSÃO(3)!!! -->
           <div class="col-md-12">
             <br>
             <b style="color: #4D4D4D;">Grupo de Pesquisa: </b>
@@ -36,6 +37,15 @@
             <a style="color: #4D4D4D;">{{$projeto->pontuacaoPlanilha}}</a>
           </div>
           @endif
+
+          @if($edital->natureza_id == 3)
+            <div class="col-md-12">
+              <br>
+              <b style="color: #4D4D4D;">Área Temática:</b>
+              <a style="color: #4D4D4D;">{{App\AreaTematica::where('id', $projeto->area_tematica_id)->first()->nome}}</a>
+            </div> 
+          @endif
+
           @if($projeto->modalidade!=null)
             <div class="col-md-12">
               <br>
