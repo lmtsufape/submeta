@@ -849,13 +849,13 @@ class AdministradorController extends Controller
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExerno));
 
         }else{
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExerno));
             $user = User::create([
               'email' => $emailAvaliador,
               'password' => bcrypt($passwordTemporario),
