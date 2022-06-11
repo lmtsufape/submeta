@@ -712,8 +712,9 @@ class AdministradorController extends Controller
                 'tipo' => 5,
             ]);
             $notificacao->save();
-            if($avaliador->tipo == "Externo"){
-                Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp,$trabalho));
+            if($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1
+                || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 ){
+                Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp,$trabalho,$evento->formAvaliacaoExterno));
             }
         }
 
@@ -741,13 +742,14 @@ class AdministradorController extends Controller
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo,$evento->natureza_id,$evento->formAvaliacaoExterno));
 
         }else{
+
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo,$evento->natureza_id,$evento->formAvaliacaoExterno));
             $user = User::create([
               'email' => $emailAvaliador,
               'password' => bcrypt($passwordTemporario),

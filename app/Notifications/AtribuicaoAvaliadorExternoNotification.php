@@ -19,7 +19,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
      *
      * @return void
      */
-    public function __construct($usuario,$trabalho)
+    public function __construct($usuario,$trabalho,$arquivo)
     {
         $this->data =  date('d/m/Y \à\s  H:i\h', strtotime(now()));
         $url = "/avaliador/editais";
@@ -27,6 +27,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
         $this->user = $usuario;
         $this->titulo = $trabalho->titulo;
         $this->trabalho = $trabalho;
+        $this->arquivo = $arquivo;
     }
 
     /**
@@ -53,7 +54,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
                     ->greeting("Saudações!")
                     ->line("Prezado avaliador, você foi convidado a avaliar a proposta / projeto intitulada(o) {$this->titulo}.")
                     ->action('Acessar', $this->url )
-                    ->attach(storage_path() . "/app/pdfFormAvalExterno/{$this->trabalho->evento_id}/formulario de avaliação externo.pdf")
+                    ->attach(storage_path('app') . "/".$this->arquivo)
                     ->markdown('vendor.notifications.email');
     }
 
