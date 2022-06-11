@@ -9,7 +9,7 @@
 		<h3>Prezado(a) Avaliador(a), cordiais saudações!</h3>
 		<p>
 			Agradecemos seu aceite para participar das avaliações de propostas de  {{$nomeEvento}} da Universidade Federal do Agreste de Pernambuco (UFAPE).
-			<br>Solicitamos gentilmente que acesse o sistema Submeta através do <a href="{{ url('http://sistemas.ufape.edu.br/submeta/') }}">LINK</a>  e da senha {{$senhaTemporaria}}, para realizar o seu cadastro no sistema e dar seguimento na avaliação da proposta para aceite ou recusa da presente proposta.
+			<br>Solicitamos, gentilmente, que acesse o sistema Submeta através do <a href="{{ url('http://www.submeta.ufape.edu.br/') }}">LINK</a>  e da senha {{$senhaTemporaria}}, para realizar o seu cadastro no sistema e dar seguimento na avaliação da proposta para aceite ou recusa da presente proposta.
 			<br>Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema com o seu parecer.
 			<br>Qualquer dúvida, por favor, entre em contato pelo e-mail: editais.prec@ufape.edu.br
 
@@ -38,7 +38,7 @@
 		<h3>Prezado(a) Avaliador(a), cordiais saudações!</h3>
 		<p>
 			Agradecemos seu aceite para participar das avaliações de propostas de  {{$nomeEvento}} da Universidade Federal do Agreste de Pernambuco (UFAPE).
-			<br>Solicitamos gentilmente que acesse o sistema Submeta através do <a href="{{ url('http://sistemas.ufape.edu.br/submeta/') }}">LINK</a>  e da senha {{$senhaTemporaria}}, para realizar o seu cadastro no sistema e dar seguimento na avaliação da proposta para aceite ou recusa da presente proposta.
+			<br>Solicitamos, gentilmente, que acesse o sistema Submeta através do <a href="{{ url('http://www.submeta.ufape.edu.br/') }}">LINK</a>, para dar seguimento na avaliação da proposta para aceite ou recusa da presente proposta.
 			<br>Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema com o seu parecer.
 			<br>Qualquer dúvida, por favor, entre em contato pelo e-mail: editais.prec@ufape.edu.br
 
