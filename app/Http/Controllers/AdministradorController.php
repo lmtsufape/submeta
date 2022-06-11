@@ -895,7 +895,7 @@ class AdministradorController extends Controller
 
         $subject = "Convite para avaliar projetos da UFAPE - Reenvio";
             Mail::to($user->email)
-                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, '', $subject, $evento->tipo));
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, '', $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExerno));
         
         
         return redirect()->back();
