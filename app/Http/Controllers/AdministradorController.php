@@ -845,17 +845,19 @@ class AdministradorController extends Controller
         //     return redirect()->back()->with(['mensagem' => 'Usuário já recebeu um convite e está pendente']);
         // }
 
+
         if(isset($user)){
+
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExerno));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExterno));
 
         }else{
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExerno));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExterno));
             $user = User::create([
               'email' => $emailAvaliador,
               'password' => bcrypt($passwordTemporario),
