@@ -67,7 +67,8 @@ class EmailParaUsuarioNaoCadastrado extends Mailable
                             'nomeFuncao' => $this->nomeFuncao,      
                             'nomeEvento' => $this->nomeEvento,      
                             'senhaTemporaria' => $this->senhaTemporaria,
-                            'tipoEvento' => $this->tipoEvento 
+                            'tipoEvento' => $this->tipoEvento,
+                            'natureza' => $this->natureza
                             
                         ]);
         }
