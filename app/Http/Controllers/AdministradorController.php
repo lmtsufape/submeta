@@ -712,10 +712,8 @@ class AdministradorController extends Controller
                 'tipo' => 5,
             ]);
             $notificacao->save();
-            if($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1
-                || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 ){
-                Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp,$trabalho,$evento->formAvaliacaoExterno));
-            }
+            Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp,$trabalho,$evento->formAvaliacaoExterno, $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso));
+            
         }
 
 

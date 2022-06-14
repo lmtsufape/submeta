@@ -19,7 +19,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
      *
      * @return void
      */
-    public function __construct($usuario,$trabalho,$arquivo)
+    public function __construct($usuario,$trabalho,$arquivo,$tipoAval)
     {
         $this->data =  date('d/m/Y \à\s  H:i\h', strtotime(now()));
         $url = "/avaliador/editais";
@@ -28,6 +28,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
         $this->titulo = $trabalho->titulo;
         $this->trabalho = $trabalho;
         $this->arquivo = $arquivo;
+        $this->tipoAval = $tipoAval;
     }
 
     /**
@@ -49,10 +50,23 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->subject('Sistema Submeta - Avaliar proposta / projeto')
+        if($this->tipoAval == 2){
+            return (new MailMessage)
+                    ->subject('Convite para avaliar proposta de projeto - Sistema Submeta')
                     ->greeting("Saudações!")
-                    ->line("Prezado avaliador, você foi convidado a avaliar a proposta / projeto intitulada(o) {$this->titulo}.")
+                    ->line("Prezado/a avaliador/a, você foi convidado/a a avaliar a proposta de projeto intitulada {$this->titulo}.")
+                    ->line("Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta com o seu parecer.")
+                    ->line("Seção de Editais e Apoios a Projetos  - PREC/UFAPE")
+                    ->action('Acessar', $this->url )
+                    ->markdown('vendor.notifications.email');
+        }
+
+        return (new MailMessage)
+                    ->subject('Convite para avaliar proposta de projeto - Sistema Submeta')
+                    ->greeting("Saudações!")
+                    ->line("Prezado/a avaliador/a, você foi convidado/a a avaliar a proposta de projeto intitulada {$this->titulo}.")
+                    ->line("Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta com o seu parecer.")
+                    ->line("Seção de Editais e Apoios a Projetos  - PREC/UFAPE")
                     ->action('Acessar', $this->url )
                     ->attach(storage_path('app') . "/".$this->arquivo)
                     ->markdown('vendor.notifications.email');
