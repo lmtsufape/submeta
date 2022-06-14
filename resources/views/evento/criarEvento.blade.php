@@ -118,8 +118,9 @@
                   </div>
               </div>
 
-              <input id="coordenador_id" name="coordenador_id" class="form-control" value="" hidden>
-              <input style="margin-top: 5px" id="coordenador_name" name="coordenador_name" class="form-control @error('coordenador_id') is-invalid @enderror" value="" placeholder="Nenhum Coordenador atribuido" required readonly>
+              <input id="coordenador_id" name="coordenador_id" class="form-control" value="{{old('coordenador_id')}}" hidden>
+             
+              <input style="margin-top: 5px" id="coordenador_name" name="coordenador_name" class="form-control @error('coordenador_id') is-invalid @enderror" value="{{old('coordenador_name')}}" placeholder="Nenhum Coordenador atribuido" required readonly>
 
              {{-- <select class="form-control @error('coordenador_id') is-invalid @enderror" id="coordenador_id" name="coordenador_id" style="pointer-events: none">
                   <option value="" disabled selected hidden>-- Coordenador da Comissão Avaliadora --</option>
