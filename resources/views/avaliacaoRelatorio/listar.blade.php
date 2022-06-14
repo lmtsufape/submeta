@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <!--Proponente Dados-->
         <div class="col-md-10" style="margin-top:4rem;padding: 0px">
-            @component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho])
+            @component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho, 'edital' => $trabalho->evento])
             @endcomponent
         </div>
 

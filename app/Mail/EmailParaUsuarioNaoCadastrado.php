@@ -43,7 +43,7 @@ class EmailParaUsuarioNaoCadastrado extends Mailable
     public function build()
     {
         if($this->nomeFuncao != 'Participante'){
-                $file = storage_path('app').'/'.$this->arquivo;
+                
                 return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
                         ->subject($this->subject)
                         ->view('emails.usuarioNaoCadastrado')
@@ -56,7 +56,7 @@ class EmailParaUsuarioNaoCadastrado extends Mailable
                             'tipoEvento' => $this->tipoEvento,
                             'natureza' => $this->natureza
                             
-                        ])->attach($file);
+                        ]);
         }else{
             return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
                         ->subject($this->subject)
