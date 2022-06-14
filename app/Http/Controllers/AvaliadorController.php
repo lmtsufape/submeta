@@ -61,6 +61,14 @@ class AvaliadorController extends Controller
 
         $user = User::find(Auth::user()->id);
         $eventos = $user->avaliadors->where('user_id',$user->id)->first()->eventos;
+        $aval = $user->avaliadors->where('user_id',$user->id)->first();
+        foreach ($eventos as $evento){
+            $evento->flag=0;
+            $trabalhos = Trabalho::where('evento_id',$evento->id)->pluck('id');
+            if($aval->trabalhos()->whereIn("trabalho_id",$trabalhos)->count() != 0){
+                $evento->flag=1;
+            }
+        }
         $hoje = Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
         return view('avaliador.editais', ["eventos"=>$eventos, "hoje" => $hoje]);

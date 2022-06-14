@@ -117,7 +117,9 @@
               @csrf
               <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
               <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
-              <button type="submit" class="btn btn-danger" @if($avaliador->trabalhos->where('evento_id', $evento->id)->count()  != 0) disabled="disabled" @endif >Remover</button>
+              <button type="submit" class="btn btn-danger" @if($avaliador->trabalhos->where('evento_id', $evento->id)->count()  != 0) disabled="disabled" @endif
+              onclick="return confirm('Tem certeza que deseja remover o avaliador {{$avaliador->user->name}}?')"
+              >Remover</button>
             </form> 
             <form action="{{ route('admin.reenviarConvite') }}" method="POST">
               @csrf
