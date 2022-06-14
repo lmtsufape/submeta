@@ -117,11 +117,20 @@ class TrabalhoController extends Controller
     public function arquivar(Request $request){
 
         $trabalho = Trabalho::find($request->trabalho_id);
+        $arquivos = Arquivo::where('trabalhoId',$trabalho->id)->get();
         if($request->arquivar_tipo == 1 ){
             $trabalho->arquivado = true;
+            foreach ($arquivos as $arquivo){
+                $arquivo->arquivado = true;
+                $arquivo->update();
+            }
             $message = "Projeto ".$trabalho->titulo." arquivado";
         }else{
             $trabalho->arquivado = false;
+            foreach ($arquivos as $arquivo){
+                $arquivo->arquivado = false;
+                $arquivo->update();
+            }
             $message = "Projeto ".$trabalho->titulo." desarquivado";
         }
         $trabalho->update();
