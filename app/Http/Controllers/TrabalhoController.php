@@ -794,7 +794,6 @@ class TrabalhoController extends Controller
 
     public function update(UpdateTrabalho $request, $id)
     {
-
         try {
             if (!$request->has('rascunho')) {
                 $request->merge([
@@ -891,7 +890,9 @@ class TrabalhoController extends Controller
                     $data['turno'] = $request->turno[$part];
                     $data['periodo_atual'] = $request->periodo_atual[$part];
                     $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
-                    $data['media_do_curso'] = $request->media_do_curso[$part];
+                    if($evento->tipo!="PIBEX") {
+                        $data['media_do_curso'] = $request->media_do_curso[$part];
+                    }
                     $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
 
                     // $participante = Participante::find($request->participante_id[$part]);
@@ -1571,7 +1572,9 @@ class TrabalhoController extends Controller
             $data['turno'] = $request->turno;
             $data['periodo_atual'] = $request->periodo_atual;
             $data['ordem_prioridade'] = $request->ordem_prioridade;
-            $data['media_do_curso'] = $request->media_do_curso;
+            if($evento->tipo!="PIBEX") {
+                $data['media_do_curso'] = $request->media_do_curso;
+            }
             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
 
             if ($request->substituirApenasPlanoCheck == 'check') {
