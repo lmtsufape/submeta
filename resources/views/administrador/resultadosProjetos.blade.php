@@ -217,7 +217,7 @@
                 <tbody id="projetos">
                 @php $cont=1;@endphp
                     @foreach($trabalhos as $trabalho)
-                        @if($trabalho->status == 'submetido')
+                        @if($trabalho->status == 'submetido' || $trabalho->status == 'avaliado')
                         <tr>
                             <td>{{$cont}}</td>
                             <td>{{$trabalho->pontuacao}}</td>

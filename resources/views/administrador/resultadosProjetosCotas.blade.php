@@ -366,7 +366,7 @@
                 @php $cont=1;@endphp
                 
                     @foreach($trabalhosAmpla as $trabalho)
-                        @if($trabalho->status == 'submetido')
+                        @if($trabalho->status == 'submetido' || $trabalho->status == 'avaliado'))
                         <tr>
                             <td>{{$cont}}</td>
                             <td>{{$trabalho->pontuacao}}</td>
@@ -419,7 +419,7 @@
                     @endforeach
 
                     @foreach($trabalhosDoutor as $trabalho)
-                        @if($trabalho->status == 'submetido')
+                        @if($trabalho->status == 'submetido' || $trabalho->status == 'avaliado'))
                         <tr>
                             <td>{{$cont}}</td>
                             <td>{{$trabalho->pontuacao}}</td>
