@@ -98,14 +98,21 @@
                                 @if($trabalho->avaliadors->count() > 0)
                                     <td>
                                         @foreach($trabalho->avaliadors as $avaliador)
-                                            @if($avaliador->tipo == "Externo")
-                                                @if($avaliador->pivot->recomendacao != null ){{$avaliador->pivot->recomendacao}} @else Pendente @endif
-                                                <br>
-                                            @else
+                                            {{--Internos--}}
+                                            @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
                                                 @php
-                                                    $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                    $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                                 @endphp
-                                                @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                                @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                            @endif
+
+                                            {{--Externos--}}
+                                            @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
+                                                @if($avaliador->pivot->recomendacao != null)
+                                                    {{$avaliador->pivot->recomendacao}}<br>
+                                                @else
+                                                    Pendente<br>
+                                                @endif
                                             @endif
                                         @endforeach
                                     </td>
@@ -178,14 +185,21 @@
                             @if($trabalho->avaliadors->count() > 0)
                                 <td>
                                     @foreach($trabalho->avaliadors as $avaliador)
-                                        @if($avaliador->tipo == "Externo")
-                                            @if($avaliador->pivot->recomendacao != null ){{$avaliador->pivot->recomendacao}} @else Pendente @endif
-                                            <br>
-                                        @else
+                                        {{--Internos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
                                             @php
-                                                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
-                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                        @endif
+
+                                        {{--Externos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
+                                            @if($avaliador->pivot->recomendacao != null)
+                                                {{$avaliador->pivot->recomendacao}}<br>
+                                            @else
+                                                Pendente<br>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </td>
@@ -260,14 +274,21 @@
                             @if($trabalho->avaliadors->count() > 0)
                                 <td>
                                     @foreach($trabalho->avaliadors as $avaliador)
-                                        @if($avaliador->tipo == "Externo")
-                                            @if($avaliador->pivot->recomendacao != null ){{$avaliador->pivot->recomendacao}} @else Pendente @endif
-                                            <br>
-                                        @else
+                                        {{--Internos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
                                             @php
-                                                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
-                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                        @endif
+
+                                        {{--Externos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
+                                            @if($avaliador->pivot->recomendacao != null)
+                                                {{$avaliador->pivot->recomendacao}}<br>
+                                            @else
+                                                Pendente<br>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </td>
@@ -313,14 +334,21 @@
                             @if($trabalho->avaliadors->count() > 0)
                                 <td>
                                     @foreach($trabalho->avaliadors as $avaliador)
-                                        @if($avaliador->tipo == "Externo")
-                                            @if($avaliador->pivot->recomendacao != null ){{$avaliador->pivot->recomendacao}} @else Pendente @endif
-                                            <br>
-                                        @else
+                                        {{--Internos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
                                             @php
-                                                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
-                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                        @endif
+
+                                        {{--Externos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
+                                            @if($avaliador->pivot->recomendacao != null)
+                                                {{$avaliador->pivot->recomendacao}}<br>
+                                            @else
+                                                Pendente<br>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </td>
@@ -394,14 +422,21 @@
                             @if($trabalho->avaliadors->count() > 0)
                                 <td>
                                     @foreach($trabalho->avaliadors as $avaliador)
-                                        @if($avaliador->tipo == "Externo")
-                                            @if($avaliador->pivot->recomendacao != null ){{$avaliador->pivot->recomendacao}} @else Pendente @endif
-                                            <br>
-                                        @else
+                                        {{--Internos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
                                             @php
-                                                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
-                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                        @endif
+
+                                        {{--Externos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
+                                            @if($avaliador->pivot->recomendacao != null)
+                                                {{$avaliador->pivot->recomendacao}}<br>
+                                            @else
+                                                Pendente<br>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </td>
@@ -447,14 +482,21 @@
                             @if($trabalho->avaliadors->count() > 0)
                                 <td>
                                     @foreach($trabalho->avaliadors as $avaliador)
-                                        @if($avaliador->tipo == "Externo")
-                                            @if($avaliador->pivot->recomendacao != null ){{$avaliador->pivot->recomendacao}} @else Pendente @endif
-                                            <br>
-                                        @else
+                                        {{--Internos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
                                             @php
-                                                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
-                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Pendente @endif
+                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                        @endif
+
+                                        {{--Externos--}}
+                                        @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
+                                            @if($avaliador->pivot->recomendacao != null)
+                                                {{$avaliador->pivot->recomendacao}}<br>
+                                            @else
+                                                Pendente<br>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </td>
