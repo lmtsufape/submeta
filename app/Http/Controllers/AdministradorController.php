@@ -163,13 +163,31 @@ class AdministradorController extends Controller
                 ->where('modalidade','AmplaConcorrencia')->get();
             foreach($trabalhosAmpla as $trabalho){
                 $trabalho->pontuacao = 0;
-                foreach($trabalho->avaliadors as $avaliador){
-                    if($avaliador->tipo == "Interno"){
-                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                        if($parecerInterno != null){
-                            $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                $cont = 0;
+                // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
+                if($evento->tipo == "PIBEX"){
+                    foreach($trabalho->avaliadors as $avaliador){
+                        if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
+                                $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
+                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
+                            $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
+                            $cont+=1;
                         }
                     }
+                }else {
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        if ($avaliador->tipo == "Interno") {
+                            $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
+                            if ($parecerInterno != null) {
+                                $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                                $cont+=1;
+                            }
+                        }
+                    }
+                }
+
+                if($trabalho->pontuacao !=0){
+                    $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
                 }
             }
             $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
@@ -181,13 +199,31 @@ class AdministradorController extends Controller
                 ->where('modalidade','RecemDoutor')->get();
             foreach($trabalhosDoutor as $trabalho){
                 $trabalho->pontuacao = 0;
-                foreach($trabalho->avaliadors as $avaliador){
-                    if($avaliador->tipo == "Interno"){
-                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                        if($parecerInterno != null){
-                            $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                $cont = 0;
+                // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
+                if($evento->tipo == "PIBEX"){
+                    foreach($trabalho->avaliadors as $avaliador){
+                        if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
+                                $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
+                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
+                            $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
+                            $cont+=1;
                         }
                     }
+                }else {
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        if ($avaliador->tipo == "Interno") {
+                            $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
+                            if ($parecerInterno != null) {
+                                $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                                $cont+=1;
+                            }
+                        }
+                    }
+                }
+
+                if($trabalho->pontuacao !=0){
+                    $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
                 }
             }
             $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
@@ -201,16 +237,32 @@ class AdministradorController extends Controller
         $trabalhos = $evento->trabalhos;
         foreach($trabalhos as $trabalho){
             $trabalho->pontuacao = 0;
-            foreach($trabalho->avaliadors as $avaliador){
-                if($avaliador->tipo == "Interno"){
-                    $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                    if($parecerInterno != null){
-                        $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+            $cont = 0;
+            // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
+            if($evento->tipo == "PIBEX"){
+                foreach($trabalho->avaliadors as $avaliador){
+                    if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
+                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
+                        $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
+                        $cont+=1;
+                    }
+                }
+            }else{
+                foreach($trabalho->avaliadors as $avaliador){
+                    if($avaliador->tipo == "Interno"){
+                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                        if($parecerInterno != null){
+                            $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                            $cont+=1;
+                        }
                     }
                 }
             }
+            if($trabalho->pontuacao !=0){
+                $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
+            }
         }
-
         $trabalhos = $trabalhos->sort(function ($item, $next) {
             return $item->pontuacao >= $next->pontuacao ? -1 : 1;
         });
@@ -917,44 +969,80 @@ class AdministradorController extends Controller
     public function imprimirResultados(Request $request)
     {
         $evento = Evento::where('id', $request->id)->first();
-            // Ampla Concorrencia
-            $trabalhosAmpla = Trabalho::where('evento_id',$evento->id)
-                ->where('modalidade','AmplaConcorrencia')->get();
-            foreach($trabalhosAmpla as $trabalho){
-                $trabalho->pontuacao = 0;
+        // Ampla Concorrencia
+        $trabalhosAmpla = Trabalho::where('evento_id',$evento->id)
+            ->where('modalidade','AmplaConcorrencia')->get();
+
+        foreach($trabalhosAmpla as $trabalho){
+            $trabalho->pontuacao = 0;
+            $cont = 0;
+            // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
+            if($evento->tipo == "PIBEX"){
                 foreach($trabalho->avaliadors as $avaliador){
-                    if($avaliador->tipo == "Interno"){
-                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                        if($parecerInterno != null){
+                    if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
+                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
+                        $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
+                        $cont+=1;
+                    }
+                }
+            }else {
+                foreach ($trabalho->avaliadors as $avaliador) {
+                    if ($avaliador->tipo == "Interno") {
+                        $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
+                        if ($parecerInterno != null) {
                             $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                            $cont+=1;
                         }
                     }
                 }
             }
-            $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
-                return $item->pontuacao >= $next->pontuacao ? -1 : 1;
-            });
+            if($trabalho->pontuacao !=0){
+                $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
+            }
+        }
+        $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
+            return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+        });
 
-            // Recém Doutor
-            $trabalhosDoutor = Trabalho::where('evento_id',$evento->id)
-                ->where('modalidade','RecemDoutor')->get();
-            foreach($trabalhosDoutor as $trabalho){
-                $trabalho->pontuacao = 0;
+        // Recém Doutor
+        $trabalhosDoutor = Trabalho::where('evento_id',$evento->id)
+            ->where('modalidade','RecemDoutor')->get();
+        foreach($trabalhosDoutor as $trabalho){
+            $trabalho->pontuacao = 0;
+            $cont = 0;
+            // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
+            if($evento->tipo == "PIBEX"){
                 foreach($trabalho->avaliadors as $avaliador){
-                    if($avaliador->tipo == "Interno"){
-                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                        if($parecerInterno != null){
+                    if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
+                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
+                        $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
+                        $cont+=1;
+                    }
+                }
+            }else {
+                foreach ($trabalho->avaliadors as $avaliador) {
+                    if ($avaliador->tipo == "Interno") {
+                        $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
+                        if ($parecerInterno != null) {
                             $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                            $cont+=1;
                         }
                     }
                 }
             }
-            $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
-                return $item->pontuacao >= $next->pontuacao ? -1 : 1;
-            });
+            if($trabalho->pontuacao !=0){
+                $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
+            }
 
-            $pdf = PDF::loadView('/administrador/resultadosProjetosCotas', compact('trabalhosDoutor', 'trabalhosAmpla', 'evento'));
-            return $pdf->setPaper('a4')->stream('Resultados.pdf');
+        }
+        $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
+            return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+        });
+
+        $pdf = PDF::loadView('/administrador/resultadosProjetosCotas', compact('trabalhosDoutor', 'trabalhosAmpla', 'evento'));
+        return $pdf->setPaper('a4')->stream('Resultados.pdf');
 
     }
 
