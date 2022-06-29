@@ -1,4 +1,4 @@
-<!-- Participantes -->
+<!-- Participantes AKI-->
 <div class="col-md-12" style="margin-top: 20px">
     <div class="card" style="border-radius: 5px">
         <div class="card-body" style="padding-top: 0.2rem;">
@@ -34,7 +34,7 @@
                                                 <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">
                                                     @if($participante)
                                                         @if(isset(old('name')[$i]))Nome: {{old('name')[$i]}} @else Nome: {{$participante->user->name}} @endif
-                                                        @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @else <br>Plano: {{$participante->planoTrabalho->titulo}} @endif
+                                                        @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @else <br>Plano: {{$participante->planoTrabalho->titulo ?? 'Não informado'}} @endif
                                                     @else
                                                         Discente
                                                     @endif
