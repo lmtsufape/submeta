@@ -38,6 +38,7 @@
                     <th scope="col">Avaliador</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">E-mail</th>
+                    <th scope="col">Avaliação</th>
                     <th scope="col">Data</th>
                     <th scope="col">Recomendação</th>
                     <th scope="col">Parecer</th>
@@ -45,15 +46,15 @@
                 </thead>
                 <tbody>
                   @foreach($trabalho->avaliadors as $avaliador)
-                    <tr>
-                      <td>{{ $avaliador->user->name }}</td>
-                      <td>{{ $avaliador->tipo }}</td>
-                      <td>{{ $avaliador->user->email }}</td>
-                      {{--Data--}}
-                      @if($avaliador->tipo !=null && $avaliador->tipo == "Interno")
-                        @php
-                          $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                        @endphp
+                    @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
+                      @php
+                        $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                      @endphp
+                      <tr>
+                        <td>{{ $avaliador->user->name }}</td>
+                        <td>{{ $avaliador->tipo }}</td>
+                        <td>{{ $avaliador->user->email }}</td>
+                        <td>Interna</td>
                         <td>
                           @if($parecerInterno == null)
                             Indisponível
@@ -72,17 +73,25 @@
                         {{--Acesso ao parecer interno--}}
                         <td>
                           @if($parecerInterno == null)
-                            <a class="btn btn-danger"  disabled="disabled"  >
+                            <button class="btn btn-danger"  disabled="disabled"  >
                               Indisponível
-                            </a>
+                            </button>
                           @else
                             <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="btn btn-primary" >
                               Visualizar
                             </a>
                           @endif
                         </td>
-                      @else
-                        {{--Data--}}
+                      </tr>
+                    @endif
+
+
+                    @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo")
+                      <tr>
+                        <td>{{ $avaliador->user->name }}</td>
+                        <td>{{ $avaliador->tipo }}</td>
+                        <td>{{ $avaliador->user->email }}</td>
+                        <td>Ad Hoc</td>
                         <td>
                           @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
                             Indisponível
@@ -97,7 +106,6 @@
                           @else
                             {{ $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->recomendacao }}
                           @endif
-
                         </td>
                         <td>
                           <form action="{{ route('admin.visualizarParecer') }}" method="post">
@@ -116,8 +124,8 @@
                           </form>
 
                         </td>
-                        @endif
-                    </tr>
+                      </tr>
+                    @endif
                   @endforeach
                 </tbody>
               </table>
