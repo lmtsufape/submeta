@@ -94,6 +94,7 @@
         <th scope="col">Tipo</th>
         <th scope="col">Email</th>
         <th scope="col">Status</th>
+        <th scope="col">Projetos</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
     </thead>
@@ -111,6 +112,42 @@
             <td style="color: red;">Recusado</td>
           @endif
           
+          
+          <td><button data-toggle="modal" class="btn btn-primary" style="color:white;
+          " data-target="#avaliadorModalCenter{{$avaliador->id}}" @if($avaliador->trabalhos->where('evento_id', $evento->id)->count()  == 0) disabled="disabled" @endif>Visualizar</button></td>
+
+          <!-- MODAL Projetos -->
+          <div class="modal fade" id="avaliadorModalCenter{{$avaliador->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="overflow-y: hidden">          
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+
+              <div class="modal-content modal-submeta modal-xl">
+                <div class="modal-header modal-header-submeta">
+                  <div class="col-md-8" style="padding-left: 0px">
+                    <h5 class="modal-title titulo-table" id="avaliacaoModalLongTitle">
+                        Projetos do Avaliador</h5>
+                  </div>
+                  <div class="col-md-4" style="text-align: right">
+                    <button type="button" class="close" aria-label="Close"
+                    data-dismiss="modal" style="color: rgb(182, 182, 182);padding-right: 0px;">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="modal-body" style="margin-left: 20px; margin-right: 20px;">        
+                  @foreach($trabalhos as $trabalho)
+                    @foreach($trabalho->avaliadors as $avaliador1)
+                      @if($avaliador1->id == $avaliador->id)
+                        {{-- {{ $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot }} --}}
+                        <a href="{{route('admin.analisarProposta',['id'=>$trabalho->id])}}">Título: {{ $trabalho->titulo }}</a><br>
+                      @endif 
+                    @endforeach
+                  @endforeach
+                </div>
+                
+              </div>
+            </div>
+          </div>
 
           <td @if($avaliador->eventos->where('id', $evento->id)->first()->pivot->convite  != null) style="text-align:center" @endif style="text-align:center; display:flex; justify-content: space-evenly">
             <form action="{{ route('admin.remover') }}" method="POST">

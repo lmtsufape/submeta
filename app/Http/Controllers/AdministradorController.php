@@ -599,12 +599,16 @@ class AdministradorController extends Controller
         $avalSelecionados = $evento->avaliadors;
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
         $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
+        $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
+        
         //dd($avaliadores);
+
         return view('administrador.selecionarAvaliadores', [
                                                             'evento'=> $evento,
                                                             'avaliadores'=>$avaliadores,
                                                             'avalSelecionados'=>$avalSelecionados,
-                                                            'grandeAreas' => $grandeAreas
+                                                            'grandeAreas' => $grandeAreas,
+                                                            'trabalhos' => $trabalhos
                                                            ]);
     }
     public function projetos(Request $request){
