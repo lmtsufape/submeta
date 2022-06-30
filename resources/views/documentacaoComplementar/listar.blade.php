@@ -77,7 +77,7 @@
 												<br>
 											</div>
 											<div class="col-md-6" style="margin-top: 15px">
-													<label class="control-label ">Comprovante de Matricula <span style="color: red">*</span>@if($participante->anexoComprovanteMatricula) 
+													<label class="control-label ">Comprovante de Matrícula <span style="color: red">*</span>@if($participante->anexoComprovanteMatricula) 
 														<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoComprovanteMatricula]) }}">Arquivo atual</a>
 														@endif
 													</label>
@@ -93,7 +93,7 @@
 											</div>
 
 											<div class="col-md-6" style="margin-top: 15px">
-													<label class="control-label ">CPF e RG <span style="color: red">*</span>@if($participante->anexo_cpf_rg)
+													<label class="control-label ">Documentos Pessoais (CPF/RG ou CNH) <span style="color: red">*</span>@if($participante->anexo_cpf_rg)
 														<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexo_cpf_rg]) }}">Arquivo atual</a>
 														@endif
 													</label>
@@ -141,7 +141,7 @@
 											@endif
 											
 											<div class="col-md-6" style="margin-top: 15px">
-												<label class="control-label ">Comprovante Bancário @if($participante->anexoComprovanteBancario) 
+												<label class="control-label ">Comprovante Bancário (Foto do cartão) @if($participante->anexoComprovanteBancario) 
 													<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoComprovanteBancario]) }}">Arquivo atual</a>
 													@endif
 												</label>
@@ -155,7 +155,7 @@
 											</div>
 
 											<div class="col-md-6" style="margin-top: 15px">
-												<label class="control-label ">Autorização dos Pais @if($participante->anexoAutorizacaoPais) 
+												<label class="control-label ">Autorização dos Pais (Em caso de menor de idade) @if($participante->anexoAutorizacaoPais) 
 													<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoAutorizacaoPais]) }}">Arquivo atual</a>
 													@endif
 												</label>
