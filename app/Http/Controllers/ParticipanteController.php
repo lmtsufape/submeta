@@ -112,6 +112,7 @@ class ParticipanteController extends Controller
         $editalTipo = $request->eventoTipo;
         $participante->anexoTermoCompromisso = Storage::putFileAs($pasta, $request->termoCompromisso, "Termo_de_Compromisso.pdf");
         $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->comprovanteMatricula, "Comprovante_de_Matricula.pdf");
+        $participante->anexo_cpf_rg = Storage::putFileAs($pasta, $request->anexo_cpf_rg, "Anexo_CPF_RG." . $request->file('anexo_cpf_rg')->getClientOriginalExtension());
 
         if($request->eventoTipo != "PIBEX"){
             $participante->anexoLattes = Storage::putFileAs($pasta, $request->pdfLattes, "Curriculo_Lattes.pdf");
