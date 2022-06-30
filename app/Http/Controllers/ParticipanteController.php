@@ -109,19 +109,26 @@ class ParticipanteController extends Controller
     public function atualizarDocComplementar(Request $request){
         $participante = Participante::find($request->partcipanteId);
         $pasta = 'participantes/' . $participante->id;
+        $editalTipo = $request->eventoTipo;
         $participante->anexoTermoCompromisso = Storage::putFileAs($pasta, $request->termoCompromisso, "Termo_de_Compromisso.pdf");
         $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->comprovanteMatricula, "Comprovante_de_Matricula.pdf");
-        $participante->anexoLattes = Storage::putFileAs($pasta, $request->pdfLattes, "Curriculo_Lattes.pdf");
-        $participante->linkLattes = $request->linkLattes;
+        $participante->anexo_cpf_rg = Storage::putFileAs($pasta, $request->anexo_cpf_rg, "Anexo_CPF_RG." . $request->file('anexo_cpf_rg')->getClientOriginalExtension());
+
+        if($request->eventoTipo != "PIBEX"){
+            $participante->anexoLattes = Storage::putFileAs($pasta, $request->pdfLattes, "Curriculo_Lattes.pdf");
+            $participante->linkLattes = $request->linkLattes;
+        }
+        
         if($request->comprovanteBancario != null){
             $participante->anexoComprovanteBancario = Storage::putFileAs($pasta, $request->comprovanteBancario, "Comprovante_Bancario." . $request->file('comprovanteBancario')->getClientOriginalExtension());
         }
         if($request->autorizacaoPais != null){
             $participante->anexoAutorizacaoPais = Storage::putFileAs($pasta, $request->autorizacaoPais, "Autorização_dos_Pais.pdf");
         }
-
+        
         $participante->update();
-
+        
+        //dd($request);
         return redirect()->back()->with(['sucesso'=>"Documentação complementar enviada com sucesso"]);
     }
 }
