@@ -26,10 +26,9 @@
                                     <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button">Informações</a>
                                 </h9>
                             </div>
-
                             <!-- Modal visualizar informações participante -->
                             <div class="modal fade" id="modalVizuParticipante{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-dialog modal-dialog-centered modal-xl">
                                     <div class="modal-content">
 
                                         <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
@@ -41,7 +40,7 @@
                                         </div>
 
                                         <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
-                                            @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1])
+                                            @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1,'trabalho' => $projeto])
                                         </div>
                                     </div>
                                 </div>

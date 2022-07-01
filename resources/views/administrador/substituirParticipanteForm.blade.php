@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 mt-3">
-            <h5>Dados do discente</h5>
+            <h5 style="font-weight: bold;">Dados do discente</h5>
         </div>
     </div>
     <div class="row">
@@ -46,7 +46,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5>Endereço</h5>
+            <h5 style="font-weight: bold;">Endereço</h5>
         </div>
     </div>
     <div class="row">
@@ -97,7 +97,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h5>Dados do curso</h5>
+            <h5 style="font-weight: bold;">Dados do curso</h5>
         </div>
     </div>
     <div class="row">
@@ -161,7 +161,7 @@
     @endif
     <div class="row">
         <div class="col-md-12">
-            <h5>Plano de trabalho</h5>
+            <h5 style="font-weight: bold;">Plano de trabalho</h5>
         </div>
     </div>
     <div class="row justify-content-center">
@@ -178,6 +178,72 @@
         </div>
         @endif
     </div>
+    {{--Documentação complementar quando o projeto está aprovado--}}
+    @if($trabalho->status =="aprovado")
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <h5 style="font-weight: bold;">Documentação Complementar</h5>
+            </div>
+        </div>
+        <div class="row col-md-12" >
+            <div class="col-md-6 pl-0" style="margin-top: 15px">
+                <label class="control-label ">Termo de Compromisso <span style="color: red">*</span>
+                    @if($participante->anexoTermoCompromisso)
+                        <a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoTermoCompromisso]) }}"><i class="ml-1 fas fa-file-pdf fa-2x"></i></a>
+                    @endif
+                </label>
+            </div>
+            <div class="col-md-6 pl-0" style="margin-top: 15px">
+                <label class="control-label ">Comprovante de Matrícula <span style="color: red">*</span>
+                    @if($participante->anexoComprovanteMatricula)
+                        <a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoComprovanteMatricula]) }}"><i class="ml-1 fas fa-file-pdf fa-2x"></i></a>
+                    @endif
+                </label>
+            </div>
+            <div class="col-md-6 pl-0" style="margin-top: 15px">
+                <label class="control-label ">Documentos Pessoais (CPF/RG ou CNH) <span style="color: red">*</span>
+                    @if($participante->anexo_cpf_rg)
+                        <a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexo_cpf_rg]) }}"><i class="ml-1 fas fa-file-pdf fa-2x"></i></a>
+                    @endif
+                </label>
+            </div>
+            @if($trabalho->evento->tipo != "PIBEX")
+                <div class="col-md-6 pl-0" style="margin-top: 15px">
+                    <label class="control-label ">PDF Lattes <span style="color: red">*</span>
+                        @if($participante->anexoLattes)
+                            <a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoLattes]) }}"><i class="ml-1 fas fa-file-pdf fa-2x"></i></a>
+                        @endif
+                    </label>
+                </div>
+                <div class="col-md-6 pl-0" style="margin-top: 15px">
+                    <div class="row">
+                    <div class="col-sm-3 pr-0">
+                    <label class="control-label " content="required">Link Lattes <span style="color: red">*</span> </label>
+                    </div>
+                    <div class="col-sm-9 pl-0">
+                    <input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="text" class="input-group-text col-md-12" name="linkLattes"  placeholder="Link Lattes" id="linkLattes{{$participante->id}}"
+                           required @if($participante->linkLattes) value="{{$participante->linkLattes}}" @endif maxlength="250" style="width: 322px;"/>
+                    </div>
+                    </div>
+                </div>
+            @endif
+            <div class="col-md-6 pl-0" style="margin-top: 15px">
+                <label class="control-label " >Comprovante Bancário (Foto do cartão)
+                    @if($participante->anexoComprovanteBancario)
+                        <a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoComprovanteBancario]) }}"><i class="ml-1 fas fa-file-pdf fa-2x"></i></a>
+                    @endif
+                </label>
+            </div>
+            <div class="col-md-6 pl-0" style="margin-top: 15px">
+                <label class="control-label ">Autorização dos Pais (Em caso de menor de idade)
+                    @if($participante->anexoAutorizacaoPais)
+                        <a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoAutorizacaoPais]) }}"><i class="ml-1 fas fa-file-pdf fa-2x"></i></a>
+                    @endif
+                </label>
+            </div>
+        </div>
+    @endif
 </div>
 
 

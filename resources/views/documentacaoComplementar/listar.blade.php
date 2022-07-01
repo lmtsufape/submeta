@@ -99,8 +99,7 @@
 													</label>
 
 												<br>
-												<input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="file" class="input-group-text" value="" name="anexo_cpf_rg" accept=".pdf" id="anexo_cpf_rg{{$participante->id}}" required"
-												/>
+												<input @if($trabalho->status!="aprovado")disabled="disabled" @endif type="file" class="input-group-text" value="" name="anexo_cpf_rg" accept=".pdf" id="anexo_cpf_rg{{$participante->id}}" required/>
 												@error('anexo_cpf_rg')
 													<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
