@@ -169,7 +169,7 @@
                                 <!-- Modal visualizar informações participante -->
                                 <div class="modal fade" id="modalVizuParticipante{{$participante->id}}" tabindex="-1"
                                      role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl">
                                         <div class="modal-content">
                                         
                                             <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
