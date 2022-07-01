@@ -62,6 +62,7 @@ class StoreTrabalho extends FormRequest
         }
 
         if ($this->has('rascunho')) {
+            $rules = [];
             return $rules;
         }else{
             $evento = Evento::find($this->editalId);

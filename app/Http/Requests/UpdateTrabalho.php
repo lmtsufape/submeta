@@ -56,6 +56,7 @@ class UpdateTrabalho extends FormRequest
                     $rules['total_periodos.'.$value] = ['required', 'string'];
                     $rules['media_do_curso.'.$value] = ['required', 'string'];
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
+                    $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
     
                 }
             }
@@ -67,7 +68,7 @@ class UpdateTrabalho extends FormRequest
             return $rules;
         }else{
 
-            $rules = [];
+            //$rules = [];
             if($evento->tipo!="PIBEX"){
                 $rules['anexoPlanilhaPontuacao']       = ['required'];
                 $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
