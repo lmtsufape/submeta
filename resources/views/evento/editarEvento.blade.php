@@ -16,7 +16,7 @@
         {{-- nome | Tipo--}}
         <div class="row justify-content-center">
             <div class="col-sm-12">{{--Nome do evento--}}
-                <label for="nome" class="col-form-label">{{ __('Nome*:') }}</label>
+                <label for="nome" class="col-form-label">{{ __('Nome:') }}<span style="color: red; font-weight: bold;">*</span></label>
                 <input value="{{$evento->nome}}" id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome') }}" required autocomplete="nome" autofocus>
 
                 @error('nome')
@@ -28,7 +28,7 @@
           
             {{-- Tipo do evento --}}
             <div class="col-sm-5">
-                <label for="tipo" class="col-form-label">{{ __('Tipo*:') }}</label>
+                <label for="tipo" class="col-form-label">{{ __('Tipo:') }}<span style="color: red; font-weight: bold;">*</span></label>
                 <!-- <input value="{{$evento->tipo}}" id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required autocomplete="tipo" autofocus> -->
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" required>
                     <option value="PIBIC" {{ $evento->tipo == "PIBIC" ? 'selected' :'' }}>PIBIC</option>
@@ -44,7 +44,7 @@
             </div>{{-- Tipo do evento --}}
 
             <div class="col-sm-2">
-                <label for="natureza" class="col-form-label">{{ __('Natureza*:') }}</label>
+                <label for="natureza" class="col-form-label">{{ __('Natureza:') }}<span style="color: red; font-weight: bold;">*</span></label>
                 <select id="natureza" type="text" class="form-control @error('natureza') is-invalid @enderror" name="natureza" value="{{ old('natureza') }}" required>
                   @foreach ($naturezas as $natureza)
                     @if ($natureza->id === $evento->natureza_id)
@@ -62,7 +62,7 @@
                 @enderror
             </div>
             <div class="col-sm-2">
-                <label for="numParticipantes" class="col-form-label">{{ __('Nº de Discentes*:') }}</label>
+                <label for="numParticipantes" class="col-form-label">{{ __('Nº de Discentes:') }}<span style="color: red; font-weight: bold;">*</span></label>
                 <input id="numParticipantes" type="number" min="1" max="20" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ $evento->numParticipantes }}" required autocomplete="numParticipantes" autofocus>
 
                 @error('numParticipantes')
@@ -99,7 +99,7 @@
         <div class="row justify-content-center">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Descrição*:</label>
+                    <label for="exampleFormControlTextarea1">Descrição:<span style="color: red; font-weight: bold;">*</span></label>
                     <textarea class="form-control @error('descricao') is-invalid @enderror" value="{{ $evento->descricao }}" id="descricao" name="descricao" rows="3">{{$evento->descricao}}</textarea>
                     @error('descricao')
                         <span class="invalid-feedback" role="alert">
@@ -113,7 +113,7 @@
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-md-11">
-                        <label for="coordenador_id" class="col-form-label">{{ __('Coordenador*: ') }}</label>
+                        <label for="coordenador_id" class="col-form-label">{{ __('Coordenador: ') }}<span style="color: red; font-weight: bold;">*</span></label>
 
                     </div>
                     <div class="col-md-1 text-sm-right">
@@ -185,7 +185,7 @@
 
             {{-- Início da Submissão --}}
             <div class="col-sm-6">
-                <label for="inicioSubmissao" class="col-form-label">{{ __('Início da Submissão*:') }}</label>
+                <label for="inicioSubmissao" class="col-form-label">{{ __('Início da Submissão:') }}<span style="color: red; font-weight: bold;">*</span></label>
                 <input value="{{$evento->inicioSubmissao}}" id="inicioSubmissao" type="date" class="form-control @error('inicioSubmissao') is-invalid @enderror" name="inicioSubmissao" value="{{ old('inicioSubmissao') }}" required autocomplete="inicioSubmissao" autofocus>
 
                 @error('inicioSubmissao')
@@ -196,7 +196,7 @@
             </div>{{-- end Início da Submissão --}}
             {{-- Fim da submissão --}}
             <div class="col-sm-6">
-                <label for="fimSubmissao" class="col-form-label">{{ __('Fim da Submissão*:') }}</label>
+                <label for="fimSubmissao" class="col-form-label">{{ __('Fim da Submissão:') }}<span style="color: red; font-weight: bold;">*</span></label>
                 <input value="{{$evento->fimSubmissao}}" id="fimSubmissao" type="date" class="form-control @error('fimSubmissao') is-invalid @enderror" name="fimSubmissao" value="{{ old('fimSubmissao') }}" required autocomplete="fimSubmissao" autofocus>
 
                 @error('fimSubmissao')
@@ -208,7 +208,7 @@
         </div>{{-- end dataInicio | dataFim | inicioSubmissao | fimSubmissao --}}
         <div class="row justify-content-center">
           <div class="col-sm-6">
-              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação*:') }}</label>
+              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação:') }}<span style="color: red; font-weight: bold;">*</span></label>
               <input value="{{$evento->inicioRevisao}}" id="inicioRevisao" type="date" class="form-control @error('inicioRevisao') is-invalid @enderror" name="inicioRevisao" value="{{ old('inicioRevisao') }}" required autocomplete="inicioRevisao" autofocus>
 
               @error('inicioRevisao')
@@ -218,7 +218,7 @@
               @enderror
           </div>
           <div class="col-sm-6">
-              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação*:') }}</label>
+              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação:') }}<span style="color: red; font-weight: bold;">*</span></label>
               <input value="{{$evento->fimRevisao}}" id="fimRevisao" type="date" class="form-control @error('fimRevisao') is-invalid @enderror" name="fimRevisao" value="{{ old('fimRevisao') }}" required autocomplete="fimRevisao" autofocus>
 
               @error('fimRevisao')
@@ -232,7 +232,7 @@
         {{-- inicioRevisao | fimRevisao | inicioResultado | fimResultado--}}
         <div class="row justify-content-left">
           <div class="col-sm-6">
-              <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar*:') }}</label>
+              <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar:') }}<span style="color: red; font-weight: bold;">*</span></label>
               <input id="resultado_preliminar" value="{{$evento->resultado_preliminar}}" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ old('resultado_preliminar') }}" required autocomplete="resultado_preliminar" autofocus>
 
               @error('resultado_preliminar')
@@ -242,7 +242,7 @@
               @enderror
           </div>
           <div class="col-sm-6">
-              <label for="inicio_recurso" class="col-form-label">{{ __('Início do recurso*:') }}</label>
+              <label for="inicio_recurso" class="col-form-label">{{ __('Início do recurso:') }}<span style="color: red; font-weight: bold;">*</span></label>
               <input id="inicio_recurso" type="date" value="{{ $evento->inicio_recurso }}" class="form-control @error('inicio_recurso') is-invalid @enderror" name="inicio_recurso" value="{{ old('inicio_recurso') }}" required autocomplete="inicio_recurso" autofocus>
 
               @error('inicio_recurso')
@@ -255,7 +255,7 @@
         </div>
         <div class="row justify-content-left">
           <div class="col-sm-6">
-              <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso*:') }}</label>
+              <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso:') }}<span style="color: red; font-weight: bold;">*</span></label>
               <input id="fim_recurso" type="date" value="{{ $evento->fim_recurso }}" class="form-control @error('fim_recurso') is-invalid @enderror" name="fim_recurso" value="{{ old('fim_recurso') }}" required autocomplete="resultado" autofocus>
 
               @error('fim_recurso')
@@ -266,7 +266,7 @@
           </div>
           
           <div class="col-sm-6">
-              <label for="resultado_final" class="col-form-label">{{ __('Resultado Final*:') }}</label>
+              <label for="resultado_final" class="col-form-label">{{ __('Resultado Final:') }}<span style="color: red; font-weight: bold;">*</span></label>
               <input id="resultado_final" type="date" value="{{ $evento->resultado_final }}" class="form-control @error('resultado_final') is-invalid @enderror" name="resultado_final" value="{{ old('resultado_final') }}" required autocomplete="resultado" autofocus>
 
               @error('resultado_final')
@@ -280,7 +280,7 @@
         <!-- AKI -->
         <div class="row justify-content-left">
             <div class="col-sm-6">
-              <label for="inicioProjeto" class="col-form-label">{{ __('Início do Projeto*:') }}</label>
+              <label for="inicioProjeto" class="col-form-label">{{ __('Início do Projeto:') }}<span style="color: red; font-weight: bold;">*</span></label>
               <input id="inicioProjeto" type="date" value="{{ $evento->inicioProjeto }}"class="form-control @error('inicioProjeto') is-invalid @enderror" name="inicioProjeto" value="{{ old('inicioProjeto') }}" required autocomplete="inicioProjeto" autofocus>
 
               @error('inicioProjeto')
@@ -291,7 +291,7 @@
             </div>
 
             <div class="col-sm-6">
-              <label for="fimProjeto" class="col-form-label">{{ __('Fim do Projeto*:') }}</label>
+              <label for="fimProjeto" class="col-form-label">{{ __('Fim do Projeto:') }}<span style="color: red; font-weight: bold;">*</span></label>
               <input id="fimProjeto" type="date" value="{{ $evento->fimProjeto }}" class="form-control @error('fimProjeto') is-invalid @enderror" name="fimProjeto" value="{{ old('fimProjeto') }}" required autocomplete="fimProjeto" autofocus>
 
               @error('fimProjeto')
@@ -369,7 +369,7 @@
         <div class="row justify-content-center" style="margin-top:10px">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">PDF do Edital*:</label>
+                    <label for="pdfEdital">PDF do Edital:<span style="color: red; font-weight: bold;">*</span></label>
                     <a href="{{route('download', ['file' => $evento->pdfEdital])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                         <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                     </a>
@@ -401,7 +401,7 @@
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="pdfEdital">Formulário para avaliador <i>ad hoc</i>:</label>
+                    <label for="pdfEdital">Formulário para avaliador <i>ad hoc</i>:<span style="color: red; font-weight: bold;">*</span></label>
                     <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                         <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                     </a>
