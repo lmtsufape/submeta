@@ -1122,21 +1122,6 @@ class TrabalhoController extends Controller
                 ]);
                 $notificacao->save();
                 Notification::send(Auth::user(), new SubmissaoNotification($trabalho->id,$trabalho->titulo));
-                //Admins
-                $admins = App\Administrador::all();
-                foreach ($admins as $admin) {
-                    $userTemp = User::find($admin->user_id);
-                    $notificacao = App\Notificacao::create([
-                        'remetente_id' => Auth::user()->id,
-                        'destinatario_id' => $admin->user_id,
-                        'trabalho_id' => $trabalho->id,
-                        'lido' => false,
-                        'tipo' => 1,
-                    ]);
-                    $notificacao->save();
-                    Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id,$trabalho->titulo,$userTemp));
-
-                }
 
 
                 return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta submetida!']);
