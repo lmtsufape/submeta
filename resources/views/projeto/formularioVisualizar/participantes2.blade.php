@@ -22,6 +22,7 @@
                             </div>
                             <div class="col-sm-5">
                                 <h5>{{$participante->user->name}}</h5>
+                                <h5>{{$participante->planoTrabalho->titulo}}</h5>
                                 <h9>
                                     <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button">Informações</a>
                                 </h9>
@@ -53,4 +54,3 @@
     </div>
 
 <!--X Participantes X-->
-
