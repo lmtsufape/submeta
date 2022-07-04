@@ -109,9 +109,11 @@
                                         Documentos Complementares
                                 </a>
                                     <hr class="dropdown-hr">
-                                <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
-                                    Visualizar
-                                </a>
+                                @if($projeto->status != 'rascunho')
+                                  <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                                      Visualizar
+                                  </a>
+                              @endif
 
                                 <hr class="dropdown-hr">
                                 <a href="{{route('planos.listar', ['id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">

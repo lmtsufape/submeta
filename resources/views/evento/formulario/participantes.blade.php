@@ -20,17 +20,22 @@
                                 <div id="participante" class="row">
                                     @for($i = 0; $i < $edital->numParticipantes; $i++)
 
-                                        <div @if(!isset(old('marcado')[$i])) hidden @endif class="form-row mb-1 col-md-3" style="margin-top: 10px" id="part{{$i}}">
-                                            <div class="col-sm-4" style="display: flex; align-items: center;">
+                                        <div @if(!isset(old('marcado')[$i])) hidden @endif class="form-row mb-1 col-md-6" style="margin-top: 10px" id="part{{$i}}">
+                                            <div class="col-sm-2" style="display: flex; align-items: center;">
                                                 <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                                             </div>
-                                            <div class="col-sm-8" style="display: flex; align-items: center;">
+                                            <div class="col-sm-10" style="display: flex; align-items: center;">
+                                              <div class="col-sm-12">
                                                 <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">
                                                     @if(isset(old('marcado')[$i]))
                                                         @if(isset(old('name')[$i]))Nome: {{old('name')[$i]}} @else Discente {{$i+1}} @endif
                                                             @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @endif
                                                     @endif
                                                 </a>
+                                                <div class="col-sm-5 pl-0" style="margin-top: 10px; text-align: left;">
+                                                  <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 12px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Excluir</button>
+                                                  </div>
+                                              </div>
                                             </div>
                                         </div>
 
@@ -124,7 +129,7 @@
                                                                     <div class="col-md-12"><h5>Endereço</h5></div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CEP'])
-                                                                            <input name="cep[{{$i}}]" type="text" id="cep{{$i}}" 
+                                                                            <input name="cep[{{$i}}]" type="text" id="cep{{$i}}"
                                                                             value="{{ old('cep')[$i] ?? ''}}" class="form-control cep"
                                                                             onblur="pesquisacep(this.value, {{$i}})" />
                                                                             @error('cep.'.$i)
@@ -155,7 +160,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Bairro'])
-                                                                            <input name="bairro[{{$i}}]" type="text" id="bairro{{$i}}" class="form-control" 
+                                                                            <input name="bairro[{{$i}}]" type="text" id="bairro{{$i}}" class="form-control"
                                                                             value="{{ old('bairro')[$i] ?? '' }}" />
                                                                             @error('bairro.'.$i)
                                                                                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
@@ -182,11 +187,11 @@
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
-                                                                    
-                                                                    
-                                                                    
-                                                                    
-                                                                    
+
+
+
+
+
                                                                     <div class="col-12">
                                                                         <div class="form-group">
                                                                             <label class=" control-label" for="firstname">Complemento</label>
@@ -359,8 +364,11 @@
                                                                         @endcomponent
                                                                     </div>
 
-                                                                    <div class="col-6">
+                                                                    {{-- <div class="col-6">
                                                                         <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Cancelar</button>
+                                                                    </div> --}}
+                                                                    <div class="col-6">
+                                                                      <button data-dismiss="modal" type="button" class="btn btn-secondary float-left" style="font-size: 16px">Sair</button>
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <button data-dismiss="modal" type="button" id="guardar{{$i}}" class="btn btn-success float-right" style="font-size: 16px" onclick="marcar({{$i}})">Salvar</button>
@@ -397,7 +405,7 @@
 </script>
   <!-- Adicionando Javascript -->
   <script>
-    
+
     function limpa_formulário_cep(id) {
             //Limpa valores do formulário de cep.
             document.getElementById(`rua${id}`).value=("");
@@ -406,7 +414,7 @@
             document.getElementById(`uf${id}`).value=("");
             //document.getElementById('ibge').value=("");
     }
-    
+
     let cont = 0; //Esse cont representa a adição de cada aluno
     function meu_callback(conteudo) {
         if (!("erro" in conteudo)) {
@@ -415,8 +423,8 @@
             document.getElementById(`bairro${cont}`).value=(conteudo.bairro);
             document.getElementById(`cidade${cont}`).value=(conteudo.localidade);
             document.getElementById(`uf${cont}`).value=(conteudo.uf);
-            
-            
+
+
             //document.getElementById('ibge').value=(conteudo.ibge);
         } //end if.
         else {
@@ -429,7 +437,7 @@
     function pesquisacep(valor, id) {
         //Nova variável "cep" somente com dígitos.
         var cep = valor.replace(/\D/g, '');
-        
+
         //Verifica se campo cep possui valor informado.
         if (cep != "") {
 
