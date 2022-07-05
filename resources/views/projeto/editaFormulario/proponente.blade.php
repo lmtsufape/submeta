@@ -22,6 +22,7 @@
           <div class="col-md-11">
             <br>
             <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
+            readonly="readonly"
                    @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
                    value="{{ Auth()->user()->proponentes->linkLattes }}"
                    @else
