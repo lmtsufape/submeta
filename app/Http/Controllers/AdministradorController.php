@@ -867,11 +867,9 @@ class AdministradorController extends Controller
         $notificacao->save();
 
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
-        $subject = "Trabalho atribuido";
-        $informacoes = $trabalho->titulo;
-        //REFAZER EMAIL
+        $subject = "Convite para avaliar projetos da UFAPE - Reenvio";
         Mail::to($avaliador->user->email)
-            ->send(new EmailLembrete($avaliador->user, $subject, $informacoes));
+            ->send(new EmailLembrete($avaliador->user->name, $subject, $trabalho->titulo,$evento->nome,$evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExterno,$avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso));
 
         return redirect()->back();
 

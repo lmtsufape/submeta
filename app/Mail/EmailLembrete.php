@@ -21,11 +21,16 @@ class EmailLembrete extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $subject, $informacoes = "")
+    public function __construct($user, $subject, $propostaTitulo, $eventoTitulo, $tipo, $natureza, $arquivo, $acesso)
     {
         $this->user = $user;
         $this->subject = $subject;
-        $this->informacoes = $informacoes;
+        $this->propostaTitulo = $propostaTitulo;
+        $this->eventoTitulo = $eventoTitulo;
+        $this->tipo = $tipo;
+        $this->natureza = $natureza;
+        $this->arquivo = $arquivo;
+        $this->acesso = $acesso;
 
     }
 
@@ -36,14 +41,32 @@ class EmailLembrete extends Mailable
      */
     public function build()
     {
-        $subject = 'Submeta - Lembrete de Edital';
+        $file = storage_path('app').'/'.$this->arquivo;
+        if($this->acesso == '1' || $this->acesso == '3'){
+            return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
+                ->subject($this->subject)
+                ->view('emails.emailLembreteRevisor')
+                ->with([
+                    'user' => $this->user,
+                    'propostaTitulo' => $this->propostaTitulo,
+                    'eventoTitulo'  => $this->eventoTitulo,
+                    'tipo' => $this->tipo,
+                    'natureza' => $this->natureza,
+                    'acesso' => $this->acesso
+
+                ])->attach($file);
+        }
         return $this->from('lmtsteste@gmail.com', 'Submeta - LMTS')
-                    ->subject($this->subject)
-                    ->view('emails.emailLembreteRevisor')
-                    ->with([
-                        'user' => $this->user,
-                        'info' => $this->informacoes,
-                        
-                    ]);
+            ->subject($this->subject)
+            ->view('emails.emailLembreteRevisor')
+            ->with([
+                'user' => $this->user,
+                'propostaTitulo' => $this->propostaTitulo,
+                'eventoTitulo'  => $this->eventoTitulo,
+                'tipo' => $this->tipo,
+                'natureza' => $this->natureza,
+                'acesso' => $this->acesso
+
+            ]);
     }
 }
