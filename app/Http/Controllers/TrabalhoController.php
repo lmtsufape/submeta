@@ -1220,7 +1220,9 @@ class TrabalhoController extends Controller
                         $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                         $participante->periodo_atual = $request->periodo_atual[$key];
                         $participante->total_periodos = $request->total_periodos[$key];
-                        $participante->media_do_curso = $request->media_geral_curso[$key];
+                        if($edital->tipo != "PIBEX"){
+                            $participante->media_do_curso = $request->media_geral_curso[$key];
+                        }
                         $participante->save();
 
 
@@ -1239,7 +1241,9 @@ class TrabalhoController extends Controller
                         $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                         $participante->periodo_atual = $request->periodo_atual[$key];
                         $participante->total_periodos = $request->total_periodos[$key];
-                        $participante->media_do_curso = $request->media_geral_curso[$key];
+                        if($edital->tipo != "PIBEX"){
+                            $participante->media_do_curso = $request->media_geral_curso[$key];
+                        }
                         $participante->save();
 
                         $subject = "Participante de Projeto";
@@ -1301,7 +1305,9 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    $participante->media_do_curso = $request->media_geral_curso[$key];
+                    if($edital->tipo != "PIBEX"){
+                        $participante->media_do_curso = $request->media_geral_curso[$key];
+                    }
                     $participante->update();
 
                     if ($request->anexoPlanoTrabalho != null && array_key_exists($key, $request->anexoPlanoTrabalho) && $request->anexoPlanoTrabalho[$key] != null) {
@@ -1384,7 +1390,9 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    $participante->media_do_curso = $request->media_geral_curso[$key];
+                    if($edital->tipo != "PIBEX"){
+                        $participante->media_do_curso = $request->media_geral_curso[$key];
+                    }
                     $participante->save();
 
                     $usuario = User::where('email', $email)->first();
@@ -1419,7 +1427,9 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    $participante->media_do_curso = $request->media_geral_curso[$key];
+                    if($edital->tipo != "PIBEX"){
+                        $participante->media_do_curso = $request->media_geral_curso[$key];
+                    }
                     $participante->save();
 
 

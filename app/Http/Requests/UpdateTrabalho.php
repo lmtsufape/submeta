@@ -54,7 +54,9 @@ class UpdateTrabalho extends FormRequest
                     $rules['ordem_prioridade.'.$value] = ['required', 'string'];
                     $rules['periodo_atual.'.$value] = ['required', 'string'];
                     $rules['total_periodos.'.$value] = ['required', 'string'];
-                    $rules['media_do_curso.'.$value] = ['required', 'string'];
+                    if($evento->tipo != "PIBEX") {
+                        $rules['media_do_curso.' . $value] = ['required', 'string'];
+                    }
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
                     $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
     
