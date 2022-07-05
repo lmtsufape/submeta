@@ -38,7 +38,7 @@
 
             </div>
             <div style="margin-top: -2rem">
-              
+
               <div class="col-md-12" style="margin-bottom:18px">
                 @if(false) {{-- Agendamento para o dia 01/07/2021 as 12:30:00--}}
                   <a data-toggle="modal" data-target="#exampleModal"  class="btn btn-info" style="color:#fff; margin-right:-15px">Criar proposta</a>
@@ -51,7 +51,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                       
+
                         <div class="modal-body" style="text-align: center">
                           <h3 style="color: #005387">Site em manutenção!</h3>
                         </div>
@@ -60,7 +60,7 @@
                           <h5 style="color: #005387; margin-bottom:-1px">Voltaremos na quinta-feira!</h5>
                           <h5 style="color: #909090"> 01/07/2021 às 12h30</h5>
                         </div>
-                        
+
                         <div class="modal-footer"style="border: 0px solid rgba(0, 0, 0, 0.2);">
                           <button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
                         </div>
@@ -73,7 +73,7 @@
                   @endif
                 @endif
               </div>
-            
+
             </div>
           </div>
         </div>
@@ -133,10 +133,11 @@
                                   </a>--}}
                                   <hr class="dropdown-hr">
 
-
-                                <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
-                                  Visualizar
-                                </a>
+                                @if($projeto->status != 'rascunho')
+                                  <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                                    Visualizar
+                                  </a>
+                              @endif
 
                                 <hr class="dropdown-hr">
                                 <a href="{{route('planos.listar', ['id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
@@ -224,7 +225,7 @@
 <script>
 function buscarEdital(input) {
     var editais = document.getElementById('projetos').children;
-    if(input.value.length > 2) {      
+    if(input.value.length > 2) {
       for(var i = 0; i < editais.length; i++) {
         var nomeEvento = editais[i].children[0].textContent;
         if(nomeEvento.substr(0).indexOf(input.value) >= 0) {
