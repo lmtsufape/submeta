@@ -452,6 +452,22 @@
                     @enderror
                 </div>
             </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="docTutorial">Documento auxiliar para Avaliador:</label>
+                        @if(old('docTutorialPreenchido') != null)
+                            <a id="docTutorialTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'docTutorial' ])}}">Arquivo atual</a>
+                        @endif
+                        <input type="hidden" id="docTutorialPreenchido" name="docTutorialPreenchido" value="{{ old('docTutorialPreenchido') }}" >
+                        <input type="file" accept=".pdf,.docx,.doc,.zip" class="form-control-file pdf @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial" onchange="exibirAnexoTemp(this)">
+                        <small>O arquivo selecionado deve ser de atÃ© 2mb.</small>
+                        @error('docTutorial')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                </div>
+            </div>
         </div>
 
         <div class="row justify-content-center" style="margin: 20px 0 20px 0">

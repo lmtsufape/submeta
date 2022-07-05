@@ -26,7 +26,8 @@ class StoreTrabalho extends FormRequest
      */
     public function rules()
     {
-        
+
+        $evento = Evento::find($this->editalId);
         $rules = [];
         if($this->has('marcado')){
             foreach ($this->get('marcado') as $key => $value) {
@@ -52,7 +53,9 @@ class StoreTrabalho extends FormRequest
                     $rules['ordem_prioridade.'.$value] = ['required', 'string'];
                     $rules['periodo_atual.'.$value] = ['required', 'string'];
                     $rules['total_periodos.'.$value] = ['required', 'string'];
-                    $rules['media_do_curso.'.$value] = ['string'];
+                    if($evento->tipo != "PIBEX") {
+                        $rules['media_do_curso.' . $value] = ['required', 'string'];
+                    }
                     $rules['anexoPlanoTrabalho.'.$value] = ['required'];
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
     
@@ -65,7 +68,6 @@ class StoreTrabalho extends FormRequest
             $rules = [];
             return $rules;
         }else{
-            $evento = Evento::find($this->editalId);
             if($evento->tipo!="PIBEX"){
                 $rules['anexoPlanilhaPontuacao']       = ['required'];
                 $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];

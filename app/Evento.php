@@ -19,7 +19,7 @@ class Evento extends Model
       'dt_inicioRelatorioParcial', 'dt_fimRelatorioParcial', 'dt_inicioRelatorioFinal', 'dt_fimRelatorioFinal',
       'formAvaliacaoExterno', 'formAvaliacaoInterno',
       'cotaDoutor', 'inicioProjeto', 'fimProjeto',
-      'formAvaliacaoRelatorio'
+      'formAvaliacaoRelatorio', 'docTutorial'
   ];
 
   public function endereco(){

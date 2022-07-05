@@ -236,8 +236,6 @@ class AvaliadorController extends Controller
         }
         $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
       	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
-        $trabalho->status = 'avaliado';
-        $trabalho->save();
         $data = Carbon::now('America/Recife');
     	if($request->anexoParecer == ''){  
     	    if($evento->tipo == "PIBEX"){

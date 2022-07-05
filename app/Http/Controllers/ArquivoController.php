@@ -149,21 +149,6 @@ class ArquivoController extends Controller
                 $notificacao->save();
                 Notification::send($userTemp, new RelatorioRecebimentoNotification($arquivo->trabalho->id,$userTemp,
                 $arquivo->trabalho->evento->nome,$arquivo->trabalho->titulo,'Parcial'));
-                //Admins
-                $admins = Administrador::all();
-                foreach ($admins as $admin) {
-                    $userTemp = User::find($admin->user_id);
-                    $notificacao = Notificacao::create([
-                        'remetente_id' => Auth::user()->id,
-                        'destinatario_id' => $admin->user_id,
-                        'trabalho_id' => $arquivo->trabalho->id,
-                        'lido' => false,
-                        'tipo' => 3,
-                    ]);
-                    $notificacao->save();
-                    Notification::send($userTemp, new RelatorioRecebimentoNotification($arquivo->trabalho->id,$userTemp,
-                    $arquivo->trabalho->evento->nome,$arquivo->trabalho->titulo,'Parcial'));
-                }
 
             }
             if($request->relatorioFinal != null) {
@@ -180,21 +165,6 @@ class ArquivoController extends Controller
                 $notificacao->save();
                 Notification::send($userTemp, new RelatorioRecebimentoNotification($arquivo->trabalho->id,$userTemp,
                     $arquivo->trabalho->evento->nome,$arquivo->trabalho->titulo,'Final'));
-                //Admins
-                $admins = Administrador::all();
-                foreach ($admins as $admin) {
-                    $userTemp = User::find($admin->user_id);
-                    $notificacao = Notificacao::create([
-                        'remetente_id' => Auth::user()->id,
-                        'destinatario_id' => $admin->user_id,
-                        'trabalho_id' => $arquivo->trabalho->id,
-                        'lido' => false,
-                        'tipo' => 4,
-                    ]);
-                    $notificacao->save();
-                    Notification::send($userTemp, new RelatorioRecebimentoNotification($arquivo->trabalho->id,$userTemp,
-                        $arquivo->trabalho->evento->nome,$arquivo->trabalho->titulo,'Final'));
-                }
             }
             $arquivo->save();
             return redirect(route('planos.listar', ['id' => $request->projId]))->with(['sucesso' => "Relatório enviado com sucesso"]);

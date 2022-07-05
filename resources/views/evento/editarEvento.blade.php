@@ -429,6 +429,27 @@
                     @enderror
                 </div>
             </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="pdfEdital">Documento auxiliar para Avaliador:</label>
+                    @if($evento->docTutorial != null)
+                        <a href="{{route('download', ['file' => $evento->docTutorial])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
+                    @else
+                        <a>
+                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                        </a>
+                    @endif
+                    <input type="file" class="form-control-file @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('docTutorial')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+            </div>
         </div>
 
         <div class="row justify-content-center" style="margin: 20px 0 20px 0">
