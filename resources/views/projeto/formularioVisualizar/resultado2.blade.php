@@ -16,12 +16,12 @@
             <div class="col-md-3" style="margin-top: 15px">
               <input class="col-md-1" type="radio" id="aprovado" name="statusProp" value="aprovado" required disabled
               @if($projeto->status=="aprovado") checked @endif>
-              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendado</a>
+              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendada</a>
               <br>
               
               <input class="col-md-1" type="radio" id="reprovado" name="statusProp" value="reprovado" required disabled
               @if($projeto->status=="reprovado") checked @endif>
-              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Recomendado</a>
+              <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Recomendada</a>
             </div>
           </div>
       </div>

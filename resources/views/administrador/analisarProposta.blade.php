@@ -995,13 +995,13 @@
                                     <input class="col-md-1" type="radio" id="aprovado" name="statusProp"
                                            value="aprovado" required
                                            @if($trabalho->status=="aprovado") checked @endif>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendado</a>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendada</a>
                                     <br>
 
                                     <input class="col-md-1" type="radio" id="reprovado" name="statusProp"
                                            value="reprovado" required
                                            @if($trabalho->status=="reprovado") checked @endif>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Recomendado</a>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Recomendada</a>
                                 </div>
                             </div>
 
@@ -1579,7 +1579,7 @@
 
             document.getElementById("aprovado").onclick = function () {
                 var s = document.getElementById("comentario");
-                s.innerHTML = 'Proposta cumpriu todos os requisitos estabelecidos no edital';
+                s.innerHTML = 'Proposta cumpriu todos os requisitos estabelecidos no edital.';
             };
             document.getElementById("reprovado").onclick = function () {
                 var s = document.getElementById("comentario");
