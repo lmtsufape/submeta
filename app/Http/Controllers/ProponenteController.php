@@ -110,12 +110,16 @@ class ProponenteController extends Controller
         
     }
     public function projetosEdital($id) {
-      $edital = Evento::find($id);
-      $projetos = Trabalho::where('evento_id', '=', $id)->where('proponente_id', Auth::user()->proponentes->id)->orderBy('titulo')->paginate(10);
-      $hoje = Carbon::today('America/Recife');
-      $hoje = $hoje->toDateString();
-
-      return view('proponente.projetosEdital')->with(['edital' => $edital, 'projetos' => $projetos, 'hoje'=>$hoje]);
+        $edital = Evento::find($id);
+        if(Auth::user()->proponentes != null){
+            $projetos = Trabalho::where('evento_id', '=', $id)->where('proponente_id', Auth::user()->proponentes->id)->orderBy('titulo')->paginate(10);
+            $hoje = Carbon::today('America/Recife');
+            $hoje = $hoje->toDateString();
+    
+            return view('proponente.projetosEdital')->with(['edital' => $edital, 'projetos' => $projetos, 'hoje'=>$hoje]);
+        }else{
+            return redirect()->route('inicial');
+        }
     }
 
     public function solicitarDesligamento(Request $request){

@@ -156,14 +156,10 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <h5>{{$participante->user->name}}</h5>
-                                    <h9>
+                                    <h6>
                                         <a href="" data-toggle="modal"
                                            data-target="#modalVizuParticipante{{$participante->id}}" class="button">Informações</a>
-                                    </h9>
-                                    <br>
-                                    <a href="">
-                                        Remover
-                                    </a>
+                                    </h6>
                                 </div>
 
                                 <!-- Modal visualizar informações participante -->
@@ -171,12 +167,12 @@
                                      role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-xl">
                                         <div class="modal-content">
-                                        
+
                                             <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                 <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
                                                     Informações Participante
                                                     @if($participante->planoTrabalho->arquivado == false)
-                                                    
+
                                                         <a title="Arquivar"  href='javascript:arquivar1{{$participante->id}}.submit()' >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>                                        </a>
                                                         <form method="GET" name='arquivar1{{$participante->id}}' action='{{route('arquivo.arquivar')}}' >
@@ -819,13 +815,13 @@
                                                                 </option>
                                                             </select>
                                                         </div>
-                                                        
+
                                                         <div class="col-sm-3" style="display:flex; align-items: end;">
                                                         <input type="text" class="form-control form-control-edit" placeholder="Nome do avaliador" onkeyup="buscar(this)" style="max-width: 200px;"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
                                                         </div>
 
                                                     </div>
-                                                    
+
                                                     <div class="col-md-6">
                                                         <label style="font-weight: bold;font-size: 18px">Internos</label>
                                                     </div>
@@ -899,7 +895,7 @@
 
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
-                        
+
                         <!--Comissão Interna-->
                         <div class="row justify-content-start" style="alignment: center">
                             <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliadores -
@@ -946,7 +942,7 @@
                                     </div>
                                     <div class="col-sm-5">
                                         <h5>{{$avaliador->user->name}}</h5>
-                                     
+
                                             <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == false)
                                                     Pendente @else <a
                                                             href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
@@ -995,13 +991,13 @@
                                     <input class="col-md-1" type="radio" id="aprovado" name="statusProp"
                                            value="aprovado" required
                                            @if($trabalho->status=="aprovado") checked @endif>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendado</a>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Recomendada</a>
                                     <br>
 
                                     <input class="col-md-1" type="radio" id="reprovado" name="statusProp"
                                            value="reprovado" required
                                            @if($trabalho->status=="reprovado") checked @endif>
-                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Recomendado</a>
+                                    <a style="color: #234B8B; font-weight: bold;font-size: 18px;">Não Recomendada</a>
                                 </div>
                             </div>
 
@@ -1579,7 +1575,7 @@
 
             document.getElementById("aprovado").onclick = function () {
                 var s = document.getElementById("comentario");
-                s.innerHTML = 'Proposta cumpriu todos os requisitos estabelecidos no edital';
+                s.innerHTML = 'Proposta cumpriu todos os requisitos estabelecidos no edital.';
             };
             document.getElementById("reprovado").onclick = function () {
                 var s = document.getElementById("comentario");
@@ -1927,7 +1923,7 @@
                 }
 
             }
-            
+
         }
     </script>
 @endsection
