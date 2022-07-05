@@ -108,11 +108,14 @@
                                 <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
                             </a>
                             <div class="dropdown-menu">
+
+                                @if($hoje <= $edital->inicioProjeto)
                                   <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                                     Editar
                                   </a>
                                   <hr class="dropdown-hr">
 
+                                @endif
                                 @if( $projeto->status== 'aprovado')
                                   <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}" class="dropdown-item" style="text-align: center;">
                                     Solicitar Substituições
