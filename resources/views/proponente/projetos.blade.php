@@ -55,7 +55,7 @@
 
         <div class="card-body" >
           @if(count($projetos)>0)
-            <table class="table table-bordered table-hover" style="display: block; overflow-x: auto; white-space: nowrap; border-radius:10px; margin-bottom:0px">
+            <table class="table table-bordered table-hover" style="display: block; overflow-x: visible; white-space: nowrap; border-radius:10px; margin-bottom:0px">
               <thead>
                 <tr>
                   <th scope="col">Edital</th>
