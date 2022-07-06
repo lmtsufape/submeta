@@ -916,8 +916,7 @@
                                                     href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
                                         </h9>
                                         <br>
-                                         <a onclick="return confirm('Tem certeza que deseja remover o avaliador {{$avaliador->user->name}}?')"
-                                            href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>1]) }}" >
+                                         <a href="" data-toggle="modal" data-target="#removerInterno{{ $avaliador->id }}" >
                                             Remover
                                         </a>
                                         <br>
@@ -926,6 +925,26 @@
                                         </a>
                                     </div>
                                 @endif
+                                <!-- Modal Remover -->
+                                    <div class="modal fade" id="removerInterno{{ $avaliador->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador Interno</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Você tem certeza que deseja remover o avaliador: {{ $avaliador->user->name }}?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                    <a type="button" class="btn btn-danger" href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>1]) }}">Remover</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                             @endforeach
                         </div>
                         <br>
@@ -949,8 +968,7 @@
                                             </h9>
 
                                         <br>
-                                        <a onclick="return confirm('Tem certeza que deseja remover o avaliador {{$avaliador->user->name}}?')"
-                                           href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>0]) }}" >
+                                        <a href="" data-toggle="modal" data-target="#removerAdHoc{{ $avaliador->id }}">
                                             Remover
                                         </a>
                                         <br>
@@ -959,6 +977,27 @@
                                         </a>
                                     </div>
                                 @endif
+
+                                <!-- Modal Remover -->
+                                    <div class="modal fade" id="removerAdHoc{{ $avaliador->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador Ad Hoc</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Você tem certeza que deseja remover o avaliador: {{ $avaliador->user->name }}?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                    <a type="button" class="btn btn-danger" href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>0]) }}">Remover</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                             @endforeach
                         </div>
                     </div>

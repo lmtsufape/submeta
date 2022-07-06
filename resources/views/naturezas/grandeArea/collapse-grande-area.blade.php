@@ -37,25 +37,45 @@
                                     Editar
                                 </a>
                                 <hr class="dropdown-hr">
-                                <form method="POST" action="{{ route('grandearea.deletar', ['id' => $grandeArea->id]) }}">
-                                    {{ csrf_field() }}
-                                    <button type="submit" class="dropdown-item dropdown-item-delete text-center">
-                                      <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
-                                        Deletar
-                                    </button>
-                                </form>
+                                <button data-toggle="modal" data-target="#removerGrandeArea{{ $grandeArea->id }}" class="dropdown-item dropdown-item-delete text-center">
+                                    <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
+                                    Deletar
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                
             </h5>
         
             <div id="collapse{{ $grandeArea->id }}" class="collapse ml-3" aria-labelledby="headingOne" data-parent="#accordion1">
                 @include('naturezas.grandeArea.collapse-area')
             </div>
         </div>
+
+        <!-- Modal Remover -->
+        <div class="modal fade" id="removerGrandeArea{{ $grandeArea->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Remover Grande Área</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Você tem certeza que deseja remover a Grande Área: {{ $grandeArea->nome }}?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <form method="POST" action="{{ route('grandearea.deletar', ['id' => $grandeArea->id]) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Remover</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     @endforeach
 
 </div>
@@ -93,20 +113,39 @@
                                     Editar
                                 </a>
                                 <hr class="dropdown-hr">
-                                <form method="POST" action="{{ route('areaTematica.deletar', ['id' => $areasTematica->id]) }}">
-                                    {{ csrf_field() }}
-                                    <button type="submit" class="dropdown-item dropdown-item-delete text-center">
-                                        <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
-                                        Deletar
-                                    </button>
-                                </form>
+                                <button data-toggle="modal" data-target="#removerAreaTematica{{ $areasTematica->id }}" class="dropdown-item dropdown-item-delete text-center">
+                                    <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
+                                    Deletar
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </h5>
+        </div>
+
+        <!-- Modal Remover -->
+        <div class="modal fade" id="removerAreaTematica{{ $areasTematica->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Remover Área Temática</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Você tem certeza que deseja remover a Área Temática: {{ $areasTematica->nome }}?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <form method="POST" action="{{ route('areaTematica.deletar', ['id' => $areasTematica->id]) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Remover</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     @endforeach
 </div>

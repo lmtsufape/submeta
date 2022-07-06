@@ -51,18 +51,38 @@
                               Editar
                           </a>
                           <hr class="dropdown-hr">
-                          <form method="POST" action="{{ route('subarea.deletar', ['id' => $subArea->id]) }}">
-                              {{ csrf_field() }}
-                              <button type="submit" class="dropdown-item dropdown-item-delete text-center">
-                                <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
+                          <button data-toggle="modal" data-target="#removerSubarea{{ $subArea->id }}" class="dropdown-item dropdown-item-delete text-center">
+                            <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
                                   Deletar
-                              </button>
-      
-                          </form>
+                          </button>
                       </div>
                   </div>
                 </td>
               </tr>
+
+              <!-- Modal Remover -->
+              <div class="modal fade" id="removerSubarea{{ $subArea->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Remover Subárea</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                              <p>Você tem certeza que deseja remover a Subárea: {{ $subArea->nome }}?</p>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                              <form method="POST" action="{{ route('subarea.deletar', ['id' => $subArea->id]) }}">
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Remover</button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
             @endforeach
           </tbody>
         </table>
