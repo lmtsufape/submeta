@@ -73,7 +73,7 @@
 							@else
 								<!-- Button trigger modal -->
 								@if($arquivo->relatorioFinal != null)
-									<button type="button"  class="btn btn-primary" data-toggle="modal" ddata-target="#modalRelatorioFinal{{ $arquivo->id }}"> Visualizar </button>
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}"> Visualizar </button>
 								@elseif($arquivo->arquivado)
 									<button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}"> Arquivado </button>
 								@elseif($trabalho->status == "reprovado")
