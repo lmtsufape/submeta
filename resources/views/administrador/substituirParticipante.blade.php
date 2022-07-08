@@ -163,7 +163,7 @@
                                                 </div>
 
                                                 <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
-                                                    @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1])
+                                                    @include('administrador.substituirParticipanteForm', ['visualizarOnly' => 1, 'trabalho' => $projeto])
                                                 </div>
                                             </div>
                                         </div>

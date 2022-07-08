@@ -154,9 +154,31 @@
               @csrf
               <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
               <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
-              <button type="submit" class="btn btn-danger" @if($avaliador->trabalhos->where('evento_id', $evento->id)->count()  != 0) disabled="disabled" @endif
-              onclick="return confirm('Tem certeza que deseja remover o avaliador {{$avaliador->user->name}}?')"
+              <button type="button" class="btn btn-danger" @if($avaliador->trabalhos->where('evento_id', $evento->id)->count()  != 0) disabled="disabled" @endif
+              data-toggle="modal" data-target="#modal{{ $avaliador->id }}"
               >Remover</button>
+
+              <!-- Modal Remover -->
+              <div class="modal fade" id="modal{{ $avaliador->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Você tem certeza que deseja remover o avaliador: {{ $avaliador->user->name }}?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-danger">Remover</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </form> 
             <form action="{{ route('admin.reenviarConvite') }}" method="POST">
               @csrf
