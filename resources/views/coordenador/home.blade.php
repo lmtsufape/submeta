@@ -10,11 +10,11 @@
         <div class="col-md-12">
             <div class="row justify-content-between">
                 <div class="col-sm">
-                    <select id="" class="form-control select-submeta" onchange="exibirEditais(this)" style="width: 140px;">
-                            <option value="todos" selected>Todos</option>
-                            <option value="aberto">Aberto(s)</option>
-                            <option value="encerrado">Encerrado(s)</option>
-                            <option value="abrira">Abrirão</option>
+                    <select id="seletor" class="form-control select-submeta" onchange="exibirEditais(this)" style="width: 140px;">
+                        <option value="aberto" selected>Aberto(s)</option>
+                        <option value="encerrado">Encerrado(s)</option>
+                        <option value="abrira">Abrirão</option>
+                        <option value="todos">Todos</option>
                     </select>
                 </div>
                 <div class="col-sm" style="margin-bottom: 10px">
@@ -201,6 +201,9 @@
 
 @section('javascript')
 <script>
+
+    exibirEditais(document.getElementById("seletor"))
+
     function exibirEditais(select) {
         let abertos = document.getElementsByClassName("aberto");
         let encerrados = document.getElementsByClassName("encerrado");
