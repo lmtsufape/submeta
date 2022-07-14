@@ -80,6 +80,9 @@ class UpdateTrabalho extends FormRequest
                 $rules['pontuacaoPlanilha']            = ['required', 'string'];
                 $rules['linkGrupoPesquisa']            = ['required', 'string'];
             }
+            if($evento->nome_docExtra != null){
+                $rules['anexo_docExtra']               = [Rule::requiredIf($evento->obrigatoriedade_docExtra == true),'file', 'mimes:zip,doc,docx,pdf', 'max:2048'];
+            }
             $rules['editalId']                     = ['required', 'string'];
             $rules['marcado.*']                    = ['required'];
             $rules['titulo']                       = ['required', 'string'];
