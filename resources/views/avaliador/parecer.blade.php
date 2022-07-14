@@ -58,6 +58,19 @@
 								@endif
 							</div>
 						@endforeach
+
+						{{--Documento Extra--}}
+						@if($trabalho->evento->nome_docExtra != null)
+							<div class="col-sm-12">
+								<label for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{ $trabalho->evento->nome_docExtra }}:@if($trabalho->evento->obrigatoriedade_docExtra == true) <span style="color: red; font-weight:bold">*</span> @endif</label>
+								@if($trabalho->anexo_docExtra != null)
+									<a href="{{ route('baixar.anexo.docExtra', ['id' => $trabalho->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+								@else
+									<i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+								@endif
+							</div>
+							<br>
+						@endif
 					</div>
 
 					<!-- TO AKI -->

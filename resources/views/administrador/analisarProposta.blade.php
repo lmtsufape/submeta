@@ -456,10 +456,20 @@
                                 <div class="col-sm-4">
                                     <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
                                            style="font-weight: bold">{{ __('Câmara ou Conselho Pertinente: ') }}</label>
-                                    <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class=""
-                                                                                                              src="{{asset('img/icons/pdf.ico')}}"
-                                                                                                              style="width:40px"
-                                                                                                              alt=""></a>
+                                    <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                </div>
+                            @endif
+                            @if($evento->nome_docExtra != null)
+                                {{-- Documento Extra --}}
+                                <div class="col-sm-4">
+                                    <label title="{{$evento->nome_docExtra}}" for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$evento->nome_docExtra}}:</label>
+                                    @if($trabalho->anexo_docExtra)
+                                        <a href="{{ route('baixar.anexo.docExtra', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                    @else
+                                        <a>
+                                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                                        </a>
+                                    @endif
                                 </div>
                             @endif
 
