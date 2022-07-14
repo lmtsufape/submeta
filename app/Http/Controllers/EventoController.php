@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Log;
 use App\Endereco;
 use App\Mail\EventoCriado;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 
 
 class EventoController extends Controller
@@ -137,6 +138,7 @@ class EventoController extends Controller
                 'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
                 'inicioProjeto'       => ['required', 'date'],
                 'fimProjeto'          => ['required', 'date'],
+                'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null), 'max:255'],
                 //'modeloDocumento'     => [],
             ]);
         }
@@ -151,6 +153,7 @@ class EventoController extends Controller
             'natureza'            => ['required'],
             'coordenador_id'      => ['required'],
             'numParticipantes'      => ['required'],
+            'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null),'max:255'],
             #----------------------------------------------
             'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
             'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
@@ -176,6 +179,9 @@ class EventoController extends Controller
         $evento['descricao']           = $request->descricao;
         $evento['tipo']                = $request->tipo;
         $evento['natureza_id']         = $request->natureza;
+        if($request->check_docExtra != null){
+            $evento['nome_docExtra']   = $request->nome_docExtra;
+        }
         $evento['inicioSubmissao']     = $request->inicioSubmissao;
         $evento['fimSubmissao']        = $request->fimSubmissao;
         $evento['inicioRevisao']       = $request->inicioRevisao;
@@ -193,6 +199,7 @@ class EventoController extends Controller
         $evento['numParticipantes']    = $request->numParticipantes;
         $evento['consu']               = $request->has('consu');
         $evento['cotaDoutor']               = $request->has('cotaDoutor');
+        $evento['obrigatoriedade_docExtra'] = $request->has('obrigatoriedade_docExtra');
         $evento['anexosStatus']        = 'final';
         $evento['inicioProjeto']       = $request->inicioProjeto;
         $evento['fimProjeto']          = $request->fimProjeto;
@@ -455,6 +462,8 @@ class EventoController extends Controller
                 'inicioProjeto'       => ['required', 'date'],
                 'fimProjeto'          => ['required', 'date'],
                 'docTutorial'     => ['file', 'mimes:zip,doc,docx,pdf', 'max:2048'],
+                'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null), 'max:255'],
+
             ]);
         }
 
@@ -482,6 +491,7 @@ class EventoController extends Controller
             'inicioProjeto'       => ['required', 'date', 'after:resultado_final'],
             'fimProjeto'          => ['required', 'date', 'after:inicioProjeto'],
             'docTutorial'     => ['file', 'mimes:zip,doc,docx,pdf', 'max:2048'],
+            'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null) , 'max:255'],
         ]);
 
         $evento->nome                 = $request->nome;
@@ -489,6 +499,11 @@ class EventoController extends Controller
         $evento->tipo                 = $request->tipo;
         $evento->natureza_id          = $request->natureza;
         $evento->numParticipantes     = $request->numParticipantes;
+        if($request->check_docExtra != null){
+            $evento->nome_docExtra    = $request->nome_docExtra;
+        }else{
+            $evento->nome_docExtra    = null;
+        }
         $evento->inicioSubmissao      = $request->inicioSubmissao;
         $evento->fimSubmissao         = $request->fimSubmissao;
         $evento->inicioRevisao        = $request->inicioRevisao;
@@ -504,6 +519,7 @@ class EventoController extends Controller
         $evento->coordenadorId        = $request->coordenador_id;
         $evento->consu                = $request->has('consu');
         $evento->cotaDoutor                = $request->has('cotaDoutor');
+        $evento->obrigatoriedade_docExtra                = $request->has('obrigatoriedade_docExtra');
         $evento->inicioProjeto       = $request->inicioProjeto;
         $evento->fimProjeto          = $request->fimProjeto;
         if($request->pdfEdital != null){

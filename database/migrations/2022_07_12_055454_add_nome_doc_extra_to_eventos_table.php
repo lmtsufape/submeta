@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDocTutorialToEventosTable extends Migration
+class AddNomeDocExtraToEventosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddDocTutorialToEventosTable extends Migration
     public function up()
     {
         Schema::table('eventos', function (Blueprint $table) {
-            $table->string('docTutorial')->nullable();
+            $table->string('nome_docExtra')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddDocTutorialToEventosTable extends Migration
     public function down()
     {
         Schema::table('eventos', function (Blueprint $table) {
-            $table->dropColumn('docTutorial');
+            $table->dropColumn('nome_docExtra');
         });
     }
 }

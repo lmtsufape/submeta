@@ -159,6 +159,22 @@
               </div>
             </div>
             @endif
+            @if($edital->nome_docExtra != null)
+                <div class="form-group col-md-6" style="margin-top: 10px">
+                    <label for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$edital->nome_docExtra}}:@if($edital->obrigatoriedade_docExtra == true) <span style="color: red; font-weight:bold">*</span> @endif</label>
+                    @if($projeto->anexo_docExtra != null)
+                        <a href="{{ route('baixar.anexo.docExtra', ['id' => $projeto->id]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+                    @else
+                        <i class="fas fa-times-circle fa-2x"></i>
+                    @endif
+                    <input type="file" class="input-group-text" name="anexo_docExtra" placeholder="{{$edital->nome_docExtra}}"  accept=".pdf,.docx,.doc,.zip" @if($edital->obrigatoriedade_docExtra == true) required @endif/>
+                    @error('anexo_docExtra')
+                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            @endif
         </div>
       </div>
     </div>

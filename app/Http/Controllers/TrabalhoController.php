@@ -309,6 +309,15 @@ class TrabalhoController extends Controller
                 }
                 $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoGrupoPesquisa, "Grupo_de_pesquisa." . $request->file('anexoGrupoPesquisa')->extension());
             }
+
+            //Anexo documentro extra
+            if (isset($request->anexo_docExtra)) {
+                if (Storage::disk()->exists($trabalho->anexo_docExtra)) {
+                    Storage::delete($trabalho->anexo_docExtra);
+                }
+                $trabalho->anexo_docExtra = Storage::putFileAs($pasta, $request->anexo_docExtra, "Documento_Extra." . $request->file('anexo_docExtra')->extension());
+            }
+
             $trabalho->save();
             return $trabalho;
         }
@@ -349,6 +358,11 @@ class TrabalhoController extends Controller
         // Anexo grupo pesquisa
         if (isset($request->anexoGrupoPesquisa)) {
             $trabalho->anexoGrupoPesquisa = Storage::putFileAs($pasta, $request->anexoGrupoPesquisa, "Grupo_de_pesquisa." . $request->file('anexoGrupoPesquisa')->extension());
+        }
+
+        // Anexo documento extra
+        if (isset($request->anexo_docExtra)) {
+            $trabalho->anexo_docExtra = Storage::putFileAs($pasta, $request->anexo_docExtra, "Documento_Extra." . $request->file('anexo_docExtra')->extension());
         }
 
         return $trabalho;
@@ -765,6 +779,16 @@ class TrabalhoController extends Controller
         return abort(404);
     }
 
+    public function baixarAnexoDocExtra($id)
+    {
+        $projeto = Trabalho::find($id);
+        if (Storage::disk()->exists($projeto->anexo_docExtra)) {
+            ob_end_clean();
+            return Storage::download($projeto->anexo_docExtra);
+        }
+        return abort(404);
+    }
+
     public function baixarAnexoTemp($eventoId, $nomeAnexo)
     {
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
@@ -817,13 +841,13 @@ class TrabalhoController extends Controller
 
             if($evento->tipo=="PIBEX"){
                 $trabalho->update($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade'
+                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra'
                     ]));
             }else{
                 $trabalho->update($request->except([
                         'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                         'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                        'justificativaAutorizacaoEtica','modalidade'
+                        'justificativaAutorizacaoEtica','modalidade','anexo_docExtra'
                     ]));
             }
 
@@ -998,14 +1022,14 @@ class TrabalhoController extends Controller
             if($evento->tipo=="PIBEX"){
                 $trabalho = Auth::user()->proponentes->trabalhos()
                     ->create($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade'
+                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra'
                     ]));
             }else{
                 $trabalho = Auth::user()->proponentes->trabalhos()
                 ->create($request->except([
                     'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                     'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica','modalidade'
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra'
                 ]));
             }
 

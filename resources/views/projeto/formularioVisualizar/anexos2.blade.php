@@ -68,6 +68,20 @@
               </div>
             @endif
 
+            @if($edital->nome_docExtra != null)
+              {{-- Documento Extra --}}
+              <div class="col-sm-4">
+                <label title="{{$edital->nome_docExtra}}" for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$edital->nome_docExtra}}:</label>
+                  @if($projeto->anexo_docExtra != null)
+                    <a href="{{ route('baixar.anexo.docExtra', ['id' => $projeto->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                  @else
+                    <a>
+                      <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                    </a>
+                  @endif
+              </div>
+            @endif
+
           </div>
         </div>
       </div>

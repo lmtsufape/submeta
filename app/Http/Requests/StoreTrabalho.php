@@ -68,6 +68,9 @@ class StoreTrabalho extends FormRequest
             $rules = [];
             return $rules;
         }else{
+            if($evento->nome_docExtra != null ){
+                $rules['anexo_docExtra']               = [Rule::requiredIf($evento->obrigatoriedade_docExtra == true),'file', 'mimes:zip,doc,docx,pdf', 'max:2048'];
+            }
             if($evento->tipo!="PIBEX"){
                 $rules['anexoPlanilhaPontuacao']       = ['required'];
                 $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
@@ -77,6 +80,7 @@ class StoreTrabalho extends FormRequest
                 $rules['pontuacaoPlanilha']            = ['required', 'string'];
                 $rules['linkGrupoPesquisa']            = ['required', 'string'];
             }
+
             $rules['editalId']                     = ['required', 'string'];
             $rules['marcado.*']                    = ['required'];
             $rules['titulo']                       = ['required', 'string'];
