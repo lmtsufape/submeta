@@ -14,7 +14,7 @@
             </div>
         </div>
         {{-- nome | Participantes | Tipo--}}
-        <div class="row justify-content-center">
+        <div class="row justify-content-start">
             <div class="col-sm-12">
                 <label for="nome" class="col-form-label">{{ __('Nome:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="nome" type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome') }}" required autocomplete="nome" autofocus>
@@ -67,20 +67,28 @@
                 </span>
                 @enderror
             </div>
-            <div class="col-sm-3">
-                <label for="consu" class="col-form-label">{{ __('Decisão da Câmara ou Conselho Pertinente: obrigatório? ') }}<input type="checkbox" name="consu" id="consu"> </label>
+        </div>{{-- end nome | Participantes | Tipo--}}
 
-                {{-- <input id="consu" type="checkbox" class="form-control @error('consu') is-invalid @enderror" name="consu" @if(old('consu')) checked @endif required autocomplete="consu" autofocus> --}}
 
+        <div class="row justify-content-start mb-1 mt-2">
+
+            <div class="col-sm-2">
+                <label for="check_docExtra" class="col-form-label">{{ __('Documento extra?') }}</label>
+                <input type="checkbox" name="check_docExtra" id="check_docExtra" onclick="showDocumentoExtra()" style="margin-left: 5px" {{ old('check_docExtra') ? 'checked' : ''}}>
+            </div>
+
+            <div class="col-sm-5">
+                <label for="consu" class="col-form-label">{{ __('Decisão da Câmara ou Conselho Pertinente: Obrigatório? ') }} </label>
+                <input type="checkbox" name="consu" id="consu" style="margin-left: 5px" {{ old('consu') ? 'checked' : ''}}>
                 @error('consu')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-                <br>
-
-                <label for="cotaDoutor" class="col-form-label">{{ __('Cota para recém doutor?') }}</label>
-                <input type="checkbox" name="cotaDoutor" id="cotaDoutor">
+            </div>
+            <div class="col-sm-3">
+                <label for="cotaDoutor" class="col-form-label">{{ __('Cota para recém doutor: ') }}</label>
+                <input type="checkbox" name="cotaDoutor" id="cotaDoutor" style="margin-left: 5px" {{ old('cotaDoutor') ? 'checked' : ''}}>
 
                 @error('cotaDoutor')
                 <span class="invalid-feedback" role="alert">
@@ -88,7 +96,27 @@
                 </span>
                 @enderror
             </div>
-        </div>{{-- end nome | Participantes | Tipo--}}
+            {{--Nome do Documento Extra--}}
+            <div class='col-md-4' style='display:none'>
+                <label for="nome_docExtra" class="col-form-label">{{ __('Digite o nome do Documento') }} <span style="color:red; font-weight:bold;">*</span></label>
+                <input id="nome_docExtra" type="text" class="form-control @error('nome_docExtra') is-invalid @enderror" name="nome_docExtra" value="{{ old('nome_docExtra') }}" placeholder="Nome do Documento" autocomplete="nome_docExtra" autofocus>
+                @error('nome_docExtra')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+            <div class="col-sm-3" style="display: none">
+                <label for="obrigatoriedade_docExtra" class="col-form-label">{{ __('Obrigatoriedade: ') }}</label>
+                <input type="checkbox" name="obrigatoriedade_docExtra" id="obrigatoriedade_docExtra" style="margin-left: 5px" {{ old('obrigatoriedade_docExtra') ? 'checked' : ''}}>
+                @error('obrigatoriedade_docExtra')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
 
         {{-- Descricao Edital --}}
         <div class="row justify-content-center">
@@ -506,6 +534,10 @@
             var pdfFormAvalRelatorioPreenchido = document.getElementById('pdfFormAvalRelatorioPreenchido');
             pdfFormAvalRelatorioPreenchido.value = "sim";
         }
+        if(file.id === "docTutorial"){
+            var docTutorialPreenchido = document.getElementById('docTutorialPreenchido');
+            docTutorialPreenchido.value = "sim";
+        }
     }
 
     $("input[type='file']").on("change", function () {
@@ -535,5 +567,20 @@
         $("#modalCoord").modal('hide');
 
     }
+
+    function showDocumentoExtra(){
+        var nome_docExtra = document.getElementById('nome_docExtra');
+        var check_docExtra = document.getElementById("check_docExtra");
+        var obrigatoriedade_docExtra = document.getElementById('obrigatoriedade_docExtra');
+        if(check_docExtra.checked == true){
+            nome_docExtra.parentElement.style.display = '';
+            obrigatoriedade_docExtra.parentElement.style.display = '';
+        }else{
+            nome_docExtra.parentElement.style.display = 'none';
+            obrigatoriedade_docExtra.parentElement.style.display = 'none';
+        }
+    }
+
+    window.onload = showDocumentoExtra();
 </script>
 @endsection
