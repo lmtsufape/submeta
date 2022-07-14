@@ -209,6 +209,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
   Route::get('/baixar/anexo-temp/{eventoId}/{nomeAnexo}', 'TrabalhoController@baixarAnexoTemp')->name('baixar.anexo.temp');
   Route::get('/baixar/evento-temp/{nomeAnexo}', 'TrabalhoController@baixarEventoTemp'            )->name('baixar.evento.temp');
   Route::get('/baixar/documentosParticipante', 'ParticipanteController@baixarDocumento'    )->name('baixar.documentosParticipante');
+  Route::get('/baixar/anexoDocExtra/{id}', 'TrabalhoController@baixarAnexoDocExtra' )->name('baixar.anexo.docExtra');
 });
 
 Route::get('/baixar/edital/{id}',           'EventoController@baixarEdital'             )->name('baixar.edital');
@@ -239,8 +240,8 @@ Route::prefix('usuarios')->name('admin.')->group(function(){
   Route::get('/visualizarParecer',          'AdministradorController@visualizarParecer')->name('visualizarParecer');
   Route::get('/visualizarParecerInterno',    'AdministradorController@visualizarParecerInterno')->name('visualizarParecerInterno');
   Route::get('/pareceresProjetos',           'AdministradorController@pareceres'        )->name('pareceres');
-  Route::get('/analisarProjetos/{column?}',   'AdministradorController@analisar'         )->name('analisar');
-  Route::get('/analisarProposta',            'AdministradorController@analisarProposta'         )->name('analisarProposta');
+  Route::get('/analisarProjetos/{column?}',   'AdministradorController@analisar'         )->name('analisar')->middleware('checkRoles:coordenador,administrador');
+  Route::get('/analisarProposta',            'AdministradorController@analisarProposta'         )->name('analisarProposta')->middleware('checkRoles:coordenador,administrador');
   Route::get('/showProjetos',            'AdministradorController@showProjetos'        )->name('showProjetos');
   Route::get('/showResultados',             'AdministradorController@showResultados'    )->name('showResultados')->middleware(['auth', 'verified']);
 });
