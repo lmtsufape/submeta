@@ -45,7 +45,6 @@
 @else
 <br>@lang('Atenciosamente'),<br>
 {{--{{ config('app.name') }}<br><br>--}}
-Seção de Editais e Apoios a Projetos  - PREC/UFAPE<br>
 Universidade Federal do Agreste de Pernambuco<br>
 @endif
 
