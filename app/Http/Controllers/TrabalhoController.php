@@ -433,8 +433,13 @@ class TrabalhoController extends Controller
 
     public function edit($id)
     {
-        $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-        $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        if(Auth::user()->tipo=='administrador'){
+            $projeto = Trabalho::find($id);
+        }else{
+            $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        }
+
+        $proponente = Proponente::where('user_id', $projeto->proponente->user_id)->first();
         if (!$projeto) {
             return back()->withErrors(['Proposta não encontrada!']);
         }
@@ -832,7 +837,8 @@ class TrabalhoController extends Controller
             $request->merge([
                 'coordenador_id' => $evento->coordenadorComissao->id
             ]);
-            $trabalho = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+
+            $trabalho = Trabalho::find($id);
 
             DB::beginTransaction();
             if (!$trabalho) {
@@ -988,10 +994,14 @@ class TrabalhoController extends Controller
 
             }
 
-
             DB::commit();
+
+            if(Auth::user()->tipo == 'administrador'){
+                return redirect(route('admin.analisarProposta',['id'=>$trabalho->id]));
+            }
+
             if (!$request->has('rascunho')) {
-                Notification::send(Auth::user(), new SubmissaoNotification($id,$trabalho->titulo));
+                Notification::send($trabalho->proponente->user, new SubmissaoNotification($id,$trabalho->titulo));
             }
             return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta atualizada!']);
 
