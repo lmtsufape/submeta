@@ -987,10 +987,9 @@ class TrabalhoController extends Controller
                 }
 
             }
-
-
             DB::commit();
             if (!$request->has('rascunho')) {
+                // SubmissaoNotification.php
                 Notification::send(Auth::user(), new SubmissaoNotification($id,$trabalho->titulo));
             }
             return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta atualizada!']);
@@ -1135,6 +1134,7 @@ class TrabalhoController extends Controller
                     'tipo' => 1,
                 ]);
                 $notificacao->save();
+                // SubmissaoRecebidaNotification.php
                 Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id,$trabalho->titulo,$userTemp));
                 //Proponente
                 $notificacao = App\Notificacao::create([
@@ -1145,7 +1145,8 @@ class TrabalhoController extends Controller
                     'tipo' => 1,
                 ]);
                 $notificacao->save();
-                Notification::send(Auth::user(), new SubmissaoNotification($trabalho->id,$trabalho->titulo));
+                // submissao e notificação.php  $trabalho->id,$trabalho->titulo
+                Notification::send(Auth::user(), new SubmissaoNotification($trabalho));
 
 
                 return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta submetida!']);
@@ -1476,6 +1477,8 @@ class TrabalhoController extends Controller
                     }
 
                     $subject = "Participante de Projeto";
+                    $time = Carbon::today('America/Recife');
+                    $time = $time->isoFormat('às H:mm, dddd, D/M/YYYY');
                     Mail::to($email)
                         ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
 
