@@ -381,6 +381,9 @@ class TrabalhoController extends Controller
         //   return back()->withErrors(['Proposta não encontrada!']);
         // }
         $projeto = Trabalho::find($id);
+        if(Auth::user()->id != $projeto->proponente->user->id){
+            return redirect()->back();
+        }
         $edital = Evento::find($projeto->evento_id);
         $grandeAreas = GrandeArea::all();
         $areas = Area::all();
