@@ -987,8 +987,6 @@ class TrabalhoController extends Controller
                 }
 
             }
-
-
             DB::commit();
             if (!$request->has('rascunho')) {
                 Notification::send(Auth::user(), new SubmissaoNotification($id,$trabalho->titulo));
@@ -1476,6 +1474,8 @@ class TrabalhoController extends Controller
                     }
 
                     $subject = "Participante de Projeto";
+                    $time = Carbon::today('America/Recife');
+                    $time = $time->isoFormat('às H:mm, dddd, D/M/YYYY');
                     Mail::to($email)
                         ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
 

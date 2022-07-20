@@ -50,7 +50,8 @@ class SubmissaoNotification extends Notification
         return (new MailMessage)
                     ->subject('Sistema Submeta - Submissão de proposta / projeto')
                     ->greeting("Saudações!")
-                    ->line("O sistema Submeta recebeu o envio de sua proposta / projeto intitulada(o) {$this->titulo}.")
+                    ->line("O sistema Submeta recebeu o envio de sua proposta / projeto intitulada(o) {$this->titulo}\n\n.")
+                    ->line("{$this->data}")
                     ->action('Acessar Proposta', $this->url )
                     ->markdown('vendor.notifications.email');
     }
