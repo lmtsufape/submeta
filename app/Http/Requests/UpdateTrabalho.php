@@ -72,16 +72,16 @@ class UpdateTrabalho extends FormRequest
 
             //$rules = [];
             if($evento->tipo!="PIBEX"){
-                $rules['anexoPlanilhaPontuacao']       = ['required'];
-                $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
-                $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
-                $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->justificativaAutorizacaoEtica == null)];
-                $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null)];
+                $rules['anexoPlanilhaPontuacao']       = [Rule::requiredIf($projeto->anexoPlanilhaPontuacao == null)];
+                $rules['anexoLattesCoordenador']       = [Rule::requiredIf($projeto->anexoLattesCoordenador == null), 'mimes:pdf'];
+                $rules['anexoGrupoPesquisa']           = [Rule::requiredIf($projeto->anexoGrupoPesquisa == null), 'mimes:pdf'];
+                $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->justificativaAutorizacaoEtica == null && $projeto->anexoAutorizacaoComiteEtica == null)];
+                $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null && $projeto->anexoAutorizacaoComiteEtica == null)];
                 $rules['pontuacaoPlanilha']            = ['required', 'string'];
                 $rules['linkGrupoPesquisa']            = ['required', 'string'];
             }
             if($evento->nome_docExtra != null){
-                $rules['anexo_docExtra']               = [Rule::requiredIf($evento->obrigatoriedade_docExtra == true),'file', 'mimes:zip,doc,docx,pdf', 'max:2048'];
+                $rules['anexo_docExtra']               = [Rule::requiredIf($evento->obrigatoriedade_docExtra == true && $evento->obrigatoriedade_docExtra == null),'file', 'mimes:zip,doc,docx,pdf', 'max:2048'];
             }
             $rules['editalId']                     = ['required', 'string'];
             $rules['marcado.*']                    = ['required'];
@@ -92,8 +92,8 @@ class UpdateTrabalho extends FormRequest
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
 
-            $rules['anexoProjeto']                 = ['required', 'mimes:pdf'];
-            $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu), 'mimes:pdf'];
+            $rules['anexoProjeto']                 = [Rule::requiredIf($projeto->anexoGrupoPesquisa == null), 'mimes:pdf'];
+            $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'];
 
             return $rules;
         }
