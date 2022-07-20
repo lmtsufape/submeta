@@ -14,17 +14,19 @@ class SubmissaoNotification extends Notification
 
     public $data;
     public $url;
+    public $natureza_id;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($id,$titulo)
+    public function __construct($trabalho)
     {
         $this->data =  date('d/m/Y \à\s  H:i\h', strtotime(now()));
-        $url = "/projeto/visualizar/".$id;
+        $url = "/projeto/visualizar/".$trabalho->id;
         $this->url = url($url);
-        $this->titulo = $titulo;
+        $this->titulo = $trabalho->titulo;
+        $this->natureza_id = $trabalho->evento->natureza_id;
     }
 
     /**
