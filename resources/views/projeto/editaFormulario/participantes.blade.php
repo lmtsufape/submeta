@@ -26,7 +26,7 @@
 
                     @endphp
 
-                    <div @if(!$participante) hidden @endif class="form-row mb-1 col-md-6" style="margin-top: 10px" id="part{{$i}}">
+                    <div @if(!$participante) hidden @endif class="form-row mb-3 col-md-6" style="margin-top: 10px" id="part{{$i}}">
                       <div class="col-sm-2" style="display: flex; align-items: center;">
                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                       </div>
@@ -321,7 +321,8 @@
                                                                         <select name="ordem_prioridade[]"  class="form-control" >
                                                                           <option value=""  selected>-- ORDEM --</option>
                                                                           @for($j = 1; $j <= $edital->numParticipantes; $j++)
-                                                                            <option @if(old('total_periodos')[$i]  ?? $participante->ordem_prioridade == $j ) selected @endif value="{{ $j }}">{{ $j }}</option>
+                                                                            
+                                                                            <option @if(old('total_periodos')[$i]  ?? ($participante->ordem_prioridade ?? '') == $j ) selected @endif value="{{ $j }}">{{ $j }}</option>
                                                                             @endfor
 
                                                                           </select>
