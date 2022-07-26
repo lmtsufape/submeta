@@ -92,7 +92,7 @@ class UpdateTrabalho extends FormRequest
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
 
-            $rules['anexoProjeto']                 = [Rule::requiredIf($projeto->anexoGrupoPesquisa == null), 'mimes:pdf'];
+            $rules['anexoProjeto']                 = [Rule::requiredIf($projeto->anexoProjeto == null), 'mimes:pdf'];
             $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'];
 
             return $rules;
