@@ -4,7 +4,7 @@
 
 <div class="container" style="margin-top: 30px;">
 
-  <div class="container" >
+  <div class="container">
     <div class="row">
       @if(session('mensagem'))
         <div class="col-md-12" style="margin-top: 30px;">
@@ -29,6 +29,9 @@
     </div>
   </div>
   <hr>
+  <div class="col-sm-4 mb-3" style="display:flex; margin:auto;">
+    <input type="text" class="form-control form-control-edit" placeholder="Digite o nome do usuário..." onkeyup="buscar(this)"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
+  </div>
   <table class="table table-bordered">
     <thead>
       <tr>   
@@ -38,11 +41,11 @@
         <th scope="col">Opções</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="usuarios">
       @foreach ($users as $user)
         @if (auth()->user()->id != $user->id)
           @if(auth()->user()->id != "administrador")
-            <tr>
+            <tr class="apareceu">
               <td>
                 {{ $user->name }}
               </td>
@@ -117,6 +120,32 @@
 
 @section('javascript')
 <script>
-  
+  function buscar(input) {
+        let nome_usuarios = document.getElementById("usuarios").children;
+        
+        if(input.value.length > 2) {
+            for(let i = 0; i < nome_usuarios.length; i++){
+                if(nome_usuarios[i].classList.contains("apareceu")){
+                    let nameUser = nome_usuarios[i].children[0].textContent;
+                    console.log(nameUser);
+                    
+                    if(nameUser.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0) {
+                      nome_usuarios[i].style.display = "";
+                    }else {
+                     nome_usuarios[i].style.display = "none";
+                    }
+                }
+
+            }
+        }else {
+            for(let i = 0; i < nome_usuarios.length; i++) {
+                if(nome_usuarios[i].classList.contains("apareceu")){
+                  nome_usuarios[i].style.display = "";
+                }
+            }
+         
+        }
+      }
+    
 </script>
 @endsection

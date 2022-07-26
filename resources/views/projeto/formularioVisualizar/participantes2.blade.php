@@ -17,16 +17,17 @@
 
                     <div class="row justify-content-start" style="alignment: center">
                         @foreach($projeto->participantes as $participante)
-                            <div class="col-sm-1">
-                                <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                            <div class="col-sm-1 mt-4">
+                                    <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                             </div>
-                            <div class="col-sm-5">
-                                <h5>{{$participante->user->name}}</h5>
-                                <h5>{{$participante->planoTrabalho->titulo}}</h5>
-                                <h9>
+                            <div class="col-sm-5 mt-4">
+                                <h5 class="mb-0">Nome: {{$participante->user->name}}</h5>
+                                <h5 class="mb-0">Plano: {{$participante->planoTrabalho->titulo}}</h5>
+                                <h6>
                                     <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button">Informações</a>
-                                </h9>
+                                </h6>
                             </div>
+                            
                             <!-- Modal visualizar informações participante -->
                             <div class="modal fade" id="modalVizuParticipante{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-xl">

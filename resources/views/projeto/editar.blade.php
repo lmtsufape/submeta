@@ -17,7 +17,7 @@
             {{ session('mensagem') }}
         </div>
     @endif
-    @if ($errors->any())
+    <!-- @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -25,7 +25,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif -->
     
     <div class="row justify-content-center">
 
@@ -39,7 +39,7 @@
       @include('projeto.editaFormulario.anexos')
 
       @include('projeto.editaFormulario.finalizar')
-      
+
 
     </div>
   </div>

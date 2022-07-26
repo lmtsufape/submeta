@@ -31,6 +31,7 @@
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required>
                   <option @if(old('tipo')=='PIBIC' ) selected @endif value="PIBIC">PIBIC</option>
                   <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
+                  <option @if(old('tipo')=='PIBIC-AF' ) selected @endif value="PIBIC-AF">PIBIC-AF</option>
                   <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
                   <option @if(old('tipo')=='PIBEX' ) selected @endif value="PIBEX">PIBEX</option>
                 </select>
