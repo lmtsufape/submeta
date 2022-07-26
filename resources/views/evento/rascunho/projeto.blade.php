@@ -7,7 +7,7 @@
     <div class="card-body">
       <div class="container">
         <div class="form-row mt-3">
-          <div class="col-md-12"><h5 style="color: #1492E6; margin-bottom:-0.4rem">Informações do projeto</h5></div>
+          <div class="col-md-12"><h5 style="color: #1492E6; margin-bottom:-0.4rem">Informações do Projeto</h5></div>
           <div class="col-md-12" style="margin-bottom: -0.8rem;"><hr style="border-top: 1px solid#1492E6"></div>
 
           <div class="form-group col-md-12" style="margin-top: 10px">

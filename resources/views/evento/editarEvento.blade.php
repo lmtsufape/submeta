@@ -33,6 +33,7 @@
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" required>
                     <option value="PIBIC" {{ $evento->tipo == "PIBIC" ? 'selected' :'' }}>PIBIC</option>
                     <option value="PIBIC-EM" {{ $evento->tipo == "PIBIC-EM" ?  'selected' :'' }}>PIBIC-EM</option>
+                    <option value="PIBIC-AF" {{ $evento->tipo == "PIBIC-AF" ?  'selected' :'' }}>PIBIC-AF</option>
                     <option value="PIBITI" {{ $evento->tipo == "PIBITI" ?  'selected' :'' }}>PIBITI</option>
                     <option value="PIBEX" {{ $evento->tipo == "PIBEX" ?  'selected' :'' }}>PIBEX</option>
                 </select>
