@@ -12,7 +12,7 @@
             <label for="nome" class="col-form-label font-tam" style="font-weight: bold">{{ __('Nome: ') }}</label>
           </div>
           <div class="col-md-11">
-            <input class="form-control" type="text" id="nomeCompletoProponente1" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
+            <input class="form-control" type="text" id="nomeCompletoProponente1" name="nomeCoordenador" disabled="disabled" @if(Auth::user()->tipo=='administrador') value="{{ $projeto->proponente->user->name }}" @else value="{{ Auth()->user()->name }}" @endif >
           </div>
 
           <div class="col-md-1">
@@ -23,11 +23,16 @@
             <br>
             <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante"
             readonly="readonly"
-                   @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
-                   value="{{ Auth()->user()->proponentes->linkLattes }}"
+                   @if(Auth::user()->tipo=='administrador')
+                    value="{{ $projeto->proponente->linkLattes }}"
                    @else
-                   value=""
-                    @endif  >
+                    @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
+                      value="{{ Auth()->user()->proponentes->linkLattes }}"
+                    @else
+                      value=""
+                    @endif
+                   @endif
+            >
             @error('linkLattesEstudante')
             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
               <strong>{{ $message }}</strong>
