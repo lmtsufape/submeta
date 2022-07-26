@@ -887,7 +887,6 @@ class TrabalhoController extends Controller
             if ($request->has('marcado')) {
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
-
                     $passwordTemporario = Str::random(8);
                     $data['name'] = $request->name[$part];
                     $data['email'] = $request->email[$part];
@@ -946,8 +945,13 @@ class TrabalhoController extends Controller
                     } else {
                         // $user = $participante->user;
                         $user->update($data);
-                        $endereco = $user->endereco;
-                        $endereco->update($data);
+                        if( $user->endereco == null){
+                            $endereco = Endereco::create($data);
+                            $endereco->user()->save($user);
+                        }else{
+                            $endereco = $user->endereco;
+                            $endereco->update($data);
+                        }
                         $participante = $user->participantes->where('trabalho_id', $trabalho->id)->where('id', $request->participante_id[$part])->first();
                         // dd($participante);
                         if ($participante == null) {
