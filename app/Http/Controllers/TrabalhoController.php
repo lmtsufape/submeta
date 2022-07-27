@@ -381,6 +381,9 @@ class TrabalhoController extends Controller
         //   return back()->withErrors(['Proposta não encontrada!']);
         // }
         $projeto = Trabalho::find($id);
+        if(Auth::user()->id != $projeto->proponente->user->id){
+            return redirect()->back();
+        }
         $edital = Evento::find($projeto->evento_id);
         $grandeAreas = GrandeArea::all();
         $areas = Area::all();
@@ -433,8 +436,13 @@ class TrabalhoController extends Controller
 
     public function edit($id)
     {
-        $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-        $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        if(Auth::user()->tipo=='administrador'){
+            $projeto = Trabalho::find($id);
+        }else{
+            $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+        }
+
+        $proponente = Proponente::where('user_id', $projeto->proponente->user_id)->first();
         if (!$projeto) {
             return back()->withErrors(['Proposta não encontrada!']);
         }
@@ -832,7 +840,8 @@ class TrabalhoController extends Controller
             $request->merge([
                 'coordenador_id' => $evento->coordenadorComissao->id
             ]);
-            $trabalho = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+
+            $trabalho = Trabalho::find($id);
 
             DB::beginTransaction();
             if (!$trabalho) {
@@ -878,7 +887,6 @@ class TrabalhoController extends Controller
             if ($request->has('marcado')) {
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
-
                     $passwordTemporario = Str::random(8);
                     $data['name'] = $request->name[$part];
                     $data['email'] = $request->email[$part];
@@ -937,8 +945,13 @@ class TrabalhoController extends Controller
                     } else {
                         // $user = $participante->user;
                         $user->update($data);
-                        $endereco = $user->endereco;
-                        $endereco->update($data);
+                        if( $user->endereco == null){
+                            $endereco = Endereco::create($data);
+                            $endereco->user()->save($user);
+                        }else{
+                            $endereco = $user->endereco;
+                            $endereco->update($data);
+                        }
                         $participante = $user->participantes->where('trabalho_id', $trabalho->id)->where('id', $request->participante_id[$part])->first();
                         // dd($participante);
                         if ($participante == null) {
@@ -987,10 +1000,15 @@ class TrabalhoController extends Controller
                 }
 
             }
+
             DB::commit();
+
+            if(Auth::user()->tipo == 'administrador'){
+                return redirect(route('admin.analisarProposta',['id'=>$trabalho->id]));
+            }
+
             if (!$request->has('rascunho')) {
-                // SubmissaoNotification.php
-                Notification::send(Auth::user(), new SubmissaoNotification($id,$trabalho->titulo));
+                Notification::send($trabalho->proponente->user, new SubmissaoNotification($id,$trabalho->titulo));
             }
             return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta atualizada!']);
 

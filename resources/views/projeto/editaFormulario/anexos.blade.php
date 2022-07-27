@@ -167,7 +167,7 @@
                     @else
                         <i class="fas fa-times-circle fa-2x"></i>
                     @endif
-                    <input type="file" class="input-group-text" name="anexo_docExtra" placeholder="{{$edital->nome_docExtra}}"  accept=".pdf,.docx,.doc,.zip" @if($edital->obrigatoriedade_docExtra == true) required @endif/>
+                    <input type="file" class="input-group-text" name="anexo_docExtra" placeholder="{{$edital->nome_docExtra}}"  accept=".pdf,.docx,.doc,.zip"/>
                     @error('anexo_docExtra')
                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                             <strong>{{ $message }}</strong>

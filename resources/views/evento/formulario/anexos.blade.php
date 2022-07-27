@@ -118,7 +118,7 @@
           @if($edital->nome_docExtra != null)
             <div class="form-group col-md-6">
               <label title="{{$edital->nome_docExtra}}" for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$edital->nome_docExtra}}: @if($edital->obrigatoriedade_docExtra == true) <span style="color: red; font-weight:bold">*</span> @endif</label>
-              <input type="file" class="input-group-text" name="anexo_docExtra"  accept=".pdf,.docx,.doc,.zip " @if($edital->obrigatoriedade_docExtra == true) required @endif/>
+              <input type="file" class="input-group-text" name="anexo_docExtra"  accept=".pdf,.docx,.doc,.zip " />
               @error('anexo_docExtra')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
