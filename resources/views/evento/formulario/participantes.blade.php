@@ -210,8 +210,8 @@
                                                                         @component('componentes.input', ['label' => 'Instituição de Ensino'])
                                                                             <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao[{{$i}}]">
                                                                                 <option value="" disabled selected hidden>-- Instituição --</option>
-                                                                                <option @if(old('instituicao')[$i] ?? "" == 'UFAPE' ) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
-                                                                                <option @if(old('instituicao')[$i] ?? "" == 'Outra' ) selected @endif value="Outra" >Outra</option>
+                                                                                <option @if((old('instituicao')[$i] ?? "") == 'UFAPE' )) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
+                                                                                <option @if((old('instituicao')[$i] ?? "") == 'Outra' )) selected @endif value="Outra" >Outra</option>
                                                                             </select>
                                                                             @error('instituicao.'.$i)
                                                                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -234,14 +234,14 @@
                                                                         @component('componentes.input', ['label' => 'Curso'])
                                                                             <select style="display: inline" class="form-control" name="curso[{{$i}}]" onchange="showCurso(this)">
                                                                                 <option value="" disabled selected hidden>-- Selecione uma opção--</option>
-                                                                                <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
-                                                                                <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
-                                                                                <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Engenharia de Alimentos' ) selected @endif value="Bacharelado em Engenharia de Alimentos">Bacharelado em Engenharia de Alimentos</option>
-                                                                                <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Medicina Veterinária' ) selected @endif value="Bacharelado em Medicina Veterinária">Bacharelado em Medicina Veterinária</option>
-                                                                                <option @if(old('curso')[$i] ?? "" == 'Bacharelado em Zootecnia' ) selected @endif value="Bacharelado em Zootecnia">Bacharelado em Zootecnia</option>
-                                                                                <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
-                                                                                <option @if(old('curso')[$i] ?? "" == 'Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
-                                                                                <option @if(old('curso')[$i] ?? "" == 'Outro' ) selected @endif value="Outro" >Outro</option>
+                                                                                <option @if((old('curso')[$i] ?? "") == 'Bacharelado em Agronomia') selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
+                                                                                <option @if((old('curso')[$i] ?? "") == 'Bacharelado em Ciência da Computação') selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
+                                                                                <option @if((old('curso')[$i] ?? "") == 'Bacharelado em Engenharia de Alimentos') selected @endif value="Bacharelado em Engenharia de Alimentos">Bacharelado em Engenharia de Alimentos</option>
+                                                                                <option @if((old('curso')[$i] ?? "") == 'Bacharelado em Medicina Veterinária') selected @endif value="Bacharelado em Medicina Veterinária">Bacharelado em Medicina Veterinária</option>
+                                                                                <option @if((old('curso')[$i] ?? "") == 'Bacharelado em Zootecnia') selected @endif value="Bacharelado em Zootecnia">Bacharelado em Zootecnia</option>
+                                                                                <option @if((old('curso')[$i] ?? "") == 'Licenciatura em Letras') selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
+                                                                                <option @if((old('curso')[$i] ?? "") == 'Licenciatura em Pedagogia') selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
+                                                                                <option @if((old('curso')[$i] ?? "") == 'Outro') selected @endif value="Outro" >Outro</option>
                                                                             </select>
                                                                             @error('curso.'.$i)
                                                                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -265,7 +265,7 @@
                                                                             <select  name="turno[{{$i}}]"  class="form-control" >
                                                                                 <option value=""  selected>-- Selecione uma opção --</option>
                                                                                 @foreach ($enum_turno as $key => $value)
-                                                                                    <option @if(old('turno')[$i] ?? "" == $value ) selected @endif value="{{ $value }}">{{ $value }}</option>
+                                                                                    <option @if((old('turno')[$i] ?? "") == $value ) selected @endif value="{{ $value }}">{{ $value }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('turno.'.$i)
@@ -283,7 +283,7 @@
                                                                             <select  name="total_periodos[{{$i}}]"   class="form-control" onchange="gerarPeriodo(this)" >
                                                                                 <option value=""  selected>-- Selecione uma opção --</option>
                                                                                 @foreach ($options as $key => $value)
-                                                                                    <option @if(old('total_periodos')[$i]  ?? "" == $key ) selected @endif value="{{ $key }}">{{ $value }}</option>
+                                                                                    <option @if((old('total_periodos')[$i]  ?? "") == $key ) selected @endif value="{{ $key }}">{{ $value }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('total_periodos.'.$i)
@@ -297,6 +297,9 @@
                                                                         @component('componentes.select', ['label' => 'Período/Ano atual'])
                                                                             <select name="periodo_atual[]"  class="form-control"  >
                                                                                 <option value=""  selected>-- Selecione uma opção --</option>
+                                                                                @if(old('periodo_atual')[$i] ?? '')
+                                                                                <option selected value="{{ old('periodo_atual')[$i] ?? '' }}">{{ old('periodo_atual')[$i] ?? '' }}</option>
+                                                                                @endif
 
                                                                             </select>
                                                                             @error('periodo_atual.'.$i)
@@ -307,11 +310,12 @@
                                                                         @endcomponent
                                                                     </div>
                                                                     <div class="col-6">
+                                                                        
                                                                         @component('componentes.select', ['label' => 'Ordem de prioridade'])
                                                                             <select name="ordem_prioridade[]"  class="form-control" >
                                                                                 <option value=""  selected>-- ORDEM --</option>
                                                                                 @for($j = 1; $j <= $edital->numParticipantes; $j++)
-                                                                                    <option @if(old('total_periodos')[$i]  ?? "" == $j ) selected @endif value="{{ $j }}">{{ $j }}</option>
+                                                                                    <option @if((old('ordem_prioridade')[$i]  ?? "") == $j) selected @endif value="{{ $j }}">{{ $j }}</option>
                                                                                 @endfor
 
                                                                             </select>

@@ -118,9 +118,9 @@
             <div class="form-group col-md-6">
 
               <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
-              <input type="radio" checked id="radioSim" onchange="displayAutorizacoesEspeciais('sim')">
+              <input type="radio" @if($projeto->anexoAutorizacaoComiteEtica != null) checked @endif id="radioSim" onchange="displayAutorizacoesEspeciais('sim')">
               <label for="radioSim" style="margin-right: 5px">Sim</label>
-              <input type="radio" id="radioNao" onchange="displayAutorizacoesEspeciais('nao')">
+              <input type="radio" @if($projeto->anexoAutorizacaoComiteEtica == null) checked @endif id="radioNao" onchange="displayAutorizacoesEspeciais('nao')">
               <label for="radioNao" style="margin-right: 5px">Não</label><br>
               <span id="idAvisoAutorizacaoEspecial" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
               <strong>Selecione a autorização e envie o arquivo!</strong>
