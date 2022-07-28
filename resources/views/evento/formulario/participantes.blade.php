@@ -5,7 +5,7 @@
         <div class="card-body" style="padding-top: 0.2rem;">
             <div class="container">
                 <div class="form-row mt-3">
-                    <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Dados do(s) Discente(s)</h5></div>
+                    <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Dados do(s) Discente(s) aqui</h5></div>
                     <div class="col-md-1 text-sm-right">
                         <a type="button" value="{{ $edital->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModal0">
                             <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
@@ -25,19 +25,21 @@
                                                 <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                                             </div>
                                             <div class="col-sm-10" style="display: flex; align-items: center;">
-                                              <div class="col-sm-12">
-                                                <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">
-                                                    @if(isset(old('marcado')[$i]))
+                                                <div class="col-sm-12">                                          
+                                                        @if(isset(old('marcado')[$i]))
                                                         @if(isset(old('name')[$i]))Nome: {{old('name')[$i]}} @else Discente {{$i+1}} @endif
-                                                            @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @endif
-                                                    @endif
-                                                </a>
+                                                        @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @endif
+                                                        @endif
+                                                    <h6>
+                                                        <a id="nomePlano{{$i+1}}"></a><br>
+                                                        <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">Informações</a>
+                                                    </h6>
                                                 <div class="col-sm-5 pl-0" style="margin-top: 10px; text-align: left;">
                                                   <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 12px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Excluir</button>
-                                                  </div>
-                                              </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                            </div>
+                                    </div>
 
                                         <div class="modal fade" id="exampleModal{{$i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-xl">
