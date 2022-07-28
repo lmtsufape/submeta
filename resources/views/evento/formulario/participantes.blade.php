@@ -5,7 +5,7 @@
         <div class="card-body" style="padding-top: 0.2rem;">
             <div class="container">
                 <div class="form-row mt-3">
-                    <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Dados do(s) Discente(s) aqui</h5></div>
+                    <div class="col-md-11"><h5 style="color: #234B8B; font-weight: bold">Dados do(s) Discente(s)</h5></div>
                     <div class="col-md-1 text-sm-right">
                         <a type="button" value="{{ $edital->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModal0">
                             <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
