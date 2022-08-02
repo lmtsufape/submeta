@@ -66,7 +66,8 @@
                 </div>
                 <div class="col-md-4">
                     <label for="tipo" class="col-form-label">{{ __('Tipo*') }}</label>
-                    <select name="tipo" id="tipo" onchange="mudar()" class="form-control">
+                    <input readonly id="tipo" type="text" name="tipo" value="{{$user->tipo}}" class="form-control" autofocus/>
+                    <!-- <select disabled name="tipo" id="tipo" onchange="mudar()" class="form-control">
                         @if(auth()->user()->tipo == 'administrador')
                             <option @if($user->tipo =='administradorResponsavel' ) selected @endif value="administradorResponsavel">Administrador responsável</option>
                         @endif
@@ -74,7 +75,7 @@
                         <option @if($user->tipo =='avaliador' ) selected @endif value="avaliador">Avaliador</option>
                         <option @if($user->tipo =='proponente' ) selected @endif value="proponente">Proponente</option>
                         <option @if($user->tipo =='participante' ) selected @endif value="participante">Discente</option>
-                    </select>
+                    </select> -->
                 </div>
                 <div class="col-md-2">
                     <label for="celular" class="col-form-label">{{ __('Celular*') }}</label>
