@@ -88,7 +88,7 @@
                             </a>
                             <div class="dropdown-menu">
                               
-                              @if($hoje <= $projeto->evento->inicioProjeto)
+                              @if($hoje <= $projeto->evento->fimSubmissao)
                                 <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                                     Editar
                                 </a>
