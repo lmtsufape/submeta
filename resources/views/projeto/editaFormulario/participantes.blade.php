@@ -32,14 +32,15 @@
                       </div>
                       <div class="col-sm-8" style="display: flex; align-items: center;">
                         <div class="col-sm-12">
-                          <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">
                             @if($participante)
                               @if(isset(old('name')[$i]))Nome: {{old('name')[$i]}} @else Nome: {{$participante->user->name}} @endif
                                 @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @else <br>Plano: {{$participante->planoTrabalho->titulo ?? 'Não informado'}} @endif
                                 @else
                                   Discente
                                 @endif
-                              </a>
+                                <h6>
+                                <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">Informações</a>
+                                </h6>
                               <div class="col-sm-5 pl-0" style="margin-top: 10px; text-align: left;">
                                 <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 12px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Excluir</button>
                                 </div>

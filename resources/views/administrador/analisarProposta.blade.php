@@ -620,7 +620,7 @@
                                                         </div>
                                                         @php
                                                             $avaliacoesId = \App\AvaliacaoRelatorio::where("arquivo_id",$participante->planoTrabalho->id)->where("tipo",$tipoTemp)->pluck('user_id');
-                                                            $avalProjeto = \App\User::whereNotIn('id', $avaliacoesId)->where('tipo','!=','participante')->where('id','!=',$trabalho->proponente_id)->get();
+                                                            $avalProjeto = \App\User::whereNotIn('id', $avaliacoesId)->where('tipo','avaliador')->get();
                                                         @endphp
 
                                                         <select name="avaliadores_{{$participante->planoTrabalho->id}}_id[]" multiple

@@ -190,16 +190,18 @@
   function marcar(id){
       let nome = document.getElementById("nome"+id);
       let linkNome = document.getElementById("nomePart"+(id+1));
+      let nomePlano = document.getElementById("nomePlano"+(id+1));
       let linkTituloProj = document.getElementById("tituloProj"+(id+1));
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
       if(nome.value != ""){
           if(planoTrabalho.value != ""){
-              linkNome.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value}`;
+              nomePlano.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value}`;
+
           }else {
-              linkNome.innerText = `Nome: ${nome.value}`;
+              nomePlano.innerText = `Nome: ${nome.value}`;
           }
       }else{
-          linkNome.innerText = `Discente `+(id+1);
+          nomePlano.innerText = `Discente `+(id+1);
       }
       if(id >=1){
           document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
