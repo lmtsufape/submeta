@@ -27,6 +27,7 @@ class StoreTrabalho extends FormRequest
     public function rules()
     {
 
+        //dd($this->all());
         $evento = Evento::find($this->editalId);
         $rules = [];
         if($this->has('marcado')){
@@ -75,8 +76,8 @@ class StoreTrabalho extends FormRequest
                 $rules['anexoPlanilhaPontuacao']       = ['required'];
                 $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
-                $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->justificativaAutorizacaoEtica == null)];
-                $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null)];
+                $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->autorizacaoFlag == 'sim')];
+                $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->autorizacaoFlag == 'nao')];
                 $rules['pontuacaoPlanilha']            = ['required', 'string'];
                 $rules['linkGrupoPesquisa']            = ['required', 'string'];
             }
