@@ -75,8 +75,10 @@ class UpdateTrabalho extends FormRequest
                 $rules['anexoPlanilhaPontuacao']       = [Rule::requiredIf($projeto->anexoPlanilhaPontuacao == null)];
                 $rules['anexoLattesCoordenador']       = [Rule::requiredIf($projeto->anexoLattesCoordenador == null), 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = [Rule::requiredIf($projeto->anexoGrupoPesquisa == null), 'mimes:pdf'];
-                $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->justificativaAutorizacaoEtica == null && $projeto->anexoAutorizacaoComiteEtica == null)];
-                $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->anexoAutorizacaoComiteEtica == null && $projeto->anexoAutorizacaoComiteEtica == null)];
+                // anexoAutorizacaoComiteEtica = SIM
+                $rules['anexoAutorizacaoComiteEtica']  = [Rule::requiredIf($this->autorizacaoFlag == 'sim' && $projeto->anexoAutorizacaoComiteEtica == null)];
+                // justificativaAutorizacaoEtica = NAO
+                $rules['justificativaAutorizacaoEtica'] = [Rule::requiredIf($this->autorizacaoFlag == 'nao' && $projeto->justificativaAutorizacaoEtica == null)];
                 $rules['pontuacaoPlanilha']            = ['required', 'string'];
                 $rules['linkGrupoPesquisa']            = ['required', 'string'];
             }

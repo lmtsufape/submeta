@@ -86,13 +86,18 @@
             <div class="form-group col-md-6">
 
               <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
-              <input type="radio" checked id="radioSim" onchange="displayAutorizacoesEspeciais('sim')">
+
+              <input type="radio" id="radioSim" name="autorizacaoFlag" onchange="displayAutorizacoesEspeciaisDois('sim')" 
+              checked value="sim">
               <label for="radioSim" style="margin-right: 5px">Sim</label>
-              <input type="radio" id="radioNao" onchange="displayAutorizacoesEspeciais('nao')">
+
+              <input type="radio" id="radioNao" name="autorizacaoFlag" onchange="displayAutorizacoesEspeciaisDois('nao')" 
+              value="nao">
               <label for="radioNao" style="margin-right: 5px">Não</label><br>
+              
               <span id="idAvisoAutorizacaoEspecial" class="invalid-feedback" role="alert" style="overflow: visible; display:none">
               <strong>Selecione a autorização e envie o arquivo!</strong>
-            </span>
+              </span>
 
               <div class="form-group" id="displaySim" style="display: block; margin-top:-1rem">
                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold;font-size: 13px">{{ __('Sim, declaro que necessito de autorizações especiais') }}</label>
@@ -131,3 +136,31 @@
     </div>
   </div>
 </div>
+
+
+<script>
+  //console.log("{{old('autorizacaoFlag')}}");
+  if("{{old('autorizacaoFlag')}}" == "sim"){ 
+    $('#radioSim').click()
+  }
+  if("{{old('autorizacaoFlag')}}" == "nao"){ 
+    $('#radioNao').click()
+  }
+
+  function displayAutorizacoesEspeciaisDois(valor){
+      if(valor == "sim"){
+        document.getElementById("radioSim").checked = true;
+        document.getElementById("radioNao").checked = false;
+        document.getElementById("displaySim").style.display = "block";
+        document.getElementById("displayNao").style.display = "none";
+        document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+      }else if(valor == "nao"){
+        document.getElementById("radioSim").checked = false;
+        document.getElementById("radioNao").checked = true;
+        document.getElementById("displaySim").style.display = "none";
+        document.getElementById("displayNao").style.display = "block";
+        document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+      }
+  }
+
+</script>
