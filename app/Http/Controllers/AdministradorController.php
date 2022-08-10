@@ -816,6 +816,8 @@ class AdministradorController extends Controller
             $user->markEmailAsVerified();
         }
 
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+
         if($user->avaliadors == null){
             $avaliador = new Avaliador();
             $avaliador->tipo = $externoInterno;
@@ -832,10 +834,14 @@ class AdministradorController extends Controller
             $avaliador->save();
         }
 
-        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+        if($request->instituicao == "ufape"){
+            $trabalho->avaliadors()->attach($avaliador,['acesso'=>2]);
+            $evento->avaliadors()->syncWithoutDetaching($avaliador);
+        }else{
+            $trabalho->avaliadors()->attach($avaliador,['acesso'=>1]);
+            $evento->avaliadors()->syncWithoutDetaching($avaliador);
+        }
 
-        $trabalho->avaliadors()->attach($avaliador);
-        $evento->avaliadors()->syncWithoutDetaching($avaliador);
         $trabalho->save();
 
         $notificacao = Notificacao::create([
