@@ -671,14 +671,14 @@ class AdministradorController extends Controller
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         if($request->flag == 0){
-            if($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3){
+            if(($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) || ($aval->tipo == null && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 && ($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))){
                 $aval->trabalhos()
                     ->updateExistingPivot($trabalho->id,['acesso'=>2]);
             }else{
                 $aval->trabalhos()->detach($trabalho);
             }
         }else{
-            if($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3){
+            if(($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) || ($aval->tipo == null && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 && ($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))){
                 $aval->trabalhos()
                     ->updateExistingPivot($trabalho->id,['acesso'=>1]);
             }else{
@@ -728,11 +728,12 @@ class AdministradorController extends Controller
         }
 
 
+
       if($request->avaliadores_externos_id != null){
             foreach ($request->avaliadores_externos_id as $avaliador) {
 
                 $aval = Avaliador::find($avaliador);
-                if(Avaliador::where('id',$avaliador)->where('tipo',"Interno")->count()>0){
+                if(Avaliador::where('id',$avaliador)->where('tipo',"Interno")->count()>0 || (Avaliador::where('id',$avaliador)->where('tipo',null)->count()>0 && (($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))) ){
                     if($aval->trabalhos()->where("trabalho_id",$trabalho->id)->first() != null){
                         $aval->trabalhos()
                             ->updateExistingPivot($trabalho->id,['acesso'=>3]);

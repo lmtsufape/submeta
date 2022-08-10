@@ -849,7 +849,8 @@
                                                             style="height: 200px;font-size: 15px">
 
                                                         @foreach ($trabalho->avaliadors as $avaliador)
-                                                            @if($avaliador->tipo == "Interno" && $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1)
+                                                            @if(($avaliador->tipo == "Interno" && $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1) ||
+                                                                (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1) ))
                                                                 <option value="{{ $avaliador->id }}">{{ $avaliador->user->name }}
                                                                     > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
                                                                     > {{$avaliador->area->nome ?? 'Indefinida'}}
@@ -857,7 +858,7 @@
                                                             @endif
                                                         @endforeach
                                                         @foreach ($trabalho->aval as $avaliador)
-                                                            @if($avaliador->tipo == "Interno")
+                                                            @if($avaliador->tipo == "Interno" || $avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco")
                                                                 <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
                                                                      > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
                                                                      > {{$avaliador->area->nome ?? 'Indefinida'}}
@@ -921,7 +922,7 @@
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
                                 @if(($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3))
-                                    || $avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco")
+                                    || (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3)))
                                     <div class="col-sm-1">
                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                                     </div>
@@ -974,7 +975,7 @@
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
                                 @if( ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null && $avaliador->tipo == "Externo") || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3
-                                    || ($avaliador->user->instituicao != "UFAPE" && $avaliador->user->instituicao != "Universidade Federal do Agreste de Pernambuco"))
+                                    || (($avaliador->user->instituicao != "UFAPE" && $avaliador->user->instituicao != "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3)))
                                     <div class="col-sm-1">
                                         <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
                                     </div>
