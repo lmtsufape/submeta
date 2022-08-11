@@ -65,7 +65,7 @@
                         <a href="{{route('admin.user.edit', $user->id)}}" class="dropdown-item text-center">
                             Editar
                         </a>
-                        <hr class="dropdown-hr">
+                        <!-- <hr class="dropdown-hr">
                         <form method="POST" action="{{route('admin.user.destroy', $user->id)}}">
                             {{ csrf_field() }}
                             <button type="submit" class="dropdown-item dropdown-item-delete text-center">
@@ -73,7 +73,7 @@
                                 Deletar
                             </button>
 
-                        </form>
+                        </form> -->
                     </div>
                 </div>
               </td>
