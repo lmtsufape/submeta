@@ -82,11 +82,8 @@ class AdministradorController extends Controller
             ->whereIn('status', $status)
             ->pluck('area_id');
 
-        $trabalhos = Trabalho::where('evento_id', $evento->id)
-            ->whereIn('status', $status)
-            ->orderBy('titulo')
-            ->paginate(10);
-
+        $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho')->sortBy('titulo');
+                   
         $grandesAreas = GrandeArea::whereIn('id', $aux)->get();
         $areas = Area::whereIn('id', $idArea)->get();
 
