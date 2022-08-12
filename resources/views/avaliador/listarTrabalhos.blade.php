@@ -3,6 +3,15 @@
 @section('content')
 
 <div class="container">
+
+  @if($errors->any())
+      <div class="col-sm-12">
+        <br>
+        <div class="alert alert-danger">
+            <p> {{$errors->first()}}</p>
+        </div>
+      </div>
+  @endif
   @if(isset($mensagem))
   <div class="col-sm-12">
       <br>

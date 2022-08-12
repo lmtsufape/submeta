@@ -15,6 +15,11 @@
                     <strong>{{ session('sucesso') }}</strong>
                 </div>
             @endif
+            @if($errors->any())
+                <div class="alert alert-danger mt-1" >
+                    {{$errors->first()}}
+                </div>
+            @endif
             <div class="card" style="border-radius: 5px">
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
@@ -178,24 +183,26 @@
                                             <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
                                                 <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
                                                     Informações Participante
-                                                    @if($participante->planoTrabalho->arquivado == false)
+                                                    @if(isset($participante->planoTrabalho))
+                                                        @if($participante->planoTrabalho->arquivado == false)
 
-                                                        <a title="Arquivar"  href='javascript:arquivar1{{$participante->id}}.submit()' >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>                                        </a>
-                                                        <form method="GET" name='arquivar1{{$participante->id}}' action='{{route('arquivo.arquivar')}}' >
-                                                            @csrf
-                                                            <input value='{{$participante->planoTrabalho->id}}' name='arquivo_id' type='hidden'/>
-                                                            <input value='1' name='arquivar_tipo' type='hidden'/>
-                                                        </form>
-                                                    @else
-                                                        <a @if($trabalho->arquivado == true) style="pointer-events: none" @endif title="Desarquivar"  href='javascript:arquivar2{{$participante->id}}.submit()'>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v11zM9.9 16.1L14 12M9.9 11.9L14 16"/></svg>
-                                                        </a>
-                                                        <form method="GET" name='arquivar2{{$participante->id}}' action='{{route('arquivo.arquivar')}}' >
-                                                            @csrf
-                                                            <input value='{{$participante->planoTrabalho->id}}' name='arquivo_id' type='hidden'/>
-                                                            <input value='0' name='arquivar_tipo' type='hidden'/>
-                                                        </form>
+                                                            <a title="Arquivar"  href='javascript:arquivar1{{$participante->id}}.submit()' >
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ed1212" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>                                        </a>
+                                                            <form method="GET" name='arquivar1{{$participante->id}}' action='{{route('arquivo.arquivar')}}' >
+                                                                @csrf
+                                                                <input value='{{$participante->planoTrabalho->id}}' name='arquivo_id' type='hidden'/>
+                                                                <input value='1' name='arquivar_tipo' type='hidden'/>
+                                                            </form>
+                                                        @else
+                                                            <a @if($trabalho->arquivado == true) style="pointer-events: none" @endif title="Desarquivar"  href='javascript:arquivar2{{$participante->id}}.submit()'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v11zM9.9 16.1L14 12M9.9 11.9L14 16"/></svg>
+                                                            </a>
+                                                            <form method="GET" name='arquivar2{{$participante->id}}' action='{{route('arquivo.arquivar')}}' >
+                                                                @csrf
+                                                                <input value='{{$participante->planoTrabalho->id}}' name='arquivo_id' type='hidden'/>
+                                                                <input value='0' name='arquivar_tipo' type='hidden'/>
+                                                            </form>
+                                                        @endif
                                                     @endif
                                                 </h5>
 
@@ -496,8 +503,13 @@
                         <div class="form-row mt-3">
                             <div class="col-sm-9"><h5 style="color: #234B8B; font-weight: bold">Relatórios</h5></div>
                             <div class="col-sm-3 text-sm-right">
-                                <a href="{{route('planos.listar', ['id' => $trabalho->id])}}" class="button">Listar
-                                    Relatórios</a>
+                                @if($flagSubstituicao == 1)
+                                    <a href="{{route('planos.listar', ['id' => $trabalho->id])}}" class="button">Listar
+                                        Relatórios</a>
+                                @else
+                                    <a href="{{route('planos.listar', ['id' => $trabalho->id])}}" class="button" title="Existe uma Substituição pendente" style="color: red">Listar
+                                        Relatórios</a>
+                                @endif
                             </div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
@@ -570,7 +582,7 @@
                                         <div class="modal-header modal-header-submeta">
                                             <div class="col-md-8" style="padding-left: 0px">
                                                 <h5 class="modal-title titulo-table" id="avaliacaoModalLongTitle">
-                                                    Seleciones o(s) avaliador(es)</h5>
+                                                    @if(isset($participante->planoTrabalho)) Seleciones o(s) avaliador(es) @else Pendências de Substituição @endif</h5>
                                             </div>
                                             <div class="col-md-4" style="text-align: right">
                                                 <button type="button" class="close" aria-label="Close"
@@ -580,6 +592,7 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        @if(isset($participante->planoTrabalho))
                                         <div class="modal-body">
                                             @if (session('error'))
                                                 <div class="col-md-12">
@@ -648,6 +661,11 @@
                                             </form>
 
                                         </div>
+                                        @else
+                                        <div class="modal-body">
+                                            <h4>Existem solicitações de substituição pendentes, por favor verifique-as antes de prosseguir</h4>
+                                        </div>
+                                            @endif
                                     </div>
                                 </div>
                             </div>
