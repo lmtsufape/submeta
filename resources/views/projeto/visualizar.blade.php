@@ -14,6 +14,11 @@
             {{ session('mensagem') }}
         </div>
     @endif
+    @if($errors->any())
+        <div class="alert alert-danger mt-1" >
+            {{$errors->first()}}
+        </div>
+    @endif
 
     <div class="row justify-content-center" style="margin-top: 4rem">
 
@@ -30,7 +35,7 @@
       @component('projeto.formularioVisualizar.participantes2', ['projeto' => $projeto, 'edital' => $edital])
       @endcomponent
 
-      @component('projeto.formularioVisualizar.relatório',['edital' => $edital,'projeto' => $projeto])
+      @component('projeto.formularioVisualizar.relatorio',['edital' => $edital,'projeto' => $projeto,'flagSubstituicao' =>$flagSubstituicao])
       @endcomponent
 
       @component('projeto.formularioVisualizar.resultado2',

@@ -3,6 +3,15 @@
 @section('content')
 
 <div class="container">
+  @if($errors->any())
+  <div class="col-sm-12">
+      <br>
+      <div class="alert alert-danger">
+          <p>{{$errors->first()}}</p>
+      </div>
+  </div>
+  @endif
+
   @if(isset($mensagem))
   <div class="col-sm-12">
       <br>
@@ -88,7 +97,7 @@
                             </a>
                             <div class="dropdown-menu">
                               
-                              @if($hoje <= $projeto->evento->inicioProjeto)
+                              @if($hoje <= $projeto->evento->fimSubmissao)
                                 <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                                     Editar
                                 </a>

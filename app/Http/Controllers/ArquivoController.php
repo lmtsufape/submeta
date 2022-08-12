@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Arquivo;
 use App\Notificacao;
+use App\Substituicao;
 use App\Trabalho;
 use App\User;
 use Auth;
@@ -120,8 +121,16 @@ class ArquivoController extends Controller
     }
 
     public function listar($id){
+
         $trabalho = Trabalho::where('id',$id)->first();
         $participantes = $trabalho->participantes;
+
+        // Verficação de pendencia de substituição
+        $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$trabalho->participantes->pluck('id'))->get());
+        if($aux != 0){
+            return redirect()->back()->withErrors("A proposta ".$trabalho->titulo." possui substituições pendentes");
+        }
+
         $arquivos = [];
         
         if(Auth::user()->id != $trabalho->proponente->user->id){
