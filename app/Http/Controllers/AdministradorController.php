@@ -564,9 +564,13 @@ class AdministradorController extends Controller
         return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário atualizado com sucesso']);
     }
 
+    public function verify_correlations($id){
+        $user = User::find($id);
+        
+    }
+
     public function destroy($id) {
         $user = User::find($id);
-
         $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
         $avaliador = Avaliador::where('user_id', '=', $id)->first();
         $proponente = Proponente::where('user_id', '=', $id)->first();

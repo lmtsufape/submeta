@@ -110,7 +110,8 @@ class ProponenteController extends Controller
         
     }
     public function projetosEdital($id) {
-        $edital = Evento::find($id);
+        $edital = Evento::find($id); 
+ 
         if(Auth::user()->proponentes != null){
             $projetos = Trabalho::where('evento_id', '=', $id)->where('proponente_id', Auth::user()->proponentes->id)->orderBy('titulo')->paginate(10);
             $hoje = Carbon::today('America/Recife');

@@ -123,6 +123,11 @@ class ArquivoController extends Controller
         $trabalho = Trabalho::where('id',$id)->first();
         $participantes = $trabalho->participantes;
         $arquivos = [];
+        
+        if(Auth::user()->id != $trabalho->proponente->user->id){
+            return redirect()->back();
+        }
+
         foreach ($participantes as $participante){
             array_push($arquivos, $participante->planoTrabalho);
         }
