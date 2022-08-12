@@ -108,6 +108,12 @@ class AvaliadorController extends Controller
       $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
       $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
       $evento = Evento::find($request->evento);
+
+        // Verficação de pendencia de substituição
+      $aux = count(Arquivo::whereIn('participanteId',$trabalho->participantes->pluck('id'))->get());
+      if($aux != count($trabalho->participantes->pluck('id'))){
+        return redirect()->back()->withErrors("A proposta ".$trabalho->titulo." possui substituições pendentes");
+      }
       
     	return view('avaliador.parecer', ['trabalho'=>$trabalho, 'evento'=>$evento]);
     }

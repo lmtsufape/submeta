@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Arquivo;
 use App\AvaliacaoRelatorio;
 use App\Notificacao;
 use App\Substituicao;
@@ -117,7 +118,11 @@ class AdministradorController extends Controller
         $AvalRelatParcial = [];
         $AvalRelatFinal = [];
         foreach($trabalho->participantes as $participante) {
-            $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
+            if(isset($participante->planoTrabalho)){
+                $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
+            }else{
+                $avals = [];
+            }
             foreach($avals as $aval){
                 if($aval->tipo == "Parcial"){
                     array_push($AvalRelatParcial,$aval);
@@ -126,7 +131,14 @@ class AdministradorController extends Controller
                 }
             }
         }
-        //
+
+        // Verficação de pendencia de substituição
+        $aux = count(Arquivo::whereIn('participanteId',$trabalho->participantes->pluck('id'))->get());
+        $flagSubstituicao = 1;
+        if($aux != count($trabalho->participantes->pluck('id'))){
+            $flagSubstituicao = -1;
+        }
+
         $grandeAreas = GrandeArea::orderBy('nome')->get();
 
         $hoje = Carbon::today('America/Recife');
@@ -141,7 +153,8 @@ class AdministradorController extends Controller
                 'grandeAreas' => $grandeAreas,
                 'AvalRelatParcial' => $AvalRelatParcial,
                 'AvalRelatFinal' => $AvalRelatFinal,
-                'hoje' => $hoje,]);
+                'hoje' => $hoje,
+                'flagSubstituicao' =>$flagSubstituicao,]);
 
     }
 

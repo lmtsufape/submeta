@@ -120,8 +120,16 @@ class ArquivoController extends Controller
     }
 
     public function listar($id){
+
         $trabalho = Trabalho::where('id',$id)->first();
         $participantes = $trabalho->participantes;
+
+        // Verficação de pendencia de substituição
+        $aux = count(Arquivo::whereIn('participanteId',$trabalho->participantes->pluck('id'))->get());
+        if($aux != count($trabalho->participantes->pluck('id'))){
+            return redirect()->back()->withErrors("A proposta ".$trabalho->titulo." possui substituições pendentes");
+        }
+
         $arquivos = [];
         foreach ($participantes as $participante){
             array_push($arquivos, $participante->planoTrabalho);

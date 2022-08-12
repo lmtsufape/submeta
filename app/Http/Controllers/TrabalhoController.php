@@ -394,6 +394,14 @@ class TrabalhoController extends Controller
         $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         $users = User::whereIn('id', $participantesUsersIds)->get();
         $arquivos = Arquivo::where('trabalhoId', $id)->get();
+
+        // Verficação de pendencia de substituição
+        $aux = count(Arquivo::whereIn('participanteId',$projeto->participantes->pluck('id'))->get());
+        $flagSubstituicao = 1;
+        if($aux != count($projeto->participantes->pluck('id'))){
+            $flagSubstituicao = -1;
+        }
+
         return view('projeto.visualizar')->with(['projeto' => $projeto,
             'grandeAreas' => $grandeAreas,
             'areas' => $areas,
@@ -407,6 +415,7 @@ class TrabalhoController extends Controller
             'visualizar' => true,
             'enum_turno' => Participante::ENUM_TURNO,
             'areasTematicas' => $areasTematicas,
+            'flagSubstituicao' =>$flagSubstituicao,
         ]);
     }
 
