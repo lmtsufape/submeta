@@ -130,9 +130,9 @@ class AdministradorController extends Controller
         }
 
         // Verficação de pendencia de substituição
-        $aux = count(Arquivo::whereIn('participanteId',$trabalho->participantes->pluck('id'))->get());
+        $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$trabalho->participantes->pluck('id'))->get());
         $flagSubstituicao = 1;
-        if($aux != count($trabalho->participantes->pluck('id'))){
+        if($aux != 0){
             $flagSubstituicao = -1;
         }
 

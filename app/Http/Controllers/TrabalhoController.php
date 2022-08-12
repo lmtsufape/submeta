@@ -396,9 +396,9 @@ class TrabalhoController extends Controller
         $arquivos = Arquivo::where('trabalhoId', $id)->get();
 
         // Verficação de pendencia de substituição
-        $aux = count(Arquivo::whereIn('participanteId',$projeto->participantes->pluck('id'))->get());
+        $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$projeto->participantes->pluck('id'))->get());
         $flagSubstituicao = 1;
-        if($aux != count($projeto->participantes->pluck('id'))){
+        if($aux != 0){
             $flagSubstituicao = -1;
         }
 
