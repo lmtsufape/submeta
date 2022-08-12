@@ -113,18 +113,6 @@
                             @endforeach
                         </div>
 
-
-    <div class="row justify-content-center" >
-        <div class="col-md-11">
-            <br>
-            {{ $trabalhos->appends(['evento_id' => $evento->id])->links() }}
-           
-                </div>
-
-        </div>
-
-
-
 @endsection
 
 @section('javascript')
