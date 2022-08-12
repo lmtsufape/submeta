@@ -6,7 +6,12 @@
           <div class="form-row mt-3">
             <div class="col-sm-9"><h5 style="color: #234B8B; font-weight: bold">Relatórios</h5></div>
             <div class="col-sm-3 text-sm-right" >
-              <a href="{{route('planos.listar', ['id' => $projeto->id])}}"  class="button">Listar Relatórios</a>
+              @if($flagSubstituicao == 1)
+                <a href="{{route('planos.listar', ['id' => $projeto->id])}}"  class="button">Listar Relatórios</a>
+              @else
+                <a href="{{route('planos.listar', ['id' => $projeto->id])}}"  class="button" title="Existe uma Substituição pendente" style="color: red">Listar Relatórios</a>
+              @endif
+
             </div>
           </div>
           <hr style="border-top: 1px solid#1492E6">

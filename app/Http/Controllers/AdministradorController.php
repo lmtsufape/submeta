@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Arquivo;
 use App\AvaliacaoRelatorio;
 use App\Notificacao;
 use App\Substituicao;
@@ -114,7 +115,11 @@ class AdministradorController extends Controller
         $AvalRelatParcial = [];
         $AvalRelatFinal = [];
         foreach($trabalho->participantes as $participante) {
-            $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
+            if(isset($participante->planoTrabalho)){
+                $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
+            }else{
+                $avals = [];
+            }
             foreach($avals as $aval){
                 if($aval->tipo == "Parcial"){
                     array_push($AvalRelatParcial,$aval);
@@ -123,7 +128,14 @@ class AdministradorController extends Controller
                 }
             }
         }
-        //
+
+        // Verficação de pendencia de substituição
+        $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$trabalho->participantes->pluck('id'))->get());
+        $flagSubstituicao = 1;
+        if($aux != 0){
+            $flagSubstituicao = -1;
+        }
+
         $grandeAreas = GrandeArea::orderBy('nome')->get();
 
         $hoje = Carbon::today('America/Recife');
@@ -138,7 +150,8 @@ class AdministradorController extends Controller
                 'grandeAreas' => $grandeAreas,
                 'AvalRelatParcial' => $AvalRelatParcial,
                 'AvalRelatFinal' => $AvalRelatFinal,
-                'hoje' => $hoje,]);
+                'hoje' => $hoje,
+                'flagSubstituicao' =>$flagSubstituicao,]);
 
     }
 
@@ -668,14 +681,14 @@ class AdministradorController extends Controller
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         if($request->flag == 0){
-            if($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3){
+            if(($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) || ($aval->tipo == null && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 && ($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))){
                 $aval->trabalhos()
                     ->updateExistingPivot($trabalho->id,['acesso'=>2]);
             }else{
                 $aval->trabalhos()->detach($trabalho);
             }
         }else{
-            if($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3){
+            if(($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) || ($aval->tipo == null && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 && ($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))){
                 $aval->trabalhos()
                     ->updateExistingPivot($trabalho->id,['acesso'=>1]);
             }else{
@@ -725,11 +738,12 @@ class AdministradorController extends Controller
         }
 
 
+
       if($request->avaliadores_externos_id != null){
             foreach ($request->avaliadores_externos_id as $avaliador) {
 
                 $aval = Avaliador::find($avaliador);
-                if(Avaliador::where('id',$avaliador)->where('tipo',"Interno")->count()>0){
+                if(Avaliador::where('id',$avaliador)->where('tipo',"Interno")->count()>0 || (Avaliador::where('id',$avaliador)->where('tipo',null)->count()>0 && (($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))) ){
                     if($aval->trabalhos()->where("trabalho_id",$trabalho->id)->first() != null){
                         $aval->trabalhos()
                             ->updateExistingPivot($trabalho->id,['acesso'=>3]);
@@ -813,6 +827,8 @@ class AdministradorController extends Controller
             $user->markEmailAsVerified();
         }
 
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+
         if($user->avaliadors == null){
             $avaliador = new Avaliador();
             $avaliador->tipo = $externoInterno;
@@ -829,10 +845,14 @@ class AdministradorController extends Controller
             $avaliador->save();
         }
 
-        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+        if($request->instituicao == "ufape"){
+            $trabalho->avaliadors()->attach($avaliador,['acesso'=>2]);
+            $evento->avaliadors()->syncWithoutDetaching($avaliador);
+        }else{
+            $trabalho->avaliadors()->attach($avaliador,['acesso'=>1]);
+            $evento->avaliadors()->syncWithoutDetaching($avaliador);
+        }
 
-        $trabalho->avaliadors()->attach($avaliador);
-        $evento->avaliadors()->syncWithoutDetaching($avaliador);
         $trabalho->save();
 
         $notificacao = Notificacao::create([
