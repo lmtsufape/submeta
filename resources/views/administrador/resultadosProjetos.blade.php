@@ -95,7 +95,7 @@
                                             @php
                                                 $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
-                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                            @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
                                         @endif
 
                                         {{--Externos--}}
@@ -181,7 +181,7 @@
                                             @php
                                                 $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
-                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                            @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
                                         @endif
 
                                         {{--Externos--}}
@@ -268,7 +268,7 @@
                                             @php
                                                 $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
                                             @endphp
-                                            @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} <br>@else Pendente <br>@endif
+                                            @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
                                         @endif
 
                                         {{--Externos--}}
