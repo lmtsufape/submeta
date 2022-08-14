@@ -39,13 +39,10 @@ class UpdateTrabalho extends FormRequest
                     
                     $usuario = User::where('email', $this->email[$value])->first();
                     
-
-                    $participante = Participante::where('user_id', $usuario->id)
-                                            ->where('trabalho_id', $projeto->id)->first();
-
-                    $arquivo = Arquivo::where('trabalhoId', $projeto->id)
-                                        ->where('participanteId', $participante->id)->first();
-
+                    // if(isset($usuario)){
+                    //     $participante = Participante::where('user_id', $usuario->id)->where('trabalho_id', $projeto->id)->first();
+                    //     $arquivo = Arquivo::where('trabalhoId', $projeto->id)->where('participanteId', $participante->id)->first();
+                    // }
                     
                     //user
                     $rules['name.'.$value] = ['required', 'string'];
@@ -72,8 +69,14 @@ class UpdateTrabalho extends FormRequest
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
-                    $rules['anexoPlanoTrabalho.'.$value] = [Rule::requiredIf($arquivo == null), 'mimes:pdf'];
-    
+                    
+                    if(isset($usuario)){
+                        $participante = Participante::where('user_id', $usuario->id)->where('trabalho_id', $projeto->id)->first();
+                        $arquivo = Arquivo::where('trabalhoId', $projeto->id)->where('participanteId', $participante->id)->first();
+                        $rules['anexoPlanoTrabalho.'.$value] = [Rule::requiredIf($arquivo == null), 'mimes:pdf'];
+                    }else {
+                        $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
+                    }
                 }
             }
 
