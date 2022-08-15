@@ -44,7 +44,7 @@
                                                     <i class="fas fa-exchange-alt fa-2x"></i></a>
                                                 <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a>
                                             
-                                                <a href="" data-toggle="modal" data-target="#modalSolicitarDesligamentoParticipante{{$participante->id}}" class="button" @if(($substituicoesProjeto->first() != null) && (($substituicoesProjeto->first()->status == 'Em Aguardo') || ($desligamentosProjeto->first() !=null && $desligamentosProjeto->first()->status == 1))) style="pointer-events: none; cursor: default; color: gray;" @endif>Solicitar desligamento</a>
+                                                <a href="" data-toggle="modal" data-target="#modalSolicitarDesligamentoParticipante{{$participante->id}}" class="button" @if((($substituicoesProjeto->first() != null) && (($substituicoesProjeto->first()->status == 'Em Aguardo') || ($desligamentosProjeto->first() !=null && $desligamentosProjeto->first()->status == 1)) || count($participantes) <= 1)) style="pointer-events: none; cursor: default; color: gray;" @endif>Solicitar desligamento</a>
                                             </div>
                                         </div>
                                                                                 
