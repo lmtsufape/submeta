@@ -276,113 +276,111 @@
                                         </div>
                                     </div>
                                 @endforeach
-
-                            <!-- Modal reprovar substituição -->
-                                <div class="modal fade" id="modalCancelarSubst" tabindex="-1" role="dialog"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-
-                                            <div class="modal-header" style="overflow-x:auto">
-                                                <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
-                                                    Cancelar Substituição</h5>
-
-                                                <button type="button" class="close" id="closeCancel" aria-label="Close"
-                                                        style="padding-top: 8px; color:#1492E6">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <form method="POST" id="CancelarSubParticForm"
-                                                      action="{{route('trabalho.aprovarSubstituicao')}}">
-                                                    @csrf
-                                                    <input type="hidden" name="substituicaoID" id="negaId" value="">
-                                                    <input type="hidden" name="aprovar" value="false">
-
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="form-group">
-                                                                <label for="justificativaTextArea">Justificativa:</label>
-                                                                <textarea class="form-control"
-                                                                          id="justificativaTextArea" rows="3"
-                                                                          name="textJustificativa" minlength="20"
-                                                                          required></textarea>
-                                                            </div>
-                                                            <select class="custom-select" name="selectJustificativa">
-                                                                <option value="DESISTENCIA">DESISTÊNCIA</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row justify-content-end mt-4">
-                                                        <div class="col-md-auto">
-                                                            <div>
-                                                                <button type="submit" class="btn btn-success">Cancelar
-                                                                    Substituição
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Modal aprovar substituição -->
-                                <div class="modal fade" id="modalResultadoSubst" tabindex="-1" role="dialog"
-                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
-
-                                            <div class="modal-header" style="overflow-x:auto">
-                                                <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
-                                                    Proceder Com Substituição</h5>
-
-                                                <button id="closeAcept" type="button" class="close" aria-label="Close"
-                                                        style="padding-top: 8px; color:#1492E6">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <form method="POST" id="AprovarSubParticForm"
-                                                      action="{{route('trabalho.aprovarSubstituicao')}}">
-                                                    @csrf
-                                                    <input type="hidden" name="substituicaoID" id="aprovaId" value="">
-                                                    <input type="hidden" name="aprovar" value="true">
-
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="form-group">
-                                                                <label for="justificativaTextArea">Justificativa:</label>
-                                                                <textarea class="form-control"
-                                                                          id="justificativaTextArea" rows="3"
-                                                                          name="textJustificativa" minlength="20"
-                                                                          required>Substituição cumpre com todos os requisitos</textarea>
-                                                            </div>
-                                                            <select class="custom-select" name="selectJustificativa">
-                                                                <option value="DESISTENCIA">DESISTÊNCIA</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row justify-content-end mt-4">
-                                                        <div class="col-md-auto">
-                                                            <div>
-                                                                <button type="submit" class="btn btn-success">Aprovar
-                                                                    Substituição
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             @endforeach
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{--Janelas para aprovação ou reprovação de substituição--}}
+    <div class="modal fade" id="modalCancelarSubst" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header" style="overflow-x:auto">
+                        <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
+                            Cancelar Substituição</h5>
+
+                        <button type="button" class="close" id="closeCancel" aria-label="Close"
+                                style="padding-top: 8px; color:#1492E6">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form method="POST" id="CancelarSubParticForm"
+                              action="{{route('trabalho.aprovarSubstituicao')}}">
+                            @csrf
+                            <input type="hidden" name="substituicaoID" id="negaId" value="">
+                            <input type="hidden" name="aprovar" value="false">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="justificativaTextArea">Justificativa:</label>
+                                        <textarea class="form-control"
+                                                  id="justificativaTextArea" rows="3"
+                                                  name="textJustificativa" minlength="20"
+                                                  required></textarea>
+                                    </div>
+                                    <select class="custom-select" name="selectJustificativa">
+                                        <option value="DESISTENCIA">DESISTÊNCIA</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row justify-content-end mt-4">
+                                <div class="col-md-auto">
+                                    <div>
+                                        <button type="submit" class="btn btn-success">Cancelar
+                                            Substituição
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+        <!-- Modal aprovar substituição -->
+    <div class="modal fade" id="modalResultadoSubst" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header" style="overflow-x:auto">
+                        <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
+                            Proceder Com Substituição</h5>
+
+                        <button id="closeAcept" type="button" class="close" aria-label="Close"
+                                style="padding-top: 8px; color:#1492E6">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" id="AprovarSubParticForm" action="{{route('trabalho.aprovarSubstituicao')}}">
+                        @csrf
+                        <input type="hidden" name="substituicaoID" id="aprovaId" value="">
+                        <input type="hidden" name="aprovar" value="true">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                        <label for="justificativaTextArea">Justificativa:</label>
+                                        <textarea class="form-control"
+                                                  id="justificativaTextArea" rows="3"
+                                                  name="textJustificativa" minlength="20"
+                                                  required>Substituição cumpre com todos os requisitos</textarea>
+                                </div>
+                                <select class="custom-select" name="selectJustificativa">
+                                    <option value="DESISTENCIA">DESISTÊNCIA</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end mt-4">
+                            <div class="col-md-auto">
+                                <div>
+                                    <button type="submit" class="btn btn-success">Aprovar
+                                        Substituição
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -1189,6 +1187,7 @@
                                                                             Submeter
                                                                         </button>
                                                                     </form>
+                                                                    {{--fsasfafsasaffafsafas--}}
                                                                 </div>
                                                             </div>
                                                         </div>

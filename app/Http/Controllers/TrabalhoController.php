@@ -1782,7 +1782,9 @@ class TrabalhoController extends Controller
         if ($request->aprovar == 'true') {
             try {
                 if ($substituicao->tipo == 'TrocarPlano') {
-                    $substituicao->participanteSubstituido->planoTrabalho()->where('id', '!=', $substituicao->planoSubstituto->id)->delete();
+                    if(!empty($substituicao->participanteSubstituido)){
+                        $substituicao->participanteSubstituido->planoTrabalho()->where('id', '!=', $substituicao->planoSubstituto->id)->delete();
+                    }
                     $substituicao->status = 'Finalizada';
                     $substituicao->justificativa = $request->textJustificativa;
                     $substituicao->causa = $request->selectJustificativa;
@@ -1791,7 +1793,10 @@ class TrabalhoController extends Controller
                     $substituicao->save();
 
                 } else {
-                    $substituicao->participanteSubstituido->delete();
+                    if(!empty($substituicao->participanteSubstituido)){
+                        $substituicao->participanteSubstituido->delete();
+                    }
+
                     $trabalho->participantes()->save($substituicao->participanteSubstituto);
 
                     $substituicao->status = 'Finalizada';
