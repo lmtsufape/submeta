@@ -1184,7 +1184,7 @@
                                                                                 type="button" class="btn btn-primary"
                                                                                 style="padding: 5px 10px;"
                                                                                 value="{{$subs->id}}">
-                                                                            Submeter{{$subs->id}}
+                                                                            Submeter
                                                                         </button>
                                                                     </form>
                                                                     {{--fsasfafsasaffafsafas--}}
