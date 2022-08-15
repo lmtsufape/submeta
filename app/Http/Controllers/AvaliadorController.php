@@ -9,6 +9,7 @@ use App\GrandeArea;
 use App\ParecerInterno;
 use App\Participante;
 use App\SubArea;
+use App\Substituicao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Trabalho;
@@ -108,9 +109,9 @@ class AvaliadorController extends Controller
       $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
       $evento = Evento::find($request->evento);
 
-        // Verficação de pendencia de substituição
-      $aux = count(Arquivo::whereIn('participanteId',$trabalho->participantes->pluck('id'))->get());
-      if($aux != count($trabalho->participantes->pluck('id'))){
+      // Verficação de pendencia de substituição
+      $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$trabalho->participantes->pluck('id'))->get());
+      if($aux != 0){
         return redirect()->back()->withErrors("A proposta ".$trabalho->titulo." possui substituições pendentes");
       }
       

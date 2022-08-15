@@ -52,6 +52,7 @@ use App\SolicitacaoCertificado;
 use App\SolicitacaoParticipante;
 use App\Substituicao;
 use Illuminate\Support\Facades\Notification;
+use App\Desligamento;
 
 class TrabalhoController extends Controller
 {
@@ -396,9 +397,9 @@ class TrabalhoController extends Controller
         $arquivos = Arquivo::where('trabalhoId', $id)->get();
 
         // Verficação de pendencia de substituição
-        $aux = count(Arquivo::whereIn('participanteId',$projeto->participantes->pluck('id'))->get());
+        $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$projeto->participantes->pluck('id'))->get());
         $flagSubstituicao = 1;
-        if($aux != count($projeto->participantes->pluck('id'))){
+        if($aux != 0){
             $flagSubstituicao = -1;
         }
 
@@ -1565,6 +1566,7 @@ class TrabalhoController extends Controller
 
         $participantes = $projeto->participantes;
         $substituicoesProjeto = Substituicao::where('trabalho_id', $projeto->id)->orderBy('created_at', 'DESC')->get();
+        $desligamentosProjeto = Desligamento::where('trabalho_id', $projeto->id)->orderBy('created_at', 'DESC')->get();
 
         return view('administrador.substituirParticipante')->with(['projeto' => $projeto,
             'edital' => $edital,
@@ -1572,6 +1574,7 @@ class TrabalhoController extends Controller
             'substituicoesProjeto' => $substituicoesProjeto,
             'estados' => $this->estados,
             'enum_turno' => Participante::ENUM_TURNO,
+            'desligamentosProjeto' => $desligamentosProjeto,
         ]);
     }
 
