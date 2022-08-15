@@ -6,7 +6,6 @@ use App\Arquivo;
 use App\Evento;
 use App\Participante;
 use App\Trabalho;
-use App\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
@@ -35,15 +34,7 @@ class UpdateTrabalho extends FormRequest
         
         if($this->has('marcado')){
             foreach ($this->get('marcado') as $key => $value) {
-                if( intval($value)  == $key){
-                    
-                    $usuario = User::where('email', $this->email[$value])->first();
-                    
-                    // if(isset($usuario)){
-                    //     $participante = Participante::where('user_id', $usuario->id)->where('trabalho_id', $projeto->id)->first();
-                    //     $arquivo = Arquivo::where('trabalhoId', $projeto->id)->where('participanteId', $participante->id)->first();
-                    // }
-                    
+                if( intval($value)  == $key){     
                     //user
                     $rules['name.'.$value] = ['required', 'string'];
                     $rules['email.'.$value] = ['required', 'string'];
@@ -69,14 +60,8 @@ class UpdateTrabalho extends FormRequest
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
+                    $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
                     
-                    if(isset($usuario)){
-                        $participante = Participante::where('user_id', $usuario->id)->where('trabalho_id', $projeto->id)->first();
-                        $arquivo = Arquivo::where('trabalhoId', $projeto->id)->where('participanteId', $participante->id)->first();
-                        $rules['anexoPlanoTrabalho.'.$value] = [Rule::requiredIf($arquivo == null), 'mimes:pdf'];
-                    }else {
-                        $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
-                    }
                 }
             }
 
