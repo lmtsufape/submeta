@@ -624,8 +624,8 @@
                                                                     para a(s) avaliacões de relatorio final</label>
                                                             @endif
                                                         </div>
-                                                        <div class="col-md-5" style="display:flex; align-items: end; max-width: 200px;">
-                                                        <input type="text" class="form-control form-control-edit" placeholder="Nome do avaliador" onkeyup="buscarAvalRelatorio(this)"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
+                                                        <div class="col-md-3 offset-md-3" style="display:flex; align-items: end; max-width: 250px;">
+                                                            <input type="text" class="form-control form-control-edit" placeholder="Nome do avaliador" onkeyup="buscarAvalRelatorio(this)"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
                                                         </div>
                                                     </div>
                                                     @foreach($trabalho->participantes as $participante)
