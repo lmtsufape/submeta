@@ -51,7 +51,8 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function(){
 
     //######## Rotas Avaliador  ####################################
     Route::prefix('avaliacaoRelatorio')->name('avaliacaoRelatorio.')->group(function(){
-        Route::post('/atribuirAvaliadorPlano',   'AvaliacaoRelatorioController@atribuicaoAvaliador')->name('atribuicao.avaliador');
+        Route::post('/atribuirAvaliadorPlano',   'AvaliacaoRelatorioController@atribuicaoAvaliador')->name('atribuicao.avaliador')->middleware('checkRoles:coordenador,administrador');
+        Route::get('/removerAvaliadorPlano/{id}',   'AvaliacaoRelatorioController@removerAvaliador')->name('remover.avaliador')->middleware('checkRoles:coordenador,administrador');
     });
     Route::post('/trabalho/planos/avaliacoes',    'AvaliacaoRelatorioController@listarUser')->name('planos.avaliacoesUser');
     Route::get('/trabalho/planos/avaliacoes/index',    'AvaliacaoRelatorioController@index')->name('planos.avaliacoes.index');

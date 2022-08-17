@@ -681,10 +681,37 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <h5>{{\App\User::find($aval->user_id)->name}}</h5>
-                                    <h9><a href="" data-toggle="modal"
+                                    <h6><a href="" data-toggle="modal"
                                            data-target="#modalVizuRelatParcial{{$aval->id}}" class="button">
-                                            @if($aval->nota == null) <b style="color: red">Pendente</b> </a>@else Avaliação</a> @endif</h9>
+                                            @if($aval->nota == null) Pendente </a>@else Avaliação</a> @endif</h6>
+                                    @if($aval->nota == null)
+                                    <h6><a href="" data-toggle="modal"
+                                           data-target="#removerAvaliadorReltorioParcial{{$aval->id}}" class="button"><b style="color: red">Remover</b></a></h6>
+                                    @endif
                                 </div>
+
+                                <!-- Modal Remover -->
+                                <div class="modal fade" id="removerAvaliadorReltorioParcial{{ $aval->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador Do Relatório Parcial</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Você tem certeza que deseja remover o avaliador: {{ $aval->user->name }}?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <a type="button" class="btn btn-danger" href="{{route('avaliacaoRelatorio.remover.avaliador',$aval->id)}}">Remover</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
 
                                 <!-- Modal visualizar informações participante -->
                                 <div class="modal fade" id="modalVizuRelatParcial{{$aval->id}}" tabindex="-1"
@@ -724,9 +751,35 @@
                                     </div>
                                     <div class="col-sm-3">
                                         <h5>{{\App\User::find($aval->user_id)->name}}</h5>
-                                        <h9><a href="" data-toggle="modal"
+                                        <h6><a href="" data-toggle="modal"
                                                data-target="#modalVizuRelatFinal{{$aval->id}}" class="button">
-                                                @if($aval->nota == null) <b style="color: red">Pendente</b> </a>@else Avaliação</a> @endif</h9>
+                                                @if($aval->nota == null) Pendente </a>@else Avaliação</a> @endif</h6>
+                                        @if($aval->nota == null)
+                                        <h6><a href="" data-toggle="modal"
+                                               data-target="#removerAvaliadorReltorioFinal{{$aval->id}}" class="button"><b style="color: red">Remover</b></a></h6>
+                                        @endif
+
+                                    </div>
+
+                                    <!-- Modal Remover -->
+                                    <div class="modal fade" id="removerAvaliadorReltorioFinal{{ $aval->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador Do Relatório Final</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Você tem certeza que deseja remover o avaliador: {{ $aval->user->name }}?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                    <a type="button" class="btn btn-danger" href="{{route('avaliacaoRelatorio.remover.avaliador',$aval->id)}}">Remover</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Modal visualizar informações participante -->

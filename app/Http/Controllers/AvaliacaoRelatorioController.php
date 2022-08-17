@@ -134,4 +134,10 @@ class AvaliacaoRelatorioController extends Controller
         return redirect()->back();
     }
 
+    public function removerAvaliador($id){
+        $avaliacao = AvaliacaoRelatorio::find($id);
+        $avaliacao->delete();
+        return redirect()->back();
+    }
+
 }
