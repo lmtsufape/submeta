@@ -18,7 +18,7 @@
 				</a>
 			</div>
 		  </div>
-			@if(\App\AvaliacaoRelatorio::where('user_id',Auth::user()->id )->get()->count()!=0)
+			@if($flagAvalRelatorio != 0)
 				<div class="" style="text-align: center">
 					<div class="form-group imagem_shadow" style="border-radius: 12px; padding:14px; height:200px; width:190px; margin:15px">
 						<a href="{{ route('planos.avaliacoes.index') }}" style="text-decoration:none; color: inherit;">
