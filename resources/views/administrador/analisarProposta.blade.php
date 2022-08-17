@@ -624,6 +624,9 @@
                                                                     para a(s) avaliacões de relatorio final</label>
                                                             @endif
                                                         </div>
+                                                        <div class="col-md-5" style="display:flex; align-items: end; max-width: 200px;">
+                                                        <input type="text" class="form-control form-control-edit" placeholder="Nome do avaliador" onkeyup="buscarAvalRelatorio(this)"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
+                                                        </div>
                                                     </div>
                                                     @foreach($trabalho->participantes as $participante)
                                                         <div class="col-md-6">
@@ -2023,11 +2026,12 @@
 
     <script>
         //let seletor = document.getElementsByClassName('aval1')
-        //console.log(seletor[0].children[0].text)
+        //console.log(seletor[0].children[0].text)=
 
         function buscar(input) {
             let seletor1 = document.getElementById('exampleFormControlSelect2').children;
             let seletor2 = document.getElementById('exampleFormControlSelect3').children;
+
 
             for(let i = 0; i < seletor1.length; i++){
                 let nomeAval1 = seletor1[i].textContent
@@ -2053,6 +2057,25 @@
 
             }
 
+        }
+
+        function buscarAvalRelatorio(input) {
+            let seletorAvalRelatorio = document.querySelectorAll('#avaliacaoSelect');
+            
+            for(let i = 0; i < seletorAvalRelatorio.length; i++){
+                
+                for(let j = 0; j < seletorAvalRelatorio[i].children.length; j++){
+                    let nomeAval = seletorAvalRelatorio[i].children[j].textContent
+                    
+
+                    if(nomeAval.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0){
+                        seletorAvalRelatorio[i].children[j].style.display = "";
+                    }else {
+                        seletorAvalRelatorio[i].children[j].style.display = "none";
+                    }
+                }
+
+            }
         }
     </script>
 @endsection
