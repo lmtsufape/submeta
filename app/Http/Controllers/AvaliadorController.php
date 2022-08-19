@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Area;
 use App\Arquivo;
+use App\AvaliacaoRelatorio;
 use App\FuncaoParticipantes;
 use App\GrandeArea;
 use App\ParecerInterno;
@@ -54,8 +55,8 @@ class AvaliadorController extends Controller
     );
 
 	public function index(){
-
-    	return view('avaliador.index');
+        $flagAvalRelatorio = count(AvaliacaoRelatorio::where('user_id',Auth::user()->id )->get());
+    	return view('avaliador.index', compact('flagAvalRelatorio'));
     }
 
     public function editais(Request $request){
