@@ -46,7 +46,6 @@ class HomeController extends Controller
           }
           else if (Auth::user()->avaliadors != null) {
             $flagAvalRelatorio = count(AvaliacaoRelatorio::where('user_id',Auth::user()->id )->get());
-            dd($flagAvalRelatorio);
             return view('avaliador.index', compact('flagAvalRelatorio'));
           }
           else if (Auth::user()->participantes != null) {
