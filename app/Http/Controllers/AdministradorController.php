@@ -67,8 +67,15 @@ class AdministradorController extends Controller
 
         $evento = Evento::where('id', $request->evento_id)->first();
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
-       // $trabalhosAvaliados = $evento->trabalhos->Where('status', 'avaliado');
-       // $trabalhos = $trabalhosSubmetidos->merge($trabalhosAvaliados);
+
+        $coordenador_id_evento = $evento->coordenadorId;
+        $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
+        $user = Auth::user();
+
+        if((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')){
+            return redirect()->back();
+        }
+       
 
         return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
     }
@@ -166,6 +173,14 @@ class AdministradorController extends Controller
     public function showResultados(Request $request){
         //dd($request);
         $evento = Evento::where('id', $request->evento_id)->first();
+        $coordenador_id_evento = $evento->coordenadorId;
+        $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
+        $user = Auth::user();
+
+        if((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')){
+            return redirect()->back();
+        }
+
         // Com cotas
         if ($evento->cotaDoutor) {
             // Ampla Concorrencia
@@ -599,19 +614,32 @@ class AdministradorController extends Controller
     public function atribuir(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        //dd($request->all());
+        $coordenador_id_evento = $evento->coordenadorId;
+        $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
+        $user = Auth::user();
+
+        if((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')){
+            return redirect()->back();
+        }
+
         return view('administrador.atribuirAvaliadores', ['evento'=> $evento]);
     }
     public function selecionar(Request $request){
 
+        $user = Auth::user();
+        
         $evento = Evento::where('id', $request->evento_id)->first();
+        $coordenador_id_evento = $evento->coordenadorId;
+        $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
         $avalSelecionados = $evento->avaliadors;
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
         $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
         
-        //dd($avaliadores);
+        if((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')){
+            return redirect()->back();
+        }
 
         return view('administrador.selecionarAvaliadores', [
                                                             'evento'=> $evento,
