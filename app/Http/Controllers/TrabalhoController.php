@@ -371,16 +371,6 @@ class TrabalhoController extends Controller
 
     public function show($id)
     {
-
-        // $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
-        // if(Auth::user()->tipo == 'administrador'){
-        //   $projeto = Trabalho::find($id);
-        // }
-        // if(!$projeto){
-        //   // $projeto = Auth::user()->coordenadorComissao->trabalho()->where('id', $id)->first();
-
-        //   return back()->withErrors(['Proposta não encontrada!']);
-        // }
         $projeto = Trabalho::find($id);
         if(Auth::user()->id != $projeto->proponente->user->id){
             return redirect()->back();
@@ -1563,6 +1553,10 @@ class TrabalhoController extends Controller
     {
         $projeto = Trabalho::find($request->projeto_id);
         $edital = Evento::find($projeto->evento_id);
+
+        if(Auth::user()->id != $projeto->proponente->user->id){
+            return redirect()->back();
+        }
 
         $participantes = $projeto->participantes;
         $substituicoesProjeto = Substituicao::where('trabalho_id', $projeto->id)->orderBy('created_at', 'DESC')->get();

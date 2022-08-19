@@ -96,6 +96,10 @@ class ParticipanteController extends Controller
         $trabalho = Trabalho::find($request->projeto_id);
         $participantes = $trabalho->participantes;
 
+        if(Auth::user()->id != $trabalho->proponente->user->id){
+            return redirect()->back();
+        }
+
         return view('documentacaoComplementar.listar')->with(['participantes' => $participantes, 'trabalho' => $trabalho]);
     }
 

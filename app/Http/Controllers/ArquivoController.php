@@ -132,6 +132,11 @@ class ArquivoController extends Controller
         }
 
         $arquivos = [];
+        
+        if(Auth::user()->id != $trabalho->proponente->user->id){
+            return redirect()->back();
+        }
+
         foreach ($participantes as $participante){
             array_push($arquivos, $participante->planoTrabalho);
         }
