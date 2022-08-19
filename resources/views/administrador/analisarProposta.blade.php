@@ -836,7 +836,7 @@
                             <!-- Modal -->
                             <div class="modal fade" id="avaliadorModalCenter" data-bs-backdrop="static"
                                  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                 aria-hidden="true" style="overflow-y: hidden">
+                                 aria-hidden="true" style="overflow-y: auto">
                                 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                                     <div class="modal-content modal-submeta modal-xl">
                                         <div class="modal-header modal-header-submeta">
