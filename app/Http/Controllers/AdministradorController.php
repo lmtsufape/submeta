@@ -574,10 +574,6 @@ class AdministradorController extends Controller
         return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário atualizado com sucesso']);
     }
 
-    public function verify_correlations($id){
-        $user = User::find($id);
-        
-    }
 
     public function destroy($id) {
         $user = User::find($id);
