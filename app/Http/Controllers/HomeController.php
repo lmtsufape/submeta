@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AvaliacaoRelatorio;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +45,8 @@ class HomeController extends Controller
             return view('proponente.index');
           }
           else if (Auth::user()->avaliadors != null) {
-            return view('avaliador.index');
+            $flagAvalRelatorio = count(AvaliacaoRelatorio::where('user_id',Auth::user()->id )->get());
+            return view('avaliador.index', compact('flagAvalRelatorio'));
           }
           else if (Auth::user()->participantes != null) {
             return view('participante.index');
