@@ -151,7 +151,8 @@
 					<hr style="border-top: 1px solid#1492E6">
 					<div class="d-flex justify-content-end">
 						<div style="margin-right: 15px"><a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id])}}"  class="btn btn-light" style="color: red;">Cancelar</a></div>
-						<div><button type="submit" class="btn btn-success">Enviar meu parecer</button></div>
+						<div><button type="submit" class="btn btn-success" @if($evento->inicioRevisao > $hoje || $evento->fimRevisao < $hoje) disabled @endif>Enviar meu parecer</button></div>
+						
 					</div>
 				</form>
 					

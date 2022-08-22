@@ -109,6 +109,8 @@ class AvaliadorController extends Controller
       $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
       $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
       $evento = Evento::find($request->evento);
+      $hoje = Carbon::today('America/Recife');
+      $hoje = $hoje->toDateString();
 
       // Verficação de pendencia de substituição
       $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$trabalho->participantes->pluck('id'))->get());
@@ -116,7 +118,7 @@ class AvaliadorController extends Controller
         return redirect()->back()->withErrors("A proposta ".$trabalho->titulo." possui substituições pendentes");
       }
       
-    	return view('avaliador.parecer', ['trabalho'=>$trabalho, 'evento'=>$evento]);
+    	return view('avaliador.parecer', ['trabalho'=>$trabalho, 'evento'=>$evento, 'hoje' => $hoje]);
     }
 
     public function parecerInterno(Request $request){
