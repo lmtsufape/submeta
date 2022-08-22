@@ -67,23 +67,11 @@
                             </a>
                             <div class="dropdown-menu">
                               @if(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == true )
-                                @if($hoje >= $evento->inicioRevisao && $hoje <= $evento->fimRevisao)
-                                        @if($evento->flag==0)
-                                            <button disabled="disabled" class="dropdown-item">
-                                                Não há ainda avaliação atribuída para você neste edital.
-                                            </button>
-                                        @else
-                                            <a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]) }}" class="dropdown-item">
-                                                <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
-                                                Avaliar Propostas
-                                            </a>
-                                        @endif
-                                @else
-                                  <button disabled="disabled" class="dropdown-item">
-                                    Hoje({{ date('d/m/Y', strtotime($hoje)) }}) não faz parte do período de revisão(avaliação)
-                                  </button>
-                                  
-                                @endif
+                                                              
+                                <a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]) }}" class="dropdown-item">
+                                    <img src="{{asset('img/icons/eye-regular.svg')}}" class="icon-card" alt="">
+                                    Avaliar Propostas
+                                </a>
                               @elseif(!is_null(Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) && Auth::user()->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite == false)
                                 <button disabled="disabled" class="dropdown-item">
                                   Convite recusado
