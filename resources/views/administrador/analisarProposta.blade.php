@@ -636,14 +636,14 @@
                                                         </div>
                                                         @php
                                                             $avaliacoesId = \App\AvaliacaoRelatorio::where("arquivo_id",$participante->planoTrabalho->id)->where("tipo",$tipoTemp)->pluck('user_id');
-                                                            $avalProjeto = \App\User::whereNotIn('id', $avaliacoesId)->where('tipo','avaliador')->orderBy('name')->get();
+                                                            $avalProjeto = \Illuminate\Support\Facades\DB::table('users')->join('avaliadors','users.id','=','avaliadors.user_id')->whereNotIn('users.id', $avaliacoesId)->orderBy('users.name')->get();
                                                         @endphp
 
                                                         <select name="avaliadores_{{$participante->planoTrabalho->id}}_id[]" multiple
                                                                 class="form-control" id="avaliacaoSelect"
                                                                 style="height: 200px;font-size:15px">
                                                             @foreach ($avalProjeto as $avaliador)
-                                                                    <option value="{{ $avaliador->id }}"> {{ $avaliador->name }}
+                                                                    <option value="{{ $avaliador->user_id }}"> {{ $avaliador->name }}
                                                                         > {{$avaliador->instituicao ?? 'Instituição Indefinida'}}
                                                                         > {{$avaliador->tipo}}
                                                                         > {{$avaliador->email}}</option>
