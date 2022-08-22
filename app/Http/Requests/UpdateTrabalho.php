@@ -32,6 +32,9 @@ class UpdateTrabalho extends FormRequest
         $projeto = Trabalho::find($this->id);
         $evento = Evento::find($this->editalId);
         
+        if(!($this->has('marcado'))){
+            $rules['erro'] = ['required'];
+        }
         if($this->has('marcado')){
             foreach ($this->get('marcado') as $key => $value) {
                 if( intval($value)  == $key){     
