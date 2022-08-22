@@ -133,7 +133,9 @@ class ArquivoController extends Controller
 
         $arquivos = [];
         
-        if(Auth::user()->id != $trabalho->proponente->user->id){
+        if(Auth::user()->id != $trabalho->proponente->user->id &&
+            Auth::user()->tipo != 'administrador' &&
+            Auth::user()->tipo != 'coordenador'){
             return redirect()->back();
         }
 
