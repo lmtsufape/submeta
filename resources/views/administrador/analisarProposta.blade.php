@@ -51,9 +51,11 @@
 
                             <div class="col-md-12">
                                 <h5 style="color: #1492E6;">{{$trabalho->titulo}}
+                                    @if(Auth::user()->tipo == 'administrador')
                                     <a class="ml-2 mb-5" href="{{ route('trabalho.editar', ['id' => $trabalho->id]) }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#234B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
                                     </a>
+                                    @endif
                                 </h5>
                             </div>
 
@@ -634,14 +636,14 @@
                                                         </div>
                                                         @php
                                                             $avaliacoesId = \App\AvaliacaoRelatorio::where("arquivo_id",$participante->planoTrabalho->id)->where("tipo",$tipoTemp)->pluck('user_id');
-                                                            $avalProjeto = \App\User::whereNotIn('id', $avaliacoesId)->where('tipo','avaliador')->orderBy('name')->get();
+                                                            $avalProjeto = \Illuminate\Support\Facades\DB::table('users')->join('avaliadors','users.id','=','avaliadors.user_id')->whereNotIn('users.id', $avaliacoesId)->orderBy('users.name')->get();
                                                         @endphp
 
                                                         <select name="avaliadores_{{$participante->planoTrabalho->id}}_id[]" multiple
                                                                 class="form-control" id="avaliacaoSelect"
                                                                 style="height: 200px;font-size:15px">
                                                             @foreach ($avalProjeto as $avaliador)
-                                                                    <option value="{{ $avaliador->id }}"> {{ $avaliador->name }}
+                                                                    <option value="{{ $avaliador->user_id }}"> {{ $avaliador->name }}
                                                                         > {{$avaliador->instituicao ?? 'Instituição Indefinida'}}
                                                                         > {{$avaliador->tipo}}
                                                                         > {{$avaliador->email}}</option>
