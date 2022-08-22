@@ -871,7 +871,7 @@
                                                 @csrf
                                                 <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                                                 <input type="hidden" name="evento_id" value="{{ $evento->id }}">
-                                                <div class="form-group">
+                                                <div class="form-group align-items-start">
                                                     <div class="row" style="margin-left: 2px;margin-bottom: 1px">
 
                                                         <div class="col-md-4">

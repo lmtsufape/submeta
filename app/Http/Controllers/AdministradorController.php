@@ -652,11 +652,10 @@ class AdministradorController extends Controller
     public function projetos(Request $request){
 
         $evento = Evento::where('id', $request->evento_id)->first();
-        $trabalhos = $evento->trabalhos->where('status', 'submetido');
-
+        $trabalhos = $evento->trabalhos;
+        $grandesAreas = GrandeArea::orderBy('nome')->get();
         $avaliadores = $evento->avaliadors;
         foreach ($trabalhos as $key => $trabalho) {
-
 
             $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
             $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
@@ -670,7 +669,8 @@ class AdministradorController extends Controller
         return view('administrador.selecionarProjetos', [
                                                          'evento'=> $evento,
                                                          'trabalhos'=>$trabalhos,
-                                                         'avaliadores'=>$avaliadores
+                                                         'avaliadores'=>$avaliadores,
+                                                         'grandesAreas' => $grandesAreas
                                                         ]);
     }
 
