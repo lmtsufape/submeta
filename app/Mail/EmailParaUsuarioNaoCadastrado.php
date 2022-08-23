@@ -22,7 +22,7 @@ class EmailParaUsuarioNaoCadastrado extends Mailable
      *
      * @return void
      */
-    public function __construct(String $nomeUsuarioPai, String $nomeTrabalho, String $nomeFuncao, String $nomeEvento, String $senhaTemporaria,  String $subject, String $tipo, String $natureza, String $arquivo)
+    public function __construct(String $nomeUsuarioPai, String $nomeTrabalho, String $nomeFuncao, String $nomeEvento, String $senhaTemporaria,  String $subject, String $tipo, String $natureza)
     {
       $this->nomeUsuarioPai  = $nomeUsuarioPai;
       $this->nomeTrabalho    = $nomeTrabalho;
@@ -32,7 +32,6 @@ class EmailParaUsuarioNaoCadastrado extends Mailable
       $this->subject         = $subject;
       $this->tipoEvento      = $tipo;
       $this->natureza      = $natureza;
-      $this->arquivo     = $arquivo;
     }
 
     /**

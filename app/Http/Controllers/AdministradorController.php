@@ -684,7 +684,7 @@ class AdministradorController extends Controller
 
         $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($user->email)
-                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, ' ', $subject, $evento->tipo,$evento->natureza_id,$evento->formAvaliacaoExterno));
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, ' ', $subject, $evento->tipo,$evento->natureza_id));
 
         return redirect()->back();
 
@@ -835,14 +835,14 @@ class AdministradorController extends Controller
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo,$evento->natureza_id,$evento->formAvaliacaoExterno));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo,$evento->natureza_id));
 
         }else{
 
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo,$evento->natureza_id,$evento->formAvaliacaoExterno));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo,$evento->natureza_id));
             $user = User::create([
               'email' => $emailAvaliador,
               'password' => bcrypt($passwordTemporario),
@@ -925,7 +925,6 @@ class AdministradorController extends Controller
         $evento = Evento::where('id', $request->evento_id)->first();
         $nomeAvaliador = $request->nomeAvaliador;
         $emailAvaliador = $request->emailAvaliador;
-        $tipo = $request->tipo;
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador )->first();
 
@@ -948,13 +947,14 @@ class AdministradorController extends Controller
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExterno));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id));
 
         }else{
+
             $passwordTemporario = Str::random(8);
             $subject = "Convite para avaliar projetos da UFAPE";
             Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExterno));
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id));
             $user = User::create([
               'email' => $emailAvaliador,
               'password' => bcrypt($passwordTemporario),
@@ -994,7 +994,7 @@ class AdministradorController extends Controller
 
         $subject = "Convite para avaliar projetos da UFAPE - Reenvio";
             Mail::to($user->email)
-                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado',$evento->nome, ' ', $subject, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExterno));
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado',$evento->nome, ' ', $subject, $evento->tipo, $evento->natureza_id));
         
         
         return redirect()->back();
