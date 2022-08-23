@@ -49,6 +49,7 @@
                                 <th scope="col">Nome do Projeto</th>
                                 <th scope="col">Nome do plano</th>
                                 <th scope="col">Discente</th>
+                                <th scope="col">Tipo do Relatório</th>
                                 <th scope="col">Avaliar</th>
 
                             </tr>
@@ -60,16 +61,10 @@
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->trabalho->titulo }}</td>
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->titulo }}</td>
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->participante->user->name }}</td>
+                                    <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->tipo }}</td>
                                     <td>
                                         <div class="row justify-content-center">
-                                            <form action="{{route('planos.avaliacoesUser')}}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="trabalho_id" value="{{ $avaliacao->plano->trabalho->id }}">
-                                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                                                <button type="submit" class="btn btn-primary mr-2 ml-2" >
-                                                    Avaliar
-                                                </button>
-                                            </form>
+                                            <a type="button" class="btn btn-primary" href="{{route('planos.avaliacoesUser', ['id'=>$avaliacao->id])}}">Avaliar</a>
                                         </div>
                                     </td>
 

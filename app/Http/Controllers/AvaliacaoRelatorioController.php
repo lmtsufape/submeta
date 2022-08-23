@@ -22,21 +22,15 @@ class AvaliacaoRelatorioController extends Controller
     }
 
 
-    public function listarUser(Request $request){
+    public function listarUser($id){
 
-        $planos = Arquivo::where('trabalhoId',$request->trabalho_id)->get();
-        $avaliacoes = AvaliacaoRelatorio::where('user_id',$request->user_id)->get();
-        $trabalho = Trabalho::find($request->trabalho_id);
+        $avaliacao = AvaliacaoRelatorio::find($id);
+        $trabalho = Trabalho::find($avaliacao->plano->trabalhoId);
         $evento = $trabalho->evento;
         $hoje = \Carbon\Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
-        if($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal){
-            $tipoRelatorio="Parcial";
-        }else{
-            $tipoRelatorio="Final";
-        }
 
-        return view('avaliacaoRelatorio.listar', ["avaliacoes"=>$avaliacoes,"trabalho"=>$trabalho,"planos"=>$planos,"evento"=>$evento,"tipoRelatorio"=>$tipoRelatorio]);
+        return view('avaliacaoRelatorio.listar', ["avaliacao"=>$avaliacao,"trabalho"=>$trabalho,"evento"=>$evento]);
     }
 
     public function index(Request $request){
@@ -74,9 +68,9 @@ class AvaliacaoRelatorioController extends Controller
         ]);
         $avaliacao = AvaliacaoRelatorio::find($request->avaliacao_id);
 
-        if($request->arquivo !=null){
+        if($request->avaliacaoArq !=null){
             $pasta = 'planoTrabalho/' . $request->plano_id . 'avaliacao/' . $request->avaliacao_id;
-            $avaliacao->arquivoAvaliacao = Storage::putFileAs($pasta, $request->arquivo, "AvaliacaoRelatorio.pdf");
+            $avaliacao->arquivoAvaliacao = Storage::putFileAs($pasta, $request->avaliacaoArq, "AvaliacaoRelatorio.pdf");
 
         }
         $plano = Arquivo::find($request->plano_id);
@@ -84,20 +78,7 @@ class AvaliacaoRelatorioController extends Controller
         $avaliacao->comentario = $request->comentario;
         $avaliacao->update();
 
-        $planos = Arquivo::where('trabalhoId',$request->trabalho_id)->get();
-        $avaliacoes = AvaliacaoRelatorio::where('user_id',$request->user_id)->get();
-        $trabalho = Trabalho::find($request->trabalho_id);
-        $evento = $trabalho->evento;
-        $hoje = \Carbon\Carbon::today('America/Recife');
-        $hoje = $hoje->toDateString();
-        if($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal){
-            $tipoRelatorio="Parcial";
-        }else{
-            $tipoRelatorio="Final";
-        }
-
-        return view('avaliacaoRelatorio.listar', ["avaliacoes"=>$avaliacoes,"trabalho"=>$trabalho,"planos"=>$planos,"evento"=>$evento,"tipoRelatorio"=>$tipoRelatorio,
-            'sucesso' => 'Avaliação do relatório '.$tipoRelatorio." do plano ".$plano->titulo.' realizada com sucesso.']);
+        return redirect()->back()->with(['sucesso' => 'Avaliação do relatório '.$avaliacao->tipo." do plano ".$plano->titulo.' realizada com sucesso.']);
     }
 
     public function atribuicaoAvaliador(Request  $request){
