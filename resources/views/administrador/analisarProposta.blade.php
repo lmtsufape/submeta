@@ -562,7 +562,7 @@
                                 || ($hoje>$evento->dt_fimRelatorioFinal))
                                 <div class="col-md-1 text-sm-right">
                                     <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal"
-                                       data-target="#avaliacaoModalCenter">
+                                       data-target="#avaliacaoRelatorioModal">
                                         <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
                                     </a>
                                 </div>
@@ -574,7 +574,7 @@
                                 </div>
                             @endif
                             <!-- Modal -->
-                            <div class="modal fade" id="avaliacaoModalCenter" data-bs-backdrop="static"
+                            <div class="modal fade" id="avaliacaoRelatorioModal" data-bs-backdrop="static"
                                  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                  aria-hidden="true" style="overflow-y: auto">
                                 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
@@ -585,6 +585,10 @@
                                                     @if(isset($participante->planoTrabalho)) Seleciones o(s) avaliador(es) @else Pendências de Substituição @endif</h5>
                                             </div>
                                             <div class="col-md-4" style="text-align: right">
+                                                <button type="button" id="enviarConviteButton" class="btn btn-info"
+                                                        data-toggle="modal" onclick="abrirModalConviteRelatorio()">
+                                                    Enviar Convites
+                                                </button>
                                                 <button type="button" class="close" aria-label="Close"
                                                         data-dismiss="modal"
                                                         style="color: rgb(182, 182, 182);padding-right: 0px;">
@@ -871,7 +875,7 @@
                                                 @csrf
                                                 <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                                                 <input type="hidden" name="evento_id" value="{{ $evento->id }}">
-                                                <div class="form-group">
+                                                <div class="form-group align-items-start">
                                                     <div class="row" style="margin-left: 2px;margin-bottom: 1px">
 
                                                         <div class="col-md-4">
@@ -1526,7 +1530,7 @@
                 </div>
                 <div class="modal-body" style="margin-left: 20px; margin-right: 20px;">
 
-                    <form action="{{ route('admin.convite.atribuicao.projeto') }}" method="POST" class="labels-blue">
+                    <form action="{{ route('admin.convite.atribuicao.projeto') }}" method="POST" class="labels-blue" id="formConvite">
                         @csrf
                         <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                         <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
@@ -1677,6 +1681,8 @@
 @section('javascript')
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
     <script type="text/javascript">
+        var avaliacaoForm;
+
         $(document).ready(function () {
             $("#content div:nth-child(1)").show();
             $(".abas li:first div").addClass("selected");
@@ -1966,6 +1972,7 @@
     <script>
         function abrirModalConvite() {
             $("#avaliadorModalCenter").modal('toggle');
+            $("#formConvite").attr('action', '{{ route('admin.convite.atribuicao.projeto') }}');
             setTimeout(() => {
                 $("#exampleModalCenter").modal();
             }, 500);
@@ -1974,11 +1981,30 @@
 
         function fecharModalConvite() {
             $('#exampleModalCenter').modal('toggle');
-            setTimeout(() => {
-                $("#avaliadorModalCenter").modal();
-            }, 500);
-            $('#avaliadorModalCenter').focus();
+            if($("#tipo_avaliacao_id").val() == 1){
+                setTimeout(() => {
+                    $("#avaliadorModalCenter").modal();
+                }, 500);
+                $('#avaliadorModalCenter').focus();
+            }else{
+                setTimeout(() => {
+                    $("#avaliacaoRelatorioModal").modal();
+                }, 500);
+                $('#avaliacaoRelatorioModal').focus();
+            }
+
         }
+
+        function abrirModalConviteRelatorio() {
+            $("#avaliacaoRelatorioModal").modal('toggle');
+            $("#formConvite").attr('action', '{{ route('admin.enviarConvite') }}');
+            setTimeout(() => {
+                $("#exampleModalCenter").modal();
+            }, 500);
+            $('#exampleModalCenter').focus();
+
+        }
+
 
         function areas() {
             var grandeArea = $('#grandeAreaConvite').val();

@@ -50,7 +50,7 @@
     <tbody id="projetos">
       @foreach ($trabalhos as $trabalho)
           <tr>
-            <td style="max-width:100px; overflow-x:scroll; text-overflow:ellipsis">{{ $trabalho->titulo}}</td>
+            <td style="max-width:100px; overflow-x:auto; text-overflow:ellipsis">{{ $trabalho->titulo}}</td>
             <td>{{ App\Area::find($trabalho->area_id)->nome}}</td>
             <td>{{ $trabalho->proponente->user->name }}</td>
             <td style="text-align:center">
@@ -59,7 +59,7 @@
                 </button>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModalCenter{{ $trabalho->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                     <div class="modal-content modal-submeta">
                       <div class="modal-header modal-header-submeta">
                         <h5 class="modal-title titulo-table" id="exampleModalLongTitle">Selecione o(s) avaliador(es)</h5>
@@ -73,18 +73,111 @@
                           @csrf
                           <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                           <input type="hidden" name="evento_id" value="{{ $evento->id }}">
-                          <div class="form-group">
-                            <label for="exampleFormControlSelect2">Selecione o(s) avaliador(es) para esse projeto</label>
-                            <select  name="avaliadores_id[]" multiple class="form-control" id="exampleFormControlSelect2" required>
+                          <div class="form-group text-left">
+                            <div class="row" style="margin-left: 2px;margin-bottom: 1px">
+
+                              <div class="col-md-4">
+                                <label for="exampleFormControlSelect2"
+                                       style="font-size: 16px;">Selecione o(s) avaliador(es)
+                                  para esse projeto</label>
+                              </div>
+
+
+                              <div class="col-md-3"
+                                   style="text-align: center;overflow-y:  auto;overflow-x:  auto">
+
+                                <select class="form-control" id="grandeArea"
+                                        name="grande_area_id" onchange="areasFiltro()">
+                                  <option value="" disabled selected hidden>-- Grande Área
+                                    --
+                                  </option>
+                                  @foreach($grandesAreas as $grandeArea)
+                                    <option title="{{$grandeArea->nome}}"
+                                            value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+
+                              <div class="col-md-2"
+                                   style="text-align: center;overflow-y:  auto;overflow-x:  auto">
+                                <input type="hidden" id="oldArea" value="{{ old('area') }}">
+                                <select class="form-control @error('area') is-invalid @enderror"
+                                        id="area" name="area_id"
+                                        onchange="(consultaExterno(),consultaInterno())">
+                                  <option value="" disabled selected hidden>-- Área --
+                                  </option>
+                                </select>
+                              </div>
+
+                              <div class="col-sm-3" style="display:flex; align-items: end;">
+                                <input type="text" class="form-control form-control-edit" placeholder="Nome do avaliador" onkeyup="buscar(this)" style="max-width: 200px;"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
+                              </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                              <label style="font-weight: bold;font-size: 18px">Internos</label>
+                            </div>
+                            <input type="hidden" id="oldAvalInterno"
+                                   value="{{ old('exampleFormControlSelect2') }}">
+                            <select name="avaliadores_internos_id[]" multiple
+                                    class="form-control" id="exampleFormControlSelect2"
+                                    style="height: 200px;font-size: 15px">
+
+                              @foreach ($trabalho->avaliadors as $avaliador)
+                                @if(($avaliador->tipo == "Interno" && $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1) ||
+                                    (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1) ))
+                                  <option value="{{ $avaliador->id }}">{{ $avaliador->user->name }}
+                                    > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
+                                    > {{$avaliador->area->nome ?? 'Indefinida'}}
+                                    > {{$avaliador->user->email}}</option>
+                                @endif
+                              @endforeach
                               @foreach ($trabalho->aval as $avaliador)
-                                <option value="{{ $avaliador->id }}" > {{ $avaliador->user->name }} ({{$avaliador->area->nome ?? 'Indefinida'}}) </option>
+                                @if($avaliador->tipo == "Interno" || $avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco")
+                                  <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
+                                    > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
+                                    > {{$avaliador->area->nome ?? 'Indefinida'}}
+                                    > {{$avaliador->user->email}}</option>
+                                @endif
                               @endforeach
                             </select>
-                            <small id="emailHelp" class="form-text text-muted">Segure SHIFT do teclado para selecionar mais de um.</small>
+
+
+                            <div class="col-md-6">
+                              <label style="font-weight: bold;font-size: 18px"><i>Ad Hoc</i></label>
+                            </div>
+
+                            <input type="hidden" id="trab" value="{{$trabalho->id}}">
+                            <input type="hidden" id="oldAvalExterno"
+                                   value="{{ old('exampleFormControlSelect3') }}">
+                            <select name="avaliadores_externos_id[]" multiple
+                                    class="form-control" id="exampleFormControlSelect3"
+                                    style="height: 200px;font-size:15px">
+                              @foreach ($trabalho->avaliadors as $avaliador)
+                                @if($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null && $avaliador->tipo == "Interno"))
+                                  <option value="{{ $avaliador->id }}">{{ $avaliador->user->name }}
+                                    > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
+                                    > {{$avaliador->area->nome ?? 'Indefinida'}}
+                                    > {{$avaliador->user->email}}</option>
+                                @endif
+                              @endforeach
+                              @foreach ($trabalho->aval as $avaliador)
+                                <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
+                                  > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
+                                  > {{$avaliador->area->nome ?? 'Indefinida'}}
+                                  > {{$avaliador->user->email}}</option>
+                              @endforeach
+                            </select>
+
+                            <small id="emailHelp" class="form-text text-muted">Segure SHIFT do
+                              teclado para selecionar mais de um.</small>
                           </div>
 
                           <div>
-                            <button type="submit" class="btn btn-info" style="width: 100%">Atribuir</button>
+                            <button type="submit" class="btn btn-info" style="width: 100%">
+                              Atribuir
+                            </button>
                           </div>
 
                         </form>
@@ -111,7 +204,7 @@
     <thead>
       <tr>
         <th scope="col">Nome do Usuário</th>
-        <th scope="col">Tipo</th>
+        <th scope="col">Tipo de Avaliação</th>
         <th scope="col">E-mail</th>
         <th scope="col">Titulo do projeto</th>
         <th scope="col">Status avaliação</th>
@@ -119,67 +212,73 @@
       </tr>
     </thead>
     <tbody>
-      @foreach ($avaliadores as $avaliador)
-        @php $contador = 0;  @endphp
-        @foreach($avaliador->trabalhos->where('evento_id', $evento->id) as $trabalho)
-          @if($trabalho->pivot->status == true)
-            @php $contador++;  @endphp
-          @endif
+      @foreach($trabalho->avaliadors as $avaliador)
+      {{-- Avaliação Interna --}}
+        @if(($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 1))
+                                   || (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 1)))
           <tr>
-          <td>{{ $avaliador->user->name }}</td>
-          <td>{{ $avaliador->tipo }}</td>
-          <td>{{ $avaliador->user->email }}</td>
-          <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
-          {{-- <td>{{ $contador }} / {{ $avaliador->trabalhos->where('evento_id', $evento->id)->count() }}</td> --}}
-          @if($avaliador->tipo=="Externo" || $avaliador->tipo=null)
-            <td>@if($trabalho->pivot->parecer == null) Pendente @else Avaliado @endif</td>
+            <td>{{ $avaliador->user->name }}</td>
+            <td> Interno </td>
+            <td>{{ $avaliador->user->email }}</td>
+            <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
+            @php
+              $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+            @endphp
+            <td>@if($parecerInterno == null) Pendente @else Avaliado @endif</td>
             <td>
-                  <div class="btn-group dropright dropdown-options">
-                      <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
-                      </a>
-                      <div class="dropdown-menu">
-                        @if($trabalho->pivot->parecer != null)
-                          <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                            Vizualizar Parecer
-                          </a>
-                        @endif
-                          <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                              Desatribuir Avaliador
-                          </a>
-
-                      </div>
-                  </div>
-            </td>
-            @else
-              @php
-                $parecer = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-              @endphp
-              <td>
-                @if($parecer == null) Pendente @else Avaliado @endif
-              </td>
-              <td>
-                <div class="btn-group dropright dropdown-options">
-                  <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
-                  </a>
-                  <div class="dropdown-menu">
-                    @if($parecer != null)
-                      <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                        Vizualizar Parecer
-                      </a>
-                    @endif
-                    <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                      Desatribuir Avaliador
+              <div class="btn-group dropright dropdown-options">
+                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                </a>
+                <div class="dropdown-menu">
+                  @if($parecerInterno != null)
+                    <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                      Vizualizar Parecer
                     </a>
+                  @endif
+                  <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>1]) }}" class="dropdown-item text-center">
+                    Desatribuir Avaliador
+                  </a>
 
-                  </div>
                 </div>
-              </td>
-            @endif
-        </tr>
-        @endforeach
+              </div>
+            </td>
+          </tr>
+        @endif
+
+      {{-- Avaliação Ad Hoc --}}
+      @if( ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null && $avaliador->tipo == "Externo") || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 2
+                                    || (($avaliador->user->instituicao != "UFAPE" && $avaliador->user->instituicao != "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 2)))
+        <tr>
+            <td>{{ $avaliador->user->name }}</td>
+            <td> Ad Hoc </td>
+            <td>{{ $avaliador->user->email }}</td>
+            <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
+            <td>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == false) Pendente @else Avaliado @endif</td>
+            <td>
+              <div class="btn-group dropright dropdown-options">
+                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                </a>
+                <div class="dropdown-menu">
+                  @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == true)
+                    <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                      Vizualizar Parecer
+                    </a>
+                  @endif
+                  <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>0]) }}" class="dropdown-item text-center">
+                    Desatribuir Avaliador
+                  </a>
+
+                </div>
+              </div>
+            </td>
+          </tr>
+        @endif
+
+
       @endforeach
+
     </tbody>
   </table>
 
