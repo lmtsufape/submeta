@@ -6,10 +6,12 @@ use App\Arquivo;
 use App\AvaliacaoRelatorio;
 use App\Avaliador;
 use App\Evento;
+use App\Notifications\AtribuicaoAvaliadorRelatorioNotification;
 use App\Trabalho;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Auth;
 
@@ -98,6 +100,8 @@ class AvaliacaoRelatorioController extends Controller
                     'arquivo_id'=>$participante->planoTrabalho->id,
                 ]);
                 $avaliacao->save();
+                Notification::send( $avaliacao->user, new AtribuicaoAvaliadorRelatorioNotification($avaliacao->tipo, $avaliacao->plano, $trabalho, $avaliacao->user));
+
                 if(Avaliador::where('user_id',$avaliadoresId[$i])->get()->count()==0){
                     $userTemp = User::find($avaliadoresId[$i]);
                     if($userTemp->instituicao==null || $userTemp->instituicao == "UFAPE" || $userTemp->instituicao == "Universidade Federal do Agreste de Pernambuco"){
