@@ -1270,7 +1270,7 @@ class TrabalhoController extends Controller
 
 
                         $subject = "Participante de Projeto";
-                        Mail::to($request->emailParticipante[$key])->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject, $edital->tipo,$edital->natureza_id,$edital->formAvaliacaoExterno));
+                        Mail::to($request->emailParticipante[$key])->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject, $edital->tipo,$edital->natureza_id));
                     } else {
 
                         $participante->user_id = $userParticipante->id;
@@ -1456,7 +1456,7 @@ class TrabalhoController extends Controller
                     $arquivo->versaoFinal = true;
                     $arquivo->save();
                     $subject = "Participante de Projeto";
-                    Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject, $edital->tipo,$edital->natureza_id,$edital->formAvaliacaoExterno));
+                    Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject, $edital->tipo,$edital->natureza_id));
                 } else {
 
                     $participante->user_id = $userParticipante->id;
