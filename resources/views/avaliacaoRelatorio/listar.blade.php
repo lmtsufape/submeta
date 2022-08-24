@@ -121,7 +121,7 @@
                                                                     <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
                                                                 </a>
                                                             @endif
-                                                        <input type="file" class="input-group-text" name="avaliacaoArq" accept=".pdf" id="avaliacaoArq" required/>
+                                                        <input type="file" class="input-group-text" name="avaliacaoArq" accept=".pdf" id="avaliacaoArq"/>
 
                                                         @error('avaliacaoArq')
                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -198,7 +198,7 @@
                                                                 </a>
                                                             @endif
 
-                                                        <input type="file" class="input-group-text" name="avaliacaoArq" accept=".pdf" id="avaliacaoArq" required/>
+                                                        <input type="file" class="input-group-text" name="avaliacaoArq" accept=".pdf" id="avaliacaoArq"/>
                                                         @error('avaliacaoArq')
                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 														<strong>{{ $message }}</strong>
