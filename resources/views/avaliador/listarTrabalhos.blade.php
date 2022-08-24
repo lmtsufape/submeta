@@ -64,9 +64,9 @@
                   @if(Auth::user()->avaliadors->tipo == 'Externo' || Auth::user()->avaliadors->tipo == null)
                       <th scope="col">Projeto</th>
                       <th scope="col">Plano de Trabalho</th>
-                      <th scope="col">Parecer Externo</th>
+                      <th scope="col" style="text-align: center">Status</th>
                   @else
-                      <th scope="col">Status Parecer</th>
+                      <th scope="col" style="text-align: center">Status</th>
                       <th scope="col">Parecer Interno</th>
                   @endif
 
@@ -78,13 +78,13 @@
                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
                     <td style="text-align: center">{{ $trabalho->created_at->format('d/m/Y') }}</td>
                     @if(Auth::user()->avaliadors->tipo == 'Externo' || Auth::user()->avaliadors->tipo == null)
-                        <td style="text-align: center">
+                        <td>
                           {{--  --}}
                           <a href="{{route('download', ['file' => $trabalho->anexoProjeto])}}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
                               <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
                           </a>
                         </td>
-                        <td style="text-align: center">
+                        <td>
                           @foreach( $trabalho->participantes as $participante)
                             @php
                               if( App\Arquivo::where('participanteId', $participante->id)->first() != null){
@@ -124,8 +124,16 @@
                         @php
                           $parecer = App\ParecerInterno::where([['avaliador_id',Auth::user()->avaliadors->id],['trabalho_id',$trabalho->id]])->first();
                         @endphp
-                          <td style="text-align: center">
-                              @if($parecer != null && $parecer->statusParecer !=null){{$parecer->statusParecer}} @else Sem Parecer @endif
+                          <td>
+                              @if($parecer != null && $parecer->statusParecer !=null)
+                                @if($parecer->statusParecer == 'RECOMENDADO')
+                                  Recomendado
+                                @else
+                                  Não Recomendado
+                                @endif
+                              @else 
+                                  Pendente 
+                              @endif
                           </td>
                           <td>
                               <div class="row justify-content-center">
@@ -161,12 +169,14 @@
                       <th scope="col">Data de Criação</th>
                       <th scope="col">Projeto</th>
                       <th scope="col">Plano de Trabalho</th>
+                      <th scope="col" style="text-align: center">Status</th>
                       <th scope="col">Parecer Externo</th>
 
                   </tr>
                   </thead>
                   <tbody>
                   @foreach ($trabalhosEx as $trabalho)
+                
                       <tr>
                           <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
                           <td style="text-align: center">{{ $trabalho->created_at->format('d/m/Y') }}</td>
@@ -193,6 +203,15 @@
                                           Não há planos de trabalho.
                                       @endif
                                   @endforeach
+                              </td>
+                              <td style="text-align: center">
+                                @if($trabalho->pivot->recomendacao == 'RECOMENDADO')
+                                    Recomendado
+                                @elseif($trabalho->pivot->recomendacao == null)
+                                    Pendente
+                                @else
+                                    Não Recomendado
+                                @endif
                               </td>
                               <td>
                                   <div class="row justify-content-center">

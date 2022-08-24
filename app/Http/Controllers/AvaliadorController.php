@@ -271,16 +271,12 @@ class AvaliadorController extends Controller
     	}
     	
   
-    	//	dd($trabalho);
-
-    	return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'evento'=>$evento ]);
+    	return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]));
     }
     public function conviteResposta(Request $request){
-        //dd($request->all());
         $user = User::find(Auth::user()->id);
         $evento = Evento::find($request->evento_id);
         $user->avaliadors->eventos()->updateExistingPivot($evento->id, ['convite'=> $request->resposta]);
-        //dd( $user->avaliadors->eventos->where('id', $evento->id)->first()->pivot);
         return redirect()->back();
     }
 
