@@ -50,7 +50,7 @@
                                 <th scope="col">Nome do plano</th>
                                 <th scope="col">Discente</th>
                                 <th scope="col">Tipo do Relatório</th>
-                                <th scope="col">Avaliar</th>
+                                <th scope="col">Status</th>
 
                             </tr>
                             </thead>
