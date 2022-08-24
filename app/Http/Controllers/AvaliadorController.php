@@ -135,6 +135,8 @@ class AvaliadorController extends Controller
         //
         $participantes = $trabalho->participantes;
         $arquivos = Arquivo::where('trabalhoId', $trabalho->id)->get();
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
 
         return view('avaliador.parecerInterno',
             ['trabalho'=>$trabalho,
@@ -147,6 +149,7 @@ class AvaliadorController extends Controller
             'enum_turno'         => Participante::ENUM_TURNO,
             'arquivos' => $arquivos,
             'estados' => $this->estados,
+            'hoje' => $hoje
             ]);
     }
 
