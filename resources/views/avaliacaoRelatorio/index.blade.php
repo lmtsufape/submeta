@@ -64,7 +64,13 @@
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->tipo }}</td>
                                     <td>
                                         <div class="row justify-content-center">
-                                            <a type="button" class="btn btn-primary" href="{{route('planos.avaliacoesUser', ['id'=>$avaliacao->id])}}">Avaliar</a>
+                                            <a type="button" class="btn btn-primary" href="{{route('planos.avaliacoesUser', ['id'=>$avaliacao->id])}}">
+                                                @if($avaliacao->nota == null)
+                                                    Avaliar
+                                                @else
+                                                    Avaliado
+                                                @endif
+                                            </a>
                                         </div>
                                     </td>
 
