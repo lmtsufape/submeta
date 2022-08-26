@@ -822,7 +822,7 @@ class TrabalhoController extends Controller
         }
         return abort(404);
     }
-
+//xxfa
 
     public function update(UpdateTrabalho $request, $id)
     {
@@ -927,8 +927,15 @@ class TrabalhoController extends Controller
                     }
                     $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
 
-                    // $participante = Participante::find($request->participante_id[$part]);
-                    $user = User::where('email', $data['email'])->first();
+                    if($request->participante_id[$part] != null){
+                        $participante = Participante::find($request->participante_id[$part]);
+                        $user = User::where('email', $participante->user->email)->first();
+                    }else{
+                        $user = User::where('email', $data['email'])->first();
+                    }
+                    
+                    
+                    
 
                     if ($user == null) {
                         $data['usuarioTemp'] = true;
