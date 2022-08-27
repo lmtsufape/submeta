@@ -91,6 +91,9 @@ class StoreTrabalho extends FormRequest
             $rules['titulo']                       = ['required', 'string'];
             $rules['grande_area_id']               = ['required', 'string'];
             $rules['area_id']                      = ['required', 'string'];
+            if($evento->natureza_id == 3){
+                $rules['area_tematica_id']          = ['required', 'string'];
+            }
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
             $rules['anexoProjeto']                 = ['required', 'mimes:pdf'];
