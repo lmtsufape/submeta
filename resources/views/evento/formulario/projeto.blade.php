@@ -72,8 +72,7 @@
                     <select class="form-control @error('area_tematica_id') is-invalid @enderror" id="areaTematica" name="area_tematica_id">
                         <option value="" disabled selected hidden>-- Área Tematica--</option>
                         @foreach($areaTematicas as $areaTematica)
-                            <option @if(old('area_tematica_id') !== null ? old('area_tematica_id') : (isset($rascunho) ? $rascunho->area_tematica_id : '')
-                            == $areaTematica->id ) selected @endif value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
+                            <option @if((old('area_tematica_id') ?? "") == $areaTematica->id) selected @endif value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
                         @endforeach
                     </select>
                     @error('area_tematica_id')
