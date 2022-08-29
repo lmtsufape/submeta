@@ -335,13 +335,13 @@
     <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'CEP'])
-            <input type="text" class="form-control cep" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->cep}}" name="cep" placeholder="CEP" disabled />
+            <input type="text" class="form-control cep" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->cep ?? ''}}" name="cep" placeholder="CEP" disabled />
             @endcomponent
         </div>
         <div class="col-6">
             @component('componentes.select', ['label' => 'Estado'])
             <select name="uf" id="estado" class="form-control" style="visibility: visible" disabled>
-                <option value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->uf}}" selected>{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->uf}}</option>
+                <option value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->uf ?? ''}}" selected>{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->uf ?? ''}}</option>
             </select>
             @endcomponent
         </div>
@@ -349,24 +349,24 @@
     <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'Cidade'])
-            <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->cidade}}" name="cidade" placeholder="Cidade" maxlength="50" id="cidade{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" disabled />
+            <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->cidade ?? ''}}" name="cidade" placeholder="Cidade" maxlength="50" id="cidade{{$subs->participanteSubstituto()->withTrashed()->first()->id ?? ''}}" disabled />
             @endcomponent
         </div>
         <div class="col-6">
             @component('componentes.input', ['label' => 'Bairro'])
-            <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->bairro}}" name="bairro" placeholder="Bairro" maxlength="50" id="bairro{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" disabled />
+            <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->bairro ?? ''}}" name="bairro" placeholder="Bairro" maxlength="50" id="bairro{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" disabled />
             @endcomponent
         </div>
     </div>
     <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'Rua'])
-            <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->rua}}" name="rua" placeholder="Rua" maxlength="100" id="rua{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" disabled />
+            <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->rua ?? ''}}" name="rua" placeholder="Rua" maxlength="100" id="rua{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" disabled />
             @endcomponent
         </div>
         <div class="col-6">
             @component('componentes.input', ['label' => 'Número'])
-            <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->numero}}" name="numero" placeholder="Número" disabled />
+            <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->numero ?? ''}}" name="numero" placeholder="Número" disabled />
             @endcomponent
         </div>
     </div>
@@ -374,7 +374,7 @@
         <div class="col-12">
             <div class="form-group">
                 <label class=" control-label" for="firstname">Complemento</label>
-                <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->complemento}}" name="complemento" placeholder="Complemento" maxlength="75" id="complemento{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" disabled />
+                <input type="text" class="form-control" value="{{$subs->participanteSubstituto()->withTrashed()->first()->user->endereco->complemento ?? ''}}" name="complemento" placeholder="Complemento" maxlength="75" id="complemento{{$subs->participanteSubstituto()->withTrashed()->first()->id}}" disabled />
             </div>
         </div>
     </div>
