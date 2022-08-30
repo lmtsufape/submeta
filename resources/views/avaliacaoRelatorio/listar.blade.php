@@ -98,8 +98,8 @@
                                                             <label for="lattes" class="col-form-label font-tam"
                                                                    style="font-weight: bold;padding-right: 10px">{{ __('Nota: ') }}</label>
 
-                                                            <input class="form-control" name="nota" type="number"
-                                                                   style="width: 60px;"
+                                                            <input class="form-control" name="nota" type="number" step="0.01"
+                                                                   style="width: 70px;"
                                                                    @if($avaliacao->nota != null) value="{{$avaliacao->nota}}" @endif>
                                                         </div>
                                                     </div>
@@ -183,8 +183,8 @@
                                                             <label for="lattes" class="col-form-label font-tam"
                                                                    style="font-weight: bold;padding-right: 10px">{{ __('Nota: ') }}</label>
 
-                                                            <input class="form-control" name="nota" type="number"
-                                                                   style="width: 60px;"
+                                                            <input class="form-control" name="nota" type="number" step="0.01"
+                                                                   style="width: 70px;"
                                                                    @if($avaliacao->nota != null) value="{{$avaliacao->nota}}" @endif>
                                                         </div>
                                                     </div>
