@@ -37,7 +37,12 @@ class UpdateTrabalho extends FormRequest
         }
         if($this->has('marcado')){
             foreach ($this->get('marcado') as $key => $value) {
-                if( intval($value)  == $key){     
+                if( intval($value)  == $key){
+                    $participante = null;
+                    if($this->participante_id[$value] != null){
+                        $participante = Participante::find($this->participante_id[$value]);
+                    }
+
                     //user
                     $rules['name.'.$value] = ['required', 'string'];
                     $rules['email.'.$value] = ['required', 'string'];
@@ -63,11 +68,18 @@ class UpdateTrabalho extends FormRequest
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
-                    $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
-                    
+
+                    if($participante !=null){
+                        $arquivo = Arquivo::where('participanteId',$participante->id)->where('trabalhoId',$projeto->id)->first();
+                        if($arquivo == null || $this->nomePlanoTrabalho[$value] != $arquivo->titulo){
+                            $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
+                        }
+                    }else{
+                        $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
+                    }
+
                 }
             }
-
         }
         // dd($this->all());
         if ($this->has('rascunho')) {

@@ -503,7 +503,7 @@
                         <div class="form-row mt-3">
                             <div class="col-sm-9"><h5 style="color: #234B8B; font-weight: bold">Relatórios</h5></div>
                             <div class="col-sm-3 text-sm-right">
-                                @if($flagSubstituicao == 1)
+                                @if($substituicoesPendentes->count() == 0)
                                     <a href="{{route('planos.listar', ['id' => $trabalho->id])}}" class="button">Listar
                                         Relatórios</a>
                                 @else
@@ -558,8 +558,8 @@
                         <div class="form-row mt-3">
                             <div class="col-sm-11"><h5 style="color: #234B8B; font-weight: bold">Avaliações de
                                     Relatórios</h5></div>
-                            @if(($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
-                                || ($hoje>$evento->dt_fimRelatorioFinal))
+                            @if((($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
+                                || ($hoje>$evento->dt_fimRelatorioFinal)) && ($substituicoesPendentes->count() == 0) )
                                 <div class="col-md-1 text-sm-right">
                                     <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal"
                                        data-target="#avaliacaoRelatorioModal">
@@ -574,6 +574,7 @@
                                 </div>
                             @endif
                             <!-- Modal -->
+                            @if($substituicoesPendentes->count() == 0)
                             <div class="modal fade" id="avaliacaoRelatorioModal" data-bs-backdrop="static"
                                  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                  aria-hidden="true" style="overflow-y: auto">
@@ -582,7 +583,7 @@
                                         <div class="modal-header modal-header-submeta">
                                             <div class="col-md-8" style="padding-left: 0px">
                                                 <h5 class="modal-title titulo-table" id="avaliacaoModalLongTitle">
-                                                    @if(isset($participante->planoTrabalho)) Seleciones o(s) avaliador(es) @else Pendências de Substituição @endif</h5>
+                                                    @if($substituicoesPendentes->count() == 0) Seleciones o(s) avaliador(es) @else Pendências de Substituição @endif</h5>
                                             </div>
                                             <div class="col-md-4" style="text-align: right">
                                                 <button type="button" id="enviarConviteButton" class="btn btn-info"
@@ -669,13 +670,14 @@
 
                                         </div>
                                         @else
-                                        <div class="modal-body">
-                                            <h4>Existem solicitações de substituição pendentes, por favor verifique-as antes de prosseguir</h4>
-                                        </div>
-                                            @endif
+                                            <div class="modal-body">
+                                                <h4>Existem solicitações de substituição pendentes, por favor verifique-as antes de prosseguir</h4>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
 
