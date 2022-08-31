@@ -62,7 +62,7 @@
                   <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                     <div class="modal-content modal-submeta">
                       <div class="modal-header modal-header-submeta">
-                        <h5 class="modal-title titulo-table" id="exampleModalLongTitle">Selecione o(s) avaliador(es) AQUI</h5>
+                        <h5 class="modal-title titulo-table" id="exampleModalLongTitle">Selecione o(s) avaliador(es)</h5>
                           <div class="col-md-4" style="text-align: right">
                             <button type="button" id="enviarConviteButton" class="btn btn-info"
                                     data-toggle="modal" onclick="abrirModalConviteAval()">
