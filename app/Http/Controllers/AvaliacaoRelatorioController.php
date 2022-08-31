@@ -65,7 +65,7 @@ class AvaliacaoRelatorioController extends Controller
 
     public function criar(Request  $request){
         $validatedData = $request->validate([
-            'nota'      => ['required', 'integer',],
+            'nota'      => ['required'],
             'comentario'     => ['required'],
         ]);
         $avaliacao = AvaliacaoRelatorio::find($request->avaliacao_id);
