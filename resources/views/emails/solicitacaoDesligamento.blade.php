@@ -6,12 +6,12 @@
 <body>
 	@if($tipo == 'resultado')
         <h4>Resultado pedido de desligamento</h4>
-        <p>A sua solicitação de desligamento no projeto <strong>{{$projeto->titulo}}</strong> foi analisada e o resultado você pode conferir <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}">aqui.</a></p>
+        <p>A sua solicitação de desligamento no projeto <strong>{{$projeto->titulo}}</strong> foi analisada e o resultado você pode ser conferirido <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}">aqui.</a></p>
 
         <p>
 			Atenciosamente,
 			<br>
-			Equipe submeta.
+			Equipe Submeta.
         </p>	
     @else
         <h4>Um pedido de desligamento foi solicitado</h4>
