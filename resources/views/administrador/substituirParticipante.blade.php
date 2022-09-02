@@ -442,7 +442,7 @@
         var idParticipante = checkboxInput.id;
         var tituloPlano = document.getElementById('nomePlanoTrabalho'+idParticipante);
         var anexoPlano = document.getElementById('anexoPlanoTrabalho'+idParticipante);
-        var planoAtual =<?php echo json_encode($participantes->first()->planoTrabalho) ?>;
+        var planoAtual =<?php echo json_encode($participantes->first()->planoTrabalho); ?>;
         var arquivo = document.getElementById('arquivo'+idParticipante);
 
         if(checkboxInput.checked){

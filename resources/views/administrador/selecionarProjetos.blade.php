@@ -63,9 +63,16 @@
                     <div class="modal-content modal-submeta">
                       <div class="modal-header modal-header-submeta">
                         <h5 class="modal-title titulo-table" id="exampleModalLongTitle">Selecione o(s) avaliador(es)</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"  style="color: rgb(182, 182, 182)">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                          <div class="col-md-4" style="text-align: right">
+                            <button type="button" id="enviarConviteButton" class="btn btn-info"
+                                    data-toggle="modal" onclick="abrirModalConviteAval()">
+                                Enviar Convites
+                            </button>
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: rgb(182, 182, 182)">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
                       </div>
                       <div class="modal-body">
 
@@ -284,14 +291,7 @@
 
 </div>
 
-
-<!-- Button trigger modal -->
-
-
-
-
 @endsection
-
 @section('javascript')
 <script>
   $('#myModal').on('shown.bs.modal', function () {
@@ -315,5 +315,10 @@
       }
     }
   }
+
+  function abrirModalConviteAval() {
+    dd("DEVE SER ABERTO AQUI O FORM DE CONVITE");
+  }
+  
 </script>
 @endsection
