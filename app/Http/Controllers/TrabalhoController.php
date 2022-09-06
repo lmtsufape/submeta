@@ -1809,7 +1809,7 @@ class TrabalhoController extends Controller
                 }
 
                 Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado',$substituicao->tipo,$substituicao->status));
-                return redirect()->back()->with(['sucesso' => 'Substituição concluida!']);
+                return redirect()->back()->with(['sucesso' => 'Substituição concluída!']);
             } catch (\Throwable $th) {
                 return redirect()->back()->with(['erro' => $th->getMessage()]);
             }
