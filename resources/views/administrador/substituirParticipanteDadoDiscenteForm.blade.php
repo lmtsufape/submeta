@@ -110,7 +110,8 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'CEP'])
-                <input type="text" class="form-control cep" value="" name="cep" placeholder="CEP" id="cep{{$participante->id}}" required />
+                <input name="cep" type="text" id="cep_part{{$participante->id}}" value="" class="form-control cep"
+                onblur="pesquisacep(this.value, {{$participante->id}})" required />
                 @error('cep')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -119,13 +120,8 @@
                 @endcomponent
             </div>
             <div class="col-6">
-                @component('componentes.select', ['label' => 'Estado'])
-                <select name="uf" class="form-control" style="visibility: visible" id="estado{{$participante->id}}" required>
-                    <option value="" selected>-- Selecione uma opção --</option>
-                    @foreach ($estados as $sigla => $nome)
-                    <option value="{{ $sigla }}">{{ $nome }}</option>
-                    @endforeach
-                </select>
+                @component('componentes.input', ['label' => 'Estado'])
+                <input name="uf" type="text" class="form-control" value="" id="uf_part{{$participante->id}}" required />
                 @error('uf')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -136,8 +132,8 @@
 
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Cidade'])
-                <input type="text" class="form-control" value="" name="cidade" placeholder="Cidade" maxlength="50" id="cidade{{$participante->id}}" required />
-                
+                <input name="cidade" type="text" id="cidade_part{{$participante->id}}" placeholder="Cidade" maxlength="50" class="form-control" 
+                value="" required/>
                 @error('cidade')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -147,7 +143,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Bairro'])
-                <input type="text" class="form-control" value="" name="bairro" placeholder="Bairro" maxlength="50" id="bairro{{$participante->id}}" required />
+                <input name="bairro" type="text" id="bairro_part{{$participante->id}}" placeholder="Bairro" class="form-control" value="" required />
                 
                 @error('bairro')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -158,7 +154,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Rua'])
-                <input type="text" class="form-control" value="" name="rua" placeholder="Rua" maxlength="100" id="rua{{$participante->id}}" required />
+                <input name="rua" type="text" id="rua_part{{$participante->id}}" class="form-control" placeholder="Rua" maxlength="100" value="" />
                 
                 @error('rua')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -424,3 +420,75 @@
         </div>
     </div>
 </form>
+
+<script>
+function limpa_formulário_cep(id) {
+    //Limpa valores do formulário de cep.
+    document.getElementById(`rua_part${id}`).value=("");
+    document.getElementById(`bairro_part${id}`).value=("");
+    document.getElementById(`cidade_part${id}`).value=("");
+    document.getElementById(`uf_part${id}`).value=("");
+}
+
+
+function meu_callback(conteudo) {
+    if (!("erro" in conteudo)) {
+        //Atualiza os campos com os valores.
+        console.log(conteudo);
+        document.getElementById(`rua_part${cont2}`).value=(conteudo.logradouro);
+        document.getElementById(`bairro_part${cont2}`).value=(conteudo.bairro);
+        document.getElementById(`cidade_part${cont2}`).value=(conteudo.localidade);
+        document.getElementById(`uf_part${cont2}`).value=(conteudo.uf);
+    } //end if.
+    else {
+        //CEP não Encontrado.
+        
+        limpa_formulário_cep(cont2);
+        alert("CEP não encontrado.");
+    }
+}
+    
+function pesquisacep(valor, id) {
+
+    //Nova variável "cep" somente com dígitos.
+    var cep = valor.replace(/\D/g, '');
+
+    //Verifica se campo cep possui valor informado.
+    if (cep != "") {
+
+    //Expressão regular para validar o CEP.
+    var validacep = /^[0-9]{8}$/;
+
+    //Valida o formato do CEP.
+    if(validacep.test(cep)) {
+
+        //Preenche os campos com "..." enquanto consulta webservice.
+        document.getElementById(`rua_part${id}`).value="...";
+        document.getElementById(`bairro_part${id}`).value="...";
+        document.getElementById(`cidade_part${id}`).value="...";
+        document.getElementById(`uf_part${id}`).value="...";
+
+        //Cria um elemento javascript.
+        var script = document.createElement('script');
+
+        //Sincroniza com o callback.
+        window.cont2 = id //Deixando o ID global
+        script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+
+        //Insere script no documento e carrega o conteúdo.
+        document.body.appendChild(script);
+
+    } //end if.
+    else {
+        //cep é inválido.
+        limpa_formulário_cep(id);
+        alert("Formato de CEP inválido.");
+    }
+    } //end if.
+    else {
+        //cep sem valor, limpa formulário.
+        limpa_formulário_cep(id);
+    }
+};
+
+</script>
