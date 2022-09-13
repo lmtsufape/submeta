@@ -190,7 +190,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Instituição de Ensino'])
-                <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao" id="instituicao[{{$participante->id}}]" required>
+                <select style="display: inline" onchange="showInstituicao2(this)" class="form-control" name="instituicao" id="instituicao[{{$participante->id}}]" required>
                     <option value="" disabled selected hidden>-- Instituição --</option>
                     <option value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                     <option value="Outra">Outra</option>
@@ -202,9 +202,9 @@
                 @enderror
                 @endcomponent
             </div>
-            <div class="col-6" id="displayinstituicao[{{$participante->id}}]" style='display:none'>
+            <div class="col-6" id="dispreiinstituicao[{{$participante->id}}]" style='display:none'>
                 @component('componentes.input', ['label' => 'Digite a Instituição'])
-                <input id="outrainstituicao[{{$participante->id}}]" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="outrainstituicao" value="" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
+                <input id="otainstituicao[{{$participante->id}}]" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="outrainstituicao" value="" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
                 @error('outrainstituicao')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -215,7 +215,7 @@
 
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Curso'])
-                <select style="display: inline" class="form-control" name="curso" onchange="showCurso(this)" id="curso[{{$participante->id}}]" required>
+                <select style="display: inline" class="form-control" name="curso" onchange="showCurso2(this)" id="curso[{{$participante->id}}]" required>
                     <option value="" disabled selected hidden>-- Selecione uma opção--</option>
                     <option value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
                     <option value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
@@ -233,9 +233,9 @@
                 @enderror
                 @endcomponent
             </div>
-            <div class="col-6" id="displaycurso[{{$participante->id}}]" style='display:none'>
+            <div class="col-6" id="dispreicurso[{{$participante->id}}]" style='display:none'>
                 @component('componentes.input', ['label' => 'Digite o nome do curso'])
-                <input id="outrocurso[{{$participante->id}}]" type="text" class="form-control" name="outrocurso" value="" placeholder="Digite o nome do curso" autocomplete="curso" autofocus>
+                <input id="otocurso[{{$participante->id}}]" type="text" class="form-control" name="outrocurso" value="" placeholder="Digite o nome do curso" autocomplete="curso" autofocus>
                 @error('outrocurso')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -490,5 +490,22 @@ function pesquisacep(valor, id) {
         limpa_formulário_cep(id);
     }
 };
+
+function showInstituicao2(instituicao){
+    var instituicaoSelect = instituicao;
+    var idSelect = instituicaoSelect.id;
+    var instituicao = document.getElementById('ota'+idSelect);
+    var display = document.getElementById('disprei'+idSelect);
+    
+
+    if(instituicaoSelect.value === "Outra"){
+        display.style.display = "block";
+        instituicao.parentElement.style.display = '';
+        instituicao.value="";
+        
+    }else if(instituicaoSelect.value === "UFAPE"){
+        display.style.display = "none";
+    }
+}
 
 </script>
