@@ -191,7 +191,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Instituição de Ensino'])
-                <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao" id="instituicao[{{$participante->id}}]" required>
+                <select style="display: inline" onchange="showInstituicao1(this)" class="form-control" name="instituicao" id="instituicao[{{$participante->id}}]" required>
                     <option value="" disabled selected hidden>-- Instituição --</option>
                     <option value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                     <option value="Outra">Outra</option>
@@ -372,7 +372,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-{{-- AKI --}}
+                
             </div>
 
             <div class="col-12 mb-3 mt-3" hidden>
@@ -500,5 +500,22 @@ function pesquisacep1(valor, id) {
         limpa_formulário_cep1(id);
     }
 };
+
+
+function showInstituicao1(instituicao){
+
+    var instituicaoSelect = instituicao;
+    var idSelect = instituicaoSelect.id;
+    var instituicao = document.getElementById(`outra${idSelect}`);
+    var display = document.getElementById('display'+idSelect);
+    
+    if(instituicaoSelect.value === "Outra"){
+        display.style.display = "block";
+        instituicao.parentElement.style.display = '';
+        instituicao.value="";
+    }else if(instituicaoSelect.value === "UFAPE"){
+        display.style.display = "none";
+    }
+}
 
 </script>
