@@ -219,6 +219,7 @@
       </tr>
     </thead>
     <tbody>
+    @foreach($trabalhos as $trabalho)
       @foreach($trabalho->avaliadors as $avaliador)
       {{-- Avaliação Interna --}}
         @if(($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 1))
@@ -285,6 +286,7 @@
 
 
       @endforeach
+    @endforeach
 
     </tbody>
   </table>
