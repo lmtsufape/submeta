@@ -2,69 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use App\Arquivo;
-use App\AvaliacaoRelatorio;
-use App\Notificacao;
-use App\Substituicao;
-use Illuminate\Http\Request;
 use App\Administrador;
-use App\User;
-use App\ParecerInterno;
-use App\Avaliador;
 use App\AdministradorResponsavel;
 use App\Area;
+use App\AvaliacaoRelatorio;
+use App\Avaliador;
+use App\CoordenadorComissao;
+use App\Evento;
+use App\FuncaoParticipantes;
+use App\GrandeArea;
+use App\Mail\EmailLembrete;
+use App\Mail\EmailParaUsuarioNaoCadastrado;
+use App\Natureza;
+use App\Notificacao;
+use App\Notifications\AtribuicaoAvaliadorExternoNotification;
+use App\ParecerInterno;
 use App\Participante;
 use App\Proponente;
-use App\GrandeArea;
-use App\Natureza;
+use App\Substituicao;
 use App\Trabalho;
-use App\FuncaoParticipantes;
-use Illuminate\Support\Facades\Auth;
-use PDF;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use App\Evento;
-use App\CoordenadorComissao;
-use Illuminate\Validation\Rule;
-use App\Mail\EmailParaUsuarioNaoCadastrado;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\EventoCriado;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\Response;
-use App\Mail\EmailLembrete;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\AtribuicaoAvaliadorExternoNotification;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use PDF;
 
 class AdministradorController extends Controller
 {
-    public function index(){
-
-    	return view('administrador.index');
+    public function index()
+    {
+        return view('administrador.index');
     }
-    public function naturezas(){
+
+    public function naturezas()
+    {
         $naturezas = Natureza::orderBy('nome')->get();
         $funcoesParticipante = FuncaoParticipantes::orderBy('nome')->get();
-    	return view('naturezas.index')->with(['naturezas' => $naturezas, 'funcoes' => $funcoesParticipante]);
-    }
-    public function usuarios(){
-        $users = User::orderBy('name')->get();
-    	return view('administrador.usersAdmin')->with(['users' => $users]);
+
+        return view('naturezas.index')->with(['naturezas' => $naturezas, 'funcoes' => $funcoesParticipante]);
     }
 
-    public function editais(){
-    	//$admin = Administrador::with('user')->where('user_id', Auth()->user()->id)->first();
-    	//$eventos = Evento::where('coordenadorId',$admin->id )->get();
+    public function usuarios()
+    {
+        $users = User::orderBy('name')->get();
+
+        return view('administrador.usersAdmin')->with(['users' => $users]);
+    }
+
+    public function editais()
+    {
+        //$admin = Administrador::with('user')->where('user_id', Auth()->user()->id)->first();
+        //$eventos = Evento::where('coordenadorId',$admin->id )->get();
         $eventos = Evento::all()->sortByDesc('created_at');
 
-    	return view('administrador.editais', ['eventos'=> $eventos]);
+        return view('administrador.editais', ['eventos' => $eventos]);
     }
 
-    public function pareceres(Request $request){
-
+    public function pareceres(Request $request)
+    {
         $evento = Evento::where('id', $request->evento_id)->first();
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
 
@@ -72,14 +74,15 @@ class AdministradorController extends Controller
         $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
         $user = Auth::user();
 
-        if((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')){
+        if ((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')) {
             return redirect()->back();
         }
-       
 
         return view('administrador.projetos')->with(['trabalhos' => $trabalhos, 'evento' => $evento]);
     }
-    public function analisar(Request $request){
+
+    public function analisar(Request $request)
+    {
         $evento = Evento::find($request->evento_id);
         $status = ['submetido', 'avaliado', 'aprovado', 'reprovado', 'corrigido'];
         $aux = Trabalho::where('evento_id', $evento->id)
@@ -91,7 +94,7 @@ class AdministradorController extends Controller
             ->pluck('area_id');
 
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho')->sortBy('titulo');
-                   
+
         $grandesAreas = GrandeArea::whereIn('id', $aux)->get();
         $areas = Area::whereIn('id', $idArea)->get();
 
@@ -105,10 +108,9 @@ class AdministradorController extends Controller
 
     // Utilizado para paginação de Collection
 
-
-    public function analisarProposta(Request $request){
-
-        $trabalho = Trabalho::where('id',$request->id)->first();
+    public function analisarProposta(Request $request)
+    {
+        $trabalho = Trabalho::where('id', $request->id)->first();
         $evento = Evento::where('id', $trabalho->evento_id)->first();
         $funcaoParticipantes = FuncaoParticipantes::all();
         $substituicoesProjeto = Substituicao::where('trabalho_id', $trabalho->id)->orderBy('created_at', 'DESC')->get();
@@ -121,25 +123,25 @@ class AdministradorController extends Controller
         //$avaliacoesRelatorio = [];->join('users','users.id','=','candidatos.user_id')
         $AvalRelatParcial = [];
         $AvalRelatFinal = [];
-        foreach($trabalho->participantes as $participante) {
-            if(isset($participante->planoTrabalho)){
+        foreach ($trabalho->participantes as $participante) {
+            if (isset($participante->planoTrabalho)) {
                 $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
-            }else{
+            } else {
                 $avals = [];
             }
-            foreach($avals as $aval){
-                if($aval->tipo == "Parcial"){
-                    array_push($AvalRelatParcial,$aval);
-                }else{
-                    array_push($AvalRelatFinal,$aval);
+            foreach ($avals as $aval) {
+                if ($aval->tipo == 'Parcial') {
+                    array_push($AvalRelatParcial, $aval);
+                } else {
+                    array_push($AvalRelatFinal, $aval);
                 }
             }
         }
 
         // Verficação de pendencia de substituição
-        $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$trabalho->participantes->pluck('id'))->get());
+        $aux = count(Substituicao::where('status', 'Em Aguardo')->whereIn('participanteSubstituido_id', $trabalho->participantes->pluck('id'))->get());
         $flagSubstituicao = 1;
-        if($aux != 0){
+        if ($aux != 0) {
             $flagSubstituicao = -1;
         }
 
@@ -149,7 +151,7 @@ class AdministradorController extends Controller
         $hoje = $hoje->toDateString();
 
         return view('administrador.analisarProposta')->with(
-            [   'trabalho' => $trabalho,
+            ['trabalho' => $trabalho,
                 'funcaoParticipantes' => $funcaoParticipantes,
                 'evento' => $evento,
                 'substituicoesPendentes' => $substituicoesPendentes,
@@ -158,61 +160,61 @@ class AdministradorController extends Controller
                 'AvalRelatParcial' => $AvalRelatParcial,
                 'AvalRelatFinal' => $AvalRelatFinal,
                 'hoje' => $hoje,
-                'flagSubstituicao' =>$flagSubstituicao,]);
-
+                'flagSubstituicao' => $flagSubstituicao, ]);
     }
 
-    public function showProjetos(Request $request){
-
-        $projetos = Trabalho::all()->where('status','<>','rascunho');
+    public function showProjetos(Request $request)
+    {
+        $projetos = Trabalho::all()->where('status', '<>', 'rascunho');
         $funcaoParticipantes = FuncaoParticipantes::all();
 
-        return view('administrador.listaProjetos')->with(['projetos'=>$projetos,'funcaoParticipantes'=>$funcaoParticipantes]);
+        return view('administrador.listaProjetos')->with(['projetos' => $projetos, 'funcaoParticipantes' => $funcaoParticipantes]);
     }
 
-    public function showResultados(Request $request){
+    public function showResultados(Request $request)
+    {
         //dd($request);
         $evento = Evento::where('id', $request->evento_id)->first();
         $coordenador_id_evento = $evento->coordenadorId;
         $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
         $user = Auth::user();
 
-        if((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')){
+        if ((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')) {
             return redirect()->back();
         }
 
         // Com cotas
         if ($evento->cotaDoutor) {
             // Ampla Concorrencia
-            $trabalhosAmpla = Trabalho::where('evento_id',$evento->id)
-                ->where('modalidade','AmplaConcorrencia')->get();
-            foreach($trabalhosAmpla as $trabalho){
+            $trabalhosAmpla = Trabalho::where('evento_id', $evento->id)
+                ->where('modalidade', 'AmplaConcorrencia')->get();
+            foreach ($trabalhosAmpla as $trabalho) {
                 $trabalho->pontuacao = 0;
                 $cont = 0;
                 // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-                if($evento->tipo == "PIBEX"){
-                    foreach($trabalho->avaliadors as $avaliador){
-                        if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
-                                $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
-                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
-                            $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
-                            $cont+=1;
+                if ($evento->tipo == 'PIBEX') {
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
+                                $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
+                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
+                            $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                            ++$cont;
                         }
                     }
-                }else {
+                } else {
                     foreach ($trabalho->avaliadors as $avaliador) {
-                        if ($avaliador->tipo == "Interno") {
+                        if ($avaliador->tipo == 'Interno') {
                             $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
                             if ($parecerInterno != null) {
                                 $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
-                                $cont+=1;
+                                ++$cont;
                             }
                         }
                     }
                 }
 
-                if($trabalho->pontuacao !=0){
-                    $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
+                if ($trabalho->pontuacao != 0) {
+                    $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
                 }
             }
             $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
@@ -220,35 +222,35 @@ class AdministradorController extends Controller
             });
 
             // Recém Doutor
-            $trabalhosDoutor = Trabalho::where('evento_id',$evento->id)
-                ->where('modalidade','RecemDoutor')->get();
-            foreach($trabalhosDoutor as $trabalho){
+            $trabalhosDoutor = Trabalho::where('evento_id', $evento->id)
+                ->where('modalidade', 'RecemDoutor')->get();
+            foreach ($trabalhosDoutor as $trabalho) {
                 $trabalho->pontuacao = 0;
                 $cont = 0;
                 // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-                if($evento->tipo == "PIBEX"){
-                    foreach($trabalho->avaliadors as $avaliador){
-                        if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
-                                $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
-                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
-                            $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
-                            $cont+=1;
+                if ($evento->tipo == 'PIBEX') {
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
+                                $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
+                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
+                            $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                            ++$cont;
                         }
                     }
-                }else {
+                } else {
                     foreach ($trabalho->avaliadors as $avaliador) {
-                        if ($avaliador->tipo == "Interno") {
+                        if ($avaliador->tipo == 'Interno') {
                             $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
                             if ($parecerInterno != null) {
                                 $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
-                                $cont+=1;
+                                ++$cont;
                             }
                         }
                     }
                 }
 
-                if($trabalho->pontuacao !=0){
-                    $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
+                if ($trabalho->pontuacao != 0) {
+                    $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
                 }
             }
             $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
@@ -260,32 +262,32 @@ class AdministradorController extends Controller
 
         // Sem Cotas
         $trabalhos = $evento->trabalhos;
-        foreach($trabalhos as $trabalho){
+        foreach ($trabalhos as $trabalho) {
             $trabalho->pontuacao = 0;
             $cont = 0;
             // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-            if($evento->tipo == "PIBEX"){
-                foreach($trabalho->avaliadors as $avaliador){
-                    if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
-                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
-                        $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
-                        $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
-                        $cont+=1;
+            if ($evento->tipo == 'PIBEX') {
+                foreach ($trabalho->avaliadors as $avaliador) {
+                    if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
+                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
+                        $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                        ++$cont;
                     }
                 }
-            }else{
-                foreach($trabalho->avaliadors as $avaliador){
-                    if($avaliador->tipo == "Interno"){
-                        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                        if($parecerInterno != null){
+            } else {
+                foreach ($trabalho->avaliadors as $avaliador) {
+                    if ($avaliador->tipo == 'Interno') {
+                        $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
+                        if ($parecerInterno != null) {
                             $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
-                            $cont+=1;
+                            ++$cont;
                         }
                     }
                 }
             }
-            if($trabalho->pontuacao !=0){
-                $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
+            if ($trabalho->pontuacao != 0) {
+                $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
             }
         }
         $trabalhos = $trabalhos->sort(function ($item, $next) {
@@ -295,8 +297,8 @@ class AdministradorController extends Controller
         return view('administrador.resultadosProjetos')->with(['evento' => $evento, 'trabalhos' => $trabalhos]);
     }
 
-    public function visualizarParecer(Request $request){
-
+    public function visualizarParecer(Request $request)
+    {
         $avaliador = Avaliador::find($request->avaliador_id);
         $trabalho = $avaliador->trabalhos->where('id', $request->trabalho_id)->first();
         $parecer = $avaliador->trabalhos->where('id', $request->trabalho_id)->first()->pivot;
@@ -305,24 +307,25 @@ class AdministradorController extends Controller
         return view('administrador.visualizarParecer')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador]);
     }
 
-    public function visualizarParecerInterno(Request $request){
-
+    public function visualizarParecerInterno(Request $request)
+    {
         $avaliador = Avaliador::find($request->avaliador_id);
         $trabalho = $avaliador->trabalhos->where('id', $request->trabalho_id)->first();
-        $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+        $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
         $evento = Evento::find($trabalho->evento_id);
 
         //dd($parecer);
-        return view('administrador.visualizarParecerInterno')->with(['parecer' => $parecerInterno, 'avaliador' => $avaliador,'trabalho' => $trabalho,'evento' => $evento]);
+        return view('administrador.visualizarParecerInterno')->with(['parecer' => $parecerInterno, 'avaliador' => $avaliador, 'trabalho' => $trabalho, 'evento' => $evento]);
     }
 
-    public function create() {
+    public function create()
+    {
         return view('administrador.novo_user');
     }
 
-    public function salvar(Request $request) {
-
-        if($request->tipo == "coordenador") {
+    public function salvar(Request $request)
+    {
+        if ($request->tipo == 'coordenador') {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
@@ -331,10 +334,10 @@ class AdministradorController extends Controller
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'senha' => ['required', 'min:8'],
                 'confirmar_senha' => ['required', 'min:8'],
-                'celular' => ($request['celular']!=null ? 'required|string|telefone' : 'nullable'),
-                'cpf' => ($request['cpf']!=null ? 'required|cpf|unique:users' : 'nullable'),
+                'celular' => ($request['celular'] != null ? 'required|string|telefone' : 'nullable'),
+                'cpf' => ($request['cpf'] != null ? 'required|cpf|unique:users' : 'nullable'),
             ]);
-        }else if ($request->tipo != "proponente") {
+        } elseif ($request->tipo != 'proponente') {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
@@ -373,8 +376,8 @@ class AdministradorController extends Controller
             'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
             'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
             'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
-            'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
-            'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
+            'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required' : ''],
+            'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'link_lattes' : ''],
             ]);
         }
 
@@ -391,30 +394,29 @@ class AdministradorController extends Controller
         $user->password = bcrypt($request->senha);
         if ($request->instituicao != null) {
             $user->instituicao = $request->instituicao;
-        } else if (isset($request->instituicaoSelect) && $request->instituicaoSelect != "Outra") {
+        } elseif (isset($request->instituicaoSelect) && $request->instituicaoSelect != 'Outra') {
             $user->instituicao = $request->instituicaoSelect;
         }
         $user->save();
 
-
         switch ($request->tipo) {
-            case "administradorResponsavel":
+            case 'administradorResponsavel':
                 $adminResp = new AdministradorResponsavel();
                 $adminResp->user_id = $user->id;
                 $adminResp->save();
                 break;
-            case "coordenador":
+            case 'coordenador':
                 $coordenador = new CoordenadorComissao();
                 $coordenador->user_id = $user->id;
                 $coordenador->save();
                 break;
-            case "avaliador":
+            case 'avaliador':
                 $avaliador = new Avaliador();
                 $avaliador->user_id = $user->id;
                 $avaliador->tipo = $request->tipoAvaliador;
                 $avaliador->save();
                 break;
-            case "proponente":
+            case 'proponente':
                 $proponente = new Proponente();
                 if ($request->SIAPE != null) {
                     $proponente->SIAPE = $request->SIAPE;
@@ -439,17 +441,18 @@ class AdministradorController extends Controller
                 $proponente->user_id = $user->id;
                 $proponente->save();
                 break;
-            case "participante":
+            case 'participante':
                 $participante = new Participante();
                 $participante->user_id = $user->id;
                 $participante->save();
                 break;
         }
 
-        return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário cadastrado com sucesso']);
+        return redirect(route('admin.usuarios'))->with(['mensagem' => 'Usuário cadastrado com sucesso']);
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $user = User::find($id);
 
         $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
@@ -457,27 +460,27 @@ class AdministradorController extends Controller
         $proponente = Proponente::where('user_id', '=', $id)->first();
         $participante = Participante::where('user_id', '=', $id)->first();
 
-        return view ('administrador.editar_user')->with(['user' => $user,
+        return view('administrador.editar_user')->with(['user' => $user,
                                                          'adminResp' => $adminResp,
                                                          'proponente' => $proponente,
-                                                         'participante' => $participante,]);
+                                                         'participante' => $participante, ]);
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $user = User::find($id);
 
-        if($request->tipo == "coordenador") {
+        if ($request->tipo == 'coordenador') {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
                 'email' => ['required', 'string', 'email', 'max:255'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
-                'celular' => ($request['celular']!=null ? 'required|string|telefone' : 'nullable'),
-                'cpf' => ($request['cpf']!=null ? 'required|cpf|unique:users' : 'nullable'),
-
+                'celular' => ($request['celular'] != null ? 'required|string|telefone' : 'nullable'),
+                'cpf' => ($request['cpf'] != null ? 'required|cpf|unique:users' : 'nullable'),
             ]);
-        }else if ($request->tipo != "proponente") {
+        } elseif ($request->tipo != 'proponente') {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
@@ -492,7 +495,7 @@ class AdministradorController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'tipo' => ['required'],
-            'cpf' => ['required', 'cpf',],
+            'cpf' => ['required', 'cpf'],
             'celular' => ['required', 'string', 'telefone'],
             'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
             'instituicaoSelect' => ['required_without:instituicao'],
@@ -512,8 +515,8 @@ class AdministradorController extends Controller
             'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
                 'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
             'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
-            'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
-            'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
+            'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required' : ''],
+            'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'link_lattes' : ''],
             ]);
         }
 
@@ -526,22 +529,22 @@ class AdministradorController extends Controller
         // }
 
         switch ($request->tipo) {
-            case "administradorResponsavel":
+            case 'administradorResponsavel':
                 $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
                 $adminResp->user_id = $user->id;
                 $adminResp->update();
                 break;
-            case "coordenador":
+            case 'coordenador':
                 $coordenador = CoordenadorComissao::where('user_id', '=', $id)->first();
                 $coordenador->user_id = $user->id;
                 $coordenador->update();
                 break;
-            case "avaliador":
+            case 'avaliador':
                 $avaliador = Avaliador::where('user_id', '=', $id)->first();
                 $avaliador->user_id = $user->id;
                 $avaliador->update();
                 break;
-            case "proponente":
+            case 'proponente':
                 $proponente = Proponente::where('user_id', '=', $id)->first();
                 if ($request->SIAPE != null) {
                     $proponente->SIAPE = $request->SIAPE;
@@ -566,7 +569,7 @@ class AdministradorController extends Controller
                 $proponente->user_id = $user->id;
                 $proponente->update();
                 break;
-            case "participante":
+            case 'participante':
                 $participante = Participante::where('user_id', '=', $id)->first();
                 $participante->user_id = $user->id;
                 $participante->update();
@@ -580,17 +583,17 @@ class AdministradorController extends Controller
         $user->celular = $request->celular;
         if ($request->instituicao != null) {
             $user->instituicao = $request->instituicao;
-        } else if (isset($request->instituicaoSelect) && $request->instituicaoSelect != "Outra") {
+        } elseif (isset($request->instituicaoSelect) && $request->instituicaoSelect != 'Outra') {
             $user->instituicao = $request->instituicaoSelect;
         }
         // $user->password = bcrypt($request->nova_senha);
         $user->update();
 
-        return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário atualizado com sucesso']);
+        return redirect(route('admin.usuarios'))->with(['mensagem' => 'Usuário atualizado com sucesso']);
     }
 
-
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $user = User::find($id);
         $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
         $avaliador = Avaliador::where('user_id', '=', $id)->first();
@@ -599,35 +602,37 @@ class AdministradorController extends Controller
 
         if (!(is_null($adminResp))) {
             $adminResp->delete();
-        } else if (!(is_null($avaliador))) {
+        } elseif (!(is_null($avaliador))) {
             $avaliador->delete();
-        } else if (!(is_null($proponente))) {
+        } elseif (!(is_null($proponente))) {
             $proponente->delete();
-        } else if (!(is_null($participante))) {
+        } elseif (!(is_null($participante))) {
             $participante->delete();
         }
 
         $user->delete();
-        return redirect( route('admin.usuarios') )->with(['mensagem' => 'Usuário deletado com sucesso']);
+
+        return redirect(route('admin.usuarios'))->with(['mensagem' => 'Usuário deletado com sucesso']);
     }
 
-    public function atribuir(Request $request){
-
+    public function atribuir(Request $request)
+    {
         $evento = Evento::where('id', $request->evento_id)->first();
         $coordenador_id_evento = $evento->coordenadorId;
         $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
         $user = Auth::user();
 
-        if((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')){
+        if ((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')) {
             return redirect()->back();
         }
 
-        return view('administrador.atribuirAvaliadores', ['evento'=> $evento]);
+        return view('administrador.atribuirAvaliadores', ['evento' => $evento]);
     }
-    public function selecionar(Request $request){
 
+    public function selecionar(Request $request)
+    {
         $user = Auth::user();
-        
+
         $evento = Evento::where('id', $request->evento_id)->first();
         $coordenador_id_evento = $evento->coordenadorId;
         $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
@@ -636,96 +641,90 @@ class AdministradorController extends Controller
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
         $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
-        
-        if((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')){
+
+        if ((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')) {
             return redirect()->back();
         }
 
         return view('administrador.selecionarAvaliadores', [
-                                                            'evento'=> $evento,
-                                                            'avaliadores'=>$avaliadores,
-                                                            'avalSelecionados'=>$avalSelecionados,
+                                                            'evento' => $evento,
+                                                            'avaliadores' => $avaliadores,
+                                                            'avalSelecionados' => $avalSelecionados,
                                                             'grandeAreas' => $grandeAreas,
-                                                            'trabalhos' => $trabalhos
+                                                            'trabalhos' => $trabalhos,
                                                            ]);
     }
-    public function projetos(Request $request){
 
+    public function projetos(Request $request)
+    {
         $evento = Evento::where('id', $request->evento_id)->first();
         $trabalhos = $evento->trabalhos;
         $grandesAreas = GrandeArea::orderBy('nome')->get();
         $avaliadores = $evento->avaliadors;
         foreach ($trabalhos as $key => $trabalho) {
-
             $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
             $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
             $trabalho->aval = $avalProjeto;
-
         }
 
         //dd($avaliadores->teste);
 
-
         return view('administrador.selecionarProjetos', [
-                                                         'evento'=> $evento,
-                                                         'trabalhos'=>$trabalhos,
-                                                         'avaliadores'=>$avaliadores,
-                                                         'grandesAreas' => $grandesAreas
+                                                         'evento' => $evento,
+                                                         'trabalhos' => $trabalhos,
+                                                         'avaliadores' => $avaliadores,
+                                                         'grandesAreas' => $grandesAreas,
                                                         ]);
     }
 
-    public function adicionar(Request $request){
-
+    public function adicionar(Request $request)
+    {
         $evento = Evento::where('id', $request->evento_id)->first();
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $aval->eventos()->attach($evento);
         $aval->save();
         $user = $aval->user()->first();
 
-        $subject = "Convite para avaliar projetos da UFAPE";
-            Mail::to($user->email)
-                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, ' ', $subject, $evento->tipo,$evento->natureza_id));
+        $subject = 'Convite para avaliar projetos da UFAPE';
+        Mail::to($user->email)
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, ' ', $subject, $evento->tipo, $evento->natureza_id));
 
         return redirect()->back();
-
     }
 
-    public function remover(Request $request){
-
+    public function remover(Request $request)
+    {
         $evento = Evento::where('id', $request->evento_id)->first();
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $aval->eventos()->detach($evento);
         $aval->trabalhos()->detach();
         $aval->save();
 
-
         return redirect()->back();
-
-
     }
 
-    public function removerProjAval(Request $request){
+    public function removerProjAval(Request $request)
+    {
         //Acesso 1 = Ad Hoc, 2 - Interno, 3 - Interno e Ad Hoc
         $aval = Avaliador::where('id', $request->avaliador_id)->first();
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
-        if($request->flag == 0){
-            if(($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) || ($aval->tipo == null && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 && ($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))){
+        if ($request->flag == 0) {
+            if (($aval->tipo == 'Interno' && $aval->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) || ($aval->tipo == null && $aval->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3 && ($aval->user->instituicao == 'UFAPE' || $aval->user->instituicao == 'Universidade Federal do Agreste de Pernambuco'))) {
                 $aval->trabalhos()
-                    ->updateExistingPivot($trabalho->id,['acesso'=>2]);
-            }else{
+                    ->updateExistingPivot($trabalho->id, ['acesso' => 2]);
+            } else {
                 $aval->trabalhos()->detach($trabalho);
             }
-        }else{
-            if(($aval->tipo == "Interno" && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) || ($aval->tipo == null && $aval->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 && ($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))){
+        } else {
+            if (($aval->tipo == 'Interno' && $aval->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) || ($aval->tipo == null && $aval->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3 && ($aval->user->instituicao == 'UFAPE' || $aval->user->instituicao == 'Universidade Federal do Agreste de Pernambuco'))) {
                 $aval->trabalhos()
-                    ->updateExistingPivot($trabalho->id,['acesso'=>1]);
-            }else{
+                    ->updateExistingPivot($trabalho->id, ['acesso' => 1]);
+            } else {
                 $aval->trabalhos()->detach($trabalho);
             }
         }
 
-        
-        if($trabalho->status === 'avaliado'){
+        if ($trabalho->status === 'avaliado') {
             $trabalho->status = 'submetido';
             $trabalho->save();
         }
@@ -735,8 +734,8 @@ class AdministradorController extends Controller
         return redirect()->back();
     }
 
-    public function buscar(Request $request){
-
+    public function buscar(Request $request)
+    {
         $trabalho = Trabalho::where('id', $request->item)->first();
         $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
         $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
@@ -744,59 +743,53 @@ class AdministradorController extends Controller
         //dd($avaliadores);
 
         return response()->json($avalProjeto);
-
     }
 
-    public function atribuicaoProjeto(Request $request){
-
+    public function atribuicaoProjeto(Request $request)
+    {
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
         $evento = Evento::where('id', $request->evento_id)->first();
-        
-        if($request->avaliadores_internos_id != null){
+
+        if ($request->avaliadores_internos_id != null) {
             foreach ($request->avaliadores_internos_id as $avaliador) {
                 $aval = Avaliador::find($avaliador);
-                if($aval->trabalhos()->where("trabalho_id",$trabalho->id)->first() != null){
+                if ($aval->trabalhos()->where('trabalho_id', $trabalho->id)->first() != null) {
                     $aval->trabalhos()
-                        ->updateExistingPivot($trabalho->id,['acesso'=>3]);
-                }else{
-                    $trabalho->avaliadors()->attach($aval,['acesso'=>2]);
+                        ->updateExistingPivot($trabalho->id, ['acesso' => 3]);
+                } else {
+                    $trabalho->avaliadors()->attach($aval, ['acesso' => 2]);
                     $evento->avaliadors()->syncWithoutDetaching($aval);
                 }
             }
         }
 
-
-
-      if($request->avaliadores_externos_id != null){
+        if ($request->avaliadores_externos_id != null) {
             foreach ($request->avaliadores_externos_id as $avaliador) {
-
                 $aval = Avaliador::find($avaliador);
-                if(Avaliador::where('id',$avaliador)->where('tipo',"Interno")->count()>0 || (Avaliador::where('id',$avaliador)->where('tipo',null)->count()>0 && (($aval->user->instituicao == "UFAPE" || $aval->user->instituicao == "Universidade Federal do Agreste de Pernambuco"))) ){
-                    if($aval->trabalhos()->where("trabalho_id",$trabalho->id)->first() != null){
+                if (Avaliador::where('id', $avaliador)->where('tipo', 'Interno')->count() > 0 || (Avaliador::where('id', $avaliador)->where('tipo', null)->count() > 0 && (($aval->user->instituicao == 'UFAPE' || $aval->user->instituicao == 'Universidade Federal do Agreste de Pernambuco')))) {
+                    if ($aval->trabalhos()->where('trabalho_id', $trabalho->id)->first() != null) {
                         $aval->trabalhos()
-                            ->updateExistingPivot($trabalho->id,['acesso'=>3]);
-                    }else{
-                        $trabalho->avaliadors()->attach($aval,['acesso'=>1]);
+                            ->updateExistingPivot($trabalho->id, ['acesso' => 3]);
+                    } else {
+                        $trabalho->avaliadors()->attach($aval, ['acesso' => 1]);
                         $evento->avaliadors()->syncWithoutDetaching($aval);
                     }
-                }else{
-                    $trabalho->avaliadors()->attach($aval,['acesso'=>1]);
+                } else {
+                    $trabalho->avaliadors()->attach($aval, ['acesso' => 1]);
                     $evento->avaliadors()->syncWithoutDetaching($aval);
                 }
             }
-      }
+        }
 
-      if($request->avaliadores_externos_id == null & $request->avaliadores_internos_id == null ){
-          redirect()->back()->with(['error' => 'Selecione ao menos um avaliador.', 'trabalho' => $trabalho->id]);
-      }
+        if ($request->avaliadores_externos_id == null & $request->avaliadores_internos_id == null) {
+            redirect()->back()->with(['error' => 'Selecione ao menos um avaliador.', 'trabalho' => $trabalho->id]);
+        }
 
-      $avaliadores = Avaliador::whereIn('id', (array)$request->avaliadores_externos_id)
-          ->orWhereIn('id', (array)$request->avaliadores_internos_id)->get();
-      $trabalho->save();
+        $avaliadores = Avaliador::whereIn('id', (array) $request->avaliadores_externos_id)
+          ->orWhereIn('id', (array) $request->avaliadores_internos_id)->get();
+        $trabalho->save();
 
-
-        foreach ($avaliadores as $avaliador){
-
+        foreach ($avaliadores as $avaliador) {
             $userTemp = User::find($avaliador->user->id);
 
             $notificacao = Notificacao::create([
@@ -807,13 +800,10 @@ class AdministradorController extends Controller
                 'tipo' => 5,
             ]);
             $notificacao->save();
-            Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp,$trabalho,$evento->formAvaliacaoExterno, $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso));
-            
+            Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp, $trabalho, $evento->formAvaliacaoExterno, $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso));
         }
 
-
         return redirect()->back();
-
     }
 
     public function enviarConviteEAtribuir(Request $request)
@@ -822,137 +812,23 @@ class AdministradorController extends Controller
         $nomeAvaliador = $request->nomeAvaliador;
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
-        $user = User::where('email', $emailAvaliador )->first();
+        $user = User::where('email', $emailAvaliador)->first();
 
-        if($request->instituicao == "ufape"){
-            $nomeInstituicao = "Universidade Federal do Agreste de Pernambuco";
-            $externoInterno = "Interno";
-        }else{
+        if ($request->instituicao == 'ufape') {
+            $nomeInstituicao = 'Universidade Federal do Agreste de Pernambuco';
+            $externoInterno = 'Interno';
+        } else {
             $nomeInstituicao = $request->outra;
-            $externoInterno = "Externo";
+            $externoInterno = 'Externo';
         }
-        if(isset($user)){
+        if (isset($user)) {
             $passwordTemporario = Str::random(8);
-            $subject = "Convite para avaliar projetos da UFAPE";
-            Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo,$evento->natureza_id));
-
-        }else{
-
-            $passwordTemporario = Str::random(8);
-            $subject = "Convite para avaliar projetos da UFAPE";
-            Mail::to($emailAvaliador)
-                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo,$evento->natureza_id));
-            $user = User::create([
-              'email' => $emailAvaliador,
-              'password' => bcrypt($passwordTemporario),
-              'usuarioTemp' => false,
-              'name' => $nomeAvaliador,
-              'tipo' => 'avaliador',
-              'instituicao' => $nomeInstituicao,
-            ]);
-
-            $user->markEmailAsVerified();
-        }
-
-        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
-
-        if($user->avaliadors == null){
-            $avaliador = new Avaliador();
-            $avaliador->tipo = $externoInterno;
-            $avaliador->save();
-            $avaliador->area()->associate($area);
-            $avaliador->user()->associate($user);
-            $avaliador->eventos()->attach($evento);
-            $user->save();
-            $avaliador->save();
-        }else{
-            $avaliador = $user->avaliadors;
-            $avaliador->eventos()->attach($evento);
-            $user->save();
-            $avaliador->save();
-        }
-
-        if($request->instituicao == "ufape"){
-            $trabalho->avaliadors()->attach($avaliador,['acesso'=>2]);
-            $evento->avaliadors()->syncWithoutDetaching($avaliador);
-        }else{
-            $trabalho->avaliadors()->attach($avaliador,['acesso'=>1]);
-            $evento->avaliadors()->syncWithoutDetaching($avaliador);
-        }
-
-        $trabalho->save();
-
-        $notificacao = Notificacao::create([
-            'remetente_id' => Auth::user()->id,
-            'destinatario_id' => $avaliador->user_id,
-            'trabalho_id' => $request->trabalho_id,
-            'lido' => false,
-            'tipo' => 5,
-        ]);
-        $notificacao->save();
-        return redirect()->back();
-    }
-
-
-    public function reenviarConviteAtribuicaoProjeto(Request $request){
-        $evento = Evento::where('id', $request->evento_id)->first();
-        $avaliador = Avaliador::where('id', $request->avaliador_id)->first();
-        if($avaliador->user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite != true){
-            $avaliador->user->avaliadors->eventos()->updateExistingPivot($evento->id, ['convite'=> null]);
-        }
-
-        $notificacao = Notificacao::create([
-            'remetente_id' => Auth::user()->id,
-            'destinatario_id' => $avaliador->user_id,
-            'trabalho_id' => $request->trabalho_id,
-            'lido' => false,
-            'tipo' => 5,
-        ]);
-        $notificacao->save();
-
-        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
-        $subject = "Convite para avaliar projetos da UFAPE - Reenvio";
-        Mail::to($avaliador->user->email)
-            ->send(new EmailLembrete($avaliador->user->name, $subject, $trabalho->titulo,$evento->nome,$evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExterno,$avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso));
-
-        return redirect()->back();
-
-    }
-
-    public function enviarConvite(Request $request){
-
-        $evento = Evento::where('id', $request->evento_id)->first();
-        $nomeAvaliador = $request->nomeAvaliador;
-        $emailAvaliador = $request->emailAvaliador;
-        $area = Area::where('id', $request->area_id)->first();
-        $user = User::where('email', $emailAvaliador )->first();
-
-        if($request->instituicao == "ufape"){
-            $nomeInstituicao = "Universidade Federal do Agreste de Pernambuco";
-            $externoInterno = "Interno";
-        }else{
-            $nomeInstituicao = $request->outra;
-            $externoInterno = "Externo";
-        }
-
-        //existe o caso de enviar o convite de novo para um mesmo usuário
-        // if(isset($user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) ){
-        //     return redirect()->back()->with(['mensagem' => 'Usuário já recebeu um convite e está pendente']);
-        // }
-
-
-        if(isset($user)){
-
-            $passwordTemporario = Str::random(8);
-            $subject = "Convite para avaliar projetos da UFAPE";
+            $subject = 'Convite para avaliar projetos da UFAPE';
             Mail::to($emailAvaliador)
                 ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id));
-
-        }else{
-
+        } else {
             $passwordTemporario = Str::random(8);
-            $subject = "Convite para avaliar projetos da UFAPE";
+            $subject = 'Convite para avaliar projetos da UFAPE';
             Mail::to($emailAvaliador)
                 ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id));
             $user = User::create([
@@ -967,17 +843,125 @@ class AdministradorController extends Controller
             $user->markEmailAsVerified();
         }
 
-        if($user->avaliadors == null){
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+
+        if ($user->avaliadors == null) {
             $avaliador = new Avaliador();
             $avaliador->tipo = $externoInterno;
             $avaliador->save();
             $avaliador->area()->associate($area);
             $avaliador->user()->associate($user);
             $avaliador->eventos()->attach($evento);
-    
             $user->save();
             $avaliador->save();
-        }else{
+        } else {
+            $avaliador = $user->avaliadors;
+            $avaliador->eventos()->attach($evento);
+            $user->save();
+            $avaliador->save();
+        }
+
+        if ($request->instituicao == 'ufape') {
+            $trabalho->avaliadors()->attach($avaliador, ['acesso' => 2]);
+            $evento->avaliadors()->syncWithoutDetaching($avaliador);
+        } else {
+            $trabalho->avaliadors()->attach($avaliador, ['acesso' => 1]);
+            $evento->avaliadors()->syncWithoutDetaching($avaliador);
+        }
+
+        $trabalho->save();
+
+        $notificacao = Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $avaliador->user_id,
+            'trabalho_id' => $request->trabalho_id,
+            'lido' => false,
+            'tipo' => 5,
+        ]);
+        $notificacao->save();
+
+        return redirect()->back();
+    }
+
+    public function reenviarConviteAtribuicaoProjeto(Request $request)
+    {
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $avaliador = Avaliador::where('id', $request->avaliador_id)->first();
+        if ($avaliador->user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite != true) {
+            $avaliador->user->avaliadors->eventos()->updateExistingPivot($evento->id, ['convite' => null]);
+        }
+
+        $notificacao = Notificacao::create([
+            'remetente_id' => Auth::user()->id,
+            'destinatario_id' => $avaliador->user_id,
+            'trabalho_id' => $request->trabalho_id,
+            'lido' => false,
+            'tipo' => 5,
+        ]);
+        $notificacao->save();
+
+        $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
+        $subject = 'Convite para avaliar projetos da UFAPE - Reenvio';
+        Mail::to($avaliador->user->email)
+            ->send(new EmailLembrete($avaliador->user->name, $subject, $trabalho->titulo, $evento->nome, $evento->tipo, $evento->natureza_id, $evento->formAvaliacaoExterno, $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso));
+
+        return redirect()->back();
+    }
+
+    public function enviarConvite(Request $request)
+    {
+        $evento = Evento::where('id', $request->evento_id)->first();
+        $nomeAvaliador = $request->nomeAvaliador;
+        $emailAvaliador = $request->emailAvaliador;
+        $area = Area::where('id', $request->area_id)->first();
+        $user = User::where('email', $emailAvaliador)->first();
+
+        if ($request->instituicao == 'ufape') {
+            $nomeInstituicao = 'Universidade Federal do Agreste de Pernambuco';
+            $externoInterno = 'Interno';
+        } else {
+            $nomeInstituicao = $request->outra;
+            $externoInterno = 'Externo';
+        }
+
+        //existe o caso de enviar o convite de novo para um mesmo usuário
+        // if(isset($user->avaliadors->eventos->where('id', $evento->id)->first()->pivot->convite) ){
+        //     return redirect()->back()->with(['mensagem' => 'Usuário já recebeu um convite e está pendente']);
+        // }
+
+        if (isset($user)) {
+            $passwordTemporario = Str::random(8);
+            $subject = 'Convite para avaliar projetos da UFAPE';
+            Mail::to($emailAvaliador)
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador-Cadastrado', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id));
+        } else {
+            $passwordTemporario = Str::random(8);
+            $subject = 'Convite para avaliar projetos da UFAPE';
+            Mail::to($emailAvaliador)
+                ->send(new EmailParaUsuarioNaoCadastrado($nomeAvaliador, '  ', 'Avaliador', $evento->nome, $passwordTemporario, $subject, $evento->tipo, $evento->natureza_id));
+            $user = User::create([
+              'email' => $emailAvaliador,
+              'password' => bcrypt($passwordTemporario),
+              'usuarioTemp' => false,
+              'name' => $nomeAvaliador,
+              'tipo' => 'avaliador',
+              'instituicao' => $nomeInstituicao,
+            ]);
+
+            $user->markEmailAsVerified();
+        }
+
+        if ($user->avaliadors == null) {
+            $avaliador = new Avaliador();
+            $avaliador->tipo = $externoInterno;
+            $avaliador->save();
+            $avaliador->area()->associate($area);
+            $avaliador->user()->associate($user);
+            $avaliador->eventos()->attach($evento);
+
+            $user->save();
+            $avaliador->save();
+        } else {
             $avaliador = $user->avaliadors;
             $avaliador->eventos()->attach($evento);
             $user->save();
@@ -987,29 +971,29 @@ class AdministradorController extends Controller
         return redirect()->back();
     }
 
-    public function reenviarConvite(Request $request){
+    public function reenviarConvite(Request $request)
+    {
         $evento = Evento::where('id', $request->evento_id)->first();
         $avaliador = Avaliador::where('id', $request->avaliador_id)->first();
         $user = $avaliador->user()->first();
 
-        $subject = "Convite para avaliar projetos da UFAPE - Reenvio";
-            Mail::to($user->email)
-                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado',$evento->nome, ' ', $subject, $evento->tipo, $evento->natureza_id));
-        
-        
+        $subject = 'Convite para avaliar projetos da UFAPE - Reenvio';
+        Mail::to($user->email)
+                ->send(new EmailParaUsuarioNaoCadastrado($user->name, '  ', 'Avaliador-Cadastrado', $evento->nome, ' ', $subject, $evento->tipo, $evento->natureza_id));
+
         return redirect()->back();
     }
-
 
     // public function baixarAnexo(Request $request) {
     //   return Storage::download($request->anexo);
     // }
 
-    public function baixarModeloAvaliacao(){
-
+    public function baixarModeloAvaliacao()
+    {
         $file = public_path().'/ModeloFormularioAvaliadorExternoPIBIC.docx';
-        $headers = array('Content-Type: application/docx',);
+        $headers = ['Content-Type: application/docx'];
         ob_end_clean();
+
         return response()->download($file, 'ModeloFormularioAvaliadorExternoPIBIC.docx', $headers);
     }
 
@@ -1017,35 +1001,35 @@ class AdministradorController extends Controller
     {
         $evento = Evento::where('id', $request->id)->first();
         // Ampla Concorrencia
-        $trabalhosAmpla = Trabalho::where('evento_id',$evento->id)
-            ->where('modalidade','AmplaConcorrencia')->get();
+        $trabalhosAmpla = Trabalho::where('evento_id', $evento->id)
+            ->where('modalidade', 'AmplaConcorrencia')->get();
 
-        foreach($trabalhosAmpla as $trabalho){
+        foreach ($trabalhosAmpla as $trabalho) {
             $trabalho->pontuacao = 0;
             $cont = 0;
             // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-            if($evento->tipo == "PIBEX"){
-                foreach($trabalho->avaliadors as $avaliador){
-                    if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
-                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
-                        $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
-                        $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
-                        $cont+=1;
+            if ($evento->tipo == 'PIBEX') {
+                foreach ($trabalho->avaliadors as $avaliador) {
+                    if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
+                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
+                        $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                        ++$cont;
                     }
                 }
-            }else {
+            } else {
                 foreach ($trabalho->avaliadors as $avaliador) {
-                    if ($avaliador->tipo == "Interno") {
+                    if ($avaliador->tipo == 'Interno') {
                         $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
                         if ($parecerInterno != null) {
                             $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
-                            $cont+=1;
+                            ++$cont;
                         }
                     }
                 }
             }
-            if($trabalho->pontuacao !=0){
-                $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
+            if ($trabalho->pontuacao != 0) {
+                $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
             }
         }
         $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
@@ -1053,44 +1037,42 @@ class AdministradorController extends Controller
         });
 
         // Recém Doutor
-        $trabalhosDoutor = Trabalho::where('evento_id',$evento->id)
-            ->where('modalidade','RecemDoutor')->get();
-        foreach($trabalhosDoutor as $trabalho){
+        $trabalhosDoutor = Trabalho::where('evento_id', $evento->id)
+            ->where('modalidade', 'RecemDoutor')->get();
+        foreach ($trabalhosDoutor as $trabalho) {
             $trabalho->pontuacao = 0;
             $cont = 0;
             // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-            if($evento->tipo == "PIBEX"){
-                foreach($trabalho->avaliadors as $avaliador){
-                    if(($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 ||
-                            $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3) &&
-                        $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao != null){
-                        $trabalho->pontuacao += $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->pontuacao;
-                        $cont+=1;
+            if ($evento->tipo == 'PIBEX') {
+                foreach ($trabalho->avaliadors as $avaliador) {
+                    if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
+                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
+                        $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                        ++$cont;
                     }
                 }
-            }else {
+            } else {
                 foreach ($trabalho->avaliadors as $avaliador) {
-                    if ($avaliador->tipo == "Interno") {
+                    if ($avaliador->tipo == 'Interno') {
                         $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
                         if ($parecerInterno != null) {
                             $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
-                            $cont+=1;
+                            ++$cont;
                         }
                     }
                 }
             }
-            if($trabalho->pontuacao !=0){
-                $trabalho->pontuacao = number_format(($trabalho->pontuacao/$cont), 2, ',', '');
+            if ($trabalho->pontuacao != 0) {
+                $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
             }
-
         }
         $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
             return $item->pontuacao >= $next->pontuacao ? -1 : 1;
         });
 
         $pdf = PDF::loadView('/administrador/resultadosProjetosCotas', compact('trabalhosDoutor', 'trabalhosAmpla', 'evento'));
+
         return $pdf->setPaper('a4')->stream('Resultados.pdf');
-
     }
-
 }
