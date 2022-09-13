@@ -282,8 +282,7 @@
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Nome completo'])
                 <input type="text" class="form-control " @value="" name="name" placeholder="Nome Completo" maxlength="150" id="nome{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantesnome{{$participante->id}}">
-                </span>
+                
                 @error("name")
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -294,8 +293,7 @@
             <div class="col-6">
                 @component('componentes.input', ['label' => 'E-mail'])
                 <input type="email" class="form-control" value="" name="email" placeholder="E-mail" maxlength="150" id="email{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantesemail{{$participante->id}}">
-                </span>
+                
                 @error('email')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -401,8 +399,7 @@
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Cidade'])
                 <input type="text" class="form-control" value="" name="cidade" placeholder="Cidade" maxlength="50" id="cidade{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantescidade{{$participante->id}}">
-                </span>
+                
                 @error('cidade')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -413,8 +410,7 @@
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Bairro'])
                 <input type="text" class="form-control" value="" name="bairro" placeholder="Bairro" maxlength="50" id="bairro{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantesbairro{{$participante->id}}">
-                </span>
+                
                 @error('bairro')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -425,8 +421,7 @@
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Rua'])
                 <input type="text" class="form-control" value="" name="rua" placeholder="Rua" maxlength="100" id="rua{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantesrua{{$participante->id}}">
-                </span>
+                
                 @error('rua')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -448,8 +443,7 @@
                 <div class="form-group">
                     <label class=" control-label" for="firstname">Complemento</label>
                     <input type="text" class="form-control" value="" name="complemento" placeholder="Complemento" maxlength="75" id="complemento{{$participante->id}}" />
-                    <span style="color: red; font-size: 12px" id="caracsRestantescomplemento{{$participante->id}}">
-                    </span>
+                    
                     @error('complemento')
                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                         <strong>{{ $message }}</strong>
@@ -661,8 +655,7 @@
             <div class="col-12" id="arqParticipante">
                 @component('componentes.input', ['label' => 'Título'])
                 <input type="text" class="form-control" value="" name="nomePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$participante->id}}" required>
-                <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$participante->id}}">
-                </span>
+                
                 @error('nomePlanoTrabalho')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>

@@ -13,7 +13,7 @@
                     <select id="seletor" class="form-control select-submeta" onchange="exibirEditais(this)" style="width: 140px;">
                         <option value="aberto" selected>Aberto(s)</option>
                         <option value="encerrado">Encerrado(s)</option>
-                        <option value="abrira">Abrirão</option>
+                        <option value="abrira">Previstos</option>
                         <option value="todos">Todos</option>
                     </select>
                 </div>
