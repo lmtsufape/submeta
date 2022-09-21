@@ -39,14 +39,37 @@
                                         <div class="col-2 align-self-center">
                                             <div class="row justify-content-around">
                                                 
-                                                <a href="" data-toggle="modal" data-target="#modalTestSubParticipante{{$participante->id}}" class="button"
-                                                   @if(($substituicoesProjeto->first() != null) && (($substituicoesProjeto->first()->status == 'Em Aguardo') || ($desligamentosProjeto->first() !=null &&$desligamentosProjeto->first()->status == 1))) style="pointer-events: none; cursor: default; color:gray;" @endif>
-                                                    <i class="fas fa-exchange-alt fa-2x"></i></a>
-                                                <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a>
-                                            
-                                                <a href="" data-toggle="modal" data-target="#modalSolicitarDesligamentoParticipante{{$participante->id}}" class="button" @if((($substituicoesProjeto->first() != null) && (($substituicoesProjeto->first()->status == 'Em Aguardo') || ($desligamentosProjeto->first() !=null && $desligamentosProjeto->first()->status == 1)) || count($participantes) <= 1)) style="pointer-events: none; cursor: default; color: gray;" @endif>Solicitar desligamento</a>
+                                                <a title="Substituição" href="" data-toggle="modal" data-target="#modalTestSubParticipante{{$participante->id}}" class="button"
+                                                  @if((count($substituicoesProjeto->where('participanteSubstituido_id',$participante->id)->where('status', 'Em Aguardo')) > 0) 
+                                                  || (count($desligamentosProjeto->where('participante_id', $participante->id)->where('status', 1)) > 0)) 
+                                                  style="pointer-events: none; cursor: default; color:gray;" 
+                                                  @endif >
+                                                    <i class="fas fa-exchange-alt fa-2x"></i>
+                                                </a>
+                                                @if((count($substituicoesProjeto->where('participanteSubstituido_id',$participante->id)->where('status', 'Em Aguardo')) > 0) 
+                                                || (count($desligamentosProjeto->where('participante_id', $participante->id)->where('status', 1)) > 0))
+                                                <a title="Desligamento" href="" data-toggle="modal" data-target="#modalSolicitarDesligamentoParticipante{{$participante->id}}" 
+                                                    class="button" style="pointer-events: none; cursor: default;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" style="width:30px;">
+                                                        <path fill="#808080" d="M352 128c0 70.7-57.3 128-128 128s-128-57.3-128-128S153.3 0 224 0s128 57.3 128 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM471 143c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/>
+                                                    </svg>
+                                                 </a>
+                                                @else
+                                                <a title="Desligamento" href="" data-toggle="modal" data-target="#modalSolicitarDesligamentoParticipante{{$participante->id}}" class="button">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" style="width:30px;">
+                                                        <path fill="#3490dc" d="M352 128c0 70.7-57.3 128-128 128s-128-57.3-128-128S153.3 0 224 0s128 57.3 128 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM471 143c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/>
+                                                    </svg>
+                                                 </a>
+                                                @endif
+                                               
+                                    
+
+                                                <a title="Visualizar" href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button"><i class="far fa-eye fa-2x"></i></a>
+        
+                            
                                             </div>
                                         </div>
+
                                                                                 
                                     </div>
 

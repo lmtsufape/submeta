@@ -840,7 +840,6 @@ class TrabalhoController extends Controller
             $request->merge([
                 'coordenador_id' => $evento->coordenadorComissao->id
             ]);
-
             $trabalho = Trabalho::find($id);
 
             DB::beginTransaction();
@@ -865,7 +864,6 @@ class TrabalhoController extends Controller
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->save();
 
-
             if ($request->marcado == null) {
                 $idExcluido = $trabalho->participantes->pluck('id');
 
@@ -880,10 +878,12 @@ class TrabalhoController extends Controller
                 }
             }
 
+
             foreach ($idExcluido as $key => $value) {
                 $trabalho->participantes()->find($value)->delete();
             }
             $trabalho->refresh();
+
             if ($request->has('marcado')) {
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
@@ -1015,8 +1015,9 @@ class TrabalhoController extends Controller
             }
 
             if (!$request->has('rascunho')) {
-                Notification::send($trabalho->proponente->user, new SubmissaoNotification($id,$trabalho->titulo));
+                Notification::send($trabalho->proponente->user, new SubmissaoNotification($trabalho));
             }
+
             return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta atualizada!']);
 
         } catch (\Throwable $th) {
