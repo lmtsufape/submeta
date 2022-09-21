@@ -3,10 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AtribuicaoAvaliadorExternoNotification extends Notification
 {
@@ -14,15 +12,16 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
 
     public $data;
     public $url;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($usuario,$trabalho,$arquivo,$tipoAval)
+    public function __construct($usuario, $trabalho, $arquivo, $tipoAval)
     {
-        $this->data =  date('d/m/Y \à\s  H:i\h', strtotime(now()));
-        $url = "/avaliador/editais";
+        $this->data = date('d/m/Y \à\s  H:i\h', strtotime(now()));
+        $url = '/avaliador/editais';
         $this->url = url($url);
         $this->user = $usuario;
         $this->titulo = $trabalho->titulo;
@@ -34,7 +33,8 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -45,43 +45,44 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
-        if($this->tipoAval == 2){
-            return (new MailMessage)
+        if ($this->tipoAval == 2) {
+            return (new MailMessage())
                     ->subject('Convite para avaliar proposta de projeto - Sistema Submeta')
-                    ->greeting("Saudações!")
+                    ->greeting('Saudações!')
                     ->line("Prezado/a avaliador/a, você foi convidado/a a avaliar a proposta de projeto intitulada {$this->titulo}.")
-                    ->line("Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta com o seu parecer.")
-                    ->line("Seção de Editais e Apoios a Projetos  - PREC/UFAPE")
-                    ->action('Acessar', $this->url )
+                    ->line('Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta com o seu parecer.')
+                    // ->line("Seção de Editais e Apoios a Projetos  - PREC/UFAPE")
+                    ->action('Acessar', $this->url)
                     ->markdown('vendor.notifications.email');
         }
 
-        return (new MailMessage)
+        return (new MailMessage())
                     ->subject('Convite para avaliar proposta de projeto - Sistema Submeta')
-                    ->greeting("Saudações!")
+                    ->greeting('Saudações!')
                     ->line("Prezado/a avaliador/a, você foi convidado/a a avaliar a proposta de projeto intitulada {$this->titulo}.")
-                    ->line("Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta com o seu parecer.")
-                    ->line("Seção de Editais e Apoios a Projetos  - PREC/UFAPE")
-                    ->action('Acessar', $this->url )
-                    ->attach(storage_path('app') . "/".$this->arquivo)
+                    ->line('Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta com o seu parecer.')
+                    // ->line('Seção de Editais e Apoios a Projetos  - PREC/UFAPE')
+                    ->action('Acessar', $this->url)
+                    ->attach(storage_path('app').'/'.$this->arquivo)
                     ->markdown('vendor.notifications.email');
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)
     {
         return [
-            //
         ];
     }
 }

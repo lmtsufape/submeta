@@ -20,8 +20,7 @@
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Nome completo'])
                 <input type="text" class="form-control " @value="" name="name" placeholder="Nome Completo" maxlength="150" id="nome{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantesnome{{$participante->id}}">
-                </span>
+                
                 @error("name")
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -32,8 +31,7 @@
             <div class="col-6">
                 @component('componentes.input', ['label' => 'E-mail'])
                 <input type="email" class="form-control" value="" name="email" placeholder="E-mail" maxlength="150" id="email{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantesemail{{$participante->id}}">
-                </span>
+                
                 @error('email')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -112,7 +110,8 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'CEP'])
-                <input type="text" class="form-control cep" value="" name="cep" placeholder="CEP" id="cep{{$participante->id}}" required />
+                <input name="cep" type="text" id="cep_subCompleta{{$participante->id}}" value="" class="form-control cep"
+                onblur="pesquisacep1(this.value, {{$participante->id}})" required />
                 @error('cep')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -121,13 +120,8 @@
                 @endcomponent
             </div>
             <div class="col-6">
-                @component('componentes.select', ['label' => 'Estado'])
-                <select name="uf" class="form-control" style="visibility: visible" id="estado{{$participante->id}}" required>
-                    <option value="" selected>-- Selecione uma opção --</option>
-                    @foreach ($estados as $sigla => $nome)
-                    <option value="{{ $sigla }}">{{ $nome }}</option>
-                    @endforeach
-                </select>
+                @component('componentes.input', ['label' => 'Estado'])
+                <input name="uf" type="text" class="form-control" value="" id="uf_subCompleta{{$participante->id}}" required />
                 @error('uf')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -138,9 +132,9 @@
 
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Cidade'])
-                <input type="text" class="form-control" value="" name="cidade" placeholder="Cidade" maxlength="50" id="cidade{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantescidade{{$participante->id}}">
-                </span>
+                <input name="cidade" type="text" id="cidade_subCompleta{{$participante->id}}" placeholder="Cidade" maxlength="50" class="form-control" 
+                value="" required/>
+                
                 @error('cidade')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -150,9 +144,8 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Bairro'])
-                <input type="text" class="form-control" value="" name="bairro" placeholder="Bairro" maxlength="50" id="bairro{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantesbairro{{$participante->id}}">
-                </span>
+                <input name="bairro" type="text" id="bairro_subCompleta{{$participante->id}}" placeholder="Bairro" class="form-control" value="" required />
+                
                 @error('bairro')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -162,9 +155,8 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Rua'])
-                <input type="text" class="form-control" value="" name="rua" placeholder="Rua" maxlength="100" id="rua{{$participante->id}}" required />
-                <span style="color: red; font-size: 12px" id="caracsRestantesrua{{$participante->id}}">
-                </span>
+                <input name="rua" type="text" id="rua_subCompleta{{$participante->id}}" class="form-control" placeholder="Rua" maxlength="100" value="" />
+                
                 @error('rua')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -186,8 +178,7 @@
                 <div class="form-group">
                     <label class=" control-label" for="firstname">Complemento</label>
                     <input type="text" class="form-control" value="" name="complemento" placeholder="Complemento" maxlength="75" id="complemento{{$participante->id}}" />
-                    <span style="color: red; font-size: 12px" id="caracsRestantescomplemento{{$participante->id}}">
-                    </span>
+                    
                     @error('complemento')
                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                         <strong>{{ $message }}</strong>
@@ -200,7 +191,7 @@
             </div>
             <div class="col-6">
                 @component('componentes.input', ['label' => 'Instituição de Ensino'])
-                <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao" id="instituicao[{{$participante->id}}]" required>
+                <select style="display: inline" onchange="showInstituicao1(this)" class="form-control" name="instituicao" id="instituicao[{{$participante->id}}]" required>
                     <option value="" disabled selected hidden>-- Instituição --</option>
                     <option value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                     <option value="Outra">Outra</option>
@@ -381,7 +372,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-
+                
             </div>
 
             <div class="col-12 mb-3 mt-3" hidden>
@@ -399,8 +390,7 @@
             <div class="col-12" id="arqParticipante">
                 @component('componentes.input', ['label' => 'Título'])
                 <input type="text" class="form-control" value="" name="nomePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$participante->id}}" required>
-                <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$participante->id}}">
-                </span>
+                
                 @error('nomePlanoTrabalho')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                     <strong>{{ $message }}</strong>
@@ -439,3 +429,93 @@
         </div>
     </div>
 </form>
+
+
+<script>
+function limpa_formulário_cep1(id) {
+    //Limpa valores do formulário de cep.
+    document.getElementById(`rua_subCompleta${id}`).value=("");
+    document.getElementById(`bairro_subCompleta${id}`).value=("");
+    document.getElementById(`cidade_subCompleta${id}`).value=("");
+    document.getElementById(`uf_subCompleta${id}`).value=("");
+}
+
+
+function meu_callback1(conteudo) {
+    if (!("erro" in conteudo)) {
+        //Atualiza os campos com os valores.
+        console.log(conteudo);
+        document.getElementById(`rua_subCompleta${cont3}`).value=(conteudo.logradouro);
+        document.getElementById(`bairro_subCompleta${cont3}`).value=(conteudo.bairro);
+        document.getElementById(`cidade_subCompleta${cont3}`).value=(conteudo.localidade);
+        document.getElementById(`uf_subCompleta${cont3}`).value=(conteudo.uf);
+    } //end if.
+    else {
+        //CEP não Encontrado.
+        
+        limpa_formulário_cep1(cont3);
+        alert("CEP não encontrado.");
+    }
+}
+    
+function pesquisacep1(valor, id) {
+
+    //Nova variável "cep" somente com dígitos.
+    var cep = valor.replace(/\D/g, '');
+
+    //Verifica se campo cep possui valor informado.
+    if (cep != "") {
+
+    //Expressão regular para validar o CEP.
+    var validacep = /^[0-9]{8}$/;
+
+    //Valida o formato do CEP.
+    if(validacep.test(cep)) {
+
+        //Preenche os campos com "..." enquanto consulta webservice.
+        document.getElementById(`rua_subCompleta${id}`).value="...";
+        document.getElementById(`bairro_subCompleta${id}`).value="...";
+        document.getElementById(`cidade_subCompleta${id}`).value="...";
+        document.getElementById(`uf_subCompleta${id}`).value="...";
+
+        //Cria um elemento javascript.
+        var script = document.createElement('script');
+
+        //Sincroniza com o callback.
+        window.cont3 = id //Deixando o ID global
+        script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback1';
+
+        //Insere script no documento e carrega o conteúdo.
+        document.body.appendChild(script);
+
+    } //end if.
+    else {
+        //cep é inválido.
+        limpa_formulário_cep1(id);
+        alert("Formato de CEP inválido.");
+    }
+    } //end if.
+    else {
+        //cep sem valor, limpa formulário.
+        limpa_formulário_cep1(id);
+    }
+};
+
+
+function showInstituicao1(instituicao){
+
+    var instituicaoSelect = instituicao;
+    var idSelect = instituicaoSelect.id;
+    var instituicao = document.getElementById(`outra${idSelect}`);
+    var display = document.getElementById('display'+idSelect);
+    
+    if(instituicaoSelect.value === "Outra"){
+        display.style.display = "block";
+        instituicao.parentElement.style.display = '';
+        instituicao.value="";
+    }else if(instituicaoSelect.value === "UFAPE"){
+        display.style.display = "none";
+    }
+}
+
+</script>

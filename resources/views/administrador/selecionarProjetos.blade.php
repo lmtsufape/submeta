@@ -63,9 +63,16 @@
                     <div class="modal-content modal-submeta">
                       <div class="modal-header modal-header-submeta">
                         <h5 class="modal-title titulo-table" id="exampleModalLongTitle">Selecione o(s) avaliador(es)</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"  style="color: rgb(182, 182, 182)">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                          <div class="col-md-4" style="text-align: right">
+                            <button type="button" id="enviarConviteButton" class="btn btn-info"
+                                    data-toggle="modal" onclick="abrirModalConviteAval({{ $trabalho->id }})">
+                                Enviar Convites
+                            </button>
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: rgb(182, 182, 182)">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
                       </div>
                       <div class="modal-body">
 
@@ -212,6 +219,7 @@
       </tr>
     </thead>
     <tbody>
+    @foreach($trabalhos as $trabalho)
       @foreach($trabalho->avaliadors as $avaliador)
       {{-- Avaliação Interna --}}
         @if(($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 1))
@@ -278,20 +286,108 @@
 
 
       @endforeach
+    @endforeach
 
     </tbody>
   </table>
 
+
+    <!-- Modal enviar convite e atribuir -->
+    <div class="modal fade" id="modalConviteAval" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content modal-submeta">
+                <div class="modal-header modal-header-submeta">
+                    <h5 class="modal-title titulo-table" id="exampleModalLongTitle" style="font-size: 20px;">Enviar
+                        Convite</h5>
+                    <button type="button" class="close" onclick="fecharModalConvite()" aria-label="Close"
+                            style="color: rgb(182, 182, 182)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="margin-left: 20px; margin-right: 20px;">
+
+                    <form action="{{ route('admin.convite.atribuicao.projeto') }}" method="POST" class="labels-blue" id="formConvite">
+                        @csrf
+                        <input type="hidden" name="evento_id" value="{{ $evento->id }}">
+                        <input type="hidden" id="trabalho_id" name="trabalho_id" value="{{ $trabalho->id }}">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nome Completo <span style="color: red;">*</span></label>
+                            <input type="text" class="form-control" name="nomeAvaliador" id="exampleInputNome1"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email <span style="color: red;">*</span></label>
+                            <input type="email" class="form-control" name="emailAvaliador" id="exampleInputEmail1"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span
+                                        style="color: red; font-weight:bold">*</span></label>
+                            <select class="form-control" id="grandeAreaConvite" name="grande_area_id" onchange="areas()"
+                                    required>
+                                <option value="" disabled selected hidden>-- Grande Área --</option>
+                                @foreach($grandesAreas as $grandeArea)
+                                    <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                                @endforeach
+                            </select>
+
+                            <label for="area" class="col-form-label">{{ __('Área') }} <span
+                                        style="color: red; font-weight:bold">*</span></label>
+                            <select class="form-control @error('area') is-invalid @enderror" id="areaConvite"
+                                    name="area_id" required>
+                                <option value="" disabled selected hidden>-- Área --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Tipo</label>
+                            <select class="form-control" name="tipo" id="exampleFormControlSelect1" disabled>
+                                <option value="avaliador">Avaliador</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Instituição <span
+                                        style="color: red; font-weight:bold">*</span></label>
+                            <select class="form-control" name="instituicao" id="membro" required
+                                    onchange="mostrarDiv(this)">
+                                <option value="" disabled>-- Selecione a instituição --</option>
+                                <option value="ufape">Universidade Federal do Agreste de Pernambuco</option>
+                                <option value="outra">Outra</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="div-outra"
+                             style="@if(old('instituicao') != null && old('instituicao') == "outra") display: block; @else display: none; @endif">
+                            <label for="outra">{{ __('Digite o nome da instituição') }}<span
+                                        style="color: red; font-weight: bold;"> *</span></label>
+                            <input id="outra" class="form-control @error('outra') is-invalid @enderror" type="text"
+                                   name="outra" value="{{old('outra')}}" autocomplete="outra"
+                                   placeholder="Universidade Federal ...">
+                            @error('outra')
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group" style="margin-top: 40px; margin-bottom: 40px;">
+                            <button type="submit" class="btn btn-info" style="width: 100%">Enviar</button>
+                        </div>
+                        <div class="form-group texto-info">
+                            O convite será enviador por e-mail e o preenchimento dos dados será de inteira
+                            responsabilidade do usuário convidado.
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-<!-- Button trigger modal -->
-
-
-
-
 @endsection
-
 @section('javascript')
 <script>
   $('#myModal').on('shown.bs.modal', function () {
@@ -315,5 +411,68 @@
       }
     }
   }
+
+  function abrirModalConviteAval(id) {
+    // fechar modeal e abrir 2o modal
+    console.log(id);
+    $("#exampleModalCenter"+id).modal('toggle');
+    $("#trabalho_id").val(id);
+    setTimeout(() => {
+        $("#modalConviteAval").modal();
+    }, 500);
+    $('#modalConviteAval').focus();
+  
+
+  }
+
+  function fecharModalConvite(){
+    $("#modalConviteAval").modal('toggle');
+  }
+
+  function areas() {
+    var grandeArea = $('#grandeAreaConvite').val();
+    $.ajax({
+        type: 'POST',
+        url: '{{ route('area.consulta') }}',
+        data: 'id=' + grandeArea,
+        headers:
+            {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+        success: (dados) => {
+
+            if (dados.length > 0) {
+                if ($('#oldArea').val() == null || $('#oldArea').val() == "") {
+                    var option = '<option selected disabled>-- Área --</option>';
+                }
+                $.each(dados, function (i, obj) {
+                    if ($('#oldArea').val() != null && $('#oldArea').val() == obj.id) {
+                        option += '<option selected value="' + obj.id + '">' + obj.nome + '</option>';
+                    } else {
+                        option += '<option value="' + obj.id + '">' + obj.nome + '</option>';
+                    }
+                })
+            } else {
+                var option = "<option selected disabled>-- Área --</option>";
+            }
+            $('#areaConvite').html(option).show();
+        },
+        error: (data) => {
+            console.log(data);
+        }
+    })
+  }
+
+  function mostrarDiv(select) {
+      if (select.value == "outra") {
+          document.getElementById('div-outra').style.display = "block";
+          $("#outra").prop('required', true);
+      } else if (select.value == "ufape") {
+          document.getElementById('div-outra').style.display = "none";
+          $("#outra").prop('required', false);
+      }
+  }
+
+  
 </script>
 @endsection

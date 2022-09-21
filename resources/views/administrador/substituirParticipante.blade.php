@@ -556,26 +556,26 @@
         }
     }
 
-    function showInstituicao(instituicao){
-        var instituicaoSelect = instituicao;
-        var idSelect = instituicaoSelect.id;
-        var instituicao = document.getElementById('outra'+idSelect);
-        var display = document.getElementById('display'+idSelect);
-
-        if(instituicaoSelect.value === "Outra"){
-            display.style.display = "block";
-            instituicao.parentElement.style.display = '';
-            instituicao.value="";
-        }else if(instituicaoSelect.value === "UFAPE"){
-            display.style.display = "none";
-        }
-    }
-
     function showCurso(curso){
         var cursoSelect = curso;
         var idSelect = cursoSelect.id;
         var curso = document.getElementById('outro'+idSelect);
         var displayCurso = document.getElementById('display'+idSelect);
+
+        if(cursoSelect.value === "Outro"){
+            displayCurso.style.display = "block";
+            curso.parentElement.style.display = '';
+            curso.value="";
+        }else{
+            displayCurso.style.display = "none";
+        }
+    }
+
+    function showCurso2(curso){
+        var cursoSelect = curso;
+        var idSelect = cursoSelect.id;
+        var curso = document.getElementById('oto'+idSelect);
+        var displayCurso = document.getElementById('disprei'+idSelect);
 
         if(cursoSelect.value === "Outro"){
             displayCurso.style.display = "block";
