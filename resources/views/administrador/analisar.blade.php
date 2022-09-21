@@ -56,6 +56,8 @@
                         <img src="{{asset('img/icons/negado.png')}}" style="width: 22px"/>
                         Proposta Negada
                         <br>
+                        <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"/><path d="M3 10H2V4.003C2 3.449 2.455 3 2.992 3h18.016A.99.99 0 0 1 22 4.003V10h-1v10.001a.996.996 0 0 1-.993.999H3.993A.996.996 0 0 1 3 20.001V10zm16 0H5v9h14v-9zM4 5v3h16V5H4zm5 7h6v2H9v-2z"/></g></svg>
+                        Proposta Arquivada
                         
                     </h6>
                 </div>
@@ -64,26 +66,34 @@
     </div>
                         <div id="projetos">
                             @foreach( $trabalhos as $trabalho )
-                            
+                           
                             <!--Informações Proponente-->
                                     <div class="row justify-content-center allTrab apareceu {{$trabalho->status}} {{$trabalho->grandeArea->nome}} {{$trabalho->area->nome}}" style="margin-top: 20px;" >
                                         <br>
                                         <div class="col-md-11" onclick="myFunc({{$trabalho->id}})">
                                             <a href="{{route('admin.analisarProposta',['id'=>$trabalho->id])}}" id="vizuProposta{{$trabalho->id}}" hidden></a>
 
-                                            <div class="card" style="border-radius: 5px;margin-left: 25px;margin-right: 25 px">
+                                            <div class="card" style="border-radius: 5px;margin-left: 25px;margin-right: 25 px; 
+                                            @if($trabalho->arquivado == true)background-color: #e7e7e7;@endif">
                                                 <div class="card-body" style="padding-top: 0.2rem; padding-left: 25px;padding-right: 25px;">
 
                                                         <div class="form-row mt-3">
                                                             <div class="col-md-10 tituloProj"><h5 style="color: #234B8B; font-weight: bold; margin-top: 15px;">Título: {{ $trabalho->titulo }}</h5></div>
                                                             <div class="col-md-2">
-                                                                @if($trabalho->status == "aprovado")
-                                                                    <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
-                                                                @elseif($trabalho->status == "reprovado")
-                                                                    <img src="{{asset('img/icons/negado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
-                                                                
+                                                                @if($trabalho->arquivado == true)
+                                                                    <div title="Proposta Arquivada">
+                                                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                                                    style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;"><g><path fill="none" d="M0 0h24v24H0z"/><path d="M3 10H2V4.003C2 3.449 2.455 3 2.992 3h18.016A.99.99 0 0 1 22 4.003V10h-1v10.001a.996.996 0 0 1-.993.999H3.993A.996.996 0 0 1 3 20.001V10zm16 0H5v9h14v-9zM4 5v3h16V5H4zm5 7h6v2H9v-2z"/></g></svg></div>
                                                                 @else
-                                                                    <img src="{{asset('img/icons/pendente.png')}}" style="width: 20%;margin: auto;display: flex;justify-content: center;align-items: center;" alt="">
+
+                                                                    @if($trabalho->status == "aprovado")
+                                                                        <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
+                                                                    @elseif($trabalho->status == "reprovado")
+                                                                        <img src="{{asset('img/icons/negado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
+                                                                    
+                                                                    @else
+                                                                        <img src="{{asset('img/icons/pendente.png')}}" style="width: 20%;margin: auto;display: flex;justify-content: center;align-items: center;" alt="">
+                                                                    @endif
                                                                 @endif
                                                             </div>
                                                         </div>
