@@ -320,6 +320,7 @@
                                     </div>
                                     <select class="custom-select" name="selectJustificativa">
                                         <option value="DESISTENCIA">DESISTÊNCIA</option>
+                                        <option value="OUTRAS">OUTRAS</option>
                                     </select>
                                 </div>
                             </div>
@@ -370,6 +371,7 @@
                                 </div>
                                 <select class="custom-select" name="selectJustificativa">
                                     <option value="DESISTENCIA">DESISTÊNCIA</option>
+                                    <option value="OUTRAS">OUTRAS</option>
                                 </select>
                             </div>
                         </div>
