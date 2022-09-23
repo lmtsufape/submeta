@@ -10,7 +10,7 @@
                     <strong>{{ session('sucesso') }}</strong>
                 </div>
             @endif
-            {{-- aki --}}
+            
             @component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho, 'edital' => $trabalho->evento, 'mostrar_val_planilha' => false])
             @endcomponent
         </div>
@@ -24,7 +24,7 @@
                             <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Anexos</h5></div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
-
+                        {{dd('oi')}}
                         {{-- Anexo do Projeto --}}
                         <div class="row justify-content-left">
                             {{-- Arquivo  --}}
