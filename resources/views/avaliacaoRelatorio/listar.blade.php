@@ -24,7 +24,7 @@
                             <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Anexos</h5></div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
-                        {{dd('oi')}}
+                        
                         {{-- Anexo do Projeto --}}
                         <div class="row justify-content-left">
                             {{-- Arquivo  --}}
