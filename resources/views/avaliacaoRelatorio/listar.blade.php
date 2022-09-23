@@ -10,7 +10,8 @@
                     <strong>{{ session('sucesso') }}</strong>
                 </div>
             @endif
-            @component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho, 'edital' => $trabalho->evento])
+            {{-- aki --}}
+            @component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho, 'edital' => $trabalho->evento, 'mostrar_val_planilha' => false])
             @endcomponent
         </div>
 
