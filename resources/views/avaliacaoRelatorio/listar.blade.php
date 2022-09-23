@@ -30,7 +30,8 @@
                             {{-- Arquivo  --}}
                             <div class="col-sm-12">
                                 <label for="anexoProjeto" class="col-form-label font-tam"
-                                       style="font-weight: bold">{{ __('Projeto: ') }}</label>
+                                       style="font-weight: bold">Projeto: {{$trabalho->titulo}}</label>
+                                       
                                 <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class=""
                                                                                                            src="{{asset('img/icons/pdf.ico')}}"
                                                                                                            style="width:40px"
@@ -73,8 +74,8 @@
                                             >{{ __('Relatório Parcial: ') }}</label>
                                             @if($avaliacao->plano->relatorioParcial)
 
-                                                <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $avaliacao->plano->relatorioParcial]) }}"><i
-                                                            class="fas fa-file-pdf fa-2x"></i></a>
+                                                <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $avaliacao->plano->relatorioParcial]) }}"><img
+                                                    src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
                                             @else
                                                 <a><i class="fas fa-times-circle fa-2x"></i></a>
