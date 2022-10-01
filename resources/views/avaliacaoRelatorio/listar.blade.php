@@ -45,7 +45,11 @@
                                     <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class=""
                                                                                                                 src="{{asset('img/icons/pdf.ico')}}"
                                                                                                                 style="width:40px"
+                                     
                                                                                                                 alt=""></a>
+                                @elseif($trabalho->justificativaAutorizacaoEtica != null)
+                                    <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"> <img class=""
+                                        src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                 @else
                                     -
                                 @endif
