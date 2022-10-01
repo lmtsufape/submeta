@@ -10,7 +10,8 @@
                     <strong>{{ session('sucesso') }}</strong>
                 </div>
             @endif
-            @component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho, 'edital' => $trabalho->evento])
+            
+            @component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho, 'edital' => $trabalho->evento, 'mostrar_val_planilha' => false])
             @endcomponent
         </div>
 
@@ -23,13 +24,14 @@
                             <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Anexos</h5></div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
-
+                        
                         {{-- Anexo do Projeto --}}
                         <div class="row justify-content-left">
                             {{-- Arquivo  --}}
                             <div class="col-sm-12">
                                 <label for="anexoProjeto" class="col-form-label font-tam"
-                                       style="font-weight: bold">{{ __('Projeto: ') }}</label>
+                                       style="font-weight: bold">Projeto: {{$trabalho->titulo}}</label>
+                                       
                                 <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class=""
                                                                                                            src="{{asset('img/icons/pdf.ico')}}"
                                                                                                            style="width:40px"
@@ -76,8 +78,8 @@
                                             >{{ __('Relatório Parcial: ') }}</label>
                                             @if($avaliacao->plano->relatorioParcial)
 
-                                                <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $avaliacao->plano->relatorioParcial]) }}"><i
-                                                            class="fas fa-file-pdf fa-2x"></i></a>
+                                                <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $avaliacao->plano->relatorioParcial]) }}"><img
+                                                    src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
                                             @else
                                                 <a><i class="fas fa-times-circle fa-2x"></i></a>
