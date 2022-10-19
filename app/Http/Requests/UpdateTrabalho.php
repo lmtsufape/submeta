@@ -105,9 +105,12 @@ class UpdateTrabalho extends FormRequest
             $rules['editalId']                     = ['required', 'string'];
             $rules['marcado.*']                    = ['required'];
             $rules['titulo']                       = ['required', 'string'];
-            $rules['grande_area_id']               = ['required', 'string'];
-            $rules['area_id']                      = ['required', 'string'];
-
+            $rules['grande_area_id']               = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
+            $rules['area_id']                      = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
+            
+            if($evento->natureza_id == 3){
+                $rules['area_tematica_id']          = ['required', 'string'];
+            }
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
 
