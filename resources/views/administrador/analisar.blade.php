@@ -68,7 +68,8 @@
                             @foreach( $trabalhos as $trabalho )
                            
                             <!--Informações Proponente-->
-                                    <div class="row justify-content-center allTrab apareceu {{$trabalho->status}} {{$trabalho->grandeArea->nome}} {{$trabalho->area->nome}}" style="margin-top: 20px;" >
+                                
+                                    <div class="row justify-content-center allTrab apareceu" style="margin-top: 20px;" >
                                         <br>
                                         <div class="col-md-11" onclick="myFunc({{$trabalho->id}})">
                                             <a href="{{route('admin.analisarProposta',['id'=>$trabalho->id])}}" id="vizuProposta{{$trabalho->id}}" hidden></a>

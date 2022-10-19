@@ -70,6 +70,7 @@
         <!--Areas-->
         <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
+                @if($trabalho->evento->natureza_id != 3)
                 <div class="card-body" style="padding-top: 0.2rem;">
                     <div class="container">
                         <div class="form-row mt-3">
@@ -81,10 +82,12 @@
                                     @if(App\SubArea::where('id', $trabalho->sub_area_id)->first() != null)
                                         > {{App\SubArea::where('id', $trabalho->sub_area_id)->first()->nome}}@endif
 
-                                </h6></div>
+                                </h6>
+                            </div>
                         </div>
                     </div>
                 </div>
+            @endif
             </div>
         </div>
     </div>
