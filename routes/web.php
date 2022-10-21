@@ -63,6 +63,14 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
         Route::get('/nova', 'AreaTematicaController@create')->name('criar')->middleware('checkAdministrador');
     });
 
+    Route::prefix('objetivoDeDenvolvimentoSustentavel')->name('objetivoDeDenvolvimentoSustentavel.')->group(function () {
+        Route::get('/editar/{id}', 'ObjetivoDeDesenvolvimentoSustentavelController@edit')->name('edit')->middleware('checkAdministrador');
+        Route::post('/atualizar/{id}', 'ObjetivoDeDesenvolvimentoSustentavelController@update')->name('atualizar')->middleware('checkAdministrador');
+        Route::post('/excluir/{id}', 'ObjetivoDeDesenvolvimentoSustentavelController@destroy')->name('deletar')->middleware('checkAdministrador');
+        Route::post('/salvar', 'ObjetivoDeDesenvolvimentoSustentavelController@store')->name('salvar')->middleware('checkAdministrador');
+        Route::get('/novo', 'ObjetivoDeDesenvolvimentoSustentavelController@create')->name('criar')->middleware('checkAdministrador');
+    });
+
     //######### Rotas Administrador #################################
     Route::get('/perfil-usuario', 'UserController@minhaConta')->name('user.perfil')->middleware(['auth', 'verified']);
 
