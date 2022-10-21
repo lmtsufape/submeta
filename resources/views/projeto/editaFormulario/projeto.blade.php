@@ -85,7 +85,23 @@
                     <strong>{{ $message }}</strong>
                   </span>
               @enderror
-            </div>
+              </div>
+                  
+              <div class="row col-md-12">
+                    <div class="form-group col-md-12">
+                      <label for="ods" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Densenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label><br>
+                      <div class="row col-md-12">
+                        @foreach($listaOds as $ods)
+                        <div class="col-md-6">
+                          <input type="checkbox" name="ods[]" id="ods{{$ods->id}}" value="{{$ods->id}}" @if($projeto->ods->contains($ods->id)) checked @endif >
+                          <label class="form-check-label" for="ods{{$ods->id}}">
+                            {{ $ods->nome }}
+                          </label>
+                        </div>
+                        @endforeach
+                      </div>
+                    </div>
+                  </div> 
           @endif
         </div>
 
