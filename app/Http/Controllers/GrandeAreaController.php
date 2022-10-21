@@ -6,6 +6,7 @@ use App\AreaTematica;
 use Illuminate\Http\Request;
 use App\GrandeArea;
 use App\Area;
+use App\ObjetivoDeDesenvolvimentoSustentavel;
 
 class GrandeAreaController extends Controller
 {
@@ -18,7 +19,8 @@ class GrandeAreaController extends Controller
     {
         $grandesAreas = GrandeArea::orderBy('nome')->get();
         $areasTematicas = AreaTematica::orderBy('nome')->get();
-        return view('naturezas.grandeArea.index')->with(['grandesAreas' => $grandesAreas, 'areasTematicas' => $areasTematicas]);
+        $ODSs = ObjetivoDeDesenvolvimentoSustentavel::orderBy('nome')->get();
+        return view('naturezas.grandeArea.index')->with(['grandesAreas' => $grandesAreas, 'areasTematicas' => $areasTematicas, 'odss' => $ODSs]);
     }
 
     /**

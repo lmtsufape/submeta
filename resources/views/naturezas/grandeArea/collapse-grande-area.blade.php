@@ -79,6 +79,8 @@
     @endforeach
 
 </div>
+
+
 <div id="accordion2">
     <div class="card">
         <div class="row">
@@ -140,6 +142,78 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <form method="POST" action="{{ route('areaTematica.deletar', ['id' => $areasTematica->id]) }}">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Remover</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+
+
+<div id="accordion3">
+    <div class="card">
+        <div class="row">
+            <div class="col-11  ">
+                <h2 class="m-2">ODS(Objetivos de Desenvolvimento Sustentável)</h2>
+            </div>
+            <div class="col-1 text-center">
+                <a href="{{route('objetivoDeDenvolvimentoSustentavel.criar')}}" >
+                    <i class="fas fa-plus-circle fa-2x m-2" style="color: green"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    @foreach ($odss as $ods)
+        <div class="card">
+            <h5 class="mb-0">
+                <div class="row">
+                    <div class="col-11">
+                        <button class="btn btn-link font-size-naturezas" aria-expanded="true" >
+                            {{ $ods->nome }}
+                        </button>
+                    </div>
+                    <div class="col-1 text-center">
+                        <div class=" dropright mt-2 text-center">
+                            <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{-- <i class="fas fa-cogs"></i> --}}
+                                <i class="fas fa-cog fa-1x"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="{{ route('objetivoDeDenvolvimentoSustentavel.edit', ['id' => $ods->id]) }}" class="dropdown-item text-center">
+                                    Editar
+                                </a>
+                                <hr class="dropdown-hr">
+                                <button data-toggle="modal" data-target="#removerODS{{ $ods->id }}" class="dropdown-item dropdown-item-delete text-center">
+                                    <img src="{{asset('img/icons/logo_lixeira.png')}}" alt="">
+                                    Deletar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h5>
+        </div>
+
+        <!-- Modal Remover -->
+        <div class="modal fade" id="removerODS{{ $ods->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Remover ODS</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Você tem certeza que deseja remover a ODS: {{ $ods->nome }}?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <form method="POST" action="{{ route('objetivoDeDenvolvimentoSustentavel.deletar', ['id' => $ods->id]) }}">
                             @csrf
                             <button type="submit" class="btn btn-danger">Remover</button>
                         </form>
