@@ -85,9 +85,29 @@
                   </span>
                     @enderror
                 </div>
+
+                  <div class="row col-md-12">
+                    <div class="form-group col-md-12">
+                      <label for="ods" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Densenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label><br>
+                      <div class="row col-md-12">
+                        @foreach($ods as $od)
+                        <div class="col-md-6">
+                          <input type="checkbox" name="ods[]" id="ods{{$od->id}}" value="{{$od->id}}">
+                          <label class="form-check-label" for="ods{{$od->id}}">
+                            {{ $od->nome }}
+                          </label>
+                        </div>
+                        @endforeach
+                      </div>
+                      @error('ods_id')
+                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                      @enderror
+                    </div>
+                  </div>  
             @endif
         </div>
-          
         </div>
     </div>
     </div>
