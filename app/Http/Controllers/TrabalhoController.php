@@ -53,6 +53,7 @@ use App\SolicitacaoParticipante;
 use App\Substituicao;
 use Illuminate\Support\Facades\Notification;
 use App\Desligamento;
+use App\ObjetivoDeDesenvolvimentoSustentavel;
 
 class TrabalhoController extends Controller
 {
@@ -91,6 +92,7 @@ class TrabalhoController extends Controller
         $edital = Evento::find($id);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
         $areaTematicas = AreaTematica::orderBy('nome')->get();
+        $ODS = ObjetivoDeDesenvolvimentoSustentavel::orderBy('nome')->get();
         $funcaoParticipantes = FuncaoParticipantes::orderBy('nome')->get();
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
 
@@ -112,6 +114,7 @@ class TrabalhoController extends Controller
                                             'enum_turno'         => Participante::ENUM_TURNO,
                                             'estados'            => $this->estados,
                                             'areaTematicas'        => $areaTematicas,
+                                            'ods'                   =>$ODS,
                                             ]);
     }
 
@@ -451,6 +454,7 @@ class TrabalhoController extends Controller
         $areaTematicas = AreaTematica::orderBy('nome')->get();
         $areas = Area::all();
         $subareas = Subarea::all();
+        $ODS = ObjetivoDeDesenvolvimentoSustentavel::orderBy('nome')->get();
         $funcaoParticipantes = FuncaoParticipantes::all();
         $participantes = Participante::where('trabalho_id', $id)->get();
         $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
@@ -472,6 +476,7 @@ class TrabalhoController extends Controller
             'enum_turno' => Participante::ENUM_TURNO,
             'estados' => $this->estados,
             'areaTematicas'        => $areaTematicas,
+            'listaOds'                  => $ODS,
         ]);
     }
 
@@ -841,6 +846,7 @@ class TrabalhoController extends Controller
                 'coordenador_id' => $evento->coordenadorComissao->id
             ]);
             $trabalho = Trabalho::find($id);
+            $trabalho->ods()->sync($request->ods);
 
             DB::beginTransaction();
             if (!$trabalho) {
@@ -1147,6 +1153,7 @@ class TrabalhoController extends Controller
             $trabalho->modalidade = $request->modalidade;
             $trabalho->save();
 
+            $trabalho->ods()->sync($request->ods);
             DB::commit();
             if (!$request->has('rascunho')) {
                 //Notificações

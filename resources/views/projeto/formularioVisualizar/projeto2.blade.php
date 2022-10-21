@@ -23,19 +23,23 @@
 <!--Areas-->
 <div class="col-md-12">
   <div class="card" style="border-radius: 5px">
-    <div class="card-body" style="padding-top: 0.2rem;">
-      <div class="container">
-        <div class="form-row mt-3">
-          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Área de Ensino</h5></div>
-          <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem">
-              {{App\GrandeArea::where('id', $projeto->grande_area_id)->first()->nome}} >
-              {{App\Area::where('id', $projeto->area_id)->first()->nome}}
-              @if(App\SubArea::where('id', $projeto->sub_area_id)->first() != null)> {{App\SubArea::where('id', $projeto->sub_area_id)->first()->nome}}@endif
-
-            </h6></div>
+    @if($edital->natureza_id != 3)
+      <div class="card-body" style="padding-top: 0.2rem;">
+        <div class="container">
+          <div class="form-row mt-3">
+              <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Área de Ensino</h5></div>
+              <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem">
+                @if(App\GrandeArea::where('id', $projeto->grande_area_id)->first() != null) {{App\GrandeArea::where('id', $projeto->grande_area_id)->first()->nome}} @endif
+                
+                @if(App\Area::where('id', $projeto->area_id)->first() != null) > {{App\Area::where('id', $projeto->area_id)->first()->nome}} @endif
+                
+                @if(App\SubArea::where('id', $projeto->sub_area_id)->first() != null)> {{App\SubArea::where('id', $projeto->sub_area_id)->first()->nome}}@endif
+                
+              </h6></div>
+            </div>
+          </div>
         </div>
-      </div>
+      @endif
     </div>
   </div>
-</div>
 <!--X projeto X-->

@@ -45,7 +45,23 @@
               <br>
               <b style="color: #4D4D4D;">Área Temática:</b>
               <a style="color: #4D4D4D;">{{App\AreaTematica::where('id', $projeto->area_tematica_id)->first()->nome}}</a>
-            </div> 
+            </div>
+            <div class="row col-md-12">
+                    <div class="form-group col-md-12">
+                    <br>
+                    <b style="color: #4D4D4D;">Objetivo de Densenvolvimento Sustentável:</b>
+                    <br>
+                    <div class="row col-md-12">
+                      @foreach($projeto->ods as $ods)
+                      <div class="col-md-6">
+                        <a style="color: #4D4D4D;">
+                          {{ $ods->nome }}
+                        </a>
+                      </div>
+                      @endforeach
+                    </div>
+                  </div>
+                </div> 
           @endif
 
           @if($projeto->modalidade!=null)

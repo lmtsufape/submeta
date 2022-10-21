@@ -125,4 +125,8 @@ class Trabalho extends Model
   {
       return $this->hasMany(Certificado::class, 'trabalho_id');
   }
+
+  public function ods(){
+    return $this->belongsToMany('App\ObjetivoDeDesenvolvimentoSustentavel', 'objetivo_de_desenvolvimento_sustentavel_trabalhos', 'trabalho_id');
+  }
 }
