@@ -110,6 +110,7 @@ class UpdateTrabalho extends FormRequest
             
             if($evento->natureza_id == 3){
                 $rules['area_tematica_id']          = ['required', 'string'];
+                $rules['ods']                    = ['required'];
             }
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
