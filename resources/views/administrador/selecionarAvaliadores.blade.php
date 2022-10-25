@@ -112,9 +112,15 @@
             <td style="color: red;">Recusado</td>
           @endif
           
-          
-          <td><button data-toggle="modal" class="btn btn-primary" style="color:white;
-          " data-target="#avaliadorModalCenter{{$avaliador->id}}" @if($avaliador->trabalhos->where('evento_id', $evento->id)->count()  == 0) disabled="disabled" @endif>Visualizar</button></td>
+          <!-- ANTOIM -->
+
+          @if($avaliador->trabalhos->where('evento_id', $evento->id)->count() == 0)
+            <td><button data-toggle="modal" class="btn btn-primary" style="color:white;
+            " data-target="#avaliadorModalCenter1{{$avaliador->id}}">Visualizar</button></td>
+          @else
+            <td><button data-toggle="modal" class="btn btn-primary" style="color:white;
+            " data-target="#avaliadorModalCenter{{$avaliador->id}}">Visualizar</button></td>
+          @endif
 
           <!-- MODAL Projetos -->
           <div class="modal fade" id="avaliadorModalCenter{{$avaliador->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="overflow-y: hidden">          
@@ -143,6 +149,32 @@
                       @endif 
                     @endforeach
                   @endforeach
+                </div>
+                
+              </div>
+            </div>
+          </div>
+
+
+          <div class="modal fade" id="avaliadorModalCenter1{{$avaliador->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="overflow-y: hidden">          
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+
+              <div class="modal-content modal-submeta modal-xl">
+                <div class="modal-header modal-header-submeta">
+                  <div class="col-md-8" style="padding-left: 0px">
+                    <h5 class="modal-title titulo-table" id="avaliacaoModalLongTitle">
+                        Projetos do Avaliador</h5>
+                  </div>
+                  <div class="col-md-4" style="text-align: right">
+                    <button type="button" class="close" aria-label="Close"
+                    data-dismiss="modal" style="color: rgb(182, 182, 182);padding-right: 0px;">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+              
+                <div class="modal-body" style="margin-left: 20px; margin-right: 20px;">        
+                  Esse Avaliador não possui projetos. <a href="{{route('admin.analisar', ['evento_id' => $evento->id])}}">Clique aqui</a> e verifique os projetos disponíveis.
                 </div>
                 
               </div>
