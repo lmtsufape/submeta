@@ -12,8 +12,9 @@
           Voltar
         </a>
       </div>
+
       <div class="col-md-10" style="text-align: center;">
-        <h3  class="titulo-table">Lista de Projetos do Edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
+        <h3  class="titulo-table">Status dos Projetos em Avaliação do edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
       </div>
       <div class="col-md-1">
         <!-- Button trigger modal -->
@@ -22,7 +23,101 @@
         </button> --}}
       </div>
     </div>
-    <div class="row">
+  <hr>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Nome do Usuário</th>
+        <th scope="col">Tipo de Avaliação</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Titulo do projeto</th>
+        <th scope="col">Status avaliação</th>
+        <th scope="col" style="text-align:center">Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+    @foreach($trabalhos as $trabalho)
+      @foreach($trabalho->avaliadors as $avaliador)
+      {{-- Avaliação Interna --}}
+        @if(($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 1))
+                                   || (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 1)))
+          <tr>
+            <td>{{ $avaliador->user->name }}</td>
+            <td> Interno </td>
+            <td>{{ $avaliador->user->email }}</td>
+            <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
+            @php
+              $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+            @endphp
+            <td>@if($parecerInterno == null) Pendente @else Avaliado @endif</td>
+            <td>
+              <div class="btn-group dropright dropdown-options">
+                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                </a>
+                <div class="dropdown-menu">
+                  @if($parecerInterno != null)
+                    <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                      Vizualizar Parecer
+                    </a>
+                  @endif
+                  <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>1]) }}" class="dropdown-item text-center">
+                    Desatribuir Avaliador
+                  </a>
+
+                </div>
+              </div>
+            </td>
+          </tr>
+        @endif
+
+      {{-- Avaliação Ad Hoc --}}
+      @if( ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null && $avaliador->tipo == "Externo") || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 2
+                                    || (($avaliador->user->instituicao != "UFAPE" && $avaliador->user->instituicao != "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 2)))
+        <tr>
+            <td>{{ $avaliador->user->name }}</td>
+            <td> Ad Hoc </td>
+            <td>{{ $avaliador->user->email }}</td>
+            <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
+            <td>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == false) Pendente @else Avaliado @endif</td>
+            <td>
+              <div class="btn-group dropright dropdown-options">
+                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
+                </a>
+                <div class="dropdown-menu">
+                  @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == true)
+                    <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
+                      Vizualizar Parecer
+                    </a>
+                  @endif
+                  <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>0]) }}" class="dropdown-item text-center">
+                    Desatribuir Avaliador
+                  </a>
+
+                </div>
+              </div>
+            </td>
+          </tr>
+        @endif
+
+
+      @endforeach
+    @endforeach
+
+    </tbody>
+  </table>
+
+
+  <div class="container" style="margin-top: 50px;">
+    <div class="row justify-content-center d-flex align-items-center" >
+
+        <h3 class="titulo-table">Lista de Projetos do Edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
+
+    </div>
+  </div>
+  
+  <div class="row">
       <div class="col-md-8">
         <div class="row">
           <div class="col-sm-1">
@@ -196,98 +291,6 @@
             </td>
           </tr>
       @endforeach
-    </tbody>
-  </table>
-
-  <div class="container" style="margin-top: 50px;">
-    <div class="row justify-content-center d-flex align-items-center" >
-
-        <h3 class="titulo-table">Status dos Projetos em Avaliação do edital: <span style="color: black;">{{ $evento->nome }}</span> </h3>
-
-    </div>
-  </div>
-  <hr>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th scope="col">Nome do Usuário</th>
-        <th scope="col">Tipo de Avaliação</th>
-        <th scope="col">E-mail</th>
-        <th scope="col">Titulo do projeto</th>
-        <th scope="col">Status avaliação</th>
-        <th scope="col" style="text-align:center">Ação</th>
-      </tr>
-    </thead>
-    <tbody>
-    @foreach($trabalhos as $trabalho)
-      @foreach($trabalho->avaliadors as $avaliador)
-      {{-- Avaliação Interna --}}
-        @if(($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 1))
-                                   || (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 1)))
-          <tr>
-            <td>{{ $avaliador->user->name }}</td>
-            <td> Interno </td>
-            <td>{{ $avaliador->user->email }}</td>
-            <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
-            @php
-              $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-            @endphp
-            <td>@if($parecerInterno == null) Pendente @else Avaliado @endif</td>
-            <td>
-              <div class="btn-group dropright dropdown-options">
-                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
-                </a>
-                <div class="dropdown-menu">
-                  @if($parecerInterno != null)
-                    <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                      Vizualizar Parecer
-                    </a>
-                  @endif
-                  <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>1]) }}" class="dropdown-item text-center">
-                    Desatribuir Avaliador
-                  </a>
-
-                </div>
-              </div>
-            </td>
-          </tr>
-        @endif
-
-      {{-- Avaliação Ad Hoc --}}
-      @if( ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null && $avaliador->tipo == "Externo") || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 2
-                                    || (($avaliador->user->instituicao != "UFAPE" && $avaliador->user->instituicao != "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso != 2)))
-        <tr>
-            <td>{{ $avaliador->user->name }}</td>
-            <td> Ad Hoc </td>
-            <td>{{ $avaliador->user->email }}</td>
-            <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
-            <td>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == false) Pendente @else Avaliado @endif</td>
-            <td>
-              <div class="btn-group dropright dropdown-options">
-                <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
-                </a>
-                <div class="dropdown-menu">
-                  @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == true)
-                    <a href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="dropdown-item text-center">
-                      Vizualizar Parecer
-                    </a>
-                  @endif
-                  <a href="{{ route('admin.removerProjAval', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id,'flag'=>0]) }}" class="dropdown-item text-center">
-                    Desatribuir Avaliador
-                  </a>
-
-                </div>
-              </div>
-            </td>
-          </tr>
-        @endif
-
-
-      @endforeach
-    @endforeach
-
     </tbody>
   </table>
 
