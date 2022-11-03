@@ -17,9 +17,9 @@
       
       @include('evento.formulario.proponente')
       
-
+      @if ($edital->numParticipantes != 0)
       @include('evento.formulario.participantes')
-
+      @endif
       
       @include('evento.formulario.anexos')
 
