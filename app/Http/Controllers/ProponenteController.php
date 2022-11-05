@@ -17,11 +17,12 @@ use App\Notificacao;
 use App\Participante;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use App\Curso;
 
 class ProponenteController extends Controller
 {
     public function index(){
-
+        $cursos = Curso::orderBy('nome')->get();
     	return view('proponente.index');
     }
 
