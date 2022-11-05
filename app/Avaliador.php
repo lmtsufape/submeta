@@ -34,4 +34,7 @@ class Avaliador extends Model
         return $this->hasMany(ParecerInterno::class, 'avali_id', 'id');
     }
 
+    public function naturezas(){
+        return $this->belongsToMany('App\Natureza', 'naturezas_avaliadors', 'avaliador_id');
+    }
 }
