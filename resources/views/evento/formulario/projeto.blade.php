@@ -88,18 +88,18 @@
 
                   <div class="row col-md-12">
                     <div class="form-group col-md-12">
-                      <label for="ods" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Densenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label><br>
+                      <label for="ods_id" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Densenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label><br>
                       <div class="row col-md-12">
                         @foreach($ods as $od)
                         <div class="col-md-6">
-                          <input type="checkbox" name="ods[]" id="ods{{$od->id}}" value="{{$od->id}}">
+                          <input type="checkbox" name="ods[]" id="ods{{$od->id}}" class="@error('ods_id') is-invalid @enderror" value="{{$od->id}}" @if(!empty(old('ods')) && in_array($od->id, old('ods'))) checked @endif>
                           <label class="form-check-label" for="ods{{$od->id}}">
                             {{ $od->nome }}
                           </label>
                         </div>
                         @endforeach
                       </div>
-                      @error('ods_id')
+                      @error('ods')
                       <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                         <strong>{{ $message }}</strong>
                       </span>

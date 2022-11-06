@@ -93,13 +93,18 @@
                       <div class="row col-md-12">
                         @foreach($listaOds as $ods)
                         <div class="col-md-6">
-                          <input type="checkbox" name="ods[]" id="ods{{$ods->id}}" value="{{$ods->id}}" @if($projeto->ods->contains($ods->id)) checked @endif >
+                          <input type="checkbox" name="ods[]" id="ods{{$ods->id}}" value="{{$ods->id}}" @if((empty(old('ods')) && $projeto->ods->contains($ods->id)) || (!empty(old('ods')) && in_array($ods->id, old('ods')))) checked @endif >
                           <label class="form-check-label" for="ods{{$ods->id}}">
                             {{ $ods->nome }}
                           </label>
                         </div>
                         @endforeach
                       </div>
+                      @error('ods')
+                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                      @enderror
                     </div>
                   </div> 
           @endif
