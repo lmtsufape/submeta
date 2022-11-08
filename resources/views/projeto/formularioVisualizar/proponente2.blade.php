@@ -76,6 +76,18 @@
             </div>
           @endif
 
+          @if ($projeto->conflitosInteresse != null &&
+            (Auth::user()->tipo == 'administrador' ||
+              Auth::user()->tipo == 'administradorResponsavel' ||
+              Auth::user()->tipo == 'coordenador' ||
+              Auth::user()->id == $projeto->proponente->user->id))
+            <div class="col-md-12">
+              <br>
+              <b style="color: #4D4D4D;">Conflitos de Interesse: </b>
+              <a style="color: #4D4D4D;">{{ $projeto->conflitosInteresse }}</a>
+            </div>
+          @endif
+
         </div>
       </div>
     </div>
