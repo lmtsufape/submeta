@@ -21,6 +21,7 @@ class Trabalho extends Model
       'linkLattesEstudante',
       'comentario',
       'modalidade',
+      'conflitosInteresse',
 
       'anexoDecisaoCONSU',
       'anexoAutorizacaoComiteEtica',
