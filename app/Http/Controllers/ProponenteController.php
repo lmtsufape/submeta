@@ -23,7 +23,7 @@ class ProponenteController extends Controller
 {
     public function index(){
         $cursos = Curso::orderBy('nome')->get();
-    	return view('proponente.index');
+    	return view('proponente.index', compact('cursos'));
     }
 
     public function create(){
@@ -72,6 +72,7 @@ class ProponenteController extends Controller
                 $proponente->bolsistaProdutividade = $request->bolsistaProdutividade;
                 $proponente->nivel = $request->nivel;
                 $proponente->linkLattes = $request->linkLattes;
+                // dd($request);
                 $proponente->user_id = Auth::user()->id;
                 $proponente->save();
 
@@ -83,6 +84,7 @@ class ProponenteController extends Controller
                 return redirect( route('home'))->with(['mensagem' => 'Cadastro feito com sucesso! Você já pode criar projetos']);
             }
         }else{
+            // dd($request);
             return redirect( route('proponente.create'))->with(['mensagem' => 'Você já é proponente!']);
         }
 

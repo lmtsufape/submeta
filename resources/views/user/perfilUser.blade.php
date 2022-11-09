@@ -124,22 +124,22 @@
                                 <label for="area" class="col-form-label">{{ __('Área:') }}</label>
                                 <select style="display: inline" class="form-control @error('area') is-invalid @enderror" name="area" id="area">
                                     @if(Auth()->user()->avaliadors->area_id == null)
-                                    <option value="" selected>Indefinida</option>
-                                    @foreach (App\Area::all() as $area)
-                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
-                                    <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
+                                        <option value="" selected>Indefinida</option>
+                                        @foreach (App\Area::all() as $area)
+                                            @if(Auth()->user()->avaliadors->area_id == $area->id)
+                                                <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
+                                            @else
+                                            <option value="{{ $area->id }}">{{ $area->nome }}</option>
+                                            @endif
+                                        @endforeach
                                     @else
-                                    <option value="{{ $area->id }}">{{ $area->nome }}</option>
-                                    @endif
-                                    @endforeach
-                                    @else
-                                    @foreach (App\Area::all() as $area)
-                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
-                                    <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
-                                    @else
-                                    <option value="{{ $area->id }}">{{ $area->nome }}</option>
-                                    @endif
-                                    @endforeach
+                                        @foreach (App\Area::all() as $area)
+                                            @if(Auth()->user()->avaliadors->area_id == $area->id)
+                                                <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
+                                            @else
+                                                <option value="{{ $area->id }}">{{ $area->nome }}</option>
+                                            @endif
+                                        @endforeach
                                     @endif
 
                                 </select>

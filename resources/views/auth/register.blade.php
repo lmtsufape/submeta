@@ -124,7 +124,7 @@
                                 </div>
                             </div>
 
-                            {{-- <div style="display:none" id="cursos" class="col-md-12 mb-2">
+                            <div style="display:none" id="cursos" class="col-md-12 mb-2">
                                 <label for="curso" class="col-form-label">{{ __('Cursos') }} <span style="color: red; font-weight:bold;">*</span></label>
                             <br>
                             <div class="row col-md-12">
@@ -137,7 +137,7 @@
                                 </div>
                                 @endforeach
                             </div>
-                        </div> --}}
+                        </div>
 
                         <div class="col-md-12">
                             <div class="form-group" style="display: block;" id="divOutro">
@@ -328,7 +328,7 @@
         var divProponente = document.getElementById('proponente');
         var comboBoxCargo = document.getElementById('cargo');
         var comboBoxVinculo = document.getElementById('vinculo');
-        // let cursos = document.getElementById('cursos');
+        let cursos = document.getElementById('cursos');
 
         if (comboBoxCargo.value === "Estudante" && comboBoxVinculo.value !== "Pós-doutorando") {
             divProponente.style.display = "none";
@@ -337,11 +337,11 @@
             divProponente.style.display = "block";
         }
 
-        // if (comboBoxCargo.value === "Professor") {
-        //     cursos.style.display = "block";
-        // } else {
-        //     cursos.style.display = "none";
-        // }
+        if (comboBoxCargo.value === "Professor") {
+            cursos.style.display = "block";
+        } else {
+            cursos.style.display = "none";
+        }
         outroVinculo();
     }
 
