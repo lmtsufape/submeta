@@ -19,45 +19,45 @@ use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use App\Curso;
 
 class UserController extends Controller
 {
 
     public function index()
     {
-      $eventos = Evento::orderBy('created_at', 'desc')->get();
-      dd($eventos);
-      if(Auth::check()){
-        Log::debug('UserController check');
-        return redirect()->route('home');
-      }
-      Log::debug('UserController index');
-      $hoje = Carbon::today('America/Recife');
-      $hoje = $hoje->toDateString();
-      return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);
-      //return view('auth.login');
+        $eventos = Evento::orderBy('created_at', 'desc')->get();
+        if (Auth::check()) {
+            Log::debug('UserController check');
+            return redirect()->route('home');
+        }
+        Log::debug('UserController index');
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+        return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);
     }
     public function inicial()
     {
-      $eventos = Evento::orderBy('created_at', 'desc')->get();
-      $hoje = Carbon::today('America/Recife');
-      $hoje = $hoje->toDateString();
-      return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);
-      //return view('auth.login');
+        $eventos = Evento::orderBy('created_at', 'desc')->get();
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+        return view('index', ['eventos' => $eventos, 'hoje' => $hoje]);
     }
 
 
-    function perfil(){
+    function perfil()
+    {
         $user = User::find(Auth::user()->id);
 
-        return view('user.perfilUser',['user'=>$user]);
+        return view('user.perfilUser', ['user' => $user]);
     }
-    
-    function editarPerfil(Request $request){
+
+    function editarPerfil(Request $request)
+    {
         $id = Auth()->user()->id;
         $user = User::find($id);
         if ($request->tipo != "proponente") {
-            
+
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
@@ -87,10 +87,10 @@ class UserController extends Controller
                 'nivel' => ['required_if:bolsistaProdutividade,sim'],
                 // 'nivel' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
                 'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],
-                'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required':''],
-                'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
-            
-                ]);
+                'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'required' : ''],
+                'linkLattes' => [(isset($request['cargo']) && $request['cargo'] !== 'Estudante') || (isset($request['cargo']) && $request['cargo'] === 'Estudante' && isset($request['vinculo']) && $request['vinculo'] === 'Pós-doutorando') ? 'link_lattes' : ''],
+
+            ]);
         }
 
         if ($request->alterarSenhaCheckBox != null) {
@@ -101,8 +101,8 @@ class UserController extends Controller
             if (!($request->nova_senha === $request->confirmar_senha)) {
                 return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
             }
-        
         }
+        
         if($user->avaliadors != null && $request->area != null && $user->tipo == "avaliador"){
           $avaliador = Avaliador::where('user_id', '=', $id)->first();
           $avaliador->user_id = $user->id;
@@ -110,6 +110,7 @@ class UserController extends Controller
 
           $avaliador->naturezas()->sync($request->natureza);
           $avaliador->update();
+
         }
 
         switch ($request->tipo) {
@@ -122,9 +123,9 @@ class UserController extends Controller
                 $avaliador = Avaliador::where('user_id', '=', $id)->first();
                 $avaliador->user_id = $user->id;
                 $avaliador->area_id = $request->area;
-                if($user->usuarioTemp == true){
+                if ($user->usuarioTemp == true) {
                     $user->usuarioTemp = false;
-                  }
+                }
                 $avaliador->update();
                 break;
             case "proponente":
@@ -150,6 +151,7 @@ class UserController extends Controller
                 $proponente->linkLattes = $request->linkLattes;
 
                 $proponente->user_id = $user->id;
+                $proponente->cursos()->sync($request->curso);
                 $proponente->update();
                 break;
             case "participante":
@@ -157,7 +159,7 @@ class UserController extends Controller
                 //$participante = $user->participantes->where('user_id', Auth::user()->id)->first();
                 $participante->user_id = $user->id;
                 //dd($participante);
-                if($user->usuarioTemp == true){
+                if ($user->usuarioTemp == true) {
                     $user->usuarioTemp = false;
                 }
 
@@ -168,7 +170,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->tipo = $request->tipo;
-       // $user->email = $request->email;
+        // $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->celular = $request->celular;
         if ($request->instituicao != null) {
@@ -184,24 +186,26 @@ class UserController extends Controller
 
         $user->update();
 
-        return redirect( route('user.perfil') )->with(['mensagem' => 'Dados atualizados com sucesso.']);
+        return redirect(route('user.perfil'))->with(['mensagem' => 'Dados atualizados com sucesso.']);
     }
 
 
-    public function meusTrabalhos(){
+    public function meusTrabalhos()
+    {
 
         //$trabalhos = Trabalho::where('autorId', Auth::user()->id)->get();
         $proponente = Proponente::with('user')->where('user_id', Auth::user()->id)->first();
         $trabalhos = $proponente->trabalhos;
         //dd($trabalhos);
 
-        return view('user.meusTrabalhos',[
-                                           'trabalhos'           => $trabalhos,
-                                           'agora'           => now(),
-                                        ]);
+        return view('user.meusTrabalhos', [
+            'trabalhos'           => $trabalhos,
+            'agora'           => now(),
+        ]);
     }
 
-    public function minhaConta() {
+    public function minhaConta()
+    {
         $id = Auth::user()->id;
         $user = User::find($id);
 
@@ -209,13 +213,16 @@ class UserController extends Controller
         $avaliador = Avaliador::where('user_id', '=', $id)->first();
         $proponente = Proponente::where('user_id', '=', $id)->first();
         $participante = Participante::where('user_id', '=', $id)->first();
+
         $naturezas = Natureza::orderBy('nome')->get();
+        $cursos = Curso::orderBy('nome')->get();
 
         return view('user.perfilUser')->with(['user' => $user,
                                               'adminResp' => $adminResp,
                                               'avaliador' => $avaliador,
                                               'proponente' => $proponente,
                                               'participante' => $participante,
+                                              'cursos' => $cursos,
                                               'naturezas' => $naturezas]);
     }
 }
