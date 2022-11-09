@@ -49,6 +49,17 @@
             </span>
             @enderror
           </div>
+
+          @if ($projeto->conflitosInteresse != null &&
+            (Auth::user()->tipo == 'administrador' ||
+              Auth::user()->tipo == 'administradorResponsavel' ||
+              Auth::user()->tipo == 'coordenador'))
+            <div class="form-group col-md-6">
+              <label for="conflitosInteresse">Conflitos de interesse: </label>
+              <textarea class="form-control @error('conflitosInteresse') is-invalid @enderror" name="conflitosInteresse"
+                  rows="4" disabled>{{ $projeto->conflitosInteresse }}</textarea>
+            </div>
+          @endif
           
         </div>
     </div>
