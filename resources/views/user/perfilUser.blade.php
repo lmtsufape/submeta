@@ -150,7 +150,19 @@
                                 </span>
                                 @enderror
                             </div>
-                            @else
+
+                            <div class="col-md-6">
+                                <label for="area" class="col-form-label">{{ __('Natureza:') }}</label>
+                                <br>
+                                @foreach($naturezas as $natureza)
+                                    <input type="checkbox" name="natureza[]" id="natureza{{$natureza->id}}" value="{{$natureza->id}}" @if((empty(old('natureza')) && $avaliador->naturezas->contains($natureza->id)) || (!empty(old('natureza')) && in_array($natureza->id, old('natureza')))) checked @endif>
+                                    <label class="form-check-label" for="natureza{{$natureza->id}}">
+                                        {{ $natureza->nome }}
+                                    </label>
+                                @endforeach
+                            </div>
+                        @else
+
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="cargo" class="col-form-label">{{ __('Cargo*') }}</label>

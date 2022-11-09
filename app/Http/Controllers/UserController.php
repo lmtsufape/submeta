@@ -14,6 +14,7 @@ use App\Endereco;
 use App\Trabalho;
 use App\Coautor;
 use App\Evento;
+use App\Natureza;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
@@ -101,11 +102,15 @@ class UserController extends Controller
                 return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
             }
         }
-        if ($user->avaliadors != null && $request->area != null && $user->tipo == "avaliador") {
-            $avaliador = Avaliador::where('user_id', '=', $id)->first();
-            $avaliador->user_id = $user->id;
-            //$avaliador->area_id = $request->area;
-            $avaliador->update();
+        
+        if($user->avaliadors != null && $request->area != null && $user->tipo == "avaliador"){
+          $avaliador = Avaliador::where('user_id', '=', $id)->first();
+          $avaliador->user_id = $user->id;
+          //$avaliador->area_id = $request->area;
+
+          $avaliador->naturezas()->sync($request->natureza);
+          $avaliador->update();
+
         }
 
         switch ($request->tipo) {
@@ -208,15 +213,16 @@ class UserController extends Controller
         $avaliador = Avaliador::where('user_id', '=', $id)->first();
         $proponente = Proponente::where('user_id', '=', $id)->first();
         $participante = Participante::where('user_id', '=', $id)->first();
+
+        $naturezas = Natureza::orderBy('nome')->get();
         $cursos = Curso::orderBy('nome')->get();
 
-        return view('user.perfilUser')->with([
-            'user' => $user,
-            'adminResp' => $adminResp,
-            'avaliador' => $avaliador,
-            'proponente' => $proponente,
-            'participante' => $participante,
-            'cursos' => $cursos
-        ]);
+        return view('user.perfilUser')->with(['user' => $user,
+                                              'adminResp' => $adminResp,
+                                              'avaliador' => $avaliador,
+                                              'proponente' => $proponente,
+                                              'participante' => $participante,
+                                              'cursos' => $cursos,
+                                              'naturezas' => $naturezas]);
     }
 }
