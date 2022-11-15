@@ -869,26 +869,28 @@ class TrabalhoController extends Controller
 
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->save();
-
-            if ($request->marcado == null) {
-                $idExcluido = $trabalho->participantes->pluck('id');
-
-            } else {
-                $idExcluido = [];
-            }
-
-            foreach ($request->participante_id as $key => $value) {
-                if ($request->marcado != null && array_search($key, $request->marcado) === false) {
-                    if ($value !== null)
-                        array_push($idExcluido, $value);
+            
+            if ($evento->numParticipantes != 0) {
+                if ($request->marcado == null) {
+                    $idExcluido = $trabalho->participantes->pluck('id');
+    
+                } else {
+                    $idExcluido = [];
                 }
+    
+                foreach ($request->participante_id as $key => $value) {
+                    if ($request->marcado != null && array_search($key, $request->marcado) === false) {
+                        if ($value !== null)
+                            array_push($idExcluido, $value);
+                    }
+                }
+    
+    
+                foreach ($idExcluido as $key => $value) {
+                    $trabalho->participantes()->find($value)->delete();
+                }
+                $trabalho->refresh();
             }
-
-
-            foreach ($idExcluido as $key => $value) {
-                $trabalho->participantes()->find($value)->delete();
-            }
-            $trabalho->refresh();
 
             if ($request->has('marcado')) {
                 foreach ($request->marcado as $key => $part) {
