@@ -32,9 +32,6 @@ class UpdateTrabalho extends FormRequest
         $projeto = Trabalho::find($this->id);
         $evento = Evento::find($this->editalId);
         
-        if(!($this->has('marcado'))){
-            $rules['erro'] = ['required'];
-        }
         if($this->has('marcado')){
             foreach ($this->get('marcado') as $key => $value) {
                 if( intval($value)  == $key){
@@ -67,20 +64,13 @@ class UpdateTrabalho extends FormRequest
                     if($evento->tipo != "PIBEX") {
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
+                    $rules['anexoPlanoTrabalho.'.$value] = ['required'];
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
-
-                    if($participante !=null){
-                        $arquivo = Arquivo::where('participanteId',$participante->id)->where('trabalhoId',$projeto->id)->first();
-                        if($arquivo == null || $this->nomePlanoTrabalho[$value] != $arquivo->titulo){
-                            $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
-                        }
-                    }else{
-                        $rules['anexoPlanoTrabalho.'.$value] = ['required', 'mimes:pdf'];
-                    }
-
+    
                 }
             }
         }
+        
         // dd($this->all());
         if ($this->has('rascunho')) {
             $rules = [];

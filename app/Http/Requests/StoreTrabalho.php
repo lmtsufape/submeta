@@ -31,9 +31,6 @@ class StoreTrabalho extends FormRequest
         $evento = Evento::find($this->editalId);
         $rules = [];
         
-        if(!($this->has('marcado'))){
-            $rules['erro'] = ['required'];
-        }
         if($this->has('marcado')){
             foreach ($this->get('marcado') as $key => $value) {
                 if( intval($value)  == $key){
