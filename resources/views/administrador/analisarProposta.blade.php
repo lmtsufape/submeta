@@ -147,6 +147,7 @@
         </div>
     </div>
     <!--Discentes-->
+    @if ($evento->numParticipantes != 0)
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
@@ -288,6 +289,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     {{--Janelas para aprovação ou reprovação de substituição--}}
     <div class="modal fade" id="modalCancelarSubst" tabindex="-1" role="dialog"
