@@ -85,9 +85,21 @@
             </div>
           @endif
 
-
-
-
+          <div class="col-md-2">
+            <br>
+            <label for="conflitosInteresse" class="col-form-label font-tam"
+              style="font-weight: bold">{{ __('Conflitos de interesse: ') }}</label>
+          </div>
+          <div class="col-md-10">
+            <br>
+            <textarea class="form-control @error('conflitosInteresse') is-invalid @enderror" autocomplete="conflitosInteresse"
+              autofocus id="conflitosInteresse" name="conflitosInteresse" rows="4">{{ old('conflitosInteresse') }}</textarea>
+            @error('conflitosInteresse')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
 
         </div>
       </div>
