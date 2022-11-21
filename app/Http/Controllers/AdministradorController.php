@@ -963,12 +963,17 @@ class AdministradorController extends Controller
             $avaliador->area()->associate($area);
             $avaliador->user()->associate($user);
             $avaliador->eventos()->attach($evento);
-
+            if($evento->natureza_id == 3){
+                $avaliador->naturezas()->sync($evento->natureza_id);
+            }
             $user->save();
             $avaliador->save();
         } else {
             $avaliador = $user->avaliadors;
             $avaliador->eventos()->attach($evento);
+            if($evento->natureza_id == 3){
+                $avaliador->naturezas()->sync($evento->natureza_id);
+            }
             $user->save();
             $avaliador->save();
         }
