@@ -178,7 +178,7 @@ class TrabalhoController extends Controller
         $trabalho->status = 'Rascunho';
 
         $stringKeys = ['titulo','linkGrupoPesquisa', 'linkLattesEstudante','pontuacaoPlanilha','anexoProjeto',
-                        'anexoPlanilhaPontuacao', 'anexoLattesCoordenador'];
+                        'anexoPlanilhaPontuacao', 'anexoLattesCoordenador', 'conflitosInteresse'];
         $intKeys = ['grande_area_id','area_id','sub_area_id','coordenador_id'];
 
         $trabalho->fill(
@@ -204,6 +204,9 @@ class TrabalhoController extends Controller
       }
       if(!(is_null($request->linkGrupo))){
         $trabalho->linkGrupoPesquisa = $request->linkGrupo;
+      }
+      if(!(is_null($request->conflitosInteresse))){
+        $trabalho->conflitosInteresse = $request->conflitosInteresse;
       }
 
         //Anexos do projeto
@@ -1216,6 +1219,7 @@ class TrabalhoController extends Controller
         $projeto->evento_id = $request->editalId;
         $projeto->status = 'submetido';
         $projeto->proponente_id = $proponente->id;
+        $projeto->conflitosInteresse = $request->conflitosInteresse;
 
         // Salvando anexos no storage
         $projeto->save();

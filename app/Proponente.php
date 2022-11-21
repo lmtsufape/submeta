@@ -14,4 +14,9 @@ class Proponente extends Model
     public function trabalhos(){
       return $this->hasMany('App\Trabalho');
   	}
+
+    public function cursos()
+    {
+        return $this->belongsToMany('App\Curso', 'proponentes_cursos', 'proponente_id');
+    }
 }

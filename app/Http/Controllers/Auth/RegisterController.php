@@ -13,6 +13,7 @@ use App\User;
 use App\Participante;
 use App\Proponente;
 use App\Rules\UrlValidacao;
+use App\Curso;
 
 class RegisterController extends Controller
 {
@@ -91,7 +92,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        //dd($data);      
+        // dd($data);      
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -134,8 +135,9 @@ class RegisterController extends Controller
                 $proponente->nivel = $data['nivel'];
             }
             $proponente->linkLattes = $data['linkLattes'];
-
+            
             $user->proponentes()->save($proponente);
+            $proponente->cursos()->sync($data['curso']);
         }
         
         return $user;
@@ -143,6 +145,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        $cursos = Curso::orderBy('nome')->get();
+        return view('auth.register', compact('cursos'));
     }
 }
