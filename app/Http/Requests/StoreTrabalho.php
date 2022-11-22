@@ -64,6 +64,9 @@ class StoreTrabalho extends FormRequest
                 }
             }
 
+        } else {
+            $rules['anexoPlanoTrabalho'] = ['required'];
+            $rules['nomePlanoTrabalho'] = ['required', 'string'];
         }
 
         if($this->has('rascunho')) {

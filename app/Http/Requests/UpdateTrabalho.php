@@ -69,6 +69,9 @@ class UpdateTrabalho extends FormRequest
     
                 }
             }
+        } else {
+            $rules['anexoPlanoTrabalho'] = ['required'];
+            $rules['nomePlanoTrabalho'] = ['required', 'string'];
         }
         
         // dd($this->all());
