@@ -11,6 +11,9 @@ class Proponente extends Model
     public function user(){
         return $this->belongsTo('App\User');
     }
+    public function planoTrabalho() {
+        return $this->hasOne('App\Arquivo', 'proponenteId');
+    }
     public function trabalhos(){
       return $this->hasMany('App\Trabalho');
   	}
