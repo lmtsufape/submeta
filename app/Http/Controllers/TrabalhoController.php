@@ -1049,6 +1049,7 @@ class TrabalhoController extends Controller
                 ]);
             }
             $evento = Evento::find($request->editalId);
+            $proponente = Proponente::where('user_id', Auth::user()->id)->first();
             $request->merge([
                 'coordenador_id' => $evento->coordenadorComissao->id
             ]);
@@ -1147,6 +1148,23 @@ class TrabalhoController extends Controller
                         $arquivo->save();
 
                     }
+
+                }
+            } else {
+                $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
+                if ($request->has('anexoPlanoTrabalho')) {
+                    $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                    $nome = $data['nomePlanoTrabalho'] . ".pdf";
+                    $file = $request->anexoPlanoTrabalho;
+                    Storage::putFileAs($path, $file, $nome);
+                    $arquivo = new Arquivo();
+                    $arquivo->titulo = $data['nomePlanoTrabalho'];
+                    $arquivo->nome = $path . $nome;
+                    $arquivo->trabalhoId = $trabalho->id;
+                    $arquivo->data = now();
+                    $arquivo->proponenteId = $proponente->id;
+                    $arquivo->versaoFinal = true;
+                    $arquivo->save();
 
                 }
             }
