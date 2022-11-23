@@ -33,6 +33,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use PDF;
+use DB;
+
 
 class AdministradorController extends Controller
 {
@@ -639,8 +641,11 @@ class AdministradorController extends Controller
         $grandeAreas = GrandeArea::orderBy('nome')->get();
         $avalSelecionados = $evento->avaliadors;
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
-        $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
+        $avaliadores =  Avaliador::join('naturezas_avaliadors', 'avaliadors.id', '=' ,'naturezas_avaliadors.avaliador_id')
+                            ->whereNotIn('avaliadors.id', $avalNaoSelecionadosId)
+                            ->where('naturezas_avaliadors.natureza_id', $evento->natureza_id)
+                            ->get();
 
         if ((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')) {
             return redirect()->back();
@@ -958,12 +963,17 @@ class AdministradorController extends Controller
             $avaliador->area()->associate($area);
             $avaliador->user()->associate($user);
             $avaliador->eventos()->attach($evento);
-
+            if($evento->natureza_id == 3){
+                $avaliador->naturezas()->sync($evento->natureza_id);
+            }
             $user->save();
             $avaliador->save();
         } else {
             $avaliador = $user->avaliadors;
             $avaliador->eventos()->attach($evento);
+            if($evento->natureza_id == 3){
+                $avaliador->naturezas()->sync($evento->natureza_id);
+            }
             $user->save();
             $avaliador->save();
         }
