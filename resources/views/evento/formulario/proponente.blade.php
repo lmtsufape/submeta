@@ -114,11 +114,6 @@
                   <strong>{{ $message }}</strong>
               </span>
               @enderror
-              @error('anexoPlanoTrabalho')
-              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                  <strong>{{ $message }}</strong>
-              </span>
-              @enderror
             </div>
           @endif
 
