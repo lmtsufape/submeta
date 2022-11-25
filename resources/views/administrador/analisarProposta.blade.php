@@ -140,6 +140,21 @@
                                     <a style="color: #4D4D4D;">{{$trabalho->modalidade}}</a>
                                 </div>
                             @endif
+                            @if ($evento->numParticipantes == 0) 
+                                <div class="col-md-12">
+                                    <br>
+                                    <b style="color: #4D4D4D;">Título do Plano de Trabalho: </b>
+                                    <a style="color: #4D4D4D;">{{$trabalho->proponente->planoTrabalho->titulo}}</a>
+                                </div>
+                                <div class="col-md-12">
+                                    <br>
+                                    <label for="anexoProjeto" class="col-form-label font-tam"
+                                        style="font-weight: bold">{{ __('Anexo do Plano de Trabalho: ') }}</label>
+                                    <a href="{{ route('baixar.plano', ['id' => $trabalho->proponente->planoTrabalho->id])}}">
+                                        <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt="">
+                                    </a>
+                                </div>
+                            @endif
                             @if ($trabalho->conflitosInteresse != null)
                                 <div class="col-md-12">
                                     <br>
