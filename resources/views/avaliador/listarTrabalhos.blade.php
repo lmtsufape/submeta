@@ -85,22 +85,31 @@
                           </a>
                         </td>
                         <td>
-                          @foreach( $trabalho->participantes as $participante)
+                          @if ($evento->numParticipantes == 0)
                             @php
-                              if( App\Arquivo::where('participanteId', $participante->id)->first() != null){
-                                $planoTrabalho = App\Arquivo::where('participanteId', $participante->id)->first()->nome;
-                              }else{
-                                $planoTrabalho = null;
-                              }
+                              $planoTrabalho = $trabalho->proponente->planoTrabalho
                             @endphp
-                            @if ($planoTrabalho != null)
-                              <a href="{{route('download', ['file' => $planoTrabalho])}}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
-                                <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
-                              </a>
-                            @else
-                              Não há planos de trabalho.
-                            @endif
-                          @endforeach
+                            <a href="{{ route('baixar.plano', ['id' => $planoTrabalho->id]) }}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
+                              <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
+                            </a>
+                          @else
+                            @foreach( $trabalho->participantes as $participante)
+                              @php
+                                if( App\Arquivo::where('participanteId', $participante->id)->first() != null){
+                                  $planoTrabalho = App\Arquivo::where('participanteId', $participante->id)->first()->nome;
+                                }else{
+                                  $planoTrabalho = null;
+                                }
+                              @endphp
+                              @if ($planoTrabalho != null)
+                                <a href="{{route('download', ['file' => $planoTrabalho])}}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
+                                  <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
+                                </a>
+                              @else
+                                Não há planos de trabalho.
+                              @endif
+                            @endforeach
+                          @endif 
                         </td>
                         <td>
                           <div class="row justify-content-center">
@@ -186,7 +195,15 @@
                                       <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
                                   </a>
                               </td>
-                              <td style="text-align: center">
+                              <td style="text-align: center"> 
+                                @if ($evento->numParticipantes == 0)
+                                  @php
+                                    $planoTrabalho = $trabalho->proponente->planoTrabalho
+                                  @endphp
+                                  <a href="{{ route('baixar.plano', ['id' => $planoTrabalho->id]) }}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
+                                    <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
+                                  </a>
+                                @else
                                   @foreach( $trabalho->participantes as $participante)
                                       @php
                                           if( App\Arquivo::where('participanteId', $participante->id)->first() != null){
@@ -203,6 +220,7 @@
                                           Não há planos de trabalho.
                                       @endif
                                   @endforeach
+                                @endif 
                               </td>
                               <td style="text-align: center">
                                 @if($trabalho->pivot->recomendacao == 'RECOMENDADO')
