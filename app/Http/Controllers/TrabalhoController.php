@@ -391,6 +391,7 @@ class TrabalhoController extends Controller
         $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         $users = User::whereIn('id', $participantesUsersIds)->get();
         $arquivos = Arquivo::where('trabalhoId', $id)->get();
+        $proponente = Proponente::where('user_id', $projeto->proponente->user_id)->first();
 
         // Verficação de pendencia de substituição
         $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$projeto->participantes->pluck('id'))->get());
@@ -413,6 +414,7 @@ class TrabalhoController extends Controller
             'enum_turno' => Participante::ENUM_TURNO,
             'areasTematicas' => $areasTematicas,
             'flagSubstituicao' =>$flagSubstituicao,
+            'proponente' => $proponente,
         ]);
     }
 
@@ -480,6 +482,7 @@ class TrabalhoController extends Controller
             'estados' => $this->estados,
             'areaTematicas'        => $areaTematicas,
             'listaOds'                  => $ODS,
+            'proponente' => $proponente,
         ]);
     }
 

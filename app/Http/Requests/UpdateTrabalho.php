@@ -6,6 +6,7 @@ use App\Arquivo;
 use App\Evento;
 use App\Participante;
 use App\Trabalho;
+use App\Proponente;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
@@ -64,14 +65,15 @@ class UpdateTrabalho extends FormRequest
                     if($evento->tipo != "PIBEX") {
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
-                    $rules['anexoPlanoTrabalho.'.$value] = ['required'];
+                    $rules['anexoPlanoTrabalho.'.$value] = [Rule::requiredIf($participante->planoTrabalho == null)];
                     $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
     
                 }
             }
         } else {
-            $rules['anexoPlanoTrabalho'] = ['required'];
-            $rules['nomePlanoTrabalho'] = ['required', 'string'];
+            $proponente = Proponente::find($projeto->proponente_id);
+            $rules['anexoPlanoTrabalho'] = [Rule::requiredIf($proponente->planoTrabalho == null)];
+            $rules['nomePlanoTrabalho'] = [Rule::requiredIf($proponente->planoTrabalho->titulo == null), 'string'];
         }
         
         // dd($this->all());
