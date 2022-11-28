@@ -71,9 +71,9 @@ class UpdateTrabalho extends FormRequest
                 }
             }
         } else {
-            $proponente = Proponente::find($projeto->proponente_id);
-            $rules['anexoPlanoTrabalho'] = [Rule::requiredIf($proponente->planoTrabalho == null)];
-            $rules['nomePlanoTrabalho'] = [Rule::requiredIf($proponente->planoTrabalho->titulo == null), 'string'];
+            $arquivo = Arquivo::where("trabalhoId", $projeto->id)->first();
+            $rules['anexoPlanoTrabalho'] = [Rule::requiredIf($arquivo == null)];
+            $rules['nomePlanoTrabalho'] = [Rule::requiredIf($arquivo->titulo == null), 'string'];
         }
         
         // dd($this->all());

@@ -77,15 +77,18 @@
           @endif
 
           @if ($edital->numParticipantes == 0)
+          @php 
+          $arquivo = App\Arquivo::where("trabalhoId", $projeto->id)->first();
+          @endphp
             <div class="col-md-12">
               <br>
               <b style="color: #4D4D4D;">Título do Plano de Trabalho: </b>
-              <a style="color: #4D4D4D;">{{$projeto->proponente->planoTrabalho->titulo}}</a>
+              <a style="color: #4D4D4D;">{{$arquivo->titulo}}</a>
             </div>
 
             <div class="col-sm-4" style="float: left">
               <label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold">{{ __('Anexo do Plano de Trabalho: ') }}</label>
-              <a href="{{ route('baixar.plano', ['id' => $projeto->proponente->planoTrabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+              <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
             </div>
           @endif

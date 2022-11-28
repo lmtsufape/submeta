@@ -97,13 +97,16 @@
           @endif
 
           @if ($edital->numParticipantes == 0)
+            @php 
+            $arquivo = App\Arquivo::where("trabalhoId", $projeto->id)->first();
+            @endphp
             <div class="col-md-3">
               <br>
               <label for="nomePlanoTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Título do plano de trabalho: ') }}<span style="color: red; font-weight:bold">*</span></label>
             </div>
             <div class="col-md-9">
               <br>
-              <input type="text" class="form-control" value="{{old('nomePlanoTrabalho') ?? $proponente->planoTrabalho->titulo ?? "" }}" name="nomePlanoTrabalho" maxlength="255" id="nomePlanoTrabalho" required>
+              <input type="text" class="form-control" value="{{old('nomePlanoTrabalho') ?? $arquivo->titulo ?? "" }}" name="nomePlanoTrabalho" maxlength="255" id="nomePlanoTrabalho" required>
               <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho">
               </span>
               @error('nomePlanoTrabalho')
@@ -117,9 +120,9 @@
               <br>
               <label for="anexoPlanoTrabalho" class="col-form-label font-tam"
                 style="font-weight: bold">{{ __('Anexo do plano de trabalho: ') }}<span style="color: red; font-weight:bold">*</span></label>
-              @if ($proponente != null && $proponente->planoTrabalho)
+              @if ($proponente != null && $arquivo)
                 <a style="margin-left: 5px"
-                href="{{ route('baixar.plano', ['id' => $proponente->planoTrabalho->id]) }}">
+                href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">
                 <i class="fas fa-file-pdf fa-2x"></i></a>
                 @else
                 <p><i class="fas fa-times-circle fa-2x"></i></p>

@@ -87,7 +87,7 @@
                         <td>
                           @if ($evento->numParticipantes == 0)
                             @php
-                              $planoTrabalho = $trabalho->proponente->planoTrabalho
+                              $planoTrabalho = App\Arquivo::where("trabalhoId", $trabalho->id)->first();
                             @endphp
                             <a href="{{ route('baixar.plano', ['id' => $planoTrabalho->id]) }}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
                               <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
@@ -198,7 +198,7 @@
                               <td style="text-align: center"> 
                                 @if ($evento->numParticipantes == 0)
                                   @php
-                                    $planoTrabalho = $trabalho->proponente->planoTrabalho
+                                    $planoTrabalho = App\Arquivo::where("trabalhoId", $trabalho->id)->first();
                                   @endphp
                                   <a href="{{ route('baixar.plano', ['id' => $planoTrabalho->id]) }}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
                                     <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
