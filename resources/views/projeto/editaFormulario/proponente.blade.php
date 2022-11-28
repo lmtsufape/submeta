@@ -130,7 +130,7 @@
             </div>
             <div class="col-md-9">
               <br>
-              <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho') ?? "" }}" name="anexoPlanoTrabalho" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
+              <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho') ?? '' }}" name="anexoPlanoTrabalho" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
               @error('anexoPlanoTrabalho')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                   <strong>{{ $message }}</strong>

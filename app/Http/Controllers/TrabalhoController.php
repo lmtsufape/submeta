@@ -853,6 +853,7 @@ class TrabalhoController extends Controller
             ]);
             $trabalho = Trabalho::find($id);
             $trabalho->ods()->sync($request->ods);
+            $proponente = Proponente::where('user_id', Auth::user()->id)->first();
 
             DB::beginTransaction();
             if (!$trabalho) {
@@ -1020,6 +1021,39 @@ class TrabalhoController extends Controller
 
                 }
 
+            } else {
+                $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
+                
+                if (Arquivo::where('proponenteId', $proponente->id)->where('trabalhoId', $trabalho->id)->count()) {
+                    $arquivo = Arquivo::where('proponenteId', $proponente->id)->where('trabalhoId', $trabalho->id)->first();
+                    $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                    $nome = $data['nomePlanoTrabalho'] . ".pdf";
+                    $titulo = $data['nomePlanoTrabalho'];
+                    if ($request->has('anexoPlanoTrabalho')) {
+                        $file = $request->anexoPlanoTrabalho;
+                        Storage::putFileAs($path, $file, $nome);
+                    } else {
+                        Storage::rename( $arquivo->nome, $path.$nome );
+                    }
+                    $arquivo->update([
+                        'titulo' => $titulo,
+                        'nome' => $path . $nome,
+                        'data' => now(),
+                    ]);
+                } else {
+                    $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                    $nome = $data['nomePlanoTrabalho'] . ".pdf";
+                    $file = $request->anexoPlanoTrabalho;
+                    Storage::putFileAs($path, $file, $nome);
+                    $arquivo = new Arquivo();
+                    $arquivo->titulo = $data['nomePlanoTrabalho'];
+                    $arquivo->nome = $path . $nome;
+                    $arquivo->trabalhoId = $trabalho->id;
+                    $arquivo->data = now();
+                    $arquivo->proponenteId = $proponente->id;
+                    $arquivo->versaoFinal = true;
+                    $arquivo->save();
+                }
             }
 
             DB::commit();
