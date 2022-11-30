@@ -135,11 +135,18 @@
                             <input type="radio" name="anexoJustificativa" value="recusado" @if($parecer!=null && $parecer->statusJustificativaAutorizacaoEtica =='recusado' ) checked @else disabled  @endif>
                         </div>
 
-                        {{--Planos de trabalho--}}
+                        {{--Planos de trabalho MUDAR AQUI--}}
                         <div class="col-sm-3">
                             <label for="nomeTrabalho" class="col-form-label">{{ __('Plano de Trabalho: ') }}</label>
                             @if ($trabalho->participantes != null)
-                                <a href=" " data-toggle="modal" data-target="#modalPlanos">Planos</a>
+                                @if ($evento->numParticipantes == 0)
+                                    @php 
+                                        $arquivo = App\Arquivo::where("trabalhoId", $trabalho->id)->first();
+                                    @endphp
+                                    <a href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">Arquivo</a>
+                                @else
+                                    <a href=" " data-toggle="modal" data-target="#modalPlanos">Planos</a>
+                                @endif
                             @else
                                 -
                             @endif
