@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Administrador;
 use App\AdministradorResponsavel;
 use App\Area;
+use App\Arquivo;
 use App\AvaliacaoRelatorio;
 use App\Avaliador;
 use App\CoordenadorComissao;
@@ -123,6 +124,24 @@ class AdministradorController extends Controller
         //$avaliacoesRelatorio = [];->join('users','users.id','=','candidatos.user_id')
         $AvalRelatParcial = [];
         $AvalRelatFinal = [];
+        if ($evento->numParticipantes == 0) {
+            $arquivo = Arquivo::where("trabalhoId", $trabalho->id)->first();
+
+            if (isset($arquivo)) {
+                $avals = AvaliacaoRelatorio::where('arquivo_id', $arquivo->id)->get();
+            } else {
+                $avals = [];
+            }
+
+            foreach ($avals as $aval) {
+                if ($aval->tipo == 'Parcial') {
+                    array_push($AvalRelatParcial, $aval);
+                } else {
+                    array_push($AvalRelatFinal, $aval);
+                }
+            }
+            
+        }
         foreach ($trabalho->participantes as $participante) {
             if (isset($participante->planoTrabalho)) {
                 $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
