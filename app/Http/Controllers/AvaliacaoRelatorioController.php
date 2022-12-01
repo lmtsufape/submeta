@@ -86,9 +86,11 @@ class AvaliacaoRelatorioController extends Controller
     public function atribuicaoAvaliador(Request  $request){
 
         $trabalho = Trabalho::find($request->trabalho_id);
-        foreach ($trabalho->participantes as $participante){
-            $avaliadoresId= $request->input('avaliadores_'.$participante->planoTrabalho->id.'_id');
-            // utilizado desta forma pois a versão do PHP 7.2 é preciso que o $array usado na função count($array) não pode ser um valor NULL.
+        $evento = $trabalho->evento;
+        if ($evento->numParticipantes == 0) {
+            $arquivo = Arquivo::where("trabalhoId", $trabalho->id)->first();
+            
+            $avaliadoresId = $request->input('avaliadores_'.$arquivo->id.'_id');
             $numeroDeItens = is_countable( $avaliadoresId ) ? count( $avaliadoresId ) : 0;
 
             for ($i = 0; $i < $numeroDeItens; $i++){
@@ -97,7 +99,7 @@ class AvaliacaoRelatorioController extends Controller
                     'comentario'=>'',
                     'nota'=>null,
                     'user_id'=>$avaliadoresId[$i],
-                    'arquivo_id'=>$participante->planoTrabalho->id,
+                    'arquivo_id'=>$arquivo->id,
                 ]);
                 $avaliacao->save();
                 Notification::send( $avaliacao->user, new AtribuicaoAvaliadorRelatorioNotification($avaliacao->tipo, $avaliacao->plano, $trabalho, $avaliacao->user));
@@ -113,6 +115,38 @@ class AvaliacaoRelatorioController extends Controller
                     $avaliador->tipo = $tipoAvaliador;
                     $avaliador->user_id = $avaliadoresId[$i];
                     $avaliador->save();
+                }
+            }
+
+        } else {
+            foreach ($trabalho->participantes as $participante){
+                $avaliadoresId= $request->input('avaliadores_'.$participante->planoTrabalho->id.'_id');
+                // utilizado desta forma pois a versão do PHP 7.2 é preciso que o $array usado na função count($array) não pode ser um valor NULL.
+                $numeroDeItens = is_countable( $avaliadoresId ) ? count( $avaliadoresId ) : 0;
+
+                for ($i = 0; $i < $numeroDeItens; $i++){
+                    $avaliacao = AvaliacaoRelatorio::create([
+                        'tipo'=>$request->tipo_relatorio,
+                        'comentario'=>'',
+                        'nota'=>null,
+                        'user_id'=>$avaliadoresId[$i],
+                        'arquivo_id'=>$participante->planoTrabalho->id,
+                    ]);
+                    $avaliacao->save();
+                    Notification::send( $avaliacao->user, new AtribuicaoAvaliadorRelatorioNotification($avaliacao->tipo, $avaliacao->plano, $trabalho, $avaliacao->user));
+
+                    if(Avaliador::where('user_id',$avaliadoresId[$i])->get()->count()==0){
+                        $userTemp = User::find($avaliadoresId[$i]);
+                        if($userTemp->instituicao==null || $userTemp->instituicao == "UFAPE" || $userTemp->instituicao == "Universidade Federal do Agreste de Pernambuco"){
+                            $tipoAvaliador = "Interno";
+                        }else{
+                            $tipoAvaliador = "Externo";
+                        }
+                        $avaliador = new Avaliador();
+                        $avaliador->tipo = $tipoAvaliador;
+                        $avaliador->user_id = $avaliadoresId[$i];
+                        $avaliador->save();
+                    }
                 }
             }
         }
