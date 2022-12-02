@@ -181,7 +181,7 @@
   </div>
 </div>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js%22%3E"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 <script>
   if("{{old('autorizacaoFlag')}}" == "sim"){
     $('#radioSim').click();

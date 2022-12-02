@@ -124,6 +124,7 @@ class ArquivoController extends Controller
 
         $trabalho = Trabalho::where('id',$id)->first();
         $participantes = $trabalho->participantes;
+        $evento = $trabalho->evento;
 
         // Verficação de pendencia de substituição
         $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$trabalho->participantes->pluck('id'))->get());
@@ -139,12 +140,18 @@ class ArquivoController extends Controller
             return redirect()->back();
         }
 
-        foreach ($participantes as $participante){
-            array_push($arquivos, $participante->planoTrabalho);
+        if ($evento->numParticipantes != 0) {
+            foreach ($participantes as $participante){
+                array_push($arquivos, $participante->planoTrabalho);
+            }
+        } else {
+            $arquivo = Arquivo::where("trabalhoId", $trabalho->id)->first();
+            array_push($arquivos, $arquivo);
         }
+        
         $hoje = Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
-        return view('planosTrabalho.listar')->with(['arquivos' => $arquivos, 'hoje' => $hoje, 'trabalho' => $trabalho]);
+        return view('planosTrabalho.listar')->with(['arquivos' => $arquivos, 'hoje' => $hoje, 'trabalho' => $trabalho, 'evento' => $evento]);
     }
 
     public function anexarRelatorio(Request $request){

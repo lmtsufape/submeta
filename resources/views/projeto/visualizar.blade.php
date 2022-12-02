@@ -32,8 +32,10 @@
       @component('projeto.formularioVisualizar.anexos2', ['edital' => $edital,'projeto' => $projeto])
       @endcomponent
       
+      @if ($edital->numParticipantes != 0)
       @component('projeto.formularioVisualizar.participantes2', ['projeto' => $projeto, 'edital' => $edital])
       @endcomponent
+      @endif
 
       @component('projeto.formularioVisualizar.relatorio',['edital' => $edital,'projeto' => $projeto,'flagSubstituicao' =>$flagSubstituicao])
       @endcomponent

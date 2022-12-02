@@ -391,6 +391,7 @@ class TrabalhoController extends Controller
         $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         $users = User::whereIn('id', $participantesUsersIds)->get();
         $arquivos = Arquivo::where('trabalhoId', $id)->get();
+        $proponente = Proponente::where('user_id', $projeto->proponente->user_id)->first();
 
         // Verficação de pendencia de substituição
         $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$projeto->participantes->pluck('id'))->get());
@@ -413,6 +414,7 @@ class TrabalhoController extends Controller
             'enum_turno' => Participante::ENUM_TURNO,
             'areasTematicas' => $areasTematicas,
             'flagSubstituicao' =>$flagSubstituicao,
+            'proponente' => $proponente,
         ]);
     }
 
@@ -480,6 +482,7 @@ class TrabalhoController extends Controller
             'estados' => $this->estados,
             'areaTematicas'        => $areaTematicas,
             'listaOds'                  => $ODS,
+            'proponente' => $proponente,
         ]);
     }
 
@@ -850,6 +853,7 @@ class TrabalhoController extends Controller
             ]);
             $trabalho = Trabalho::find($id);
             $trabalho->ods()->sync($request->ods);
+            $proponente = Proponente::where('user_id', Auth::user()->id)->first();
 
             DB::beginTransaction();
             if (!$trabalho) {
@@ -872,26 +876,28 @@ class TrabalhoController extends Controller
 
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->save();
-
-            if ($request->marcado == null) {
-                $idExcluido = $trabalho->participantes->pluck('id');
-
-            } else {
-                $idExcluido = [];
-            }
-
-            foreach ($request->participante_id as $key => $value) {
-                if ($request->marcado != null && array_search($key, $request->marcado) === false) {
-                    if ($value !== null)
-                        array_push($idExcluido, $value);
+            
+            if ($evento->numParticipantes != 0) {
+                if ($request->marcado == null) {
+                    $idExcluido = $trabalho->participantes->pluck('id');
+    
+                } else {
+                    $idExcluido = [];
                 }
+    
+                foreach ($request->participante_id as $key => $value) {
+                    if ($request->marcado != null && array_search($key, $request->marcado) === false) {
+                        if ($value !== null)
+                            array_push($idExcluido, $value);
+                    }
+                }
+    
+    
+                foreach ($idExcluido as $key => $value) {
+                    $trabalho->participantes()->find($value)->delete();
+                }
+                $trabalho->refresh();
             }
-
-
-            foreach ($idExcluido as $key => $value) {
-                $trabalho->participantes()->find($value)->delete();
-            }
-            $trabalho->refresh();
 
             if ($request->has('marcado')) {
                 foreach ($request->marcado as $key => $part) {
@@ -1015,6 +1021,39 @@ class TrabalhoController extends Controller
 
                 }
 
+            } else {
+                $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
+                
+                if (Arquivo::where('proponenteId', $proponente->id)->where('trabalhoId', $trabalho->id)->count()) {
+                    $arquivo = Arquivo::where('proponenteId', $proponente->id)->where('trabalhoId', $trabalho->id)->first();
+                    $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                    $nome = $data['nomePlanoTrabalho'] . ".pdf";
+                    $titulo = $data['nomePlanoTrabalho'];
+                    if ($request->has('anexoPlanoTrabalho')) {
+                        $file = $request->anexoPlanoTrabalho;
+                        Storage::putFileAs($path, $file, $nome);
+                    } else {
+                        Storage::rename( $arquivo->nome, $path.$nome );
+                    }
+                    $arquivo->update([
+                        'titulo' => $titulo,
+                        'nome' => $path . $nome,
+                        'data' => now(),
+                    ]);
+                } else {
+                    $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                    $nome = $data['nomePlanoTrabalho'] . ".pdf";
+                    $file = $request->anexoPlanoTrabalho;
+                    Storage::putFileAs($path, $file, $nome);
+                    $arquivo = new Arquivo();
+                    $arquivo->titulo = $data['nomePlanoTrabalho'];
+                    $arquivo->nome = $path . $nome;
+                    $arquivo->trabalhoId = $trabalho->id;
+                    $arquivo->data = now();
+                    $arquivo->proponenteId = $proponente->id;
+                    $arquivo->versaoFinal = true;
+                    $arquivo->save();
+                }
             }
 
             DB::commit();
@@ -1047,6 +1086,7 @@ class TrabalhoController extends Controller
                 ]);
             }
             $evento = Evento::find($request->editalId);
+            $proponente = Proponente::where('user_id', Auth::user()->id)->first();
             $request->merge([
                 'coordenador_id' => $evento->coordenadorComissao->id
             ]);
@@ -1145,6 +1185,23 @@ class TrabalhoController extends Controller
                         $arquivo->save();
 
                     }
+
+                }
+            } else {
+                $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
+                if ($request->has('anexoPlanoTrabalho')) {
+                    $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                    $nome = $data['nomePlanoTrabalho'] . ".pdf";
+                    $file = $request->anexoPlanoTrabalho;
+                    Storage::putFileAs($path, $file, $nome);
+                    $arquivo = new Arquivo();
+                    $arquivo->titulo = $data['nomePlanoTrabalho'];
+                    $arquivo->nome = $path . $nome;
+                    $arquivo->trabalhoId = $trabalho->id;
+                    $arquivo->data = now();
+                    $arquivo->proponenteId = $proponente->id;
+                    $arquivo->versaoFinal = true;
+                    $arquivo->save();
 
                 }
             }

@@ -140,6 +140,24 @@
                                     <a style="color: #4D4D4D;">{{$trabalho->modalidade}}</a>
                                 </div>
                             @endif
+                            @if ($evento->numParticipantes == 0) 
+                            @php 
+                            $arquivo = App\Arquivo::where("trabalhoId", $trabalho->id)->first();
+                            @endphp
+                                <div class="col-md-12">
+                                    <br>
+                                    <b style="color: #4D4D4D;">Título do Plano de Trabalho: </b>
+                                    <a style="color: #4D4D4D;">{{$arquivo->titulo}}</a>
+                                </div>
+                                <div class="col-md-12">
+                                    <br>
+                                    <label for="anexoProjeto" class="col-form-label font-tam"
+                                        style="font-weight: bold">{{ __('Anexo do Plano de Trabalho: ') }}</label>
+                                    <a href="{{ route('baixar.plano', ['id' => $arquivo->id])}}">
+                                        <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt="">
+                                    </a>
+                                </div>
+                            @endif
                             @if ($trabalho->conflitosInteresse != null)
                                 <div class="col-md-12">
                                     <br>
@@ -154,6 +172,7 @@
         </div>
     </div>
     <!--Discentes-->
+    @if ($evento->numParticipantes != 0)
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
@@ -295,6 +314,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     {{--Janelas para aprovação ou reprovação de substituição--}}
     <div class="modal fade" id="modalCancelarSubst" tabindex="-1" role="dialog"
@@ -515,7 +535,7 @@
                         <div class="form-row mt-3">
                             <div class="col-sm-9"><h5 style="color: #234B8B; font-weight: bold">Relatórios</h5></div>
                             <div class="col-sm-3 text-sm-right">
-                                @if($substituicoesPendentes->count() == 0)
+                                @if($substituicoesPendentes->count() == 0 || $evento->numParticipantes == 0)
                                     <a href="{{route('planos.listar', ['id' => $trabalho->id])}}" class="button">Listar
                                         Relatórios</a>
                                 @else
@@ -571,7 +591,7 @@
                             <div class="col-sm-11"><h5 style="color: #234B8B; font-weight: bold">Avaliações de
                                     Relatórios</h5></div>
                             @if((($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
-                                || ($hoje>$evento->dt_fimRelatorioFinal)) && ($substituicoesPendentes->count() == 0) )
+                                || ($hoje>$evento->dt_fimRelatorioFinal)) && ($substituicoesPendentes->count() == 0 || $evento->numParticipantes == 0) )
                                 <div class="col-md-1 text-sm-right">
                                     <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal"
                                        data-target="#avaliacaoRelatorioModal">
@@ -586,7 +606,7 @@
                                 </div>
                             @endif
                             <!-- Modal -->
-                            @if($substituicoesPendentes->count() == 0)
+                            @if($substituicoesPendentes->count() == 0 || $evento->numParticipantes == 0)
                             <div class="modal fade" id="avaliacaoRelatorioModal" data-bs-backdrop="static"
                                  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                  aria-hidden="true" style="overflow-y: auto">
@@ -595,7 +615,7 @@
                                         <div class="modal-header modal-header-submeta">
                                             <div class="col-md-8" style="padding-left: 0px">
                                                 <h5 class="modal-title titulo-table" id="avaliacaoModalLongTitle">
-                                                    @if($substituicoesPendentes->count() == 0) Seleciones o(s) avaliador(es) @else Pendências de Substituição @endif</h5>
+                                                    @if($substituicoesPendentes->count() == 0 || $evento->numParticipantes == 0) Seleciones o(s) avaliador(es) @else Pendências de Substituição @endif</h5>
                                             </div>
                                             <div class="col-md-4" style="text-align: right">
                                                 <button type="button" id="enviarConviteButton" class="btn btn-info"
@@ -609,7 +629,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        @if(isset($participante->planoTrabalho))
+                                        @if(isset($participante->planoTrabalho) || $evento->numParticipantes == 0)
                                         <div class="modal-body">
                                             @if (session('error'))
                                                 <div class="col-md-12">
@@ -647,6 +667,26 @@
                                                             <input type="text" class="form-control form-control-edit" placeholder="Nome do avaliador" onkeyup="buscarAvalRelatorio(this)"> <img src="{{asset('img/icons/logo_lupa.png')}}" alt="">
                                                         </div>
                                                     </div>
+                                                    @if ($evento->numParticipantes == 0)
+                                                        <div class="col-md-6">
+                                                            <label style="font-weight: bold;font-size: 18px">Plano: {{$arquivo->titulo}}</label>
+                                                        </div>
+                                                        @php
+                                                            $avaliacoesId = \App\AvaliacaoRelatorio::where("arquivo_id",$arquivo->id)->where("tipo",$tipoTemp)->pluck('user_id');
+                                                            $avalProjeto = \Illuminate\Support\Facades\DB::table('users')->join('avaliadors','users.id','=','avaliadors.user_id')->whereNotIn('users.id', $avaliacoesId)->orderBy('users.name')->get();
+                                                        @endphp
+
+                                                        <select name="avaliadores_{{$arquivo->id}}_id[]" multiple
+                                                            class="form-control" id="avaliacaoSelect"
+                                                            style="height: 200px;font-size:15px">
+                                                        @foreach ($avalProjeto as $avaliador)
+                                                                <option value="{{ $avaliador->user_id }}"> {{ $avaliador->name }}
+                                                                    > {{$avaliador->instituicao ?? 'Instituição Indefinida'}}
+                                                                    > {{$avaliador->tipo}}
+                                                                    > {{$avaliador->email}}</option>
+                                                        @endforeach
+                                                        </select>
+                                                    @else
                                                     @foreach($trabalho->participantes as $participante)
                                                         <div class="col-md-6">
                                                             <label style="font-weight: bold;font-size: 18px">Plano: {{$participante->planoTrabalho->titulo}}</label>
@@ -668,6 +708,7 @@
                                                             @endforeach
                                                         </select>
                                                     @endforeach
+                                                    @endif
                                                     <small id="emailHelp" class="form-text text-muted">Segure SHIFT do
                                                         teclado para selecionar mais de um.</small>
                                                 </div>

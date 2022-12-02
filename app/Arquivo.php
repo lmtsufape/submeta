@@ -15,7 +15,7 @@ class Arquivo extends Model
 
   use SoftDeletes;
   protected $fillable = [
-      'nome','titulo', 'versao', 'versaoFinal', 'data', 'trabalhoId', 'participanteId'
+      'nome','titulo', 'versao', 'versaoFinal', 'data', 'trabalhoId', 'participanteId', 'proponenteId'
   ];
 
   public function trabalho(){
@@ -29,6 +29,11 @@ class Arquivo extends Model
   public function participante() {
       return $this->belongsTo('App\Participante', 'participanteId');
   }
+
+  public function proponente() {
+      return $this->belongsTo('App\Proponente', 'proponenteId');
+  }
+  
   public function avaliadors(){
     return $this->belongsToMany('App\Avaliador', 'avaliadors_plano_trabalho')->withPivot('status', 'AnexoParecer', 'parecer', 'recomendacao', 'created_at');
   }

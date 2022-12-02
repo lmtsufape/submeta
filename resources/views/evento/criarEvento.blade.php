@@ -60,7 +60,7 @@
             <div class="col-sm-2">
                 <label for="numParticipantes" class="col-form-label">{{ __('Nº de Discentes:') }}<span style="color:red; font-weight:bold;">*</span></label>
 
-                <input id="numParticipantes" type="number" min="1" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ old('numParticipantes') }}" required autocomplete="numParticipantes" autofocus>
+                <input id="numParticipantes" type="number" min="0" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ old('numParticipantes') }}" required autocomplete="numParticipantes" autofocus>
 
                 @error('numParticipantes')
                 <span class="invalid-feedback" role="alert">

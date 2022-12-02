@@ -103,12 +103,13 @@
                                                             <div class="col-md-12">
                                                                 <p class="proponenteProj" style="color: #4D4D4D; padding: 0px"><b>Proponente:</b> {{ App\Proponente::find($trabalho->proponente_id)->user->name }}</p>
                                                             </div>
-
+                                                            @if ($evento->numParticipantes != 0)
                                                             <div class="col-md-12"> <p style="color: #4D4D4D; padding: 0px"><b>Discentes:</b>
                                                                 @foreach($trabalho->participantes as $participante)
                                                                     {{$participante->user->name}};
                                                                 @endforeach
                                                             </div>
+                                                            @endif
                                                             @if($trabalho->grande_area_id != null && $trabalho->area_id != null && $trabalho->sub_area_id != null)
                                                                 <div class="col-md-12">
                                                                     <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">{{$trabalho->grandeArea->nome}} > {{$trabalho->area->nome}} > {{$trabalho->subArea->nome}}</h6>
