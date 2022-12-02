@@ -1033,7 +1033,9 @@ class TrabalhoController extends Controller
                         $file = $request->anexoPlanoTrabalho;
                         Storage::putFileAs($path, $file, $nome);
                     } else {
-                        Storage::rename( $arquivo->nome, $path.$nome );
+                        if($arquivo->nome != $path.$nome) {
+                            Storage::rename( $arquivo->nome, $path.$nome );
+                        }
                     }
                     $arquivo->update([
                         'titulo' => $titulo,
