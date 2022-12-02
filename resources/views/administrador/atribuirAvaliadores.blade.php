@@ -39,29 +39,39 @@
 	      </div>
           
 	      <div class="col-sm-3 d-flex justify-content-center">
-              <a href="{{ route('admin.projetos', ['evento_id' => $evento->id]) }}" style="text-decoration:none; color: inherit;">
+              <a @if(count($evento->trabalhos) > 0) href="{{ route('admin.projetos', ['evento_id' => $evento->id]) }}" @else href="#" @endif style="text-decoration:none; color: inherit;">
 	            <div class="card text-center card-menu">
 					<div class="card-body d-flex justify-content-center">
-						<div class="container">
-							<div class="row titulo-card-menu">
-								<div class="col-md-12">
-									<h2 style="padding-top:15px">Selecionar projetos</h2>
+						@if(count($evento->trabalhos) == 0)
+							<h2 style="padding-top:15px">EDITAL NÃO POSSUI PROJETOs</h2>
+
+						@else
+							<div class="container">
+								<div class="row titulo-card-menu">
+									<div class="col-md-12">
+										
+										<h2 style="padding-top:15px">Selecionar projetos</h2>
+										
+									</div>
+								</div>
+								@php
+									$projetos = \App\Trabalho::count();
+								@endphp
+								<div class="row">
+									<div class="col-md-12">
+										<h5>Nº total de projetos:</h5>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<h1 class="quant-titulo-card">{{$projetos}}</h1>
+									</div>
 								</div>
 							</div>
-							@php
-								$projetos = \App\Trabalho::count();
-							@endphp
-							<div class="row">
-								<div class="col-md-12">
-									<h5>Nº total de projetos:</h5>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<h1 class="quant-titulo-card">{{$projetos}}</h1>
-								</div>
-							</div>
-						</div>
+						@endif
+						
+						
+						
 					</div>
 	            </div>
 	         </a>

@@ -1625,16 +1625,18 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Instituição <span
-                                        style="color: red; font-weight:bold">*</span></label>
-                            <select class="form-control" name="instituicao" id="membro" required
-                                    onchange="mostrarDiv(this)">
-                                <option value="" disabled>-- Selecione a instituição --</option>
-                                <option value="ufape">Universidade Federal do Agreste de Pernambuco</option>
-                                <option value="outra">Outra</option>
-                            </select>
-                        </div>
+                        @if($evento->natureza_id != 3)
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Instituição <span
+                                            style="color: red; font-weight:bold">*</span></label>
+                                <select class="form-control" name="instituicao" id="membro" required
+                                        onchange="mostrarDiv(this)">
+                                    <option value="" disabled>-- Selecione a instituição --</option>
+                                    <option value="ufape">Universidade Federal do Agreste de Pernambuco</option>
+                                    <option value="outra">Outra</option>
+                                </select>
+                            </div>
+                        @endif
 
                         <div class="form-group" id="div-outra"
                              style="@if(old('instituicao') != null && old('instituicao') == "outra") display: block; @else display: none; @endif">

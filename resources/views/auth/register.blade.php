@@ -25,7 +25,6 @@
                                 <div class="form-group">
                                     <label for="name" class="col-form-label">{{ __('Nome Completo') }} <span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Digite seu nome completo" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                    
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -68,7 +67,7 @@
                                     <select style="display: inline" onchange="showInstituicao()" class="form-control @error('instituicaoSelect') is-invalid @enderror" name="instituicaoSelect" id="instituicaoSelect">
                                         <option value="" disabled selected hidden>-- Instituição --</option>
                                         <option @if(old('instituicaoSelect')=='UFAPE' ) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
-                                        <option @if(old('instituicaoSelect')=='Outra' ) selected @endif value="Outra" >Outra</option>
+                                        <option @if(old('instituicaoSelect')=='Outra' ) selected @endif value="Outra">Outra</option>
                                     </select>
                                     @error('instituicaoSelect')
                                     <span class="invalid-feedback" role="alert">
@@ -124,11 +123,26 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <div style="display:none" id="cursos" class="col-md-12 mb-2">
+                                <label for="curso" class="col-form-label">{{ __('Cursos que leciona') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                <br>
+                                <div class="row col-md-12">
+                                    @foreach($cursos as $curso)
+                                    <div class="col-sm-6">
+                                        <input type="checkbox" name="curso[]" id="curso{{$curso->id}}" value="{{$curso->id}}">
+                                        <label class="form-check-label" for="curso{{$curso->id}}">
+                                            {{ $curso->nome }}
+                                        </label>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+
                             <div class="col-md-12">
                                 <div class="form-group" style="display: block;" id="divOutro">
                                     <label for="outro" class="col-form-label">{{ __('Qual?') }} <span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="outro" type="text" class="form-control @error('outro') is-invalid @enderror" name="outro" placeholder="Digite aqui o seu vínculo" value="{{ old('outro') }}">
-                    
                                     @error('outro')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -141,9 +155,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima') }} <span style="color: red; font-weight:bold;">*</span></label>
-                                            <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome">
+                                            <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome" , onchange="curso()">
                                                 <option value="" disabled selected hidden>-- Titulação --</option>
-                                                <option @if(old('titulacaoMaxima')=='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
+                                                <option @if(old('titulacaoMaxima')=='Doutorado' ) selected @endif value=" Doutorado">Doutorado</option>
                                                 <option @if(old('titulacaoMaxima')=='Mestrado' ) selected @endif value="Mestrado">Mestrado</option>
                                                 <option @if(old('titulacaoMaxima')=='Especialização' ) selected @endif value="Especialização">Especialização</option>
                                                 <option @if(old('titulacaoMaxima')=='Graduação' ) selected @endif value="Graduação">Graduação</option>
@@ -224,7 +238,7 @@
                                         <div class="form-group" id="nivelInput" style="display: block;">
                                             <label for="nivel" class="col-form-label">{{ __('Nível') }} <span style="color: red; font-weight:bold;">*</span></label>
                                             <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
-                                                <option value="" disabled selected hidden></option>                     
+                                                <option value="" disabled selected hidden></option>
                                                 <option value="1A">1A</option>
                                                 <option value="1B">1B</option>
                                                 <option value="1C">1C</option>
@@ -238,7 +252,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div> <!-- -->
                             <div class="col-md-12">
@@ -314,15 +328,24 @@
         var divProponente = document.getElementById('proponente');
         var comboBoxCargo = document.getElementById('cargo');
         var comboBoxVinculo = document.getElementById('vinculo');
-
+        
         if (comboBoxCargo.value === "Estudante" && comboBoxVinculo.value !== "Pós-doutorando") {
             divProponente.style.display = "none";
         } else {
-            document.getElementById("outro").value="";
+            document.getElementById("outro").value = "";
             divProponente.style.display = "block";
         }
-
+        
         outroVinculo();
+    }
+    
+    function curso() {
+        let cursos = document.getElementById('cursos');
+        if (titulacaoMaxima.value !== "Técnico") {
+            cursos.style.display = "block";
+        } else {
+            cursos.style.display = "none";
+        }
     }
 
     function outroVinculo() {
@@ -347,20 +370,20 @@
         }
     }
 
-    function showInstituicao(){
+    function showInstituicao() {
         var instituicao = document.getElementById('instituicao');
         var instituicaoSelect = document.getElementById('instituicaoSelect');
 
-        if(instituicaoSelect.value === "Outra"){        
+        if (instituicaoSelect.value === "Outra") {
             document.getElementById("displayOutro").style.display = "block";
             instituicao.parentElement.style.display = '';
-            document.getElementById('instituicao').value="";
-        }else if(instituicaoSelect.value === "UFAPE"){
+            document.getElementById('instituicao').value = "";
+        } else if (instituicaoSelect.value === "UFAPE") {
             document.getElementById("displayOutro").style.display = "none";
         }
     }
 
-    function onload(){
+    function onload() {
         mudarNivel();
         outroVinculo();
         mudar();
