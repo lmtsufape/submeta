@@ -92,14 +92,15 @@
                                     @enderror
                                 </div>
                             </div>
-                            @if (Auth()->user()->tipo == 'proponente')
+                            @if(isset($proponente) && $proponente->titulacaoMaxima != 'Técnico')
                             <div class="col-md-12 mb-2">
-                                <label for="curso" class="col-form-label">{{ __('Cursos*:') }}</label>
+                                <label for="curso" class="col-form-label">{{ __('Cursos em que leciona*:') }}</label>
                                 <br>
                                 <div class="row col-md-12">
                                     @foreach($cursos as $curso)
                                     <div class="col-sm-6">
-                                        <input type="checkbox" name="curso[]" id="curso{{$curso->id}}" value="{{$curso->id}}" @if((empty(old('curso')) && $proponente->cursos->contains($curso->id)) || (!empty(old('curso')) && in_array($curso->id, old('curso')))) checked @endif>
+                                        <input type="checkbox" name="curso[]" id="curso{{$curso->id}}" value="{{$curso->id}}" @if((empty(old('curso')) && $proponente->cursos->contains($curso->id)) || (!empty(old('curso')) && in_array($curso->id, old('curso')))) checked
+                                        @endif>
                                         <label class="form-check-label" for="curso{{$curso->id}}">
                                             {{ $curso->nome }}
                                         </label>
@@ -124,22 +125,22 @@
                                 <label for="area" class="col-form-label">{{ __('Área:') }}</label>
                                 <select style="display: inline" class="form-control @error('area') is-invalid @enderror" name="area" id="area">
                                     @if(Auth()->user()->avaliadors->area_id == null)
-                                        <option value="" selected>Indefinida</option>
-                                        @foreach (App\Area::all() as $area)
-                                            @if(Auth()->user()->avaliadors->area_id == $area->id)
-                                                <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
-                                            @else
-                                            <option value="{{ $area->id }}">{{ $area->nome }}</option>
-                                            @endif
-                                        @endforeach
+                                    <option value="" selected>Indefinida</option>
+                                    @foreach (App\Area::all() as $area)
+                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
+                                    <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
                                     @else
-                                        @foreach (App\Area::all() as $area)
-                                            @if(Auth()->user()->avaliadors->area_id == $area->id)
-                                                <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
-                                            @else
-                                                <option value="{{ $area->id }}">{{ $area->nome }}</option>
-                                            @endif
-                                        @endforeach
+                                    <option value="{{ $area->id }}">{{ $area->nome }}</option>
+                                    @endif
+                                    @endforeach
+                                    @else
+                                    @foreach (App\Area::all() as $area)
+                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
+                                    <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
+                                    @else
+                                    <option value="{{ $area->id }}">{{ $area->nome }}</option>
+                                    @endif
+                                    @endforeach
                                     @endif
 
                                 </select>
@@ -155,13 +156,13 @@
                                 <label for="area" class="col-form-label">{{ __('Natureza:') }}</label>
                                 <br>
                                 @foreach($naturezas as $natureza)
-                                    <input type="checkbox" name="natureza[]" id="natureza{{$natureza->id}}" value="{{$natureza->id}}" @if((empty(old('natureza')) && $avaliador->naturezas->contains($natureza->id)) || (!empty(old('natureza')) && in_array($natureza->id, old('natureza')))) checked @endif>
-                                    <label class="form-check-label" for="natureza{{$natureza->id}}">
-                                        {{ $natureza->nome }}
-                                    </label>
+                                <input type="checkbox" name="natureza[]" id="natureza{{$natureza->id}}" value="{{$natureza->id}}" @if((empty(old('natureza')) && $avaliador->naturezas->contains($natureza->id)) || (!empty(old('natureza')) && in_array($natureza->id, old('natureza')))) checked @endif>
+                                <label class="form-check-label" for="natureza{{$natureza->id}}">
+                                    {{ $natureza->nome }}
+                                </label>
                                 @endforeach
                             </div>
-                        @else
+                            @else
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -233,7 +234,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima*') }}</label>
-                                            <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome">
+                                            <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome" , onchange="curso()">
                                                 <option value="" disabled selected hidden>-- Titulação --</option>
                                                 @isset($proponente)
                                                 <option @if( $proponente->titulacaoMaxima =='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>

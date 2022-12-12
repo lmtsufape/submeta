@@ -137,7 +137,9 @@ class RegisterController extends Controller
             $proponente->linkLattes = $data['linkLattes'];
             
             $user->proponentes()->save($proponente);
-            $proponente->cursos()->sync($data['curso']);
+            if($proponente->titulacaoMaxima == 'Técnico'){
+                $proponente->cursos()->sync($data['curso']);
+            }
         }
         
         return $user;
