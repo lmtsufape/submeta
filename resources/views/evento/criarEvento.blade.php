@@ -398,6 +398,40 @@
         <hr>
         <div class="row subtitulo">
             <div class="col-sm-12">
+                <p>Critérios para Avaliação</p>
+            </div>
+        </div>
+
+        <table class="table table-bordered" id="dynamicAddRemove">
+            <tr>
+                <th>Nome</th>
+                <th>Nota Máxima</th>
+                <th>Peso</th>
+                <th>Prioridade</th>
+                <th>Ação</th>
+            </tr>
+            <tr>
+                <td><input type="text" min=1 name="addMoreInputFields[0][nome]" class="form-control" />
+                </td>
+                <td><input type="number" min=1  step="1" name="addMoreInputFields[0][nota_maxima]" class="form-control" />
+                </td>
+                <td><input type="number" min=1  step="1" name="addMoreInputFields[0][peso]" class="form-control" />
+                </td>
+                <td>
+                    <select name="addMoreInputFields[0][prioridade][]" class="form-control">
+                        <option value="" selected>-- ORDEM --</option>
+                        {{-- @for($j = 1; $j <= $edital->numParticipantes; $j++)
+                            <option @if((old('ordem_prioridade')[$i] ?? "" )==$j) selected @endif value="{{ $j }}">{{ $j }}</option>
+                        @endfor --}}
+                    </select>
+                </td>
+                <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
+            </tr>
+        </table>
+
+        <hr>
+        <div class="row subtitulo">
+            <div class="col-sm-12">
                 <p>Documentos</p>
             </div>
         </div>
@@ -505,6 +539,23 @@
 
 @section('javascript')
 <script type="text/javascript">
+    var i = 0;
+    $("#dynamic-ar").click(function () {
+        ++i;
+        $("#dynamicAddRemove").append(
+            '<tr><td><input type="text" min=1 name="addMoreInputFields[' + i +
+            '][nome]" class="form-control" /></td><td><input type="number" min=1  step="1" name="addMoreInputFields[' + i +
+            '][valor]" class="form-control" /></td><td><input type="number" min=1  step="1" name="addMoreInputFields[' + i +
+            '][peso]" class="form-control" /></td><td><select name="addMoreInputFields[' + i +
+            '][prioridade][]" class="form-control"><option value="" selected>-- ORDEM --</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field">Remover</button></td></tr>'
+            );
+            console.log(i)
+    });
+
+    $(document).on('click', '.remove-input-field', function () {
+        $(this).parents('tr').remove();
+    });
+
     function selecionar_decisao_camara() {
         var natureza = document.getElementById('natureza');
         if (natureza.value == 3) {
