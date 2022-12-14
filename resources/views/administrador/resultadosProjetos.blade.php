@@ -52,7 +52,11 @@
                     <th scope="col">Pontuação</th>
                     <th scope="col" style="width: 100%;">Nome do projeto</th>
                     <th scope="col">Proponente</th>
-                    <th scope="col">Área</th>
+                    @if($evento->natureza_id != 3)
+                        <th scope="col">Área</th>
+                    @else
+                        <th scope="col">Área Temática</th>
+                    @endif
                     <th scope="col">N. Planos</th>
                     <th scope="col">Avaliador</th>
                     <th scope="col">Status</th>
@@ -73,7 +77,11 @@
                                 {{$trabalho->proponente->user->name}}
                             </td>
                             <td>
-                                {{$trabalho->area->nome}}
+                                @if($evento->natureza_id != 3)
+                                    {{$trabalho->area->nome}}
+                                @else
+                                    {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                @endif
                             </td>
                             <td>
                                 {{$trabalho->participantes->count()}}
@@ -138,7 +146,11 @@
                     <th scope="col">Pontuação</th>
                     <th scope="col" style="width: 100%;">Nome do projeto</th>
                     <th scope="col">Proponente</th>
-                    <th scope="col">Área</th>
+                    @if($evento->natureza_id != 3)
+                        <th scope="col">Área</th>
+                    @else
+                        <th scope="col">Área Temática</th>
+                    @endif
                     <th scope="col">N. Planos</th>
                     <th scope="col">Avaliador</th>
                     <th scope="col">Status</th>
@@ -159,7 +171,11 @@
                                 {{$trabalho->proponente->user->name}}
                             </td>
                             <td>
-                                {{$trabalho->area->nome}}
+                                @if($evento->natureza_id != 3)
+                                    {{$trabalho->area->nome}}
+                                @else
+                                    {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                @endif
                             </td>
                             <td>
                                 {{$trabalho->participantes->count()}}
@@ -225,7 +241,11 @@
                     <th scope="col">Pontuação</th>
                     <th scope="col" style="width: 100%;">Nome do projeto</th>
                     <th scope="col">Proponente</th>
-                    <th scope="col">Área</th>
+                    @if($evento->natureza_id != 3)
+                        <th scope="col">Área</th>
+                    @else
+                        <th scope="col">Área Temática</th>
+                    @endif
                     <th scope="col">N. Planos</th>
                     <th scope="col">Avaliador</th>
                     <th scope="col">Status</th>
@@ -246,7 +266,11 @@
                                 {{$trabalho->proponente->user->name}}
                             </td>
                             <td>
-                                {{$trabalho->area->nome}}
+                                @if($evento->natureza_id != 3)
+                                    {{$trabalho->area->nome}}
+                                @else
+                                    {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                @endif
                             </td>
                             <td>
                                 {{$trabalho->participantes->count()}}

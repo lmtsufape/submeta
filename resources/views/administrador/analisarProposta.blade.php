@@ -1543,7 +1543,7 @@
                     </button>
                 </div>
                 <div class="modal-body" style="margin-left: 20px; margin-right: 20px;">
-
+                    
                     <form action="{{ route('admin.convite.atribuicao.projeto') }}" method="POST" class="labels-blue" id="formConvite">
                         @csrf
                         <input type="hidden" name="evento_id" value="{{ $evento->id }}">
@@ -1559,24 +1559,38 @@
                                    required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span
-                                        style="color: red; font-weight:bold">*</span></label>
-                            <select class="form-control" id="grandeAreaConvite" name="grande_area_id" onchange="areas()"
+                        @if($evento->natureza_id == 3)
+                            <div class="form-group">
+                                <label for="grandeArea" class="col-form-label">{{ __('Áreas Temáticas') }} <span
+                                                style="color: red; font-weight:bold">*</span></label>
+                                    <select class="form-control" id="grandeAreaConvite" name="area_tematica_id"
                                     required>
-                                <option value="" disabled selected hidden>-- Grande Área --</option>
-                                @foreach($grandeAreas as $grandeArea)
-                                    <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
-                                @endforeach
-                            </select>
+                                            <option value="" disabled selected hidden>-- Áreas Temáticas --</option>
+                                        @foreach($areasTematicas as $areaTematica)
+                                            <option value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
+                                        @endforeach
+                                    </select>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span
+                                            style="color: red; font-weight:bold">*</span></label>
+                                <select class="form-control" id="grandeAreaConvite" name="grande_area_id" onchange="areas()"
+                                        required>
+                                    <option value="" disabled selected hidden>-- Grande Área --</option>
+                                    @foreach($grandeAreas as $grandeArea)
+                                        <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                                    @endforeach
+                                </select>
 
-                            <label for="area" class="col-form-label">{{ __('Área') }} <span
-                                        style="color: red; font-weight:bold">*</span></label>
-                            <select class="form-control @error('area') is-invalid @enderror" id="areaConvite"
-                                    name="area_id" required>
-                                <option value="" disabled selected hidden>-- Área --</option>
-                            </select>
-                        </div>
+                                <label for="area" class="col-form-label">{{ __('Área') }} <span
+                                            style="color: red; font-weight:bold">*</span></label>
+                                <select class="form-control @error('area') is-invalid @enderror" id="areaConvite"
+                                        name="area_id" required>
+                                    <option value="" disabled selected hidden>-- Área --</option>
+                                </select>
+                            </div>
+                        @endif
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Tipo</label>
                             <select class="form-control" name="tipo" id="exampleFormControlSelect1" disabled>

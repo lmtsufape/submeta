@@ -137,7 +137,11 @@
     <thead>
       <tr>
         <th scope="col">Nome do Projeto</th>
-        <th scope="col">Área</th>
+        @if($evento->natureza_id == 3)
+          <th scope="col">Área Temática</th>
+        @else
+          <th scope="col">Área</th>
+        @endif
         <th scope="col">Proponente</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
@@ -145,8 +149,12 @@
     <tbody id="projetos">
       @foreach ($trabalhos as $trabalho)
           <tr>
-            <td style="max-width:100px; overflow-x:auto; text-overflow:ellipsis">{{ $trabalho->titulo}}</td>
-            <td>{{ App\Area::find($trabalho->area_id)->nome}}</td>
+            <td style="max-width:100px; overflow-x:auto; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
+            @if($evento->natureza_id == 3)
+              <td>{{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}</td>
+            @else
+              <td>{{ App\Area::find($trabalho->area_id)->nome }}</td>
+            @endif
             <td>{{ $trabalho->proponente->user->name }}</td>
             <td style="text-align:center">
                 <button type="button" class="btn btn-primary" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModalCenter{{ $trabalho->id }}">

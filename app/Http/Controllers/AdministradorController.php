@@ -34,6 +34,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use PDF;
 use DB;
+use App\AreaTematica;
 
 
 class AdministradorController extends Controller
@@ -148,6 +149,8 @@ class AdministradorController extends Controller
         }
 
         $grandeAreas = GrandeArea::orderBy('nome')->get();
+        $areasTematicas = AreaTematica::orderBy('nome')->get();
+        //dd($areasTematicas);
 
         $hoje = Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
@@ -162,7 +165,8 @@ class AdministradorController extends Controller
                 'AvalRelatParcial' => $AvalRelatParcial,
                 'AvalRelatFinal' => $AvalRelatFinal,
                 'hoje' => $hoje,
-                'flagSubstituicao' => $flagSubstituicao, ]);
+                'flagSubstituicao' => $flagSubstituicao,
+                'areasTematicas' => $areasTematicas, ]);
     }
 
     public function showProjetos(Request $request)
@@ -639,13 +643,32 @@ class AdministradorController extends Controller
         $coordenador_id_evento = $evento->coordenadorId;
         $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
+        $areasTematicas = AreaTematica::orderBy('nome')->get();
         $avalSelecionados = $evento->avaliadors;
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
-        $avaliadores =  Avaliador::join('naturezas_avaliadors', 'avaliadors.id', '=' ,'naturezas_avaliadors.avaliador_id')
-                            ->whereNotIn('avaliadors.id', $avalNaoSelecionadosId)
-                            ->where('naturezas_avaliadors.natureza_id', $evento->natureza_id)
-                            ->get();
+        $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
+        
+        //$avaliadores =  Avaliador::join('naturezas_avaliadors', 'avaliadors.id', '=' ,'naturezas_avaliadors.avaliador_id')->whereNotIn('avaliadors.id', $avalNaoSelecionadosId)
+        //            ->where('naturezas_avaliadors.natureza_id', $evento->natureza_id)
+        //            ->get();
+        
+        $avaliadores_extensao = collect();
+        $avaliadores_others = collect();
+        foreach($avaliadores as $avaliador){
+            if($evento->natureza_id == 3 && $avaliador->area_id == null){
+                $avaliadores_extensao->push($avaliador);
+            }elseif($evento->natureza_id != 3 && $avaliador->area_id != null){
+                $avaliadores_others->push($avaliador);
+            }
+        }
+        
+        if($evento->natureza_id == 3){
+            $avaliadores = $avaliadores_extensao;
+        } else {
+            $avaliadores = $avaliadores_others;
+        }
+
 
         if ((Auth::user()->id != $coordenador_id->user_id) && ($user->tipo != 'administrador')) {
             return redirect()->back();
@@ -657,6 +680,7 @@ class AdministradorController extends Controller
                                                             'avalSelecionados' => $avalSelecionados,
                                                             'grandeAreas' => $grandeAreas,
                                                             'trabalhos' => $trabalhos,
+                                                            'areasTematicas' => $areasTematicas,
                                                            ]);
     }
 
@@ -818,6 +842,7 @@ class AdministradorController extends Controller
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador)->first();
+        $areaTematica = AreaTematica::where('id', $request->area_tematica_id)->first();
 
         if ($request->instituicao == 'ufape') {
             $nomeInstituicao = 'Universidade Federal do Agreste de Pernambuco';
@@ -864,6 +889,10 @@ class AdministradorController extends Controller
             $avaliador->eventos()->attach($evento);
             $user->save();
             $avaliador->save();
+        }
+
+        if($evento->natureza_id == 3){
+            $avaliador->areaTematicas()->sync($areaTematica);
         }
 
         if ($request->instituicao == 'ufape') {
@@ -920,6 +949,7 @@ class AdministradorController extends Controller
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador)->first();
+        $areaTematica = AreaTematica::where('id', $request->area_tematica_id)->first();
 
         if ($request->instituicao == 'ufape') {
             $nomeInstituicao = 'Universidade Federal do Agreste de Pernambuco';
@@ -965,6 +995,7 @@ class AdministradorController extends Controller
             $avaliador->eventos()->attach($evento);
             if($evento->natureza_id == 3){
                 $avaliador->naturezas()->sync($evento->natureza_id);
+                $avaliador->areaTematicas()->sync($areaTematica);
             }
             $user->save();
             $avaliador->save();
@@ -973,6 +1004,7 @@ class AdministradorController extends Controller
             $avaliador->eventos()->attach($evento);
             if($evento->natureza_id == 3){
                 $avaliador->naturezas()->sync($evento->natureza_id);
+                $avaliador->areaTematicas()->sync($areaTematica);
             }
             $user->save();
             $avaliador->save();
