@@ -130,4 +130,8 @@ class Trabalho extends Model
   public function ods(){
     return $this->belongsToMany('App\ObjetivoDeDesenvolvimentoSustentavel', 'objetivo_de_desenvolvimento_sustentavel_trabalhos', 'trabalho_id');
   }
+
+  public function avaliacaoTrabalho(){
+    return $this->hasMany('App\AvaliacaoTrabalho');
+  }
 }
