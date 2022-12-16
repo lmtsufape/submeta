@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row titulo">
@@ -398,36 +397,85 @@
         <hr>
         <div class="row subtitulo">
             <div class="col-sm-12">
-                <p>Critérios para Avaliação</p>
+                <p>Avaliação</p>
+            </div>
+        </div>
+        
+        <div class="my-2" >
+            <p style="font-size: 16px">Como a avaliação será realizada?</p>
+        </div>
+
+        <div class="mb-2">
+            <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
+                checked value="form">
+            <label for="radioSim" style="margin-right: 5px">Formulário (em pdf)</label>
+
+            <input type="radio" id="radioCampos" name="tipoAvaliacao" onchange="displayTipoAvaliacao('campos')" 
+                value="campos">
+            <label for="radioNao" style="margin-right: 5px">Por critérios</label><br>
+        </div>
+
+        <div class="row justify-content-center " style="margin-top:10px" id="displayForm">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="pdfFormAvalExterno">Formulário para avaliador <i>ad hoc</i>:<span style="color:red; font-weight:bold;">*</span></label>
+                    @if(old('pdfFormAvalExternoPreenchido') != null)
+                    <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoExterno' ])}}">Arquivo atual</a>
+                    @endif
+                    <input type="hidden" id="pdfFormAvalExternoPreenchido" name="pdfFormAvalExternoPreenchido" value="{{ old('pdfFormAvalExternoPreenchido') }}">
+                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
+                    <small>O arquivo selecionado deve ter até 2mb.</small>
+                    @error('pdfFormAvalExterno')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="docTutorial">Documento auxiliar para Avaliador:</label>
+                    @if(old('docTutorialPreenchido') != null)
+                    <a id="docTutorialTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'docTutorial' ])}}">Arquivo atual</a>
+                    @endif
+                    <input type="hidden" id="docTutorialPreenchido" name="docTutorialPreenchido" value="{{ old('docTutorialPreenchido') }}">
+                    <input type="file" accept=".pdf,.docx,.doc,.zip" class="form-control-file pdf @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial" onchange="exibirAnexoTemp(this)">
+                    <small>O arquivo selecionado deve ser de atÃ© 2mb.</small>
+                    @error('docTutorial')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
             </div>
         </div>
 
-        <table class="table table-bordered" id="dynamicAddRemove">
-            <tr>
-                <th>Nome</th>
-                <th>Nota Máxima</th>
-                <th>Peso</th>
-                <th>Prioridade</th>
-                <th>Ação</th>
-            </tr>
-            <tr>
-                <td><input type="text" min=1 name="addMoreInputFields[0][nome]" class="form-control" />
-                </td>
-                <td><input type="number" min=1  step="1" name="addMoreInputFields[0][nota_maxima]" class="form-control" />
-                </td>
-                <td><input type="number" min=1  step="1" name="addMoreInputFields[0][peso]" class="form-control" />
-                </td>
-                <td>
-                    <select name="addMoreInputFields[0][prioridade][]" class="form-control">
-                        <option value="" selected>-- ORDEM --</option>
-                        {{-- @for($j = 1; $j <= $edital->numParticipantes; $j++)
-                            <option @if((old('ordem_prioridade')[$i] ?? "" )==$j) selected @endif value="{{ $j }}">{{ $j }}</option>
-                        @endfor --}}
-                    </select>
-                </td>
-                <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
-            </tr>
-        </table>
+        <div class="row justify-content-center" style="margin-top:10px; display: none" id="displayCampos">
+            <table class="table table-bordered col-sm-12" id="dynamicAddRemove">
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Nota Máxima</th>
+                    <th>Prioridade</th>
+                    <th>Ação</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="inputField[nome][0]" class="form-control nome" />
+                    </td>
+                    <td><input type="text" name="inputField[descricao][0]" class="form-control descricao" />
+                    </td>
+                    <td><input type="number" min=1  step="1" name="inputField[nota_maxima][0]" class="form-control nota_maxima" />
+                    </td>
+                    <td>
+                        <select name="addMoreInputFields[prioridade][0]" class="form-control prioridade">
+                            <option value="" selected>-- ORDEM --</option>
+                            <option value="1">1</option>                                  
+                        </select>
+                    </td>
+                    <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
+                </tr>
+            </table>
+        </div>
 
         <hr>
         <div class="row subtitulo">
@@ -471,23 +519,8 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="pdfFormAvalExterno">Formulário para avaliador <i>ad hoc</i>:<span style="color:red; font-weight:bold;">*</span></label>
-                    @if(old('pdfFormAvalExternoPreenchido') != null)
-                    <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoExterno' ])}}">Arquivo atual</a>
-                    @endif
-                    <input type="hidden" id="pdfFormAvalExternoPreenchido" name="pdfFormAvalExternoPreenchido" value="{{ old('pdfFormAvalExternoPreenchido') }}">
-                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
-                    <small>O arquivo selecionado deve ter até 2mb.</small>
-                    @error('pdfFormAvalExterno')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-sm-6">
+            
+            <div class="col-sm-12">
                 <div class="form-group">
                     <label for="pdfFormAvalExterno">Formulário de avaliação do relatório:</label>
                     @if(old('pdfFormAvalRelatorioPreenchido') != null)
@@ -497,22 +530,6 @@
                     <input type="file" accept=".pdf" class="form-control-file pdf @error('pdfFormAvalRelatorio') is-invalid @enderror" name="pdfFormAvalRelatorio" value="{{ old('pdfFormAvalRelatorio') }}" id="pdfFormAvalRelatorio" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('pdfFormAvalRelatorio')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="docTutorial">Documento auxiliar para Avaliador:</label>
-                    @if(old('docTutorialPreenchido') != null)
-                    <a id="docTutorialTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'docTutorial' ])}}">Arquivo atual</a>
-                    @endif
-                    <input type="hidden" id="docTutorialPreenchido" name="docTutorialPreenchido" value="{{ old('docTutorialPreenchido') }}">
-                    <input type="file" accept=".pdf,.docx,.doc,.zip" class="form-control-file pdf @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial" onchange="exibirAnexoTemp(this)">
-                    <small>O arquivo selecionado deve ser de atÃ© 2mb.</small>
-                    @error('docTutorial')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -535,26 +552,49 @@
     </form>
 </div>
 
+
 @endsection
 
 @section('javascript')
 <script type="text/javascript">
     var i = 0;
+    var numCampos = 1;
     $("#dynamic-ar").click(function () {
         ++i;
+        ++numCampos;
         $("#dynamicAddRemove").append(
-            '<tr><td><input type="text" min=1 name="addMoreInputFields[' + i +
-            '][nome]" class="form-control" /></td><td><input type="number" min=1  step="1" name="addMoreInputFields[' + i +
-            '][valor]" class="form-control" /></td><td><input type="number" min=1  step="1" name="addMoreInputFields[' + i +
-            '][peso]" class="form-control" /></td><td><select name="addMoreInputFields[' + i +
-            '][prioridade][]" class="form-control"><option value="" selected>-- ORDEM --</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field">Remover</button></td></tr>'
-            );
-            console.log(i)
+            '<tr><td><input type="text" name="inputField[nome][' + i + ']" class="form-control nome"/></td><td><input type="text" name="inputField[descricao][' + i + ']" class="form-control descricao" /></td><td><input type="number" min=1  step="1" name="inputField[nota_maxima][' + i + ']" class="form-control nota_maxima" /></td><td><select name="addMoreInputFields[prioridade][' + i + ']" class="form-control prioridade"><option value="" selected>-- ORDEM --</option><option value="1">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field">Remover</button></td></tr>');
+
+        $(".prioridade").children().remove(".dynamic")
+        $(".prioridade").each(function() {
+            for (let x = 2; x <= numCampos; x++) {
+                $(this).append('<option value="' + x + '" class="dynamic">' + x + '</option>')
+            }
+        })
+
+        console.log()
     });
 
     $(document).on('click', '.remove-input-field', function () {
         $(this).parents('tr').remove();
+        $('.dynamic[value|="' + numCampos + '"]').remove();
+        --numCampos;
     });
+
+    function displayTipoAvaliacao(valor){
+      if (valor == "form"){
+        document.getElementById("radioForm").checked = true;
+        document.getElementById("radioCampos").checked = false;
+        document.getElementById("displayForm").style.display = "";
+        document.getElementById("displayCampos").style.display = "none";
+      } else if(valor == "campos"){
+        document.getElementById("radioForm").checked = false;
+        document.getElementById("radioCampos").checked = true;
+        document.getElementById("displayForm").style.display = "none";
+        document.getElementById("displayCampos").style.display = "inline";
+      }
+    }
+    
 
     function selecionar_decisao_camara() {
         var natureza = document.getElementById('natureza');
