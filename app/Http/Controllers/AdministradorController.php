@@ -689,6 +689,7 @@ class AdministradorController extends Controller
         $evento = Evento::where('id', $request->evento_id)->first();
         $trabalhos = $evento->trabalhos;
         $grandesAreas = GrandeArea::orderBy('nome')->get();
+        $areasTematicas = AreaTematica::orderBy('nome')->get();
         $avaliadores = $evento->avaliadors;
         foreach ($trabalhos as $key => $trabalho) {
             $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
@@ -703,6 +704,7 @@ class AdministradorController extends Controller
                                                          'trabalhos' => $trabalhos,
                                                          'avaliadores' => $avaliadores,
                                                          'grandesAreas' => $grandesAreas,
+                                                         'areasTematicas' => $areasTematicas
                                                         ]);
     }
 
