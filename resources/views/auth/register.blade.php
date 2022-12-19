@@ -125,7 +125,7 @@
                             </div>
 
                             <div style="display:none" id="cursos" class="col-md-12 mb-2">
-                                <label for="curso" class="col-form-label">{{ __('Cursos que leciona') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                <label for="curso" class="col-form-label">{{ __('Cursos que Leciona') }} <span style="color: red; font-weight:bold;">*</span></label>
                                 <br>
                                 <div class="row col-md-12">
                                     @foreach($cursos as $curso)

@@ -88,7 +88,8 @@
 
                   <div class="row col-md-12">
                     <div class="form-group col-md-12">
-                      <label for="ods_id" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Densenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label><br>
+                      <label for="ods_id" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Densenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label>
+                      <span>É possível selecionar um ou mais ODS's</span><br>
                       <div class="row col-md-12">
                         @foreach($ods as $od)
                         <div class="col-md-6">
