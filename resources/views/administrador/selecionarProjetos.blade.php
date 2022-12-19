@@ -323,7 +323,7 @@
                         <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                         <input type="hidden" id="trabalho_id" name="trabalho_id" value="{{ $trabalho->id }}">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nome Completo <span style="color: red;">*</span></label>
+                            <label for="exampleInputEmail1">Nome Completo<span style="color: red;">*</span></label>
                             <input type="text" class="form-control" name="nomeAvaliador" id="exampleInputNome1"
                                    required>
                         </div>
@@ -334,6 +334,7 @@
                         </div>
 
                         <div class="form-group">
+                          @if($evento->natureza_id != 3)
                             <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span
                                         style="color: red; font-weight:bold">*</span></label>
                             <select class="form-control" id="grandeAreaConvite" name="grande_area_id" onchange="areas()"
@@ -357,17 +358,30 @@
                                 <option value="avaliador">Avaliador</option>
                             </select>
                         </div>
+                        @else
+                        <label for="grandeArea" class="col-form-label">{{ __('Áreas Temáticas') }} <span
+                                    style="color: red; font-weight:bold">*</span></label>
+                        <select class="form-control" id="grandeAreaConvite" name="area_tematica_id"
+                        required>
+                                <option value="" disabled selected hidden>-- Áreas Temáticas --</option>
+                            @foreach($areasTematicas as $areaTematica)
+                                <option value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
+                            @endforeach
+                        </select>
+                        @endif
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Instituição <span
-                                        style="color: red; font-weight:bold">*</span></label>
-                            <select class="form-control" name="instituicao" id="membro" required
-                                    onchange="mostrarDiv(this)">
-                                <option value="" disabled>-- Selecione a instituição --</option>
-                                <option value="ufape">Universidade Federal do Agreste de Pernambuco</option>
-                                <option value="outra">Outra</option>
-                            </select>
-                        </div>
+                        @if($evento->natureza_id != 3)
+                          <div class="form-group">
+                              <label for="exampleFormControlSelect1">Instituição <span
+                                          style="color: red; font-weight:bold">*</span></label>
+                              <select class="form-control" name="instituicao" id="membro" required
+                                      onchange="mostrarDiv(this)">
+                                  <option value="" disabled>-- Selecione a instituição --</option>
+                                  <option value="ufape">Universidade Federal do Agreste de Pernambuco</option>
+                                  <option value="outra">Outra</option>
+                              </select>
+                          </div>
+                        @endif
 
                         <div class="form-group" id="div-outra"
                              style="@if(old('instituicao') != null && old('instituicao') == "outra") display: block; @else display: none; @endif">
