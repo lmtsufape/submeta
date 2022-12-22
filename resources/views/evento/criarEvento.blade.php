@@ -478,9 +478,12 @@
                     <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
                 </tr>
             </table>
+
             <div class="col-sm-12 alert alert-danger" style="display: none" id="nota_maxima_invalida">
                 A soma das notas máximas não pode ser maior que 10.
             </div>
+
+            <input type="checkbox" id="checkB[0]" checked name="campos[]" value="0" hidden>
         </div>
 
         <div class="col-sm-12 row" style="margin-top:10px; display: none" id="displayLink">
@@ -579,7 +582,9 @@
         $("#dynamicAddRemove").append(
             '<tr><td><input type="text" name="inputField[nome][' + i + ']" class="form-control nome"/></td><td><input type="text" name="inputField[descricao][' + i + ']" class="form-control descricao" /></td><td><input type="number" min=1  step="1" name="inputField[nota_maxima][' + i + ']" class="form-control nota_maxima" /></td><td><select name="addMoreInputFields[prioridade][' + i + ']" class="form-control prioridade"><option value="" selected>-- ORDEM --</option><option value="1" class="ordem_option">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[' + i + ']">Remover</button></td></tr>');
 
-        $(".prioridade").children().remove(".dynamic")
+        $("#displayCampos").append('<input type="checkbox" id="checkB[' + i + ']" checked name="campos[]" value="' + i + '" hidden>');
+
+        $(".prioridade").children().remove(".dynamic");
 
         // Exibe opções caso estejam ocultas
         $('.ordem_option').show();
@@ -611,11 +616,15 @@
         selectId = $(this).attr('name').replace(/\D/g, "").toString();
         currentOption = currentOptions[selectId];
 
+        document.getElementById('checkB[' + selectId + ']').remove();
+
         $('.ordem_option[value|="' + currentOption + '"]').show();
         delete currentOptions[selectId];
 
         $('.dynamic[value|="' + numCampos + '"]').remove();
+
         --numCampos;
+
 
     });
 
