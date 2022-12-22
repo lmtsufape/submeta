@@ -478,11 +478,14 @@
                     <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
                 </tr>
             </table>
+            <div class="col-sm-12 alert alert-danger" style="display: none" id="nota_maxima_invalida">
+                A soma das notas máximas não pode ser maior que 10.
+            </div>
         </div>
 
-        <div class="row" style="margin-top:10px; display: none" id="displayLink">
+        <div class="col-sm-12 row" style="margin-top:10px; display: none" id="displayLink">
             <label for="link" class="col-form-label">{{ __('Link para o formulário:') }}<span style="color:red; font-weight:bold;">*</span></label>
-            <input id="link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ old('link') }}" required autocomplete="link" autofocus>
+            <input id="link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ old('link') }}" required autocomplete="link">
         </div>
 
         <hr>
@@ -628,6 +631,27 @@
 
         currentOptions[selectId] = newOption;
         
+    });
+
+    $("#dynamicAddRemove").on('input', '.nota_maxima', function () {
+        console.log("eita")
+        somaNotas = 0;
+
+        $(".nota_maxima").each(function() {
+            valor = Number($(this).val());
+            if  (valor != 0) {
+                somaNotas += valor;
+            }
+            
+        });
+
+        if (somaNotas > 10) {
+            $('.nota_maxima').css('border', '1px solid red');
+            document.getElementById("nota_maxima_invalida").style.display = "";
+        } else {
+            $('.nota_maxima').css('border', '');
+            document.getElementById("nota_maxima_invalida").style.display = "none";
+        }
     });
 
 
