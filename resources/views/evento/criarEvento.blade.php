@@ -408,14 +408,17 @@
         <div class="mb-2">
             <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
                 checked value="form">
-            <label for="radioSim" style="margin-right: 5px">Formulário (em pdf)</label>
-
+            <label for="radioForm" style="margin-right: 5px">Formulário (em pdf)</label>
             <input type="radio" id="radioCampos" name="tipoAvaliacao" onchange="displayTipoAvaliacao('campos')" 
                 value="campos">
-            <label for="radioNao" style="margin-right: 5px">Por critérios</label><br>
+            <label for="radioCampos" style="margin-right: 5px">Barema</label>
+
+            <input type="radio" id="radioLink" name="tipoAvaliacao" onchange="displayTipoAvaliacao('link')" 
+                value="link">
+            <label for="radioLink" style="margin-right: 5px">Link</label><br>
         </div>
 
-        <div class="row justify-content-center " style="margin-top:10px" id="displayForm">
+        <div class="row justify-content-center" style="margin-top:10px" id="displayForm">
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="pdfFormAvalExterno">Formulário para avaliador <i>ad hoc</i>:<span style="color:red; font-weight:bold;">*</span></label>
@@ -475,6 +478,11 @@
                     <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
                 </tr>
             </table>
+        </div>
+
+        <div class="row" style="margin-top:10px; display: none" id="displayLink">
+            <label for="link" class="col-form-label">{{ __('Link para o formulário:') }}<span style="color:red; font-weight:bold;">*</span></label>
+            <input id="link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ old('link') }}" required autocomplete="link" autofocus>
         </div>
 
         <hr>
@@ -628,13 +636,24 @@
       if (valor == "form"){
         document.getElementById("radioForm").checked = true;
         document.getElementById("radioCampos").checked = false;
+        document.getElementById("radioLink").checked = false;
         document.getElementById("displayForm").style.display = "";
         document.getElementById("displayCampos").style.display = "none";
-      } else if(valor == "campos"){
+        document.getElementById("displayLink").style.display = "none";
+      } else if (valor == "campos"){
         document.getElementById("radioForm").checked = false;
         document.getElementById("radioCampos").checked = true;
+        document.getElementById("radioLink").checked = false;
         document.getElementById("displayForm").style.display = "none";
         document.getElementById("displayCampos").style.display = "inline";
+        document.getElementById("displayLink").style.display = "none";
+      } else if (valor == "link") {
+        document.getElementById("radioForm").checked = false;
+        document.getElementById("radioCampos").checked = false;
+        document.getElementById("radioLink").checked = true;
+        document.getElementById("displayForm").style.display = "none";
+        document.getElementById("displayCampos").style.display = "none";
+        document.getElementById("displayLink").style.display = "";
       }
     }
     
