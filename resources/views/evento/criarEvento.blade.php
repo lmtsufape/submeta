@@ -469,7 +469,7 @@
                     <td>
                         <select name="addMoreInputFields[prioridade][0]" class="form-control prioridade">
                             <option value="" selected>-- ORDEM --</option>
-                            <option value="1">1</option>                                  
+                            <option value="1" class="ordem_option">1</option>                                  
                         </select>
                     </td>
                     <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
@@ -544,7 +544,7 @@
                 <a class="btn btn-secondary botao-form" href="{{ route('admin.editais') }}" style="width:100%">Cancelar</a>
             </div>
             <div class="col-md-6" style="padding-right:0">
-                <button type="submit" class="btn btn-primary botao-form" style="width:100%">
+                <button type="submit" class="btn btn-primary botao-form" id="idButtonSubmitEvento" style="width:100%">
                     {{ __('Criar Edital') }}
                 </button>
             </div>
@@ -559,28 +559,71 @@
 <script type="text/javascript">
     var i = 0;
     var numCampos = 1;
+    var currentOptions = {'0': ''}
+
+    // Adiciona campo de avaliação
     $("#dynamic-ar").click(function () {
         ++i;
         ++numCampos;
         $("#dynamicAddRemove").append(
-            '<tr><td><input type="text" name="inputField[nome][' + i + ']" class="form-control nome"/></td><td><input type="text" name="inputField[descricao][' + i + ']" class="form-control descricao" /></td><td><input type="number" min=1  step="1" name="inputField[nota_maxima][' + i + ']" class="form-control nota_maxima" /></td><td><select name="addMoreInputFields[prioridade][' + i + ']" class="form-control prioridade"><option value="" selected>-- ORDEM --</option><option value="1">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field">Remover</button></td></tr>');
+            '<tr><td><input type="text" name="inputField[nome][' + i + ']" class="form-control nome"/></td><td><input type="text" name="inputField[descricao][' + i + ']" class="form-control descricao" /></td><td><input type="number" min=1  step="1" name="inputField[nota_maxima][' + i + ']" class="form-control nota_maxima" /></td><td><select name="addMoreInputFields[prioridade][' + i + ']" class="form-control prioridade"><option value="" selected>-- ORDEM --</option><option value="1" class="ordem_option">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[' + i + ']">Remover</button></td></tr>');
 
         $(".prioridade").children().remove(".dynamic")
+
+        // Exibe opções caso estejam ocultas
+        $('.ordem_option').show();
+
         $(".prioridade").each(function() {
+
+            // Resetando os valores selecionados
+            $(this).val("").change();
+
+            selectId = $(this).attr('name').replace(/\D/g, "").toString();
+            currentOptions[selectId] = '';
+
             for (let x = 2; x <= numCampos; x++) {
-                $(this).append('<option value="' + x + '" class="dynamic">' + x + '</option>')
+                
+                $(this).append('<option value="' + x + '" class="ordem_option dynamic">' + x + '</option>')
+                
             }
+
         })
 
-        console.log()
+        //console.log(currentOptions);
     });
 
+    
+    // Exclui campo de avaliação
     $(document).on('click', '.remove-input-field', function () {
         $(this).parents('tr').remove();
+
+        selectId = $(this).attr('name').replace(/\D/g, "").toString();
+        currentOption = currentOptions[selectId];
+
+        $('.ordem_option[value|="' + currentOption + '"]').show();
+        delete currentOptions[selectId];
+
         $('.dynamic[value|="' + numCampos + '"]').remove();
         --numCampos;
+
     });
 
+    $("#dynamicAddRemove").on('change', '.prioridade', function () {
+
+        selectId = $(this).attr('name').replace(/\D/g, "").toString();
+        newOption = $(this).val();
+        currentOption = currentOptions[selectId];
+
+        $('.ordem_option[value|="' + currentOption + '"]').show();
+
+        $('.ordem_option[value|="' + newOption + '"]').hide();
+
+        currentOptions[selectId] = newOption;
+        
+    });
+
+
+    // Tipo de avaliação
     function displayTipoAvaliacao(valor){
       if (valor == "form"){
         document.getElementById("radioForm").checked = true;
