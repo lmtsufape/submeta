@@ -407,14 +407,15 @@
 
         <div class="mb-2">
             <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
-                checked value="form">
+                @if((old('tipoAvaliacao') == 'form') || old('tipoAvaliaco') == "") checked @endif value="form">
             <label for="radioForm" style="margin-right: 5px">Formulário (em pdf)</label>
+
             <input type="radio" id="radioCampos" name="tipoAvaliacao" onchange="displayTipoAvaliacao('campos')" 
-                value="campos">
+                @if(old('tipoAvaliacao') == 'campos') checked @endif value="campos">
             <label for="radioCampos" style="margin-right: 5px">Barema</label>
 
             <input type="radio" id="radioLink" name="tipoAvaliacao" onchange="displayTipoAvaliacao('link')" 
-                value="link">
+                @if(old('tipoAvaliacao') == 'link') checked @endif value="link">
             <label for="radioLink" style="margin-right: 5px">Link</label><br>
         </div>
 
@@ -443,7 +444,7 @@
                     @endif
                     <input type="hidden" id="docTutorialPreenchido" name="docTutorialPreenchido" value="{{ old('docTutorialPreenchido') }}">
                     <input type="file" accept=".pdf,.docx,.doc,.zip" class="form-control-file pdf @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial" onchange="exibirAnexoTemp(this)">
-                    <small>O arquivo selecionado deve ser de atÃ© 2mb.</small>
+                    <small>O arquivo selecionado deve ser de até 2mb.</small>
                     @error('docTutorial')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -456,28 +457,54 @@
         <div class="row justify-content-center" style="margin-top:10px; display: none" id="displayCampos">
             <table class="table table-bordered col-sm-12" id="dynamicAddRemove">
                 <tr>
-                    <th>Nome</th>
+                    <th>Nome<span style="color:red; font-weight:bold;">*</span></th>
                     <th>Descrição</th>
-                    <th>Nota Máxima</th>
-                    <th>Prioridade</th>
+                    <th>Nota Máxima<span style="color:red; font-weight:bold;">*</span></th>
+                    <th>Prioridade<span style="color:red; font-weight:bold;">*</span></th>
                     <th>Ação</th>
                 </tr>
                 <tr>
-                    <td><input type="text" name="inputField[nome][0]" class="form-control nome" />
+                    <td><input type="text" name="inputField[0][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ old('inputField[0][nome]') }}" />
+                    @error('inputField.*.nome')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                     </td>
-                    <td><input type="text" name="inputField[descricao][0]" class="form-control descricao" />
+                    <td><input type="text" name="inputField[0][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ old('inputField[0][descricao]') }}" />
+                    @error('inputField.*.descricao')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                     </td>
-                    <td><input type="number" min=1  step="1" name="inputField[nota_maxima][0]" class="form-control nota_maxima" />
+                    <td><input type="number" min="1"  step="1" name="inputField[0][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ old('inputField[0][nota_maxima]') }}" />
+                    @error('inputField.*.nota_maxima')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                     </td>
                     <td>
-                        <select name="addMoreInputFields[prioridade][0]" class="form-control prioridade">
+                        <select name="inputField[0][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror">
                             <option value="" selected>-- ORDEM --</option>
                             <option value="1" class="ordem_option">1</option>                                  
                         </select>
+                        @error('inputField.*.prioridade')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </td>
                     <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
                 </tr>
             </table>
+
+            @if($errors->has('inputField.*'))
+                <div class="col-sm-12 alert alert-danger" style="display: none" id="nota_maxima_invalida">
+                    Você deve preencher os campos obrigatórios.
+                </div>
+            @endif
 
             <div class="col-sm-12 alert alert-danger" style="display: none" id="nota_maxima_invalida">
                 A soma das notas máximas não pode ser maior que 10.
@@ -488,8 +515,14 @@
 
         <div class="col-sm-12 row" style="margin-top:10px; display: none" id="displayLink">
             <label for="link" class="col-form-label">{{ __('Link para o formulário:') }}<span style="color:red; font-weight:bold;">*</span></label>
-            <input id="link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ old('link') }}" required autocomplete="link">
+            <input id="link" type="text" class="form-control @error("link") is-invalid @enderror" name="link" value="{{ old('link') }}">
+            @error('link')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
+
 
         <hr>
         <div class="row subtitulo">
@@ -575,12 +608,18 @@
     var numCampos = 1;
     var currentOptions = {'0': ''}
 
+    $(document).ready(function() {
+        displayTipoAvaliacao("{{ old('tipoAvaliacao') }}")
+    });
+
     // Adiciona campo de avaliação
     $("#dynamic-ar").click(function () {
         ++i;
         ++numCampos;
+
         $("#dynamicAddRemove").append(
-            '<tr><td><input type="text" name="inputField[nome][' + i + ']" class="form-control nome"/></td><td><input type="text" name="inputField[descricao][' + i + ']" class="form-control descricao" /></td><td><input type="number" min=1  step="1" name="inputField[nota_maxima][' + i + ']" class="form-control nota_maxima" /></td><td><select name="addMoreInputFields[prioridade][' + i + ']" class="form-control prioridade"><option value="" selected>-- ORDEM --</option><option value="1" class="ordem_option">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[' + i + ']">Remover</button></td></tr>');
+            '<tr><td><input type="text" name="inputField[' + i + '][nome]" class="form-control nome @error("inputField.*.nome") is-invalid @enderror" /></td><td><input type="text" name="inputField[' + i + '][descricao]" class="form-control descricao @error("inputField.*.descricao") is-invalid @enderror"/></td><td><input type="number" min="1"  step="1" name="inputField[' + i + '][nota_maxima]" class="form-control nota_maxima @error("inputField.*.nota_maxima") is-invalid @enderror" /></td><td><select name="inputField[' + i + '][prioridade]" class="form-control prioridade @error("inputField.*.prioridade") is-invalid @enderror"><option value="" selected>-- ORDEM --</option><option value="1" class="ordem_option">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[' + i + ']">Remover</button></td></tr>'
+        );
 
         $("#displayCampos").append('<input type="checkbox" id="checkB[' + i + ']" checked name="campos[]" value="' + i + '" hidden>');
 
@@ -605,7 +644,6 @@
 
         })
 
-        //console.log(currentOptions);
     });
 
     

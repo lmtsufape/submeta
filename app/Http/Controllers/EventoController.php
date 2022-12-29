@@ -16,6 +16,7 @@ use App\Trabalho;
 use App\AreaModalidade;
 use App\Natureza;
 use App\CoordenadorComissao;
+use App\CampoAvaliacao;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Rules\ExcelRule;
@@ -82,7 +83,6 @@ class EventoController extends Controller
      */
     public function store(Request $request)
     {
-
         $mytime = Carbon::now('America/Recife');
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
@@ -134,7 +134,6 @@ class EventoController extends Controller
                 'dt_fimRelatorioParcial'     => ['required', 'date'],
                 'dt_inicioRelatorioFinal'  => ['required', 'date'],
                 'dt_fimRelatorioFinal'     => ['required', 'date'],
-                'pdfFormAvalExterno' => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
                 'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
                 'inicioProjeto'       => ['required', 'date'],
                 'fimProjeto'          => ['required', 'date'],
@@ -152,7 +151,7 @@ class EventoController extends Controller
             'tipo'                => ['required', 'string'],
             'natureza'            => ['required'],
             'coordenador_id'      => ['required'],
-            'numParticipantes'      => ['required'],
+            'numParticipantes'    => ['required'],
             'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null),'max:255'],
             #----------------------------------------------
             'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
@@ -167,12 +166,31 @@ class EventoController extends Controller
             'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
             'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
             'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
-            'pdfFormAvalExterno'           => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
             'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
             'inicioProjeto'       => ['required', 'date', 'after:yesterday'],
             'fimProjeto'          => ['required', 'date', 'after_or_equal:fimSubmissao'],
             //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
         ]);
+        
+        // Validação quando avaliação for por Barema
+        if ($request->tipoAvaliacao == 'form') {
+            $validateAvaliacao = $request->validate([
+                'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
+            ]);
+        } elseif ($request->tipoAvaliacao == 'campos') {
+            if($request->has('campos')){
+                $validateCampo = $request->validate([
+                    'inputField.*.nome'        => ['required', 'string'],
+                    'inputField.*.nota_maxima' => ['required'],
+                    'inputField.*.prioridade'  => ['required']
+                ]);
+            }
+        } elseif ($request->tipoAvaliacao == 'link') {
+            $validateAvaliacao = $request->validate([
+                'link'    => ['required', 'url'],
+            ]);
+        }
+        
 
         //$evento = Evento::create([
         $evento['nome']                = $request->nome;
@@ -203,6 +221,9 @@ class EventoController extends Controller
         $evento['anexosStatus']        = 'final';
         $evento['inicioProjeto']       = $request->inicioProjeto;
         $evento['fimProjeto']          = $request->fimProjeto;
+        if($request->tipoAvaliacao == "link") {
+            $evento['formAvaliacaoExterno'] = $request->link;
+        }
 
         //dd($evento);
         // $user = User::find($request->coordenador_id);
@@ -238,7 +259,7 @@ class EventoController extends Controller
         }
 
 
-        if(isset($request->pdfFormAvalExterno)){
+        if(isset($request->pdfFormAvalExterno) && ($request->tipoAvaliacao == 'form')){
             $pdfFormAvalExterno = $request->pdfFormAvalExterno;
             $extension = $pdfFormAvalExterno->extension();
             $path = 'pdfFormAvalExterno/' . $evento->id . '/';
@@ -257,7 +278,7 @@ class EventoController extends Controller
 
             $evento->formAvaliacaoRelatorio = $path . $nome;
         }
-        if(isset($request->docTutorial)){
+        if(isset($request->docTutorial) && ($request->tipoAvaliacao == 'form')){
             $docTutorial = $request->docTutorial;
             $extension = $docTutorial->extension();
             $path = 'docTutorial/' . $evento->id . '/';
@@ -268,6 +289,23 @@ class EventoController extends Controller
         }
 
         $evento->update();
+
+        // Criando campos de avaliacao
+        if ($request->tipoAvaliacao == 'campos') {
+            if($request->has('campos')){
+                foreach ($request->get('campos') as $key => $value) {
+                    $campoAval = new CampoAvaliacao();
+                    $campoAval->nome = $request->inputField[$value]['nome'];
+                    $campoAval->nota_maxima = $request->inputField[$value]['nota_maxima'];
+                    if ($request->has('inputField['. $value. ']["descricao"]')){
+                        $campoAval->descricao = $request->inputField[$value]['descricao'];
+                    }
+                    $campoAval->prioridade = $request->inputField[$value]['prioridade'];
+                    $campoAval->evento_id = $evento->id;
+                    $campoAval->save();
+                }
+            }
+        }
 
         // $user = Auth::user();
         // $subject = "Evento Criado";
@@ -300,7 +338,7 @@ class EventoController extends Controller
             $nome = "modelo" . "." . $extension;
             $eventoTemp->modeloDocumento = Storage::putFileAs($path, $request->modeloDocumento, $nome);
         }
-        if(!(is_null($request->pdfFormAvalExterno)) ) {
+        if(!(is_null($request->pdfFormAvalExterno)) && ($request->tipoAvaliacao == 'form')) {
             $extension = $request->pdfFormAvalExterno->extension();
             $pasta = 'pdfFormAvalExterno/' . $eventoTemp->id;
             $nome = "formulario de avaliação externo" . "." . $extension;
@@ -311,7 +349,7 @@ class EventoController extends Controller
             $eventoTemp->formAvaliacaoRelatorio = Storage::putFileAs($pasta, $request->pdfFormAvalRelatorio, 'formulario de avaliação do relatorio.pdf');
         }
 
-        if(!(is_null($request->docTutorial)) ) {
+        if(!(is_null($request->docTutorial)) && ($request->tipoAvaliacao == 'form')) {
             $extension = $request->docTutorial->extension();
             $pasta = 'docTutorial/' . $eventoTemp->id;
             $nome = "documento tutorial" . "." . $extension;
@@ -647,7 +685,7 @@ class EventoController extends Controller
 
         $numeroRevisores = Revisor::where('eventoId', $evento->id)->count();
         $numeroComissao = ComissaoEvento::where('eventosId',$evento->id)->count();
-        // $atribuicoesProcessando
+        // $atribuicoesProcessando;
         // dd($trabalhosEnviados);
         $revs = Revisor::where('eventoId', $evento->id)->with('user')->get();
 
