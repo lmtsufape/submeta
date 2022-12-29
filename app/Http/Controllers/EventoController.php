@@ -175,14 +175,16 @@ class EventoController extends Controller
         // Validação quando avaliação for por Barema
         if ($request->tipoAvaliacao == 'form') {
             $validateAvaliacao = $request->validate([
-                'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
+                'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
             ]);
         } elseif ($request->tipoAvaliacao == 'campos') {
             if($request->has('campos')){
                 $validateCampo = $request->validate([
                     'inputField.*.nome'        => ['required', 'string'],
                     'inputField.*.nota_maxima' => ['required'],
-                    'inputField.*.prioridade'  => ['required']
+                    'inputField.*.prioridade'  => ['required'],
+                    'somaNotas'                => ['required', 'numeric', 'max:10'],
+                    ['somaNotas.max'        => 'A soma dos campos não pode ser maior que 10.']
                 ]);
             }
         } elseif ($request->tipoAvaliacao == 'link') {

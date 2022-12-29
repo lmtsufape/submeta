@@ -501,7 +501,7 @@
             </table>
 
             @if($errors->has('inputField.*'))
-                <div class="col-sm-12 alert alert-danger" style="display: none" id="nota_maxima_invalida">
+                <div class="col-sm-12 alert alert-danger" id="inputFieldError">
                     Você deve preencher os campos obrigatórios.
                 </div>
             @endif
@@ -511,6 +511,9 @@
             </div>
 
             <input type="checkbox" id="checkB[0]" checked name="campos[]" value="0" hidden>
+
+            <input type="number" name="somaNotas" value="0" id="somaNotas" hidden>
+
         </div>
 
         <div class="col-sm-12 row" style="margin-top:10px; display: none" id="displayLink">
@@ -681,7 +684,6 @@
     });
 
     $("#dynamicAddRemove").on('input', '.nota_maxima', function () {
-        console.log("eita")
         somaNotas = 0;
 
         $(".nota_maxima").each(function() {
@@ -691,6 +693,8 @@
             }
             
         });
+
+        $('#somaNotas').val(somaNotas);
 
         if (somaNotas > 10) {
             $('.nota_maxima').css('border', '1px solid red');
@@ -807,4 +811,11 @@
 
     window.onload = showDocumentoExtra();
 </script>
+
+@if($errors->has('somaNotas'))
+    <script>
+        $('.nota_maxima').css('border', '1px solid red');
+        document.getElementById("nota_maxima_invalida").style.display = "";
+    </script>
+@endif
 @endsection
