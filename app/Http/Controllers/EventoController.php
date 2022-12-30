@@ -636,6 +636,7 @@ class EventoController extends Controller
         $comissao = ComissaoEvento::where('eventosId', $id);
         $revisores = Revisor::where('eventoId', $id);
         $trabalhos = Trabalho::where('evento_id', $id);
+        $camposAvaliacao = CampoAvaliacao::where('evento_id', $id);
 
         // if(isset($areas)){
         //     $areas->delete();
@@ -652,6 +653,10 @@ class EventoController extends Controller
         if(isset($trabalhos)){
             $trabalhos->delete();
             Trabalho::withTrashed()->where('evento_id', $id)->update(['evento_id' => null]);
+        }
+        if(isset($camposAvaliacao)){
+            $camposAvaliacao->delete();
+            CampoAvaliacao::withTrashed()->where('evento_id', $id)->update(['evento_id' => null]);
         }
 
         Storage::deleteDirectory('pdfEdital/' . $evento->id );
