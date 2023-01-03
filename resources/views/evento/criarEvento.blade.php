@@ -407,7 +407,7 @@
 
         <div class="mb-2">
             <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
-                @if((old('tipoAvaliacao') == 'form') || old('tipoAvaliaco') == "") checked @endif value="form">
+                @if((old('tipoAvaliacao') == 'form') || old('tipoAvaliacao') == "") checked @endif value="form">
             <label for="radioForm" style="margin-right: 5px">Formulário (em pdf)</label>
 
             <input type="radio" id="radioCampos" name="tipoAvaliacao" onchange="displayTipoAvaliacao('campos')" 
