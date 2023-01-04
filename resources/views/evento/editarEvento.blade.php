@@ -434,9 +434,15 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="pdfEdital">Formulário para avaliador <i>ad hoc</i>:<span style="color: red; font-weight: bold;">*</span></label>
-                    <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
+                    @if ($evento->tipoAvaliacao == "form")
+                        <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
+                    @else
+                        <a>
+                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                        </a>
+                    @endif
                     <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
                     <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('pdfFormAvalExterno')
@@ -479,8 +485,7 @@
                     <th>Prioridade<span style="color:red; font-weight:bold;">*</span></th>
                     <th>Ação</th>
                 </tr>
-                @if (isset($camposAvaliacao))
-                    
+                @if ($camposAvaliacao->count() != 0)
                     @foreach ($camposAvaliacao as $campoAvaliacao)
                     
                         @if ($numCampos == 0)
@@ -616,7 +621,7 @@
 
         <div class="col-sm-12 row" style="margin-top:10px; display: none" id="displayLink">
             <label for="link" class="col-form-label">{{ __('Link para o formulário:') }}<span style="color:red; font-weight:bold;">*</span></label>
-            <input id="link" type="text" class="form-control @error("link") is-invalid @enderror" name="link" value="{{ old('link') }}">
+            <input id="link" type="text" class="form-control @error("link") is-invalid @enderror" name="link" value="{{ ($evento->tipoAvaliacao == "link") ? $evento->formAvaliacaoExterno : old('link') }}">
             @error('link')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
