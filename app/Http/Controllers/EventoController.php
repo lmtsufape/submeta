@@ -542,7 +542,7 @@ class EventoController extends Controller
 
         if ($request->tipoAvaliacao == 'form') {
             $validateAvaliacao = $request->validate([
-                'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
+                'pdfFormAvalExterno'    => ['file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
             ]);
         } elseif ($request->tipoAvaliacao == 'campos') {
             if($request->has('campos')){
