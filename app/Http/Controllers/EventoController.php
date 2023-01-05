@@ -618,7 +618,7 @@ class EventoController extends Controller
             $evento->formAvaliacaoExterno = $path . $nome;
         }
 
-        if($request->docTutorial != null && ($request->tipoAvaliacao == 'form')){
+        if ($request->docTutorial != null && ($request->tipoAvaliacao == 'form')){
             $docTutorial = $request->docTutorial;
             $extension = $docTutorial->extension();
             $path = 'docTutorial/' . $evento->id . '/';
@@ -637,14 +637,10 @@ class EventoController extends Controller
             $evento->formAvaliacaoRelatorio = $path . $nome;
         }
 
-        $evento->update();
-
         // Editando campos de avaliacao
         if ($request->tipoAvaliacao == 'campos') {
             if($request->has('campos')){
                 $camposAvaliacao->forceDelete();
-                // $numCampos = $camposAvaliacao->count();
-                // $numNovosCampos = count($request->inputField);
                 foreach ($request->get('campos') as $key => $value) {
                     $campoAval = new CampoAvaliacao();
                     $campoAval->nome = $request->inputField[$value]['nome'];
@@ -658,6 +654,30 @@ class EventoController extends Controller
                 }
             }
         }
+
+        // Mudança de tipo de avaliação
+        if ($request->tipoAvaliacao != 'form') {
+            //Apagar arquivos do formulário de avaliação
+
+            //if (Storage::exists('pdfFormAvalExterno/' . $evento->id)) {
+            Storage::deleteDirectory('pdfFormAvalExterno/' . $evento->id );
+            //}
+            //if (Storage::exists('docTutorial/' . $evento->id)) {
+            Storage::deleteDirectory('docTutorial/' . $evento->id );
+            //}
+            
+            if ($request->tipoAvaliacao == 'campos') {
+                $evento->formAvaliacaoExterno = null;
+            }
+            $evento->docTutorial = null;
+        }
+
+        if ($request->tipoAvaliacao != 'campos') {
+            //Apaga campos de avaliacao
+            $camposAvaliacao->forceDelete();
+        }
+
+        $evento->update();
 
         $eventos = Evento::orderBy('nome')->get();
         

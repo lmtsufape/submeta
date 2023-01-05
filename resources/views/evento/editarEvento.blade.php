@@ -600,6 +600,7 @@
                         </td>
                         <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
                     </tr>
+                    @php ++$i; ++$numCampos; @endphp
                 @endif
             </table>
 
@@ -753,8 +754,6 @@
 
         // Adiciona campo de avaliação
         $("#dynamic-ar").click(function () {
-            ++i;
-            ++numCampos;
             
             $("#dynamicAddRemove").append(
                 '<tr><td><input type="text" name="inputField[' + i + '][nome]" class="form-control nome @error("inputField.*.nome") is-invalid @enderror" /></td><td><input type="text" name="inputField[' + i + '][descricao]" class="form-control descricao @error("inputField.*.descricao") is-invalid @enderror"/></td><td><input type="number" min="1"  step="1" name="inputField[' + i + '][nota_maxima]" class="form-control nota_maxima @error("inputField.*.nota_maxima") is-invalid @enderror" /></td><td><select name="inputField[' + i + '][prioridade]" class="form-control prioridade @error("inputField.*.prioridade") is-invalid @enderror"><option value="" selected>-- ORDEM --</option><option value="1" class="ordem_option">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[' + i + ']">Remover</button></td></tr>'
@@ -762,7 +761,11 @@
 
             $("#displayCampos").append('<input type="checkbox" id="checkB[' + i + ']" checked name="campos[]" value="' + i + '" hidden>');
 
+            ++i;
+            ++numCampos;
+            
             addOrdemPrioridade();
+            
             
         });
 
