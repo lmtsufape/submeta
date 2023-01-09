@@ -655,10 +655,11 @@ class AdministradorController extends Controller
         
         $avaliadores_extensao = collect();
         $avaliadores_others = collect();
+
         foreach($avaliadores as $avaliador){
-            if($evento->natureza_id == 3 && $avaliador->area_id == null){
+            if($evento->natureza_id == 3 && count($avaliador->areaTematicas) > 0){
                 $avaliadores_extensao->push($avaliador);
-            }elseif($evento->natureza_id != 3 && $avaliador->area_id != null){
+            }elseif($evento->natureza_id != 3 && count($avaliador->areaTematicas) == 0){
                 $avaliadores_others->push($avaliador);
             }
         }
