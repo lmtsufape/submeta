@@ -109,7 +109,6 @@
                                         <option @if(old('perfil')=='Estudante' ) selected @endif value="Estudante">Estudante</option>
                                         <option @if(old('perfil')=='Outro' ) selected @endif value="Outro">Outro</option>
                                     </select>
-
                                     @error('perfil')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -126,6 +125,20 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                </div>
+                            </div>
+                            <div style="display:none" id="divCursos" class="col-md-12 mb-2">
+                                <label for="curso" class="col-form-label">{{ __('Cursos que Leciona') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                <br>
+                                <div class="row col-md-12">
+                                    @foreach($cursos as $curso)
+                                    <div class="col-sm-6">
+                                        <input type="checkbox" name="curso[]" id="curso{{$curso->id}}" value="{{$curso->id}}">
+                                        <label class="form-check-label" for="curso{{$curso->id}}">
+                                            {{ $curso->nome }}
+                                        </label>
+                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -163,9 +176,9 @@
                             <div class="col-md-6">
                                 <div class="form-group" id="divTitulacaoMax" style="display: none">
                                     <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima') }} <span style="color: red; font-weight:bold;">*</span></label>
-                                    <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome" , onchange="curso()">
+                                    <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome">
                                         <option value="" disabled selected hidden>-- Titulação --</option>
-                                        <option @if(old('titulacaoMaxima')=='Doutorado' ) selected @endif value=" Doutorado">Doutorado</option>
+                                        <option @if(old('titulacaoMaxima')=='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
                                         <option @if(old('titulacaoMaxima')=='Mestrado' ) selected @endif value="Mestrado">Mestrado</option>
                                         <option @if(old('titulacaoMaxima')=='Especialização' ) selected @endif value="Especialização">Especialização</option>
                                         <option @if(old('titulacaoMaxima')=='Graduação' ) selected @endif value="Graduação">Graduação</option>
@@ -177,20 +190,6 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                </div>
-                            </div>
-                            <div style="display:none" id="divCursos" class="col-md-12 mb-2">
-                                <label for="curso" class="col-form-label">{{ __('Cursos que Leciona') }} <span style="color: red; font-weight:bold;">*</span></label>
-                                <br>
-                                <div class="row col-md-12">
-                                    @foreach($cursos as $curso)
-                                    <div class="col-sm-6">
-                                        <input type="checkbox" name="curso[]" id="curso{{$curso->id}}" value="{{$curso->id}}">
-                                        <label class="form-check-label" for="curso{{$curso->id}}">
-                                            {{ $curso->nome }}
-                                        </label>
-                                    </div>
-                                    @endforeach
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -473,6 +472,7 @@
         var divNumero = document.getElementById('numero'); 
         var divComplemento = document.getElementById('complemento');         
 
+        var divCursos = document.getElementById('divCursos');
         var divVinculo = document.getElementById('divVinculo');
         var divTitulacaoMax = document.getElementById('divTitulacaoMax');
         var divAnoTitulacao = document.getElementById('anoTitulacao');
@@ -483,7 +483,6 @@
         var divOutroVinculo = document.getElementById('divOutro');
 
         var comboBoxPerfil = document.getElementById('perfil');
-        var comboBoxVinculo = document.getElementById('vinculo');
 
         if(comboBoxPerfil.value === "Professor" || comboBoxPerfil.value === "Técnico" || comboBoxPerfil.value === "Outro"){
             divVinculo.style.display = "block";
@@ -493,6 +492,13 @@
             divSIAPE.style.display = "block";
             divBolsista.style.display = "block";
 
+            if (comboBoxPerfil.value === "Professor" || comboBoxPerfil.value === "Técnico" ){
+                divCursos.style.display = "block";
+            } else {
+                divCursos.style.display = "none";
+            }
+
+
         } else {
             divVinculo.style.display = "none";
             divTitulacaoMax.style.display = "none";
@@ -500,6 +506,7 @@
             divAreaFormacao.style.display = "none";
             divSIAPE.style.display = "none";
             divBolsista.style.display = "none";
+            divCursos.style.display = "none";
         }
         
         if(comboBoxPerfil.value === "Estudante"){
@@ -531,17 +538,6 @@
 
         outroPerfil();
         outroVinculo();
-    }
-    
-    function curso() {
-        var divCursos = document.getElementById('divCursos');
-        var titulacaoMaxima = document.getElementById('titulacaoMaxima');
-
-        if (titulacaoMaxima.value !== "Técnico") {
-            divCursos.style.display = "block";
-        } else {
-            divCursos.style.display = "none";
-        }
     }
 
     function outroPerfil() {
@@ -595,13 +591,13 @@
         outroVinculo();
         mudarPerfil();
         showInstituicao();
-        curso();
     }
     window.onload = onload();
 </script>
 
-//----------------------------- Scripts para auto-complete de endereço --------------------------------//
 <script>
+//----------------------------- Scripts para auto-complete de endereço --------------------------------//
+
     function limpa_formulário_cep() {
         //Limpa valores do formulário de cep.
         document.getElementById(`rua`).value = ("");
