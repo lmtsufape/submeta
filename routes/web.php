@@ -305,6 +305,9 @@ Route::prefix('evento')->name('evento.')->group(function () {
     Route::post('/editar/{id}', 'EventoController@update')->name('update')->middleware('checkRoles:coordenador,administrador');
     Route::post('/setResumo', 'EventoController@setResumo')->name('setResumo')->middleware('checkAdministrador');
     Route::post('/setFoto', 'EventoController@setFotoEvento')->name('setFotoEvento')->middleware('checkAdministrador');
+
+    Route::get('{id}/formularios', 'FormularioController@index')->name('formularios.index')->middleware('checkAdministrador');
+    Route::get('{id}/formularios/create', 'FormularioController@create')->name('formularios.create')->middleware('checkAdministrador');
 });
 
 //########## Rotas de administrador responsavel (Reitor ou pro-reitor)########

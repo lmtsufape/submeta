@@ -16,7 +16,6 @@ class CreateFormulariosTable extends Migration
         Schema::create('formularios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('titulo');
-            $table->string('tipo');
             $table->unsignedBigInteger('tipo_formulario_id');
             $table->foreign('tipo_formulario_id')->references('id')->on('tipo_formularios');
             $table->unsignedBigInteger('evento_id');

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BlocoFormularios extends Model
+class TipoFormulario extends Model
 {
     //
 }
