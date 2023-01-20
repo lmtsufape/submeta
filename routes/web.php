@@ -88,6 +88,12 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
 
         Route::post('/parecerInterno', 'AvaliadorController@parecerInterno')->name('parecerInterno')->middleware('auth');
         Route::post('/EnviarparecerInterno', 'AvaliadorController@enviarParecerInterno')->name('enviarParecerInterno')->middleware('auth');
+
+        Route::post('/parecerBarema', 'AvaliadorController@parecerBarema')->name('parecerBarema')->middleware('auth');
+        Route::post('/EnviarparecerBarema', 'AvaliadorController@enviarParecerBarema')->name('enviarParecerBarema')->middleware('auth');
+
+        Route::post('/parecerLink', 'AvaliadorController@parecerLink')->name('parecerLink')->middleware('auth');
+        Route::post('/EnviarparecerLink', 'AvaliadorController@enviarParecerLink')->name('enviarParecerLink')->middleware('auth');
     });
 
     Route::get('/notificacao/listar', 'NotificacaoController@listar')->name('notificacao.listar')->middleware('auth');
