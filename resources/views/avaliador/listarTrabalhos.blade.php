@@ -165,7 +165,7 @@
         </div>
           @endif
 
-       @if($trabalhosEx != null)
+        @if($trabalhosEx != null)
           <div class="form-group mb-0" style="margin-left: 20px;margin-top: 20px;">
               <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Avaliação <i>Ad Hoc</i> do Edital: {{ $evento->nome }}</h5>
           </div>
@@ -249,7 +249,102 @@
                   </tbody>
               </table>
           </div>
-      @endif
+        @endif
+
+        @if ($trabalhos != null)
+            <div class="form-group mb-0" style="margin-left: 20px;margin-top: 20px;">
+                <h5 class="card-title mb-0" style="font-size:25px; font-family:Arial, Helvetica, sans-serif; color:#1492E6">Avaliação do Edital: {{ $evento->nome }}</h5>
+            </div>
+            <hr class="mb-0">
+            <div class="card-body" >
+                <table class="table table-bordered table-hover" style="display: block; white-space: nowrap; border-radius:10px; margin-bottom:0px">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="width:100%">Nome do Projeto</th>
+                        <th scope="col">Data de Criação</th>
+                        <th scope="col">Projeto</th>
+                        <th scope="col">Plano de Trabalho</th>
+                        <th scope="col" style="text-align: center">Status</th>
+                        <th scope="col">Parecer Externo</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($trabalhos as $trabalho)
+                            <tr>
+                                <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
+                                <td style="text-align: center">{{ $trabalho->created_at->format('d/m/Y') }}</td>
+                                <td style="text-align: center">
+                                    {{--  --}}
+                                    <a href="{{route('download', ['file' => $trabalho->anexoProjeto])}}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
+                                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
+                                    </a>
+                                </td>
+                                <td style="text-align: center"> 
+                                    @if ($evento->numParticipantes == 0)
+                                    @php
+                                        $planoTrabalho = App\Arquivo::where("trabalhoId", $trabalho->id)->first();
+                                    @endphp
+                                    <a href="{{ route('baixar.plano', ['id' => $planoTrabalho->id]) }}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
+                                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
+                                    </a>
+                                    @else
+                                    @foreach( $trabalho->participantes as $participante)
+                                        @php
+                                            if( App\Arquivo::where('participanteId', $participante->id)->first() != null){
+                                                $planoTrabalho = App\Arquivo::where('participanteId', $participante->id)->first()->nome;
+                                            }else{
+                                                $planoTrabalho = null;
+                                            }
+                                        @endphp
+                                        @if ($planoTrabalho != null)
+                                            <a href="{{route('download', ['file' => $planoTrabalho])}}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
+                                                <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
+                                            </a>
+                                        @else
+                                            Não há planos de trabalho.
+                                        @endif
+                                    @endforeach
+                                    @endif 
+                                </td>
+                                <td style="text-align: center">
+                                    @if($trabalho->pivot->recomendacao == 'RECOMENDADO')
+                                        Recomendado
+                                    @elseif($trabalho->pivot->recomendacao == null)
+                                        Pendente
+                                    @else
+                                        Não Recomendado
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="row justify-content-center">
+                                        @if ($evento->tipoAvaliacao == 'campos')
+                                            <form action="{{ route('avaliador.parecerBarema', ['evento' => $evento]) }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
+                                                <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
+                                                    <button type="submit" class="btn btn-primary mr-2 ml-2" >
+                                                        Parecer
+                                                    </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('avaliador.parecerLink', ['evento' => $evento]) }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}" >
+                                                <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
+                                                    <button type="submit" class="btn btn-primary mr-2 ml-2" >
+                                                        Parecer
+                                                    </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
       </div>
     </div>
   </div>
