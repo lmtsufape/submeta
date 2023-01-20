@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Area;
 use App\Arquivo;
 use App\AvaliacaoRelatorio;
+use App\CampoAvaliacao;
+use App\AvaliacaoTrabalho;
 use App\FuncaoParticipantes;
 use App\GrandeArea;
 use App\ParecerInterno;
@@ -81,25 +83,30 @@ class AvaliadorController extends Controller
 
         $user = User::find(Auth::user()->id);
         $evento = Evento::where('id', $request->evento_id)->first();
-        //$trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
         $trabalhosEx = [];
         $trabalhosIn = [];
+        $trabalhos = [];
         $aval = $user->avaliadors->where('user_id',$user->id)->first();
-        foreach ($aval->trabalhos->where('evento_id',$evento->id) as $trab){
-            if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 2
-                || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 3 ||
-                ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == null && $aval->tipo == "Interno")){
-                array_push($trabalhosIn,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
-            }
-            if ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 1 ||
-                $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 3 ||
-                ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == null && $aval->tipo == "Externo")){
-                array_push($trabalhosEx,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+
+        if ($evento->tipoAvaliacao == 'campos' || $evento->tipoAvaliacao == 'link') {
+            $trabalhos = $aval->trabalhos->where('evento_id', $request->evento_id);
+
+        } else {
+            foreach ($aval->trabalhos->where('evento_id',$evento->id) as $trab){
+                if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 2
+                    || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 3 ||
+                    ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == null && $aval->tipo == "Interno")){
+                    array_push($trabalhosIn,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+                }
+                if ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 1 ||
+                    $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 3 ||
+                    ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == null && $aval->tipo == "Externo")){
+                    array_push($trabalhosEx,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
+                }
             }
         }
 
-
-        return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'evento'=>$evento]);
+        return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'trabalhos'=>$trabalhos, 'evento'=>$evento]);
 
     }
 
@@ -215,6 +222,71 @@ class AvaliadorController extends Controller
         }
 
         return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'evento'=>$evento]);
+    }
+
+    public function parecerBarema(Request $request) {
+
+        $user = User::find(Auth::user()->id);
+        $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
+        $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $evento = Evento::find($request->evento_id);
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+        $camposAvaliacao = CampoAvaliacao::where('evento_id', $evento->id)->get();
+
+        return view('avaliador.parecerBarema', ['trabalho'=>$trabalho, 'evento'=>$evento, 'hoje' => $hoje, 'camposAvaliacao' => $camposAvaliacao ]);
+    }
+
+    public function enviarParecerBarema(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
+        $camposAvaliacao = CampoAvaliacao::where('evento_id', $request->evento_id)->get();
+        $avaliacaoTrab = AvaliacaoTrabalho::where('trabalho_id', $request->trabalho_id)->where('avaliador_id', $avaliador->id)->get();
+
+        if ($avaliacaoTrab->count() > 0) {
+            foreach ($avaliacaoTrab as $avaliacao) {
+                $avaliacao->forceDelete();
+            }
+        }
+
+        $i = 0;
+
+        foreach ($camposAvaliacao as $campoAvaliacao) {
+            //dd("a");
+            $avaliacaoTrab = new AvaliacaoTrabalho();
+            $avaliacaoTrab->nota = $request->inputField[$i]['nota'];
+            $avaliacaoTrab->avaliador_id = $avaliador->id;
+            $avaliacaoTrab->campo_avaliacao_id = $campoAvaliacao->id;
+            $avaliacaoTrab->trabalho_id = $request->trabalho_id;
+            $avaliacaoTrab->save();
+
+            ++$i; 
+        }
+
+        return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]));
+    }
+
+    public function parecerLink(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
+        $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $evento = Evento::find($request->evento_id);
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+
+        return view('avaliador.parecerLink', ['trabalho'=>$trabalho, 'evento'=>$evento, 'hoje' => $hoje]);
+    }
+
+    public function enviarParecerLink(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $evento = Evento::find($request->evento_id);
+        $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
+      	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $data = Carbon::now('America/Recife');
+
+        $avaliador->trabalhos()->updateExistingPivot($trabalho->id,['recomendacao'=>$request->recomendacao, 'created_at' => $data]);
+
+        return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]));
     }
 
     public function parecerPlano(Request $request){
