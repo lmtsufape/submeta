@@ -56,7 +56,6 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-
         if ($data['perfil'] == "Estudante")
         {
             return Validator::make($data, [
@@ -68,8 +67,10 @@ class RegisterController extends Controller
                 'celular' => ['required', 'string', 'telefone'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
+                'outroCursoEstudante' => ['required_if:cursoEstudante,Outro', 'max:255'],
+                'cursoEstudante' => ['required_without:outroCursoEstudante'],
                 'perfil' => ['required'],
-                'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],                
+                'linkLattes' => ['required'],                
             ]);
         }
 
@@ -118,6 +119,7 @@ class RegisterController extends Controller
         $user->password = bcrypt($data['password']);
         $user->cpf = $data['cpf'];
         $user->celular = $data['celular'];
+
         if ($data['instituicao'] != null) {
             $user->instituicao = $data['instituicao'];
         } else if (isset($data['instituicaoSelect']) && $data['instituicaoSelect'] != "Outra") {
@@ -135,22 +137,34 @@ class RegisterController extends Controller
             $endereco->numero = $data['numero'];
             $endereco->bairro = $data['bairro'];
             $endereco->complemento = $data['complemento'];
+            $endereco->save();
 
             $participante->data_de_nascimento = $data['data_de_nascimento'];
             $participante->linkLattes = $data['linkLattes'];
 
+
+            if ($data['outroCursoEstudante'] != null) {
+                $participante->curso = $data['outroCursoEstudante'];
+            } else if (isset($data['cursoEstudante']) && $data['cursoEstudante'] != "Outro") {
+                $participante->curso = $data['cursoEstudante'];
+            }
+
             $user->save();
             $user->participantes()->save($participante);
             $endereco->user()->save($user);
+
         } else {
+
             $user->tipo = 'proponente';
             $user->save();
 
             $proponente = new Proponente();
-            if ($data['SIAPE'] != null) {
-                $proponente->SIAPE = $data['SIAPE'];
-            }
             $proponente->cargo = $data['perfil'];
+            $proponente->titulacaoMaxima = $data['titulacaoMaxima'];
+            $proponente->anoTitulacao = $data['anoTitulacao'];
+            $proponente->areaFormacao = $data['areaFormacao'];
+            $proponente->bolsistaProdutividade = $data['bolsistaProdutividade'];
+            $proponente->linkLattes = $data['linkLattes'];
 
             if ($data['vinculo'] != 'Outro') {
                 $proponente->vinculo = $data['vinculo'];
@@ -158,21 +172,20 @@ class RegisterController extends Controller
                 $proponente->vinculo = $data['outro'];
             }
 
-            $proponente->titulacaoMaxima = $data['titulacaoMaxima'];
-            $proponente->anoTitulacao = $data['anoTitulacao'];
-            $proponente->areaFormacao = $data['areaFormacao'];
-            $proponente->bolsistaProdutividade = $data['bolsistaProdutividade'];
-            if ($data['bolsistaProdutividade'] == 'sim') {
-                $proponente->nivel = $data['nivel'];
-            }
-            $proponente->linkLattes = $data['linkLattes'];
-            
-            $user->proponentes()->save($proponente);
-            if($proponente->titulacaoMaxima == 'Técnico'){
-                $proponente->cursos()->sync($data['curso']);
+            if ($data['SIAPE'] != null) {
+                $proponente->SIAPE = $data['SIAPE'];
             }
 
+            if ($data['bolsistaProdutividade'] == 'sim') {
+                $proponente->nivel = $data['nivel'];
+            }            
+            
+            $user->proponentes()->save($proponente);
             $user->participantes()->save($participante);
+
+            if($data['perfil'] == 'Professor'){
+                $proponente->cursos()->sync($data['curso']);
+            }
         }
         
         return $user;

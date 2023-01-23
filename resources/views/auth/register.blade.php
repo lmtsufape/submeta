@@ -23,7 +23,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="name" class="col-form-label">{{ __('Nome Completo') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="name" class="col-form-label" style="font-weight:600;">{{ __('Nome Completo') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Digite seu nome completo" value="{{ old('name') }}" required autocomplete="name" autofocus>
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -34,8 +34,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="cpf" class="col-form-label">{{ __('CPF') }} <span style="color: red; font-weight:bold;">*</span></label>
-                                    <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" placeholder="Digite o número do cpf" value="{{ old('cpf') }}" required autocomplete="cpf" autofocus>
+                                    <label for="cpf" class="col-form-label" style="font-weight:600;">{{ __('CPF') }}<span style="color: red; font-weight:bold;">*</span></label>
+                                    <input id="cpf" type="text" class="form-control @error('cpf') is-invalid @enderror" name="cpf" placeholder="Digite o número do CPF" value="{{ old('cpf') }}" required autocomplete="cpf" autofocus>
 
                                     @error('cpf')
                                     <span class="invalid-feedback" role="alert">
@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="rg" class="col-form-label">{{ __('RG') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="rg" class="col-form-label" style="font-weight:600;">{{ __('RG') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="rg" type="text" class="form-control @error('rg') is-invalid @enderror" name="rg" placeholder="Digite o número do RG" value="{{ old('rg') }}" required autocomplete="rg" autofocus>
 
                                     @error('rg')
@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="celular" class="col-form-label">{{ __('Celular') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="celular" class="col-form-label" style="font-weight:600;">{{ __('Celular') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="celular" type="text" class="form-control @error('celular') is-invalid @enderror" name="celular" placeholder="Digite o número do seu celular" value="{{ old('celular') }}" required autocomplete="celular" autofocus>
 
                                     @error('celular')
@@ -75,7 +75,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="instituicaoSelect" class="col-form-label">{{ __('Instituição de Vínculo') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="instituicaoSelect" class="col-form-label" style="font-weight:600;">{{ __('Instituição de Vínculo') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <select style="display: inline" onchange="showInstituicao()" class="form-control @error('instituicaoSelect') is-invalid @enderror" name="instituicaoSelect" id="instituicaoSelect">
                                         <option value="" disabled selected hidden>-- Instituição --</option>
                                         <option @if(old('instituicaoSelect')=='UFAPE' ) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
@@ -90,7 +90,7 @@
                             </div>
                             <div class="col-md-12" id="displayOutro" style='display:none'>
                                 <div class="form-group">
-                                    <label for="instituicao" class="col-form-label">{{ __('Digite a Instituição') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="instituicao" class="col-form-label" style="font-weight:600;">{{ __('Digite a Instituição') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="instituicao" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="instituicao" value="{{ old('instituicao') }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
                                     @error('instituicao')
                                     <span class="invalid-feedback" role="alert">
@@ -101,7 +101,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="perfil" class="col-form-label">{{ __('Perfil') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="perfil" class="col-form-label" style="font-weight:600;">{{ __('Perfil') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <select id="perfil" name="perfil" class="form-control @error('perfil') is-invalid @enderror" onchange="mudarPerfil()">
                                         <option value="" disabled selected hidden>-- Perfil --</option>
                                         <option @if(old('perfil')=='Professor' ) selected @endif value="Professor">Professor</option>
@@ -118,7 +118,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group" id="outroPerfil">
-                                    <label for="outroPerfil" class="col-form-label">{{ __('Qual perfil?') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="outroPerfil" class="col-form-label" style="font-weight:600;">{{ __('Qual perfil?') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="outroPerfil" type="text" class="form-control @error('outroPerfil') is-invalid @enderror" name="outroPerfil" placeholder="Digite aqui qual o seu perfil" value="{{ old('outroPerfil') }}">
                                     @error('outroPerfil')
                                     <span class="invalid-feedback" role="alert">
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
                             <div style="display:none" id="divCursos" class="col-md-12 mb-2">
-                                <label for="curso" class="col-form-label">{{ __('Cursos que Leciona') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                <label for="curso" class="col-form-label" style="font-weight:600;">{{ __('Cursos que Leciona') }}<span style="color: red; font-weight:bold;">*</span></label>
                                 <br>
                                 <div class="row col-md-12">
                                     @foreach($cursos as $curso)
@@ -145,7 +145,7 @@
                             <!-- Proponente -->
                             <div class="col-md-6">
                                 <div class="form-group" id="divVinculo">
-                                    <label for="vinculo" class="col-form-label">{{ __('Vínculo') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="vinculo" class="col-form-label" style="font-weight:600;">{{ __('Vínculo') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <select name="vinculo" id="vinculo" class="form-control @error('vinculo') is-invalid @enderror" onchange="mudarPerfil()">
                                         <option value="" disabled selected hidden>-- Vínculo --</option>
                                         <option @if(old('vinculo')=='Servidor na ativa' ) selected @endif value="Servidor na ativa">Servidor na ativa</option>
@@ -164,7 +164,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group" id="divOutro">
-                                    <label for="outro" class="col-form-label">{{ __('Qual?') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="outro" class="col-form-label" style="font-weight:600;">{{ __('Qual?') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="outro" type="text" class="form-control @error('outro') is-invalid @enderror" name="outro" placeholder="Digite aqui o seu vínculo" value="{{ old('outro') }}">
                                     @error('outro')
                                     <span class="invalid-feedback" role="alert">
@@ -175,7 +175,7 @@
                             </div>    
                             <div class="col-md-6">
                                 <div class="form-group" id="divTitulacaoMax" style="display: none">
-                                    <label for="titulacaoMaxima" class="col-form-label">{{ __('Titulação Máxima') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="titulacaoMaxima" class="col-form-label" style="font-weight:600;">{{ __('Titulação Máxima') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <select id="titulacaoMaxima" class="form-control @error('titulacaoMaxima') is-invalid @enderror" name="titulacaoMaxima" value="{{ old('titulacaoMaxima') }}" autocomplete="nome">
                                         <option value="" disabled selected hidden>-- Titulação --</option>
                                         <option @if(old('titulacaoMaxima')=='Doutorado' ) selected @endif value="Doutorado">Doutorado</option>
@@ -194,7 +194,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group" id="anoTitulacao" style="display: none">
-                                    <label for="AnoTitulacao" class="col-form-label">{{ __('Ano da Titulação Máxima') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="AnoTitulacao" class="col-form-label" style="font-weight:600;">{{ __('Ano da Titulação Máxima') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="AnoTitulacao" type="text" class="form-control @error('anoTitulacao') is-invalid @enderror" name="anoTitulacao" placeholder="Digite o ano de titulação" value="{{ old('anoTitulacao') }}" autocomplete="nome">
 
                                     @error('anoTitulacao')
@@ -206,7 +206,7 @@
                             </div>
                             <div class="col-md-6" >
                                 <div class="form-group" id="areaFormacao" style="display: none">
-                                    <label for="areaFormacao" class="col-form-label">{{ __('Área de Formação') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="areaFormacao" class="col-form-label" style="font-weight:600;">{{ __('Área de Formação') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="areaFormacao" type="text" class="form-control @error('areaFormacao') is-invalid @enderror" name="areaFormacao" placeholder="Digite a sua área de formação" value="{{ old('areaFormacao') }}" autocomplete="nome">
 
                                     @error('areaFormacao')
@@ -218,7 +218,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group" id="siape" style="display: none">
-                                    <label for="SIAPE" class="col-form-label">{{ __('SIAPE') }}</label>
+                                    <label for="SIAPE" class="col-form-label" style="font-weight:600;">{{ __('SIAPE') }}</label>
                                     <input id="SIAPE" type="text" class="form-control @error('SIAPE') is-invalid @enderror" name="SIAPE" placeholder="Digite o SIAPE" value="{{ old('SIAPE') }}" autocomplete="nome">
 
                                     @error('SIAPE')
@@ -230,7 +230,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group" id="bolsista" style="display: none">
-                                    <label for="bolsistaProdutividade" class="col-form-label">{{ __('Bolsista de Produtividade') }} <span style="color: red; font-weight:bold;">*</span></label><br>
+                                    <label for="bolsistaProdutividade" class="col-form-label" style="font-weight:600;">{{ __('Bolsista de Produtividade') }}<span style="color: red; font-weight:bold;">*</span></label><br>
                                     <select name="bolsistaProdutividade" id="bolsistaProdutividade" class="form-control @error('bolsistaProdutividade') is-invalid @enderror" onchange="mudarNivel()">
                                         <option value="" disabled selected hidden>-- Bolsista --</option>
                                         <option @if(old('bolsistaProdutividade')=='nao' ) selected @endif value="nao">Não</option>
@@ -245,7 +245,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group" id="nivelInput" style="display: block;">
-                                    <label for="nivel" class="col-form-label">{{ __('Nível') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="nivel" class="col-form-label" style="font-weight:600;">{{ __('Nível') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <select name="nivel" id="nivel" class="form-control @error('nivel') is-invalid @enderror">
                                         <option value="" disabled selected hidden></option>
                                         <option value="1A">1A</option>
@@ -278,7 +278,7 @@
                             <div class="col-md-6">
                                 <div class="form-group" id="curso">
                                     @component('componentes.input', ['label' => 'Curso'])
-                                    <select style="display: inline" class="form-control" name="curso" onchange="showCurso(this)">
+                                    <select style="display: inline" class="form-control" id='cursoEstudante' name="cursoEstudante" onchange="outroCurso(this)">
                                         <option value="" disabled selected hidden>-- Selecione uma opção--</option>
                                         <option @if((old('curso')) == 'Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
                                         <option @if((old('curso')) == 'Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
@@ -296,7 +296,21 @@
                                     @enderror
                                     @endcomponent
                                 </div>                                
-                            </div>                                
+                            </div>  
+
+                            <div class="col-md-12">
+                                <div class="form-group" id="divCursoEstudante" style="display:none">
+                                    @component('componentes.input', ['label' => 'Qual curso?'])
+                                    <input name="outroCursoEstudante" type="text" id="outroCursoEstudante" value="{{ old('outroCursoEstudante')}}" class="form-control"/>
+                                    @error('outroCursoEstudante')
+                                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                    @endcomponent
+                                </div>
+                            </div>
+                            
+                            
+
                             <div class="col-md-12" id='endereco'>
                                 <div class="d-flex justify-content-between align-items-center" style="margin-bottom:6px">
                                     <h5 class="card-title mb-0" style="font-size:20px; font-family:Arial, Helvetica, sans-serif; font-family:Arial, Helvetica, sans-serif; ">Endereço</h5>
@@ -364,7 +378,7 @@
                             </div>
                             <div class='col-md-12'>
                                 <div class="form-group" id='complemento'>
-                                    <label class=" control-label" for="firstname">Complemento</label>
+                                    <label class=" control-label" for="firstname" style="font-weight:600;">Complemento</label>
                                     <input type="text" class="form-control" value="{{old('complemento')}}" name="complemento" placeholder="Complemento" maxlength="75" id="complemento" />
                                     <span style="color: red; font-size: 12px" id="caracsRestantescomplemento">
                                     </span>
@@ -379,7 +393,7 @@
                             
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="linkLattes" class="col-form-label">{{ __('Link do Currículo Lattes') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="linkLattes" class="col-form-label" style="font-weight:600;">{{ __('Link do Currículo Lattes') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="linkLattes" type="text" class="form-control @error('linkLattes') is-invalid @enderror" name="linkLattes" placeholder="Digite o link do currículo Lattes" value="{{ old('linkLattes') }}" autocomplete="nome">
 
                                     @error('linkLattes')
@@ -396,7 +410,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="email" class="col-form-label">{{ __('E-Mail') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="email" class="col-form-label" style="font-weight:600;">{{ __('E-Mail') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Digite o seu e-mail" value="{{ old('email') }}" required autocomplete="email">
 
                                     @error('email')
@@ -408,7 +422,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="password" class="col-form-label">{{ __('Senha') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="password" class="col-form-label" style="font-weight:600;">{{ __('Senha') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Digite sua senha" required autocomplete="new-password">
 
                                     @error('password')
@@ -421,7 +435,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="password-confirm" class="col-form-label">{{ __('Confirme a Senha') }} <span style="color: red; font-weight:bold;">*</span></label>
+                                    <label for="password-confirm" class="col-form-label" style="font-weight:600;">{{ __('Confirme a Senha') }}<span style="color: red; font-weight:bold;">*</span></label>
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirme sua senha" required autocomplete="new-password">
                                 </div>
                             </div>
@@ -492,7 +506,7 @@
             divSIAPE.style.display = "block";
             divBolsista.style.display = "block";
 
-            if (comboBoxPerfil.value === "Professor" || comboBoxPerfil.value === "Técnico" ){
+            if (comboBoxPerfil.value === "Professor"){
                 divCursos.style.display = "block";
             } else {
                 divCursos.style.display = "none";
@@ -538,6 +552,17 @@
 
         outroPerfil();
         outroVinculo();
+    }
+
+    function outroCurso(){
+        var comboBoxCurso = document.getElementById('cursoEstudante');
+        var divCurso = document.getElementById('divCursoEstudante');
+
+        if (comboBoxCurso.value === "Outro") {
+            divCurso.style.display = "block";
+        } else {
+            divCurso.style.display = "none";
+        }
     }
 
     function outroPerfil() {
