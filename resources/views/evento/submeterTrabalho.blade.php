@@ -19,7 +19,10 @@
       
 
       @include('evento.formulario.participantes')
-
+      
+      @if($edital->natureza_id == 3)
+        @include('evento.formulario.integrantes')
+      @endif
       
       @include('evento.formulario.anexos')
 
