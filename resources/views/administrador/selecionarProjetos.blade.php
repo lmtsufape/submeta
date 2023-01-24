@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
 @section('content')
 
 <div class="container" style="margin-top: 30px;">
@@ -334,6 +338,15 @@
                         </div>
 
                         <div class="form-group">
+                          <label for="grandeArea" class="col-form-label">{{ __('Áreas Temáticas') }}<span style="color: red; font-weight:bold">*</span></label>
+                          <select class="form-control" id="areaTematicaConvite" style="width: 425px" name="grandeAreaConvite[]" multiple="multiple" required>
+                              @foreach($areasTematicas as $areaTematica)
+                                  <option value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
+                              @endforeach
+                          </select>
+                        </div>
+
+                        <div class="form-group">
                           @if($evento->natureza_id != 3)
                             <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span
                                         style="color: red; font-weight:bold">*</span></label>
@@ -414,6 +427,15 @@
 
 @endsection
 @section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+  $("#areaTematicaConvite").select2({
+    placeholder: 'Selecione as áreas temáticas',
+    allowClear: true
+  });
+</script>
+
+
 <script>
   $('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
@@ -497,7 +519,5 @@
           $("#outra").prop('required', false);
       }
   }
-
-  
 </script>
 @endsection
