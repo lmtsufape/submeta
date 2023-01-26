@@ -104,11 +104,20 @@
             </div>
 					</div>
 
-          <p>Por fim, informe sua recomendação.</p>
-					<select class="custom-select" name="recomendacao" >
-							<option  @if($trabalho->pivot->recomendacao =='RECOMENDADO' ) selected @endif value="RECOMENDADO">RECOMENDADO</option>	
-							<option @if($trabalho->pivot->recomendacao =='NAO-RECOMENDADO' ) selected @endif value="NAO-RECOMENDADO">NAO-RECOMENDADO</option>												  
-					</select>
+          <p>Por fim, informe a pontuação (caso necessário) e sua recomendação.</p>
+
+					<div class="form-group"> 
+						<label style="font-weight: bold">Pontuação</label>
+						<input class="form-control" name="pontuacao" type="number" max="10" min="0" value="{{ $trabalho->pivot->pontuacao }}"/>
+					</div>
+
+					<div class="form-group">
+						<label style="font-weight: bold">Recomendação <span style="color:red; font-weight:bold;">*</span></label>
+						<select class="custom-select" name="recomendacao" required>
+								<option  @if($trabalho->pivot->recomendacao =='RECOMENDADO' ) selected @endif value="RECOMENDADO">RECOMENDADO</option>	
+								<option @if($trabalho->pivot->recomendacao =='NAO-RECOMENDADO' ) selected @endif value="NAO-RECOMENDADO">NAO-RECOMENDADO</option>								  
+						</select>
+					</div>
 					
 					<hr style="border-top: 1px solid#1492E6">
 					<div class="d-flex justify-content-end">

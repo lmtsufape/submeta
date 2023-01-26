@@ -284,7 +284,12 @@ class AvaliadorController extends Controller
       	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
         $data = Carbon::now('America/Recife');
 
-        $avaliador->trabalhos()->updateExistingPivot($trabalho->id,['recomendacao'=>$request->recomendacao, 'created_at' => $data]);
+        if ($request->pontuacao == null) {
+            $avaliador->trabalhos()->updateExistingPivot($trabalho->id,['status'=> 1, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
+        } else {
+            $avaliador->trabalhos()->updateExistingPivot($trabalho->id,['status'=> 1, 'recomendacao'=>$request->recomendacao, 'created_at' => $data, 'pontuacao' => $request->pontuacao]);
+        }
+        
 
         return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]));
     }
