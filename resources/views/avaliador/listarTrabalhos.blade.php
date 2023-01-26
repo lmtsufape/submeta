@@ -265,7 +265,7 @@
                         <th scope="col">Projeto</th>
                         <th scope="col">Plano de Trabalho</th>
                         <th scope="col" style="text-align: center">Status</th>
-                        <th scope="col">Parecer Externo</th>
+                        <th scope="col">Parecer</th>
 
                     </tr>
                     </thead>
