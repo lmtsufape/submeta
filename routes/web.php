@@ -245,6 +245,8 @@ Route::prefix('usuarios')->name('admin.')->group(function () {
     Route::post('/visualizarParecer', 'AdministradorController@visualizarParecer')->name('visualizarParecer');
     Route::get('/visualizarParecer', 'AdministradorController@visualizarParecer')->name('visualizarParecer');
     Route::get('/visualizarParecerInterno', 'AdministradorController@visualizarParecerInterno')->name('visualizarParecerInterno');
+    Route::get('/visualizarParecerLink', 'AdministradorController@visualizarParecerLink')->name('visualizarParecerLink');
+    Route::get('/visualizarParecerBarema', 'AdministradorController@visualizarParecerBarema')->name('visualizarParecerBarema');
     Route::get('/pareceresProjetos', 'AdministradorController@pareceres')->name('pareceres');
     Route::get('/analisarProjetos/{column?}', 'AdministradorController@analisar')->name('analisar')->middleware('checkRoles:coordenador,administrador');
     Route::get('/analisarProposta', 'AdministradorController@analisarProposta')->name('analisarProposta')->middleware('checkRoles:coordenador,administrador');

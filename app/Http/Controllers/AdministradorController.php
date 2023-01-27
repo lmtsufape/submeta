@@ -8,6 +8,8 @@ use App\Area;
 use App\Arquivo;
 use App\AvaliacaoRelatorio;
 use App\Avaliador;
+use App\AvaliacaoTrabalho;
+use App\CampoAvaliacao;
 use App\CoordenadorComissao;
 use App\Evento;
 use App\FuncaoParticipantes;
@@ -326,6 +328,29 @@ class AdministradorController extends Controller
 
         //dd($parecer);
         return view('administrador.visualizarParecer')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador]);
+    }
+
+    public function visualizarParecerLink(Request $request)
+    {
+        $avaliador = Avaliador::find($request->avaliador_id);
+        $trabalho = $avaliador->trabalhos->where('id', $request->trabalho_id)->first();
+        $parecer = $avaliador->trabalhos->where('id', $request->trabalho_id)->first()->pivot;
+        $evento = Evento::find($trabalho->evento_id);
+
+        //dd($parecer);
+        return view('administrador.visualizarParecerLink')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador, 'evento' => $evento]);
+    }
+
+    public function visualizarParecerBarema(Request $request)
+    {
+        $avaliador = Avaliador::find($request->avaliador_id);
+        $trabalho = $avaliador->trabalhos->where('id', $request->trabalho_id)->first();
+        $parecer = $avaliador->trabalhos->where('id', $request->trabalho_id)->first()->pivot;
+        $avalTrabalho = AvaliacaoTrabalho::where('trabalho_id', $trabalho->id)->where('avaliador_id', $avaliador->id)->get();
+        $camposAvaliacao = CampoAvaliacao::where('evento_id', $request->evento_id)->get();
+
+        //dd($parecer);
+        return view('administrador.visualizarParecerBarema')->with(['trabalho' => $trabalho, 'parecer' => $parecer, 'avaliador' => $avaliador, 'avalTrabalho' => $avalTrabalho, 'camposAvaliacao' => $camposAvaliacao]);
     }
 
     public function visualizarParecerInterno(Request $request)
