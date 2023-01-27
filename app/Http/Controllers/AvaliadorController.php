@@ -242,6 +242,9 @@ class AvaliadorController extends Controller
         $avaliador = $user->avaliadors->where('user_id',$user->id)->first();
         $camposAvaliacao = CampoAvaliacao::where('evento_id', $request->evento_id)->get();
         $avaliacaoTrab = AvaliacaoTrabalho::where('trabalho_id', $request->trabalho_id)->where('avaliador_id', $avaliador->id)->get();
+        $evento = Evento::find($request->evento_id);
+        $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
+        $data = Carbon::now('America/Recife');
 
         if ($avaliacaoTrab->count() > 0) {
             foreach ($avaliacaoTrab as $avaliacao) {
@@ -250,6 +253,7 @@ class AvaliadorController extends Controller
         }
 
         $i = 0;
+        $pontuacao = 0;
 
         foreach ($camposAvaliacao as $campoAvaliacao) {
             //dd("a");
@@ -260,8 +264,12 @@ class AvaliadorController extends Controller
             $avaliacaoTrab->trabalho_id = $request->trabalho_id;
             $avaliacaoTrab->save();
 
+            $pontuacao += number_format($request->inputField[$i]['nota']);
             ++$i; 
+            
         }
+
+        $avaliador->trabalhos()->updateExistingPivot($trabalho->id,['status'=> 1, 'recomendacao'=>$request->recomendacao, 'created_at' => $data, 'pontuacao' => $pontuacao]);
 
         return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]));
     }
