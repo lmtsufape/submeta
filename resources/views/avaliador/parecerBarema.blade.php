@@ -96,15 +96,16 @@
 						<input type="hidden" name="trabalho_id" value="{{$trabalho->id}}" >
 						<input type="hidden" name="evento_id" value="{{$evento->id}}" >
 
-						<div class="col-sm-12">
+						<div class="form-group">
+							<p>Preencha os valores da notas a partir de cada critério.</p>
 							<div class="justify-content-center" id="displayCampos">
 								<table class="table table-bordered col-sm-12" id="dynamicAddRemove">
 									<tr>
-											<th>Nome<span style="color:red; font-weight:bold;">*</span></th>
+											<th>Nome</th>
 											<th>Descrição</th>
-											<th>Nota Máxima<span style="color:red; font-weight:bold;">*</span></th>
-											<th>Prioridade<span style="color:red; font-weight:bold;">*</span></th>
-											<th>Nota da avaliação</th>
+											<th>Nota Máxima</th>
+											<th>Prioridade</th>
+											<th>Nota da avaliação<span style="color:red; font-weight:bold;">*</span></th>
 									</tr>
 									@foreach ($camposAvaliacao as $campoAvaliacao)
 										<tr>
@@ -113,7 +114,7 @@
 											</td>
 											<td><input type="number" name="inputField[{{$i}}][nota_maxima]" class="form-control nota_maxima" value="{{ $campoAvaliacao->nota_maxima }}" disabled/></td>
 											<td><input type="number" name="inputField[{{$i}}][nota_prioridade]" class="form-control nota_maxima" value="{{ $campoAvaliacao->prioridade }}" disabled/></td>
-											<td><input type="number" min="1" max="{{ $campoAvaliacao->nota_maxima }}" step="1" name="inputField[{{$i}}][nota]" class="form-control nota" required />
+											<td><input type="number" min="0" max="{{ $campoAvaliacao->nota_maxima }}" step="1" name="inputField[{{$i}}][nota]" class="form-control nota" required />
 										</tr>
 										<input type="checkbox" id="checkB[{{$i}}]" checked name="campos[]" value="{{$i}}" hidden>
 										@php ++$i; ++$numCampos; @endphp
@@ -122,6 +123,15 @@
 							</div>
 						</div>
 
+						<p>Por fim, informe a sua recomendação.</p>
+						<div class="form-group">
+							<label style="font-weight: bold">Recomendação <span style="color:red; font-weight:bold;">*</span></label>
+							<select class="custom-select" name="recomendacao" required>
+									<option  @if($trabalho->pivot->recomendacao =='RECOMENDADO' ) selected @endif value="RECOMENDADO">RECOMENDADO</option>	
+									<option @if($trabalho->pivot->recomendacao =='NAO-RECOMENDADO' ) selected @endif value="NAO-RECOMENDADO">NAO-RECOMENDADO</option>								  
+							</select>
+						</div>
+						
 						<hr style="border-top: 1px solid#1492E6">
 						<div class="d-flex justify-content-end">
 							<div style="margin-right: 15px"><a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id])}}"  class="btn btn-light" style="color: red;">Cancelar</a></div>
