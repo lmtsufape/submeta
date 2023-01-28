@@ -455,6 +455,11 @@
         </div>
 
         <div class="row justify-content-center" style="margin-top:10px; display: none" id="displayCampos">
+            <div class="row align-items-end mb-4">
+                <label class="col-sm-3" for="pontuacao">Valor total da pontuação por Barema:<span style="color:red; font-weight:bold;">*</span></label>
+                <input type="number" name="pontuacao" min="1" class="col-sm-1 form-control" id="pontuacao" value="{{old('pontuacao')}}"/>
+            </div>
+            <label>Campos do Barema:</label>
             <table class="table table-bordered col-sm-12" id="dynamicAddRemove">
                 <tr>
                     <th>Nome<span style="color:red; font-weight:bold;">*</span></th>
@@ -507,7 +512,7 @@
             @endif
 
             <div class="col-sm-12 alert alert-danger" style="display: none" id="nota_maxima_invalida">
-                A soma das notas máximas não pode ser maior que 10.
+                A soma das notas máximas deve ser igual a pontuação total definida.
             </div>
 
             <input type="checkbox" id="checkB[0]" checked name="campos[]" value="0" hidden>
@@ -683,27 +688,42 @@
         
     });
 
+    $('#pontuacao').on('input', function () {
+        validateNotas();
+    })
+
     $("#dynamicAddRemove").on('input', '.nota_maxima', function () {
-        somaNotas = 0;
-
-        $(".nota_maxima").each(function() {
-            valor = Number($(this).val());
-            if  (valor != 0) {
-                somaNotas += valor;
-            }
-            
-        });
-
-        $('#somaNotas').val(somaNotas);
-
-        if (somaNotas > 10) {
-            $('.nota_maxima').css('border', '1px solid red');
-            document.getElementById("nota_maxima_invalida").style.display = "";
-        } else {
-            $('.nota_maxima').css('border', '');
-            document.getElementById("nota_maxima_invalida").style.display = "none";
-        }
+        validateNotas();
     });
+
+    function validateNotas() {
+        pontuacao = $("#pontuacao").val();
+
+        if (pontuacao == "") {
+            alert("Escolha o valor total da pontuação antes de adicionar as notas máximas!")
+            $('.nota_maxima').val("");
+        } else {
+            somaNotas = 0;
+
+            $(".nota_maxima").each(function() {
+                valor = Number($(this).val());
+                if  (valor != 0) {
+                    somaNotas += valor;
+                }
+                
+            });
+
+            $('#somaNotas').val(somaNotas);
+
+            if (somaNotas != pontuacao) {
+                $('.nota_maxima').css('border', '1px solid red');
+                document.getElementById("nota_maxima_invalida").style.display = "";
+            } else {
+                $('.nota_maxima').css('border', '');
+                document.getElementById("nota_maxima_invalida").style.display = "none";
+            }
+        }
+    }
 
 
     // Tipo de avaliação
