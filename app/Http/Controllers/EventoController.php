@@ -185,8 +185,8 @@ class EventoController extends Controller
                     'inputField.*.nome'        => ['required', 'string'],
                     'inputField.*.nota_maxima' => ['required'],
                     'inputField.*.prioridade'  => ['required'],
-                    'somaNotas'                => ['required', 'numeric', 'max:10'],
-                    ['somaNotas.max'        => 'A soma dos campos não pode ser maior que 10.']
+                    'somaNotas'                => ['required', 'numeric', 'max:' . $request->pontuacao, 'min:' . $request->pontuacao],
+                    ['somaNotas.*'        => 'A soma das notas máximas deve ser igual a pontuação total definida.']
                 ]);
             }
         } elseif ($request->tipoAvaliacao == 'link') {
@@ -449,12 +449,19 @@ class EventoController extends Controller
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
         $camposAvaliacao = CampoAvaliacao::where('evento_id', $id)->get();
+
+        $pontuacao = 0;
+        foreach ($camposAvaliacao as $campo) {
+            $pontuacao += $campo->nota_maxima;
+        }
+
         return view('evento.editarEvento',['evento'=>$evento,
             'coordenadores'=>$coordenadors,
             'naturezas'=>$naturezas,
             'ontem'=>$yesterday,
             'coordEvent'=>$coordEvent,
-            'camposAvaliacao'=>$camposAvaliacao]);
+            'camposAvaliacao'=>$camposAvaliacao,
+            'pontuacao'=>$pontuacao]);
     }
 
     /**
@@ -549,7 +556,9 @@ class EventoController extends Controller
                 $validateCampo = $request->validate([
                     'inputField.*.nome'        => ['required', 'string'],
                     'inputField.*.nota_maxima' => ['required'],
-                    'inputField.*.prioridade'  => ['required']
+                    'inputField.*.prioridade'  => ['required'],
+                    'somaNotas'                => ['required', 'numeric', 'max:' . $request->pontuacao, 'min:' . $request->pontuacao],
+                    ['somaNotas.*'        => 'A soma das notas máximas deve ser igual a pontuação total definida.']
                 ]);
             }
         } elseif ($request->tipoAvaliacao == 'link') {
