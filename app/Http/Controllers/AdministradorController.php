@@ -845,7 +845,7 @@ class AdministradorController extends Controller
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador)->first();
-        $areaTematica = AreaTematica::where('id', $request->area_tematica_id)->first();
+        $areaTematica = AreaTematica::find($request->areasTemeticas);
 
         if ($request->instituicao == 'ufape') {
             $nomeInstituicao = 'Universidade Federal do Agreste de Pernambuco';
@@ -952,8 +952,8 @@ class AdministradorController extends Controller
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', $emailAvaliador)->first();
-        $areaTematica = AreaTematica::where('id', $request->area_tematica_id)->first();
-
+        $areaTematica = AreaTematica::find($request->areasTemeticas);
+        
         if ($request->instituicao == 'ufape') {
             $nomeInstituicao = 'Universidade Federal do Agreste de Pernambuco';
             $externoInterno = 'Interno';

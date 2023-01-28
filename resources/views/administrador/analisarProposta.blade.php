@@ -1565,8 +1565,8 @@
 
                         @if($evento->natureza_id == 3)
                             <div class="form-group">
-                                <label for="grandeArea" class="col-form-label">{{ __('Áreas Temáticas') }}<span style="color: red; font-weight:bold">*</span></label>
-                                <select class="form-control" id="areaTematicaConvite" style="width: 425px" name="grandeAreaConvite[]" multiple="multiple" required>
+                                <label for="areasTemeticas" class="col-form-label">{{ __('Áreas Temáticas') }}<span style="color: red; font-weight:bold">*</span></label>
+                                <select class="form-control" id="areaTematicaConvite" style="width: 425px" name="areasTemeticas[]" multiple="multiple" required>
                                     @foreach($areasTematicas as $areaTematica)
                                         <option value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
                                     @endforeach
