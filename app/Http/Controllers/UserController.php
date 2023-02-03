@@ -20,6 +20,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use App\Curso;
+use App\AreaTematica;
 
 class UserController extends Controller
 {
@@ -107,7 +108,6 @@ class UserController extends Controller
           $avaliador = Avaliador::where('user_id', '=', $id)->first();
           $avaliador->user_id = $user->id;
           //$avaliador->area_id = $request->area;
-
           $avaliador->naturezas()->sync($request->natureza);
           $avaliador->update();
 
@@ -122,7 +122,8 @@ class UserController extends Controller
             case "avaliador":
                 $avaliador = Avaliador::where('user_id', '=', $id)->first();
                 $avaliador->user_id = $user->id;
-                $avaliador->area_id = $request->area;
+                //$avaliador->area_id = $request->area;
+                $avaliador->areaTematicas()->sync($request->area);
                 if ($user->usuarioTemp == true) {
                     $user->usuarioTemp = false;
                 }
@@ -216,6 +217,8 @@ class UserController extends Controller
 
         $naturezas = Natureza::orderBy('nome')->get();
         $cursos = Curso::orderBy('nome')->get();
+        $areaTematica = AreaTematica::orderBy('nome')->get();
+
 
         return view('user.perfilUser')->with(['user' => $user,
                                               'adminResp' => $adminResp,
@@ -223,6 +226,7 @@ class UserController extends Controller
                                               'proponente' => $proponente,
                                               'participante' => $participante,
                                               'cursos' => $cursos,
-                                              'naturezas' => $naturezas]);
+                                              'naturezas' => $naturezas,
+                                              'areaTematica' => $areaTematica]);
     }
 }
