@@ -41,8 +41,12 @@ class ObjetivoDeDesenvolvimentoSustentavelController extends Controller
     public function destroy($id)
     {
         $ODS = ObjetivoDeDesenvolvimentoSustentavel::find($id);
-        $ODS->delete();
 
+        if ($ODS->trabalhos()->first()){
+            return redirect( route('grandearea.index') )->with(['error' => 'Não foi possível excluir a ODS. Existe um ou mais trabalhos vinculados a ODS']);
+        }
+        
+        $ODS->delete();
         return redirect( route('grandearea.index') )->with(['mensagem' => 'ODS excluido com sucesso']);
     }
 }
