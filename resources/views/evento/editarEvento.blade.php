@@ -479,7 +479,7 @@
         <div class="row justify-content-center" style="margin-top:10px; display: none" id="displayCampos">
             <div class="row align-items-end mb-4">
                 <label class="col-sm-3" for="pontuacao">Valor total da pontuação por Barema:<span style="color:red; font-weight:bold;">*</span></label>
-                <input type="number" name="pontuacao" min="1" class="col-sm-1 form-control" id="pontuacao" value="{{old('pontuacao')?old('pontuacao'):$pontuacao}}"/>
+                <input type="number" name="pontuacao" min="0" class="col-sm-1 form-control" id="pontuacao" value="{{old('pontuacao')?old('pontuacao'):$pontuacao}}"/>
             </div>
             <label>Campos do Barema:</label>
             <table class="table table-bordered col-sm-12" id="dynamicAddRemove">
@@ -491,7 +491,9 @@
                     <th>Ação</th>
                 </tr>
                 @if ($camposAvaliacao->count() != 0)
+                    @php $somaNotas = 0; @endphp
                     @foreach ($camposAvaliacao as $campoAvaliacao)
+                        @php $somaNotas += $campoAvaliacao->nota_maxima; @endphp
                     
                         @if ($numCampos == 0)
                         <tr>
@@ -619,7 +621,7 @@
                 A soma das notas máximas deve ser igual a pontuação total definida.
             </div>
 
-            <input type="checkbox" id="checkB[0]" checked name="campos[]" value="0" hidden>
+            <input type="checkbox" id="checkB[0]" checked name="campos[]" value="0" hidden disabled>
 
             <input type="number" name="somaNotas" value="0" id="somaNotas" hidden>
 
@@ -742,10 +744,13 @@
             
             if (numCampos > 1) {
                 for (let y = 1; y < (numCampos); y++) {
-                    $("#displayCampos").append('<input type="checkbox" id="checkB[' + y + ']" checked name="campos[]" value="' + y + '" hidden>');
+                    $("#displayCampos").append('<input type="checkbox" id="checkB[' + y + ']" checked name="campos[]" value="' + y + '" hidden disabled>');
                     addOrdemPrioridade();
                 }
             }
+            @if(old('tipoAvaliacao') == 'campos' || $evento->tipoAvaliacao == 'campos')
+                $('#somaNotas').val('{{$somaNotas}}');
+            @endif
 
             z = 0
             @foreach($camposAvaliacao as $campoAvaliacao)
@@ -755,6 +760,10 @@
                 ++z
             @endforeach
             
+        });
+
+        $("input[name^='inputField']").on('change', function() {
+            $("input[name^='campos']").prop('disabled', false);
         });
 
         // Adiciona campo de avaliação
