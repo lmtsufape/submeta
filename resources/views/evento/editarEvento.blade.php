@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
-@php $i=0; $numCampos=0; @endphp
+@php
+    $i=0; $numCampos=0; $avaliado=false;
+    foreach ($evento->trabalhos as $trabalho) {
+        $avaliacoes = $trabalho->avaliadors()->where('status', 1)->count();
+        if ($avaliacoes > 0) {
+            $avaliado = true;
+        }
+    }
+@endphp
+
 
 @section('content')
 <div class="container">
@@ -397,6 +406,12 @@
                 <p>Avaliação</p>
             </div>
         </div>
+
+        @if($avaliado)
+            <div class="alert alert-primary col-sm-12" role="alert">
+                <strong>Você não pode alterar a avaliação após algum trabalho já ter sido avaliado.</strong>
+            </div>
+        @endif
         
         <div class="my-2" >
             <p style="font-size: 16px">Como a avaliação será realizada?</p>
@@ -405,30 +420,41 @@
         <div class="mb-2">
             @if (old('tipoAvaliacao') != null)
                 <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
-                    @if((old('tipoAvaliacao') == 'form') || old('tipoAvaliacao') == "") checked @endif value="form">
+                    @if((old('tipoAvaliacao') == 'form') || old('tipoAvaliacao') == "") checked @endif value="form" @if($avaliado) disabled @endif>
                 <label for="radioForm" style="margin-right: 5px">Formulário (em pdf)</label>
 
                 <input type="radio" id="radioCampos" name="tipoAvaliacao" onchange="displayTipoAvaliacao('campos')" 
-                    @if(old('tipoAvaliacao') == 'campos') checked @endif value="campos">
+                    @if(old('tipoAvaliacao') == 'campos') checked @endif value="campos" @if($avaliado) disabled @endif>
                 <label for="radioCampos" style="margin-right: 5px">Barema</label>
 
                 <input type="radio" id="radioLink" name="tipoAvaliacao" onchange="displayTipoAvaliacao('link')" 
-                    @if(old('tipoAvaliacao') == 'link') checked @endif value="link">
+                    @if(old('tipoAvaliacao') == 'link') checked @endif value="link" @if($avaliado) disabled @endif>
                 <label for="radioLink" style="margin-right: 5px">Link</label><br>
             @else
                 <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
-                @if($evento->tipoAvaliacao == 'form' || $evento->tipoAvaliacao == '') checked @endif value="form">
+                @if($evento->tipoAvaliacao == 'form' || $evento->tipoAvaliacao == '') checked @endif value="form" @if($avaliado) disabled @endif>
                 <label for="radioForm" style="margin-right: 5px">Formulário (em pdf)</label>
 
                 <input type="radio" id="radioCampos" name="tipoAvaliacao" onchange="displayTipoAvaliacao('campos')" 
-                    @if($evento->tipoAvaliacao == 'campos') checked @endif value="campos">
+                    @if($evento->tipoAvaliacao == 'campos') checked @endif value="campos" @if($avaliado) disabled @endif>
                 <label for="radioCampos" style="margin-right: 5px">Barema</label>
 
                 <input type="radio" id="radioLink" name="tipoAvaliacao" onchange="displayTipoAvaliacao('link')" 
-                    @if($evento->tipoAvaliacao == 'link') checked @endif value="link">
+                    @if($evento->tipoAvaliacao == 'link') checked @endif value="link" @if($avaliado) disabled @endif>
                 <label for="radioLink" style="margin-right: 5px">Link</label><br>
             @endif
         </div>
+
+        <!-- Garante envio do tipo de avaliação, mesmo com a avaliação desativada -->
+        @if($avaliado)
+            @if($evento->tipoAvaliacao == 'form' || $evento->tipoAvaliacao == '')
+                <input type="hidden" id="radioForm" name="tipoAvaliacao" value="form">
+            @elseif($evento->tipoAvaliacao == 'campos')
+                <input type="hidden" id="radioCampos" name="tipoAvaliacao" value="campos">
+            @elseif($evento->tipoAvaliacao == 'link')
+                <input type="hidden" id="radioLink" name="tipoAvaliacao" value="link">
+            @endif
+        @endif
 
         <div class="row justify-content-center" style="margin-top:10px" id="displayForm">
             <div class="col-sm-6">
@@ -443,7 +469,7 @@
                             <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
                         </a>
                     @endif
-                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
+                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" @if($avaliado) disabled @endif>
                     <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('pdfFormAvalExterno')
                     <span class="invalid-feedback" role="alert">
@@ -465,7 +491,7 @@
                             <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
                         </a>
                     @endif
-                    <input type="file" class="form-control-file @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial">
+                    <input type="file" class="form-control-file @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial" @if($avaliado) disabled @endif>
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('docTutorial')
                     <span class="invalid-feedback" role="alert">
@@ -479,7 +505,7 @@
         <div class="row justify-content-center" style="margin-top:10px; display: none" id="displayCampos">
             <div class="row align-items-end mb-4">
                 <label class="col-sm-3" for="pontuacao">Valor total da pontuação por Barema:<span style="color:red; font-weight:bold;">*</span></label>
-                <input type="number" name="pontuacao" min="0" class="col-sm-1 form-control" id="pontuacao" value="{{old('pontuacao')?old('pontuacao'):$pontuacao}}"/>
+                <input type="number" name="pontuacao" min="0" class="col-sm-1 form-control" id="pontuacao" value="{{old('pontuacao')?old('pontuacao'):$pontuacao}}" @if($avaliado) disabled @endif/>
             </div>
             <label>Campos do Barema:</label>
             <table class="table table-bordered col-sm-12" id="dynamicAddRemove">
@@ -497,21 +523,21 @@
                     
                         @if ($numCampos == 0)
                         <tr>
-                            <td><input type="text" name="inputField[{{$i}}][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ $campoAvaliacao->nome }}" />
+                            <td><input type="text" name="inputField[{{$i}}][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ $campoAvaliacao->nome }}" @if($avaliado) disabled @endif/>
                             @error('inputField.*.nome')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                             </td>
-                            <td><input type="text" name="inputField[{{$i}}][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ $campoAvaliacao->descricao }}" />
+                            <td><input type="text" name="inputField[{{$i}}][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ $campoAvaliacao->descricao }}" @if($avaliado) disabled @endif/>
                             @error('inputField.*.descricao')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                             </td>
-                            <td><input type="number" min="1"  step="1" name="inputField[{{$i}}][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ $campoAvaliacao->nota_maxima }}" />
+                            <td><input type="number" min="1"  step="1" name="inputField[{{$i}}][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ $campoAvaliacao->nota_maxima }}" @if($avaliado) disabled @endif/>
                             @error('inputField.*.nota_maxima')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -519,7 +545,7 @@
                             @enderror
                             </td>
                             <td>
-                                <select name="inputField[{{$i}}][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror">
+                                <select name="inputField[{{$i}}][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror" @if($avaliado) disabled @endif>
                                     <option value="" >-- ORDEM --</option>
                                     <option value="1" class="ordem_option">1</option>                                  
                                 </select>
@@ -529,25 +555,25 @@
                                     </span>
                                 @enderror
                             </td>
-                            <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
+                            <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary" @if($avaliado) disabled @endif>Adicionar</button></td>
                         </tr>
                         @else
                         <tr>
-                            <td><input type="text" name="inputField[{{$i}}][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ $campoAvaliacao->nome }}" />
+                            <td><input type="text" name="inputField[{{$i}}][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ $campoAvaliacao->nome }}" @if($avaliado) disabled @endif/>
                             @error('inputField.*.nome')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                             </td>
-                            <td><input type="text" name="inputField[{{$i}}][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ $campoAvaliacao->descricao }}" />
+                            <td><input type="text" name="inputField[{{$i}}][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ $campoAvaliacao->descricao }}" @if($avaliado) disabled @endif/>
                             @error('inputField.*.descricao')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
                             </td>
-                            <td><input type="number" min="1"  step="1" name="inputField[{{$i}}][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ $campoAvaliacao->nota_maxima }}" />
+                            <td><input type="number" min="1"  step="1" name="inputField[{{$i}}][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ $campoAvaliacao->nota_maxima }}" @if($avaliado) disabled @endif/>
                             @error('inputField.*.nota_maxima')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -555,7 +581,7 @@
                             @enderror
                             </td>
                             <td>
-                                <select name="inputField[{{$i}}][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror">
+                                <select name="inputField[{{$i}}][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror" @if($avaliado) disabled @endif>
                                     <option value="" >-- ORDEM --</option>
                                     <option value="1" class="ordem_option">1</option>                                  
                                 </select>
@@ -565,7 +591,7 @@
                                     </span>
                                 @enderror
                             </td>
-                            <td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[{{$i}}]">Remover</button></td>
+                            <td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[{{$i}}]" @if($avaliado) disabled @endif>Remover</button></td>
                         </tr>
                         @endif
                         @php ++$i; ++$numCampos; @endphp
@@ -573,21 +599,21 @@
                     
                 @else
                     <tr>
-                        <td><input type="text" name="inputField[0][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ old('inputField[0][nome]') }}" />
+                        <td><input type="text" name="inputField[0][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ old('inputField[0][nome]') }}" @if($avaliado) disabled @endif/>
                         @error('inputField.*.nome')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                         </td>
-                        <td><input type="text" name="inputField[0][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ old('inputField[0][descricao]') }}" />
+                        <td><input type="text" name="inputField[0][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ old('inputField[0][descricao]') }}" @if($avaliado) disabled @endif/>
                         @error('inputField.*.descricao')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
                         </td>
-                        <td><input type="number" min="1"  step="1" name="inputField[0][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ old('inputField[0][nota_maxima]') }}" />
+                        <td><input type="number" min="1"  step="1" name="inputField[0][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ old('inputField[0][nota_maxima]') }}" @if($avaliado) disabled @endif/>
                         @error('inputField.*.nota_maxima')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -595,7 +621,7 @@
                         @enderror
                         </td>
                         <td>
-                            <select name="inputField[0][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror">
+                            <select name="inputField[0][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror" @if($avaliado) disabled @endif>
                                 <option value="" selected>-- ORDEM --</option>
                                 <option value="1" class="ordem_option">1</option>                                  
                             </select>
@@ -605,7 +631,7 @@
                                 </span>
                             @enderror
                         </td>
-                        <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">Adicionar</button></td>
+                        <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary" @if($avaliado) disabled @endif>Adicionar</button></td>
                     </tr>
                     @php ++$i; ++$numCampos; @endphp
                 @endif
@@ -629,7 +655,7 @@
 
         <div class="col-sm-12 row" style="margin-top:10px; display: none" id="displayLink">
             <label for="link" class="col-form-label">{{ __('Link para o formulário:') }}<span style="color:red; font-weight:bold;">*</span></label>
-            <input id="link" type="text" class="form-control @error("link") is-invalid @enderror" name="link" value="{{ ($evento->tipoAvaliacao == "link") ? $evento->formAvaliacaoExterno : old('link') }}">
+            <input id="link" type="text" class="form-control @error("link") is-invalid @enderror" name="link" value="{{ ($evento->tipoAvaliacao == "link") ? $evento->formAvaliacaoExterno : old('link') }}" @if($avaliado) disabled @endif>
             @error('link')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -762,12 +788,15 @@
             
         });
 
+        // Habilita edição dos campos
         $("input[name^='inputField']").on('change', function() {
             $("input[name^='campos']").prop('disabled', false);
         });
 
         // Adiciona campo de avaliação
         $("#dynamic-ar").click(function () {
+            // Habilita edição dos campos
+            $("input[name^='campos']").prop('disabled', false);
             
             $("#dynamicAddRemove").append(
                 '<tr><td><input type="text" name="inputField[' + i + '][nome]" class="form-control nome @error("inputField.*.nome") is-invalid @enderror" /></td><td><input type="text" name="inputField[' + i + '][descricao]" class="form-control descricao @error("inputField.*.descricao") is-invalid @enderror"/></td><td><input type="number" min="1"  step="1" name="inputField[' + i + '][nota_maxima]" class="form-control nota_maxima @error("inputField.*.nota_maxima") is-invalid @enderror" /></td><td><select name="inputField[' + i + '][prioridade]" class="form-control prioridade @error("inputField.*.prioridade") is-invalid @enderror"><option value="" selected>-- ORDEM --</option><option value="1" class="ordem_option">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[' + i + ']">Remover</button></td></tr>'
@@ -810,6 +839,8 @@
         
         // Exclui campo de avaliação
         $(document).on('click', '.remove-input-field', function () {
+            // Habilita edição dos campos
+            $("input[name^='campos']").prop('disabled', false);
             $(this).parents('tr').remove();
 
             selectId = $(this).attr('name').replace(/\D/g, "").toString();
