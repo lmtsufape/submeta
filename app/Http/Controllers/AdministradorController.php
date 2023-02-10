@@ -214,30 +214,41 @@ class AdministradorController extends Controller
             foreach ($trabalhosAmpla as $trabalho) {
                 $trabalho->pontuacao = 0;
                 $cont = 0;
-                // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-                if ($evento->tipo == 'PIBEX') {
-                    foreach ($trabalho->avaliadors as $avaliador) {
-                        if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
-                                $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
-                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
-                            $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
-                            ++$cont;
-                        }
-                    }
-                } else {
-                    foreach ($trabalho->avaliadors as $avaliador) {
-                        if ($avaliador->tipo == 'Interno') {
-                            $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
-                            if ($parecerInterno != null) {
-                                $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                if ($evento->tipoAvaliacao == "form"){
+                    // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
+                    if ($evento->tipo == 'PIBEX') {
+                        foreach ($trabalho->avaliadors as $avaliador) {
+                            if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
+                                    $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
+                                $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
+                                $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
                                 ++$cont;
                             }
                         }
+                    } else {
+                        foreach ($trabalho->avaliadors as $avaliador) {
+                            if ($avaliador->tipo == 'Interno') {
+                                $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
+                                if ($parecerInterno != null) {
+                                    $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                                    ++$cont;
+                                }
+                            }
+                        }
                     }
-                }
 
-                if ($trabalho->pontuacao != 0) {
-                    $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                    if ($trabalho->pontuacao != 0) {
+                        $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                    }
+                } elseif ($evento->tipoAvaliacao == "campos"){
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                        ++$cont;
+                    }
+
+                    if ($trabalho->pontuacao != 0) {
+                        $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                    }
                 }
             }
             $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
@@ -250,30 +261,42 @@ class AdministradorController extends Controller
             foreach ($trabalhosDoutor as $trabalho) {
                 $trabalho->pontuacao = 0;
                 $cont = 0;
-                // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-                if ($evento->tipo == 'PIBEX') {
-                    foreach ($trabalho->avaliadors as $avaliador) {
-                        if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
-                                $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
-                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
-                            $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
-                            ++$cont;
-                        }
-                    }
-                } else {
-                    foreach ($trabalho->avaliadors as $avaliador) {
-                        if ($avaliador->tipo == 'Interno') {
-                            $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
-                            if ($parecerInterno != null) {
-                                $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                if ($evento->tipoAvaliacao == "form"){
+                    // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
+                    if ($evento->tipo == 'PIBEX') {
+                        foreach ($trabalho->avaliadors as $avaliador) {
+                            if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
+                                    $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
+                                $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
+                                $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
                                 ++$cont;
                             }
                         }
+                    } else {
+                        foreach ($trabalho->avaliadors as $avaliador) {
+                            if ($avaliador->tipo == 'Interno') {
+                                $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
+                                if ($parecerInterno != null) {
+                                    $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                                    ++$cont;
+                                }
+                            }
+                        }
                     }
-                }
 
-                if ($trabalho->pontuacao != 0) {
-                    $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                    if ($trabalho->pontuacao != 0) {
+                        $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                    }
+
+                } elseif ($evento->tipoAvaliacao == "campos"){
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                        ++$cont;
+                    }
+
+                    if ($trabalho->pontuacao != 0) {
+                        $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                    }
                 }
             }
             $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
@@ -288,29 +311,39 @@ class AdministradorController extends Controller
         foreach ($trabalhos as $trabalho) {
             $trabalho->pontuacao = 0;
             $cont = 0;
-            // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-            if ($evento->tipo == 'PIBEX') {
-                foreach ($trabalho->avaliadors as $avaliador) {
-                    if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
-                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
-                        $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
-                        $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
-                        ++$cont;
-                    }
-                }
-            } else {
-                foreach ($trabalho->avaliadors as $avaliador) {
-                    if ($avaliador->tipo == 'Interno') {
-                        $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
-                        if ($parecerInterno != null) {
-                            $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+            if ($evento->tipoAvaliacao == "form"){
+                // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
+                if ($evento->tipo == 'PIBEX') {
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
+                                $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
+                            $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao != null) {
+                            $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
                             ++$cont;
                         }
                     }
+                } else {
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        if ($avaliador->tipo == 'Interno') {
+                            $parecerInterno = ParecerInterno::where([['avaliador_id', $avaliador->id], ['trabalho_id', $trabalho->id]])->first();
+                            if ($parecerInterno != null) {
+                                $trabalho->pontuacao += $parecerInterno->statusAnexoPlanilhaPontuacao;
+                                ++$cont;
+                            }
+                        }
+                    }
                 }
-            }
-            if ($trabalho->pontuacao != 0) {
-                $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                if ($trabalho->pontuacao != 0) {
+                    $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                }
+            } elseif($evento->tipoAvaliacao == "campos"){
+                foreach ($trabalho->avaliadors as $avaliador) {
+                    $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                    ++$cont;
+                }
+                if ($trabalho->pontuacao != 0) {
+                    $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                }
             }
         }
         $trabalhos = $trabalhos->sort(function ($item, $next) {
