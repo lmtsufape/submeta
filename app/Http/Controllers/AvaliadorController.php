@@ -166,6 +166,7 @@ class AvaliadorController extends Controller
         //$trabalhos = $user->avaliadors->where('user_id',$user->id)->first()->trabalhos->where('evento_id', $request->evento_id);
         $trabalhosEx = [];
         $trabalhosIn = [];
+        $trabalhos = [];
         $aval = $user->avaliadors->where('user_id',$user->id)->first();
         foreach ($aval->trabalhos->where('evento_id',$evento->id) as $trab){
             if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 2 || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->acesso == 3 ){
@@ -221,7 +222,12 @@ class AvaliadorController extends Controller
             $parecerInterno->update();
         }
 
-        return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'evento'=>$evento]);
+        if ($trabalho->avaliadors()->where('status', 1)->count() == $trabalho->avaliadors()->count()) {
+            $trabalho->status = "avaliado";
+            $trabalho->save();
+        }
+
+        return view('avaliador.listarTrabalhos', ['trabalhosEx'=>$trabalhosEx,'trabalhosIn'=>$trabalhosIn, 'trabalhos'=>$trabalhos, 'evento'=>$evento]);
     }
 
     public function parecerBarema(Request $request) {
@@ -271,6 +277,11 @@ class AvaliadorController extends Controller
 
         $avaliador->trabalhos()->updateExistingPivot($trabalho->id,['status'=> 1, 'recomendacao'=>$request->recomendacao, 'created_at' => $data, 'pontuacao' => $pontuacao]);
 
+        if ($trabalho->avaliadors()->where('status', 1)->count() == $trabalho->avaliadors()->count()) {
+            $trabalho->status = "avaliado";
+            $trabalho->save();
+        }
+
         return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]));
     }
 
@@ -297,8 +308,12 @@ class AvaliadorController extends Controller
         } else {
             $avaliador->trabalhos()->updateExistingPivot($trabalho->id,['status'=> 1, 'recomendacao'=>$request->recomendacao, 'created_at' => $data, 'pontuacao' => $request->pontuacao]);
         }
-        
 
+        if ($trabalho->avaliadors()->where('status', 1)->count() == $trabalho->avaliadors()->count()) {
+            $trabalho->status = "avaliado";
+            $trabalho->save();
+        }
+        
         return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]));
     }
 
@@ -357,8 +372,12 @@ class AvaliadorController extends Controller
                   ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $anexoParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data]);
           }
     	}
+
+        if ($trabalho->avaliadors()->where('status', 1)->count() == $trabalho->avaliadors()->count()) { 
+            $trabalho->status = "avaliado";
+            $trabalho->save();
+        }
     	
-  
     	return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]));
     }
     public function conviteResposta(Request $request){
