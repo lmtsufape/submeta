@@ -71,6 +71,7 @@
                             {{ $pivot->recomendacao }}
                           @endif
                         {{--Acesso ao parecer interno--}}
+                        </td>
                         <td>
                           @if($avaliacaoTrabalho == null)
                             <button class="btn btn-danger"  disabled="disabled"  >
