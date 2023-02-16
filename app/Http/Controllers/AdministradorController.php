@@ -308,10 +308,10 @@ class AdministradorController extends Controller
 
         // Sem Cotas
         $trabalhos = $evento->trabalhos;
-        foreach ($trabalhos as $trabalho) {
-            $trabalho->pontuacao = 0;
-            $cont = 0;
-            if ($evento->tipoAvaliacao == "form"){
+        if ($evento->tipoAvaliacao == "form") {
+            foreach ($trabalhos as $trabalho) {
+                $trabalho->pontuacao = 0;
+                $cont = 0;
                 // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
                 if ($evento->tipo == 'PIBEX') {
                     foreach ($trabalho->avaliadors as $avaliador) {
@@ -336,19 +336,48 @@ class AdministradorController extends Controller
                 if ($trabalho->pontuacao != 0) {
                     $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
                 }
-            } elseif($evento->tipoAvaliacao == "campos"){
-                foreach ($trabalho->avaliadors as $avaliador) {
-                    $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
-                    ++$cont;
-                }
-                if ($trabalho->pontuacao != 0) {
-                    $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
-                }
+
+                $trabalhos = $trabalhos->sort(function ($item, $next) {
+                    return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+                });
+            }
+        } elseif ($evento->tipoAvaliacao == "campos"){
+            foreach ($trabalhos as $trabalho) {
+                //dd($trabalhos);
+                $trabalho->pontuacao = 0;
+                $cont = 0;
+                    $camposAvaliacao = CampoAvaliacao::where('evento_id', $evento->id)->orderBy('prioridade', 'ASC')->get();
+
+                    foreach ($trabalho->avaliadors as $avaliador) {
+                        $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                        ++$cont;
+                    }
+
+                    if ($trabalho->pontuacao != 0) {
+                        $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                    }
+
+                    // $trabalhos = $trabalhos->sort(function ($item, $next) {
+                    //     return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+                    // });
+
+                    // Faz a classificação dos trabalhos de acordo com a pontuação e com a nota de cada campo de avaliação
+                    $trabalhos = $trabalhos->sort(function ($item, $next) use ($camposAvaliacao){
+                        if ($item->pontuacao == $next->pontuacao) {
+
+                            foreach ($camposAvaliacao as $campo) {
+                                $notaItem = $item->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
+                                $notaNext = $next->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
+                                if ($notaItem != $notaNext) {
+                                    return $notaItem >= $notaNext ? -1 : 1;
+                                }
+                            }
+                        } else {
+                            return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+                        }
+                    });
             }
         }
-        $trabalhos = $trabalhos->sort(function ($item, $next) {
-            return $item->pontuacao >= $next->pontuacao ? -1 : 1;
-        });
 
         return view('administrador.resultadosProjetos')->with(['evento' => $evento, 'trabalhos' => $trabalhos]);
     }
@@ -882,7 +911,7 @@ class AdministradorController extends Controller
                 'tipo' => 5,
             ]);
             $notificacao->save();
-            Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp, $trabalho, $evento->formAvaliacaoExterno, $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso));
+            Notification::send($userTemp, new AtribuicaoAvaliadorExternoNotification($userTemp, $trabalho, $evento->formAvaliacaoExterno, $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso, $evento->tipoAvaliacao));
         }
 
         return redirect()->back();
