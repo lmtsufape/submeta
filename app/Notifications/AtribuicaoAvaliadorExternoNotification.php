@@ -18,7 +18,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
      *
      * @return void
      */
-    public function __construct($usuario, $trabalho, $arquivo, $tipoAval)
+    public function __construct($usuario, $trabalho, $arquivo, $tipoAval, $avaliacao)
     {
         $this->data = date('d/m/Y \à\s  H:i\h', strtotime(now()));
         $url = '/avaliador/editais';
@@ -28,6 +28,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
         $this->trabalho = $trabalho;
         $this->arquivo = $arquivo;
         $this->tipoAval = $tipoAval;
+        $this->avaliacao = $avaliacao;
     }
 
     /**
@@ -50,13 +51,12 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {
-        if ($this->tipoAval == 2) {
+    {   
+        if ($this->tipoAval == 2 || $this->avaliacao != "form") {
             return (new MailMessage())
                     ->subject('Convite para avaliar proposta de projeto - Sistema Submeta')
                     ->greeting('Saudações!')
                     ->line("Prezado/a avaliador/a, você foi convidado/a a avaliar a proposta de projeto intitulada {$this->titulo}.")
-                    ->line('Aproveitamos para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta com o seu parecer.')
                     // ->line("Seção de Editais e Apoios a Projetos  - PREC/UFAPE")
                     ->action('Acessar', $this->url)
                     ->markdown('vendor.notifications.email');
