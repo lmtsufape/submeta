@@ -62,7 +62,7 @@
                 </tr>
                 </thead>
                 <tbody id="projetos">
-                @php $cont=1;@endphp
+                @php $cont=1; @endphp
                     @foreach($trabalhos as $trabalho)
                         @if($trabalho->status == 'aprovado')
                         <tr>
@@ -94,18 +94,33 @@
                                     @foreach($trabalho->avaliadors as $avaliador)
                                         {{--Internos--}}
                                         @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
-                                            @php
-                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                                            @endphp
-                                            @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
+                                            @if ($evento->tipoAvaliacao == "form")
+                                                @php
+                                                    $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
+                                            @elseif ($evento->tipoAvaliacao == "campos")
+                                                @php 
+                                                    $avaliacaoTrabalho = App\AvaliacaoTrabalho::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($avaliacaoTrabalho != null && $avaliacaoTrabalho->nota !=null){{$avaliador->pivot->recomendacao}} <br>@else Pendente <br>@endif
+                                            @endif
                                         @endif
+
 
                                         {{--Externos--}}
                                         @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
-                                            @if($avaliador->pivot->recomendacao != null)
-                                                {{$avaliador->pivot->recomendacao}}<br>
-                                            @else
-                                                Pendente<br>
+                                            @if ($evento->tipoAvaliacao == "form")
+                                                @if($avaliador->pivot->recomendacao != null)
+                                                    {{$avaliador->pivot->recomendacao}}<br>
+                                                @else
+                                                    Pendente<br>
+                                                @endif
+                                            @elseif ($evento->tipoAvaliacao == "campos")
+                                                @php
+                                                    $avaliacaoTrabalho = App\AvaliacaoTrabalho::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($avaliacaoTrabalho != null && $avaliacaoTrabalho->nota !=null){{$avaliador->pivot->recomendacao}} <br> @else Pendente <br>@endif
                                             @endif
                                         @endif
                                     @endforeach
@@ -184,18 +199,33 @@
                                     @foreach($trabalho->avaliadors as $avaliador)
                                         {{--Internos--}}
                                         @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
-                                            @php
-                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                                            @endphp
-                                            @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
+                                            @if ($evento->tipoAvaliacao == "form")
+                                                @php
+                                                    $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
+                                            @elseif ($evento->tipoAvaliacao == "campos")
+                                                @php 
+                                                    $avaliacaoTrabalho = App\AvaliacaoTrabalho::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($avaliacaoTrabalho != null && $avaliacaoTrabalho->nota !=null){{$avaliador->pivot->recomendacao}} <br>@else Pendente <br>@endif
+                                            @endif
                                         @endif
+
 
                                         {{--Externos--}}
                                         @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
-                                            @if($avaliador->pivot->recomendacao != null)
-                                                {{$avaliador->pivot->recomendacao}}<br>
-                                            @else
-                                                Pendente<br>
+                                            @if ($evento->tipoAvaliacao == "form")
+                                                @if($avaliador->pivot->recomendacao != null)
+                                                    {{$avaliador->pivot->recomendacao}}<br>
+                                                @else
+                                                    Pendente<br>
+                                                @endif
+                                            @elseif ($evento->tipoAvaliacao == "campos")
+                                                @php
+                                                    $avaliacaoTrabalho = App\AvaliacaoTrabalho::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($avaliacaoTrabalho != null && $avaliacaoTrabalho->nota !=null){{$avaliador->pivot->recomendacao}} <br> @else Pendente <br>@endif
                                             @endif
                                         @endif
                                     @endforeach
@@ -275,18 +305,33 @@
                                     @foreach($trabalho->avaliadors as $avaliador)
                                         {{--Internos--}}
                                         @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
-                                            @php
-                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                                            @endphp
-                                            @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
+                                            @if ($evento->tipoAvaliacao == "form")
+                                                @php
+                                                    $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($parecerInterno != null && $parecerInterno->statusParecer !=null){{$parecerInterno->statusParecer}} <br>@else Pendente <br>@endif
+                                            @elseif ($evento->tipoAvaliacao == "campos")
+                                                @php 
+                                                    $avaliacaoTrabalho = App\AvaliacaoTrabalho::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($avaliacaoTrabalho != null && $avaliacaoTrabalho->nota !=null){{$avaliador->pivot->recomendacao}} <br>@else Pendente <br>@endif
+                                            @endif
                                         @endif
+
 
                                         {{--Externos--}}
                                         @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo" || $avaliador->tipo == null)
-                                            @if($avaliador->pivot->recomendacao != null)
-                                                {{$avaliador->pivot->recomendacao}}<br>
-                                            @else
-                                                Pendente<br>
+                                            @if ($evento->tipoAvaliacao == "form")
+                                                @if($avaliador->pivot->recomendacao != null)
+                                                    {{$avaliador->pivot->recomendacao}}<br>
+                                                @else
+                                                    Pendente<br>
+                                                @endif
+                                            @elseif ($evento->tipoAvaliacao == "campos")
+                                                @php
+                                                    $avaliacaoTrabalho = App\AvaliacaoTrabalho::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                                @endphp
+                                                @if($avaliacaoTrabalho != null && $avaliacaoTrabalho->nota !=null){{$avaliador->pivot->recomendacao}} <br> @else Pendente <br>@endif
                                             @endif
                                         @endif
                                     @endforeach
