@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use App\User;
 use App\Participante;
 use App\Proponente;
+use App\Endereco;
 use App\Rules\UrlValidacao;
 use App\Curso;
 
@@ -55,31 +56,49 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        if ($data['perfil'] == "Estudante")
+        {
+            return Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'cpf' => ['required', 'cpf', 'unique:users'],
+                'rg' => ['required', 'unique:participantes'],
+                'celular' => ['required', 'string', 'telefone'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'outroCursoEstudante' => ['required_if:cursoEstudante,Outro', 'max:255'],
+                'cursoEstudante' => ['required_without:outroCursoEstudante'],
+                'perfil' => ['required'],
+                'linkLattes' => ['required'],                
+            ]);
+        }
 
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'cpf' => ['required', 'cpf', 'unique:users'],
+            'rg' => ['required', 'unique:participantes'],
             'celular' => ['required', 'string', 'telefone'],
             'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
             'instituicaoSelect' => ['required_without:instituicao'],
-            'cargo' => ['required'],
+            'perfil' => ['required'],
             'vinculo' => ['required'],
             'outro' => ['required_if:vinculo,Outro'],
             'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade'],
-            'titulacaoMaxima' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+            'titulacaoMaxima' => Rule::requiredIf((isset($data['perfil']) && $data['perfil'] !== 'Estudante') || (isset($data['perfil']) && $data['perfil'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'anoTitulacao' => ['required_with:titulacaoMaxima,areaFormacao,bolsistaProdutividade,linkLattes'],
-            'anoTitulacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+            'anoTitulacao' => Rule::requiredIf((isset($data['perfil']) && $data['perfil'] !== 'Estudante') || (isset($data['perfil']) && $data['perfil'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'areaFormacao' => ['required_with:titulacaoMaxima,anoTitulacao,bolsistaProdutividade,linkLattes'],
-            'areaFormacao' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+            'areaFormacao' => Rule::requiredIf((isset($data['perfil']) && $data['perfil'] !== 'Estudante') || (isset($data['perfil']) && $data['perfil'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'bolsistaProdutividade' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,linkLattes'],
-            'bolsistaProdutividade' => Rule::requiredIf((isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
+            'bolsistaProdutividade' => Rule::requiredIf((isset($data['perfil']) && $data['perfil'] !== 'Estudante') || (isset($data['perfil']) && $data['perfil'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando')),
             'nivel' => ['required_if:bolsistaProdutividade,sim'],
-            //'nivel' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+            //'nivel' => [(isset($data['perfil']) && $data['perfil'] !== 'Estudante') || (isset($data['perfil']) && $data['perfil'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
             'linkLattes' => ['required_with:titulacaoMaxima,anoTitulacao,areaFormacao,bolsistaProdutividade'],            
-            'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
-            'linkLattes' => [(isset($data['cargo']) && $data['cargo'] !== 'Estudante') || (isset($data['cargo']) && $data['cargo'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
+            'linkLattes' => [(isset($data['perfil']) && $data['perfil'] !== 'Estudante') || (isset($data['perfil']) && $data['perfil'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'required':''],
+            'linkLattes' => [(isset($data['perfil']) && $data['perfil'] !== 'Estudante') || (isset($data['perfil']) && $data['perfil'] === 'Estudante' && isset($data['vinculo']) && $data['vinculo'] === 'Pós-doutorando') ? 'link_lattes':''],
 
         ]);
     }
@@ -91,35 +110,61 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
-        // dd($data);      
+    {      
+        $participante = new Participante();
+        $participante->rg = $data['rg'];
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
         $user->cpf = $data['cpf'];
         $user->celular = $data['celular'];
+
         if ($data['instituicao'] != null) {
             $user->instituicao = $data['instituicao'];
         } else if (isset($data['instituicaoSelect']) && $data['instituicaoSelect'] != "Outra") {
             $user->instituicao = $data['instituicaoSelect'];
         }
 
-        if ($data['cargo'] === "Estudante" && $data['vinculo'] !== "Pós-doutorando") {
+        if ($data['perfil'] === "Estudante"){
             $user->tipo = 'participante';
-            $user->save();
 
-            $participante = new Participante();
+            $endereco = new Endereco();
+            $endereco->cep = $data['cep'];
+            $endereco->uf = $data['uf'];
+            $endereco->cidade = $data['cidade'];
+            $endereco->rua = $data['rua'];
+            $endereco->numero = $data['numero'];
+            $endereco->bairro = $data['bairro'];
+            $endereco->complemento = $data['complemento'];
+            $endereco->save();
+
+            $participante->data_de_nascimento = $data['data_de_nascimento'];
+            $participante->linkLattes = $data['linkLattes'];
+
+
+            if ($data['outroCursoEstudante'] != null) {
+                $participante->curso = $data['outroCursoEstudante'];
+            } else if (isset($data['cursoEstudante']) && $data['cursoEstudante'] != "Outro") {
+                $participante->curso = $data['cursoEstudante'];
+            }
+
+            $user->save();
             $user->participantes()->save($participante);
+            $endereco->user()->save($user);
+
         } else {
+
             $user->tipo = 'proponente';
             $user->save();
 
             $proponente = new Proponente();
-            if ($data['SIAPE'] != null) {
-                $proponente->SIAPE = $data['SIAPE'];
-            }
-            $proponente->cargo = $data['cargo'];
+            $proponente->cargo = $data['perfil'];
+            $proponente->titulacaoMaxima = $data['titulacaoMaxima'];
+            $proponente->anoTitulacao = $data['anoTitulacao'];
+            $proponente->areaFormacao = $data['areaFormacao'];
+            $proponente->bolsistaProdutividade = $data['bolsistaProdutividade'];
+            $proponente->linkLattes = $data['linkLattes'];
 
             if ($data['vinculo'] != 'Outro') {
                 $proponente->vinculo = $data['vinculo'];
@@ -127,17 +172,18 @@ class RegisterController extends Controller
                 $proponente->vinculo = $data['outro'];
             }
 
-            $proponente->titulacaoMaxima = $data['titulacaoMaxima'];
-            $proponente->anoTitulacao = $data['anoTitulacao'];
-            $proponente->areaFormacao = $data['areaFormacao'];
-            $proponente->bolsistaProdutividade = $data['bolsistaProdutividade'];
+            if ($data['SIAPE'] != null) {
+                $proponente->SIAPE = $data['SIAPE'];
+            }
+
             if ($data['bolsistaProdutividade'] == 'sim') {
                 $proponente->nivel = $data['nivel'];
-            }
-            $proponente->linkLattes = $data['linkLattes'];
+            }            
             
             $user->proponentes()->save($proponente);
-            if($proponente->titulacaoMaxima == 'Técnico'){
+            $user->participantes()->save($participante);
+
+            if($data['perfil'] == 'Professor'){
                 $proponente->cursos()->sync($data['curso']);
             }
         }

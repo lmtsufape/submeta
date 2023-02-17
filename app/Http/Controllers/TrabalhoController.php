@@ -13,6 +13,7 @@ use App\AreaTematica;
 use App\Arquivo;
 use App\Coautor;
 use App\Revisor;
+use App\TrabalhoUser;
 use App\SubArea;
 use App\Endereco;
 use App\Trabalho;
@@ -400,6 +401,8 @@ class TrabalhoController extends Controller
             $flagSubstituicao = -1;
         }
 
+        $trabalhos_user = TrabalhoUser::where('trabalho_id', $projeto->id)->get();
+
         return view('projeto.visualizar')->with(['projeto' => $projeto,
             'grandeAreas' => $grandeAreas,
             'areas' => $areas,
@@ -414,7 +417,8 @@ class TrabalhoController extends Controller
             'enum_turno' => Participante::ENUM_TURNO,
             'areasTematicas' => $areasTematicas,
             'flagSubstituicao' =>$flagSubstituicao,
-            'proponente' => $proponente,
+            'trabalhos_user' => $trabalhos_user,
+            'proponente' => $proponente
         ]);
     }
 
@@ -469,6 +473,8 @@ class TrabalhoController extends Controller
         $rascunho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id', $edital->id)->where('status', 'Rascunho')
             ->orderByDesc('updated_at')->first();
 
+        $trabalhos_user = TrabalhoUser::where('trabalho_id', $projeto->id)->get();
+
         return view('projeto.editar')->with(['projeto' => $projeto,
             'grandeAreas' => $grandeAreas,
             'areas' => $areas,
@@ -482,7 +488,8 @@ class TrabalhoController extends Controller
             'estados' => $this->estados,
             'areaTematicas'        => $areaTematicas,
             'listaOds'                  => $ODS,
-            'proponente' => $proponente,
+            'trabalhos_user' => $trabalhos_user,
+            'proponente' => $proponente
         ]);
     }
 
@@ -876,6 +883,29 @@ class TrabalhoController extends Controller
 
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->save();
+
+            
+            if($request->integrantesExistentes == null){
+                $request->integrantesExistentes = [];
+            }
+            $usuariosRemovidos = TrabalhoUser::where('trabalho_id', $trabalho->id)->whereNotIn('user_id', $request->integrantesExistentes)->get();
+
+            if($usuariosRemovidos->first() != null) {
+                foreach($usuariosRemovidos as $usuarioRemovido){
+                    $usuarioRemovido->delete();
+                }
+            }
+
+            if($evento->natureza_id == 3 && $request->integrantes != null){
+                foreach($request->integrantes as $integrante){
+                    $integrante = explode(',', $integrante); 
+                    $trabalho_user = new TrabalhoUser();
+                    $trabalho_user->user_id = $integrante[0];
+                    $trabalho_user->funcao_participante_id = $integrante[1];
+                    $trabalho_user->trabalho_id = $trabalho->id;
+                    $trabalho_user->save();
+                }
+            }
             
             if ($evento->numParticipantes != 0) {
                 if ($request->marcado == null) {
@@ -1077,6 +1107,16 @@ class TrabalhoController extends Controller
 
     }
 
+    public function buscarUsuario(Request $request) {
+        $usuario = User::where('cpf', $request->cpf_consulta)->first();
+        $funcao = FuncaoParticipantes::where('id', $request->funcao)->first();
+        if($usuario){
+            return json_encode([$usuario, $funcao]);
+        }
+
+        return json_encode('inexistente');
+    }
+
 
     public function salvar(StoreTrabalho $request)
     {
@@ -1214,6 +1254,19 @@ class TrabalhoController extends Controller
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->modalidade = $request->modalidade;
             $trabalho->save();
+
+
+            if($evento->natureza_id == 3){
+                foreach($request->integrantes as $integrante){
+                    $integrante = explode(',', $integrante); 
+                    
+                    $trabalho_user = new TrabalhoUser();
+                    $trabalho_user->user_id = $integrante[0];
+                    $trabalho_user->funcao_participante_id = $integrante[1];
+                    $trabalho_user->trabalho_id = $trabalho->id;
+                    $trabalho_user->save();
+                }
+            }
 
             $trabalho->ods()->sync($request->ods);
             DB::commit();

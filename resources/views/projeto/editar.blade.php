@@ -38,6 +38,10 @@
         @include('projeto.editaFormulario.participantes')
       @endif
 
+      @if($edital->natureza_id == 3)
+        @include('projeto.editaFormulario.integrantes')
+      @endif
+
       @include('projeto.editaFormulario.anexos')
 
       @include('projeto.editaFormulario.finalizar')

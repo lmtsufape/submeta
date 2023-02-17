@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
 @section('content')
 
 <div class="container" style="margin-top: 30px;">
@@ -43,7 +47,11 @@
       <tr>   
         <th scope="col">Nome do Usuário</th>
         <th scope="col">Email</th>
-        <th scope="col">Área</th>
+        @if($evento->natureza_id == 3)
+          <th scope="col">Área Temática</th>
+        @else
+          <th scope="col">Área</th>
+        @endif
         <th scope="col">Tipo</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
@@ -55,7 +63,11 @@
           <td>{{ $avaliador->user->email }}</td>
           <td>
             @if(is_null($avaliador->area))
-              Indefinida
+              @if($avaliador->areaTematicas()->get()->first() != null)
+                {{ $avaliador->areaTematicas()->get()->first()->nome }}
+              @else
+                Indefinida
+              @endif
             @else
               {{ $avaliador->area->nome }}
             @endif
@@ -71,7 +83,9 @@
           <td style="text-align:center">
             <form action="{{ route('admin.adicionar') }}" method="POST">
               @csrf
-              <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" >
+              <!-- Possibilidade de exclusão -->
+              {{-- <input type="hidden" name="avaliador_id" value="{{ $avaliador->avaliador_id }}"> --}}
+              <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}" > 
               <input type="hidden" name="evento_id" value="{{ $evento->id }}" >
               <button type="submit" class="btn btn-primary" >Adicionar</button>
             </form>          
@@ -251,7 +265,8 @@
             <label for="exampleInputEmail1">Email <span style="color: red;">*</span></label>
             <input type="email" class="form-control" name="emailAvaliador" id="exampleInputEmail1" required>            
           </div>
-
+  <!-- aki -->
+        @if($evento->natureza_id != 3)
           <div class="form-group">
           <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span style="color: red; font-weight:bold">*</span></label>
               <select class="form-control" id="grandeArea" name="grande_area_id" onchange="areas()" required>
@@ -272,6 +287,16 @@
               <option value="avaliador" >Avaliador</option>
             </select>
           </div>
+        @else       
+          <div class="form-group">
+            <label for="areasTemeticas" class="col-form-label">{{ __('Áreas Temáticas') }}<span style="color: red; font-weight:bold">*</span></label>
+            <select class="form-control" id="areaTematicaConvite" style="width: 425px" name="areasTemeticas[]" multiple="multiple" required>
+                @foreach($areasTematicas as $areaTematica)
+                    <option value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
+                @endforeach
+            </select>
+          </div>                       
+        @endif
   
           @if($evento->natureza_id != 3)
             <div class="form-group">
@@ -310,6 +335,14 @@
 @endsection
 
 @section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+  $("#areaTematicaConvite").select2({
+    placeholder: 'Selecione as áreas temáticas',
+    allowClear: true
+  });
+</script>
+
 <script>
   $('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')

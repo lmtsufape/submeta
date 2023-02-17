@@ -37,6 +37,11 @@
       @endcomponent
       @endif
 
+      @if($edital->natureza_id == 3)
+        @component('projeto.formularioVisualizar.integrantes', ['projeto' => $projeto, 'edital' => $edital, 'trabalhos_user' => $trabalhos_user])
+        @endcomponent
+      @endif
+
       @component('projeto.formularioVisualizar.relatorio',['edital' => $edital,'projeto' => $projeto,'flagSubstituicao' =>$flagSubstituicao])
       @endcomponent
 

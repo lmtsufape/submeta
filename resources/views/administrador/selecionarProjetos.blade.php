@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
 @section('content')
 
 <div class="container" style="margin-top: 30px;">
@@ -137,7 +141,11 @@
     <thead>
       <tr>
         <th scope="col">Nome do Projeto</th>
-        <th scope="col">Área</th>
+        @if($evento->natureza_id == 3)
+          <th scope="col">Área Temática</th>
+        @else
+          <th scope="col">Área</th>
+        @endif
         <th scope="col">Proponente</th>
         <th scope="col" style="text-align:center">Ação</th>
       </tr>
@@ -145,8 +153,12 @@
     <tbody id="projetos">
       @foreach ($trabalhos as $trabalho)
           <tr>
-            <td style="max-width:100px; overflow-x:auto; text-overflow:ellipsis">{{ $trabalho->titulo}}</td>
-            <td>{{ App\Area::find($trabalho->area_id)->nome}}</td>
+            <td style="max-width:100px; overflow-x:auto; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
+            @if($evento->natureza_id == 3)
+              <td>{{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}</td>
+            @else
+              <td>{{ App\Area::find($trabalho->area_id)->nome }}</td>
+            @endif
             <td>{{ $trabalho->proponente->user->name }}</td>
             <td style="text-align:center">
                 <button type="button" class="btn btn-primary" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal" data-target="#exampleModalCenter{{ $trabalho->id }}">
@@ -315,7 +327,7 @@
                         <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                         <input type="hidden" id="trabalho_id" name="trabalho_id" value="{{ $trabalho->id }}">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nome Completo <span style="color: red;">*</span></label>
+                            <label for="exampleInputEmail1">Nome Completo<span style="color: red;">*</span></label>
                             <input type="text" class="form-control" name="nomeAvaliador" id="exampleInputNome1"
                                    required>
                         </div>
@@ -325,41 +337,54 @@
                                    required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span
-                                        style="color: red; font-weight:bold">*</span></label>
-                            <select class="form-control" id="grandeAreaConvite" name="grande_area_id" onchange="areas()"
-                                    required>
-                                <option value="" disabled selected hidden>-- Grande Área --</option>
-                                @foreach($grandesAreas as $grandeArea)
-                                    <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                        @if($evento->natureza_id != 3)
+                          <div class="form-group">                          
+                              <label for="grandeArea" class="col-form-label">{{ __('Grande Área') }} <span
+                                          style="color: red; font-weight:bold">*</span></label>
+                              <select class="form-control" id="grandeAreaConvite" name="grande_area_id" onchange="areas()"
+                                      required>
+                                  <option value="" disabled selected hidden>-- Grande Área --</option>
+                                  @foreach($grandesAreas as $grandeArea)
+                                      <option value="{{$grandeArea->id}}">{{$grandeArea->nome}}</option>
+                                  @endforeach
+                              </select>
+
+                              <label for="area" class="col-form-label">{{ __('Área') }} <span
+                                          style="color: red; font-weight:bold">*</span></label>
+                              <select class="form-control @error('area') is-invalid @enderror" id="areaConvite"
+                                      name="area_id" required>
+                                  <option value="" disabled selected hidden>-- Área --</option>
+                              </select>
+                          </div>
+                          <div class="form-group">
+                              <label for="exampleFormControlSelect1">Tipo</label>
+                              <select class="form-control" name="tipo" id="exampleFormControlSelect1" disabled>
+                                  <option value="avaliador">Avaliador</option>
+                              </select>
+                          </div>
+                        @else
+                          <div class="form-group">
+                            <label for="areasTemeticas" class="col-form-label">{{ __('Áreas Temáticas') }}<span style="color: red; font-weight:bold">*</span></label>
+                            <select class="form-control" id="areaTematicaConvite" style="width: 425px" name="areasTemeticas[]" multiple="multiple" required>
+                                @foreach($areasTematicas as $areaTematica)
+                                    <option value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
                                 @endforeach
                             </select>
+                          </div>
+                        @endif
 
-                            <label for="area" class="col-form-label">{{ __('Área') }} <span
-                                        style="color: red; font-weight:bold">*</span></label>
-                            <select class="form-control @error('area') is-invalid @enderror" id="areaConvite"
-                                    name="area_id" required>
-                                <option value="" disabled selected hidden>-- Área --</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Tipo</label>
-                            <select class="form-control" name="tipo" id="exampleFormControlSelect1" disabled>
-                                <option value="avaliador">Avaliador</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Instituição <span
-                                        style="color: red; font-weight:bold">*</span></label>
-                            <select class="form-control" name="instituicao" id="membro" required
-                                    onchange="mostrarDiv(this)">
-                                <option value="" disabled>-- Selecione a instituição --</option>
-                                <option value="ufape">Universidade Federal do Agreste de Pernambuco</option>
-                                <option value="outra">Outra</option>
-                            </select>
-                        </div>
+                        @if($evento->natureza_id != 3)
+                          <div class="form-group">
+                              <label for="exampleFormControlSelect1">Instituição <span
+                                          style="color: red; font-weight:bold">*</span></label>
+                              <select class="form-control" name="instituicao" id="membro" required
+                                      onchange="mostrarDiv(this)">
+                                  <option value="" disabled>-- Selecione a instituição --</option>
+                                  <option value="ufape">Universidade Federal do Agreste de Pernambuco</option>
+                                  <option value="outra">Outra</option>
+                              </select>
+                          </div>
+                        @endif
 
                         <div class="form-group" id="div-outra"
                              style="@if(old('instituicao') != null && old('instituicao') == "outra") display: block; @else display: none; @endif">
@@ -392,6 +417,15 @@
 
 @endsection
 @section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+  $("#areaTematicaConvite").select2({
+    placeholder: 'Selecione as áreas temáticas',
+    allowClear: true
+  });
+</script>
+
+
 <script>
   $('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
@@ -475,7 +509,5 @@
           $("#outra").prop('required', false);
       }
   }
-
-  
 </script>
 @endsection
