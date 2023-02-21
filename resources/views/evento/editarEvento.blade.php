@@ -18,7 +18,7 @@
     </div>
 
     <form action="{{route('evento.update',$evento->id)}}" method="POST" enctype="multipart/form-data">
-    @csrf
+        @csrf
         <div class="row subtitulo">
             <div class="col-sm-12">
                 <p>Informações Gerais</p>
@@ -36,7 +36,7 @@
                 </span>
                 @enderror
             </div>{{--End Nome do evento--}}
-          
+
             {{-- Tipo do evento --}}
             <div class="col-sm-5">
                 <label for="tipo" class="col-form-label">{{ __('Tipo:') }}<span style="color: red; font-weight: bold;">*</span></label>
@@ -58,13 +58,13 @@
             <div class="col-sm-2">
                 <label for="natureza" class="col-form-label">{{ __('Natureza:') }}<span style="color: red; font-weight: bold;">*</span></label>
                 <select id="natureza" type="text" class="form-control @error('natureza') is-invalid @enderror" name="natureza" value="{{ old('natureza') }}" required>
-                  @foreach ($naturezas as $natureza)
+                    @foreach ($naturezas as $natureza)
                     @if ($natureza->id === $evento->natureza_id)
-                        <option value="{{ $natureza->id }}" selected>{{ $natureza->nome }}</option>
+                    <option value="{{ $natureza->id }}" selected>{{ $natureza->nome }}</option>
                     @else
-                        <option value="{{ $natureza->id }}">{{ $natureza->nome }}</option>
+                    <option value="{{ $natureza->id }}">{{ $natureza->nome }}</option>
                     @endif
-                  @endforeach              
+                    @endforeach
                 </select>
 
                 @error('natureza')
@@ -75,7 +75,7 @@
             </div>
             <div class="col-sm-2">
                 <label for="numParticipantes" class="col-form-label">{{ __('Nº de Discentes:') }}<span style="color: red; font-weight: bold;">*</span></label>
-                <input id="numParticipantes" type="number" min="0" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ $evento->numParticipantes }}" required autocomplete="numParticipantes" autofocus>
+                <input id="numParticipantes" type="number" min="0" max="500" class="form-control @error('numParticipantes') is-invalid @enderror" name="numParticipantes" value="{{ $evento->numParticipantes }}" required autocomplete="numParticipantes" autofocus>
 
                 @error('numParticipantes')
                 <span class="invalid-feedback" role="alert">
@@ -115,7 +115,7 @@
             </div>
 
             {{--Nome do Documento Extra--}}
-            <div class='col-md-4'  style='display:none'>
+            <div class='col-md-4' style='display:none'>
                 <label for="nome_docExtra" class="col-form-label">{{ __('Digite o nome do Documento') }} <span style="color:red; font-weight:bold;">*</span></label>
                 <input id="nome_docExtra" type="text" class="form-control @error('nome_docExtra') is-invalid @enderror" name="nome_docExtra" @if($evento->nome_docExtra != null ) value="{{$evento->nome_docExtra}}" @else value="{{ old('nome_docExtra')}}" @endif placeholder="Nome do Documento" autocomplete="nome_docExtra" autofocus>
                 @error('nome_docExtra')
@@ -143,11 +143,11 @@
                     <label for="exampleFormControlTextarea1">Descrição:<span style="color: red; font-weight: bold;">*</span></label>
                     <textarea class="form-control @error('descricao') is-invalid @enderror" value="{{ $evento->descricao }}" id="descricao" name="descricao" rows="3">{{$evento->descricao}}</textarea>
                     @error('descricao')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
-                  </div>
+                </div>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -180,34 +180,34 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-bordered" >
+                        <table class="table table-bordered">
                             <thead>
-                            <tr>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Celular</th>
-                                <th scope="col">Instituição</th>
-                                <th scope="col">Seleção</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Celular</th>
+                                    <th scope="col">Instituição</th>
+                                    <th scope="col">Seleção</th>
+                                </tr>
                             </thead>
                             <tbody id="projetos">
-                            @foreach($coordenadores as $coordenador)
+                                @foreach($coordenadores as $coordenador)
                                 <tr>
                                     <td>{{$coordenador->user->name}}</td>
                                     <td>{{$coordenador->user->email}}</td>
                                     @if($coordenador->user->celular != null)
-                                        <td>{{$coordenador->user->celular}}</td>
+                                    <td>{{$coordenador->user->celular}}</td>
                                     @else
-                                        <td>Não Definido</td>
+                                    <td>Não Definido</td>
                                     @endif
                                     @if($coordenador->user->instituicao != null)
-                                        <td>{{$coordenador->user->instituicao}}</td>
+                                    <td>{{$coordenador->user->instituicao}}</td>
                                     @else
-                                        <td>Não Definida</td>
+                                    <td>Não Definida</td>
                                     @endif
-                                    <td style="text-align-last:center"><input  type="button" class="btn-primary btn" value="Definir" onclick="defCoord({{$coordenador->id}},'{{$coordenador->user->name}}')" style="width: 100px"></td>
+                                    <td style="text-align-last:center"><input type="button" class="btn-primary btn" value="Definir" onclick="defCoord({{$coordenador->id}},'{{$coordenador->user->name}}')" style="width: 100px"></td>
                                 </tr>
-                            @endforeach
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -248,98 +248,98 @@
             </div>{{-- end Fim da submissão --}}
         </div>{{-- end dataInicio | dataFim | inicioSubmissao | fimSubmissao --}}
         <div class="row justify-content-center">
-          <div class="col-sm-6">
-              <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação:') }}<span style="color: red; font-weight: bold;">*</span></label>
-              <input value="{{$evento->inicioRevisao}}" id="inicioRevisao" type="date" class="form-control @error('inicioRevisao') is-invalid @enderror" name="inicioRevisao" value="{{ old('inicioRevisao') }}" required autocomplete="inicioRevisao" autofocus>
+            <div class="col-sm-6">
+                <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação:') }}<span style="color: red; font-weight: bold;">*</span></label>
+                <input value="{{$evento->inicioRevisao}}" id="inicioRevisao" type="date" class="form-control @error('inicioRevisao') is-invalid @enderror" name="inicioRevisao" value="{{ old('inicioRevisao') }}" required autocomplete="inicioRevisao" autofocus>
 
-              @error('inicioRevisao')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
-          </div>
-          <div class="col-sm-6">
-              <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação:') }}<span style="color: red; font-weight: bold;">*</span></label>
-              <input value="{{$evento->fimRevisao}}" id="fimRevisao" type="date" class="form-control @error('fimRevisao') is-invalid @enderror" name="fimRevisao" value="{{ old('fimRevisao') }}" required autocomplete="fimRevisao" autofocus>
+                @error('inicioRevisao')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="col-sm-6">
+                <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação:') }}<span style="color: red; font-weight: bold;">*</span></label>
+                <input value="{{$evento->fimRevisao}}" id="fimRevisao" type="date" class="form-control @error('fimRevisao') is-invalid @enderror" name="fimRevisao" value="{{ old('fimRevisao') }}" required autocomplete="fimRevisao" autofocus>
 
-              @error('fimRevisao')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime( old('inicioRevisao') )) . '.' }}</strong>
-              </span>
-              @enderror
-          </div>
+                @error('fimRevisao')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message . date('d/m/Y', strtotime( old('inicioRevisao') )) . '.' }}</strong>
+                </span>
+                @enderror
+            </div>
         </div>
-        
+
         {{-- inicioRevisao | fimRevisao | inicioResultado | fimResultado--}}
         <div class="row justify-content-left">
-          <div class="col-sm-6">
-              <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar:') }}<span style="color: red; font-weight: bold;">*</span></label>
-              <input id="resultado_preliminar" value="{{$evento->resultado_preliminar}}" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ old('resultado_preliminar') }}" required autocomplete="resultado_preliminar" autofocus>
+            <div class="col-sm-6">
+                <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar:') }}<span style="color: red; font-weight: bold;">*</span></label>
+                <input id="resultado_preliminar" value="{{$evento->resultado_preliminar}}" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ old('resultado_preliminar') }}" required autocomplete="resultado_preliminar" autofocus>
 
-              @error('resultado_preliminar')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
-          </div>
-          <div class="col-sm-6">
-              <label for="inicio_recurso" class="col-form-label">{{ __('Início do recurso:') }}<span style="color: red; font-weight: bold;">*</span></label>
-              <input id="inicio_recurso" type="date" value="{{ $evento->inicio_recurso }}" class="form-control @error('inicio_recurso') is-invalid @enderror" name="inicio_recurso" value="{{ old('inicio_recurso') }}" required autocomplete="inicio_recurso" autofocus>
+                @error('resultado_preliminar')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                </span>
+                @enderror
+            </div>
+            <div class="col-sm-6">
+                <label for="inicio_recurso" class="col-form-label">{{ __('Início do recurso:') }}<span style="color: red; font-weight: bold;">*</span></label>
+                <input id="inicio_recurso" type="date" value="{{ $evento->inicio_recurso }}" class="form-control @error('inicio_recurso') is-invalid @enderror" name="inicio_recurso" value="{{ old('inicio_recurso') }}" required autocomplete="inicio_recurso" autofocus>
 
-              @error('inicio_recurso')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
-          </div>
-          
+                @error('inicio_recurso')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                </span>
+                @enderror
+            </div>
+
         </div>
         <div class="row justify-content-left">
-          <div class="col-sm-6">
-              <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso:') }}<span style="color: red; font-weight: bold;">*</span></label>
-              <input id="fim_recurso" type="date" value="{{ $evento->fim_recurso }}" class="form-control @error('fim_recurso') is-invalid @enderror" name="fim_recurso" value="{{ old('fim_recurso') }}" required autocomplete="resultado" autofocus>
+            <div class="col-sm-6">
+                <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso:') }}<span style="color: red; font-weight: bold;">*</span></label>
+                <input id="fim_recurso" type="date" value="{{ $evento->fim_recurso }}" class="form-control @error('fim_recurso') is-invalid @enderror" name="fim_recurso" value="{{ old('fim_recurso') }}" required autocomplete="resultado" autofocus>
 
-              @error('fim_recurso')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
-          </div>
-          
-          <div class="col-sm-6">
-              <label for="resultado_final" class="col-form-label">{{ __('Resultado Final:') }}<span style="color: red; font-weight: bold;">*</span></label>
-              <input id="resultado_final" type="date" value="{{ $evento->resultado_final }}" class="form-control @error('resultado_final') is-invalid @enderror" name="resultado_final" value="{{ old('resultado_final') }}" required autocomplete="resultado" autofocus>
+                @error('fim_recurso')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                </span>
+                @enderror
+            </div>
 
-              @error('resultado_final')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
-          </div>
+            <div class="col-sm-6">
+                <label for="resultado_final" class="col-form-label">{{ __('Resultado Final:') }}<span style="color: red; font-weight: bold;">*</span></label>
+                <input id="resultado_final" type="date" value="{{ $evento->resultado_final }}" class="form-control @error('resultado_final') is-invalid @enderror" name="resultado_final" value="{{ old('resultado_final') }}" required autocomplete="resultado" autofocus>
+
+                @error('resultado_final')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                </span>
+                @enderror
+            </div>
         </div>
 
         <!-- AKI -->
         <div class="row justify-content-left">
             <div class="col-sm-6">
-              <label for="inicioProjeto" class="col-form-label">{{ __('Início do Projeto:') }}<span style="color: red; font-weight: bold;">*</span></label>
-              <input id="inicioProjeto" type="date" value="{{ $evento->inicioProjeto }}"class="form-control @error('inicioProjeto') is-invalid @enderror" name="inicioProjeto" value="{{ old('inicioProjeto') }}" required autocomplete="inicioProjeto" autofocus>
+                <label for="inicioProjeto" class="col-form-label">{{ __('Início do Projeto:') }}<span style="color: red; font-weight: bold;">*</span></label>
+                <input id="inicioProjeto" type="date" value="{{ $evento->inicioProjeto }}" class="form-control @error('inicioProjeto') is-invalid @enderror" name="inicioProjeto" value="{{ old('inicioProjeto') }}" required autocomplete="inicioProjeto" autofocus>
 
-              @error('inicioProjeto')
-              <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
+                @error('inicioProjeto')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
+                </span>
+                @enderror
             </div>
 
             <div class="col-sm-6">
-              <label for="fimProjeto" class="col-form-label">{{ __('Fim do Projeto:') }}<span style="color: red; font-weight: bold;">*</span></label>
-              <input id="fimProjeto" type="date" value="{{ $evento->fimProjeto }}" class="form-control @error('fimProjeto') is-invalid @enderror" name="fimProjeto" value="{{ old('fimProjeto') }}" required autocomplete="fimProjeto" autofocus>
+                <label for="fimProjeto" class="col-form-label">{{ __('Fim do Projeto:') }}<span style="color: red; font-weight: bold;">*</span></label>
+                <input id="fimProjeto" type="date" value="{{ $evento->fimProjeto }}" class="form-control @error('fimProjeto') is-invalid @enderror" name="fimProjeto" value="{{ old('fimProjeto') }}" required autocomplete="fimProjeto" autofocus>
 
-              @error('fimProjeto')
-              <span class="invalid-feedback" role="alert">
+                @error('fimProjeto')
+                <span class="invalid-feedback" role="alert">
                     <strong>{{ $message . date('d/m/Y', strtotime($ontem ?? '')) . '.' }}</strong>
-              </span>
-              @enderror
+                </span>
+                @enderror
             </div>
         </div>
 
@@ -353,49 +353,45 @@
             <div class="col-sm-6">
 
                 @component('componentes.input', ['label' => 'Início do Relatório Parcial:'])
-                    <input id="dt_inicioRelatorioParcial" type="date" value="{{ $evento->dt_inicioRelatorioParcial }}" class="form-control @error('dt_inicioRelatorioParcial') is-invalid @enderror" name="dt_inicioRelatorioParcial" value="{{ old('dt_inicioRelatorioParcial') }}" required autocomplete="dt_inicioRelatorioParcial" autofocus
-                           title="Início para o período do envio do relatório parcial">
-                    @error('dt_inicioRelatorioParcial')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>Apenas será aceita data posterior ao dia do Resultado Final ({{date('d/m/Y', strtotime($evento->resultado_final ?? ''))}})</strong>
-                    </span>
-                    @enderror
+                <input id="dt_inicioRelatorioParcial" type="date" value="{{ $evento->dt_inicioRelatorioParcial }}" class="form-control @error('dt_inicioRelatorioParcial') is-invalid @enderror" name="dt_inicioRelatorioParcial" value="{{ old('dt_inicioRelatorioParcial') }}" required autocomplete="dt_inicioRelatorioParcial" autofocus title="Início para o período do envio do relatório parcial">
+                @error('dt_inicioRelatorioParcial')
+                <span class="invalid-feedback" role="alert">
+                    <strong>Apenas será aceita data posterior ao dia do Resultado Final ({{date('d/m/Y', strtotime($evento->resultado_final ?? ''))}})</strong>
+                </span>
+                @enderror
                 @endcomponent
             </div>
             <div class="col-sm-6">
 
                 @component('componentes.input', ['label' => 'Fim do Relatório Parcial:'])
-                    <input id="dt_fimRelatorioParcial" type="date" value="{{ $evento->dt_fimRelatorioParcial }}" class="form-control @error('dt_fimRelatorioParcial') is-invalid @enderror" name="dt_fimRelatorioParcial" value="{{ old('dt_fimRelatorioParcial') }}" required autocomplete="dt_fimRelatorioParcial" autofocus
-                           title="Final do período do envio do relatório parcial">
-                    @error('dt_fimRelatorioParcial')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>A data deve ser igual ou posterior a data de início do Relatório Parcial ({{date('d/m/Y', strtotime($evento->dt_inicioRelatorioParcial ?? ''))}})</strong>
-                    </span>
-                    @enderror
+                <input id="dt_fimRelatorioParcial" type="date" value="{{ $evento->dt_fimRelatorioParcial }}" class="form-control @error('dt_fimRelatorioParcial') is-invalid @enderror" name="dt_fimRelatorioParcial" value="{{ old('dt_fimRelatorioParcial') }}" required autocomplete="dt_fimRelatorioParcial" autofocus title="Final do período do envio do relatório parcial">
+                @error('dt_fimRelatorioParcial')
+                <span class="invalid-feedback" role="alert">
+                    <strong>A data deve ser igual ou posterior a data de início do Relatório Parcial ({{date('d/m/Y', strtotime($evento->dt_inicioRelatorioParcial ?? ''))}})</strong>
+                </span>
+                @enderror
                 @endcomponent
             </div>
             <div class="col-sm-6">
 
                 @component('componentes.input', ['label' => 'Início do Relatório Final:'])
-                    <input id="dt_inicioRelatorioFinal" type="date" value="{{ $evento->dt_inicioRelatorioFinal }}" class="form-control @error('dt_inicioRelatorioFinal') is-invalid @enderror" name="dt_inicioRelatorioFinal" value="{{ old('dt_inicioRelatorioFinal') }}" required autocomplete="dt_inicioRelatorioFinal" autofocus
-                           title="Início para o período do envio do relatório final">
-                    @error('dt_inicioRelatorioFinal')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>Apenas será aceita data posterior ao fim do Relatório Parcial ({{date('d/m/Y', strtotime($evento->dt_fimRelatorioParcial ?? ''))}})</strong>
-                    </span>
-                    @enderror
+                <input id="dt_inicioRelatorioFinal" type="date" value="{{ $evento->dt_inicioRelatorioFinal }}" class="form-control @error('dt_inicioRelatorioFinal') is-invalid @enderror" name="dt_inicioRelatorioFinal" value="{{ old('dt_inicioRelatorioFinal') }}" required autocomplete="dt_inicioRelatorioFinal" autofocus title="Início para o período do envio do relatório final">
+                @error('dt_inicioRelatorioFinal')
+                <span class="invalid-feedback" role="alert">
+                    <strong>Apenas será aceita data posterior ao fim do Relatório Parcial ({{date('d/m/Y', strtotime($evento->dt_fimRelatorioParcial ?? ''))}})</strong>
+                </span>
+                @enderror
                 @endcomponent
             </div>
             <div class="col-sm-6">
 
                 @component('componentes.input', ['label' => 'Fim do Relatório Final:'])
-                    <input id="dt_fimRelatorioFinal" type="date" value="{{ $evento->dt_fimRelatorioFinal }}" class="form-control @error('dt_fimRelatorioFinal') is-invalid @enderror" name="dt_fimRelatorioFinal" value="{{ old('dt_fimRelatorioFinal') }}" required autocomplete="dt_fimRelatorioFinal" autofocus
-                           title="Final do período do envio do relatório final">
-                    @error('dt_fimRelatorioFinal')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>A data deve ser igual ou posterior a data de início do Relatório Final ({{date('d/m/Y', strtotime($evento->dt_inicioRelatorioFinal ?? ''))}})</strong>
-                    </span>
-                    @enderror
+                <input id="dt_fimRelatorioFinal" type="date" value="{{ $evento->dt_fimRelatorioFinal }}" class="form-control @error('dt_fimRelatorioFinal') is-invalid @enderror" name="dt_fimRelatorioFinal" value="{{ old('dt_fimRelatorioFinal') }}" required autocomplete="dt_fimRelatorioFinal" autofocus title="Final do período do envio do relatório final">
+                @error('dt_fimRelatorioFinal')
+                <span class="invalid-feedback" role="alert">
+                    <strong>A data deve ser igual ou posterior a data de início do Relatório Final ({{date('d/m/Y', strtotime($evento->dt_inicioRelatorioFinal ?? ''))}})</strong>
+                </span>
+                @enderror
                 @endcomponent
             </div>
         </div>
@@ -725,9 +721,9 @@
                             <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                         </a>
                     @else
-                        <a>
-                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
-                        </a>
+                    <a>
+                        <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                    </a>
                     @endif
                     
                     <input type="file" class="form-control-file @error('pdfFormAvalRelatorio') is-invalid @enderror" name="pdfFormAvalRelatorio" value="{{ old('pdfFormAvalRelatorio') }}" id="pdfFormAvalRelatorio">
@@ -760,7 +756,7 @@
 
 @endsection
 @section('javascript')
-    <script type="text/javascript">
+<script type="text/javascript">
         var i = "{{$i}}";
         var numCampos = "{{$numCampos}}";
         var currentOptions = {'0': ''}
@@ -943,28 +939,28 @@
         }
         }
 
-        function defCoord(data,data2){
-            document.getElementById('coordenador_id').value=data;
-            document.getElementById('coordenador_name').value=data2;
-            $("#modalCoord").modal('hide');
+    function defCoord(data, data2) {
+        document.getElementById('coordenador_id').value = data;
+        document.getElementById('coordenador_name').value = data2;
+        $("#modalCoord").modal('hide');
 
+    }
+
+    function showDocumentoExtra() {
+        var nome_docExtra = document.getElementById('nome_docExtra');
+        var check_docExtra = document.getElementById("check_docExtra");
+        var obrigatoriedade_docExtra = document.getElementById('obrigatoriedade_docExtra');
+        if (check_docExtra.checked == true) {
+            nome_docExtra.parentElement.style.display = '';
+            obrigatoriedade_docExtra.parentElement.style.display = '';
+        } else {
+            nome_docExtra.parentElement.style.display = 'none';
+            obrigatoriedade_docExtra.parentElement.style.display = 'none';
         }
+    }
 
-        function showDocumentoExtra(){
-            var nome_docExtra = document.getElementById('nome_docExtra');
-            var check_docExtra = document.getElementById("check_docExtra");
-            var obrigatoriedade_docExtra = document.getElementById('obrigatoriedade_docExtra');
-            if(check_docExtra.checked == true){
-                nome_docExtra.parentElement.style.display = '';
-                obrigatoriedade_docExtra.parentElement.style.display = '';
-            }else{
-                nome_docExtra.parentElement.style.display = 'none';
-                obrigatoriedade_docExtra.parentElement.style.display = 'none';
-            }
-        }
-
-        window.onload = showDocumentoExtra();
-    </script>
+    window.onload = showDocumentoExtra();
+</script>
 
     @if($errors->has('somaNotas'))
     <script>

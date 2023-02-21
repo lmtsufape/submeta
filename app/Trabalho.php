@@ -131,6 +131,10 @@ class Trabalho extends Model
     return $this->belongsToMany('App\ObjetivoDeDesenvolvimentoSustentavel', 'objetivo_de_desenvolvimento_sustentavel_trabalhos', 'trabalho_id');
   }
 
+  public function integrantes() {
+    return $this->belongsToMany('App\User', 'trabalho_users', 'trabalho_id');
+  }
+
   public function avaliacaoTrabalho(){
     return $this->hasMany('App\AvaliacaoTrabalho');
   }

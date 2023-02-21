@@ -38,6 +38,10 @@ class Avaliador extends Model
         return $this->belongsToMany('App\Natureza', 'naturezas_avaliadors', 'avaliador_id');
     }
 
+    public function areaTematicas() {
+        return $this->belongsToMany('App\AreaTematica', 'area_tematica_avaliadors', 'avaliador_id');
+    }
+
     public function avaliacaoTrabalho(){
         return $this->hasMany('App\AvaliacaoTrabalho');
     }
