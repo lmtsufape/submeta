@@ -255,10 +255,30 @@ class AdministradorController extends Controller
                     }
                 }
             }
-            $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
-                return $item->pontuacao >= $next->pontuacao ? -1 : 1;
-            });
+            if ($evento->tipoAvaliacao == "form") {
+                $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) {
+                    return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+                });    
+            } elseif ($evento->tipoAvaliacao == "campos") {
+                $camposAvaliacao = CampoAvaliacao::where('evento_id', $evento->id)->orderBy('prioridade', 'ASC')->get();
 
+                // Faz a classificação dos trabalhos de acordo com a pontuação e com a nota de cada campo de avaliação
+                $trabalhosAmpla = $trabalhosAmpla->sort(function ($item, $next) use ($camposAvaliacao){
+                    if ($item->pontuacao == $next->pontuacao) {
+
+                        foreach ($camposAvaliacao as $campo) {
+                            $notaItem = $item->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
+                            $notaNext = $next->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
+                            if ($notaItem != $notaNext) {
+                                return $notaItem >= $notaNext ? -1 : 1;
+                            }
+                        }
+                    } else {
+                        return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+                    }
+                });
+            }
+            
             // Recém Doutor
             $trabalhosDoutor = Trabalho::where('evento_id', $evento->id)
                 ->where('modalidade', 'RecemDoutor')->get();
@@ -303,10 +323,31 @@ class AdministradorController extends Controller
                     }
                 }
             }
-            $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
-                return $item->pontuacao >= $next->pontuacao ? -1 : 1;
-            });
 
+            if ($evento->tipoAvaliacao == "form") {
+                $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) {
+                    return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+                });
+            } elseif ($evento->tipoAvaliacao == "campos") {
+                $camposAvaliacao = CampoAvaliacao::where('evento_id', $evento->id)->orderBy('prioridade', 'ASC')->get();
+
+                // Faz a classificação dos trabalhos de acordo com a pontuação e com a nota de cada campo de avaliação
+                $trabalhosDoutor = $trabalhosDoutor->sort(function ($item, $next) use ($camposAvaliacao){
+                    if ($item->pontuacao == $next->pontuacao) {
+
+                        foreach ($camposAvaliacao as $campo) {
+                            $notaItem = $item->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
+                            $notaNext = $next->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
+                            if ($notaItem != $notaNext) {
+                                return $notaItem >= $notaNext ? -1 : 1;
+                            }
+                        }
+                    } else {
+                        return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+                    }
+                });
+            }
+            
             return view('administrador.resultadosProjetosCotas')->with(['evento' => $evento, 'trabalhosAmpla' => $trabalhosAmpla, 'trabalhosDoutor' => $trabalhosDoutor]);
         }
 
@@ -350,36 +391,32 @@ class AdministradorController extends Controller
                 //dd($trabalhos);
                 $trabalho->pontuacao = 0;
                 $cont = 0;
-                    $camposAvaliacao = CampoAvaliacao::where('evento_id', $evento->id)->orderBy('prioridade', 'ASC')->get();
+                $camposAvaliacao = CampoAvaliacao::where('evento_id', $evento->id)->orderBy('prioridade', 'ASC')->get();
 
-                    foreach ($trabalho->avaliadors as $avaliador) {
-                        $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
-                        ++$cont;
-                    }
+                foreach ($trabalho->avaliadors as $avaliador) {
+                    $trabalho->pontuacao += $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->pontuacao;
+                    ++$cont;
+                }
 
-                    if ($trabalho->pontuacao != 0) {
-                        $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
-                    }
+                if ($trabalho->pontuacao != 0) {
+                    $trabalho->pontuacao = number_format(($trabalho->pontuacao / $cont), 2, ',', '');
+                }
 
-                    // $trabalhos = $trabalhos->sort(function ($item, $next) {
-                    //     return $item->pontuacao >= $next->pontuacao ? -1 : 1;
-                    // });
+                // Faz a classificação dos trabalhos de acordo com a pontuação e com a nota de cada campo de avaliação
+                $trabalhos = $trabalhos->sort(function ($item, $next) use ($camposAvaliacao){
+                    if ($item->pontuacao == $next->pontuacao) {
 
-                    // Faz a classificação dos trabalhos de acordo com a pontuação e com a nota de cada campo de avaliação
-                    $trabalhos = $trabalhos->sort(function ($item, $next) use ($camposAvaliacao){
-                        if ($item->pontuacao == $next->pontuacao) {
-
-                            foreach ($camposAvaliacao as $campo) {
-                                $notaItem = $item->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
-                                $notaNext = $next->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
-                                if ($notaItem != $notaNext) {
-                                    return $notaItem >= $notaNext ? -1 : 1;
-                                }
+                        foreach ($camposAvaliacao as $campo) {
+                            $notaItem = $item->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
+                            $notaNext = $next->avaliacaoTrabalho()->where('campo_avaliacao_id', $campo->id)->first()->nota;
+                            if ($notaItem != $notaNext) {
+                                return $notaItem >= $notaNext ? -1 : 1;
                             }
-                        } else {
-                            return $item->pontuacao >= $next->pontuacao ? -1 : 1;
                         }
-                    });
+                    } else {
+                        return $item->pontuacao >= $next->pontuacao ? -1 : 1;
+                    }
+                });
             }
         }
 
