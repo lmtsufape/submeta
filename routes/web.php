@@ -305,6 +305,17 @@ Route::prefix('naturezas')->group(function () {
     Route::get('/funcao-participante/{id}/destroy', 'ParticipanteController@destroyFuncao')->name('funcao_participante.destroy');
 });
 
+Route::prefix('cursos')->name('cursos.')->group(function (){
+    //#################### Rotas de cursos #########################
+    Route::get('index', 'CursoController@index')->name('index')->middleware('checkAdministrador');
+    Route::get('nova', 'CursoController@create')->name('criar')->middleware('checkAdministrador');
+    Route::post('salvar','CursoController@store')->name('salvar')->middleware('checkAdministrador');
+    Route::get('editar/{id}', 'CursoController@edit')->name('editar')->middleware('checkAdministrador');
+    Route::post('editar/{id}', 'CursoController@update')->name('update')->middleware('checkAdministrador');
+    Route::delete('exluir/{id}', 'CursoController@destroy')->name('excluir')->middleware('checkAdministrador');
+    //Route::get('novo')->name('novo');
+});
+
 //############ Evento ##############################################
 Route::prefix('evento')->name('evento.')->group(function () {
     Route::get('/criar', 'EventoController@create')->name('criar')->middleware('checkAdministrador');

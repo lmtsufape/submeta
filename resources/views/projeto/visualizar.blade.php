@@ -42,7 +42,8 @@
         @endcomponent
       @endif
 
-      @component('projeto.formularioVisualizar.relatorio',['edital' => $edital,'projeto' => $projeto,'flagSubstituicao' =>$flagSubstituicao])
+      @component('projeto.formularioVisualizar.relatorio',['edital' => $edital,'projeto' => $projeto,'flagSubstituicao' =>$flagSubstituicao,
+                                                           'AvalRelatParcial' => $AvalRelatParcial, 'AvalRelatFinal' => $AvalRelatFinal, 'cont' => 0])
       @endcomponent
 
       @component('projeto.formularioVisualizar.resultado2',

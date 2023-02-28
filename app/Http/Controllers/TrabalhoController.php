@@ -55,6 +55,7 @@ use App\Substituicao;
 use Illuminate\Support\Facades\Notification;
 use App\Desligamento;
 use App\ObjetivoDeDesenvolvimentoSustentavel;
+use App\AvaliacaoRelatorio;
 
 class TrabalhoController extends Controller
 {
@@ -403,6 +404,24 @@ class TrabalhoController extends Controller
 
         $trabalhos_user = TrabalhoUser::where('trabalho_id', $projeto->id)->get();
 
+        $AvalRelatParcial = [];
+        $AvalRelatFinal = [];
+
+        foreach ($participantes as $participante) {
+            if (isset($participante->planoTrabalho)) {
+                $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
+            } else {
+                $avals = [];
+            }
+            foreach ($avals as $aval) {
+                if ($aval->tipo == 'Parcial') {
+                    array_push($AvalRelatParcial, $aval);
+                } else {
+                    array_push($AvalRelatFinal, $aval);
+                }
+            }
+        }
+
         return view('projeto.visualizar')->with(['projeto' => $projeto,
             'grandeAreas' => $grandeAreas,
             'areas' => $areas,
@@ -418,6 +437,8 @@ class TrabalhoController extends Controller
             'areasTematicas' => $areasTematicas,
             'flagSubstituicao' =>$flagSubstituicao,
             'trabalhos_user' => $trabalhos_user,
+            'AvalRelatParcial' => $AvalRelatParcial,
+            'AvalRelatFinal' => $AvalRelatFinal,
             'proponente' => $proponente
         ]);
     }

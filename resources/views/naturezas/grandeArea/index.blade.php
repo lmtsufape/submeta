@@ -4,6 +4,15 @@
 
 <div class="container" >
     <div class="row" >
+        @if(session('error'))
+        <div class="col-md-12" style="margin-top: 30px;">
+            <div class="alert alert-danger">
+                <p>{{session('error')}}</p>
+            </div>
+        </div>
+        @endif
+    </div>
+    <div class="row" >
         @if(session('mensagem'))
         <div class="col-md-12" style="margin-top: 30px;">
             <div class="alert alert-success">

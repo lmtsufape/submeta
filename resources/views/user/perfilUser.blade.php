@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endsection
+
 @section('content')
 
 <div class="container" style="margin-top: 3rem;">
@@ -122,29 +126,12 @@
                             </div>
                             @if(Auth()->user()->tipo == 'avaliador')
                             <div class="col-md-6">
-                                <label for="area" class="col-form-label">{{ __('Área:') }}</label>
-                                <select style="display: inline" class="form-control @error('area') is-invalid @enderror" name="area" id="area">
-                                    @if(Auth()->user()->avaliadors->area_id == null)
-                                    <option value="" selected>Indefinida</option>
-                                    @foreach (App\Area::all() as $area)
-                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
-                                    <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
-                                    @else
-                                    <option value="{{ $area->id }}">{{ $area->nome }}</option>
-                                    @endif
+                                <label for="area" class="col-form-label">{{ __('Área temática:') }}</label>
+                                <select style="display: inline" class="form-control @error('area') is-invalid @enderror" name="area[]" id="area" multiple="multiple">                     
+                                    @foreach ($areaTematica as $area)
+                                        <option value="{{ $area->id }}" id="area{{$area->id}}" @if((empty(old('area')) && $avaliador->areaTematicas->contains($area->id)) || (!empty(old('area')) && in_array($area->id, old('area')))) selected @endif>{{ $area->nome }}</option>                                
                                     @endforeach
-                                    @else
-                                    @foreach (App\Area::all() as $area)
-                                    @if(Auth()->user()->avaliadors->area_id == $area->id)
-                                    <option value="{{ $area->id }}" selected>{{ $area->nome }}</option>
-                                    @else
-                                    <option value="{{ $area->id }}">{{ $area->nome }}</option>
-                                    @endif
-                                    @endforeach
-                                    @endif
-
                                 </select>
-
                                 @error('area')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -804,6 +791,14 @@
 
 @endsection
 @section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+$("#area").select2({
+    placeholder: 'Selecione as áreas temáticas',
+    allowClear: true
+});
+</script>
+
 <script type="text/javascript">
     //var emailInput = document.getElementById('email');
     //emailInput.disabled = true;

@@ -86,7 +86,11 @@
                       </td>
                       <td style="text-align: center">{{ date('d-m-Y \à\s H:i\h', strtotime($projeto->updated_at)) }}</td>
                       @if($projeto->status !=null)
-                        <td style="color: rgb(6, 85, 6); text-align: center;text-transform: capitalize;">{{$projeto->status}}</td>
+                        @if($projeto->status === "aprovado")
+                          <td style="color: rgb(6, 85, 6); text-align: center;text-transform: capitalize;">Em Execução</td>
+                        @else
+                          <td style="color: rgb(6, 85, 6); text-align: center;text-transform: capitalize;">{{$projeto->status}}</td>
+                        @endif                        
                       @else
                             <td style="color: rgb(0, 0, 0); text-align: center">Submetido</td>
                       @endif
