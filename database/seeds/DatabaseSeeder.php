@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RecomendacaoSeeder::class);
         $this->call(AvaliadorSeeder::class);
         $this->call(AreaTematicaSeeder::class);
+        $this->call(CursoSeeder::class);
         
         // $this->call(UsersTableSeeder::class);
 
