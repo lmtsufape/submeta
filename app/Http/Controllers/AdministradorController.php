@@ -126,6 +126,11 @@ class AdministradorController extends Controller
         //$avaliacoesRelatorio = [];->join('users','users.id','=','candidatos.user_id')
         $AvalRelatParcial = [];
         $AvalRelatFinal = [];
+        $MediaAvalRelatParcial = 0;
+        $AvalRelatParcialPendentes = 0;
+        $MediaAvalRelatFinal = 0;
+        $AvalRelatFinalPendentes = 0;
+
         foreach ($trabalho->participantes as $participante) {
             if (isset($participante->planoTrabalho)) {
                 $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
@@ -135,10 +140,28 @@ class AdministradorController extends Controller
             foreach ($avals as $aval) {
                 if ($aval->tipo == 'Parcial') {
                     array_push($AvalRelatParcial, $aval);
+                    $MediaAvalRelatParcial += $aval->nota;
+
+                    if($aval->nota == null){
+                        $AvalRelatParcialPendentes += 1;
+                    }
                 } else {
                     array_push($AvalRelatFinal, $aval);
+                    $MediaAvalRelatFinal += $aval->nota;
+
+                    if($aval->nota == null){
+                        $AvalRelatFinalPendentes += 1;
+                    }
                 }
             }
+        }
+
+        if(count($AvalRelatParcial) > 0){
+            $MediaAvalRelatParcial  = $MediaAvalRelatParcial / count($AvalRelatParcial);
+        }
+
+        if(count($AvalRelatFinal) > 0){
+            $MediaAvalRelatFinal = $MediaAvalRelatFinal / count($AvalRelatFinal);
         }
 
         // Verficação de pendencia de substituição
@@ -166,7 +189,12 @@ class AdministradorController extends Controller
                 'AvalRelatFinal' => $AvalRelatFinal,
                 'hoje' => $hoje,
                 'flagSubstituicao' => $flagSubstituicao,
-                'areasTematicas' => $areasTematicas, ]);
+                'areasTematicas' => $areasTematicas, 
+                'MediaAvalRelatParcial' => $MediaAvalRelatParcial,
+                'AvalRelatParcialPendentes' => $AvalRelatParcialPendentes,
+                'MediaAvalRelatFinal' => $MediaAvalRelatFinal,
+                'AvalRelatFinalPendentes' => $AvalRelatFinalPendentes,
+                ]);
     }
 
     public function showProjetos(Request $request)

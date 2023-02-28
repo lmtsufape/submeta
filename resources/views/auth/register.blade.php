@@ -91,7 +91,7 @@
                             <div class="col-md-12" id="displayOutro" style='display:none'>
                                 <div class="form-group">
                                     <label for="instituicao" class="col-form-label" style="font-weight:600;">{{ __('Digite a Instituição') }}<span style="color: red; font-weight:bold;">*</span></label>
-                                    <input id="instituicao" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="instituicao" value="{{ old('instituicao') }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
+                                    <input id="instituicao" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="instituicao" value="{{ old('instituicao') }}" placeholder="Digite o nome da Instituição" autofocus>
                                     @error('instituicao')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -280,14 +280,10 @@
                                     @component('componentes.input', ['label' => 'Curso'])
                                     <select style="display: inline" class="form-control" id='cursoEstudante' name="cursoEstudante" onchange="outroCurso(this)">
                                         <option value="" disabled selected hidden>-- Selecione uma opção--</option>
-                                        <option @if((old('curso')) == 'Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
-                                        <option @if((old('curso')) == 'Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
-                                        <option @if((old('curso')) == 'Bacharelado em Engenharia de Alimentos' ) selected @endif value="Bacharelado em Engenharia de Alimentos">Bacharelado em Engenharia de Alimentos</option>
-                                        <option @if((old('curso')) == 'Bacharelado em Medicina Veterinária' ) selected @endif value="Bacharelado em Medicina Veterinária">Bacharelado em Medicina Veterinária</option>
-                                        <option @if((old('curso')) == 'Bacharelado em Zootecnia' ) selected @endif value="Bacharelado em Zootecnia">Bacharelado em Zootecnia</option>
-                                        <option @if((old('curso')) == 'Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
-                                        <option @if((old('curso')) == 'Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
-                                        <option @if((old('curso')) == 'Outro' ) selected @endif value="Outro">Outro</option>
+                                        @foreach ($cursos as $curso)
+                                            <option @if(old('cursoEstudante')==$curso->id) selected @endif value='{{$curso->id}}'>{{$curso->nome}}</option>
+                                        @endforeach              
+                                        <option @if(old('cursoEstudante') == "Outro" ) selected @endif value="Outro">Outro</option>                          
                                     </select>
                                     @error('curso')
                                     <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -616,6 +612,7 @@
         outroVinculo();
         mudarPerfil();
         showInstituicao();
+        outroCurso();
     }
     window.onload = onload();
 </script>

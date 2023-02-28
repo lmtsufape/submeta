@@ -701,6 +701,11 @@
                         <div class="row justify-content-start" style="alignment: center">
                             <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
                         </div>
+                        <div class='row justify-content-start'>
+                            <h6 class='col-9' style="color: black; font-weight: bold">Media das avaliações:<span style="font-weight: normal"> {{$MediaAvalRelatParcial}}</span><h6>
+                            <h6 class='col-3' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$AvalRelatParcialPendentes}}</span><h6>   
+                            <br><br>
+                        </div>
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($AvalRelatParcial as $aval)
                                 <div class="col-sm-1" style="margin-bottom: 7px">
@@ -770,6 +775,11 @@
                         @if(count($AvalRelatFinal) >0)
                             <div class="row justify-content-start" style="alignment: center">
                                 <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Finais</h6></div>
+                            </div>
+                            <div class='row justify-content-start'>
+                                <h6 class='col-9' style="color: black; font-weight: bold">Media das avaliações:<span style="font-weight: normal"> {{$MediaAvalRelatFinal}}</span><h6>
+                                <h6 class='col-3' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$AvalRelatFinalPendentes}}</span><h6>   
+                                <br><br>
                             </div>
                             <div class="row justify-content-start" style="alignment: center">
                                 @foreach($AvalRelatFinal as $aval)
