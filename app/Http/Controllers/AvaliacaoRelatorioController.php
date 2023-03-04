@@ -17,13 +17,6 @@ use Auth;
 
 class AvaliacaoRelatorioController extends Controller
 {
-
-    public function create()
-    {
-
-    }
-
-
     public function listarUser($id){
 
         $avaliacao = AvaliacaoRelatorio::find($id);
@@ -66,8 +59,10 @@ class AvaliacaoRelatorioController extends Controller
     public function criar(Request  $request){
         $validatedData = $request->validate([
             'nota'      => ['required'],
+            'nota_apresentacao' => ['required'],
             'comentario'     => ['required'],
         ]);
+        
         $avaliacao = AvaliacaoRelatorio::find($request->avaliacao_id);
 
         if($request->avaliacaoArq !=null){
@@ -77,6 +72,7 @@ class AvaliacaoRelatorioController extends Controller
         }
         $plano = Arquivo::find($request->plano_id);
         $avaliacao->nota = $request->nota;
+        $avaliacao->nota_apresentacao = $request->nota_apresentacao;
         $avaliacao->comentario = $request->comentario;
         $avaliacao->update();
 
