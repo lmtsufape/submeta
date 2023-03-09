@@ -24,9 +24,11 @@
       
       @component('evento.formulario.anexos')
       @endcomponent
-      
+
+      @if ($edital->numParticipantes != 0)
       @component('evento.formulario.participantes', ['estados' => $estados, 'enum_turno' => $enum_turno])
       @endcomponent
+      @endif
       
       @component('evento.formulario.finalizar')
       @endcomponent
@@ -34,11 +36,13 @@
     </div>
   </div>
   </form>
+  @if ($edital->numParticipantes != 0)
   <div id="participanteFirst" >
     @component('componentes.participante', ['enum_turno' => $enum_turno,'estados' => $estados, ])
       
     @endcomponent
   </div>
+  @endif
   <!-- Modal de Aviso Edit -->
   <div class="modal fade" id="exampleModalAnexarDocumento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

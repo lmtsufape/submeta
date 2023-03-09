@@ -34,12 +34,14 @@
       
       @include('projeto.editaFormulario.proponente')
 
-      @include('projeto.editaFormulario.participantes')
+      @if ($edital->numParticipantes != 0)
+        @include('projeto.editaFormulario.participantes')
+      @endif
 
       @if($edital->natureza_id == 3)
         @include('projeto.editaFormulario.integrantes')
       @endif
-      
+
       @include('projeto.editaFormulario.anexos')
 
       @include('projeto.editaFormulario.finalizar')
@@ -48,11 +50,13 @@
     </div>
   </div>
   </form>
+  @if ($edital->numParticipantes != 0)
   <div id="participanteFirst" >
     @component('componentes.participante', ['enum_turno' => $enum_turno,'estados' => $estados, ])
       
     @endcomponent
   </div>
+  @endif
   <!-- Modal de Aviso Edit -->
   <div class="modal fade" id="exampleModalAnexarDocumento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -122,9 +126,11 @@
     
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
   let buttonRascunho = document.getElementById('idButtonSubmitRascunho');
+  @if($edital->numParticipantes != 0)
   let parts = document.getElementById('participante');
   let partsFirst = document.getElementById('participanteFirst');
   const participante = partsFirst.firstElementChild;
+  @endif
   let contador = 0;
 
   buttonSubmit.addEventListener('click', (e)=>{
@@ -136,7 +142,7 @@
     const input = '<input id="input_rascunho" type="hidden" name="rascunho" value="true">';
     $("#updateProjetoForm").append(input);
   })
-
+  @if($edital->numParticipantes != 0)
   function gerarPeriodo(e){
     var select = e.parentElement.parentElement.nextElementSibling;
     selectPeriodos = select.children[0].children[1];
@@ -255,17 +261,17 @@
         $("#atribuir1").attr('data-target','#exampleModal'+(id));
         document.getElementById("exampleModal"+id).modal('hide');
     }
-
+    @endif
 </script>
 
 
 <script>
   
-
+  $( document ).ready( function () {
     $.validator.addMethod("alpha", function(value, element) {
         return this.optional(element) || value == value.match(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/);
     });
-
+    @if($edital->numParticipantes != 0)
     $('input.cep:text').mask('00000-000');
     //$('input.cpf:text').mask('000.000.000-00');
     $('.numero').mask('0000000000000');
@@ -288,7 +294,7 @@
        
      }
     });
-
+    @endif
     
 
     // $.validator.setDefaults( {

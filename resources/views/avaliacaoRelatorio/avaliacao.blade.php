@@ -1,8 +1,13 @@
 @php $arquivo = \App\Arquivo::find($aval->arquivo_id); @endphp
 <div class="container-fluid">
     <div class="row">
+        @if ($arquivo->trabalho->evento->numParticipante != 0)
         <h5><b>Discente:</b>
             {{\App\Participante::find($arquivo->participanteId)->user->name}}</h5>
+        @else
+        <h5><b>Proponente:</b>
+            {{$arquivo->trabalho->proponente->user->name}}</h5>
+        @endif
     </div>
 
     <div class="row">

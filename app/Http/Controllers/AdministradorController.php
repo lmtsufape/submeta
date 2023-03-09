@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Administrador;
 use App\AdministradorResponsavel;
 use App\Area;
+use App\Arquivo;
 use App\AvaliacaoRelatorio;
 use App\Avaliador;
 use App\CoordenadorComissao;
@@ -130,6 +131,35 @@ class AdministradorController extends Controller
         $AvalRelatParcialPendentes = 0;
         $MediaAvalRelatFinal = 0;
         $AvalRelatFinalPendentes = 0;
+        
+        if ($evento->numParticipantes == 0) {
+            $arquivo = Arquivo::where("trabalhoId", $trabalho->id)->first();
+
+            if (isset($arquivo)) {
+                $avals = AvaliacaoRelatorio::where('arquivo_id', $arquivo->id)->get();
+            } else {
+                $avals = [];
+            }
+
+            foreach ($avals as $aval) {
+                if ($aval->tipo == 'Parcial') {
+                    array_push($AvalRelatParcial, $aval);
+                    $MediaAvalRelatParcial += $aval->nota;
+
+                    if($aval->nota == null){
+                        $AvalRelatParcialPendentes += 1;
+                    }
+                } else {
+                    array_push($AvalRelatFinal, $aval);
+                    $MediaAvalRelatFinal += $aval->nota;
+
+                    if($aval->nota == null){
+                        $AvalRelatFinalPendentes += 1;
+                    }
+                }
+            }
+        }
+        
 
         foreach ($trabalho->participantes as $participante) {
             if (isset($participante->planoTrabalho)) {

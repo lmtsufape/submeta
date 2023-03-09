@@ -48,7 +48,7 @@
                                 <th scope="col">Nome do Evento</th>
                                 <th scope="col">Nome do Projeto</th>
                                 <th scope="col">Nome do plano</th>
-                                <th scope="col">Discente</th>
+                                <th scope="col">Nome</th>
                                 <th scope="col">Tipo do Relatório</th>
                                 <th scope="col">Status</th>
 
@@ -60,7 +60,7 @@
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->trabalho->evento->nome }}</td>
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->trabalho->titulo }}</td>
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->titulo }}</td>
-                                    <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->participante->user->name }}</td>
+                                    <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->trabalho->evento->numParticipantes == 0 ? $avaliacao->plano->proponente->user->name : $avaliacao->plano->participante->user->name }}</td>
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->tipo }}</td>
                                     <td>
                                         <div class="row justify-content-center">

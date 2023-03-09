@@ -96,6 +96,49 @@
             </div>
           @endif
 
+          @if ($edital->numParticipantes == 0)
+            @php 
+            $arquivo = App\Arquivo::where("trabalhoId", $projeto->id)->first();
+            @endphp
+            <div class="col-md-3">
+              <br>
+              <label for="nomePlanoTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Título do plano de trabalho: ') }}<span style="color: red; font-weight:bold">*</span></label>
+            </div>
+            <div class="col-md-9">
+              <br>
+              <input type="text" class="form-control" value="{{old('nomePlanoTrabalho') ?? $arquivo->titulo ?? "" }}" name="nomePlanoTrabalho" maxlength="255" id="nomePlanoTrabalho" required>
+              <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho">
+              </span>
+              @error('nomePlanoTrabalho')
+              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                  <strong>{{ $message }}</strong>
+              </span>
+              @enderror
+            </div>
+            
+            <div class="col-md-3">
+              <br>
+              <label for="anexoPlanoTrabalho" class="col-form-label font-tam"
+                style="font-weight: bold">{{ __('Anexo do plano de trabalho: ') }}<span style="color: red; font-weight:bold">*</span></label>
+              @if ($proponente != null && $arquivo)
+                <a style="margin-left: 5px"
+                href="{{ route('baixar.plano', ['id' => $arquivo->id]) }}">
+                <i class="fas fa-file-pdf fa-2x"></i></a>
+                @else
+                <p><i class="fas fa-times-circle fa-2x"></i></p>
+              @endif
+            </div>
+            <div class="col-md-9">
+              <br>
+              <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho') ?? '' }}" name="anexoPlanoTrabalho" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
+              @error('anexoPlanoTrabalho')
+              <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                  <strong>{{ $message }}</strong>
+              </span>
+              @enderror
+            </div>
+          @endif
+
           <div class="col-md-2">
             <br>
             <label for="conflitosInteresse" class="col-form-label font-tam"
@@ -104,7 +147,7 @@
           <div class="col-md-10">
             <br>
             <textarea class="form-control @error('conflitosInteresse') is-invalid @enderror" autocomplete="conflitosInteresse"
-              autofocus id="conflitosInteresse" name="conflitosInteresse" rows="4">{{ $projeto->conflitosInteresse }}</textarea>
+             id="conflitosInteresse" name="conflitosInteresse" rows="4">{{ $projeto->conflitosInteresse }}</textarea>
             @error('conflitosInteresse')
               <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

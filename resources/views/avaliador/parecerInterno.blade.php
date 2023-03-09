@@ -20,6 +20,7 @@
 		@component('projeto.formularioVisualizar.anexos2', ['edital' => $trabalho->evento, 'projeto' => $trabalho])
 		@endcomponent
 		</div>
+		@if ($evento->numParticipantes != 0)
 		<!-- Participantes -->
 			<div class="col-sm-10" style="margin-top: 20px">
 				<div class="card" style="border-radius: 5px">
@@ -64,6 +65,7 @@
 					</div>
 				</div>
 			</div>
+			@endif
 	</div>
 </div>
 {{-- Parecer Interno --}}

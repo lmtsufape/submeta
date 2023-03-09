@@ -60,7 +60,9 @@
                     <th scope="col">N. Planos</th>
                     <th scope="col">Avaliador</th>
                     <th scope="col">Status</th>
+                    @if ($evento->numParticipantes != 0)
                     <th scope="col">Bolsas</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody id="projetos">
@@ -84,7 +86,7 @@
                                 @endif
                             </td>
                             <td>
-                                {{$trabalho->participantes->count()}}
+                                @if ($evento->numParticipantes != 0) {{$trabalho->participantes->count()}} @else {{$trabalho->proponente->count()}} @endif
                             </td>
                             <td>
                                 @if($trabalho->avaliadors->count() > 0)
@@ -119,11 +121,13 @@
                             @else
                                 <td>Pendente</td>
                             @endif
+                            @if ($evento->numParticipantes != 0)
                             <td>
                                 <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirmTrab{{$trabalho->id}}" >
                                     Definir
                                 </button>
                             </td>
+                            @endif
                         </tr>
                         @php $cont+=1;@endphp
                         @endif
@@ -154,7 +158,9 @@
                     <th scope="col">N. Planos</th>
                     <th scope="col">Avaliador</th>
                     <th scope="col">Status</th>
+                    @if ($evento->numParticipantes != 0)
                     <th scope="col">Bolsas</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody id="projetos">
@@ -178,7 +184,7 @@
                                 @endif
                             </td>
                             <td>
-                                {{$trabalho->participantes->count()}}
+                                @if ($evento->numParticipantes != 0) {{$trabalho->participantes->count()}} @else {{$trabalho->proponente->count()}} @endif
                             </td>
                             <td>
                                 @if($trabalho->avaliadors->count() > 0)
@@ -213,11 +219,13 @@
                             @else
                                 <td>Pendente</td>
                             @endif
+                            @if ($evento->numParticipantes != 0)
                             <td>
                                 <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirmTrab{{$trabalho->id}}" >
                                     Definir
                                 </button>
                             </td>
+                            @endif
                         </tr>
                         @php $cont+=1;@endphp
                         @endif
@@ -249,7 +257,9 @@
                     <th scope="col">N. Planos</th>
                     <th scope="col">Avaliador</th>
                     <th scope="col">Status</th>
+                    @if ($evento->numParticipantes != 0)
                     <th scope="col">Bolsas</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody id="projetos">
@@ -273,7 +283,7 @@
                                 @endif
                             </td>
                             <td>
-                                {{$trabalho->participantes->count()}}
+                                @if ($evento->numParticipantes != 0) {{$trabalho->participantes->count()}} @else {{$trabalho->proponente->count()}} @endif
                             </td>
                             <td>
                                 @if($trabalho->avaliadors->count() > 0)
@@ -308,11 +318,13 @@
                             @else
                                 <td>Pendente</td>
                             @endif
+                            @if ($evento->numParticipantes != 0)
                             <td>
                                 <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirmTrab{{$trabalho->id}}" >
                                     Definir
                                 </button>
                             </td>
+                            @endif
                         </tr>
                         @php $cont+=1;@endphp
                         @endif

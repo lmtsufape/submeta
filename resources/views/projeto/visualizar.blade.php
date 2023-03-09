@@ -32,12 +32,16 @@
       @component('projeto.formularioVisualizar.anexos2', ['edital' => $edital,'projeto' => $projeto])
       @endcomponent
       
+      @if ($edital->numParticipantes != 0)
       @component('projeto.formularioVisualizar.participantes2', ['projeto' => $projeto, 'edital' => $edital])
       @endcomponent
+      @endif
+
       @if($edital->natureza_id == 3)
         @component('projeto.formularioVisualizar.integrantes', ['projeto' => $projeto, 'edital' => $edital, 'trabalhos_user' => $trabalhos_user])
         @endcomponent
       @endif
+
       @component('projeto.formularioVisualizar.relatorio',['edital' => $edital,'projeto' => $projeto,'flagSubstituicao' =>$flagSubstituicao,
                                                            'AvalRelatParcial' => $AvalRelatParcial, 'AvalRelatFinal' => $AvalRelatFinal, 'cont' => 0])
       @endcomponent
