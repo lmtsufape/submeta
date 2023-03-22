@@ -157,7 +157,7 @@
     <div class="card">
         <div class="row">
             <div class="col-11  ">
-                <h2 class="m-2">ODS(Objetivos de Desenvolvimento Sustentável)</h2>
+                <h2 class="m-2">ODS(Objetivo de Desenvolvimento Sustentável)</h2>
             </div>
             <div class="col-1 text-center">
                 <a href="{{route('objetivoDeDenvolvimentoSustentavel.criar')}}" >

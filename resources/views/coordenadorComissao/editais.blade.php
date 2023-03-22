@@ -5,12 +5,20 @@
 <div class="container" style="margin-top: 100px;">
 
   <div class="container" >
-    <div class="row" >
-      <div class="col-sm-10">
-        <h3>Meus Editais</h3> 
+
+    <div class="row p-b-5" >
+
+      <div class="col-sm-4" style="float: start;">
+        <h3 class="title-table">Meus Editais</h3> 
       </div>
+      <div class="col-sm-8 align-text-top aling-end ">
+          <a href="{{route('evento.criar')}}" class="btn btn-info" style="float: right;">Criar Edital</a>
+      </div>
+
     </div>
+
   </div>
+
   <hr>
   @if(session('mensagem'))
     <div class="row">
