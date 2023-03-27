@@ -84,6 +84,7 @@ class RegisterController extends Controller
             'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
             'instituicaoSelect' => ['required_without:instituicao'],
             'perfil' => ['required'],
+            'curso' => ['required_if:perfil,Professor'],
             'vinculo' => ['required'],
             'outro' => ['required_if:vinculo,Outro'],
             'titulacaoMaxima' => ['required_with:anoTitulacao,areaFormacao,bolsistaProdutividade'],
