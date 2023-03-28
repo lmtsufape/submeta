@@ -45,10 +45,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($trabalho->avaliadors as $avaliador)
-                    @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
+                  @if($evento->tipoAvaliacao == "campos")
+                    @foreach($trabalho->avaliadors as $avaliador)
                       @php
-                        $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                        $avaliacaoTrabalho = App\AvaliacaoTrabalho::where('trabalho_id', $trabalho->id)->where('avaliador_id', $avaliador->id)->get()->first();
+                        $pivot = $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot;
                       @endphp
                       <tr>
                         <td>{{ $avaliador->user->name }}</td>
@@ -56,77 +57,160 @@
                         <td>{{ $avaliador->user->email }}</td>
                         <td>Interna</td>
                         <td>
-                          @if($parecerInterno == null)
+                          @if($avaliacaoTrabalho == null)
                             Indisponível
                           @else
-                            {{ date('d/m/Y', strtotime($parecerInterno->created_at)) }}
+                            {{ date('d/m/Y', strtotime($pivot->created_at)) }}
                           @endif
                         </td>
                         {{--Parecer--}}
                         <td>
-                          @if($parecerInterno == null)
+                          @if($avaliacaoTrabalho == null)
                             Indisponível
                           @else
-                            {{ $parecerInterno->statusParecer }}
+                            {{ $pivot->recomendacao }}
                           @endif
-                        </td>
                         {{--Acesso ao parecer interno--}}
+                        </td>
                         <td>
-                          @if($parecerInterno == null)
+                          @if($avaliacaoTrabalho == null)
                             <button class="btn btn-danger"  disabled="disabled"  >
                               Indisponível
                             </button>
                           @else
-                            <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="btn btn-primary" >
+                            <a href="{{ route('admin.visualizarParecerBarema', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id, 'evento_id' => $evento->id]) }}" class="btn btn-primary" >
                               Visualizar
                             </a>
                           @endif
                         </td>
                       </tr>
-                    @endif
-
-
-                    @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo")
+                    @endforeach
+                  @elseif($evento->tipoAvaliacao == "link")
+                    @foreach($trabalho->avaliadors as $avaliador)
+                      @php
+                        $pivot = $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot;
+                        $parecerLink = $pivot->status;
+                      @endphp
+                      
                       <tr>
                         <td>{{ $avaliador->user->name }}</td>
                         <td>{{ $avaliador->tipo }}</td>
                         <td>{{ $avaliador->user->email }}</td>
-                        <td>Ad Hoc</td>
+                        <td>Interna</td>
                         <td>
-                          @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                          @if($parecerLink == null)
                             Indisponível
                           @else
-                            {{ date('d/m/Y', strtotime($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->created_at)) }}
+                            {{ date('d/m/Y', strtotime($pivot->created_at)) }}
                           @endif
                         </td>
                         {{--Parecer--}}
                         <td>
-                          @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                          @if($parecerLink == null)
                             Indisponível
                           @else
-                            {{ $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->recomendacao }}
+                            {{ $pivot->recomendacao }}
                           @endif
                         </td>
+                        {{--Acesso ao parecer interno--}}
                         <td>
-                          <form action="{{ route('admin.visualizarParecer') }}" method="post">
-                            @csrf
-                            <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
-                            <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}">
-                            @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                          @if($parecerLink == null)
+                            <button class="btn btn-danger"  disabled="disabled"  >
+                              Indisponível
+                            </button>
+                          @else
+                            <a href="{{ route('admin.visualizarParecerLink', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="btn btn-primary" >
+                              Visualizar
+                            </a>
+                          @endif
+                        </td>
+                      </tr>
+                    @endforeach
+                  @else
+                    @foreach($trabalho->avaliadors as $avaliador)
+                    
+                      @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || ( $avaliador->tipo == "Interno" && $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == null ))
+                        @php
+                          $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                        @endphp
+                        <tr>
+                          <td>{{ $avaliador->user->name }}</td>
+                          <td>{{ $avaliador->tipo }}</td>
+                          <td>{{ $avaliador->user->email }}</td>
+                          <td>Interna</td>
+                          <td>
+                            @if($parecerInterno == null)
+                              Indisponível
+                            @else
+                              {{ date('d/m/Y', strtotime($parecerInterno->created_at)) }}
+                            @endif
+                          </td>
+                          {{--Parecer--}}
+                          <td>
+                            @if($parecerInterno == null)
+                              Indisponível
+                            @else
+                              {{ $parecerInterno->statusParecer }}
+                            @endif
+                          </td>
+                          {{--Acesso ao parecer interno--}}
+                          <td>
+                            @if($parecerInterno == null)
                               <button class="btn btn-danger"  disabled="disabled"  >
                                 Indisponível
                               </button>
                             @else
-                              <button class="btn btn-primary"  >
+                              <a href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}" class="btn btn-primary" >
                                 Visualizar
-                              </button>
+                              </a>
                             @endif
-                          </form>
+                          </td>
+                        </tr>
+                      @endif
 
-                        </td>
-                      </tr>
-                    @endif
-                  @endforeach
+
+                      @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->acesso == 3 || $avaliador->tipo == "Externo")
+                        <tr>
+                          <td>{{ $avaliador->user->name }}</td>
+                          <td>{{ $avaliador->tipo }}</td>
+                          <td>{{ $avaliador->user->email }}</td>
+                          <td>Ad Hoc</td>
+                          <td>
+                            @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                              Indisponível
+                            @else
+                              {{ date('d/m/Y', strtotime($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->created_at)) }}
+                            @endif
+                          </td>
+                          {{--Parecer--}}
+                          <td>
+                            @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                              Indisponível
+                            @else
+                              {{ $avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->recomendacao }}
+                            @endif
+                          </td>
+                          <td>
+                            <form action="{{ route('admin.visualizarParecer') }}" method="post">
+                              @csrf
+                              <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
+                              <input type="hidden" name="avaliador_id" value="{{ $avaliador->id }}">
+                              @if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->parecer == null)
+                                <button class="btn btn-danger"  disabled="disabled"  >
+                                  Indisponível
+                                </button>
+                              @else
+                                <button class="btn btn-primary"  >
+                                  Visualizar
+                                </button>
+                              @endif
+                            </form>
+
+                          </td>
+                        </tr>
+                      @endif
+                    @endforeach
+                  @endif
                 </tbody>
               </table>
             </div>

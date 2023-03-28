@@ -88,6 +88,12 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
 
         Route::post('/parecerInterno', 'AvaliadorController@parecerInterno')->name('parecerInterno')->middleware('auth');
         Route::post('/EnviarparecerInterno', 'AvaliadorController@enviarParecerInterno')->name('enviarParecerInterno')->middleware('auth');
+
+        Route::post('/parecerBarema', 'AvaliadorController@parecerBarema')->name('parecerBarema')->middleware('auth');
+        Route::post('/EnviarparecerBarema', 'AvaliadorController@enviarParecerBarema')->name('enviarParecerBarema')->middleware('auth');
+
+        Route::post('/parecerLink', 'AvaliadorController@parecerLink')->name('parecerLink')->middleware('auth');
+        Route::post('/EnviarparecerLink', 'AvaliadorController@enviarParecerLink')->name('enviarParecerLink')->middleware('auth');
     });
 
     Route::get('/notificacao/listar', 'NotificacaoController@listar')->name('notificacao.listar')->middleware('auth');
@@ -242,6 +248,8 @@ Route::prefix('usuarios')->name('admin.')->group(function () {
     Route::post('/visualizarParecer', 'AdministradorController@visualizarParecer')->name('visualizarParecer');
     Route::get('/visualizarParecer', 'AdministradorController@visualizarParecer')->name('visualizarParecer');
     Route::get('/visualizarParecerInterno', 'AdministradorController@visualizarParecerInterno')->name('visualizarParecerInterno');
+    Route::get('/visualizarParecerLink', 'AdministradorController@visualizarParecerLink')->name('visualizarParecerLink');
+    Route::get('/visualizarParecerBarema', 'AdministradorController@visualizarParecerBarema')->name('visualizarParecerBarema');
     Route::get('/pareceresProjetos', 'AdministradorController@pareceres')->name('pareceres');
     Route::get('/analisarProjetos/{column?}', 'AdministradorController@analisar')->name('analisar')->middleware('checkRoles:coordenador,administrador');
     Route::get('/analisarProposta', 'AdministradorController@analisarProposta')->name('analisarProposta')->middleware('checkRoles:coordenador,administrador');

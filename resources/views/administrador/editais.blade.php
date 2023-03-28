@@ -79,10 +79,12 @@
                         <a href="{{route('admin.pareceres', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
                             Visualizar Pareceres
                         </a>
+                        @if($evento->tipoAvaliacao != "link")
                         <hr class="dropdown-hr">
                         <a href="{{route('admin.showResultados', ['evento_id' => $evento->id])}}" class="dropdown-item text-center">
                           Resultados
                         </a>
+                        @endif
                         <hr class="dropdown-hr">
                           <!-- Button trigger modal -->
                           <button type="button" class="dropdown-item dropdown-item-delete text-center" data-toggle="modal" data-target="#exampleModal{{ $evento->id }}">
