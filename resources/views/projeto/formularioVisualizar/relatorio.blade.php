@@ -45,6 +45,7 @@
             </div>
           </div>
 
+          @if($edital->numParticipantes > 0)
           <br>
           <div class="row justify-content-start">
               <div class="col-md-3"><h6 style="color: #234B8B; font-weight: bold">Avaliações dos Relatórios</h6></div>
@@ -130,6 +131,7 @@
             @endforeach       
             </tbody>
           </table>    
+          @endif          
         </div>
       </div>
     </div>
