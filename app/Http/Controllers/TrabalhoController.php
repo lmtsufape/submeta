@@ -404,23 +404,27 @@ class TrabalhoController extends Controller
 
         $trabalhos_user = TrabalhoUser::where('trabalho_id', $projeto->id)->get();
 
+        $avals_projeto = [];
         $AvalRelatParcial = [];
         $AvalRelatFinal = [];
 
-        foreach ($participantes as $participante) {
-            if (isset($participante->planoTrabalho)) {
-                $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
-            } else {
-                $avals = [];
+        if (isset($arquivos)) {
+            foreach ($arquivos as $arquivo) {
+                array_push($avals_projeto, AvaliacaoRelatorio::where('arquivo_id', $arquivo->id)->get());
             }
-            foreach ($avals as $aval) {
+        }
+        
+        foreach ($avals_projeto as $avals) {
+            foreach ($avals as $aval){
                 if ($aval->tipo == 'Parcial') {
                     array_push($AvalRelatParcial, $aval);
                 } else {
                     array_push($AvalRelatFinal, $aval);
                 }
-            }
+            }   
         }
+
+
 
         return view('projeto.visualizar')->with(['projeto' => $projeto,
             'grandeAreas' => $grandeAreas,
