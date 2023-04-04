@@ -1068,28 +1068,71 @@
                         </div>
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
-                                @if(($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3))
-                                    || (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3)))
-                                    <div class="col-sm-1">
-                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <h5>{{$avaliador->user->name}}</h5>
-                                        @php
-                                            $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
-                                        @endphp
-                                        <h9>@if($parecerInterno == null) Pendente @else <a
-                                                    href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
-                                        </h9>
-                                        <br>
-                                         <a href="" data-toggle="modal" data-target="#removerInterno{{ $avaliador->id }}" >
-                                            Remover
-                                        </a>
-                                        <br>
-                                        <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
-                                            Reenviar convite
-                                        </a>
-                                    </div>
+                                @if(($avaliador->tipo == 'Interno' && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3)) || (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3)))
+                                    @if ($evento->tipoAvaliacao == 'form')
+                                        <div class="col-sm-1">
+                                            <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <h5>{{$avaliador->user->name}}</h5>
+                                            @php
+                                                $parecerInterno = App\ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                            @endphp
+                                            <h9>@if($parecerInterno == null) Pendente @else <a
+                                                        href="{{ route('admin.visualizarParecerInterno', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
+                                            </h9>
+                                            <br>
+                                            <a href="" data-toggle="modal" data-target="#removerInterno{{ $avaliador->id }}" >
+                                                Remover
+                                            </a>
+                                            <br>
+                                            <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                                Reenviar convite
+                                            </a>
+                                        </div>
+                                    @elseif ($evento->tipoAvaliacao == "campos")
+                                        <div class="col-sm-1">
+                                            <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <h5>{{$avaliador->user->name}}</h5>
+                                            @php
+                                                $avaliacaoTrabalho = App\AvaliacaoTrabalho::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                            @endphp
+                                            <h9>@if($avaliacaoTrabalho == null) Pendente @else <a
+                                                        href="{{ route('admin.visualizarParecerBarema', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id, 'evento_id' => $evento->id]) }}">Avaliado</a> @endif
+                                            </h9>
+                                            <br>
+                                            <a href="" data-toggle="modal" data-target="#removerInterno{{ $avaliador->id }}" >
+                                                Remover
+                                            </a>
+                                            <br>
+                                            <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                                Reenviar convite
+                                            </a>
+                                        </div>
+                                    @elseif ($evento->tipoAvaliacao == "link")
+                                        <div class="col-sm-1">
+                                            <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <h5>{{$avaliador->user->name}}</h5>
+
+                                                <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == false)
+                                                        Pendente @else <a
+                                                                href="{{ route('admin.visualizarParecerLink', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
+                                                </h9>
+
+                                            <br>
+                                            <a href="" data-toggle="modal" data-target="#removerAdHoc{{ $avaliador->id }}">
+                                                Remover
+                                            </a>
+                                            <br>
+                                            <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                                Reenviar convite
+                                            </a>
+                                        </div>
+                                    @endif
                                 @endif
                                 <!-- Modal Remover -->
                                     <div class="modal fade" id="removerInterno{{ $avaliador->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1121,28 +1164,71 @@
                         </div>
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->avaliadors as $avaliador)
-                                @if( ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null && $avaliador->tipo == "Externo") || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3
-                                    || (($avaliador->user->instituicao != "UFAPE" && $avaliador->user->instituicao != "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3)))
-                                    <div class="col-sm-1">
-                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <h5>{{$avaliador->user->name}}</h5>
+                                @if( ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null && $avaliador->tipo == "Externo") || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3 || (($avaliador->user->instituicao != "UFAPE" && $avaliador->user->instituicao != "Universidade Federal do Agreste de Pernambuco") && $avaliador->tipo == null && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1 || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 3)))
+                                    @if ($evento->tipoAvaliacao == 'form')
+                                        <div class="col-sm-1">
+                                            <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <h5>{{$avaliador->user->name}}</h5>
 
-                                            <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == false)
-                                                    Pendente @else <a
-                                                            href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
+                                                <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == false)
+                                                        Pendente @else <a
+                                                                href="{{ route('admin.visualizarParecer', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
+                                                </h9>
+
+                                            <br>
+                                            <a href="" data-toggle="modal" data-target="#removerAdHoc{{ $avaliador->id }}">
+                                                Remover
+                                            </a>
+                                            <br>
+                                            <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                                Reenviar convite
+                                            </a>
+                                        </div>
+                                    @elseif ($evento->tipoAvaliacao == "campos")
+                                        <div class="col-sm-1">
+                                            <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <h5>{{$avaliador->user->name}}</h5>
+                                            @php
+                                                $avaliacaoTrabalho = App\AvaliacaoTrabalho::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
+                                            @endphp
+                                            <h9>@if($avaliacaoTrabalho == null) Pendente @else <a
+                                                        href="{{ route('admin.visualizarParecerBarema', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id, 'evento_id' => $evento->id]) }}">Avaliado</a> @endif
                                             </h9>
+                                            <br>
+                                            <a href="" data-toggle="modal" data-target="#removerInterno{{ $avaliador->id }}" >
+                                                Remover
+                                            </a>
+                                            <br>
+                                            <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                                Reenviar convite
+                                            </a>
+                                        </div>
+                                    @elseif ($evento->tipoAvaliacao == "link")
+                                        <div class="col-sm-1">
+                                            <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <h5>{{$avaliador->user->name}}</h5>
 
-                                        <br>
-                                        <a href="" data-toggle="modal" data-target="#removerAdHoc{{ $avaliador->id }}">
-                                            Remover
-                                        </a>
-                                        <br>
-                                        <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
-                                            Reenviar convite
-                                        </a>
-                                    </div>
+                                                <h9>@if($avaliador->trabalhos->where('id', $trabalho->id)->first()->pivot->status == false)
+                                                        Pendente @else <a
+                                                                href="{{ route('admin.visualizarParecerLink', ['trabalho_id' => $trabalho->id, 'avaliador_id' => $avaliador->id]) }}">Avaliado</a> @endif
+                                                </h9>
+
+                                            <br>
+                                            <a href="" data-toggle="modal" data-target="#removerAdHoc{{ $avaliador->id }}">
+                                                Remover
+                                            </a>
+                                            <br>
+                                            <a href="{{ route('admin.reenviar.atribuicao.projeto', ['evento_id' => $evento->id, 'avaliador_id'=>$avaliador->id, 'trabalho_id' => $trabalho->id]) }}">
+                                                Reenviar convite
+                                            </a>
+                                        </div>
+                                    @endif
                                 @endif
 
                                 <!-- Modal Remover -->

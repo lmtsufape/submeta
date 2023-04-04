@@ -134,4 +134,8 @@ class Trabalho extends Model
   public function integrantes() {
     return $this->belongsToMany('App\User', 'trabalho_users', 'trabalho_id');
   }
+
+  public function avaliacaoTrabalho(){
+    return $this->hasMany('App\AvaliacaoTrabalho');
+  }
 }

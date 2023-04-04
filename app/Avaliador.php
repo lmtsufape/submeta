@@ -41,4 +41,8 @@ class Avaliador extends Model
     public function areaTematicas() {
         return $this->belongsToMany('App\AreaTematica', 'area_tematica_avaliadors', 'avaliador_id');
     }
+
+    public function avaliacaoTrabalho(){
+        return $this->hasMany('App\AvaliacaoTrabalho');
+    }
 }

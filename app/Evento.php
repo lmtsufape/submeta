@@ -47,6 +47,8 @@ class Evento extends Model
   public function avaliadors(){
       return $this->belongsToMany('App\Avaliador')->withPivot('convite', 'created_at');
   }
-
+  public function campos_avaliacao(){
+    return $this->hasMany('App\CampoAvaliacao');
+}
 
 }

@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+@php
+    $i=0; $numCampos=0; $avaliado=false;
+    foreach ($evento->trabalhos as $trabalho) {
+        $avaliacoes = $trabalho->avaliadors()->where('status', 1)->count();
+        if ($avaliacoes > 0) {
+            $avaliado = true;
+        }
+    }
+@endphp
+
+
 @section('content')
 <div class="container">
     <div class="row titulo">
@@ -384,90 +395,99 @@
                 @endcomponent
             </div>
         </div>
+
         <hr>
         <div class="row subtitulo">
             <div class="col-sm-12">
-                <p>Documentos</p>
+                <p>Avaliação</p>
             </div>
         </div>
 
-        {{-- Pdf Edital --}}
-        <div class="row justify-content-center" style="margin-top:10px">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="pdfEdital">PDF do Edital:<span style="color: red; font-weight: bold;">*</span></label>
-                    <a href="{{route('download', ['file' => $evento->pdfEdital])}}" target="_new" style="font-size: 20px; color: #114048ff;">
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
-                    <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
-                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
-                    @error('pdfEdital')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
+        @if($avaliado)
+            <div class="alert alert-primary col-sm-12" role="alert">
+                <strong>Você não pode alterar a avaliação após algum trabalho já ter sido avaliado.</strong>
             </div>
+        @endif
+        
+        <div class="my-2" >
+            <p style="font-size: 16px">Como a avaliação será realizada?</p>
+        </div>
 
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="modeloDocumento">Arquivo com os modelos de documentos do edital:</label>
-                    <a href="{{route('download', ['file' => $evento->modeloDocumento])}}" target="_new" style="font-size: 20px; color: #114048ff;">
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
-                    <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
-                    <small>O arquivo selecionado deve ter até 2mb.</small>
-                    @error('modeloDocumento')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
+        <div class="mb-2">
+            @if (old('tipoAvaliacao') != null)
+                <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
+                    @if((old('tipoAvaliacao') == 'form') || old('tipoAvaliacao') == "") checked @endif value="form" @if($avaliado) disabled @endif>
+                <label for="radioForm" style="margin-right: 5px">Formulário (em pdf)</label>
 
+                <input type="radio" id="radioCampos" name="tipoAvaliacao" onchange="displayTipoAvaliacao('campos')" 
+                    @if(old('tipoAvaliacao') == 'campos') checked @endif value="campos" @if($avaliado) disabled @endif>
+                <label for="radioCampos" style="margin-right: 5px">Barema</label>
+
+                <input type="radio" id="radioLink" name="tipoAvaliacao" onchange="displayTipoAvaliacao('link')" 
+                    @if(old('tipoAvaliacao') == 'link') checked @endif value="link" @if($avaliado) disabled @endif>
+                <label for="radioLink" style="margin-right: 5px">Link</label><br>
+            @else
+                <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
+                @if($evento->tipoAvaliacao == 'form' || $evento->tipoAvaliacao == '') checked @endif value="form" @if($avaliado) disabled @endif>
+                <label for="radioForm" style="margin-right: 5px">Formulário (em pdf)</label>
+
+                <input type="radio" id="radioCampos" name="tipoAvaliacao" onchange="displayTipoAvaliacao('campos')" 
+                    @if($evento->tipoAvaliacao == 'campos') checked @endif value="campos" @if($avaliado) disabled @endif>
+                <label for="radioCampos" style="margin-right: 5px">Barema</label>
+
+                <input type="radio" id="radioLink" name="tipoAvaliacao" onchange="displayTipoAvaliacao('link')" 
+                    @if($evento->tipoAvaliacao == 'link') checked @endif value="link" @if($avaliado) disabled @endif>
+                <label for="radioLink" style="margin-right: 5px">Link</label><br>
+            @endif
+        </div>
+
+        <!-- Garante envio do tipo de avaliação, mesmo com a avaliação desativada -->
+        @if($avaliado)
+            @if($evento->tipoAvaliacao == 'form' || $evento->tipoAvaliacao == '')
+                <input type="hidden" id="radioForm" name="tipoAvaliacao" value="form">
+            @elseif($evento->tipoAvaliacao == 'campos')
+                <input type="hidden" id="radioCampos" name="tipoAvaliacao" value="campos">
+            @elseif($evento->tipoAvaliacao == 'link')
+                <input type="hidden" id="radioLink" name="tipoAvaliacao" value="link">
+            @endif
+        @endif
+
+        <div class="row justify-content-center" style="margin-top:10px" id="displayForm">
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="pdfEdital">Formulário para avaliador <i>ad hoc</i>:<span style="color: red; font-weight: bold;">*</span></label>
-                    <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;">
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
-                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno">
+                    @if ($evento->tipoAvaliacao == "form")
+                        <a href="{{route('download', ['file' => $evento->formAvaliacaoExterno])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
+                    @else
+                        <a>
+                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                        </a>
+                    @endif
+                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" @if($avaliado) disabled @endif>
                     <small>O arquivo selecionado deve ter até 2mb.</small>
                     @error('pdfFormAvalExterno')
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
+                            <strong>{{ $message }}</strong>
+                        </span>
                     @enderror
                 </div>
             </div>
+
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="pdfEdital">Formulário de avaliação do relatório:</label>
-                    <a href="{{route('download', ['file' => $evento->formAvaliacaoRelatorio])}}" target="_new" style="font-size: 20px; color: #114048ff;">
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
-                    <input type="file" class="form-control-file @error('pdfFormAvalRelatorio') is-invalid @enderror" name="pdfFormAvalRelatorio" value="{{ old('pdfFormAvalRelatorio') }}" id="pdfFormAvalRelatorio">
-                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
-                    @error('pdfFormAvalRelatorio')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-sm-12">
                 <div class="form-group">
                     <label for="pdfEdital">Documento auxiliar para Avaliador:</label>
                     @if($evento->docTutorial != null)
-                    <a href="{{route('download', ['file' => $evento->docTutorial])}}" target="_new" style="font-size: 20px; color: #114048ff;">
-                        <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
-                    </a>
+                        <a href="{{route('download', ['file' => $evento->docTutorial])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
                     @else
-                    <a>
-                        <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
-                    </a>
+                        <a>
+                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                        </a>
                     @endif
-                    <input type="file" class="form-control-file @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial">
+                    <input type="file" class="form-control-file @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial" @if($avaliado) disabled @endif>
                     <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
                     @error('docTutorial')
                     <span class="invalid-feedback" role="alert">
@@ -476,6 +496,246 @@
                     @enderror
                 </div>
             </div>
+        </div>
+
+        <div class="row justify-content-center" style="margin-top:10px; display: none" id="displayCampos">
+            <div class="row align-items-end mb-4">
+                <label class="col-sm-3" for="pontuacao">Valor total da pontuação por Barema:<span style="color:red; font-weight:bold;">*</span></label>
+                <input type="number" name="pontuacao" min="0" class="col-sm-1 form-control" id="pontuacao" value="{{old('pontuacao')?old('pontuacao'):$pontuacao}}" @if($avaliado) disabled @endif/>
+            </div>
+            <label>Campos do Barema:</label>
+            <table class="table table-bordered col-sm-12" id="dynamicAddRemove">
+                <tr>
+                    <th>Nome<span style="color:red; font-weight:bold;">*</span></th>
+                    <th>Descrição</th>
+                    <th>Nota Máxima<span style="color:red; font-weight:bold;">*</span></th>
+                    <th>Prioridade<span style="color:red; font-weight:bold;">*</span></th>
+                    <th>Ação</th>
+                </tr>
+                @if ($camposAvaliacao->count() != 0)
+                    @php $somaNotas = 0; @endphp
+                    @foreach ($camposAvaliacao as $campoAvaliacao)
+                        @php $somaNotas += $campoAvaliacao->nota_maxima; @endphp
+                    
+                        @if ($numCampos == 0)
+                        <tr>
+                            <td><input type="text" name="inputField[{{$i}}][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ $campoAvaliacao->nome }}" @if($avaliado) disabled @endif/>
+                            @error('inputField.*.nome')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </td>
+                            <td><input type="text" name="inputField[{{$i}}][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ $campoAvaliacao->descricao }}" @if($avaliado) disabled @endif/>
+                            @error('inputField.*.descricao')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </td>
+                            <td><input type="number" min="1"  step="1" name="inputField[{{$i}}][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ $campoAvaliacao->nota_maxima }}" @if($avaliado) disabled @endif/>
+                            @error('inputField.*.nota_maxima')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </td>
+                            <td>
+                                <select name="inputField[{{$i}}][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror" @if($avaliado) disabled @endif>
+                                    <option value="" >-- ORDEM --</option>
+                                    <option value="1" class="ordem_option">1</option>                                  
+                                </select>
+                                @error('inputField.*.prioridade')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </td>
+                            <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary" @if($avaliado) disabled @endif>Adicionar</button></td>
+                        </tr>
+                        @else
+                        <tr>
+                            <td><input type="text" name="inputField[{{$i}}][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ $campoAvaliacao->nome }}" @if($avaliado) disabled @endif/>
+                            @error('inputField.*.nome')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </td>
+                            <td><input type="text" name="inputField[{{$i}}][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ $campoAvaliacao->descricao }}" @if($avaliado) disabled @endif/>
+                            @error('inputField.*.descricao')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </td>
+                            <td><input type="number" min="1"  step="1" name="inputField[{{$i}}][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ $campoAvaliacao->nota_maxima }}" @if($avaliado) disabled @endif/>
+                            @error('inputField.*.nota_maxima')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            </td>
+                            <td>
+                                <select name="inputField[{{$i}}][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror" @if($avaliado) disabled @endif>
+                                    <option value="" >-- ORDEM --</option>
+                                    <option value="1" class="ordem_option">1</option>                                  
+                                </select>
+                                @error('inputField.*.prioridade')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </td>
+                            <td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[{{$i}}]" @if($avaliado) disabled @endif>Remover</button></td>
+                        </tr>
+                        @endif
+                        @php ++$i; ++$numCampos; @endphp
+                    @endforeach
+                    
+                @else
+                    <tr>
+                        <td><input type="text" name="inputField[0][nome]" class="form-control nome @error('inputField.*.nome') is-invalid @enderror" value="{{ old('inputField[0][nome]') }}" @if($avaliado) disabled @endif/>
+                        @error('inputField.*.nome')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        </td>
+                        <td><input type="text" name="inputField[0][descricao]" class="form-control descricao @error('inputField.*.descricao') is-invalid @enderror" value="{{ old('inputField[0][descricao]') }}" @if($avaliado) disabled @endif/>
+                        @error('inputField.*.descricao')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        </td>
+                        <td><input type="number" min="1"  step="1" name="inputField[0][nota_maxima]" class="form-control nota_maxima @error('inputField.*.nota_maxima') is-invalid @enderror" value="{{ old('inputField[0][nota_maxima]') }}" @if($avaliado) disabled @endif/>
+                        @error('inputField.*.nota_maxima')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        </td>
+                        <td>
+                            <select name="inputField[0][prioridade]" class="form-control prioridade @error('inputField.*.prioridade') is-invalid @enderror" @if($avaliado) disabled @endif>
+                                <option value="" selected>-- ORDEM --</option>
+                                <option value="1" class="ordem_option">1</option>                                  
+                            </select>
+                            @error('inputField.*.prioridade')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </td>
+                        <td><button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary" @if($avaliado) disabled @endif>Adicionar</button></td>
+                    </tr>
+                    @php ++$i; ++$numCampos; @endphp
+                @endif
+            </table>
+
+            @if($errors->has('inputField.*'))
+                <div class="col-sm-12 alert alert-danger" id="inputFieldError">
+                    Você deve preencher os campos obrigatórios.
+                </div>
+            @endif
+
+            <div class="col-sm-12 alert alert-danger" style="display: none" id="nota_maxima_invalida">
+                A soma das notas máximas deve ser igual a pontuação total definida.
+            </div>
+
+            <input type="checkbox" id="checkB[0]" checked name="campos[]" value="0" hidden disabled>
+
+            <input type="number" name="somaNotas" value="0" id="somaNotas" hidden>
+
+        </div>
+
+        <div class="col-sm-12 row" style="margin-top:10px; display: none" id="displayLink">
+            <label for="link" class="col-form-label">{{ __('Link para o formulário:') }}<span style="color:red; font-weight:bold;">*</span></label>
+            <input id="link" type="text" class="form-control @error("link") is-invalid @enderror" name="link" value="{{ ($evento->tipoAvaliacao == "link") ? $evento->formAvaliacaoExterno : old('link') }}" @if($avaliado) disabled @endif>
+            @error('link')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        <hr>
+        <div class="row subtitulo">
+            <div class="col-sm-12">
+                <p>Documentos</p>
+            </div>
+        </div>
+        
+        {{-- Pdf Edital --}}
+        <div class="row justify-content-center" style="margin-top:10px">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="pdfEdital">PDF do Edital:<span style="color: red; font-weight: bold;">*</span></label>
+                    @if($evento->pdfEdital != null)
+                        <a href="{{route('download', ['file' => $evento->pdfEdital])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
+                    @else
+                        <a>
+                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                        </a>
+                    @endif
+                    <input type="file" class="form-control-file @error('pdfEdital') is-invalid @enderror" name="pdfEdital" value="{{ old('pdfEdital') }}" id="pdfEdital">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('pdfEdital')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    </div>
+            </div>
+       
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="modeloDocumento">Arquivo com os modelos de documentos do edital:</label>
+                    @if($evento->modeloDocumento != null)
+                        <a href="{{route('download', ['file' => $evento->modeloDocumento])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
+                    @else
+                        <a>
+                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                        </a>
+                    @endif
+                    <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
+                    <small>O arquivo selecionado deve ter até 2mb.</small>
+                    @error('modeloDocumento')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    </div>
+            </div>
+
+           
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="pdfEdital">Formulário de avaliação do relatório:</label>
+                    @if($evento->formAvaliacaoRelatorio != null)
+                        <a href="{{route('download', ['file' => $evento->formAvaliacaoRelatorio])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                            <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
+                        </a>
+                    @else
+                    <a>
+                        <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                    </a>
+                    @endif
+                    
+                    <input type="file" class="form-control-file @error('pdfFormAvalRelatorio') is-invalid @enderror" name="pdfFormAvalRelatorio" value="{{ old('pdfFormAvalRelatorio') }}" id="pdfFormAvalRelatorio">
+                    <small>O arquivo selecionado deve ser no formato PDF de até 2mb.</small>
+                    @error('pdfFormAvalRelatorio')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            
         </div>
 
         <div class="row justify-content-center" style="margin: 20px 0 20px 0">
@@ -497,6 +757,188 @@
 @endsection
 @section('javascript')
 <script type="text/javascript">
+        var i = "{{$i}}";
+        var numCampos = "{{$numCampos}}";
+        var currentOptions = {'0': ''}
+
+        $(document).ready(function() {
+            displayTipoAvaliacao("{{ old('tipoAvaliacao') == null ? $evento->tipoAvaliacao : old('tipoAvaliacao')}}")
+            
+            if (numCampos > 1) {
+                for (let y = 1; y < (numCampos); y++) {
+                    $("#displayCampos").append('<input type="checkbox" id="checkB[' + y + ']" checked name="campos[]" value="' + y + '" hidden disabled>');
+                    addOrdemPrioridade();
+                }
+            }
+            @if(old('tipoAvaliacao') == 'campos' || $evento->tipoAvaliacao == 'campos')
+                $('#somaNotas').val('{{$somaNotas}}');
+            @endif
+
+            z = 0
+            @foreach($camposAvaliacao as $campoAvaliacao)
+                selectId = z
+                newOption = "{{$campoAvaliacao->prioridade}}"
+                displayPrioridades(selectId, newOption)
+                ++z
+            @endforeach
+            
+        });
+
+        // Habilita edição dos campos
+        $("input[name^='inputField']").on('change', function() {
+            $("input[name^='campos']").prop('disabled', false);
+        });
+
+        // Adiciona campo de avaliação
+        $("#dynamic-ar").click(function () {
+            // Habilita edição dos campos
+            $("input[name^='campos']").prop('disabled', false);
+            
+            $("#dynamicAddRemove").append(
+                '<tr><td><input type="text" name="inputField[' + i + '][nome]" class="form-control nome @error("inputField.*.nome") is-invalid @enderror" /></td><td><input type="text" name="inputField[' + i + '][descricao]" class="form-control descricao @error("inputField.*.descricao") is-invalid @enderror"/></td><td><input type="number" min="1"  step="1" name="inputField[' + i + '][nota_maxima]" class="form-control nota_maxima @error("inputField.*.nota_maxima") is-invalid @enderror" /></td><td><select name="inputField[' + i + '][prioridade]" class="form-control prioridade @error("inputField.*.prioridade") is-invalid @enderror"><option value="" selected>-- ORDEM --</option><option value="1" class="ordem_option">1</option></select></td><td><button type="button" class="btn btn-outline-danger remove-input-field" name="removeButton[' + i + ']">Remover</button></td></tr>'
+            );
+
+            $("#displayCampos").append('<input type="checkbox" id="checkB[' + i + ']" checked name="campos[]" value="' + i + '" hidden>');
+
+            ++i;
+            ++numCampos;
+            
+            addOrdemPrioridade();
+            
+            
+        });
+
+        function addOrdemPrioridade() {
+
+            $(".prioridade").children().remove(".dynamic");
+
+            // Exibe opções caso estejam ocultas
+            $('.ordem_option').show();
+
+            $(".prioridade").each(function() {
+
+                // Resetando os valores selecionados
+                $(this).val("").change();
+
+                selectId = $(this).attr('name').replace(/\D/g, "").toString();
+                currentOptions[selectId] = '';
+
+                for (let x = 2; x <= numCampos; x++) {
+                    
+                    $(this).append('<option value="' + x + '" class="ordem_option dynamic">' + x + '</option>')
+                    
+                }
+
+            })
+        }
+
+        
+        // Exclui campo de avaliação
+        $(document).on('click', '.remove-input-field', function () {
+            // Habilita edição dos campos
+            $("input[name^='campos']").prop('disabled', false);
+            $(this).parents('tr').remove();
+
+            selectId = $(this).attr('name').replace(/\D/g, "").toString();
+            currentOption = currentOptions[selectId];
+
+            document.getElementById('checkB[' + selectId + ']').remove();
+
+            $('.ordem_option[value|="' + currentOption + '"]').show();
+            delete currentOptions[selectId];
+
+            $('.dynamic[value|="' + numCampos + '"]').remove();
+
+            --numCampos;
+
+
+        });
+
+        function displayPrioridades(id, newOption) {
+            currentOption = currentOptions[id];
+
+            $('.ordem_option[value|="' + currentOption + '"]').show();
+
+            $('.ordem_option[value|="' + newOption + '"]').hide();
+
+            $('select[name="inputField[' + id + '][prioridade]"]').val(newOption);
+
+            currentOptions[id] = newOption;
+
+        }
+
+        $("#dynamicAddRemove").on('change', '.prioridade', function () {
+
+            selectId = $(this).attr('name').replace(/\D/g, "").toString();
+            newOption = $(this).val();
+            
+            displayPrioridades(selectId, newOption);
+        });
+
+        $('#pontuacao').on('input', function () {
+            validateNotas();
+        })
+
+        $("#dynamicAddRemove").on('input', '.nota_maxima', function () {
+            validateNotas();
+        });
+
+        function validateNotas() {
+            pontuacao = $("#pontuacao").val();
+
+            if (pontuacao == "") {
+                alert("Escolha o valor total da pontuação antes de adicionar as notas máximas!")
+                $('.nota_maxima').val("");
+            } else {
+                somaNotas = 0;
+
+                $(".nota_maxima").each(function() {
+                    valor = Number($(this).val());
+                    if  (valor != 0) {
+                        somaNotas += valor;
+                    }
+                    
+                });
+
+                $('#somaNotas').val(somaNotas);
+
+                if (somaNotas != pontuacao) {
+                    $('.nota_maxima').css('border', '1px solid red');
+                    document.getElementById("nota_maxima_invalida").style.display = "";
+                } else {
+                    $('.nota_maxima').css('border', '');
+                    document.getElementById("nota_maxima_invalida").style.display = "none";
+                }
+            }
+        }
+
+
+        // Tipo de avaliação
+        function displayTipoAvaliacao(valor){
+        if (valor == "form"){
+            document.getElementById("radioForm").checked = true;
+            document.getElementById("radioCampos").checked = false;
+            document.getElementById("radioLink").checked = false;
+            document.getElementById("displayForm").style.display = "";
+            document.getElementById("displayCampos").style.display = "none";
+            document.getElementById("displayLink").style.display = "none";
+        } else if (valor == "campos"){
+            document.getElementById("radioForm").checked = false;
+            document.getElementById("radioCampos").checked = true;
+            document.getElementById("radioLink").checked = false;
+            document.getElementById("displayForm").style.display = "none";
+            document.getElementById("displayCampos").style.display = "inline";
+            document.getElementById("displayLink").style.display = "none";
+        } else if (valor == "link") {
+            document.getElementById("radioForm").checked = false;
+            document.getElementById("radioCampos").checked = false;
+            document.getElementById("radioLink").checked = true;
+            document.getElementById("displayForm").style.display = "none";
+            document.getElementById("displayCampos").style.display = "none";
+            document.getElementById("displayLink").style.display = "";
+        }
+        }
+
     function defCoord(data, data2) {
         document.getElementById('coordenador_id').value = data;
         document.getElementById('coordenador_name').value = data2;
@@ -519,4 +961,12 @@
 
     window.onload = showDocumentoExtra();
 </script>
+
+    @if($errors->has('somaNotas'))
+    <script>
+        $('.nota_maxima').css('border', '1px solid red');
+        document.getElementById("nota_maxima_invalida").style.display = "";
+    </script>
+    @endif
+
 @endsection
