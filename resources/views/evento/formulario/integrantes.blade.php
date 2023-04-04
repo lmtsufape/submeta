@@ -34,12 +34,12 @@
                 </button>
             </div>
 
-            <div class="form-row" style="padding: 30px;">
+            <div class="form-row d-flex align-items-end" style="padding: 30px;">
                 <div class="col-md-8">
                     <label for="cpf_consulta">CPF:</label>
                     <input type="text" id="cpf_consulta" name="cpf_consulta" class="form-control" onkeyup="mask_cpf();">
                 </div>
-                <div class="col-md-4 mt-4">
+                <div class="col-md-4">
                     <button type="button" class="btn btn-primary" onclick="preencherUsuarioExistente()">Adicionar</button>
                 </div>
             </div>
