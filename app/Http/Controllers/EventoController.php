@@ -83,6 +83,7 @@ class EventoController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $mytime = Carbon::now('America/Recife');
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
@@ -115,87 +116,45 @@ class EventoController extends Controller
             $request->fimProjeto == null
 
         ){
-            $validatedData = $request->validate([
-                'nome'                => ['required', 'string'],
-                'descricao'           => ['required', 'string'],
-                'tipo'                => ['required', 'string'],
-                'natureza'            => ['required'],
-                'coordenador_id'      => ['required'],
-                'numParticipantes'    => ['required'],
-                'tipoAvaliacao'       => ['required'],
-                'inicioSubmissao'     => ['required', 'date'],
-                'fimSubmissao'        => ['required', 'date'],
-                'inicioRevisao'       => ['required', 'date'],
-                'fimRevisao'          => ['required', 'date'],
-                'inicio_recurso'      => ['required', 'date'],
-                'fim_recurso'         => ['required', 'date'],
-                'resultado_final'     => ['required', 'date'],
-                'resultado_preliminar'=> ['required', 'date'],
-                'dt_inicioRelatorioParcial'  => ['required', 'date'],
-                'dt_fimRelatorioParcial'     => ['required', 'date'],
-                'dt_inicioRelatorioFinal'  => ['required', 'date'],
-                'dt_fimRelatorioFinal'     => ['required', 'date'],
-                'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-                'inicioProjeto'       => ['required', 'date'],
-                'fimProjeto'          => ['required', 'date'],
-                'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null), 'max:255'],
-                //'modeloDocumento'     => [],
-            ]);
+            if($request->tipo == 'CONTINUO'){
+                $validatedData = $request->validate(Evento::$continuos_dates_rules);
+            } else {
+                $validatedData = $request->validate(Evento::$dates_rules);
+            }
+
+        }
+        
+        // validacao normal
+        if($request->tipo == 'CONTINUO'){
+            $validatedData = $request->validate(Evento::$continuos_rules);
+        } else {
+            $validatedData = $request->validate(Evento::$rules);
         }
 
-        // validacao normal
-        //after   = depois
-        //before  = antes
-        $validatedData = $request->validate([
-            'nome'                => ['required', 'string'],
-            'descricao'           => ['required', 'string','max:1500'],
-            'tipo'                => ['required', 'string'],
-            'natureza'            => ['required'],
-            'coordenador_id'      => ['required'],
-            'numParticipantes'    => ['required'],
-            'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null),'max:255'],
-            'tipoAvaliacao'       => ['required'],
-            #----------------------------------------------
-            'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
-            'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-            'inicioRevisao'       => ['required', 'date', 'after:yesterday'],
-            'fimRevisao'          => ['required', 'date', 'after:inicioRevisao', 'after:fimSubmissao'],
-            'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
-            'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
-            'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
-            'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
-            'dt_inicioRelatorioParcial'  => ['required', 'date', 'after:resultado_final'],
-            'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
-            'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
-            'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
-            'pdfEdital'           => [($request->pdfEditalPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
-            'inicioProjeto'       => ['required', 'date', 'after:yesterday'],
-            'fimProjeto'          => ['required', 'date', 'after_or_equal:fimSubmissao'],
-            //'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
-        ]);
-        
+               
         // Validação quando avaliação for por Barema
-        if ($request->tipoAvaliacao == 'form') {
-            $validateAvaliacao = $request->validate([
-                'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
-            ]);
-        } elseif ($request->tipoAvaliacao == 'campos') {
-            if($request->has('campos')){
-                $validateCampo = $request->validate([
-                    'inputField.*.nome'        => ['required', 'string'],
-                    'inputField.*.nota_maxima' => ['required'],
-                    'inputField.*.prioridade'  => ['required'],
-                    'somaNotas'                => ['required', 'numeric', 'max:' . $request->pontuacao, 'min:' . $request->pontuacao],
-                    ['somaNotas.*'        => 'A soma das notas máximas deve ser igual a pontuação total definida.']
+        if($request->tipo != 'CONTINUO'){
+            if ($request->tipoAvaliacao == 'form') {
+                $validateAvaliacao = $request->validate([
+                    'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
+                ]);
+            } elseif ($request->tipoAvaliacao == 'campos') {
+                if($request->has('campos')){
+                    $validateCampo = $request->validate([
+                        'inputField.*.nome'        => ['required', 'string'],
+                        'inputField.*.nota_maxima' => ['required'],
+                        'inputField.*.prioridade'  => ['required'],
+                        'somaNotas'                => ['required', 'numeric', 'max:' . $request->pontuacao, 'min:' . $request->pontuacao],
+                        ['somaNotas.*'        => 'A soma das notas máximas deve ser igual a pontuação total definida.']
+                    ]);
+                }
+            } elseif ($request->tipoAvaliacao == 'link') {
+                $validateAvaliacao = $request->validate([
+                    'link'    => ['required', 'url'],
                 ]);
             }
-        } elseif ($request->tipoAvaliacao == 'link') {
-            $validateAvaliacao = $request->validate([
-                'link'    => ['required', 'url'],
-            ]);
         }
         
-
         //$evento = Evento::create([
         $evento['nome']                = $request->nome;
         $evento['descricao']           = $request->descricao;
@@ -206,16 +165,21 @@ class EventoController extends Controller
         }
         $evento['inicioSubmissao']     = $request->inicioSubmissao;
         $evento['fimSubmissao']        = $request->fimSubmissao;
-        $evento['inicioRevisao']       = $request->inicioRevisao;
-        $evento['fimRevisao']          = $request->fimRevisao;
-        $evento['inicio_recurso']      = $request->inicio_recurso;
-        $evento['fim_recurso']         = $request->fim_recurso;
-        $evento['resultado_preliminar']= $request->resultado_preliminar;
-        $evento['resultado_final']     = $request->resultado_final;
-        $evento['dt_inicioRelatorioParcial']  = $request->dt_inicioRelatorioParcial;
-        $evento['dt_fimRelatorioParcial']     = $request->dt_fimRelatorioParcial;
-        $evento['dt_inicioRelatorioFinal']  = $request->dt_inicioRelatorioFinal;
-        $evento['dt_fimRelatorioFinal']     = $request->dt_fimRelatorioFinal;
+
+        if ($request->tipo != "CONTINUO"){   
+            $evento['inicioRevisao']       = $request->inicioRevisao;
+            $evento['fimRevisao']          = $request->fimRevisao;
+            $evento['inicio_recurso']      = $request->inicio_recurso;
+            $evento['fim_recurso']         = $request->fim_recurso;
+            $evento['resultado_preliminar']= $request->resultado_preliminar;
+            $evento['resultado_final']     = $request->resultado_final;
+            $evento['dt_inicioRelatorioParcial']  = $request->dt_inicioRelatorioParcial;
+            $evento['dt_fimRelatorioParcial']     = $request->dt_fimRelatorioParcial;
+            $evento['dt_inicioRelatorioFinal']  = $request->dt_inicioRelatorioFinal;
+            $evento['dt_fimRelatorioFinal']     = $request->dt_fimRelatorioFinal;
+            $evento['inicioProjeto']       = $request->inicioProjeto;
+            $evento['fimProjeto']          = $request->fimProjeto;
+        }
         $evento['coordenadorId']       = $request->coordenador_id;
         $evento['criador_id']          = $user_id;
         $evento['numParticipantes']    = $request->numParticipantes;
@@ -223,13 +187,10 @@ class EventoController extends Controller
         $evento['cotaDoutor']               = $request->has('cotaDoutor');
         $evento['obrigatoriedade_docExtra'] = $request->has('obrigatoriedade_docExtra');
         $evento['anexosStatus']        = 'final';
-        $evento['inicioProjeto']       = $request->inicioProjeto;
-        $evento['fimProjeto']          = $request->fimProjeto;
         $evento['tipoAvaliacao']       = $request->tipoAvaliacao;
         if($request->tipoAvaliacao == "link") {
             $evento['formAvaliacaoExterno'] = $request->link;
-        }
-
+        } 
         //dd($evento);
         // $user = User::find($request->coordenador_id);
         // $user->coordenadorComissao()->editais()->save($evento);
@@ -490,81 +451,54 @@ class EventoController extends Controller
             $request->fimProjeto == null
 
         ){
-            $validatedData = $request->validate([
-                'nome'                => ['required', 'string'],
-                'descricao'           => ['required', 'string'],
-                'tipo'                => ['required', 'string'],
-                'natureza'            => ['required'],
-                'numParticipantes'    => ['required'],
-                'tipoAvaliacao'       => ['required'],
-                'inicioSubmissao'     => ['required', 'date'],
-                'fimSubmissao'        => ['required', 'date'],
-                'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
-                'fimRevisao'          => ['required', 'date'],
-                'resultado_preliminar'=> ['required', 'date'],
-                'inicio_recurso'      => ['required', 'date'],
-                'fim_recurso'         => ['required', 'date'],
-                'resultado_final'     => ['required', 'date'],
-                'dt_inicioRelatorioParcial'  => ['required', 'date'],
-                'dt_fimRelatorioParcial'     => ['required', 'date'],
-                'dt_inicioRelatorioFinal'  => ['required', 'date'],
-                'dt_fimRelatorioFinal'     => ['required', 'date'],
-                'pdfEdital'           => ['file', 'mimes:pdf', 'max:2048'],
-                'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
-                'pdfFormAvalRelatorio'           => ['file', 'mimes:pdf', 'max:2048'],
-                'inicioProjeto'       => ['required', 'date'],
-                'fimProjeto'          => ['required', 'date'],
-                'docTutorial'     => ['file', 'mimes:zip,doc,docx,pdf', 'max:2048'],
-                'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null), 'max:255'],
-
-            ]);
+            if($request->tipo == 'CONTINUO'){
+                $validatedData = $request->validate(Evento::$continuos_dates_rules);
+            } else {
+                $validatedData = $request->validate(Evento::$dates_rules);
+            }
         }
 
-        $validated = $request->validate([
-            'nome'                => ['required', 'string'],
-            'descricao'           => ['required', 'string', 'max:1500'],
-            'tipo'                => ['required', 'string'],
-            'natureza'            => ['required'],
-            'numParticipantes'    => ['required'],
-            'tipoAvaliacao'       => ['required'],
-            'inicioSubmissao'     => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-            'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-            'inicioRevisao'       => ['required', 'date', 'after:fimSubmissao'],
-            'fimRevisao'          => ['required', 'date', 'after:inicioRevisao'],
-            'resultado_preliminar'=> ['required', 'date', 'after_or_equal:fimRevisao'],
-            'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
-            'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
-            'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
-            'dt_inicioRelatorioParcial'  => ['required', 'date', 'after:resultado_final'],
-            'dt_fimRelatorioParcial'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
-            'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
-            'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
-            'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
-            'pdfFormAvalExterno'           => ['file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
-            'inicioProjeto'       => ['required', 'date', 'after:resultado_final'],
-            'fimProjeto'          => ['required', 'date', 'after:inicioProjeto'],
-            'docTutorial'     => ['file', 'mimes:zip,doc,docx,pdf', 'max:2048'],
-            'nome_docExtra'       => [Rule::requiredIf($request->check_docExtra != null) , 'max:255'],
-        ]);
+        if($request->tipo == 'CONTINUO'){
+            $validatedData = $request->validate(Evento::$continuos_edit_rules);
+        } else {
+            $validatedData = $request->validate(Evento::$edit_rules);
+        }
 
-        if ($request->tipoAvaliacao == 'form') {
-            $validateAvaliacao = $request->validate([
-                'pdfFormAvalExterno'    => ['file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
-            ]);
-        } elseif ($request->tipoAvaliacao == 'campos') {
-            if($request->has('campos')){
-                $validateCampo = $request->validate([
-                    'inputField.*.nome'        => ['required', 'string'],
-                    'inputField.*.nota_maxima' => ['required'],
-                    'inputField.*.prioridade'  => ['required'],
-                    'somaNotas'                => ['required', 'numeric', 'max:' . $request->pontuacao, 'min:' . $request->pontuacao],
-                    ['somaNotas.*'        => 'A soma das notas máximas deve ser igual a pontuação total definida.']
+        if($request->tipo != 'CONTINUO'){
+            if ($request->tipoAvaliacao == 'form') {
+                $validateAvaliacao = $request->validate([
+                    'pdfFormAvalExterno'    => ['file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
+                ]);
+            } elseif ($request->tipoAvaliacao == 'campos') {
+                if($request->has('campos')){
+                    $validateCampo = $request->validate([
+                        'inputField.*.nome'        => ['required', 'string'],
+                        'inputField.*.nota_maxima' => ['required'],
+                        'inputField.*.prioridade'  => ['required'],
+                        'somaNotas'                => ['required', 'numeric', 'max:' . $request->pontuacao, 'min:' . $request->pontuacao],
+                        ['somaNotas.*'        => 'A soma das notas máximas deve ser igual a pontuação total definida.']
+                    ]);
+                }
+            } elseif ($request->tipoAvaliacao == 'link') {
+                $validateAvaliacao = $request->validate([
+                    'link'    => ['required', 'url'],
                 ]);
             }
-        } elseif ($request->tipoAvaliacao == 'link') {
-            $validateAvaliacao = $request->validate([
-                'link'    => ['required', 'url'],
-            ]);
+
+            $evento->inicioRevisao        = $request->inicioRevisao;
+            $evento->fimRevisao           = $request->fimRevisao;
+            $evento->inicio_recurso       = $request->inicio_recurso;
+            $evento->fim_recurso          = $request->fim_recurso;
+            $evento->resultado_preliminar = $request->resultado_preliminar;
+            $evento->resultado_final      = $request->resultado_final;
+            $evento->dt_inicioRelatorioParcial   = $request->dt_inicioRelatorioParcial;
+            $evento->dt_fimRelatorioParcial      = $request->dt_fimRelatorioParcial;
+            $evento->dt_inicioRelatorioFinal   = $request->dt_inicioRelatorioFinal;
+            $evento->dt_fimRelatorioFinal      = $request->dt_fimRelatorioFinal;
+            $evento->cotaDoutor                = $request->has('cotaDoutor');
+            $evento->inicioProjeto       = $request->inicioProjeto;
+            $evento->fimProjeto          = $request->fimProjeto;
+            $evento->tipoAvaliacao       = $request->tipoAvaliacao;
         }
 
         $evento->nome                 = $request->nome;
@@ -577,25 +511,13 @@ class EventoController extends Controller
         }else{
             $evento->nome_docExtra    = null;
         }
+        
         $evento->inicioSubmissao      = $request->inicioSubmissao;
-        $evento->fimSubmissao         = $request->fimSubmissao;
-        $evento->inicioRevisao        = $request->inicioRevisao;
-        $evento->fimRevisao           = $request->fimRevisao;
-        $evento->inicio_recurso       = $request->inicio_recurso;
-        $evento->fim_recurso          = $request->fim_recurso;
-        $evento->resultado_preliminar = $request->resultado_preliminar;
-        $evento->resultado_final      = $request->resultado_final;
-        $evento->dt_inicioRelatorioParcial   = $request->dt_inicioRelatorioParcial;
-        $evento->dt_fimRelatorioParcial      = $request->dt_fimRelatorioParcial;
-        $evento->dt_inicioRelatorioFinal   = $request->dt_inicioRelatorioFinal;
-        $evento->dt_fimRelatorioFinal      = $request->dt_fimRelatorioFinal;
+        $evento->fimSubmissao         = $request->fimSubmissao;        
         $evento->coordenadorId        = $request->coordenador_id;
         $evento->consu                = $request->has('consu');
-        $evento->cotaDoutor                = $request->has('cotaDoutor');
         $evento->obrigatoriedade_docExtra                = $request->has('obrigatoriedade_docExtra');
-        $evento->inicioProjeto       = $request->inicioProjeto;
-        $evento->fimProjeto          = $request->fimProjeto;
-        $evento->tipoAvaliacao       = $request->tipoAvaliacao;
+        
         if($request->tipoAvaliacao == "link") {
             $evento->formAvaliacaoExterno = $request->link;
         }

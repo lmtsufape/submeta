@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 @section('content')
 <div class="container">
@@ -27,12 +28,13 @@
 
             <div class="col-sm-5">
                 <label for="tipo" class="col-form-label">{{ __('Tipo:') }}<span style="color:red; font-weight:bold;">*</span></label>
-                <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required>
+                <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required onchange="selectTipo()">
                     <option @if(old('tipo')=='PIBIC' ) selected @endif value="PIBIC">PIBIC</option>
                     <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
                     <option @if(old('tipo')=='PIBIC-AF' ) selected @endif value="PIBIC-AF">PIBIC-AF</option>
                     <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
                     <option @if(old('tipo')=='PIBEX' ) selected @endif value="PIBEX">PIBEX</option>
+                    <option @if(old('tipo')=='CONTINUO' ) selected @endif value="CONTINUO">Fluxo Contínuo</option>
                 </select>
 
                 @error('tipo')
@@ -86,7 +88,7 @@
                 </span>
                 @enderror
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3" id='div-cot-doutor'>
                 <label for="cotaDoutor" class="col-form-label">{{ __('Cota para recém doutor: ') }}</label>
                 <input type="checkbox" name="cotaDoutor" id="cotaDoutor" style="margin-left: 5px" {{ old('cotaDoutor') ? 'checked' : ''}}>
 
@@ -246,7 +248,7 @@
         </div>{{-- end dataInicio | dataFim | inicioSubmissao | fimSubmissao --}}
 
         <div class="row justify-content-center">
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-inicio-avaliacao'>
                 <label for="inicioRevisao" class="col-form-label">{{ __('Início da Avaliação:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="inicioRevisao" type="date" class="form-control @error('inicioRevisao') is-invalid @enderror" name="inicioRevisao" value="{{ old('inicioRevisao') }}" required autocomplete="inicioRevisao" autofocus>
 
@@ -256,7 +258,7 @@
                 </span>
                 @enderror
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6"  id='div-fim-avaliacao'>
                 <label for="fimRevisao" class="col-form-label">{{ __('Fim da Avaliação:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="fimRevisao" type="date" class="form-control @error('fimRevisao') is-invalid @enderror" name="fimRevisao" value="{{ old('fimRevisao') }}" required autocomplete="fimRevisao" autofocus>
 
@@ -269,7 +271,7 @@
         </div>
 
         <div class="row justify-content-left">
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-result-pre'>
                 <label for="resultado_preliminar" class="col-form-label">{{ __('Resultado Preliminar:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="resultado_preliminar" type="date" class="form-control @error('resultado_preliminar') is-invalid @enderror" name="resultado_preliminar" value="{{ old('resultado_preliminar') }}" required autocomplete="resultado_preliminar" autofocus>
 
@@ -279,7 +281,7 @@
                 </span>
                 @enderror
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-ini-rec'>
                 <label for="inicio_recurso" class="col-form-label">{{ __('Início do recurso:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="inicio_recurso" type="date" class="form-control @error('inicio_recurso') is-invalid @enderror" name="inicio_recurso" value="{{ old('inicio_recurso') }}" required autocomplete="inicio_recurso" autofocus>
 
@@ -292,7 +294,7 @@
 
         </div>
         <div class="row justify-content-left">
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-fim-rec'>
                 <label for="fim_recurso" class="col-form-label">{{ __('Fim do Recurso:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="fim_recurso" type="date" class="form-control @error('fim_recurso') is-invalid @enderror" name="fim_recurso" value="{{ old('fim_recurso') }}" required autocomplete="resultado" autofocus>
 
@@ -303,7 +305,7 @@
                 @enderror
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-result-fim'>
                 <label for="resultado_final" class="col-form-label">{{ __('Resultado Final:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="resultado_final" type="date" class="form-control @error('resultado_final') is-invalid @enderror" name="resultado_final" value="{{ old('resultado_final') }}" required autocomplete="resultado" autofocus>
 
@@ -317,7 +319,7 @@
 
         <!-- AKI -->
         <div class="row justify-content-left">
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-ini-proj'>
                 <label for="inicioProjeto" class="col-form-label">{{ __('Início do Projeto:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="inicioProjeto" type="date" class="form-control @error('inicioProjeto') is-invalid @enderror" name="inicioProjeto" value="{{ old('inicioProjeto') }}" required autocomplete="inicioProjeto" autofocus>
 
@@ -328,7 +330,7 @@
                 @enderror
             </div>
 
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-fim-proj'>
                 <label for="fimProjeto" class="col-form-label">{{ __('Fim do Projeto:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <input id="fimProjeto" type="date" class="form-control @error('fimProjeto') is-invalid @enderror" name="fimProjeto" value="{{ old('fimProjeto') }}" required autocomplete="fimProjeto" autofocus>
 
@@ -341,14 +343,15 @@
         </div>
 
 
-        <hr>
+        
         <div class="row subtitulo">
-            <div class="col-sm-12">
+            <div class="col-sm-12" id='div-relat-titulo'>
+                <hr>
                 <p>Relatórios</p>
             </div>
         </div>
         <div class="row justify-content-left">
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-inicio-relat-parcial'>
 
                 @component('componentes.input', ['label' => 'Início do Relatório Parcial:'])
                 <input id="dt_inicioRelatorioParcial" type="date" class="form-control @error('dt_inicioRelatorioParcial') is-invalid @enderror" name="dt_inicioRelatorioParcial" value="{{ old('dt_inicioRelatorioParcial') }}" required autocomplete="dt_inicioRelatorioParcial" autofocus title="Início para o período do envio do relatório parcial">
@@ -359,7 +362,7 @@
                 @enderror
                 @endcomponent
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-fim-relat-parcial'>
 
                 @component('componentes.input', ['label' => 'Fim do Relatório Parcial:'])
                 <input id="dt_fimRelatorioParcial" type="date" class="form-control @error('dt_fimRelatorioParcial') is-invalid @enderror" name="dt_fimRelatorioParcial" value="{{ old('dt_fimRelatorioParcial') }}" required autocomplete="dt_fimRelatorioParcial" autofocus title="Final do período de envio do relatório parcial">
@@ -370,7 +373,7 @@
                 @enderror
                 @endcomponent
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-ini-relat-final'>
 
                 @component('componentes.input', ['label' => 'Início do Relatório Final:'])
                 <input id="dt_inicioRelatorioFinal" type="date" class="form-control @error('dt_inicioRelatorioFinal') is-invalid @enderror" name="dt_inicioRelatorioFinal" value="{{ old('dt_inicioRelatorioFinal') }}" required autocomplete="dt_inicioRelatorioFinal" autofocus title="Início para o período de envio do relatório final">
@@ -381,7 +384,7 @@
                 @enderror
                 @endcomponent
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" id='div-fim-relat-final'>
 
                 @component('componentes.input', ['label' => 'Fim do Relatório Final:'])
                 <input id="dt_fimRelatorioFinal" type="date" class="form-control @error('dt_fimRelatorioFinal') is-invalid @enderror" name="dt_fimRelatorioFinal" value="{{ old('dt_fimRelatorioFinal') }}" required autocomplete="dt_fimRelatorioFinal" autofocus title="Final do período de envio do relatório final">
@@ -394,18 +397,19 @@
             </div>
         </div>
 
-        <hr>
-        <div class="row subtitulo">
+        
+        <div class="row subtitulo" id='div-avaliacao'>
+            <hr>
             <div class="col-sm-12">
                 <p>Avaliação</p>
             </div>
         </div>
         
-        <div class="my-2" >
+        <div class="my-2" id='div-text-aval'>
             <p style="font-size: 16px">Como a avaliação será realizada?</p>
         </div>
 
-        <div class="mb-2">
+        <div class="mb-2" id='div-tipo-aval'>
             <input type="radio" id="radioForm" name="tipoAvaliacao" onchange="displayTipoAvaliacao('form')" 
                 @if((old('tipoAvaliacao') == 'form') || old('tipoAvaliacao') == "") checked @endif value="form">
             <label for="radioForm" style="margin-right: 5px">Formulário (em pdf)</label>
@@ -421,23 +425,7 @@
 
         <div class="row justify-content-center" style="margin-top:10px" id="displayForm">
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="pdfFormAvalExterno">Formulário para avaliador <i>ad hoc</i>:<span style="color:red; font-weight:bold;">*</span></label>
-                    @if(old('pdfFormAvalExternoPreenchido') != null)
-                    <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoExterno' ])}}">Arquivo atual</a>
-                    @endif
-                    <input type="hidden" id="pdfFormAvalExternoPreenchido" name="pdfFormAvalExternoPreenchido" value="{{ old('pdfFormAvalExternoPreenchido') }}">
-                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
-                    <small>O arquivo selecionado deve ter até 2mb.</small>
-                    @error('pdfFormAvalExterno')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group" id='div-doc-aux'>
                     <label for="docTutorial">Documento auxiliar para Avaliador:</label>
                     @if(old('docTutorialPreenchido') != null)
                     <a id="docTutorialTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'docTutorial' ])}}">Arquivo atual</a>
@@ -446,6 +434,23 @@
                     <input type="file" accept=".pdf,.docx,.doc,.zip" class="form-control-file pdf @error('docTutorial') is-invalid @enderror" name="docTutorial" value="{{ old('docTutorial') }}" id="docTutorial" onchange="exibirAnexoTemp(this)">
                     <small>O arquivo selecionado deve ser de até 2mb.</small>
                     @error('docTutorial')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group" id='div-adhoc'>
+                    <label for="pdfFormAvalExterno">Formulário para avaliador <i>ad hoc</i>:<span style="color:red; font-weight:bold;">*</span></label>
+                    @if(old('pdfFormAvalExternoPreenchido') != null)
+                    <a id="pdfFormAvalExternoTemp" href="{{ route('baixar.evento.temp', ['nomeAnexo' => 'formAvaliacaoExterno' ])}}">Arquivo atual</a>
+                    @endif
+                    <input type="hidden" id="pdfFormAvalExternoPreenchido" name="pdfFormAvalExternoPreenchido" value="{{ old('pdfFormAvalExternoPreenchido') }}">
+                    <input type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.csv,.zip" class="form-control-file @error('pdfFormAvalExterno') is-invalid @enderror" name="pdfFormAvalExterno" value="{{ old('pdfFormAvalExterno') }}" id="pdfFormAvalExterno" onchange="exibirAnexoTemp(this)">
+                    <small>O arquivo selecionado deve ter até 2mb.</small>
+                    @error('pdfFormAvalExterno')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -829,7 +834,74 @@
         }
     }
 
-    window.onload = showDocumentoExtra();
+    function displayNone(name){
+        document.getElementById(name);
+
+    }
+
+    function selectTipo(){
+        var tipo = document.getElementById('tipo');
+
+        names = ['div-inicio-avaliacao',
+                 'div-fim-avaliacao',
+                 'div-result-pre',
+                 'div-ini-rec',
+                 'div-fim-rec',
+                 'div-result-fim',
+                 'div-ini-proj',
+                 'div-fim-proj',
+                 'div-adhoc',
+                 'div-doc-aux',
+                 'div-cot-doutor',
+                 'div-inicio-relat-parcial',
+                 'div-fim-relat-parcial',
+                 'div-ini-relat-final',
+                 'div-fim-relat-final',
+                 'div-relat-titulo',
+                 'div-avaliacao',
+                 'div-tipo-aval',
+                 'div-text-aval']
+
+        inputs = ['inicioRevisao',
+                  'fimRevisao',
+                  'resultado_preliminar',
+                  'inicio_recurso',
+                  'fim_recurso',
+                  'resultado_final',
+                  'inicioProjeto',
+                  'fimProjeto',
+                  'dt_inicioRelatorioParcial',
+                  'dt_fimRelatorioParcial',
+                  'dt_inicioRelatorioFinal',
+                  'dt_fimRelatorioFinal'
+                ]
+
+        if(tipo.value === 'CONTINUO'){
+            names.forEach(function(nome, i){
+                document.getElementById(nome).style.display = "none";
+            }) 
+
+            inputs.forEach(function(nome, i){
+                document.getElementById(nome).removeAttribute('required');
+            })
+            
+        } else {
+            names.forEach(function(nome, i){
+                document.getElementById(nome).style.display = "block";
+            }) 
+
+            inputs.forEach(function(nome, i){
+                document.getElementById(nome).setAttribute('required', '');
+            })
+        }
+    }
+
+    function onload(){
+        showDocumentoExtra();
+        selectTipo();
+    }
+
+    window.onload = onload();
 </script>
 
 @if($errors->has('somaNotas'))
