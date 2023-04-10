@@ -327,6 +327,14 @@ class TrabalhoController extends Controller
                 $trabalho->anexo_docExtra = Storage::putFileAs($pasta, $request->anexo_docExtra, "Documento_Extra." . $request->file('anexo_docExtra')->extension());
             }
 
+            //Anexo SIPAC
+            if (isset($request->anexo_SIPAC)) {
+                if (Storage::disk()->exists($trabalho->anexo_SIPAC)) {
+                    Storage::delete($trabalho->anexo_SIPAC);
+                }
+                $trabalho->anexo_SIPAC = Storage::putFileAs($pasta, $request->anexo_SIPAC, "Anexo_SIPAC." . $request->file('anexo_SIPAC')->extension());
+            }
+
             $trabalho->save();
             return $trabalho;
         }
@@ -1145,7 +1153,6 @@ class TrabalhoController extends Controller
 
     public function salvar(StoreTrabalho $request)
     {
-
         try {
             if (!$request->has('rascunho')) {
                 $request->merge([
@@ -1163,14 +1170,21 @@ class TrabalhoController extends Controller
             if($evento->tipo=="PIBEX"){
                 $trabalho = Auth::user()->proponentes->trabalhos()
                     ->create($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra'
+                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC'
                     ]));
-            }else{
+            }else if($evento->tipo=="CONTINUO"){
+                $trabalho = Auth::user()->proponentes->trabalhos()
+                    ->create($request->except([
+                    'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
+                    'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra',
+                ]));
+            } else {
                 $trabalho = Auth::user()->proponentes->trabalhos()
                 ->create($request->except([
                     'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                     'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra'
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC'
                 ]));
             }
 

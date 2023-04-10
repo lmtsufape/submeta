@@ -13,9 +13,9 @@
           
           @if($edital->tipo == "CONTINUO")
             <div class="form-group col-md-6" style="margin-top: 10px">
-              <label for="anexoSIPAC" class="col-form-label font-tam" style="font-weight: bold">{{ __('Processo SIPAC: ') }}<span style="color: red; font-weight:bold">*</span></label>
-                <input type="file" class="input-group-text" name="SIPAC" placeholder="PDF do processo SIPAC" accept=".pdf" />
-              @error('anexoSIPAC')
+              <label for="anexo_SIPAC" class="col-form-label font-tam" style="font-weight: bold">{{ __('Processo SIPAC: ') }}<span style="color: red; font-weight:bold">*</span></label>
+                <input type="file" class="input-group-text" name="anexo_SIPAC" placeholder="PDF do processo SIPAC" accept=".pdf" />
+              @error('anexo_SIPAC')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                 <strong>{{ $message }}</strong>
               </span>
