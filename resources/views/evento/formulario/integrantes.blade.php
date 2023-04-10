@@ -48,7 +48,11 @@
                 <label for="funcao_participante">Função do Participante:</label>
                 <select name="" id="funcao_participante" class="form-control">
                     @foreach($funcaoParticipantes as $funcao)
-                        <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                        @if($funcao->nome != 'Bolsista')
+                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                        @elseif($edital->tipo != "CONTINUO")
+                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
