@@ -327,14 +327,6 @@ class TrabalhoController extends Controller
                 $trabalho->anexo_docExtra = Storage::putFileAs($pasta, $request->anexo_docExtra, "Documento_Extra." . $request->file('anexo_docExtra')->extension());
             }
 
-            //Anexo SIPAC
-            if (isset($request->anexo_SIPAC)) {
-                if (Storage::disk()->exists($trabalho->anexo_SIPAC)) {
-                    Storage::delete($trabalho->anexo_SIPAC);
-                }
-                $trabalho->anexo_SIPAC = Storage::putFileAs($pasta, $request->anexo_SIPAC, "Anexo_SIPAC." . $request->file('anexo_SIPAC')->extension());
-            }
-
             $trabalho->save();
             return $trabalho;
         }
@@ -380,6 +372,14 @@ class TrabalhoController extends Controller
         // Anexo documento extra
         if (isset($request->anexo_docExtra)) {
             $trabalho->anexo_docExtra = Storage::putFileAs($pasta, $request->anexo_docExtra, "Documento_Extra." . $request->file('anexo_docExtra')->extension());
+        }
+
+        //Anexo SIPAC
+        if (isset($request->anexo_SIPAC)) {
+            if (Storage::disk()->exists($trabalho->anexo_SIPAC)) {
+                Storage::delete($trabalho->anexo_SIPAC);
+            }
+            $trabalho->anexo_SIPAC = Storage::putFileAs($pasta, $request->anexo_SIPAC, "Anexo_SIPAC." . $request->file('anexo_SIPAC')->extension());
         }
 
         return $trabalho;

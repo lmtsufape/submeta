@@ -101,7 +101,9 @@ class StoreTrabalho extends FormRequest
             $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu), 'mimes:pdf'];
             
             if($evento->tipo!="CONTINUO"){
-                $rules['anexoProjeto']                 = ['required', 'mimes:pdf'];
+                $rules['anexoProjeto'] = ['required', 'mimes:pdf'];
+            } else {
+                $rules['anexo_SIPAC'] = ['required', 'mimes:pdf'];
             }
             
             return $rules;
