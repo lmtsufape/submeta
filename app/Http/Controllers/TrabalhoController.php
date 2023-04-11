@@ -848,6 +848,16 @@ class TrabalhoController extends Controller
         return abort(404);
     }
 
+    public function baixarAnexoSIPAC($id)
+    {
+        $projeto = Trabalho::find($id);
+        if (Storage::disk()->exists($projeto->anexo_SIPAC)) {
+            ob_end_clean();
+            return Storage::download($projeto->anexo_SIPAC);
+        }
+        return abort(404);
+    }
+
     public function baixarAnexoTemp($eventoId, $nomeAnexo)
     {
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
