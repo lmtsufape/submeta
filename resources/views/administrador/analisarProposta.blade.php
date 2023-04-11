@@ -435,94 +435,105 @@
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
 
-                        {{-- Anexo do Projeto --}}
                         <div class="row justify-content-start">
-                            {{-- Arquivo  --}}
-                            <div class="col-sm-4">
-                                <label for="anexoProjeto" class="col-form-label font-tam"
-                                       style="font-weight: bold">{{ __('Projeto: ') }}</label>
-                                <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class=""
-                                                                                                           src="{{asset('img/icons/pdf.ico')}}"
-                                                                                                           style="width:40px"
-                                                                                                           alt=""></a>
-
-                            </div>
-
-                            @if($evento->tipo != "PIBEX")
+                        @if($evento->tipo != "CONTINUO")
+                            {{-- Anexo do Projeto --}}
+                                {{-- Arquivo  --}}
                                 <div class="col-sm-4">
-                                    <label for="anexoLatterCoordenador" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
-                                    <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> <img class=""
-                                                                                                                src="{{asset('img/icons/pdf.ico')}}"
-                                                                                                                style="width:40px"
-                                                                                                                alt=""></a>
+                                    <label for="anexoProjeto" class="col-form-label font-tam"
+                                        style="font-weight: bold">{{ __('Projeto: ') }}</label>
+                                    <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class=""
+                                                                                                            src="{{asset('img/icons/pdf.ico')}}"
+                                                                                                            style="width:40px"
+                                                                                                            alt=""></a>
 
                                 </div>
-                            @endif
 
-                            @if($evento->tipo != "PIBEX")
-                                <div class="col-sm-4">
-                                    @if($trabalho->anexoAutorizacaoComiteEtica != null)
-                                        <label title="Declaração da autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
-                                        <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
-                                    @else
-                                        <label title="Declaração de não necessidade de autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Declaração Autorização Especial: ') }}</label>
-                                        @if($trabalho->justificativaAutorizacaoEtica != null)
-                                            <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                @if($evento->tipo != "PIBEX")
+                                    <div class="col-sm-4">
+                                        <label for="anexoLatterCoordenador" class="col-form-label font-tam"
+                                            style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
+                                        <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> <img class=""
+                                                                                                                    src="{{asset('img/icons/pdf.ico')}}"
+                                                                                                                    style="width:40px"
+                                                                                                                    alt=""></a>
+
+                                    </div>
+                                @endif
+
+                                @if($evento->tipo != "PIBEX")
+                                    <div class="col-sm-4">
+                                        @if($trabalho->anexoAutorizacaoComiteEtica != null)
+                                            <label title="Declaração da autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
+                                            <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                        @else
+                                            <label title="Declaração de não necessidade de autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Declaração Autorização Especial: ') }}</label>
+                                            @if($trabalho->justificativaAutorizacaoEtica != null)
+                                                <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                            @else
+                                                -
+                                            @endif
+                                        @endif
+                                    </div>
+                                @endif
+
+                                @if($evento->tipo != "PIBEX")
+                                    <div class="col-sm-4">
+                                        <label for="anexoPlanilha" class="col-form-label font-tam"
+                                            style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
+                                        <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"><img
+                                                    class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:40px"
+                                                    alt=""></a>
+
+                                    </div>
+                                @endif
+
+                                @if($evento->tipo != "PIBEX")
+                                    <div class="col-sm-4">
+                                        <label for="nomeTrabalho" class="col-form-label font-tam"
+                                            style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
+                                        @if($trabalho->anexoGrupoPesquisa != null)
+                                            <a href="{{ route('baixar.anexoGrupoPesquisa', ['id' => $trabalho->id]) }}"><img
+                                                        class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px"
+                                                        alt=""></a>
                                         @else
                                             -
                                         @endif
-                                    @endif
-                                </div>
-                            @endif
+                                    </div>
+                                @endif
 
-                            @if($evento->tipo != "PIBEX")
-                                <div class="col-sm-4">
-                                    <label for="anexoPlanilha" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
-                                    <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"><img
-                                                class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:40px"
-                                                alt=""></a>
+                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX")
+                                    {{-- Decisão do CONSU --}}
+                                    <div class="col-sm-4">
+                                        <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
+                                            style="font-weight: bold">{{ __('Câmara ou Conselho Pertinente: ') }}</label>
+                                        <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                    </div>
+                                @endif
+                                @if($evento->nome_docExtra != null)
+                                    {{-- Documento Extra --}}
+                                    <div class="col-sm-4">
+                                        <label title="{{$evento->nome_docExtra}}" for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$evento->nome_docExtra}}:</label>
+                                        @if($trabalho->anexo_docExtra)
+                                            <a href="{{ route('baixar.anexo.docExtra', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                        @else
+                                            <a>
+                                                <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endif
+                        @else
+                            <div class="col-sm-4">
+                                    <label for="anexo_SIPAC" class="col-form-label font-tam"
+                                        style="font-weight: bold">{{ __('Anexo SIPAC: ') }}</label>
+                                    <a href="{{ route('baixar.anexo.SIPAC', ['id' => $trabalho->id])}}"><img class=""
+                                                                                                            src="{{asset('img/icons/pdf.ico')}}"
+                                                                                                            style="width:40px"
+                                                                                                            alt=""></a>
 
-                                </div>
-                            @endif
-
-                            @if($evento->tipo != "PIBEX")
-                                <div class="col-sm-4">
-                                    <label for="nomeTrabalho" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
-                                    @if($trabalho->anexoGrupoPesquisa != null)
-                                        <a href="{{ route('baixar.anexoGrupoPesquisa', ['id' => $trabalho->id]) }}"><img
-                                                    class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px"
-                                                    alt=""></a>
-                                    @else
-                                        -
-                                    @endif
-                                </div>
-                            @endif
-
-                            @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX")
-                                {{-- Decisão do CONSU --}}
-                                <div class="col-sm-4">
-                                    <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Câmara ou Conselho Pertinente: ') }}</label>
-                                    <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
-                                </div>
-                            @endif
-                            @if($evento->nome_docExtra != null)
-                                {{-- Documento Extra --}}
-                                <div class="col-sm-4">
-                                    <label title="{{$evento->nome_docExtra}}" for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$evento->nome_docExtra}}:</label>
-                                    @if($trabalho->anexo_docExtra)
-                                        <a href="{{ route('baixar.anexo.docExtra', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
-                                    @else
-                                        <a>
-                                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            @endif
-
+                            </div>                                
+                        @endif
                         </div>
                     </div>
                 </div>
@@ -530,6 +541,7 @@
         </div>
     </div>
 
+    @if($evento->tipo != "CONTINUO")
     <!--Relatórios-->
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
@@ -910,6 +922,7 @@
             </div>
         </div>
     </div>
+    
 
     <!--Avaliadores-->
     <div class="row justify-content-center" style="margin-top: 20px;">
@@ -1276,7 +1289,7 @@
             </div>
         </div>
     </div>
-
+    @endif
     <!--Aprovar ou Negar Proposta-->
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
