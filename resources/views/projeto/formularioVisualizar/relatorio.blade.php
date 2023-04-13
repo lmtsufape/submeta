@@ -52,17 +52,24 @@
             <thead>
               <tr>
                 <th style="color: black;">Avaliador</th>
+                <th style="color: black;">Discente</th>
                 <th style="color: black;">Relatório</th>
                 <th style="color: black;">Nota</th>
+                <th style="color: black;">Apresentação</th>
                 <th style="color: black;">Visualizar</th>
               </tr>
             </thead>
             <tbody>
             @foreach($AvalRelatParcial as $aval)
+            @php $arquivo = \App\Arquivo::find($aval->arquivo_id);@endphp
               <tr>
                 <th style="color: black;">{{$cont += 1}}</th>
+                <td>
+                  @if($arquivo->participanteId != null) {{\App\Participante::find($arquivo->participanteId)->user->name}}@endif
+                </td>
                 <td>Parcial</td>
                 <td>@if($aval->nota == null) Pendente @else {{$aval->nota}} @endif</td>
+                <td>@if($aval->nota_apresentacao == null) Pendente @else {{$aval->nota}} @endif</td>
                 <td><a href="" data-toggle="modal" data-target="#modalVizuRelatParcial{{$aval->id}}" class="button">Visualizar</a></td>
               </tr>
 
@@ -87,10 +94,15 @@
             </div>
             @endforeach
             @foreach($AvalRelatFinal as $aval)
+            @php $arquivo = \App\Arquivo::find($aval->arquivo_id);@endphp
               <tr>              
                 <th style="color: black;">{{$cont += 1}}</th>
+                <td>
+                  @if($arquivo->participanteId != null) {{\App\Participante::find($arquivo->participanteId)->user->name}}@endif
+                </td>
                 <td>Final</td>
                 <td>@if($aval->nota == null) Pendente @else {{$aval->nota}} @endif</td>
+                <td>@if($aval->nota_apresentacao == null) Pendente @else {{$aval->nota}} @endif</td>
                 <td><a href="" data-toggle="modal" data-target="#modalVizuRelatFinal{{$aval->id}}" class="button">Visualizar</a></td>
               </tr>
               <!-- Modal visualizar informações participante -->
