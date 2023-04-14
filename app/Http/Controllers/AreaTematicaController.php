@@ -11,6 +11,11 @@ class AreaTematicaController extends Controller
     public function destroy($id)
     {
         $areaTematica = AreaTematica::find($id);
+
+        if ($areaTematica->trabalho()->first()){
+            return redirect( route('grandearea.index') )->with(['error' => 'Não foi possível excluir a Área Temática. Existe um ou mais trabalhos vinculados a essa Área Temática']);
+        }
+
         $areaTematica->delete();
 
         return redirect( route('grandearea.index') )->with(['mensagem' => 'Área Tematica excluida com sucesso']);
