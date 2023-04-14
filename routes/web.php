@@ -219,6 +219,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/baixar/evento-temp/{nomeAnexo}', 'TrabalhoController@baixarEventoTemp')->name('baixar.evento.temp');
     Route::get('/baixar/documentosParticipante', 'ParticipanteController@baixarDocumento')->name('baixar.documentosParticipante');
     Route::get('/baixar/anexoDocExtra/{id}', 'TrabalhoController@baixarAnexoDocExtra')->name('baixar.anexo.docExtra');
+    Route::get('/baixar/anexoSIPAC/{id}', 'TrabalhoController@baixarAnexoSIPAC')->name('baixar.anexo.SIPAC');
 });
 
 Route::get('/baixar/edital/{id}', 'EventoController@baixarEdital')->name('baixar.edital');
@@ -319,7 +320,7 @@ Route::prefix('cursos')->name('cursos.')->group(function (){
 //############ Evento ##############################################
 Route::prefix('evento')->name('evento.')->group(function () {
     Route::get('/criar', 'EventoController@create')->name('criar')->middleware('checkRoles:coordenador,administrador');
-    Route::post('/criar', 'EventoController@store')->name('criar')->middleware('checkRoles:coordenador,administrador');
+    Route::post('/criar', 'EventoController@store')->name('criar')->middleware('checkRoles:coordenador,checkAdministrador');
     Route::get('/visualizar/{id}', 'EventoController@show')->name('visualizar')->middleware('auth');
     Route::get('/listar', 'EventoController@listar')->name('listar')->middleware('auth');
     Route::delete('/excluir/{id}', 'EventoController@destroy')->name('deletar')->middleware('checkRoles:coordenador,administrador');

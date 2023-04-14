@@ -435,94 +435,105 @@
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
 
-                        {{-- Anexo do Projeto --}}
                         <div class="row justify-content-start">
-                            {{-- Arquivo  --}}
-                            <div class="col-sm-4">
-                                <label for="anexoProjeto" class="col-form-label font-tam"
-                                       style="font-weight: bold">{{ __('Projeto: ') }}</label>
-                                <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class=""
-                                                                                                           src="{{asset('img/icons/pdf.ico')}}"
-                                                                                                           style="width:40px"
-                                                                                                           alt=""></a>
-
-                            </div>
-
-                            @if($evento->tipo != "PIBEX")
+                        @if($evento->tipo != "CONTINUO")
+                            {{-- Anexo do Projeto --}}
+                                {{-- Arquivo  --}}
                                 <div class="col-sm-4">
-                                    <label for="anexoLatterCoordenador" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
-                                    <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> <img class=""
-                                                                                                                src="{{asset('img/icons/pdf.ico')}}"
-                                                                                                                style="width:40px"
-                                                                                                                alt=""></a>
+                                    <label for="anexoProjeto" class="col-form-label font-tam"
+                                        style="font-weight: bold">{{ __('Projeto: ') }}</label>
+                                    <a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class=""
+                                                                                                            src="{{asset('img/icons/pdf.ico')}}"
+                                                                                                            style="width:40px"
+                                                                                                            alt=""></a>
 
                                 </div>
-                            @endif
 
-                            @if($evento->tipo != "PIBEX")
-                                <div class="col-sm-4">
-                                    @if($trabalho->anexoAutorizacaoComiteEtica != null)
-                                        <label title="Declaração da autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
-                                        <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
-                                    @else
-                                        <label title="Declaração de não necessidade de autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Declaração Autorização Especial: ') }}</label>
-                                        @if($trabalho->justificativaAutorizacaoEtica != null)
-                                            <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                @if($evento->tipo != "PIBEX")
+                                    <div class="col-sm-4">
+                                        <label for="anexoLatterCoordenador" class="col-form-label font-tam"
+                                            style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
+                                        <a href="{{ route('baixar.anexo.lattes', ['id' => $trabalho->id]) }}"> <img class=""
+                                                                                                                    src="{{asset('img/icons/pdf.ico')}}"
+                                                                                                                    style="width:40px"
+                                                                                                                    alt=""></a>
+
+                                    </div>
+                                @endif
+
+                                @if($evento->tipo != "PIBEX")
+                                    <div class="col-sm-4">
+                                        @if($trabalho->anexoAutorizacaoComiteEtica != null)
+                                            <label title="Declaração da autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
+                                            <a href="{{ route('baixar.anexo.comite', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                        @else
+                                            <label title="Declaração de não necessidade de autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Declaração Autorização Especial: ') }}</label>
+                                            @if($trabalho->justificativaAutorizacaoEtica != null)
+                                                <a href="{{ route('baixar.anexo.justificativa', ['id' => $trabalho->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                            @else
+                                                -
+                                            @endif
+                                        @endif
+                                    </div>
+                                @endif
+
+                                @if($evento->tipo != "PIBEX")
+                                    <div class="col-sm-4">
+                                        <label for="anexoPlanilha" class="col-form-label font-tam"
+                                            style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
+                                        <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"><img
+                                                    class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:40px"
+                                                    alt=""></a>
+
+                                    </div>
+                                @endif
+
+                                @if($evento->tipo != "PIBEX")
+                                    <div class="col-sm-4">
+                                        <label for="nomeTrabalho" class="col-form-label font-tam"
+                                            style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
+                                        @if($trabalho->anexoGrupoPesquisa != null)
+                                            <a href="{{ route('baixar.anexoGrupoPesquisa', ['id' => $trabalho->id]) }}"><img
+                                                        class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px"
+                                                        alt=""></a>
                                         @else
                                             -
                                         @endif
-                                    @endif
-                                </div>
-                            @endif
+                                    </div>
+                                @endif
 
-                            @if($evento->tipo != "PIBEX")
-                                <div class="col-sm-4">
-                                    <label for="anexoPlanilha" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
-                                    <a href="{{ route('baixar.anexo.planilha', ['id' => $trabalho->id]) }}"><img
-                                                class="" src="{{asset('img/icons/xlsx.ico')}}" style="width:40px"
-                                                alt=""></a>
+                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX")
+                                    {{-- Decisão do CONSU --}}
+                                    <div class="col-sm-4">
+                                        <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
+                                            style="font-weight: bold">{{ __('Câmara ou Conselho Pertinente: ') }}</label>
+                                        <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                    </div>
+                                @endif
+                                @if($evento->nome_docExtra != null)
+                                    {{-- Documento Extra --}}
+                                    <div class="col-sm-4">
+                                        <label title="{{$evento->nome_docExtra}}" for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$evento->nome_docExtra}}:</label>
+                                        @if($trabalho->anexo_docExtra)
+                                            <a href="{{ route('baixar.anexo.docExtra', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                        @else
+                                            <a>
+                                                <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endif
+                        @else
+                            <div class="col-sm-4">
+                                    <label for="anexo_SIPAC" class="col-form-label font-tam"
+                                        style="font-weight: bold">{{ __('Anexo SIPAC: ') }}</label>
+                                    <a href="{{ route('baixar.anexo.SIPAC', ['id' => $trabalho->id])}}"><img class=""
+                                                                                                            src="{{asset('img/icons/pdf.ico')}}"
+                                                                                                            style="width:40px"
+                                                                                                            alt=""></a>
 
-                                </div>
-                            @endif
-
-                            @if($evento->tipo != "PIBEX")
-                                <div class="col-sm-4">
-                                    <label for="nomeTrabalho" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
-                                    @if($trabalho->anexoGrupoPesquisa != null)
-                                        <a href="{{ route('baixar.anexoGrupoPesquisa', ['id' => $trabalho->id]) }}"><img
-                                                    class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px"
-                                                    alt=""></a>
-                                    @else
-                                        -
-                                    @endif
-                                </div>
-                            @endif
-
-                            @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX")
-                                {{-- Decisão do CONSU --}}
-                                <div class="col-sm-4">
-                                    <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
-                                           style="font-weight: bold">{{ __('Câmara ou Conselho Pertinente: ') }}</label>
-                                    <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
-                                </div>
-                            @endif
-                            @if($evento->nome_docExtra != null)
-                                {{-- Documento Extra --}}
-                                <div class="col-sm-4">
-                                    <label title="{{$evento->nome_docExtra}}" for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$evento->nome_docExtra}}:</label>
-                                    @if($trabalho->anexo_docExtra)
-                                        <a href="{{ route('baixar.anexo.docExtra', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
-                                    @else
-                                        <a>
-                                            <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            @endif
-
+                            </div>                                
+                        @endif
                         </div>
                     </div>
                 </div>
@@ -530,6 +541,7 @@
         </div>
     </div>
 
+    @if($evento->tipo != "CONTINUO")
     <!--Relatórios-->
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
@@ -738,153 +750,171 @@
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
 
-                        @if(count($AvalRelatParcial) >0)
-                        <div class="row justify-content-start" style="alignment: center">
-                            <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
-                        </div>
-                        <div class='row justify-content-start'>
-                            <h6 class='col-9' style="color: black; font-weight: bold">Media das avaliações:<span style="font-weight: normal"> {{$MediaAvalRelatParcial}}</span><h6>
-                            <h6 class='col-3' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$AvalRelatParcialPendentes}}</span><h6>   
-                            <br><br>
-                        </div>
-                        <div class="row justify-content-start" style="alignment: center">
-                            @foreach($AvalRelatParcial as $aval)
-                                <div class="col-sm-1" style="margin-bottom: 7px">
-                                    <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                        @if(count($arquivos) > 0)
+                            <div class="row justify-content-start" style="alignment: center">
+                                <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
+                            </div>
+                            @for ($i = 0; $i < count($arquivos); $i++)
+                                <div class='row justify-content-start' style='margin-top:40px;'>
+                                <h6 class='col-4' style="color: black; font-weight: bold">Título:<span style="font-weight: normal"> {{$arquivos[$i]->titulo}}</span><h6>
+                                    <h6 class='col-9' style="color: black; font-weight: bold">Média das avaliações:<span style="font-weight: normal"> {{$mediaAval[$i]['relatorio_parcial']}}</span><h6>
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Média da apresentação:<span style="font-weight: normal"> {{$mediaAval[$i]['apresentacao_parcial']}}</span><h6>
+                                    <h6 class='col-3' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$mediaAval[$i]['pendentes_parcial']}}</span><h6>   
+                                    <br><br>
                                 </div>
-                                <div class="col-sm-3">
-                                    <h5>{{\App\User::find($aval->user_id)->name}}</h5>
-                                    <h6><a href="" data-toggle="modal"
-                                           data-target="#modalVizuRelatParcial{{$aval->id}}" class="button">
-                                            @if($aval->nota == null) Pendente </a>@else Avaliação</a> @endif</h6>
-                                    @if($aval->nota == null)
-                                    <h6><a href="" data-toggle="modal"
-                                           data-target="#removerAvaliadorReltorioParcial{{$aval->id}}" class="button"><b style="color: red">Remover</b></a></h6>
-                                    @endif
-                                </div>
+                                <div class="row justify-content-start" style="alignment: center">
+                                    @foreach($mediaAval[$i]['avaliacoes_parciais'] as $aval)
+                                        <div class="col-sm-1" style="margin-bottom: 7px">
+                                            <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <h5>{{\App\User::find($aval->user_id)->name}}</h5>
+                                            <h6><a href="" data-toggle="modal"
+                                                data-target="#modalVizuRelatParcial{{$aval->id}}" class="button">
+                                                    @if($aval->nota == null) Pendente </a>@else Avaliação</a> @endif</h6>
+                                            @if($aval->nota == null)
+                                            <h6><a href="" data-toggle="modal"
+                                                data-target="#removerAvaliadorReltorioParcial{{$aval->id}}" class="button"><b style="color: red">Remover</b></a></h6>
+                                            @endif
+                                        </div>
 
-                                <!-- Modal Remover -->
-                                <div class="modal fade" id="removerAvaliadorReltorioParcial{{ $aval->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador Do Relatório Parcial</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Você tem certeza que deseja remover o avaliador: {{ $aval->user->name }}?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                <a type="button" class="btn btn-danger" href="{{route('avaliacaoRelatorio.remover.avaliador',$aval->id)}}">Remover</a>
+                                        <!-- Modal Remover -->
+                                        <div class="modal fade" id="removerAvaliadorReltorioParcial{{ $aval->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador Do Relatório Parcial</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Você tem certeza que deseja remover o avaliador: {{ $aval->user->name }}?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                        <a type="button" class="btn btn-danger" href="{{route('avaliacaoRelatorio.remover.avaliador',$aval->id)}}">Remover</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
 
 
-                                <!-- Modal visualizar informações participante -->
-                                <div class="modal fade" id="modalVizuRelatParcial{{$aval->id}}" tabindex="-1"
-                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content">
+                                        <!-- Modal visualizar informações participante -->
+                                        <div class="modal fade" id="modalVizuRelatParcial{{$aval->id}}" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content">
 
-                                            <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
-                                                <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
-                                                    Avaliação do relatório parcial @if($aval->nota == null) <b style="color: red">Pendente</b>@endif</h5>
+                                                    <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
+                                                        <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
+                                                            Avaliação do relatório parcial @if($aval->nota == null) <b style="color: red">Pendente</b>@endif</h5>
 
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close" style="padding-top: 8px; color:#1492E6">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
 
-                                            <div class="modal-body"
-                                                 style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
-                                                @include('avaliacaoRelatorio.avaliacao', ['avaliacao' => $aval])
+                                                    <div class="modal-body"
+                                                        style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
+                                                        @include('avaliacaoRelatorio.avaliacao', ['avaliacao' => $aval])
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endforeach
                                 </div>
-                            @endforeach
-                        </div>
+                            @endfor 
                         @endif
 
-                        @if(count($AvalRelatFinal) >0)
-                            <div class="row justify-content-start" style="alignment: center">
-                                <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Finais</h6></div>
-                            </div>
-                            <div class='row justify-content-start'>
-                                <h6 class='col-9' style="color: black; font-weight: bold">Media das avaliações:<span style="font-weight: normal"> {{$MediaAvalRelatFinal}}</span><h6>
-                                <h6 class='col-3' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$AvalRelatFinalPendentes}}</span><h6>   
-                                <br><br>
-                            </div>
-                            <div class="row justify-content-start" style="alignment: center">
-                                @foreach($AvalRelatFinal as $aval)
-                                    <div class="col-sm-1" style="margin-bottom: 7px">
-                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <h5>{{\App\User::find($aval->user_id)->name}}</h5>
-                                        <h6><a href="" data-toggle="modal"
-                                               data-target="#modalVizuRelatFinal{{$aval->id}}" class="button">
-                                                @if($aval->nota == null) Pendente </a>@else Avaliação</a> @endif</h6>
-                                        @if($aval->nota == null)
-                                        <h6><a href="" data-toggle="modal"
-                                               data-target="#removerAvaliadorReltorioFinal{{$aval->id}}" class="button"><b style="color: red">Remover</b></a></h6>
-                                        @endif
+                        @if(count($arquivos) > 0)
+                            @foreach ($mediaAval as $aval)
+                                @if(count($aval['avaliacoes_finais']) > 0)
+                                <br><hr style="border-top: 1px solid#1492E6">
+                                <div class="row justify-content-start" style="alignment: center" >
+                                    <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Finais</h6></div>
+                                </div>
 
-                                    </div>
 
-                                    <!-- Modal Remover -->
-                                    <div class="modal fade" id="removerAvaliadorReltorioFinal{{ $aval->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador Do Relatório Final</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Você tem certeza que deseja remover o avaliador: {{ $aval->user->name }}?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                    <a type="button" class="btn btn-danger" href="{{route('avaliacaoRelatorio.remover.avaliador',$aval->id)}}">Remover</a>
+                                @for ($i = 0; $i < count($arquivos); $i++)
+                                    <div class='row justify-content-start'  style='margin-top:40px;'>
+                                        <h6 class='col-4' style="color: black; font-weight: bold">Título:<span style="font-weight: normal"> {{$arquivos[$i]->titulo}}</span><h6>
+                                    </div>
+                                    <div class='row justify-content-start'>
+                                        <h6 class='col-4' style="color: black; font-weight: bold">Média das avaliações:<span style="font-weight: normal"> {{$mediaAval[$i]['relatorio_final']}}</span><h6>
+                                        <h6 class='col-4' style="color: black; font-weight: bold">Média da apresentação:<span style="font-weight: normal"> {{$mediaAval[$i]['apresentacao_final']}}</span><h6>
+                                        <h6 class='col-3' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$mediaAval[$i]['pendentes_final']}}</span><h6>   
+                                        <br><br>
+                                    </div>
+                                    <div class="row justify-content-start" style="alignment: center">
+                                        @foreach($mediaAval[$i]['avaliacoes_finais'] as $aval)
+                                            <div class="col-sm-1" style="margin-bottom: 7px">
+                                                <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <h5>{{\App\User::find($aval->user_id)->name}}</h5>
+                                                <h6><a href="" data-toggle="modal"
+                                                    data-target="#modalVizuRelatFinal{{$aval->id}}" class="button">
+                                                        @if($aval->nota == null) Pendente </a>@else Avaliação</a> @endif</h6>
+                                                @if($aval->nota == null)
+                                                <h6><a href="" data-toggle="modal"
+                                                    data-target="#removerAvaliadorReltorioFinal{{$aval->id}}" class="button"><b style="color: red">Remover</b></a></h6>
+                                                @endif
+
+                                            </div>
+
+                                            <!-- Modal Remover -->
+                                            <div class="modal fade" id="removerAvaliadorReltorioFinal{{ $aval->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Remover Avaliador Do Relatório Final</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Você tem certeza que deseja remover o avaliador: {{ $aval->user->name }}?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                            <a type="button" class="btn btn-danger" href="{{route('avaliacaoRelatorio.remover.avaliador',$aval->id)}}">Remover</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <!-- Modal visualizar informações participante -->
-                                    <div class="modal fade" id="modalVizuRelatFinal{{$aval->id}}" tabindex="-1"
-                                         role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                                            <div class="modal-content">
+                                            <!-- Modal visualizar informações participante -->
+                                            <div class="modal fade" id="modalVizuRelatFinal{{$aval->id}}" tabindex="-1"
+                                                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                    <div class="modal-content">
 
-                                                <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
-                                                    <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
-                                                        Avaliação do relatório final @if($aval->nota == null) <b style="color: red">Pendente</b>@endif</h5>
+                                                        <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
+                                                            <h5 class="modal-title" id="exampleModalLabel" style="color:#1492E6">
+                                                                Avaliação do relatório final @if($aval->nota == null) <b style="color: red">Pendente</b>@endif</h5>
 
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close" style="padding-top: 8px; color:#1492E6">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
 
-                                                <div class="modal-body"
-                                                     style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
-                                                    @include('avaliacaoRelatorio.avaliacao', ['avaliacao' => $aval])
+                                                        <div class="modal-body"
+                                                            style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
+                                                            @include('avaliacaoRelatorio.avaliacao', ['avaliacao' => $aval])
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endforeach
                                     </div>
-                                @endforeach
-                            </div>
+                                @endfor
+                                @break
+                                @endif
+                            @endforeach
                         @endif
 
                     </div>
@@ -892,6 +922,7 @@
             </div>
         </div>
     </div>
+    
 
     <!--Avaliadores-->
     <div class="row justify-content-center" style="margin-top: 20px;">
@@ -1258,7 +1289,7 @@
             </div>
         </div>
     </div>
-
+    @endif
     <!--Aprovar ou Negar Proposta-->
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
