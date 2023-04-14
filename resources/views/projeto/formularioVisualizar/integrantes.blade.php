@@ -16,6 +16,38 @@
                             <div class="col-sm-5 mt-4">
                                 <h5 class="mb-0">Nome: {{ $trabalho_user->user->name }}</h5>
                                 <h5 class="mb-0">Função: {{ $trabalho_user->funcao->nome }}</h5>
+                                <h6>
+                                    <a href="" data-toggle="modal" data-target="#modalVizuIntegrante{{$trabalho_user->id}}" class="button">Informações</a>
+                                </h6>
+                            </div>
+
+                            <div class="modal fade" id="modalVizuIntegrante{{$trabalho_user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-xl">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header" style="overflow-x:auto; padding-left: 31px">
+                                            <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Informações Integrante</h5>
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="modal-body" style="padding-right: 32px;padding-left: 32px;padding-top: 20px;padding-bottom: 32px;">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-5 mt-4">
+                                                    <h5 class="mb-0">Nome: {{ $trabalho_user->user->name }}</h5>
+                                                    <h5 class="mb-0">E-mail: {{ $trabalho_user->user->email }}</h5>
+                                                    <h5 class="mb-0">Instituição: {{ $trabalho_user->user->instituicao }}</h5>
+                                                    <h5 class="mb-0">Cargo no projeto: {{ $trabalho_user->funcao->nome }}</h5>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                         @endforeach
