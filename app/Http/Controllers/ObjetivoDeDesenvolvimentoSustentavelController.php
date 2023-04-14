@@ -47,6 +47,6 @@ class ObjetivoDeDesenvolvimentoSustentavelController extends Controller
         }
         
         $ODS->delete();
-        return redirect( route('grandearea.index') )->with(['mensagem' => 'ODS excluido com sucesso']);
+        return redirect( route('grandearea.index') )->with(['mensagem' => 'ODS excluído com sucesso']);
     }
 }
