@@ -1015,6 +1015,15 @@
                 document.getElementById(nome).setAttribute('required', '');
             })
         }
+
+        //retirada das datas dos relatórios parciais para o PIBEX
+        if(tipo.value === 'PIBEX'){
+            document.getElementById('div-inicio-relat-parcial').style.display = "none";
+            document.getElementById('div-fim-relat-parcial').style.display = "none";
+        
+            document.getElementById('dt_inicioRelatorioParcial').removeAttribute('required');
+            document.getElementById('dt_fimRelatorioParcial').removeAttribute('required');
+        }
     }
 
     
