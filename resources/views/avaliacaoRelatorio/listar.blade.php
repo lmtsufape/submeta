@@ -72,17 +72,24 @@
                                                     src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                     @endif
                                     @if($avaliacao->tipo == "Parcial")
-                                        <div style="margin-left: 25px">
+                                        <div style="margin-left: 120px">
                                             <label for="anexoProjeto" class="col-form-label font-tam"
-                                                   style="font-weight: bold"
-                                            >{{ __('Relatório Parcial: ') }}</label>
+                                                   style="font-weight: bold">{{ __('Relatório Parcial: ') }}
+                                            </label>
+                                            
                                             @if($avaliacao->plano->relatorioParcial)
-
                                                 <a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $avaliacao->plano->relatorioParcial]) }}"><img
                                                     src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
-
                                             @else
                                                 <a><i class="fas fa-times-circle fa-2x"></i></a>
+                                            @endif
+                                            <label for="lattes" class="col-form-label font-tam"
+                                                    style="font-weight: bold;margin-right: 5px;margin-left: 120px;">{{ __('Formulário de Avaliação: ') }}</label>
+
+                                            @if($evento->formAvaliacaoRelatorio != null)
+                                                <a href="{{route('download', ['file' => $evento->formAvaliacaoRelatorio])}}" target="_new"  >
+                                                    <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
+                                                </a>
                                             @endif
                                         </div>
                                         <div class="col-sm-12">
@@ -97,43 +104,44 @@
                                                        value="{{$avaliacao->plano->id}}">
                                                 <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 
-                                                <div class="col-12" style="padding-left: 0px">
 
-                                                    <div class="row">
-                                                        <div class="col-sm-6 row">
+                                                <div class="col-12" style="padding-left: 0px; margin-top: 10px ">
+
+                                                    <div class="row" >
+                                                        <div class="col-sm-4 row">
                                                             <label for="lattes" class="col-form-label font-tam"
-                                                                   style="font-weight: bold;padding-right: 10px">{{ __('Nota: ') }}</label>
+                                                                   style="font-weight: bold;padding-right: 10px">{{ __('Nota do relatório escrito: ') }}</label>
 
                                                             <input class="form-control" name="nota" type="number" step="0.01"
                                                                    style="width: 70px;"
+                                                                   required
                                                                    @if($avaliacao->nota != null) value="{{$avaliacao->nota}}" @endif>
                                                         </div>
-                                                    </div>
-                                                    <div class="row" style="margin-top: 10px">
-                                                        <label for="lattes" class="col-form-label font-tam"
-                                                               style="font-weight: bold;margin-right: 5px;">{{ __('Formulário de Avaliação: ') }}</label>
+                                                        <div class="col row">
+                                                            <label for="lattes" class="col-form-label font-tam"
+                                                                   style="font-weight: bold;padding-right: 10px">{{ __('Nota da apresentação: ') }}</label>
 
-                                                        @if($evento->formAvaliacaoRelatorio != null)
-                                                            <a href="{{route('download', ['file' => $evento->formAvaliacaoRelatorio])}}" target="_new"  >
-                                                                <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
-                                                            </a>
-                                                        @endif
-                                                    </div>
-                                                    <div class="row" style="margin-top: 10px">
-                                                        <label for="lattes" class="col-form-label font-tam"
-                                                               style="font-weight: bold;margin-right: 5px;">{{ __('Arquivo: ') }}</label>
-                                                            @if($avaliacao->arquivoAvaliacao != null)
-                                                                <a href="{{route('download', ['file' => $avaliacao->arquivoAvaliacao])}}" target="_new"  >
-                                                                    <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
-                                                                </a>
-                                                            @endif
-                                                        <input type="file" class="input-group-text" name="avaliacaoArq" accept=".pdf" id="avaliacaoArq"/>
+                                                            <input class="form-control" name="nota_apresentacao" type="number" step="0.01"
+                                                                   style="width: 70px;"
+                                                                   required
+                                                                   @if($avaliacao->nota != null) value="{{$avaliacao->nota_apresentacao}}" @endif>
+                                                        </div>
+                                                        <div class="col-5 row" style="margin-right: 40px;">
+                                                            <label for="lattes" class="col-form-label font-tam"
+                                                                style="font-weight: bold;margin-right: 5px;">{{ __('Arquivo: ') }}</label>
+                                                                @if($avaliacao->arquivoAvaliacao != null)
+                                                                    <a href="{{route('download', ['file' => $avaliacao->arquivoAvaliacao])}}" target="_new"  >
+                                                                        <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
+                                                                    </a>
+                                                                @endif
+                                                                <input type="file" class="input-group-text" name="avaliacaoArq" accept=".pdf" id="avaliacaoArq"/>
 
-                                                        @error('avaliacaoArq')
-                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-														<strong>{{ $message }}</strong>
-													</span>
-                                                        @enderror
+                                                            @error('avaliacaoArq')
+                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                        </div>
                                                     </div>
 
                                                     <div class="row">
@@ -141,13 +149,17 @@
                                                                style="font-weight: bold">{{ __('Comentário: ') }}</label>
                                                     </div>
                                                     <div class="row">
-										<textarea class="col-md-11" minlength="20" id="comentario"
-                                                  name="comentario"
-                                                  style="border-radius:5px 5px 0 0;height: 71px;"
-                                                  required>@if($avaliacao->comentario != null){{$avaliacao->comentario}}@endif</textarea>
-
-                                                        <div class="col-md-1" style="flex: 1;align-self: flex-end;">
+                                                        <textarea class="col-md-12" minlength="20" id="comentario"
+                                                                name="comentario"
+                                                                style="border-radius:5px 5px 0 0;height: 150px;"
+                                                                required>@if($avaliacao->comentario != null){{$avaliacao->comentario}}@endif</textarea>
+                                                    </div>
+                                                    <div class="row justify-content-end" style="margin-top: 10px">
+                                                        <div class="col-1">
                                                             <button type="submit" class="btn btn-success" style="height: 40px">Salvar</button>
+                                                        </div>
+                                                        <div>
+                                                            <a href="{{ route('planos.avaliacoes.index') }}" class="btn btn-secondary">Voltar</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -159,7 +171,7 @@
 
                                         {{--Relatorio FInal--}}
                                     @else
-                                        <div style="margin-left: 25px">
+                                        <div style="margin-left: 120px">
                                             <label for="anexoProjeto" class="col-form-label font-tam"
                                                    style="font-weight: bold"
                                             >{{ __('Relatório Final: ') }}</label>
@@ -168,6 +180,14 @@
                                                             class="fas fa-file-pdf fa-2x"></i></a>
                                             @else
                                                 <a><i class="fas fa-times-circle fa-2x"></i></a>
+                                            @endif
+                                            <label for="lattes" class="col-form-label font-tam"
+                                                    style="font-weight: bold;margin-right: 5px; margin-left: 120px;">{{ __('Formulário de Avaliação: ') }}</label>
+
+                                            @if($evento->formAvaliacaoRelatorio != null)
+                                                <a href="{{route('download', ['file' => $evento->formAvaliacaoRelatorio])}}" target="_new"  >
+                                                    <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
+                                                </a>
                                             @endif
                                         </div>
                                         <div class="col-sm-12">
@@ -182,48 +202,62 @@
                                                        value="{{$avaliacao->plano->id}}">
                                                 <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 
-                                                <div class="col-12" style="padding-left: 0px">
+                                                <div class="col-12" style="padding-left: 0px; margin-top: 10px ">
 
                                                     <div class="row">
-                                                        <div class="col-sm-6 row">
+                                                        <div class="col-sm-4 row">
                                                             <label for="lattes" class="col-form-label font-tam"
-                                                                   style="font-weight: bold;padding-right: 10px">{{ __('Nota: ') }}</label>
+                                                                   style="font-weight: bold;padding-right: 10px">{{ __('Nota do relatório escrito: ') }}</label>
 
                                                             <input class="form-control" name="nota" type="number" step="0.01"
-                                                                   style="width: 70px;"
+                                                                   style="width: 70px;" required
                                                                    @if($avaliacao->nota != null) value="{{$avaliacao->nota}}" @endif>
                                                         </div>
+                                                        <div class="col row">
+                                                            <label for="lattes" class="col-form-label font-tam"
+                                                                   style="font-weight: bold;padding-right: 10px">{{ __('Nota da apresentação: ') }}</label>
+
+                                                            <input class="form-control" name="nota_apresentacao" type="number" step="0.01"
+                                                                   style="width: 70px;" required
+                                                                   @if($avaliacao->nota_apresentacao != null) value="{{$avaliacao->nota_apresentacao}}" @endif>
+                                                        </div>
+                                                        <div class="col-5 row" style="margin-right: 70px;">
+                                                            <label for="lattes" class="col-form-label font-tam"
+                                                                style="font-weight: bold;margin-right: 5px;">{{ __('Arquivo: ') }}</label>
+
+                                                                @if($avaliacao->arquivoAvaliacao != null)
+                                                                    <a href="{{route('download', ['file' => $avaliacao->arquivoAvaliacao])}}" target="_new"  >
+                                                                        <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
+                                                                    </a>
+                                                                @endif
+
+                                                            <input type="file" class="input-group-text" name="avaliacaoArq" accept=".pdf" id="avaliacaoArq"/>
+                                                            @error('avaliacaoArq')
+                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
+                                                        </div>
+
                                                     </div>
-                                                    <div class="row" style="margin-top: 10px">
-                                                        <label for="lattes" class="col-form-label font-tam"
-                                                               style="font-weight: bold;margin-right: 5px;">{{ __('Arquivo: ') }}</label>
-
-                                                            @if($avaliacao->arquivoAvaliacao != null)
-                                                                <a href="{{route('download', ['file' => $avaliacao->arquivoAvaliacao])}}" target="_new"  >
-                                                                    <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
-                                                                </a>
-                                                            @endif
-
-                                                        <input type="file" class="input-group-text" name="avaliacaoArq" accept=".pdf" id="avaliacaoArq"/>
-                                                        @error('avaliacaoArq')
-                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-														<strong>{{ $message }}</strong>
-													</span>
-                                                        @enderror
-                                                    </div>
-
                                                     <div class="row">
                                                         <label for="lattes" class="col-form-label font-tam"
                                                                style="font-weight: bold">{{ __('Comentário: ') }}</label>
                                                     </div>
-                                                    <div class="row">
-										<textarea class="col-md-11" minlength="20" id="comentario"
-                                                  name="comentario"
-                                                  style="border-radius:5px 5px 0 0;height: 71px;"
-                                                  required>@if($avaliacao->comentario){{$avaliacao->comentario}}@endif</textarea>
 
-                                                        <div class="col-md-1" style="flex: 1;align-self: flex-end;">
+                                                    <div class="row">
+                                                        <textarea class="col-md-12" minlength="20" id="comentario"
+                                                            name="comentario" style="border-radius:5px 5px 0 0;height: 150px;"
+                                                            required>@if($avaliacao->comentario){{$avaliacao->comentario}}@endif
+                                                        </textarea>
+
+                                                    </div>
+                                                    <div class="row justify-content-end" style="margin-top: 10px">
+                                                        <div class="col-1">
                                                             <button type="submit" class="btn btn-success" style="height: 40px">Salvar</button>
+                                                        </div>
+                                                        <div>
+                                                            <a href="{{ route('planos.avaliacoes.index') }}" class="btn btn-secondary">Voltar</a>
                                                         </div>
                                                     </div>
                                                 </div>

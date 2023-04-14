@@ -1,7 +1,7 @@
 @php $arquivo = \App\Arquivo::find($aval->arquivo_id); @endphp
 <div class="container-fluid">
     <div class="row">
-        @if ($arquivo->trabalho->evento->numParticipante != 0)
+        @if ($arquivo->trabalho->evento->numParticipantes != 0)
         <h5><b>Discente:</b>
             {{\App\Participante::find($arquivo->participanteId)->user->name}}</h5>
         @else
@@ -20,9 +20,18 @@
             <label for="lattes" class="col-form-label font-tam"
                    style="font-weight: bold">{{ __('Nota: ') }}</label>
         </div>
-        <div class="col-sm-6 text-center padEsquerda">
+        <div class="col-sm-5 text-center padEsquerda">
             <input class="form-control" name="nota" type="number"
                    style="width: 60px" @if(isset($aval)) value="{{$aval->nota}}" @endif disabled>
+        </div>
+
+        <div class="col-sm-2 padEsquerda">
+            <label for="lattes" class="col-form-label font-tam"
+                   style="font-weight: bold">{{ __('Apresentação: ') }}</label>
+        </div>
+        <div class="col-sm-4 text-center padEsquerda">
+            <input class="form-control" name="nota" type="number"
+                   style="width: 60px" @if(isset($aval)) value="{{$aval->nota_apresentacao}}" @endif disabled>
         </div>
     </div>
     <div class="row">

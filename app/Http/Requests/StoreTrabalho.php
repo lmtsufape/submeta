@@ -76,7 +76,7 @@ class StoreTrabalho extends FormRequest
             if($evento->nome_docExtra != null ){
                 $rules['anexo_docExtra']               = [Rule::requiredIf($evento->obrigatoriedade_docExtra == true),'file', 'mimes:zip,doc,docx,pdf', 'max:2048'];
             }
-            if($evento->tipo!="PIBEX"){
+            if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO"){
                 $rules['anexoPlanilhaPontuacao']       = ['required'];
                 $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
@@ -98,9 +98,14 @@ class StoreTrabalho extends FormRequest
             }
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
-            $rules['anexoProjeto']                 = ['required', 'mimes:pdf'];
             $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu), 'mimes:pdf'];
-
+            
+            if($evento->tipo!="CONTINUO"){
+                $rules['anexoProjeto'] = ['required', 'mimes:pdf'];
+            } else {
+                $rules['anexo_SIPAC'] = ['required', 'mimes:pdf'];
+            }
+            
             return $rules;
         }
         

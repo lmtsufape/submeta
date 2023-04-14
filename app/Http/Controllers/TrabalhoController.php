@@ -374,6 +374,14 @@ class TrabalhoController extends Controller
             $trabalho->anexo_docExtra = Storage::putFileAs($pasta, $request->anexo_docExtra, "Documento_Extra." . $request->file('anexo_docExtra')->extension());
         }
 
+        //Anexo SIPAC
+        if (isset($request->anexo_SIPAC)) {
+            if (Storage::disk()->exists($trabalho->anexo_SIPAC)) {
+                Storage::delete($trabalho->anexo_SIPAC);
+            }
+            $trabalho->anexo_SIPAC = Storage::putFileAs($pasta, $request->anexo_SIPAC, "Anexo_SIPAC." . $request->file('anexo_SIPAC')->extension());
+        }
+
         return $trabalho;
     }
 
@@ -404,23 +412,27 @@ class TrabalhoController extends Controller
 
         $trabalhos_user = TrabalhoUser::where('trabalho_id', $projeto->id)->get();
 
+        $avals_projeto = [];
         $AvalRelatParcial = [];
         $AvalRelatFinal = [];
 
-        foreach ($participantes as $participante) {
-            if (isset($participante->planoTrabalho)) {
-                $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
-            } else {
-                $avals = [];
+        if (isset($arquivos)) {
+            foreach ($arquivos as $arquivo) {
+                array_push($avals_projeto, AvaliacaoRelatorio::where('arquivo_id', $arquivo->id)->get());
             }
-            foreach ($avals as $aval) {
+        }
+        
+        foreach ($avals_projeto as $avals) {
+            foreach ($avals as $aval){
                 if ($aval->tipo == 'Parcial') {
                     array_push($AvalRelatParcial, $aval);
                 } else {
                     array_push($AvalRelatFinal, $aval);
                 }
-            }
+            }   
         }
+
+
 
         return view('projeto.visualizar')->with(['projeto' => $projeto,
             'grandeAreas' => $grandeAreas,
@@ -836,6 +848,16 @@ class TrabalhoController extends Controller
         return abort(404);
     }
 
+    public function baixarAnexoSIPAC($id)
+    {
+        $projeto = Trabalho::find($id);
+        if (Storage::disk()->exists($projeto->anexo_SIPAC)) {
+            ob_end_clean();
+            return Storage::download($projeto->anexo_SIPAC);
+        }
+        return abort(404);
+    }
+
     public function baixarAnexoTemp($eventoId, $nomeAnexo)
     {
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
@@ -1141,7 +1163,6 @@ class TrabalhoController extends Controller
 
     public function salvar(StoreTrabalho $request)
     {
-
         try {
             if (!$request->has('rascunho')) {
                 $request->merge([
@@ -1159,14 +1180,21 @@ class TrabalhoController extends Controller
             if($evento->tipo=="PIBEX"){
                 $trabalho = Auth::user()->proponentes->trabalhos()
                     ->create($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra'
+                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC'
                     ]));
-            }else{
+            }else if($evento->tipo=="CONTINUO"){
+                $trabalho = Auth::user()->proponentes->trabalhos()
+                    ->create($request->except([
+                    'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
+                    'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra',
+                ]));
+            } else {
                 $trabalho = Auth::user()->proponentes->trabalhos()
                 ->create($request->except([
                     'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                     'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra'
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC'
                 ]));
             }
 

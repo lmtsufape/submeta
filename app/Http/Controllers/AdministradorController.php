@@ -112,6 +112,60 @@ class AdministradorController extends Controller
         return view('administrador.analisar')->with(['trabalhos' => $trabalhos, 'evento' => $evento, 'funcaoParticipantes' => $funcaoParticipantes, 'column' => $request->column, 'grandesAreas' => $grandesAreas, 'areas' => $areas]);
     }
 
+    //retorna a média das avaliações dos relatórios e apresentações,
+    //o número de avaliações pendentes e duas listas com as avaliações parciais 
+    //e finais respectivamente
+    protected function get_info_avaliacoes($avals){
+        $AvalRelatParcial = [];
+        $AvalRelatFinal = [];
+        $MediaAvalRelatParcial = 0;
+        $MediaApresentacaoParcial = 0;
+        $AvalRelatParcialPendentes = 0;
+        $MediaAvalRelatFinal = 0;
+        $MediaApresentacaoFinal = 0;
+        $AvalRelatFinalPendentes = 0;
+
+        foreach ($avals as $aval) {
+            if ($aval->tipo == 'Parcial') {
+                array_push($AvalRelatParcial, $aval);
+                $MediaAvalRelatParcial += $aval->nota;
+                $MediaApresentacaoParcial += $aval->nota_apresentacao;
+
+                if($aval->nota == null){
+                    $AvalRelatParcialPendentes += 1;
+                }
+            } else {
+                array_push($AvalRelatFinal, $aval);
+                $MediaAvalRelatFinal += $aval->nota;
+                $MediaApresentacaoFinal += $aval->nota_apresentacao;
+
+                if($aval->nota == null){
+                    $AvalRelatFinalPendentes += 1;
+                }
+            }
+        }
+        
+        if(count($AvalRelatParcial) > 0){
+            $MediaAvalRelatParcial  = $MediaAvalRelatParcial / count($AvalRelatParcial);
+            $MediaApresentacaoParcial = $MediaApresentacaoParcial / count($AvalRelatParcial);
+        }
+
+        if(count($AvalRelatFinal) > 0){
+            $MediaAvalRelatFinal = $MediaAvalRelatFinal / count($AvalRelatFinal);
+            $MediaApresentacaoFinal = $MediaApresentacaoFinal / count($AvalRelatFinal);
+        }
+
+        return ['relatorio_parcial' => number_format($MediaAvalRelatParcial, 2, '.', ''), 
+                'apresentacao_parcial' => number_format($MediaApresentacaoParcial, 2, '.', ''),
+                'pendentes_parcial' => $AvalRelatParcialPendentes,
+                'relatorio_final' => number_format($MediaAvalRelatFinal, 2, '.', ''), 
+                'apresentacao_final' => number_format($MediaApresentacaoFinal, 2, '.', ''),
+                'pendentes_final' => $AvalRelatFinalPendentes,
+                'avaliacoes_parciais' => $AvalRelatParcial,
+                'avaliacoes_finais' => $AvalRelatFinal];
+    }
+
+
     // Utilizado para paginação de Collection
 
     public function analisarProposta(Request $request)
@@ -127,73 +181,18 @@ class AdministradorController extends Controller
         $trabalho->aval = $avalProjeto;
         // Usuarios que possuem avaliações de relatório
         //$avaliacoesRelatorio = [];->join('users','users.id','=','candidatos.user_id')
-        $AvalRelatParcial = [];
-        $AvalRelatFinal = [];
-        $MediaAvalRelatParcial = 0;
-        $AvalRelatParcialPendentes = 0;
-        $MediaAvalRelatFinal = 0;
-        $AvalRelatFinalPendentes = 0;
-        
-        if ($evento->numParticipantes == 0) {
-            $arquivo = Arquivo::where("trabalhoId", $trabalho->id)->first();
+        $arquivos = Arquivo::where("trabalhoId", $trabalho->id)->get();
+        $avals_projeto = [];
+        $media_avaliacoes = [];
 
-            if (isset($arquivo)) {
-                $avals = AvaliacaoRelatorio::where('arquivo_id', $arquivo->id)->get();
-            } else {
-                $avals = [];
-            }
-
-            foreach ($avals as $aval) {
-                if ($aval->tipo == 'Parcial') {
-                    array_push($AvalRelatParcial, $aval);
-                    $MediaAvalRelatParcial += $aval->nota;
-
-                    if($aval->nota == null){
-                        $AvalRelatParcialPendentes += 1;
-                    }
-                } else {
-                    array_push($AvalRelatFinal, $aval);
-                    $MediaAvalRelatFinal += $aval->nota;
-
-                    if($aval->nota == null){
-                        $AvalRelatFinalPendentes += 1;
-                    }
-                }
+        if (isset($arquivos)) {
+            foreach ($arquivos as $arquivo) {
+                array_push($avals_projeto, AvaliacaoRelatorio::where('arquivo_id', $arquivo->id)->get());
             }
         }
         
-
-        foreach ($trabalho->participantes as $participante) {
-            if (isset($participante->planoTrabalho)) {
-                $avals = AvaliacaoRelatorio::where('arquivo_id', $participante->planoTrabalho->id)->get();
-            } else {
-                $avals = [];
-            }
-            foreach ($avals as $aval) {
-                if ($aval->tipo == 'Parcial') {
-                    array_push($AvalRelatParcial, $aval);
-                    $MediaAvalRelatParcial += $aval->nota;
-
-                    if($aval->nota == null){
-                        $AvalRelatParcialPendentes += 1;
-                    }
-                } else {
-                    array_push($AvalRelatFinal, $aval);
-                    $MediaAvalRelatFinal += $aval->nota;
-
-                    if($aval->nota == null){
-                        $AvalRelatFinalPendentes += 1;
-                    }
-                }
-            }
-        }
-
-        if(count($AvalRelatParcial) > 0){
-            $MediaAvalRelatParcial  = $MediaAvalRelatParcial / count($AvalRelatParcial);
-        }
-
-        if(count($AvalRelatFinal) > 0){
-            $MediaAvalRelatFinal = $MediaAvalRelatFinal / count($AvalRelatFinal);
+        foreach ($avals_projeto as $avals) {
+            array_push($media_avaliacoes, $this->get_info_avaliacoes($avals));
         }
 
         // Verficação de pendencia de substituição
@@ -209,7 +208,7 @@ class AdministradorController extends Controller
 
         $hoje = Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
-
+        //dd($media_avaliacoes, $arquivos);
         return view('administrador.analisarProposta')->with(
             ['trabalho' => $trabalho,
                 'funcaoParticipantes' => $funcaoParticipantes,
@@ -217,15 +216,11 @@ class AdministradorController extends Controller
                 'substituicoesPendentes' => $substituicoesPendentes,
                 'substituicoesProjeto' => $substituicoesProjeto,
                 'grandeAreas' => $grandeAreas,
-                'AvalRelatParcial' => $AvalRelatParcial,
-                'AvalRelatFinal' => $AvalRelatFinal,
                 'hoje' => $hoje,
                 'flagSubstituicao' => $flagSubstituicao,
-                'areasTematicas' => $areasTematicas, 
-                'MediaAvalRelatParcial' => $MediaAvalRelatParcial,
-                'AvalRelatParcialPendentes' => $AvalRelatParcialPendentes,
-                'MediaAvalRelatFinal' => $MediaAvalRelatFinal,
-                'AvalRelatFinalPendentes' => $AvalRelatFinalPendentes,
+                'areasTematicas' => $areasTematicas,
+                'mediaAval' => $media_avaliacoes,
+                'arquivos' => $arquivos,
                 ]);
     }
 
