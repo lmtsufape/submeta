@@ -12,19 +12,28 @@ class AreaTematicaSeeder extends Seeder
     public function run()
     {
         DB::table('area_tematicas')->insert([
-            'nome' => 'Erradicação da Pobreza'
+            'nome' => 'Comunicação'
         ]);
         DB::table('area_tematicas')->insert([
-            'nome' => 'Fome zero e agricultura sustentável'
+            'nome' => 'Cultura'
         ]);
         DB::table('area_tematicas')->insert([
-            'nome' => 'Saúde e bem-estar'
+            'nome' => 'Direitos Humanos e Justiça'
         ]);
         DB::table('area_tematicas')->insert([
-            'nome' => 'Educação de qualidade'
+            'nome' => 'Educação'
         ]);
         DB::table('area_tematicas')->insert([
-            'nome' => 'Igualdade de gênero'
+            'nome' => 'Meio Ambiente'
+        ]);
+        DB::table('area_tematicas')->insert([
+            'nome' => 'Saúde'
+        ]);
+        DB::table('area_tematicas')->insert([
+            'nome' => 'Tecnologia e Produção'
+        ]);
+        DB::table('area_tematicas')->insert([
+            'nome' => 'Trabalho'
         ]);
     }
 }
