@@ -18,18 +18,20 @@
 
           <div class="row justify-content-center">
             {{-- Relatório Parcial  --}}
-            <div class="col-sm-3">
-              <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
-            </div>
-            <div class="col-sm-3">
-              <input id="dt_inicioRelatorioParcial{{$edital->id}}" type="date" class="form-control" name="dt_inicioRelatorioParcial" value="{{$edital->dt_inicioRelatorioParcial}}" required autocomplete="dt_inicioRelatorioParcial" disabled autofocus>
-            </div>
-            <div class="col-sm-3">
-              <label for="dt_fimRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Fim do Relatório Parcial: ') }}</label>
-            </div>
-            <div class="col-sm-3">
-              <input id="dt_fimRelatorioParcial{{$edital->id}}" type="date" class="form-control" name="dt_fimRelatorioParcial" value="{{$edital->dt_fimRelatorioParcial}}" required autocomplete="dt_fimRelatorioParcial" disabled autofocus>
-            </div>
+            @if($edital->tipo != "PIBEX")
+              <div class="col-sm-3">
+                <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="dt_inicioRelatorioParcial{{$edital->id}}" type="date" class="form-control" name="dt_inicioRelatorioParcial" value="{{$edital->dt_inicioRelatorioParcial}}" required autocomplete="dt_inicioRelatorioParcial" disabled autofocus>
+              </div>
+              <div class="col-sm-3">
+                <label for="dt_fimRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Fim do Relatório Parcial: ') }}</label>
+              </div>
+              <div class="col-sm-3">
+                <input id="dt_fimRelatorioParcial{{$edital->id}}" type="date" class="form-control" name="dt_fimRelatorioParcial" value="{{$edital->dt_fimRelatorioParcial}}" required autocomplete="dt_fimRelatorioParcial" disabled autofocus>
+              </div>
+            @endif
             {{-- Relatório Final --}}
             <div class="col-sm-3">
               <label for="dt_inicioRelatorioFinal" class="col-form-label font-tam" style="font-weight: bold">{{ __('Início do Relatório Final:') }}</label>

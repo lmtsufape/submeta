@@ -24,7 +24,9 @@
 						@if ($evento->numParticipantes != 0)
 						<th scope="col" style="width:200px; text-align: center;">Discente</th>
 						@endif
+						@if ($evento->tipo != 'PIBEX')
 						<th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
+						@endif
 						<th scope="col" style="width:200px; text-align: center;">Relatório Final</th>
                     </tr>
 				</thead>
@@ -36,6 +38,7 @@
 						@if ($evento->numParticipantes != 0)
 						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}" id="td-nomeAluno">{{$arquivo->participante->user->name}}</td>
 						@endif
+						@if ($evento->tipo != 'PIBEX')
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
@@ -61,7 +64,7 @@
 								@endif
 							@endif
 						</td>
-						
+						@endif
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioFinal == null) &&
 								 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))

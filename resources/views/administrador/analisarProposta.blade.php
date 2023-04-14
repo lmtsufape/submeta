@@ -564,24 +564,26 @@
 
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
-                            <div class="col-sm-3">
-                                <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam"
-                                       style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
-                            </div>
-                            <div class="col-sm-3">
-                                <input id="dt_inicioRelatorioParcial{{$evento->id}}" type="date" class="form-control"
-                                       name="dt_inicioRelatorioParcial" value="{{$evento->dt_inicioRelatorioParcial}}"
-                                       required autocomplete="dt_inicioRelatorioParcial" disabled autofocus>
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="dt_fimRelatorioParcial" class="col-form-label font-tam"
-                                       style="font-weight: bold">{{ __('Fim do Relatório Parcial: ') }}</label>
-                            </div>
-                            <div class="col-sm-3">
-                                <input id="dt_fimRelatorioParcial{{$evento->id}}" type="date" class="form-control"
-                                       name="dt_fimRelatorioParcial" value="{{$evento->dt_fimRelatorioParcial}}"
-                                       required autocomplete="dt_fimRelatorioParcial" disabled autofocus>
-                            </div>
+                            @if($evento->tipo != 'PIBEX')
+                                <div class="col-sm-3">
+                                    <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam"
+                                        style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input id="dt_inicioRelatorioParcial{{$evento->id}}" type="date" class="form-control"
+                                        name="dt_inicioRelatorioParcial" value="{{$evento->dt_inicioRelatorioParcial}}"
+                                        required autocomplete="dt_inicioRelatorioParcial" disabled autofocus>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="dt_fimRelatorioParcial" class="col-form-label font-tam"
+                                        style="font-weight: bold">{{ __('Fim do Relatório Parcial: ') }}</label>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input id="dt_fimRelatorioParcial{{$evento->id}}" type="date" class="form-control"
+                                        name="dt_fimRelatorioParcial" value="{{$evento->dt_fimRelatorioParcial}}"
+                                        required autocomplete="dt_fimRelatorioParcial" disabled autofocus>
+                                </div>
+                            @endif
                             {{-- Relatório Final --}}
                             <div class="col-sm-3">
                                 <label for="dt_inicioRelatorioFinal" class="col-form-label font-tam"
@@ -659,7 +661,7 @@
                                                 @csrf
                                                 <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                                                 <input type="hidden" name="evento_id" value="{{ $evento->id }}">
-                                                @if($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
+                                                @if($evento->tipo != "PIBEX" && $evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
                                                     <input type="hidden" name="tipo_relatorio" value="Parcial">
                                                     @php $tipoTemp = "Parcial"; @endphp
                                                 @else
@@ -669,7 +671,7 @@
                                                 <div class="form-group">
                                                     <div class="row" style="margin-left: 2px;margin-bottom: 1px">
                                                         <div class="col-md-6">
-                                                            @if($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
+                                                            @if($evento->tipo != "PIBEX" && $evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
                                                                 <label for="exampleFormControlSelect2"
                                                                        style="font-size: 16px;">Selecione o(s) avaliador(es)
                                                                     para a(s) avaliacões de relatorio parcial</label>
@@ -750,7 +752,7 @@
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
 
-                        @if(count($arquivos) > 0)
+                        @if(count($arquivos) > 0 && $evento->tipo != "PIBEX")
                             <div class="row justify-content-start" style="alignment: center">
                                 <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
                             </div>
