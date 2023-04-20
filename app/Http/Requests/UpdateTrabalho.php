@@ -83,7 +83,7 @@ class UpdateTrabalho extends FormRequest
         }else{
 
             //$rules = [];
-            if($evento->tipo!="PIBEX"){
+            if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO"){
                 $rules['anexoPlanilhaPontuacao']       = [Rule::requiredIf($projeto->anexoPlanilhaPontuacao == null)];
                 $rules['anexoLattesCoordenador']       = [Rule::requiredIf($projeto->anexoLattesCoordenador == null), 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = [Rule::requiredIf($projeto->anexoGrupoPesquisa == null), 'mimes:pdf'];
@@ -109,9 +109,10 @@ class UpdateTrabalho extends FormRequest
             }
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
-
-            $rules['anexoProjeto']                 = [Rule::requiredIf($projeto->anexoProjeto == null), 'mimes:pdf'];
-            $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'];
+            if($evento->tipo!="CONTINUO"){
+                $rules['anexoProjeto']                 = [Rule::requiredIf($projeto->anexoProjeto == null), 'mimes:pdf'];
+                $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'];
+            }
 
             return $rules;
         }

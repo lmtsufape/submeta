@@ -12,9 +12,11 @@
           {{-- Arquivo  --}}
           
           @if($edital->tipo == "CONTINUO")
-            <div class="form-group col-md-6" style="margin-top: 10px">
+            <div class="form-group col-md-8" style="margin-top: 10px">
               <label for="anexo_SIPAC" class="col-form-label font-tam" style="font-weight: bold">{{ __('Processo SIPAC: ') }}<span style="color: red; font-weight:bold">*</span></label>
-                <input type="file" class="input-group-text" name="anexo_SIPAC" placeholder="PDF do processo SIPAC" accept=".pdf" />
+              <input type="file" class="input-group-text" name="anexo_SIPAC" placeholder="PDF do processo SIPAC" accept=".pdf" />
+              <span>Processo completo registrado no SIPAC com o parecer da Comissão de Extensão e Cultura, 
+                    a decisão de aprovação na Câmara de Extensão e Cultura e a proposta de Atividade de Extensão.</span>
               @error('anexo_SIPAC')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                 <strong>{{ $message }}</strong>
