@@ -17,7 +17,7 @@ use Auth;
 
 class AvaliacaoRelatorioController extends Controller
 {
-    public function listarUser($id){
+    public function listarUserRelatorio($id){
 
         $avaliacao = AvaliacaoRelatorio::find($id);
         $trabalho = Trabalho::find($avaliacao->plano->trabalhoId);
@@ -25,7 +25,18 @@ class AvaliacaoRelatorioController extends Controller
         $hoje = \Carbon\Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
 
-        return view('avaliacaoRelatorio.listar', ["avaliacao"=>$avaliacao,"trabalho"=>$trabalho,"evento"=>$evento]);
+        return view('avaliacaoRelatorio.listarRelatorio', ["avaliacao"=>$avaliacao,"trabalho"=>$trabalho,"evento"=>$evento]);
+    }
+
+    public function listarUserApresentacao($id){
+
+        $avaliacao = AvaliacaoRelatorio::find($id);
+        $trabalho = Trabalho::find($avaliacao->plano->trabalhoId);
+        $evento = $trabalho->evento;
+        $hoje = \Carbon\Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+
+        return view('avaliacaoRelatorio.listarApresentacao', ["avaliacao"=>$avaliacao,"trabalho"=>$trabalho,"evento"=>$evento]);
     }
 
     public function index(Request $request){
@@ -56,10 +67,9 @@ class AvaliacaoRelatorioController extends Controller
 
 
 
-    public function criar(Request  $request){
+    public function criarRelatorio(Request  $request){
         $validatedData = $request->validate([
             'nota'      => ['required'],
-            'nota_apresentacao' => ['required'],
             'comentario'     => ['required'],
         ]);
         
@@ -72,12 +82,35 @@ class AvaliacaoRelatorioController extends Controller
         }
         $plano = Arquivo::find($request->plano_id);
         $avaliacao->nota = $request->nota;
+        // $avaliacao->nota_apresentacao = $request->nota_apresentacao;
+        $avaliacao->comentario = $request->comentario;
+        $avaliacao->update();
+
+        return redirect()->back()->with(['sucesso' => 'Avaliação do relatório '.$avaliacao->tipo." do plano ".$plano->titulo.' realizada com sucesso.']);
+    }
+
+    public function criarApresentacao(Request  $request){
+        $validatedData = $request->validate([
+            'nota_apresentacao'      => ['required'],
+            'comentario'     => ['required'],
+        ]);
+        
+        $avaliacao = AvaliacaoRelatorio::find($request->avaliacao_id);
+
+        if($request->avaliacaoArq !=null){
+            $pasta = 'planoTrabalho/' . $request->plano_id . 'avaliacao/' . $request->avaliacao_id;
+            $avaliacao->arquivoAvaliacao = Storage::putFileAs($pasta, $request->avaliacaoArq, "AvaliacaoRelatorio.pdf");
+
+        }
+        $plano = Arquivo::find($request->plano_id);
+        // $avaliacao->nota = $request->nota;
         $avaliacao->nota_apresentacao = $request->nota_apresentacao;
         $avaliacao->comentario = $request->comentario;
         $avaliacao->update();
 
         return redirect()->back()->with(['sucesso' => 'Avaliação do relatório '.$avaliacao->tipo." do plano ".$plano->titulo.' realizada com sucesso.']);
     }
+
 
     public function atribuicaoAvaliador(Request  $request){
 

@@ -51,9 +51,11 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
         Route::post('/atribuirAvaliadorPlano', 'AvaliacaoRelatorioController@atribuicaoAvaliador')->name('atribuicao.avaliador')->middleware('checkRoles:coordenador,administrador');
         Route::get('/removerAvaliadorPlano/{id}', 'AvaliacaoRelatorioController@removerAvaliador')->name('remover.avaliador')->middleware('checkRoles:coordenador,administrador');
     });
-    Route::get('/trabalho/planos/avaliacao/{id}', 'AvaliacaoRelatorioController@listarUser')->name('planos.avaliacoesUser');
+    Route::get('/trabalho/planos/avaliacaoRelatorio/{id}', 'AvaliacaoRelatorioController@listarUserRelatorio')->name('planos.avaliacoesUserRelatorio');
+    Route::get('/trabalho/planos/avaliacaoApresentacao/{id}', 'AvaliacaoRelatorioController@listarUserApresentacao')->name('planos.avaliacoesUserApresentacao');
     Route::get('/trabalho/planos/avaliacoes/index', 'AvaliacaoRelatorioController@index')->name('planos.avaliacoes.index');
-    Route::post('/trabalho/planos/avaliacoes/criar', 'AvaliacaoRelatorioController@criar')->name('planos.avaliacoesUser.criar');
+    Route::post('/trabalho/planos/avaliacoes/criaRelatorio', 'AvaliacaoRelatorioController@criarRelatorio')->name('planos.avaliacoesUser.criarRelatorio');
+    Route::post('/trabalho/planos/avaliacoes/criaApresentacao', 'AvaliacaoRelatorioController@criarApresentacao')->name('planos.avaliacoesUser.criarApresentacao');
 
     Route::prefix('areaTematica')->name('areaTematica.')->group(function () {
         Route::get('/editar/{id}', 'AreaTematicaController@edit')->name('edit')->middleware('checkAdministrador');
@@ -158,6 +160,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::post('/trabalho/criarRascunho', 'TrabalhoController@storeParcial')->name('trabalho.storeParcial');
     Route::get('/edital/{id}/projetos', 'TrabalhoController@projetosDoEdital')->name('projetos.edital');
     Route::get('/projeto/visualizar/{id}', 'TrabalhoController@show')->name('trabalho.show');
+    Route::get('/projeto/solicitarDeclaracao/{id}', 'TrabalhoController@solicitarDeclaracao')->name('trabalho.solicitarDeclaracao');
     Route::get('/projeto/{id}/editar', 'TrabalhoController@edit')->name('trabalho.editar');
 
     Route::post('/projeto/buscarUsuario', 'TrabalhoController@buscarUsuario')->name('trabalho.buscarUsuario');

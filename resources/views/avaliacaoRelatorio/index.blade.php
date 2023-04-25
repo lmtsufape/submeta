@@ -63,17 +63,24 @@
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->trabalho->evento->numParticipantes == 0 ? $avaliacao->plano->proponente->user->name : $avaliacao->plano->participante->user->name }}</td>
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->tipo }}</td>
                                     <td>
-                                        <div class="row justify-content-center">
-                                            <a type="button" class="btn btn-primary" href="{{route('planos.avaliacoesUser', ['id'=>$avaliacao->id])}}">
+                                        <div class="row-md-2 justify-content-center">
+                                            <a type="button" class="btn-sm btn-primary" href="{{route('planos.avaliacoesUserRelatorio', ['id'=>$avaliacao->id])}}">
                                                 @if($avaliacao->nota == null)
-                                                    Avaliar
+                                                    Avaliar Relatório
                                                 @else
-                                                    Avaliado
+                                                    Relatório Avaliado
+                                                @endif
+                                            </a>
+                                            
+                                            <a type="button" class="btn-sm btn-primary" href="{{route('planos.avaliacoesUserApresentacao', ['id'=>$avaliacao->id])}}">
+                                                @if($avaliacao->nota_apresentacao == null)
+                                                    Avaliar Apresentação
+                                                @else
+                                                    Apresentação Avaliada
                                                 @endif
                                             </a>
                                         </div>
                                     </td>
-
                                 </tr>
                             @endforeach
                             </tbody>

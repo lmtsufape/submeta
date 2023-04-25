@@ -94,7 +94,7 @@
                                         </div>
                                         <div class="col-sm-12">
                                             <form id="formRelatFinal" method="post"
-                                                  action="{{route('planos.avaliacoesUser.criar')}}"
+                                                  action="{{route('planos.avaliacoesUser.criarApresentacao')}}"
                                                   enctype="multipart/form-data">
                                                 @csrf
                                                 <input type="hidden" name="tipo" value="Parcial">
@@ -108,7 +108,7 @@
                                                 <div class="col-12" style="padding-left: 0px; margin-top: 10px ">
 
                                                     <div class="row" >
-                                                        <div class="col-sm-4 row">
+                                                        {{-- <div class="col-sm-4 row">
                                                             <label for="lattes" class="col-form-label font-tam"
                                                                    style="font-weight: bold;padding-right: 10px">{{ __('Nota do relatório escrito: ') }}</label>
 
@@ -116,7 +116,7 @@
                                                                    style="width: 70px;"
                                                                    required
                                                                    @if($avaliacao->nota != null) value="{{$avaliacao->nota}}" @endif>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col row">
                                                             <label for="lattes" class="col-form-label font-tam"
                                                                    style="font-weight: bold;padding-right: 10px">{{ __('Nota da apresentação: ') }}</label>
@@ -192,7 +192,7 @@
                                         </div>
                                         <div class="col-sm-12">
                                             <form id="formRelatFinal" method="post"
-                                                  action="{{route('planos.avaliacoesUser.criar')}}"
+                                                  action="{{route('planos.avaliacoesUser.criarApresentacao')}}"
                                                   enctype="multipart/form-data">
                                                 @csrf
                                                 <input type="hidden" name="tipo" value="Final">
@@ -205,14 +205,14 @@
                                                 <div class="col-12" style="padding-left: 0px; margin-top: 10px ">
 
                                                     <div class="row">
-                                                        <div class="col-sm-4 row">
+                                                        {{-- <div class="col-sm-4 row">
                                                             <label for="lattes" class="col-form-label font-tam"
                                                                    style="font-weight: bold;padding-right: 10px">{{ __('Nota do relatório escrito: ') }}</label>
 
                                                             <input class="form-control" name="nota" type="number" step="0.01"
                                                                    style="width: 70px;" required
                                                                    @if($avaliacao->nota != null) value="{{$avaliacao->nota}}" @endif>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="col row">
                                                             <label for="lattes" class="col-form-label font-tam"
                                                                    style="font-weight: bold;padding-right: 10px">{{ __('Nota da apresentação: ') }}</label>
