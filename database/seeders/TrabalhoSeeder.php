@@ -34,7 +34,7 @@ class TrabalhoSeeder extends Seeder
         	'linkGrupoPesquisa'	 			=>'link',
         	'linkLattesEstudante'			=>'link',
         	'pontuacaoPlanilha'				=>'link',
-            'status'                        =>'submetido',
+            'status'                        =>'aprovado',
         	'data'							=>'2023-04-24',
         	'anexoProjeto'					=>'Álgebra',
         	'anexoDecisaoCONSU'				=>'Álgebra',
@@ -48,6 +48,8 @@ class TrabalhoSeeder extends Seeder
         	'coordenador_id'				=>1,
             'proponente_id'                 =>1,
             'created_at'                    =>'2023-04-24',
+            'aprovado'                      =>'1',
+            'area_tematica_id'              =>1,
             'updated_at'                    =>'2023-04-24',
         
       	]);
@@ -56,8 +58,9 @@ class TrabalhoSeeder extends Seeder
             'linkGrupoPesquisa'             =>'link',
             'linkLattesEstudante'           =>'link',
             'pontuacaoPlanilha'             =>'link',
-            'status'                        =>'submetido',
+            'status'                        =>'aprovado',
             'data'                          =>'2020-01-01',
+            'area_tematica_id'              =>1,
             'anexoProjeto'                  =>'Álgebra',
             'anexoDecisaoCONSU'             =>'Álgebra',
             'anexoPlanilhaPontuacao'        =>'Álgebra',

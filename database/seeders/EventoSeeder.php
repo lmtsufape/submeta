@@ -19,7 +19,7 @@ class EventoSeeder extends Seeder
         'nome' => 'Evento 1',
         'descricao' => 'Descrição do evento 1',
         'tipo' => 'PIBIC',
-        'natureza_id' => 3,
+        'natureza_id' => 2,
         'inicioSubmissao' => '2023-04-24',
         'fimSubmissao' => '2023-04-24',
         'inicioRevisao' => '2023-04-24',
@@ -43,7 +43,6 @@ class EventoSeeder extends Seeder
         'fimProjeto' => '2023-05-01',
         'obrigatoriedade_docExtra' => false,
         'tipoAvaliacao' => 'form',
-        'formAvaliacaoExterno' => 'formAvaliacao.pdf',
        ]);
     }
 }

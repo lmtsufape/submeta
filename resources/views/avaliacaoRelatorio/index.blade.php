@@ -64,7 +64,7 @@
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->tipo }}</td>
                                     <td>
                                         <div class="row-md-2 justify-content-center">
-                                            <a type="button" class="btn-sm btn-primary" href="{{route('planos.avaliacoesUserRelatorio', ['id'=>$avaliacao->id])}}">
+                                            <a type="button" class="btn-sm btn-{{ $avaliacao->nota ? 'success' : 'primary' }}" href="{{ route('planos.avaliacoesUserRelatorio', ['id'=>$avaliacao->id]) }}">
                                                 @if($avaliacao->nota == null)
                                                     Avaliar Relatório
                                                 @else
@@ -72,7 +72,7 @@
                                                 @endif
                                             </a>
                                             
-                                            <a type="button" class="btn-sm btn-primary" href="{{route('planos.avaliacoesUserApresentacao', ['id'=>$avaliacao->id])}}">
+                                            <a type="button" class="btn-sm btn-{{ $avaliacao->nota_apresentacao ? 'success' : 'primary' }}" href="{{route('planos.avaliacoesUserApresentacao', ['id'=>$avaliacao->id])}}">
                                                 @if($avaliacao->nota_apresentacao == null)
                                                     Avaliar Apresentação
                                                 @else
