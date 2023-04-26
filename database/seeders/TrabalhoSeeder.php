@@ -34,8 +34,8 @@ class TrabalhoSeeder extends Seeder
         	'linkGrupoPesquisa'	 			=>'link',
         	'linkLattesEstudante'			=>'link',
         	'pontuacaoPlanilha'				=>'link',
-            'status'                        =>'Submetido',
-        	'data'							=>'2020-01-01',
+            'status'                        =>'submetido',
+        	'data'							=>'2023-04-24',
         	'anexoProjeto'					=>'Álgebra',
         	'anexoDecisaoCONSU'				=>'Álgebra',
         	'anexoPlanilhaPontuacao'		=>'Álgebra',
@@ -47,7 +47,8 @@ class TrabalhoSeeder extends Seeder
         	'evento_id'						=>1,
         	'coordenador_id'				=>1,
             'proponente_id'                 =>1,
-            'created_at'                    =>'2020-01-01',
+            'created_at'                    =>'2023-04-24',
+            'updated_at'                    =>'2023-04-24',
         
       	]);
         DB::table('trabalhos')->insert([
@@ -55,7 +56,7 @@ class TrabalhoSeeder extends Seeder
             'linkGrupoPesquisa'             =>'link',
             'linkLattesEstudante'           =>'link',
             'pontuacaoPlanilha'             =>'link',
-            'status'                        =>'Submetido',
+            'status'                        =>'submetido',
             'data'                          =>'2020-01-01',
             'anexoProjeto'                  =>'Álgebra',
             'anexoDecisaoCONSU'             =>'Álgebra',
@@ -68,7 +69,8 @@ class TrabalhoSeeder extends Seeder
             'evento_id'                     =>1,
             'coordenador_id'                =>1,
             'proponente_id'                 =>1,
-            'created_at'                    =>'2020-01-02',
+            'created_at'                    =>'2023-04-24',
+            'updated_at'                    =>'2023-04-24',
         
         ]);
     }
