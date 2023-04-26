@@ -124,8 +124,12 @@ class AvaliadorController extends Controller
       if($aux != 0){
         return redirect()->back()->withErrors("A proposta ".$trabalho->titulo." possui substituições pendentes");
       }
-      
-    	return view('avaliador.parecer', ['trabalho'=>$trabalho, 'evento'=>$evento, 'hoje' => $hoje]);
+      if( strtotime($trabalho->created_at . "+ 15 days" ) > strtotime($hoje) ){
+        return view('avaliador.parecer', ['trabalho'=>$trabalho, 'evento'=>$evento, 'hoje' => $hoje]);
+      } else {
+        return redirect(route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id]))->with('error_code', 1800);
+      }
+        
     }
 
     public function parecerInterno(Request $request){

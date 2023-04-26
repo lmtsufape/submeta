@@ -28,6 +28,11 @@
       </div>
   </div>
   @endif
+  @if(!empty(Session::get('error_code')) && Session::get('error_code') == 1800)
+    <div class="alert alert-danger mt-4" role="alert">
+      A data limite para a avaliação foi atingida.
+    </div>
+  @endif
   <div class="row justify-content-center" style="margin-top: 3rem;">
     <div class="col-md-11" style="margin-bottom: -3rem">
       <div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px;">
