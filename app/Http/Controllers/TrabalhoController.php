@@ -45,11 +45,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\EmailParaUsuarioNaoCadastrado;
 use App\Mail\SolicitacaoSubstituicao;
+use App\Mail\SolicitacaoDeclaracao;
 use App\Notificacao;
 use App\Notifications\SolicitacaoCertificadoNotification;
 use App\Notifications\SubmissaoNotification;
 use App\Notifications\SubmissaoRecebidaNotification;
-use App\SolicitacaoCertificado;
 use App\SolicitacaoParticipante;
 use App\Substituicao;
 use Illuminate\Support\Facades\Notification;
@@ -118,6 +118,25 @@ class TrabalhoController extends Controller
                                             'areaTematicas'        => $areaTematicas,
                                             'ods'                   =>$ODS,
                                             ]);
+    }
+
+    public function solicitarDeclaracao($id)
+    {
+        $trabalho = Trabalho::find($id);
+        $userParticipante = $trabalho->proponente->user;
+        
+
+        $solicitacao = new Notificacao();
+        $solicitacao->remetente_id = Auth::user()->id;
+        $solicitacao->destinatario_id = $trabalho->evento->coordenadorComissao->user_id;
+        $solicitacao->trabalho_id = $trabalho->id;
+        $solicitacao->tipo = 6;
+        $solicitacao->lido = false;
+        $solicitacao->save();
+
+        Mail::to($trabalho->evento->coordenadorComissao->user->email)->send(new SolicitacaoDeclaracao($userParticipante, $trabalho, $trabalho->evento));
+
+        return redirect()->back()->with(['sucesso' => 'Solicitação de declaração enviada com sucesso.']);
     }
 
     public function arquivar(Request $request){

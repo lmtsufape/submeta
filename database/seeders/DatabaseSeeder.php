@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AvaliadorSeeder::class);
         $this->call(AreaTematicaSeeder::class);
         $this->call(CursoSeeder::class);
+        $this->call(EventoSeeder::class);
+        $this->call(TrabalhoSeeder::class);
         
         // $this->call(UsersTableSeeder::class);
 
@@ -144,7 +146,6 @@ class DatabaseSeeder extends Seeder
 //                           ];
 
 
-        //$this->call(TrabalhoSeeder::class);
         //$this->call(AvaliadorSeeder::class);
     }
 }

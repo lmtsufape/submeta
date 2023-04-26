@@ -151,12 +151,13 @@
                                 <a href="{{route('planos.listar', ['id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
                                     Relatórios
                                 </a>
-
-                                <hr class="dropdown-hr">
-                                {{-- <a href="" class="dropdown-item" style="text-align: center">
-                                  Recorrer
-                                </a>
-                                --}}
+                                
+                                @if($projeto->status == 'arquivado' || date('d-m-Y') < date('d-m-Y', strtotime($projeto->evento->fimProjeto)))
+                                  <hr class="dropdown-hr">
+                                  <a href="{{route('trabalho.solicitarDeclaracao', ['id' => $projeto->id])}}" class="dropdown-item" style="text-align: center">
+                                      Solicitar Declaração
+                                  </a>
+                                @endif
 
                                 <!-- Button trigger modal -->
                                   @if(($projeto->status ==  "rascunho") || ($projeto->evento->fimSubmissao > $hoje))

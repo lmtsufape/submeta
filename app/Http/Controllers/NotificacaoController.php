@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Certificado;
 use App\Notificacao;
+use App\SolicitacaoCertificado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 
 class NotificacaoController extends Controller
 {
@@ -131,9 +134,9 @@ class NotificacaoController extends Controller
                 return redirect()->route('admin.analisarProposta', ['id' => $notificacao->trabalho->id]);
             }
         } elseif ($notificacao->tipo == 6) {
-            $trabalho = $notificacao->trabalho;
-            return view('administrador.visualizarSolicitacaoCertificado', compact('notificacao', 'trabalho'));
+            return redirect()->route('trabalho.show', ['id' => $notificacao->trabalho->id]);
         }
+        
     }
 
 

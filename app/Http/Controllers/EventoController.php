@@ -39,7 +39,6 @@ class EventoController extends Controller
             // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
             $hoje = Carbon::today('America/Recife');
             $hoje = $hoje->toDateString();
-
             return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>'', 'flag'=>'false']);
         }else{
             $eventos = Evento::where('nome','ilike','%'.$request->buscar.'%')->get();
@@ -83,7 +82,7 @@ class EventoController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+
         $mytime = Carbon::now('America/Recife');
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
@@ -96,6 +95,7 @@ class EventoController extends Controller
                 'modeloDocumento' => ['file', 'max:2048', new ExcelRule($request->file('modeloDocumento'))],
             ]);
         }
+        
         if(isset($request->docTutorial)){
             $request->validate([
                 'docTutorial' => ['file', 'max:2048', new ExcelRule($request->file('docTutorial'))],
@@ -222,7 +222,6 @@ class EventoController extends Controller
             $path = 'modeloDocumento/' . $evento->id . '/';
             $nome = "modelo" . "." . $extension;
             Storage::putFileAs($path, $modeloDocumento, $nome);
-
             $evento->modeloDocumento = $path . $nome;
         }
 
@@ -532,14 +531,14 @@ class EventoController extends Controller
         }
 
         if($request->modeloDocumento != null){
-            $modeloDocumento = $request->modeloDocumento;
-            $extension = $modeloDocumento->extension();
-            $path = 'modeloDocumento/' . $evento->id . '/';
-            $nome = "modelo" . "." . $extension;
-            Storage::putFileAs($path, $modeloDocumento, $nome);
-            $evento->modeloDocumento = $path . $nome;
+            foreach ($request->modeloDocumento as $key => $modeloDocumento) {
+                $extension = $modeloDocumento->extension();
+                $path = 'modeloDocumento/' . $evento->id . '/';
+                $nome = "modelo" . $key . "." . $extension;
+                Storage::putFileAs($path, $modeloDocumento, $nome);
+                $evento->modeloDocumento = $path . $nome;
+            }
         }
-
 
         if(isset($request->pdfFormAvalExterno) && ($request->tipoAvaliacao == 'form')){
             $pdfFormAvalExterno = $request->pdfFormAvalExterno;
