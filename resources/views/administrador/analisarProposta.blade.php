@@ -122,7 +122,7 @@
                                 @endif
                             </div>
 
-                            @if($evento->tipo != "PIBEX")
+                            @if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO")
                                 <div class="col-md-12">
                                     <br>
                                     <b style="color: #4D4D4D;">Grupo de Pesquisa: </b>

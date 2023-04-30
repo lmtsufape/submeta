@@ -98,14 +98,14 @@ class StoreTrabalho extends FormRequest
             }
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
-            $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu), 'mimes:pdf'];
             
             if($evento->tipo!="CONTINUO"){
+                $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu), 'mimes:pdf'];
                 $rules['anexoProjeto'] = ['required', 'mimes:pdf'];
             } else {
                 $rules['anexo_SIPAC'] = ['required', 'mimes:pdf'];
             }
-            
+            //dd($rules, $evento);
             return $rules;
         }
         
@@ -143,6 +143,12 @@ class StoreTrabalho extends FormRequest
             'media_do_curso.*.required'  => 'O :attribute é obrigatório',
             'anexoPlanoTrabalho.*.required'  => 'O :attribute é obrigatório',
             'nomePlanoTrabalho.*.required'  => 'O :attribute é obrigatório',
+            'area_id' => "area id",
+            'area_tematica_id' => 'area tematica id',
+            'ods.*' => 'Deve ser selecionada pelo menos uma ODS',
+            'linkLattesEstudante.*' => "O link do currículo lattes do estudante é obrigatório",
+            'anexoDecisaoCONSU.*' => 'anexoDecisaoCONSU',
+            'anexo_SIPAC.*' => 'anexo_SIPAC'
         ];
     }
 }
