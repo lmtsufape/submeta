@@ -16,6 +16,9 @@
                 <hr style="border-top: 1px solid#1492E6">  
                 <div class="row" id="integrante">
                 </div>
+                
+                @include('evento.formulario.participantes')
+
             </div>
         </div>    
     </div>    
@@ -149,7 +152,7 @@
             if(data == 'inexistente' || $('#cpf_consulta').val() == ""){
                 exibirModalUsuarioInexistente();
             }else {
-                exibirUsuarioAdicionado();
+                exibirUsuarioAdicionado(data);
                 $('#integrante').append(`
                 <div id="integrante${data[0]['id']}" class="col-md-6">
                     <div class="row">
@@ -176,8 +179,27 @@
         $('#aviso-modal-usuario-nao-existe').modal('show');
     }
 
-    function exibirUsuarioAdicionado() {
-        $('#aviso-modal-usuario-adicionado').modal('show');;
+    let modal_id = 0;
+
+    function exibirUsuarioAdicionado(data) {
+        $('#modalIntegrante').modal('hide'); 
+        document.getElementById(`nome${modal_id}`).value = data[0]['name'];
+        document.getElementById(`email${modal_id}`).value = data[0]['email'];
+        document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(data[2]['data_de_nascimento'])).toLocaleDateString();
+        document.getElementById(`cpf${modal_id}`).value = data[0]['cpf'];
+        document.getElementById(`rg${modal_id}`).value = data[2]['rg'];
+        document.getElementById(`celular${modal_id}`).value = data[0]['celular'];
+        document.getElementById(`cep${modal_id}`).value = data[3]['cep'];
+        document.getElementById(`uf${modal_id}`).value = data[3]['uf'];
+        document.getElementById(`cidade${modal_id}`).value = data[3]['cidade'];
+        document.getElementById(`bairro${modal_id}`).value = data[3]['bairro'];
+        document.getElementById(`rua${modal_id}`).value = data[3]['rua'];
+        document.getElementById(`numero${modal_id}`).value = data[3]['numero'];
+        document.getElementById(`complemento${modal_id}`).value = data[3]['complemento'];
+        document.getElementById(`instituicao[${modal_id}]`).value = data[0]['instituicao'];
+        document.getElementById(`curso[${modal_id}]`).value = data[2]['curso'];
+        $(`#exampleModal${modal_id}`).modal('show');
+        console.log(data);
     }
 
 </script>

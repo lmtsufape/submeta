@@ -1,10 +1,10 @@
 <!-- Participantes -->
 @php $cont= 0; @endphp
-<div class="col-md-12" style="margin-top: 20px">
-    <div class="card" style="border-radius: 5px">
-        <div class="card-body" style="padding-top: 0.2rem;">
-            <div class="container">
-                <div class="form-row mt-3">
+<!-- <div class="col-md-12" style="margin-top: 20px"> -->
+    <!-- <div style="border-radius: 5px"> -->
+        <!-- <div style="padding-top: 0.2rem;"> -->
+            <!-- <div class="container"> -->
+                <!-- <div class="form-row mt-3">
                     <div class="col-md-11">
                         <h5 style="color: #234B8B; font-weight: bold">Dados do(s) Discente(s)</h5>
                         <strong>
@@ -18,14 +18,14 @@
                             <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
                         </a>
                     </div>
-                </div>
+                </div> -->
                 <hr style="border-top: 1px solid#1492E6">
                 <div class="row-cols-sm-12 justify-content-start">
                     <ol style="counter-reset: item;list-style-type: none; margin-left:-20px; margin-right:20px; margin-top:10px">
                         <li id="item">
                             <div style="margin-bottom:15px">
                                 <div id="participante" class="row">
-                                    @for($i = 0; $i < $edital->numParticipantes; $i++)
+                                    <!-- @for($i = 0; $i < $edital->numParticipantes; $i++) -->
 
                                         <div @if(!isset(old('marcado')[$i])) hidden @endif class="form-row mb-1 col-md-6" style="margin-top: 10px" id="part{{$i}}">
                                             <div class="col-sm-2" style="display: flex; align-items: center;">
@@ -48,7 +48,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="modal fade" id="exampleModal{{$i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="exampleModal{{$i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:auto;">
                                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -98,7 +98,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Data de nascimento'])
-                                                                        <input type="date" class="form-control" value="{{old('data_de_nascimento')[$i] ?? "" }}" name="data_de_nascimento[{{$i}}]" placeholder="Data de nascimento" />
+                                                                        <input type="text" class="form-control" value="{{old('data_de_nascimento')[$i] ?? "" }}" name="data_de_nascimento[{{$i}}]" placeholder="Data de nascimento" id="data_de_nascimento{{$i}}" />
                                                                         @error('data_de_nascimento.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -108,7 +108,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CPF'])
-                                                                        <input type="text" class="form-control cpf" value="{{old('cpf')[$i] ?? "" }}" name="cpf[{{$i}}]" placeholder="CPF" />
+                                                                        <input type="text" class="form-control cpf" value="{{old('cpf')[$i] ?? "" }}" name="cpf[{{$i}}]" placeholder="CPF" id="cpf{{$i}}"/>
 
                                                                         @error('cpf.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -119,7 +119,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'RG'])
-                                                                        <input type="text" class="form-control rg" min="9" maxlength="9" value="{{old('rg')[$i] ?? "" }}" name="rg[{{$i}}]" placeholder="RG" />
+                                                                        <input type="text" class="form-control rg" min="9" maxlength="9" value="{{old('rg')[$i] ?? "" }}" name="rg[{{$i}}]" placeholder="RG" id="rg{{$i}}"/>
                                                                         @error('rg.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -129,7 +129,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Celular'])
-                                                                        <input type="tel" class="form-control celular" value="{{old('celular')[$i] ?? "" }}" name="celular[{{$i}}]" placeholder="Celular" />
+                                                                        <input type="tel" class="form-control celular" value="{{old('celular')[$i] ?? "" }}" name="celular[{{$i}}]" placeholder="Celular" id="celular{{$i}}"/>
                                                                         @error('celular.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -142,7 +142,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CEP'])
-                                                                        <input name="cep[{{$i}}]" type="text" id="cep{{$i}}" value="{{ old('cep')[$i] ?? ''}}" class="form-control cep" onblur="pesquisacep(this.value, {{$i}})" />
+                                                                        <input name="cep[{{$i}}]" type="text" id="cep{{$i}}" value="{{ old('cep')[$i] ?? ''}}" class="form-control cep" onblur="pesquisacep(this.value, {{$i}})" id="cep{{$i}}" />
                                                                         @error('cep.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -160,7 +160,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Cidade'])
-                                                                        <input name="cidade[{{$i}}]" type="text" id="cidade{{$i}}" class="form-control" value="{{ old('cidade')[$i] ?? '' }}" />
+                                                                        <input name="cidade[{{$i}}]" type="text" id="cidade{{$i}}" class="form-control" value="{{ old('cidade')[$i] ?? '' }}" id="cidade{{$i}}"/>
                                                                         @error('cidade.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -169,7 +169,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Bairro'])
-                                                                        <input name="bairro[{{$i}}]" type="text" id="bairro{{$i}}" class="form-control" value="{{ old('bairro')[$i] ?? '' }}" />
+                                                                        <input name="bairro[{{$i}}]" type="text" id="bairro{{$i}}" class="form-control" value="{{ old('bairro')[$i] ?? '' }}" id="bairro{{$i}}"/>
                                                                         @error('bairro.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -178,7 +178,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Rua'])
-                                                                        <input name="rua[{{$i}}]" type="text" id="rua{{$i}}" class="form-control" value="{{ old('rua')[$i] ?? '' }}" />
+                                                                        <input name="rua[{{$i}}]" type="text" id="rua{{$i}}" class="form-control" value="{{ old('rua')[$i] ?? '' }}" id="rua{{$i}}"/>
                                                                         @error('rua.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -187,7 +187,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Número'])
-                                                                        <input name="numero[{{$i}}]" type="text" class="form-control" value="{{ old('numero')[$i] ?? '' }}" />
+                                                                        <input name="numero[{{$i}}]" type="text" class="form-control" value="{{ old('numero')[$i] ?? '' }}" id="numero{{$i}}"/>
                                                                         @error('numero.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -216,7 +216,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Instituição de Ensino'])
-                                                                        <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao[{{$i}}]">
+                                                                        <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao[{{$i}}]" id="instituicao[{{$i}}]">
                                                                             <option value="" disabled selected hidden>-- Instituição --</option>
                                                                             <option @if((old('instituicao')[$i] ?? "" )=='UFAPE' )) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                                                                             <option @if((old('instituicao')[$i] ?? "" )=='Outra' )) selected @endif value="Outra">Outra</option>
@@ -240,7 +240,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Curso'])
-                                                                        <select style="display: inline" class="form-control" name="curso[{{$i}}]" onchange="showCurso(this)">
+                                                                        <select style="display: inline" class="form-control" name="curso[{{$i}}]" onchange="showCurso(this)" id="curso[{{$i}}]">
                                                                             <option value="" disabled selected hidden>-- Selecione uma opção--</option>
                                                                             <option @if((old('curso')[$i] ?? "" )=='Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
                                                                             <option @if((old('curso')[$i] ?? "" )=='Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
@@ -399,24 +399,20 @@
                                 </div>
 
 
-                                @endfor
+                                <!-- @endfor -->
 
                             </div>
+                            
+                        </li>
+                        
+                    </ol>
                 </div>
 
-                </li>
+            <!-- </div> -->
+        <!-- </div> -->
+    <!-- </div> -->
+<!-- </div> -->
 
-                </ol>
-
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-<script>
-
-
-</script>
 <!-- Adicionando Javascript -->
 <script>
     function limpa_formulário_cep(id) {

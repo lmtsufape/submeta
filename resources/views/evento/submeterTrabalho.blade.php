@@ -18,11 +18,7 @@
       @include('evento.formulario.proponente')
       
       @if ($edital->numParticipantes != 0)
-      @include('evento.formulario.participantes')
-      @endif
-      
-      @if($edital->natureza_id == 3)
-        @include('evento.formulario.integrantes')
+          @include('evento.formulario.integrantes')
       @endif
       
       @include('evento.formulario.anexos')
@@ -217,7 +213,8 @@
       }
 
       document.getElementById("checkB"+id).checked = true;
-      $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
+      //$("#atribuir1").attr('data-target','#modalIntegrante'+(id+1));
+      modal_id = id+1;
       document.getElementById("part"+id).removeAttribute("hidden");
       document.getElementById("exampleModal"+id).modal('hide');
 

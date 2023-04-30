@@ -1172,8 +1172,10 @@ class TrabalhoController extends Controller
     public function buscarUsuario(Request $request) {
         $usuario = User::where('cpf', $request->cpf_consulta)->first();
         $funcao = FuncaoParticipantes::where('id', $request->funcao)->first();
+        $participante = $usuario->participantes()->first();
+
         if($usuario){
-            return json_encode([$usuario, $funcao]);
+            return json_encode([$usuario, $funcao, $participante, $usuario->endereco()->first()]);
         }
 
         return json_encode('inexistente');
