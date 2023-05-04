@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
         $this->call(EventoSeeder::class);
         $this->call(TrabalhoSeeder::class);
         $this->call(ArquivoSeeder::class);
+        $this->call(CampoAvaliacaoSeeder::class);
         $this->call(AvaliadorTrabalhoSeeder::class);
         $this->call(AvaliadorEventoSeeder::class);
-        $this->call(CampoAvaliacaoSeeder::class);
         $this->call(AvaliacaoTrabalhosSeeder::class);
         $this->call(AvaliacaoRelatorioSeeder::class);
         
