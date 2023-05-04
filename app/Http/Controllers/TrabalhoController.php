@@ -1153,9 +1153,9 @@ class TrabalhoController extends Controller
     public function buscarUsuario(Request $request) {
         $usuario = User::where('cpf', $request->cpf_consulta)->first();
         $funcao = FuncaoParticipantes::where('id', $request->funcao)->first();
-        $participante = $usuario->participantes()->first();
-
+        
         if($usuario){
+            $participante = $usuario->participantes()->first();
             return json_encode([$usuario, $funcao, $participante, $usuario->endereco()->first()]);
         }
 
@@ -1165,7 +1165,7 @@ class TrabalhoController extends Controller
 
     public function salvar(StoreTrabalho $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         try {
             if (!$request->has('rascunho')) {
                 $request->merge([
@@ -1201,15 +1201,15 @@ class TrabalhoController extends Controller
                 ]));
             }
 
-
+            //adição dos participantes
             if ($request->has('marcado')) {
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
 
-                    $passwordTemporario = Str::random(8);
+                    // $passwordTemporario = Str::random(8);
                     $data['name'] = $request->name[$part];
                     $data['email'] = $request->email[$part];
-                    $data['password'] = bcrypt($passwordTemporario);
+                    // $data['password'] = bcrypt($passwordTemporario);
                     $data['data_de_nascimento'] = $request->data_de_nascimento[$part];
                     $data['cpf'] = $request->cpf[$part];
                     $data['tipo'] = 'participante';
@@ -1265,6 +1265,7 @@ class TrabalhoController extends Controller
                     $participante->save();
 
                     if ($request->has('anexoPlanoTrabalho')) {
+                        dd("plano de trabalho");
                         $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
                         $nome = $data['nomePlanoTrabalho'] . ".pdf";
                         $file = $request->anexoPlanoTrabalho[$part];
@@ -1279,6 +1280,7 @@ class TrabalhoController extends Controller
                         $arquivo->save();
 
                     }
+                    
 
                 }
             } else {
@@ -1309,9 +1311,9 @@ class TrabalhoController extends Controller
 
 
             if($evento->natureza_id == 3){
+
                 foreach($request->integrantes as $integrante){
                     $integrante = explode(',', $integrante); 
-                    
                     $trabalho_user = new TrabalhoUser();
                     $trabalho_user->user_id = $integrante[0];
                     $trabalho_user->funcao_participante_id = $integrante[1];
