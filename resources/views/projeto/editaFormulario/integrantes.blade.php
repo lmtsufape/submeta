@@ -157,6 +157,7 @@
     }
 
     function preencherUsuarioExistente() {
+        console.log(modal_id);
         if(!document.getElementById(`exampleModal${modal_id}`)){
             exibirModalNumeroMaximoDeIntegrantes();
             return;
@@ -264,7 +265,11 @@
     $(document).ready(function() {
         
         @foreach($trabalhos_user as $trabalho_user)
-        modal_id += 1;
+        
+        if(<?php echo json_encode($trabalho_user) ?>['funcao']){
+            modal_id += 1;
+        }
+
         $('#integrante').append(`
                 <div id="integrante{{$trabalho_user->id}}" class="col-md-6">
                     <div class="row">

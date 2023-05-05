@@ -232,20 +232,20 @@
         let cpf = document.getElementById("cpf"+id);
         let funcao = document.getElementById("funcao_participante");
         let email = document.getElementById("email"+id);
-
+        let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
 
         if(nome.value != ""){
             if(planoTrabalho != null && planoTrabalho.value != ""){
-                linkNome.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção: ${funcao.value}`;
+                linkNome.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção: ${funcaoParticipantes[funcao.value -1].nome}`;
             }else {
-                linkNome.innerText = `Nome: ${nome.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção: ${funcao.value}`;
+                linkNome.innerText = `Nome: ${nome.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção: ${funcaoParticipantes[funcao.value -1].nome}`;
             }
         }
 
-        if(id >=1){
-            document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
-        }
-        console.log(document.getElementById("exampleModal"+id));
+        // if(id >=1){
+        //     document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
+        // }
+        // console.log(document.getElementById("exampleModal"+id));
 
         document.getElementById("checkB"+id).checked = true;
         // $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
@@ -256,14 +256,15 @@
 
     
     function desmarcar(id){
-        if(id >= 1){
-            document.getElementById("cancelar"+(id-1)).removeAttribute("disabled");
-        }
+        // if(id >= 1){
+        //     document.getElementById("cancelar"+(id-1)).removeAttribute("disabled");
+        // }
         document.getElementById("checkB"+id).checked = false;
         document.getElementById("part"+id).setAttribute("hidden",true);
         // $("#atribuir1").attr('data-target','#exampleModal'+(id));
         // document.getElementById("exampleModal"+id).modal('hide');
         modal_id -= 1;
+        console.log(modal_id);
     }
     @endif
 </script>

@@ -58,15 +58,20 @@ class UpdateTrabalho extends FormRequest
                     $rules['rg.'.$value] = ['required', 'string'];
                     $rules['data_de_nascimento.'.$value] = ['required', 'string'];
                     $rules['curso.'.$value] = ['required', 'string'];
-                    $rules['turno.'.$value] = ['required', 'string'];
-                    $rules['ordem_prioridade.'.$value] = ['required', 'string'];
-                    $rules['periodo_atual.'.$value] = ['required', 'string'];
-                    $rules['total_periodos.'.$value] = ['required', 'string'];
-                    if($evento->tipo != "PIBEX") {
+
+                    
+                    if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO") {
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
-                    $rules['anexoPlanoTrabalho.'.$value] = [Rule::requiredIf($participante->planoTrabalho == null)];
-                    $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
+
+                    if($evento->tipo != "CONTINUO"){
+                        $rules['turno.'.$value] = ['required', 'string'];
+                        $rules['ordem_prioridade.'.$value] = ['required', 'string'];
+                        $rules['periodo_atual.'.$value] = ['required', 'string'];
+                        $rules['total_periodos.'.$value] = ['required', 'string'];
+                        $rules['anexoPlanoTrabalho.'.$value] = [Rule::requiredIf($participante->planoTrabalho == null)];
+                        $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
+                    }
     
                 }
             }
@@ -113,7 +118,6 @@ class UpdateTrabalho extends FormRequest
                 $rules['anexoProjeto']                 = [Rule::requiredIf($projeto->anexoProjeto == null), 'mimes:pdf'];
                 $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'];
             }
-
             return $rules;
         }
     }

@@ -88,7 +88,7 @@
                                                         @if (isset(old('funcao')[$i]))
                                                             Função: {{ old('funcao')[$i] }}
                                                         @else
-                                                            Função: {{ $participante->funcao }}
+                                                            Função: {{ $trabalhos_user[$i]->funcao->nome }}
                                                         @endif
                                                     @endif
                                                     <h6>
@@ -103,8 +103,7 @@
                                                             id="cancelar{{ $i }}"
                                                             class=" btn btn-danger btn-sm"
                                                             style="font-size: 12px"
-                                                            onclick="desmarcar({{ $i }})"
-                                                            @if (isset(old('marcado')[$i + 1])) disabled @endif>Excluir</button>
+                                                            onclick="desmarcar({{ $i }})">Excluir</button>
                                                     </div>
                                                 </div>
 
