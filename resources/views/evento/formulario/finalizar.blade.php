@@ -16,6 +16,9 @@
       </div>
       @if($errors->any())             
         <div class="alert alert-danger">
+          @foreach($errors->all() as $error)
+            <li>{{$error}}</li>
+          @endforeach
           Verifique se todos os campos obrigatórios/Dados do discente foram preenchidos!
         </div>
       @endif

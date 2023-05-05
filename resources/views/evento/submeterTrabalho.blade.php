@@ -18,11 +18,7 @@
       @include('evento.formulario.proponente')
       
       @if ($edital->numParticipantes != 0)
-      @include('evento.formulario.participantes')
-      @endif
-      
-      @if($edital->natureza_id == 3)
-        @include('evento.formulario.integrantes')
+          @include('evento.formulario.integrantes')
       @endif
       
       @include('evento.formulario.anexos')
@@ -202,12 +198,17 @@
       let nomePlano = document.getElementById("nomePlano"+(id+1));
       let linkTituloProj = document.getElementById("tituloProj"+(id+1));
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
+
+      let cpf = document.getElementById("cpf"+id);
+      //let funcao = document.getElementById("funcao_participante");
+      let email = document.getElementById("email"+id);
+      console.log(planoTrabalho);
       if(nome.value != ""){
-          if(planoTrabalho.value != ""){
-              nomePlano.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value}`;
+          if(planoTrabalho != null && planoTrabalho.value != ""){
+              nomePlano.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção:`;
 
           }else {
-              nomePlano.innerText = `Nome: ${nome.value}`;
+              nomePlano.innerText = `Nome: ${nome.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção:`;
           }
       }else{
           nomePlano.innerText = `Discente `+(id+1);
@@ -217,7 +218,8 @@
       }
 
       document.getElementById("checkB"+id).checked = true;
-      $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
+      //$("#atribuir1").attr('data-target','#modalIntegrante'+(id+1));
+      modal_id = id+1;
       document.getElementById("part"+id).removeAttribute("hidden");
       document.getElementById("exampleModal"+id).modal('hide');
 
@@ -230,7 +232,8 @@
       }
       document.getElementById("checkB"+id).checked = false;
       document.getElementById("part"+id).setAttribute("hidden",true);
-      $("#atribuir1").attr('data-target','#exampleModal'+(id));
+      //$("#atribuir1").attr('data-target','#exampleModal'+(id));
+      modal_id -= 1;
       document.getElementById("exampleModal"+id).modal('hide');
   }
   @endif

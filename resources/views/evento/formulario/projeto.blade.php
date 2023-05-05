@@ -4,13 +4,15 @@
     <div class="card-body" style="padding-top: 0.2rem;">
       <div class="container">
         <div class="form-row mt-3">
-          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Informações do Projeto</h5></div>
+          
+          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">@if($edital->tipo == 'CONTINUO')Informações da Atividade de Extensão: @else Informações do Projeto @endif</h5></div>
         </div>
         <hr style="border-top: 1px solid#1492E6">
 
       <div class="row">
           <div class="form-group col-md-12" style="margin-top: 10px">
-              <label for="titulo" class="col-form-label" style="font-weight: bold">{{ __('Nome do Projeto') }} <span style="color: red; font-weight:bold">*</span></label>
+              <label for="titulo" class="col-form-label" style="font-weight: bold">@if($edital->tipo == 'CONTINUO'){{__('Nome da Atividade de Extensão')}} 
+                @else{{ __('Nome do Projeto') }}@endif <span style="color: red; font-weight:bold">*</span></label>
               <input id="titulo" type="text" class="form-control @error('titulo') is-invalid @enderror" name="titulo" placeholder="Digite o nome do projeto" value="{{old('titulo')}}" autocomplete="titulo" maxlength="255" >
               
               @error('titulo')
@@ -88,8 +90,9 @@
 
                   <div class="row col-md-12">
                     <div class="form-group col-md-12">
-                      <label for="ods_id" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Densenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label>
-                      <span>É possível selecionar um ou mais ODS's</span><br>
+                      <label for="ods_id" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Desenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label>
+                      <span>É possível selecionar um ou mais ODS. Para outras informações, 
+                            <a href="https://brasil.un.org/pt-br/sdgs" rel='external' target='_blank'> acesse o link.</a></span><br>
                       <div class="row col-md-12">
                         @foreach($ods as $od)
                         <div class="col-md-6">

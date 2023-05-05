@@ -34,7 +34,7 @@
             @enderror
           </div>
 
-          @if($edital->tipo != "PIBEX")
+          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO')
           <div class="col-md-2">
             <br>
             <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}<span style="color: red; font-weight:bold">*</span></label>
@@ -51,7 +51,7 @@
           </div>
           @endif
 
-          @if($edital->tipo != "PIBEX")
+          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO')
           <div class="col-md-3">
             <br>
             <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Valor da Planilha de Pontuação: ') }}<span style="color: red; font-weight:bold">*</span></label>
