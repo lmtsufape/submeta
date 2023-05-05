@@ -1265,7 +1265,7 @@ class TrabalhoController extends Controller
                     $participante->save();
 
                     if ($request->has('anexoPlanoTrabalho')) {
-                        dd("plano de trabalho");
+                        // dd("plano de trabalho");
                         $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
                         $nome = $data['nomePlanoTrabalho'] . ".pdf";
                         $file = $request->anexoPlanoTrabalho[$part];
