@@ -1,5 +1,5 @@
 <!-- Participantes AKI-->
-<div class="col-md-12"
+<!-- <div class="col-md-12"
     style="margin-top: 20px">
     <div class="card"
         style="border-radius: 5px">
@@ -23,7 +23,7 @@
                         </a>
                     </div>
                 </div>
-                <hr style="border-top: 1px solid#1492E6">
+                <hr style="border-top: 1px solid#1492E6"> -->
                 <div class="row-cols-sm-12 justify-content-start">
                     <ol
                         style="counter-reset: item;list-style-type: none; margin-left:-20px; margin-right:20px; margin-top:10px">
@@ -36,8 +36,7 @@
                                             $participante = null;
                                             if ($projeto->participantes->keys()->contains($i)) {
                                                 $participante = $projeto->participantes[$i];
-                                            }
-                                            
+                                            }                                            
                                         @endphp
 
                                         <div @if (!$participante) hidden @endif
@@ -59,32 +58,52 @@
                                                         @else
                                                             Nome: {{ $participante->user->name }}
                                                         @endif
-                                                        @if (isset(old('nomePlanoTrabalho')[$i]))
-                                                            <br> Plano: {{ old('nomePlanoTrabalho')[$i] }}
-                                                        @else
-                                                            <br>Plano:
-                                                            {{ $participante->planoTrabalho->titulo ?? 'Não informado' }}
+                                                        <br>
+
+                                                        @if($edital->tipo != "CONTINUO")
+                                                        <br>
+                                                            @if (isset(old('nomePlanoTrabalho')[$i]))
+                                                                Plano: {{ old('nomePlanoTrabalho')[$i] }}
+                                                            @else
+                                                                Plano:
+                                                                {{ $participante->planoTrabalho->titulo ?? 'Não informado' }}
+                                                            @endif
                                                         @endif
-                                                    @else
-                                                        Discente
+                                                        
+
+                                                        @if (isset(old('email')[$i]))
+                                                            E-mail: {{ old('email')[$i] }}
+                                                        @else
+                                                            E-mail: {{ $participante->user->email }}
+                                                        @endif
+                                                        <br>
+
+                                                        @if (isset(old('cpf')[$i]))
+                                                            CPF:{{ old('cpf')[$i] }}
+                                                        @else
+                                                            CPF: {{ $participante->user->cpf }}
+                                                        @endif
+                                                        <br>
+
+                                                        @if (isset(old('funcao')[$i]))
+                                                            Função: {{ old('funcao')[$i] }}
+                                                        @else
+                                                            Função: {{ $trabalhos_user[$i]->funcao->nome }}
+                                                        @endif
                                                     @endif
                                                     <h6>
-                                                        <a href=""
-                                                            style=""
-                                                            class="justify-content-center"
-                                                            data-toggle="modal"
-                                                            data-target="#exampleModal{{ $i }}"
-                                                            id="nomePart{{ $i + 1 }}">Informações</a>
+                                                        <a id="nomePart{{ $i + 1 }}"></a>
                                                     </h6>
+                                                    <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">Mais Informações</a>
+                                                    
                                                     <div class="col-sm-5 pl-0"
                                                         style="margin-top: 10px; text-align: left;">
                                                         <button data-dismiss="modal"
                                                             type="button"
                                                             id="cancelar{{ $i }}"
-                                                            class=" btn btn-danger"
+                                                            class=" btn btn-danger btn-sm"
                                                             style="font-size: 12px"
-                                                            onclick="desmarcar({{ $i }})"
-                                                            @if (isset(old('marcado')[$i + 1])) disabled @endif>Excluir</button>
+                                                            onclick="desmarcar({{ $i }})">Excluir</button>
                                                     </div>
                                                 </div>
 
@@ -96,7 +115,8 @@
                                             tabindex="-1"
                                             role="dialog"
                                             aria-labelledby="exampleModalLabel"
-                                            aria-hidden="true">
+                                            aria-hidden="true"
+                                            style="overflow:auto;">
                                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -181,11 +201,12 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Data de nascimento'])
-                                                                            <input type="date"
+                                                                            <input type="text"
                                                                                 class="form-control"
                                                                                 value="{{ old('data_de_nascimento')[$i] ?? ($participante->data_de_nascimento ?? '') }}"
                                                                                 name="data_de_nascimento[{{ $i }}]"
-                                                                                placeholder="Data de nascimento" />
+                                                                                placeholder="Data de nascimento"
+                                                                                id="data_de_nascimento{{$i}}" />
                                                                             @error('data_de_nascimento.' . $i)
                                                                                 <span class="invalid-feedback"
                                                                                     role="alert"
@@ -201,7 +222,8 @@
                                                                                 class="form-control cpf"
                                                                                 value="{{ old('cpf')[$i] ?? ($participante->user->cpf ?? '') }}"
                                                                                 name="cpf[{{ $i }}]"
-                                                                                placeholder="CPF" />
+                                                                                placeholder="CPF" 
+                                                                                id="cpf{{$i}}"/>
 
                                                                             @error('cpf.' . $i)
                                                                                 <span class="invalid-feedback"
@@ -220,7 +242,8 @@
                                                                                 maxlength="9"
                                                                                 value="{{ old('rg')[$i] ?? ($participante->rg ?? '') }}"
                                                                                 name="rg[{{ $i }}]"
-                                                                                placeholder="RG" />
+                                                                                placeholder="RG" 
+                                                                                id="rg{{$i}}"/>
                                                                             @error('rg.' . $i)
                                                                                 <span class="invalid-feedback"
                                                                                     role="alert"
@@ -236,7 +259,8 @@
                                                                                 class="form-control celular"
                                                                                 value="{{ old('celular')[$i] ?? ($participante->user->celular ?? '') }}"
                                                                                 name="celular[{{ $i }}]"
-                                                                                placeholder="Celular" />
+                                                                                placeholder="Celular" 
+                                                                                id="celular{{$i}}"/>
                                                                             @error('celular.' . $i)
                                                                                 <span class="invalid-feedback"
                                                                                     role="alert"
@@ -246,6 +270,7 @@
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
+                                                                    
                                                                     <div class="col-md-12">
                                                                         <h5>Endereço</h5>
                                                                     </div>
@@ -332,7 +357,8 @@
                                                                             <input name="numero[{{ $i }}]"
                                                                                 type="text"
                                                                                 class="form-control"
-                                                                                value="{{ old('numero')[$i] ?? ($participante->user->endereco->numero ?? '') }}" />
+                                                                                value="{{ old('numero')[$i] ?? ($participante->user->endereco->numero ?? '') }}"
+                                                                                id="numero{{$i}}"/>
                                                                             @error('numero.' . $i)
                                                                                 <span class="invalid-feedback"
                                                                                     role="alert"
@@ -373,7 +399,8 @@
                                                                             <select style="display: inline"
                                                                                 onchange="showInstituicao(this)"
                                                                                 class="form-control"
-                                                                                name="instituicao[{{ $i }}]">
+                                                                                name="instituicao[{{ $i }}]"
+                                                                                id="instituicao[{{$i}}]">
                                                                                 <option value=""
                                                                                     disabled
                                                                                     selected
@@ -421,7 +448,8 @@
                                                                             <select style="display: inline"
                                                                                 class="form-control"
                                                                                 name="curso[{{ $i }}]"
-                                                                                onchange="showCurso(this)">
+                                                                                onchange="showCurso(this)"
+                                                                                id="curso[{{ $i }}]">
                                                                                 <option value=""
                                                                                     disabled
                                                                                     selected
@@ -490,7 +518,8 @@
                                                                             @enderror
                                                                         @endcomponent
                                                                     </div>
-                                                                    <div class="col-6">
+
+                                                                    @if($edital->natureza_id != 3)                                                                    <div class="col-6">
                                                                         @component('componentes.select', ['label' => 'Turno'])
                                                                             <select name="turno[{{ $i }}]"
                                                                                 class="form-control">
@@ -516,77 +545,76 @@
                                                                     @php
                                                                         $options = ['3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9, '10' => 10, '11' => 11, '12' => 12];
                                                                     @endphp
-                                                                    <div class="col-6">
-                                                                        @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
-                                                                            <select
-                                                                                name="total_periodos[{{ $i }}]"
-                                                                                class="form-control"
-                                                                                onchange="gerarPeriodo(this)">
-                                                                                <option value=""
-                                                                                    selected>-- Selecione uma opção --
-                                                                                </option>
-                                                                                @foreach ($options as $key => $value)
-                                                                                    <option
-                                                                                        @if ((old('total_periodos')[$i] ?? ($participante->total_periodos ?? '')) == $key) selected @endif
-                                                                                        value="{{ $key }}">
-                                                                                        {{ $value }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                            @error('total_periodos.' . $i)
-                                                                                <span class="invalid-feedback"
-                                                                                    role="alert"
-                                                                                    style="overflow: visible; display:block">
-                                                                                    <strong>{{ $message }}</strong>
-                                                                                </span>
-                                                                            @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        @component('componentes.select', ['label' => 'Período/Ano atual'])
-                                                                            <select name="periodo_atual[]"
-                                                                                class="form-control">
-                                                                                <option value=""
-                                                                                    selected>-- Selecione uma opção --
-                                                                                </option>
-                                                                                <option selected
-                                                                                    value="{{ old('periodo_atual')[$i] ?? ($participante->periodo_atual ?? '') }}">
-                                                                                    {{ old('periodo_atual')[$i] ?? ($participante->periodo_atual ?? '') }}
-                                                                                </option>
+                                                                        <div class="col-6">
+                                                                            @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
+                                                                                <select
+                                                                                    name="total_periodos[{{ $i }}]"
+                                                                                    class="form-control"
+                                                                                    onchange="gerarPeriodo(this)">
+                                                                                    <option value=""
+                                                                                        selected>-- Selecione uma opção --
+                                                                                    </option>
+                                                                                    @foreach ($options as $key => $value)
+                                                                                        <option
+                                                                                            @if ((old('total_periodos')[$i] ?? ($participante->total_periodos ?? '')) == $key) selected @endif
+                                                                                            value="{{ $key }}">
+                                                                                            {{ $value }}</option>
+                                                                                    @endforeach
+                                                                                </select>
+                                                                                @error('total_periodos.' . $i)
+                                                                                    <span class="invalid-feedback"
+                                                                                        role="alert"
+                                                                                        style="overflow: visible; display:block">
+                                                                                        <strong>{{ $message }}</strong>
+                                                                                    </span>
+                                                                                @enderror
+                                                                            @endcomponent
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            @component('componentes.select', ['label' => 'Período/Ano atual'])
+                                                                                <select name="periodo_atual[]"
+                                                                                    class="form-control">
+                                                                                    <option value=""
+                                                                                        selected>-- Selecione uma opção --
+                                                                                    </option>
+                                                                                    <option selected
+                                                                                        value="{{ old('periodo_atual')[$i] ?? ($participante->periodo_atual ?? '') }}">
+                                                                                        {{ old('periodo_atual')[$i] ?? ($participante->periodo_atual ?? '') }}
+                                                                                    </option>
 
-                                                                            </select>
-                                                                            @error('periodo_atual.' . $i)
-                                                                                <span class="invalid-feedback"
-                                                                                    role="alert"
-                                                                                    style="overflow: visible; display:block">
-                                                                                    <strong>{{ $message }}</strong>
-                                                                                </span>
-                                                                            @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    <div class="col-6">
+                                                                                </select>
+                                                                                @error('periodo_atual.' . $i)
+                                                                                    <span class="invalid-feedback"
+                                                                                        role="alert"
+                                                                                        style="overflow: visible; display:block">
+                                                                                        <strong>{{ $message }}</strong>
+                                                                                    </span>
+                                                                                @enderror
+                                                                            @endcomponent
+                                                                        </div>
+                                                                        <div class="col-6">
 
-                                                                        @component('componentes.select', ['label' => 'Ordem de prioridade'])
-                                                                            <select name="ordem_prioridade[]"
-                                                                                class="form-control">
-                                                                                <option value=""
-                                                                                    selected>-- ORDEM --</option>
-                                                                                @for ($j = 1; $j <= $edital->numParticipantes; $j++)
-                                                                                    <option
-                                                                                        @if ((old('ordem_prioridade')[$i] ?? ($participante->ordem_prioridade ?? '')) == $j) selected @endif
-                                                                                        value="{{ $j }}">
-                                                                                        {{ $j }}</option>
-                                                                                @endfor
-                                                                            </select>
-                                                                            @error('ordem_prioridade.' . $i)
-                                                                                <span class="invalid-feedback"
-                                                                                    role="alert"
-                                                                                    style="overflow: visible; display:block">
-                                                                                    <strong>{{ $message }}</strong>
-                                                                                </span>
-                                                                            @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    @if ($edital->tipo != 'PIBEX')
+                                                                            @component('componentes.select', ['label' => 'Ordem de prioridade'])
+                                                                                <select name="ordem_prioridade[]"
+                                                                                    class="form-control">
+                                                                                    <option value=""
+                                                                                        selected>-- ORDEM --</option>
+                                                                                    @for ($j = 1; $j <= $edital->numParticipantes; $j++)
+                                                                                        <option
+                                                                                            @if ((old('ordem_prioridade')[$i] ?? ($participante->ordem_prioridade ?? '')) == $j) selected @endif
+                                                                                            value="{{ $j }}">
+                                                                                            {{ $j }}</option>
+                                                                                    @endfor
+                                                                                </select>
+                                                                                @error('ordem_prioridade.' . $i)
+                                                                                    <span class="invalid-feedback"
+                                                                                        role="alert"
+                                                                                        style="overflow: visible; display:block">
+                                                                                        <strong>{{ $message }}</strong>
+                                                                                    </span>
+                                                                                @enderror
+                                                                            @endcomponent
+                                                                        </div>
                                                                         <div class="col-6">
                                                                             @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
                                                                                 <input type="number"
@@ -606,65 +634,70 @@
                                                                             @endcomponent
                                                                         </div>
                                                                     @endif
-                                                                    <div class="col-md-12">
-                                                                        <h5>Plano de trabalho</h5>
-                                                                    </div>
-                                                                    <div class="col-12">
-                                                                        @component('componentes.input', ['label' => 'Título'])
-                                                                            <input type="text"
-                                                                                class="form-control"
-                                                                                value="{{ old('nomePlanoTrabalho')[$i] ?? ($participante->planoTrabalho->titulo ?? '') }}"
-                                                                                name="nomePlanoTrabalho[{{ $i }}]"
-                                                                                placeholder="Digite o título do plano de trabalho"
-                                                                                maxlength="255"
-                                                                                id="nomePlanoTrabalho{{ $i }}">
-                                                                            <span style="color: red; font-size: 12px"
-                                                                                id="caracsRestantesnomePlanoTrabalho{{ $i }}">
-                                                                            </span>
-                                                                            @error('nomePlanoTrabalho.' . $i)
+
+                                                                    @if($edital->tipo != 'CONTINUO')
+                                                                        <div class="col-md-12">
+                                                                            <h5>Plano de trabalho</h5>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            @component('componentes.input', ['label' => 'Título'])
+                                                                                <input type="text"
+                                                                                    class="form-control"
+                                                                                    value="{{ old('nomePlanoTrabalho')[$i] ?? ($participante->planoTrabalho->titulo ?? '') }}"
+                                                                                    name="nomePlanoTrabalho[{{ $i }}]"
+                                                                                    placeholder="Digite o título do plano de trabalho"
+                                                                                    maxlength="255"
+                                                                                    id="nomePlanoTrabalho{{ $i }}">
+                                                                                <span style="color: red; font-size: 12px"
+                                                                                    id="caracsRestantesnomePlanoTrabalho{{ $i }}">
+                                                                                </span>
+                                                                                @error('nomePlanoTrabalho.' . $i)
+                                                                                    <span class="invalid-feedback"
+                                                                                        role="alert"
+                                                                                        style="overflow: visible; display:block">
+                                                                                        <strong>{{ $message }}</strong>
+                                                                                    </span>
+                                                                                @enderror
+                                                                            @endcomponent
+                                                                        </div>
+
+
+                                                                        <div class="col-12"
+                                                                            style="margin-bottom: 10px">
+                                                                            <label>Anexo (.pdf)<span
+                                                                                    style="color: red;font-weight: bold">*
+                                                                                </span>
+                                                                                @if ($participante != null && $participante->planoTrabalho)
+                                                                                    <a style="margin-left: 5px"
+                                                                                        href="{{ route('baixar.plano', ['id' => $participante->planoTrabalho->id]) }}">
+                                                                                        <i
+                                                                                            class="fas fa-file-pdf fa-2x"></i></a>
+                                                                                @endif
+                                                                            </label>
+
+                                                                            <input type="file"
+                                                                                class="input-group-text"
+                                                                                value="{{ old('anexoPlanoTrabalho')[$i] ?? '' }}"
+                                                                                name="anexoPlanoTrabalho[{{ $i }}]"
+                                                                                accept=".pdf"
+                                                                                placeholder="Anexo do Plano de Trabalho" />
+                                                                            @error('anexoPlanoTrabalho.' . $i)
                                                                                 <span class="invalid-feedback"
                                                                                     role="alert"
                                                                                     style="overflow: visible; display:block">
                                                                                     <strong>{{ $message }}</strong>
                                                                                 </span>
                                                                             @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    <div class="col-12"
-                                                                        style="margin-bottom: 10px">
-                                                                        <label>Anexo (.pdf)<span
-                                                                                style="color: red;font-weight: bold">*
-                                                                            </span>
-                                                                            @if ($participante != null && $participante->planoTrabalho)
-                                                                                <a style="margin-left: 5px"
-                                                                                    href="{{ route('baixar.plano', ['id' => $participante->planoTrabalho->id]) }}">
-                                                                                    <i
-                                                                                        class="fas fa-file-pdf fa-2x"></i></a>
-                                                                            @endif
-                                                                        </label>
+                                                                            @error('anexoPlanoTrabalho')
+                                                                                <span class="invalid-feedback"
+                                                                                    role="alert"
+                                                                                    style="overflow: visible; display:block">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                            @enderror
 
-                                                                        <input type="file"
-                                                                            class="input-group-text"
-                                                                            value="{{ old('anexoPlanoTrabalho')[$i] ?? '' }}"
-                                                                            name="anexoPlanoTrabalho[{{ $i }}]"
-                                                                            accept=".pdf"
-                                                                            placeholder="Anexo do Plano de Trabalho" />
-                                                                        @error('anexoPlanoTrabalho.' . $i)
-                                                                            <span class="invalid-feedback"
-                                                                                role="alert"
-                                                                                style="overflow: visible; display:block">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                        @enderror
-                                                                        @error('anexoPlanoTrabalho')
-                                                                            <span class="invalid-feedback"
-                                                                                role="alert"
-                                                                                style="overflow: visible; display:block">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                        @enderror
-
-                                                                    </div>
+                                                                        </div>
+                                                                    @endif
                                                                     {{-- <div class="col-6">
                                                                           <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})" @if (isset(old('marcado')[$i + 1])) disabled @endif>Excluir</button>
                                                                           </div> --}}
@@ -704,10 +737,10 @@
                     </ol>
 
                 </div>
-            </div>
+            <!-- </div>
         </div>
     </div>
-</div>
+</div> -->
 <script>
     function limpa_formulário_cep(id) {
         //Limpa valores do formulário de cep.

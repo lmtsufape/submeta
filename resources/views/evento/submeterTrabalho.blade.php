@@ -198,12 +198,17 @@
       let nomePlano = document.getElementById("nomePlano"+(id+1));
       let linkTituloProj = document.getElementById("tituloProj"+(id+1));
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
+
+      let cpf = document.getElementById("cpf"+id);
+      //let funcao = document.getElementById("funcao_participante");
+      let email = document.getElementById("email"+id);
+      console.log(planoTrabalho);
       if(nome.value != ""){
-          if(planoTrabalho.value != ""){
-              nomePlano.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value}`;
+          if(planoTrabalho != null && planoTrabalho.value != ""){
+              nomePlano.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção:`;
 
           }else {
-              nomePlano.innerText = `Nome: ${nome.value}`;
+              nomePlano.innerText = `Nome: ${nome.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção:`;
           }
       }else{
           nomePlano.innerText = `Discente `+(id+1);
@@ -227,7 +232,8 @@
       }
       document.getElementById("checkB"+id).checked = false;
       document.getElementById("part"+id).setAttribute("hidden",true);
-      $("#atribuir1").attr('data-target','#exampleModal'+(id));
+      //$("#atribuir1").attr('data-target','#exampleModal'+(id));
+      modal_id -= 1;
       document.getElementById("exampleModal"+id).modal('hide');
   }
   @endif

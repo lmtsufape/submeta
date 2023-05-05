@@ -19,7 +19,8 @@
                         </a>
                     </div>
                 </div> -->
-                <hr style="border-top: 1px solid#1492E6">
+                <!-- <hr style="border-top: 1px solid#1492E6">
+                <h6 style="color: #234B8B; font-weight: bold">Participantes</h6> -->
                 <div class="row-cols-sm-12 justify-content-start">
                     <ol style="counter-reset: item;list-style-type: none; margin-left:-20px; margin-right:20px; margin-top:10px">
                         <li id="item">
@@ -39,10 +40,10 @@
                                                     @endif
                                                     <h6>
                                                         <a id="nomePlano{{$i+1}}"></a><br>
-                                                        <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">Informações</a>
+                                                        <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">Mais Informações</a>
                                                     </h6>
                                                     <div class="col-sm-5 pl-0" style="margin-top: 10px; text-align: left;">
-                                                        <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 12px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Excluir</button>
+                                                        <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger btn-sm" style="font-size: 12px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Remover</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -52,7 +53,7 @@
                                             <div class="modal-dialog modal-dialog-centered modal-xl">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Dados do Discente {{$i+1}}</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Dados do Integrante {{$i+1}}</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -268,115 +269,120 @@
                                                                         @enderror
                                                                         @endcomponent
                                                                     </div>
-                                                                    <div class="col-6">
-                                                                        @component('componentes.select', ['label' => 'Turno'])
-                                                                        <select name="turno[{{$i}}]" class="form-control">
-                                                                            <option value="" selected>-- Selecione uma opção --</option>
-                                                                            @foreach ($enum_turno as $key => $value)
-                                                                            <option @if((old('turno')[$i] ?? "" )==$value ) selected @endif value="{{ $value }}">{{ $value }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                        @error('turno.'.$i)
-                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                        @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    @php
-                                                                    $options = array('3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12);
-                                                                    @endphp
-                                                                    <div class="col-6">
-                                                                        @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
-                                                                        <select name="total_periodos[{{$i}}]" class="form-control" onchange="gerarPeriodo(this)">
-                                                                            <option value="" selected>-- Selecione uma opção --</option>
-                                                                            @foreach ($options as $key => $value)
-                                                                            <option @if((old('total_periodos')[$i] ?? "" )==$key ) selected @endif value="{{ $key }}">{{ $value }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                        @error('total_periodos.'.$i)
-                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                        @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        @component('componentes.select', ['label' => 'Período/Ano atual'])
-                                                                        <select name="periodo_atual[]" class="form-control">
-                                                                            <option value="" selected>-- Selecione uma opção --</option>
-                                                                            @if(old('periodo_atual')[$i] ?? '')
-                                                                            <option selected value="{{ old('periodo_atual')[$i] ?? '' }}">{{ old('periodo_atual')[$i] ?? '' }}</option>
-                                                                            @endif
 
-                                                                        </select>
-                                                                        @error('periodo_atual.'.$i)
-                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                        @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    <div class="col-6">
+                                                                    @if($edital->natureza_id != 3)
+                                                                        <div class="col-6">
+                                                                            @component('componentes.select', ['label' => 'Turno'])
+                                                                            <select name="turno[{{$i}}]" class="form-control">
+                                                                                <option value="" selected>-- Selecione uma opção --</option>
+                                                                                @foreach ($enum_turno as $key => $value)
+                                                                                <option @if((old('turno')[$i] ?? "" )==$value ) selected @endif value="{{ $value }}">{{ $value }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            @error('turno.'.$i)
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                            @enderror
+                                                                            @endcomponent
+                                                                        </div>
+                                                                        @php
+                                                                        $options = array('3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12);
+                                                                        @endphp
+                                                                        <div class="col-6">
+                                                                            @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
+                                                                            <select name="total_periodos[{{$i}}]" class="form-control" onchange="gerarPeriodo(this)">
+                                                                                <option value="" selected>-- Selecione uma opção --</option>
+                                                                                @foreach ($options as $key => $value)
+                                                                                <option @if((old('total_periodos')[$i] ?? "" )==$key ) selected @endif value="{{ $key }}">{{ $value }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            @error('total_periodos.'.$i)
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                            @enderror
+                                                                            @endcomponent
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            @component('componentes.select', ['label' => 'Período/Ano atual'])
+                                                                            <select name="periodo_atual[]" class="form-control">
+                                                                                <option value="" selected>-- Selecione uma opção --</option>
+                                                                                @if(old('periodo_atual')[$i] ?? '')
+                                                                                <option selected value="{{ old('periodo_atual')[$i] ?? '' }}">{{ old('periodo_atual')[$i] ?? '' }}</option>
+                                                                                @endif
 
-                                                                        @component('componentes.select', ['label' => 'Ordem de prioridade'])
-                                                                        <select name="ordem_prioridade[]" class="form-control">
-                                                                            <option value="" selected>-- ORDEM --</option>
-                                                                            @for($j = 1; $j <= $edital->numParticipantes; $j++)
-                                                                                <option @if((old('ordem_prioridade')[$i] ?? "" )==$j) selected @endif value="{{ $j }}">{{ $j }}</option>
-                                                                                @endfor
+                                                                            </select>
+                                                                            @error('periodo_atual.'.$i)
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                            @enderror
+                                                                            @endcomponent
+                                                                        </div>
+                                                                        <div class="col-6">
 
-                                                                        </select>
-                                                                        @error('ordem_prioridade.'.$i)
-                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                        @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    @if($edital->tipo != "PIBEX")
+                                                                            @component('componentes.select', ['label' => 'Ordem de prioridade'])
+                                                                            <select name="ordem_prioridade[]" class="form-control">
+                                                                                <option value="" selected>-- ORDEM --</option>
+                                                                                @for($j = 1; $j <= $edital->numParticipantes; $j++)
+                                                                                    <option @if((old('ordem_prioridade')[$i] ?? "" )==$j) selected @endif value="{{ $j }}">{{ $j }}</option>
+                                                                                    @endfor
 
-                                                                    <div class="col-6">
-                                                                        @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
-                                                                        <input type="number" class="form-control media" value="{{old('media_do_curso')[$i] ?? "" }}" name="media_do_curso[{{$i}}]" min="0" max="10" step="0.01">
-                                                                        @error('media_do_curso.'.$i)
-                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                        @enderror
-                                                                        @endcomponent
-                                                                    </div>
+                                                                            </select>
+                                                                            @error('ordem_prioridade.'.$i)
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                            @enderror
+                                                                            @endcomponent
+                                                                        </div>
+                                                                    
+
+                                                                        <div class="col-6">
+                                                                            @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
+                                                                            <input type="number" class="form-control media" value="{{old('media_do_curso')[$i] ?? "" }}" name="media_do_curso[{{$i}}]" min="0" max="10" step="0.01">
+                                                                            @error('media_do_curso.'.$i)
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                            @enderror
+                                                                            @endcomponent
+                                                                        </div>
                                                                     @endif
-                                                                    <div class="col-md-12">
-                                                                        <h5>Plano de trabalho</h5>
-                                                                    </div>
-                                                                    <div class="col-12">
-                                                                        @component('componentes.input', ['label' => 'Título'])
-                                                                        <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ?? "" }}" name="nomePlanoTrabalho[{{$i}}]" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$i}}">
-                                                                        <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$i}}">
-                                                                        </span>
-                                                                        @error('nomePlanoTrabalho.'.$i)
-                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                        @enderror
-                                                                        @endcomponent
-                                                                    </div>
-                                                                    <div class="col-12">
-                                                                        @component('componentes.input', ['label' => 'Anexo (.pdf)'])
-                                                                        <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
-                                                                        @error('anexoPlanoTrabalho.'.$i)
-                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                        @enderror
-                                                                        @error('anexoPlanoTrabalho')
-                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                        @enderror
-                                                                        @endcomponent
-                                                                    </div>
+                                                                    
+                                                                    @if($edital->tipo != "CONTINUO")
+                                                                        <div class="col-md-12">
+                                                                            <h5>Plano de trabalho</h5>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            @component('componentes.input', ['label' => 'Título'])
+                                                                            <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ?? "" }}" name="nomePlanoTrabalho[{{$i}}]" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$i}}">
+                                                                            <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$i}}">
+                                                                            </span>
+                                                                            @error('nomePlanoTrabalho.'.$i)
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                            @enderror
+                                                                            @endcomponent
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            @component('componentes.input', ['label' => 'Anexo (.pdf)'])
+                                                                            <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
+                                                                            @error('anexoPlanoTrabalho.'.$i)
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                            @enderror
+                                                                            @error('anexoPlanoTrabalho')
+                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                <strong>{{ $message }}</strong>
+                                                                            </span>
+                                                                            @enderror
+                                                                            @endcomponent
+                                                                        </div>
+                                                                    @endif
 
                                                                     {{-- <div class="col-6">
                                                                         <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Cancelar</button>

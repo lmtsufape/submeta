@@ -14,15 +14,16 @@
                     </div>
                 </div>
                 <hr style="border-top: 1px solid#1492E6">  
-                <div class="row" id="integrante">
+                <div class="row" id="integrante" style="display:none">
                 </div>
+                @include('projeto.editaFormulario.participantes')
             </div>
         </div>    
     </div>    
 </div>
 
 <div class="modal fade" id="modalIntegrante" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Adicionar Integrante</h5>
@@ -31,24 +32,38 @@
                 </button>
             </div>
 
-            <div class="form-row" style="padding: 30px;">
-                <div class="col-md-8">
-                    <label for="cpf_consulta">CPF:</label>
-                    <input type="text" id="cpf_consulta" name="cpf_consulta" class="form-control" onkeyup="mask_cpf();">
-                </div>
-                <div class="col-md-4 mt-4">
-                    <button type="button" class="btn btn-primary" onclick="preencherUsuarioExistente()">Adicionar</button>
+            <div class="container">
+                <div class="row justify-content-center" style="padding-left:35px; padding-right:45px">
+
+                    <div class="form-controll" style="margin-left:10px; margin-top:10px; margin-bottom:15px; font-weight:bold;">
+
+                        <div class="form-row d-flex">
+                            <label for="cpf_consulta">CPF:</label>
+                            <input type="text" id="cpf_consulta" name="cpf_consulta" class="form-control" onkeyup="mask_cpf();">
+                        </div>
+
+                        <div class="form-row d-flex" style="margin-top:10px">
+                            <label for="funcao_participante">Função do Integrante:</label>
+                            <select name="" id="funcao_participante" class="form-control">
+                                @foreach($funcaoParticipantes as $funcao)
+                                    @if($funcao->nome != 'Bolsista')
+                                        <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                    @elseif($edital->tipo != "CONTINUO")
+                                        <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-row justify-content-center" style="margin-top:20px;">
+                            <button type="button" class="btn btn-primary" onclick="preencherUsuarioExistente()">Adicionar</button>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
-        
-            <div class="form-row" style="padding: 0px 30px 30px 30px;">
-                <label for="funcao_participante">Função do Participante:</label>
-                <select name="" id="funcao_participante" class="form-control">
-                    @foreach($funcaoParticipantes as $funcao)
-                        <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                    @endforeach
-                </select>
-            </div>
+
         </div>
     </div>
 </div>
@@ -94,6 +109,26 @@
 </div>
 
 
+<div class="modal fade" id="aviso-modal-limite-de-integrantes" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #dc3545;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: white;">Aviso</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" >
+                <span id="texto-erro">O limite de integrantes para esse projeto foi atingido.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-color-dafault" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <script>
     function mask_cpf() {
@@ -122,6 +157,12 @@
     }
 
     function preencherUsuarioExistente() {
+        console.log(modal_id);
+        if(!document.getElementById(`exampleModal${modal_id}`)){
+            exibirModalNumeroMaximoDeIntegrantes();
+            return;
+        }
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -139,12 +180,12 @@
 
 
         success: function (data) {
-            console.log(data)
+            // console.log(data)
             if(data == 'inexistente' || $('#cpf_consulta').val() == ""){
                 $('#texto-erro').html('CPF não consta no sistema!');
                 exibirModalUsuarioInexistente();
             }else {
-                exibirUsuarioAdicionado();
+                exibirUsuarioAdicionado(data);
                 $('#integrante').append(`
                 <div id="integrante${data[0]['id']}" class="col-md-6">
                     <div class="row">
@@ -171,13 +212,64 @@
         $('#aviso-modal-usuario-nao-existe').modal('show');
     }
 
-    function exibirUsuarioAdicionado() {
-        $('#aviso-modal-usuario-adicionado').modal('show');;
+    function exibirModalNumeroMaximoDeIntegrantes() {
+        $('#aviso-modal-limite-de-integrantes').modal('show');
+    }
+
+    let modal_id = 0;
+   
+
+    function exibirUsuarioAdicionado(data) {
+        // console.log(`${modal_id}`, data);
+        $('#modalIntegrante').modal('hide'); 
+        document.getElementById(`nome${modal_id}`).value = data[0]['name'];
+        document.getElementById(`nome${modal_id}`).setAttribute("readonly", "");
+        document.getElementById(`email${modal_id}`).value = data[0]['email'];
+        document.getElementById(`email${modal_id}`).setAttribute("readonly", "");
+        document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(data[2]['data_de_nascimento'])).toLocaleDateString();
+        document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
+        
+        document.getElementById(`cpf${modal_id}`).value = data[0]['cpf'];
+        document.getElementById(`cpf${modal_id}`).setAttribute("readonly", "");
+        
+        document.getElementById(`rg${modal_id}`).value = data[2]['rg'];
+        document.getElementById(`rg${modal_id}`).setAttribute("readonly", "");
+        
+        document.getElementById(`celular${modal_id}`).value = data[0]['celular'];
+        document.getElementById(`celular${modal_id}`).setAttribute("readonly", "");
+        document.getElementById(`cep${modal_id}`).value = data[3]['cep'];
+        document.getElementById(`cep${modal_id}`).setAttribute("readonly", "");
+        document.getElementById(`uf${modal_id}`).value = data[3]['uf'];
+        document.getElementById(`uf${modal_id}`).setAttribute("readonly", "");
+        document.getElementById(`cidade${modal_id}`).value = data[3]['cidade'];
+        document.getElementById(`cidade${modal_id}`).setAttribute("readonly", "");
+        
+        document.getElementById(`bairro${modal_id}`).value = data[3]['bairro'];
+        document.getElementById(`bairro${modal_id}`).setAttribute("readonly", "");
+        document.getElementById(`rua${modal_id}`).value = data[3]['rua'];
+        document.getElementById(`rua${modal_id}`).setAttribute("readonly", "");
+        
+        document.getElementById(`numero${modal_id}`).value = data[3]['numero'];
+        document.getElementById(`numero${modal_id}`).setAttribute("readonly", "");
+        
+        document.getElementById(`complemento${modal_id}`).value = data[3]['complemento'];
+        document.getElementById(`complemento${modal_id}`).setAttribute("readonly", "");
+        
+        document.getElementById(`instituicao[${modal_id}]`).value = data[0]['instituicao'];
+        document.getElementById(`instituicao[${modal_id}]`).setAttribute("readonly", "");
+        document.getElementById(`curso[${modal_id}]`).value = data[2]['curso'];
+        document.getElementById(`curso[${modal_id}]`).setAttribute("readonly", "");
+        $(`#exampleModal${modal_id}`).modal('show');
     }
 
     $(document).ready(function() {
         
         @foreach($trabalhos_user as $trabalho_user)
+        
+        if(<?php echo json_encode($trabalho_user) ?>['funcao']){
+            modal_id += 1;
+        }
+
         $('#integrante').append(`
                 <div id="integrante{{$trabalho_user->id}}" class="col-md-6">
                     <div class="row">

@@ -35,10 +35,6 @@
       @include('projeto.editaFormulario.proponente')
 
       @if ($edital->numParticipantes != 0)
-        @include('projeto.editaFormulario.participantes')
-      @endif
-
-      @if($edital->natureza_id == 3)
         @include('projeto.editaFormulario.integrantes')
       @endif
 
@@ -50,13 +46,13 @@
     </div>
   </div>
   </form>
-  @if ($edital->numParticipantes != 0)
+  <!-- @if ($edital->numParticipantes != 0)
   <div id="participanteFirst" >
     @component('componentes.participante', ['enum_turno' => $enum_turno,'estados' => $estados, ])
       
     @endcomponent
   </div>
-  @endif
+  @endif -->
   <!-- Modal de Aviso Edit -->
   <div class="modal fade" id="exampleModalAnexarDocumento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -233,33 +229,42 @@
         let linkNome = document.getElementById("nomePart"+(id+1));
         let linkTituloProj = document.getElementById("tituloProj"+(id+1));
         let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
+        let cpf = document.getElementById("cpf"+id);
+        let funcao = document.getElementById("funcao_participante");
+        let email = document.getElementById("email"+id);
+        let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
+
         if(nome.value != ""){
-            if(planoTrabalho.value != ""){
-                linkNome.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value}`;
+            if(planoTrabalho != null && planoTrabalho.value != ""){
+                linkNome.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção: ${funcaoParticipantes[funcao.value -1].nome}`;
             }else {
-                linkNome.innerText = `Nome: ${nome.value}`;
+                linkNome.innerText = `Nome: ${nome.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção: ${funcaoParticipantes[funcao.value -1].nome}`;
             }
         }
-        if(id >=1){
-            document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
-        }
+
+        // if(id >=1){
+        //     document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
+        // }
+        // console.log(document.getElementById("exampleModal"+id));
 
         document.getElementById("checkB"+id).checked = true;
-        $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
+        // $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
+        modal_id += 1;
         document.getElementById("part"+id).removeAttribute("hidden");
-        document.getElementById("exampleModal"+id).modal('hide');
-
-
-
+        // document.getElementById("exampleModal"+id).modal('hide');
     }
+
+    
     function desmarcar(id){
-        if(id >= 1){;
-            document.getElementById("cancelar"+(id-1)).removeAttribute("disabled");
-        }
+        // if(id >= 1){
+        //     document.getElementById("cancelar"+(id-1)).removeAttribute("disabled");
+        // }
         document.getElementById("checkB"+id).checked = false;
         document.getElementById("part"+id).setAttribute("hidden",true);
-        $("#atribuir1").attr('data-target','#exampleModal'+(id));
-        document.getElementById("exampleModal"+id).modal('hide');
+        // $("#atribuir1").attr('data-target','#exampleModal'+(id));
+        // document.getElementById("exampleModal"+id).modal('hide');
+        modal_id -= 1;
+        console.log(modal_id);
     }
     @endif
 </script>
