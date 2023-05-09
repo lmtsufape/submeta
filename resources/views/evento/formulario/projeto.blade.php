@@ -92,7 +92,7 @@
                     <div class="form-group col-md-12">
                       <label for="ods_id" class="col-form-label" style="font-weight: bold">{{ __('Objetivo de Desenvolvimento Sustentável') }} <span style="color: red; font-weight:bold">*</span></label>
                       <span>(é possível selecionar um ou mais objetivos. Para outras informações, acesse o  
-                            <a href="https://brasil.un.org/pt-br/sdgs" rel='external' target='_blank'>link</a>).</span><br><br>
+                            <a href="https://brasil.un.org/pt-br/sdgs" rel='external' target='_blank'>link</a>).</span>
                       <div class="row col-md-12">
                         @foreach($ods as $od)
                         <div class="col-md-6">
