@@ -18,7 +18,7 @@ class AreaTematicaController extends Controller
 
         $areaTematica->delete();
 
-        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área Tematica excluida com sucesso']);
+        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área Temática excluida com sucesso']);
     }
 
     public function update(Request $request, $id)
@@ -27,7 +27,7 @@ class AreaTematicaController extends Controller
         $areaTematica->nome = $request->nome;
         $areaTematica->update();
 
-        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área Tematica editada com sucesso']);
+        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área Temática editada com sucesso']);
     }
 
     public function edit($id)
@@ -51,6 +51,6 @@ class AreaTematicaController extends Controller
         $areaTematica->nome = $request->nome;
         $areaTematica->save();
 
-        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área Tematica cadastrada com sucesso']);
+        return redirect( route('grandearea.index') )->with(['mensagem' => 'Área Temática cadastrada com sucesso']);
     }
 }
