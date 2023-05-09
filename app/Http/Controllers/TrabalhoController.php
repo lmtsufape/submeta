@@ -56,6 +56,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Desligamento;
 use App\ObjetivoDeDesenvolvimentoSustentavel;
 use App\AvaliacaoRelatorio;
+use App\Curso;
 
 class TrabalhoController extends Controller
 {
@@ -1172,10 +1173,11 @@ class TrabalhoController extends Controller
     public function buscarUsuario(Request $request) {
         $usuario = User::where('cpf', $request->cpf_consulta)->first();
         $funcao = FuncaoParticipantes::where('id', $request->funcao)->first();
+        $cursos = Curso::pluck('nome', 'id')->all();
         
         if($usuario){
             $participante = $usuario->participantes()->first();
-            return json_encode([$usuario, $funcao, $participante, $usuario->endereco()->first()]);
+                return json_encode([$usuario, $funcao, $participante, $usuario->endereco()->first(), $cursos]);
         }
 
         return json_encode('inexistente');

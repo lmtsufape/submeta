@@ -265,7 +265,8 @@
         document.getElementById(`instituicao[${modal_id}]`).value = data[0]['instituicao'];
         document.getElementById(`instituicao[${modal_id}]`).setAttribute("readonly", "");
 
-        document.getElementById(`curso[${modal_id}]`).value = data[2]['curso'];
+        document.getElementById(`curso[${modal_id}]`).value = data[4][data[2]['curso_id']];
+        console.log(data[2]['curso_id'], data[4], data[4][data[2]['curso_id']]);
         document.getElementById(`curso[${modal_id}]`).setAttribute("readonly", "");
         
         console.log(document.getElementById(`funcaoParticipante${modal_id}`));
