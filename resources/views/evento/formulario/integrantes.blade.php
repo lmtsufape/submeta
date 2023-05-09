@@ -43,7 +43,7 @@
 
                         <div class="form-row d-flex">
                             <label for="cpf_consulta">CPF:</label>
-                            <input type="text" id="cpf_consulta" name="cpf_consulta" class="form-control" onkeyup="mask_cpf();">
+                            <input type="text" id="cpf_consulta" name="cpf_consulta" class="form-control">
                         </div>
                     
                         <div class="form-row d-flex" style="margin-top:10px">
@@ -135,26 +135,9 @@
 
 
 <script>
-    function mask_cpf() {
-        $("#cpf_consulta").keydown(function(){
-            try {
-                $("#cpf_consulta").unmask();
-            } catch (e) {}
-
-            $("#cpf_consulta").mask("999.999.999-99");
-            
-            // ajustando foco
-            var elem = this;
-            setTimeout(function(){
-                // mudo a posição do seletor
-                elem.selectionStart = elem.selectionEnd = 10000;
-            }, 0);
-            // reaplico o valor para mudar o foco
-            var currentValue = $(this).val();
-            $(this).val('');
-            $(this).val(currentValue);
-        });
-    }
+    $(document).ready(function () {
+        $("#cpf_consulta").mask("999.999.999-99");
+    });
 
     function removerIntegrante(id) {
         $(`#integrante${id}`).remove()
