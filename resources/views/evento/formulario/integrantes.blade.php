@@ -109,6 +109,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="aviso-modal-limite-de-integrantes" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #dc3545;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: white;">Aviso</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" >
+                <span id="texto-erro">O limite de integrantes para esse projeto foi atingido.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-color-dafault" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <script>
@@ -138,6 +157,12 @@
     }
 
     function preencherUsuarioExistente() {
+        if(!document.getElementById(`exampleModal${modal_id}`)){
+            exibirModalNumeroMaximoDeIntegrantes();
+            return;
+        }
+
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -186,9 +211,14 @@
         $('#aviso-modal-usuario-nao-existe').modal('show');
     }
 
+    function exibirModalNumeroMaximoDeIntegrantes() {
+        $('#aviso-modal-limite-de-integrantes').modal('show');
+    }
+
     let modal_id = 0;
 
     function exibirUsuarioAdicionado(data) {
+        console.log(`${modal_id}`, data);
         $('#modalIntegrante').modal('hide'); 
         document.getElementById(`nome${modal_id}`).value = data[0]['name'];
         document.getElementById(`nome${modal_id}`).setAttribute("readonly", "");

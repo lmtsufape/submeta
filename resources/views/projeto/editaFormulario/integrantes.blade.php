@@ -157,7 +157,7 @@
     }
 
     function preencherUsuarioExistente() {
-        console.log(modal_id);
+        //console.log(modal_id);
         if(!document.getElementById(`exampleModal${modal_id}`)){
             exibirModalNumeroMaximoDeIntegrantes();
             return;
