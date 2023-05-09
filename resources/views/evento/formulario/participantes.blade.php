@@ -69,9 +69,9 @@
                                                         <div class="col-md-12">
                                                             <div class="container">
                                                                 <div class="row">
-                                                                    <input type="hidden" name="funcaoParticipante[]" value="4">
+                                                                    <input type="hidden" name="funcaoParticipante[{{$i}}]" id="funcaoParticipante{{$i}}">
                                                                     <div class="col-md-12 mt-3">
-                                                                        <h5>Dados do discente</h5>
+                                                                        <h5>Dados do integrante</h5>
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Nome completo'])
@@ -354,10 +354,10 @@
                                                                     @endif
                                                                     
                                                                     @if($edital->tipo != "CONTINUO")
-                                                                        <div class="col-md-12">
+                                                                        <div class="col-md-12" id="plano-titulo{{$i}}">
                                                                             <h5>Plano de trabalho</h5>
                                                                         </div>
-                                                                        <div class="col-12">
+                                                                        <div class="col-12" id="plano-nome{{$i}}">
                                                                             @component('componentes.input', ['label' => 'Título'])
                                                                             <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ?? "" }}" name="nomePlanoTrabalho[{{$i}}]" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$i}}">
                                                                             <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$i}}">
@@ -369,7 +369,7 @@
                                                                             @enderror
                                                                             @endcomponent
                                                                         </div>
-                                                                        <div class="col-12">
+                                                                        <div class="col-12" id="plano-anexo{{$i}}">
                                                                             @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                                                                             <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
                                                                             @error('anexoPlanoTrabalho.'.$i)

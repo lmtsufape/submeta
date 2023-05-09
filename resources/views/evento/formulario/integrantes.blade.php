@@ -222,7 +222,6 @@
     let modal_id = 0;
 
     function exibirUsuarioAdicionado(data) {
-        console.log(`${modal_id}`, data);
         $('#modalIntegrante').modal('hide'); 
         document.getElementById(`nome${modal_id}`).value = data[0]['name'];
         document.getElementById(`nome${modal_id}`).setAttribute("readonly", "");
@@ -268,6 +267,16 @@
 
         document.getElementById(`curso[${modal_id}]`).value = data[2]['curso'];
         document.getElementById(`curso[${modal_id}]`).setAttribute("readonly", "");
+        
+        console.log(document.getElementById(`funcaoParticipante${modal_id}`));
+        document.getElementById(`funcaoParticipante${modal_id}`).value = data[1]['nome'];
+        
+        if(data[1].nome != "Bolsista" && data[1].nome != "Voluntário"){
+            document.getElementById(`plano-titulo${modal_id}`).setAttribute('hidden', "");
+            document.getElementById(`plano-nome${modal_id}`).setAttribute('hidden', "");
+            document.getElementById(`plano-anexo${modal_id}`).setAttribute('hidden', "");
+        }
+        
         $(`#exampleModal${modal_id}`).modal('show');
     }
 
