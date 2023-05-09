@@ -200,15 +200,27 @@
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
 
       let cpf = document.getElementById("cpf"+id);
-      //let funcao = document.getElementById("funcao_participante");
+      let funcao = document.getElementById("funcao_participante");
       let email = document.getElementById("email"+id);
-      console.log(planoTrabalho);
+
+      let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
+      let nome_funcao = "";
+
+      //pega o nome da função do participante
+      for (var i = 0; i < funcaoParticipantes.length; i++) {
+        if(funcaoParticipantes[i].id == funcao.value){
+          nome_funcao =  funcaoParticipantes[i].nome;
+          break;
+        }
+      }
+
+
       if(nome.value != ""){
           if(planoTrabalho != null && planoTrabalho.value != ""){
               nomePlano.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção:`;
 
           }else {
-              nomePlano.innerText = `Nome: ${nome.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção:`;
+              nomePlano.innerText = `Nome: ${nome.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção:${nome_funcao}`;
           }
       }else{
           nomePlano.innerText = `Discente `+(id+1);
@@ -221,7 +233,7 @@
       //$("#atribuir1").attr('data-target','#modalIntegrante'+(id+1));
       modal_id = id+1;
       document.getElementById("part"+id).removeAttribute("hidden");
-      document.getElementById("exampleModal"+id).modal('hide');
+      //document.getElementById("exampleModal"+id).modal('hide');
 
 
 

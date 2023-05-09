@@ -45,13 +45,15 @@
                         <div class="form-row d-flex" style="margin-top:10px">
                             <label for="funcao_participante">Função do Integrante:</label>
                             <select name="" id="funcao_participante" class="form-control">
-                                @foreach($funcaoParticipantes as $funcao)
-                                    @if($funcao->nome != 'Bolsista')
+                                @if($edital->natureza_id == 3)
+                                    @if($edital->tipo == "CONTINUO" && $funcao->nome != 'Bolsista')
                                         <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                                    @elseif($edital->tipo != "CONTINUO")
+                                    @elseif($funcao->nome != "Consultor" && $funcao->nome != "Pesquisador" && $funcao->nome != "Voluntário")
                                         <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
                                     @endif
-                                @endforeach
+                                @else 
+                                    <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                @endif
                             </select>
                         </div>
 
@@ -157,7 +159,7 @@
     }
 
     function preencherUsuarioExistente() {
-        console.log(modal_id);
+        //console.log(modal_id);
         if(!document.getElementById(`exampleModal${modal_id}`)){
             exibirModalNumeroMaximoDeIntegrantes();
             return;

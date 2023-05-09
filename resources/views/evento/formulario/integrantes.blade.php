@@ -50,9 +50,13 @@
                             <label for="funcao_participante">Função do Integrante:</label>
                             <select name="" id="funcao_participante" class="form-control">
                                 @foreach($funcaoParticipantes as $funcao)
-                                    @if($funcao->nome != 'Bolsista')
-                                        <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                                    @elseif($edital->tipo != "CONTINUO")
+                                    @if($edital->natureza_id == 3)
+                                        @if($edital->tipo == "CONTINUO" && $funcao->nome != 'Bolsista')
+                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                        @elseif($funcao->nome != "Consultor" && $funcao->nome != "Pesquisador" && $funcao->nome != "Voluntário")
+                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                        @endif
+                                    @else 
                                         <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
                                     @endif
                                 @endforeach
@@ -109,6 +113,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="aviso-modal-limite-de-integrantes" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #dc3545;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: white;">Aviso</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" >
+                <span id="texto-erro">O limite de integrantes para esse projeto foi atingido.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-color-dafault" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <script>
@@ -138,6 +161,12 @@
     }
 
     function preencherUsuarioExistente() {
+        if(!document.getElementById(`exampleModal${modal_id}`)){
+            exibirModalNumeroMaximoDeIntegrantes();
+            return;
+        }
+
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -184,6 +213,10 @@
 
     function exibirModalUsuarioInexistente() {
         $('#aviso-modal-usuario-nao-existe').modal('show');
+    }
+
+    function exibirModalNumeroMaximoDeIntegrantes() {
+        $('#aviso-modal-limite-de-integrantes').modal('show');
     }
 
     let modal_id = 0;
@@ -234,6 +267,16 @@
 
         document.getElementById(`curso[${modal_id}]`).value = data[2]['curso'];
         document.getElementById(`curso[${modal_id}]`).setAttribute("readonly", "");
+        
+        console.log(document.getElementById(`funcaoParticipante${modal_id}`));
+        document.getElementById(`funcaoParticipante${modal_id}`).value = data[1]['nome'];
+        
+        if(data[1].nome != "Bolsista" && data[1].nome != "Voluntário"){
+            document.getElementById(`plano-titulo${modal_id}`).setAttribute('hidden', "");
+            document.getElementById(`plano-nome${modal_id}`).setAttribute('hidden', "");
+            document.getElementById(`plano-anexo${modal_id}`).setAttribute('hidden', "");
+        }
+        
         $(`#exampleModal${modal_id}`).modal('show');
     }
 

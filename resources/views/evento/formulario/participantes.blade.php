@@ -69,9 +69,9 @@
                                                         <div class="col-md-12">
                                                             <div class="container">
                                                                 <div class="row">
-                                                                    <input type="hidden" name="funcaoParticipante[]" value="4">
+                                                                    <input type="hidden" name="funcaoParticipante[{{$i}}]" id="funcaoParticipante{{$i}}">
                                                                     <div class="col-md-12 mt-3">
-                                                                        <h5>Dados do discente</h5>
+                                                                        <h5>Dados do integrante</h5>
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Nome completo'])
@@ -217,11 +217,12 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Instituição de Ensino'])
-                                                                        <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao[{{$i}}]" id="instituicao[{{$i}}]">
+                                                                        <!-- <select style="display: inline" onchange="showInstituicao(this)" class="form-control" name="instituicao[{{$i}}]" id="instituicao[{{$i}}]">
                                                                             <option value="" disabled selected hidden>-- Instituição --</option>
                                                                             <option @if((old('instituicao')[$i] ?? "" )=='UFAPE' )) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                                                                             <option @if((old('instituicao')[$i] ?? "" )=='Outra' )) selected @endif value="Outra">Outra</option>
-                                                                        </select>
+                                                                        </select> -->
+                                                                        <input type="text" style="display: inline" class="form-control" name="instituicao[{{$i}}]" id="instituicao[{{$i}}]">
                                                                         @error('instituicao.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -241,7 +242,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Curso'])
-                                                                        <select style="display: inline" class="form-control" name="curso[{{$i}}]" onchange="showCurso(this)" id="curso[{{$i}}]">
+                                                                        <!-- <select style="display: inline" class="form-control" name="curso[{{$i}}]" onchange="showCurso(this)" id="curso[{{$i}}]">
                                                                             <option value="" disabled selected hidden>-- Selecione uma opção--</option>
                                                                             <option @if((old('curso')[$i] ?? "" )=='Bacharelado em Agronomia' ) selected @endif value="Bacharelado em Agronomia">Bacharelado em Agronomia</option>
                                                                             <option @if((old('curso')[$i] ?? "" )=='Bacharelado em Ciência da Computação' ) selected @endif value="Bacharelado em Ciência da Computação">Bacharelado em Ciência da Computação</option>
@@ -251,7 +252,8 @@
                                                                             <option @if((old('curso')[$i] ?? "" )=='Licenciatura em Letras' ) selected @endif value="Licenciatura em Letras">Licenciatura em Letras</option>
                                                                             <option @if((old('curso')[$i] ?? "" )=='Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
                                                                             <option @if((old('curso')[$i] ?? "" )=='Outro' ) selected @endif value="Outro">Outro</option>
-                                                                        </select>
+                                                                        </select> -->
+                                                                        <input type="text" style="display: inline" class="form-control" name="curso[{{$i}}]" id="curso[{{$i}}]">
                                                                         @error('curso.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -352,10 +354,10 @@
                                                                     @endif
                                                                     
                                                                     @if($edital->tipo != "CONTINUO")
-                                                                        <div class="col-md-12">
+                                                                        <div class="col-md-12" id="plano-titulo{{$i}}">
                                                                             <h5>Plano de trabalho</h5>
                                                                         </div>
-                                                                        <div class="col-12">
+                                                                        <div class="col-12" id="plano-nome{{$i}}">
                                                                             @component('componentes.input', ['label' => 'Título'])
                                                                             <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ?? "" }}" name="nomePlanoTrabalho[{{$i}}]" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$i}}">
                                                                             <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$i}}">
@@ -367,7 +369,7 @@
                                                                             @enderror
                                                                             @endcomponent
                                                                         </div>
-                                                                        <div class="col-12">
+                                                                        <div class="col-12" id="plano-anexo{{$i}}">
                                                                             @component('componentes.input', ['label' => 'Anexo (.pdf)'])
                                                                             <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
                                                                             @error('anexoPlanoTrabalho.'.$i)
