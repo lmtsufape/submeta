@@ -141,7 +141,6 @@ class RegisterController extends Controller
             $endereco->save();
 
             $participante->data_de_nascimento = $data['data_de_nascimento'];
-            $participante->curso = Curso::find($data['cursoEstudante']);
             $participante->linkLattes = $data['linkLattes'];
 
             if ($data['outroCursoEstudante'] != null) {
