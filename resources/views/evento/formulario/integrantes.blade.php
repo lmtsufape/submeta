@@ -50,9 +50,13 @@
                             <label for="funcao_participante">Função do Integrante:</label>
                             <select name="" id="funcao_participante" class="form-control">
                                 @foreach($funcaoParticipantes as $funcao)
-                                    @if($funcao->nome != 'Bolsista')
-                                        <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                                    @elseif($edital->tipo != "CONTINUO")
+                                    @if($edital->natureza_id == 3)
+                                        @if($edital->tipo == "CONTINUO" && $funcao->nome != 'Bolsista')
+                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                        @elseif($funcao->nome != "Consultor" && $funcao->nome != "Pesquisador" && $funcao->nome != "Voluntário")
+                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                        @endif
+                                    @else 
                                         <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
                                     @endif
                                 @endforeach
