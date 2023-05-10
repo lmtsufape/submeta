@@ -112,8 +112,8 @@
   })
   buttonRascunho.addEventListener('click', (e)=>{
     $('.collapse').addClass('show')
-    const input = '<input id="input_rascunho" type="hidden" name="rascunho" value="true">';
-    $("#criarProjetoForm").append(input);
+    $("form#criarProjetoForm").prepend('<input id="input_rascunho" type="hidden" name="rascunho" value="true" />');
+    $("form#criarProjetoForm").submit();
   })
 
   @if($edital->numParticipantes != 0)
