@@ -105,7 +105,7 @@
                             </a>
                             <div class="dropdown-menu">
                               
-                              @if($hoje <= $projeto->evento->fimSubmissao)
+                              @if($hoje <= $projeto->evento->fimSubmissao && $projeto->status == 'rascunho')
                                 <a href="{{ route('trabalho.editar', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                                     Editar
                                 </a>
