@@ -32,9 +32,9 @@
       @component('projeto.formularioVisualizar.anexos2', ['edital' => $edital,'projeto' => $projeto])
       @endcomponent
       
-      @if ($edital->numParticipantes != 0)
-      @component('projeto.formularioVisualizar.participantes2', ['projeto' => $projeto, 'edital' => $edital])
-      @endcomponent
+      @if ($edital->numParticipantes != 0 && $edital->natureza_id != 3)
+        @component('projeto.formularioVisualizar.participantes2', ['projeto' => $projeto, 'edital' => $edital])
+        @endcomponent
       @endif
 
       @if($edital->natureza_id == 3)
