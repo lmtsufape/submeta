@@ -61,7 +61,6 @@
                                                         <br>
 
                                                         @if($edital->tipo != "CONTINUO")
-                                                        <br>
                                                             @if (isset(old('nomePlanoTrabalho')[$i]))
                                                                 Plano: {{ old('nomePlanoTrabalho')[$i] }}
                                                             @else
