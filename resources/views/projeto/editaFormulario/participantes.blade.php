@@ -159,6 +159,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Nome completo'])
                                                                             <input type="text"
+                                                                                disabled
                                                                                 class="form-control "
                                                                                 value="{{ old('name')[$i] ?? ($participante->user->name ?? '') }}"
                                                                                 name="name[{{ $i }}]"
@@ -180,6 +181,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'E-mail'])
                                                                             <input type="email"
+                                                                                disabled
                                                                                 class="form-control"
                                                                                 value="{{ old('email')[$i] ?? ($participante->user->email ?? '') }}"
                                                                                 name="email[{{ $i }}]"
@@ -201,6 +203,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Data de nascimento'])
                                                                             <input type="text"
+                                                                                disabled
                                                                                 class="form-control"
                                                                                 value="{{ old('data_de_nascimento')[$i] ?? ($participante->data_de_nascimento ?? '') }}"
                                                                                 name="data_de_nascimento[{{ $i }}]"
@@ -218,6 +221,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CPF'])
                                                                             <input type="text"
+                                                                                disabled
                                                                                 class="form-control cpf"
                                                                                 value="{{ old('cpf')[$i] ?? ($participante->user->cpf ?? '') }}"
                                                                                 name="cpf[{{ $i }}]"
@@ -236,6 +240,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'RG'])
                                                                             <input type="text"
+                                                                                disabled
                                                                                 class="form-control rg"
                                                                                 min="9"
                                                                                 maxlength="9"
@@ -255,6 +260,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Celular'])
                                                                             <input type="tel"
+                                                                                disabled
                                                                                 class="form-control celular"
                                                                                 value="{{ old('celular')[$i] ?? ($participante->user->celular ?? '') }}"
                                                                                 name="celular[{{ $i }}]"
@@ -278,6 +284,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CEP'])
                                                                             <input name="cep[{{ $i }}]"
+                                                                                disabled
                                                                                 type="text"
                                                                                 id="cep{{ $i }}"
                                                                                 value="{{ old('cep')[$i] ?? ($participante->user->endereco->cep ?? '') }}"
@@ -294,6 +301,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Estado'])
                                                                             <input name="uf[{{ $i }}]"
+                                                                                disabled
                                                                                 type="text"
                                                                                 class="form-control"
                                                                                 value="{{ old('uf')[$i] ?? ($participante->user->endereco->uf ?? '') }}"
@@ -309,6 +317,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Cidade'])
                                                                             <input name="cidade[{{ $i }}]"
+                                                                                disabled
                                                                                 type="text"
                                                                                 id="cidade{{ $i }}"
                                                                                 class="form-control"
@@ -324,6 +333,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Bairro'])
                                                                             <input name="bairro[{{ $i }}]"
+                                                                                disabled
                                                                                 type="text"
                                                                                 id="bairro{{ $i }}"
                                                                                 class="form-control"
@@ -339,6 +349,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Rua'])
                                                                             <input name="rua[{{ $i }}]"
+                                                                                disabled
                                                                                 type="text"
                                                                                 id="rua{{ $i }}"
                                                                                 class="form-control"
@@ -354,6 +365,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Número'])
                                                                             <input name="numero[{{ $i }}]"
+                                                                                disabled    
                                                                                 type="text"
                                                                                 class="form-control"
                                                                                 value="{{ old('numero')[$i] ?? ($participante->user->endereco->numero ?? '') }}"
@@ -373,6 +385,7 @@
                                                                                 for="firstname">Complemento</label>
                                                                             <input type="text"
                                                                                 class="form-control"
+                                                                                disabled
                                                                                 value="{{ old('complemento')[$i] ?? ($participante->user->endereco->complemento ?? '') }}"
                                                                                 name="complemento[{{ $i }}]"
                                                                                 placeholder="Complemento"
@@ -396,6 +409,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Instituição de Ensino'])
                                                                             <select style="display: inline"
+                                                                                disabled
                                                                                 onchange="showInstituicao(this)"
                                                                                 class="form-control"
                                                                                 name="instituicao[{{ $i }}]"
@@ -427,6 +441,7 @@
                                                                         @component('componentes.input', ['label' => 'Digite a Instituição'])
                                                                             <input
                                                                                 id="outrainstituicao[{{ $i }}]"
+                                                                                disabled
                                                                                 type="text"
                                                                                 class="form-control @error('instituicao') is-invalid @enderror"
                                                                                 name="outrainstituicao[{{ $i }}]"
@@ -445,6 +460,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Curso'])
                                                                             <select style="display: inline"
+                                                                                disabled
                                                                                 class="form-control"
                                                                                 name="curso[{{ $i }}]"
                                                                                 onchange="showCurso(this)"
