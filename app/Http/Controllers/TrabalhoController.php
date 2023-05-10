@@ -505,6 +505,8 @@ class TrabalhoController extends Controller
             $projeto = Trabalho::find($id);
         }else{
             $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
+            if ($projeto->status != 'rascunho')
+                return redirect()->back()->with('mensagem', 'Não é possível alterar uma proposta já submetida');
         }
 
         $proponente = Proponente::where('user_id', $projeto->proponente->user_id)->first();
