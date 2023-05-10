@@ -192,6 +192,20 @@
 
   $("input.rg:text").mask('00.000.000-0');
 
+  function get_funcao(id){
+    let funcao = document.getElementById("funcao_participante");
+    let fun_part = <?php echo json_encode($funcaoParticipantes); ?>;
+    let nome_funcao = "";
+    fun_part.forEach(function(func, i){
+        if(func.id == id){
+          nome_funcao =  func.nome;
+        }
+
+
+    });
+    return nome_funcao;
+  }
+
   function marcar(id){
       let nome = document.getElementById("nome"+id);
       let linkNome = document.getElementById("nomePart"+(id+1));
@@ -204,7 +218,7 @@
       let email = document.getElementById("email"+id);
 
       let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
-      let nome_funcao = "";
+      let nome_funcao = get_funcao(funcao.value);
 
       //pega o nome da função do participante
       for (var i = 0; i < funcaoParticipantes.length; i++) {
@@ -214,19 +228,18 @@
         }
       }
 
-
       if(nome.value != ""){
           if(planoTrabalho != null && planoTrabalho.value != ""){
               nomePlano.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
                                         <strong>Plano: </strong>${planoTrabalho.value}<br>
                                         <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${funcaoParticipantes[funcao.value -1].nome}</p>`;
+                                        <strong>Função: </strong>${nome_funcao}</p>`;
           }else {
               nomePlano.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
                                         <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${funcaoParticipantes[funcao.value -1].nome}</p>`;
+                                        <strong>Função: </strong>${nome_funcao}</p>`;
           }
       }else{
           nomePlano.innerText = `Discente `+(id+1);
