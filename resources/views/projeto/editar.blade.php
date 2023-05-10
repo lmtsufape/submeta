@@ -236,9 +236,16 @@
 
         if(nome.value != ""){
             if(planoTrabalho != null && planoTrabalho.value != ""){
-                linkNome.innerText = `Nome: ${nome.value} \n Plano: ${planoTrabalho.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção: ${funcaoParticipantes[funcao.value -1].nome}`;
+                linkNome.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
+                                        <strong>E-mail: </strong>${email.value} <br>
+                                        <strong>Plano: </strong>${planoTrabalho.value}<br>
+                                        <strong>CPF: </strong>${cpf.value} <br>
+                                        <strong>Função: </strong>${funcaoParticipantes[funcao.value -1].nome}</p>`;
             }else {
-                linkNome.innerText = `Nome: ${nome.value} \n E-mail: ${email.value} \n CPF: ${cpf.value}\nFunção: ${funcaoParticipantes[funcao.value -1].nome}`;
+                linkNome.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
+                                        <strong>E-mail: </strong>${email.value} <br>
+                                        <strong>CPF: </strong>${cpf.value} <br>
+                                        <strong>Função: </strong>${funcaoParticipantes[funcao.value -1].nome}</p>`;
             }
         }
 

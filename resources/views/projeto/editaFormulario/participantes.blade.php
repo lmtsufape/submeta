@@ -52,43 +52,38 @@
                                             <div class="col-sm-8"
                                                 style="display: flex; align-items: center;">
                                                 <div class="col-sm-12">
+                                                
+
                                                     @if ($participante)
+                                                    <p>
                                                         @if (isset(old('name')[$i]))
-                                                            Nome: {{ old('name')[$i] }}
+                                                            <strong>Nome: </strong> {{ old('name')[$i] }}
                                                         @else
-                                                            Nome: {{ $participante->user->name }}
+                                                            <strong>Nome: </strong>{{ $participante->user->name }}
                                                         @endif
                                                         <br>
-
-                                                        @if($edital->tipo != "CONTINUO")
-                                                            @if (isset(old('nomePlanoTrabalho')[$i]))
-                                                                Plano: {{ old('nomePlanoTrabalho')[$i] }}
-                                                            @else
-                                                                Plano:
-                                                                {{ $participante->planoTrabalho->titulo ?? 'Não informado' }}
-                                                            @endif
-                                                        @endif
                                                         
 
                                                         @if (isset(old('email')[$i]))
-                                                            E-mail: {{ old('email')[$i] }}
+                                                            <strong>E-mail: </strong>{{ old('email')[$i] }}
                                                         @else
-                                                            E-mail: {{ $participante->user->email }}
+                                                            <strong>E-mail: </strong>{{ $participante->user->email }}
                                                         @endif
                                                         <br>
 
                                                         @if (isset(old('cpf')[$i]))
-                                                            CPF:{{ old('cpf')[$i] }}
+                                                            <strong>CPF: </strong>{{ old('cpf')[$i] }}
                                                         @else
-                                                            CPF: {{ $participante->user->cpf }}
+                                                            <strong>CPF: </strong>{{ $participante->user->cpf }}
                                                         @endif
                                                         <br>
 
                                                         @if (isset(old('funcao')[$i]))
-                                                            Função: {{ old('funcao')[$i] }}
+                                                            <strong>Função: </strong> {{ old('funcao')[$i] }}/
                                                         @else
-                                                            Função: {{ $trabalhos_user[$i]->funcao->nome }}
+                                                            <strong>Função: </strong> {{ $trabalhos_user[$i]->funcao->nome }}
                                                         @endif
+                                                        </p>
                                                     @endif
                                                     <h6>
                                                         <a id="nomePart{{ $i + 1 }}"></a>
