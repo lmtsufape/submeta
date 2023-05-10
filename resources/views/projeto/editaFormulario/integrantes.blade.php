@@ -45,15 +45,17 @@
                         <div class="form-row d-flex" style="margin-top:10px">
                             <label for="funcao_participante">Função do Integrante:</label>
                             <select name="" id="funcao_participante" class="form-control">
-                                @if($edital->natureza_id == 3)
-                                    @if($edital->tipo == "CONTINUO" && $funcao->nome != 'Bolsista')
-                                        <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                                    @elseif($funcao->nome != "Consultor" && $funcao->nome != "Pesquisador" && $funcao->nome != "Voluntário")
+                                @foreach($funcaoParticipantes as $funcao)
+                                    @if($edital->natureza_id == 3)
+                                        @if($edital->tipo == "CONTINUO" && $funcao->nome != 'Bolsista')
+                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                        @elseif($funcao->nome != "Consultor" && $funcao->nome != "Pesquisador" && $funcao->nome != "Voluntário")
+                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                        @endif
+                                    @else 
                                         <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
                                     @endif
-                                @else 
-                                    <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                                @endif
+                                @endforeach
                             </select>
                         </div>
 
