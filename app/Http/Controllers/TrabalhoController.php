@@ -1235,7 +1235,8 @@ class TrabalhoController extends Controller
                     $data['data_de_nascimento'] = $request->data_de_nascimento[$part];
                     $data['cpf'] = $request->cpf[$part];
                     $data['tipo'] = 'participante';
-                    $data['funcao_participante_id'] = 4;
+                    if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
+                        $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
                     $data['rg'] = $request->rg[$part];
                     $data['celular'] = $request->celular[$part];
                     $data['cep'] = $request->cep[$part];
