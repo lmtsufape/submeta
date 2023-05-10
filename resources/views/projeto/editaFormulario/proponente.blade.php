@@ -139,7 +139,7 @@
             </div>
           @endif
 
-          @if($edital->tipo !='CONTINUO')
+          @if($edital->tipo !='CONTINUO' && $edital->tipo != "PIBEX")
           <div class="col-md-2">
             <br>
             <label for="conflitosInteresse" class="col-form-label font-tam"
