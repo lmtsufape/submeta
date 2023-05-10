@@ -34,12 +34,17 @@
                                             </div>
                                             <div class="col-sm-10" style="display: flex; align-items: center;">
                                                 <div class="col-sm-12">
-                                                    @if(isset(old('marcado')[$i]))
-                                                    @if(isset(old('name')[$i]))Nome: {{old('name')[$i]}} @else Discente {{$i+1}} @endif
-                                                    @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @endif
-                                                    @endif
                                                     <h6>
-                                                        <a id="nomePlano{{$i+1}}"></a><br>
+                                                        @if(isset(old('integrantes')[$i]))<input name="integrantes[{{$i}}]" value="{{old('integrantes')[$i]}}" type="hidden"/> @endif
+                                                        <a id="nomePlano{{$i+1}}">
+                                                            @if(isset(old('marcado')[$i]))
+                                                                @if(isset(old('name')[$i]))Nome: {{old('name')[$i]}} @else Discente {{$i+1}} @endif
+                                                                @if(isset(old('nomePlanoTrabalho')[$i]))<br> Plano: {{old('nomePlanoTrabalho')[$i]}} @endif
+                                                                @if(isset(old('email')[$i]))<br> E-mail: {{old('email')[$i]}} @endif
+                                                                @if(isset(old('cpf')[$i]))<br> CPF: {{old('cpf')[$i]}} @endif
+                                                                @if(isset(old('funcaoParticipante')[$i]))<br> Função: {{old('funcaoParticipante')[$i]}} @endif
+                                                            @endif
+                                                        </a><br>
                                                         <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">Mais Informações</a>
                                                     </h6>
                                                     <div class="col-sm-5 pl-0" style="margin-top: 10px; text-align: left;">
@@ -69,13 +74,13 @@
                                                         <div class="col-md-12">
                                                             <div class="container">
                                                                 <div class="row">
-                                                                    <input type="hidden" name="funcaoParticipante[{{$i}}]" id="funcaoParticipante{{$i}}">
+                                                                    <input type="hidden" name="funcaoParticipante[{{$i}}]" id="funcaoParticipante{{$i}}" value="{{old('funcaoParticipante')[$i] ?? "" }}">
                                                                     <div class="col-md-12 mt-3">
                                                                         <h5>Dados do integrante</h5>
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Nome completo'])
-                                                                        <input type="text" class="form-control " value="{{old('name')[$i] ?? "" }}" name="name[{{$i}}]" placeholder="Nome Completo" maxlength="150" id="nome{{$i}}" />
+                                                                        <input readonly type="text" class="form-control " value="{{old('name')[$i] ?? "" }}" name="name[{{$i}}]" placeholder="Nome Completo" maxlength="150" id="nome{{$i}}" />
                                                                         <span style="color: red; font-size: 12px" id="caracsRestantesnome{{$i}}">
                                                                         </span>
                                                                         @error("name.".$i)
@@ -87,7 +92,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'E-mail'])
-                                                                        <input type="email" class="form-control" value="{{old('email')[$i] ?? "" }}" name="email[{{$i}}]" placeholder="E-mail" maxlength="150" id="email{{$i}}" />
+                                                                        <input readonly type="email" class="form-control" value="{{old('email')[$i] ?? "" }}" name="email[{{$i}}]" placeholder="E-mail" maxlength="150" id="email{{$i}}" />
                                                                         <span style="color: red; font-size: 12px" id="caracsRestantesemail{{$i}}">
                                                                         </span>
                                                                         @error('email.'.$i)
@@ -99,7 +104,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Data de nascimento'])
-                                                                        <input type="text" class="form-control" value="{{old('data_de_nascimento')[$i] ?? "" }}" name="data_de_nascimento[{{$i}}]" placeholder="Data de nascimento" id="data_de_nascimento{{$i}}" />
+                                                                        <input readonly type="text" class="form-control" value="{{old('data_de_nascimento')[$i] ?? "" }}" name="data_de_nascimento[{{$i}}]" placeholder="Data de nascimento" id="data_de_nascimento{{$i}}" />
                                                                         @error('data_de_nascimento.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -109,7 +114,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CPF'])
-                                                                        <input type="text" class="form-control cpf" value="{{old('cpf')[$i] ?? "" }}" name="cpf[{{$i}}]" placeholder="CPF" id="cpf{{$i}}"/>
+                                                                        <input readonly type="text" class="form-control cpf" value="{{old('cpf')[$i] ?? "" }}" name="cpf[{{$i}}]" placeholder="CPF" id="cpf{{$i}}"/>
 
                                                                         @error('cpf.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -120,7 +125,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'RG'])
-                                                                        <input type="text" class="form-control rg" min="9" maxlength="9" value="{{old('rg')[$i] ?? "" }}" name="rg[{{$i}}]" placeholder="RG" id="rg{{$i}}"/>
+                                                                        <input readonly type="text" class="form-control rg" min="9" maxlength="9" value="{{old('rg')[$i] ?? "" }}" name="rg[{{$i}}]" placeholder="RG" id="rg{{$i}}"/>
                                                                         @error('rg.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -130,7 +135,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Celular'])
-                                                                        <input type="tel" class="form-control celular" value="{{old('celular')[$i] ?? "" }}" name="celular[{{$i}}]" placeholder="Celular" id="celular{{$i}}"/>
+                                                                        <input readonly type="tel" class="form-control celular" value="{{old('celular')[$i] ?? "" }}" name="celular[{{$i}}]" placeholder="Celular" id="celular{{$i}}"/>
                                                                         @error('celular.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -143,7 +148,7 @@
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CEP'])
-                                                                        <input name="cep[{{$i}}]" type="text" id="cep{{$i}}" value="{{ old('cep')[$i] ?? ''}}" class="form-control cep" onblur="pesquisacep(this.value, {{$i}})" id="cep{{$i}}" />
+                                                                        <input readonly name="cep[{{$i}}]" type="text" id="cep{{$i}}" value="{{ old('cep')[$i] ?? ''}}" class="form-control cep" onblur="pesquisacep(this.value, {{$i}})" id="cep{{$i}}" />
                                                                         @error('cep.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -152,7 +157,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Estado'])
-                                                                        <input name="uf[{{$i}}]" type="text" class="form-control" value="{{ old('uf')[$i] ?? '' }}" id="uf{{$i}}" />
+                                                                        <input readonly name="uf[{{$i}}]" type="text" class="form-control" value="{{ old('uf')[$i] ?? '' }}" id="uf{{$i}}" />
                                                                         @error('uf.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -161,7 +166,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Cidade'])
-                                                                        <input name="cidade[{{$i}}]" type="text" id="cidade{{$i}}" class="form-control" value="{{ old('cidade')[$i] ?? '' }}" id="cidade{{$i}}"/>
+                                                                        <input readonly name="cidade[{{$i}}]" type="text" id="cidade{{$i}}" class="form-control" value="{{ old('cidade')[$i] ?? '' }}" id="cidade{{$i}}"/>
                                                                         @error('cidade.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -170,7 +175,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Bairro'])
-                                                                        <input name="bairro[{{$i}}]" type="text" id="bairro{{$i}}" class="form-control" value="{{ old('bairro')[$i] ?? '' }}" id="bairro{{$i}}"/>
+                                                                        <input readonly name="bairro[{{$i}}]" type="text" id="bairro{{$i}}" class="form-control" value="{{ old('bairro')[$i] ?? '' }}" id="bairro{{$i}}"/>
                                                                         @error('bairro.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -179,7 +184,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Rua'])
-                                                                        <input name="rua[{{$i}}]" type="text" id="rua{{$i}}" class="form-control" value="{{ old('rua')[$i] ?? '' }}" id="rua{{$i}}"/>
+                                                                        <input readonly name="rua[{{$i}}]" type="text" id="rua{{$i}}" class="form-control" value="{{ old('rua')[$i] ?? '' }}" id="rua{{$i}}"/>
                                                                         @error('rua.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -188,7 +193,7 @@
 
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Número'])
-                                                                        <input name="numero[{{$i}}]" type="text" class="form-control" value="{{ old('numero')[$i] ?? '' }}" id="numero{{$i}}"/>
+                                                                        <input readonly name="numero[{{$i}}]" type="text" class="form-control" value="{{ old('numero')[$i] ?? '' }}" id="numero{{$i}}"/>
                                                                         @error('numero.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block"><strong>{{ $message }}</strong></span>
                                                                         @enderror
@@ -202,7 +207,7 @@
                                                                     <div class="col-12">
                                                                         <div class="form-group">
                                                                             <label class=" control-label" for="firstname">Complemento</label>
-                                                                            <input type="text" class="form-control" value="{{old('complemento')[$i] ?? "" }}" name="complemento[{{$i}}]" placeholder="Complemento" maxlength="75" id="complemento{{$i}}" />
+                                                                            <input readonly type="text" class="form-control" value="{{old('complemento')[$i] ?? "" }}" name="complemento[{{$i}}]" placeholder="Complemento" maxlength="75" id="complemento{{$i}}" />
                                                                             <span style="color: red; font-size: 12px" id="caracsRestantescomplemento{{$i}}">
                                                                             </span>
                                                                             @error('complemento.'.$i)
@@ -222,7 +227,7 @@
                                                                             <option @if((old('instituicao')[$i] ?? "" )=='UFAPE' )) selected @endif value="UFAPE">Universidade Federal do Agreste de Pernambuco - UFAPE</option>
                                                                             <option @if((old('instituicao')[$i] ?? "" )=='Outra' )) selected @endif value="Outra">Outra</option>
                                                                         </select> -->
-                                                                        <input type="text" style="display: inline" class="form-control" name="instituicao[{{$i}}]" id="instituicao[{{$i}}]">
+                                                                        <input readonly type="text" style="display: inline" value="{{old('instituicao')[$i] ?? "" }}" class="form-control" name="instituicao[{{$i}}]" id="instituicao[{{$i}}]">
                                                                         @error('instituicao.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -232,7 +237,7 @@
                                                                     </div>
                                                                     <div class="col-6" id="displayinstituicao[{{$i}}]" style='display:none'>
                                                                         @component('componentes.input', ['label' => 'Digite a Instituição'])
-                                                                        <input id="outrainstituicao[{{$i}}]" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="outrainstituicao[{{$i}}]" value="{{ old('outrainstituicao')[$i] ?? "" }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
+                                                                        <input readonly id="outrainstituicao[{{$i}}]" type="text" class="form-control @error('instituicao') is-invalid @enderror" name="outrainstituicao[{{$i}}]" value="{{ old('outrainstituicao')[$i] ?? "" }}" placeholder="Digite o nome da Instituição" autocomplete="instituicao" autofocus>
                                                                         @error('outrainstituicao.'.$i)
                                                                         <span class="invalid-feedback" role="alert">
                                                                             <strong>{{ $message }}</strong>
@@ -253,7 +258,7 @@
                                                                             <option @if((old('curso')[$i] ?? "" )=='Licenciatura em Pedagogia' ) selected @endif value="Licenciatura em Pedagogia">Licenciatura em Pedagogia</option>
                                                                             <option @if((old('curso')[$i] ?? "" )=='Outro' ) selected @endif value="Outro">Outro</option>
                                                                         </select> -->
-                                                                        <input type="text" style="display: inline" class="form-control" name="curso[{{$i}}]" id="curso[{{$i}}]">
+                                                                        <input readonly type="text" style="display: inline" value="{{old('curso')[$i] ?? "" }}" class="form-control" name="curso[{{$i}}]" id="curso[{{$i}}]">
                                                                         @error('curso.'.$i)
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                             <strong>{{ $message }}</strong>
@@ -263,7 +268,7 @@
                                                                     </div>
                                                                     <div class="col-6" id="displaycurso[{{$i}}]" style='display:none'>
                                                                         @component('componentes.input', ['label' => 'Digite o nome do curso'])
-                                                                        <input id="outrocurso[{{$i}}]" type="text" class="form-control" name="outrocurso[{{$i}}]" value="{{ old('outrocurso')[$i] ?? "" }}" placeholder="Digite o nome do curso" autocomplete="curso" autofocus>
+                                                                        <input readonly id="outrocurso[{{$i}}]" type="text" class="form-control" name="outrocurso[{{$i}}]" value="{{ old('outrocurso')[$i] ?? "" }}" placeholder="Digite o nome do curso" autocomplete="curso" autofocus>
                                                                         @error('outrocurso.'.$i)
                                                                         <span class="invalid-feedback" role="alert">
                                                                             <strong>{{ $message }}</strong>
@@ -293,7 +298,7 @@
                                                                         @endphp
                                                                         <div class="col-6">
                                                                             @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
-                                                                            <select name="total_periodos[{{$i}}]" class="form-control" onchange="gerarPeriodo(this)">
+                                                                            <select readonly name="total_periodos[{{$i}}]" class="form-control" onchange="gerarPeriodo(this)">
                                                                                 <option value="" selected>-- Selecione uma opção --</option>
                                                                                 @foreach ($options as $key => $value)
                                                                                 <option @if((old('total_periodos')[$i] ?? "" )==$key ) selected @endif value="{{ $key }}">{{ $value }}</option>
