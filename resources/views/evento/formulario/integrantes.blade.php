@@ -202,7 +202,7 @@
         $('#aviso-modal-limite-de-integrantes').modal('show');
     }
 
-    let modal_id = 0;
+    let modal_id = Number(document.getElementById('quantidadeModais').value);
 
     function exibirUsuarioAdicionado(data) {
         $('#modalIntegrante').modal('hide'); 

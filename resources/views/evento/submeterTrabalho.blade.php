@@ -7,6 +7,7 @@
   <form method="POST" id="criarProjetoForm"  action="{{route('trabalho.store')}}" enctype="multipart/form-data" >
   @csrf
   <input type="hidden" name="editalId" value="{{$edital->id}}">
+  <input type="hidden" name="quantidadeModais" id="quantidadeModais" value="{{old('quantidadeModais', 0)}}" >
 
   <div class="container">
     
@@ -240,6 +241,7 @@
       document.getElementById("checkB"+id).checked = true;
       //$("#atribuir1").attr('data-target','#modalIntegrante'+(id+1));
       modal_id = id+1;
+      document.getElementById("quantidadeModais").value = modal_id;
       document.getElementById("part"+id).removeAttribute("hidden");
       //document.getElementById("exampleModal"+id).modal('hide');
 
@@ -254,6 +256,7 @@
       document.getElementById("part"+id).setAttribute("hidden",true);
       //$("#atribuir1").attr('data-target','#exampleModal'+(id));
       modal_id -= 1;
+      document.getElementById("quantidadeModais").value = modal_id;
       document.getElementById("exampleModal"+id).modal('hide');
   }
   @endif
