@@ -214,7 +214,7 @@
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
 
       let cpf = document.getElementById("cpf"+id);
-      let funcao = document.getElementById("funcaoParticipante"+id);
+      let nome_funcao = document.getElementById("funcaoParticipante"+id).value;
       let email = document.getElementById("email"+id);
 
       if(nome.value != ""){
