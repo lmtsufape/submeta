@@ -219,16 +219,16 @@
 
       if(nome.value != ""){
           if(planoTrabalho != null && planoTrabalho.value != ""){
-              nomePlano.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
+              nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
                                         <strong>Plano: </strong>${planoTrabalho.value}<br>
                                         <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${nome_funcao}</p>`;
+                                        <strong>Função: </strong>${nome_funcao}`;
           }else {
-              nomePlano.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
+              nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
                                         <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${nome_funcao}</p>`;
+                                        <strong>Função: </strong>${nome_funcao}`;
           }
       }else{
           nomePlano.innerText = `Discente `+(id+1);
