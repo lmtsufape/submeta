@@ -6,6 +6,7 @@ use App\Evento;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreTrabalho extends FormRequest
 {
@@ -19,6 +20,17 @@ class StoreTrabalho extends FormRequest
         return Auth::check();
     }
 
+    protected function prepareForValidation()
+    {
+        $func = function($value) {
+            return ['cpf' => $value];
+        };
+        $this->merge([
+            'cpfs' => array_map($func, $this->cpf),
+        ]);
+    }
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,6 +42,7 @@ class StoreTrabalho extends FormRequest
         $rules = [];
         
         if($this->has('marcado')){
+            $rules['cpfs.*.cpf'] = ['distinct', 'nullable'];
             foreach ($this->get('marcado') as $key => $value) {
                 if( intval($value)  == $key){
                     //user
@@ -137,6 +150,7 @@ class StoreTrabalho extends FormRequest
             'anexoPlanoTrabalho.*.required' => 'O :attribute é obrigatório',
             'anexoProjeto.required' => 'O :attribute é obrigatório',
             'cpf.*.required'  => 'O cpf é obrigatório',
+            'cpfs.*.cpf.distinct'  => 'O integrante com CPF :input não pode ser adicionado mais de uma vez',
             'name.*.required'  => 'O :attribute é obrigatório',
             'email.*.required'  => 'O :attribute é obrigatório',
             'instituicao.*.required'  => 'O :attribute é obrigatório',
