@@ -105,27 +105,29 @@
 
 
 <script>
-
-    if(document.getElementById("radioSim").checked){
-      document.getElementById("radioSim").checked = true;
-      document.getElementById("radioNao").checked = false;
-      document.getElementById("displaySim").style.display = "block";
-      document.getElementById("displayNao").style.display = "none";
-      document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
-    }else{
-      document.getElementById("radioSim").checked = false;
-      document.getElementById("radioNao").checked = true;
-      document.getElementById("displaySim").style.display = "none";
-      document.getElementById("displayNao").style.display = "block";
-      document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+    let radio_sim = document.getElementById("radioSim");
+    if(radio_sim){
+      if(radio_sim.checked){
+        document.getElementById("radioSim").checked = true;
+        document.getElementById("radioNao").checked = false;
+        document.getElementById("displaySim").style.display = "block";
+        document.getElementById("displayNao").style.display = "none";
+        document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+      }else{
+        document.getElementById("radioSim").checked = false;
+        document.getElementById("radioNao").checked = true;
+        document.getElementById("displaySim").style.display = "none";
+        document.getElementById("displayNao").style.display = "block";
+        document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
+      }
     }
     
   let buttonSubmit = document.getElementById('idButtonSubmitProjeto');
   let buttonRascunho = document.getElementById('idButtonSubmitRascunho');
   @if($edital->numParticipantes != 0)
   let parts = document.getElementById('participante');
-  let partsFirst = document.getElementById('participanteFirst');
-  const participante = partsFirst.firstElementChild;
+  //let partsFirst = document.getElementById('participanteFirst');
+  //const participante = partsFirst.firstElementChild;
   @endif
   let contador = 0;
 
@@ -138,6 +140,7 @@
     const input = '<input id="input_rascunho" type="hidden" name="rascunho" value="true">';
     $("#updateProjetoForm").append(input);
   })
+
   @if($edital->numParticipantes != 0)
   function gerarPeriodo(e){
     var select = e.parentElement.parentElement.nextElementSibling;
@@ -172,57 +175,57 @@
       }
   };
 
-  $("input.cpf:text").mask("000.000.000-00");
-  $("input.celular:text").mask(SPMaskBehavior, spOptions);
-  $("input.cep:text").mask("00000-000");
+  //$("input.cpf:text").mask("000.000.000-00");
+  //$("input.celular:text").mask(SPMaskBehavior, spOptions);
+  //$("input.cep:text").mask("00000-000");
 
-  buttonMais.addEventListener("click", (e) => {
+  // buttonMais.addEventListener("click", (e) => {
     
-    if(parts.children.length  >= "{{ $edital->numParticipantes }}"){
-      alert('Limite de participante.')
-    }else{
-      contador++;
-      var cln = participante.cloneNode(true);
-      cln.setAttribute('style', " "); 
-      var id = cln.children[2].firstElementChild.id;
-      var id2 = cln.children[0].firstElementChild.id;
-      cln.children[2].firstElementChild.setAttribute('id', id + contador);
-      cln.children[0].firstElementChild.setAttribute('href', "#collapseParticipante" + contador);
-      cln.children[0].firstElementChild.setAttribute('id', id2 + contador);
+  //   if(parts.children.length  >= "{{ $edital->numParticipantes }}"){
+  //     alert('Limite de participante.')
+  //   }else{
+  //     contador++;
+  //     var cln = participante.cloneNode(true);
+  //     cln.setAttribute('style', " "); 
+  //     var id = cln.children[2].firstElementChild.id;
+  //     var id2 = cln.children[0].firstElementChild.id;
+  //     cln.children[2].firstElementChild.setAttribute('id', id + contador);
+  //     cln.children[0].firstElementChild.setAttribute('href', "#collapseParticipante" + contador);
+  //     cln.children[0].firstElementChild.setAttribute('id', id2 + contador);
       
-      for (i = 0; i < cln.children.length; i++) {
-        for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
-          let input = cln.children[i].querySelectorAll('input')[index];
-          let name = input.getAttributeNode("name").value;
-          name = name.replace("[]", "");
-          input.getAttributeNode("name").value = name + '['+ contador +']';
-          let select = cln.children[i].querySelectorAll('select')[index];
-          if(select){
-            let selectName = select.getAttributeNode("name").value;
-            selectName = selectName.replace("[", "");
-            selectName = selectName.replace("]", "");
-            select.getAttributeNode("name").value = selectName + '['+ contador +']';
-          }
+  //     for (i = 0; i < cln.children.length; i++) {
+  //       for (let index = 0; index < cln.children[i].querySelectorAll('input').length; index++) {
+  //         let input = cln.children[i].querySelectorAll('input')[index];
+  //         let name = input.getAttributeNode("name").value;
+  //         name = name.replace("[]", "");
+  //         input.getAttributeNode("name").value = name + '['+ contador +']';
+  //         let select = cln.children[i].querySelectorAll('select')[index];
+  //         if(select){
+  //           let selectName = select.getAttributeNode("name").value;
+  //           selectName = selectName.replace("[", "");
+  //           selectName = selectName.replace("]", "");
+  //           select.getAttributeNode("name").value = selectName + '['+ contador +']';
+  //         }
           
-        }
-      }
-      var SPMaskBehavior = function (val) {
-          return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-      },
-      spOptions = {
-          onKeyPress: function(val, e, field, options) {
-          field.mask(SPMaskBehavior.apply({}, arguments), options);
-          }
-      };
-      parts.appendChild(cln);
-      $("input.cpf:text").val("").mask("000.000.000-00");
-      $("input.celular:text").val("").mask(SPMaskBehavior, spOptions);
-      $("input.cep:text").val("").mask("00000-000");
+  //       }
+  //     }
+  //     var SPMaskBehavior = function (val) {
+  //         return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+  //     },
+  //     spOptions = {
+  //         onKeyPress: function(val, e, field, options) {
+  //         field.mask(SPMaskBehavior.apply({}, arguments), options);
+  //         }
+  //     };
+  //     parts.appendChild(cln);
+  //     $("input.cpf:text").val("").mask("000.000.000-00");
+  //     $("input.celular:text").val("").mask(SPMaskBehavior, spOptions);
+  //     $("input.cep:text").val("").mask("00000-000");
 
-    }
+  //   }
 
     
-  });
+  // });
 
     function marcar(id){
         let nome = document.getElementById("nome"+id);

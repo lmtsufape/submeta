@@ -12,9 +12,9 @@
           <button id="submeterFormProposta" type="submit" style="display: none;"></button>
           
           <a href="{{ route('proponente.projetosEdital', ['id' => $edital->id])}}" class="btn btn-secondary">Cancelar</a>
-          @if(Auth::user()->tipo != 'administrador')
+          <!-- @if(Auth::user()->tipo != 'administrador')
             <button type="submit" class="btn btn-primary " id="idButtonSubmitRascunho" >{{ __('Salvar como rascunho') }}</button>
-          @endif
+          @endif -->
           <button type="submit" class="btn btn-success" id="idButtonSubmitProjeto" >{{ __('Submeter projeto') }}</button>
         </div>
         @if($errors->any())             
