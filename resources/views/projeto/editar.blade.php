@@ -260,6 +260,8 @@
         document.getElementById("checkB"+id).checked = true;
         // $("#atribuir1").attr('data-target','#exampleModal'+(id+1));
         modal_id += 1;
+        document.getElementById("quantidadeModais").value = modal_id;
+        
         document.getElementById("part"+id).removeAttribute("hidden");
         // document.getElementById("exampleModal"+id).modal('hide');
     }
@@ -274,6 +276,7 @@
         // $("#atribuir1").attr('data-target','#exampleModal'+(id));
         // document.getElementById("exampleModal"+id).modal('hide');
         modal_id -= 1;
+        document.getElementById("quantidadeModais").value = modal_id;
         console.log(modal_id);
     }
     @endif

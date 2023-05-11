@@ -358,38 +358,40 @@
                                                                         </div>
                                                                     @endif
                                                                     
-                                                                    @if($edital->tipo != "CONTINUO" && (old('funcaoParticipante') == null || !array_key_exists($i, old('funcaoParticipante')) || old('funcaoParticipante')[$i] == 'Bolsista'))
-                                                                        <div class="col-md-12" id="plano-titulo{{$i}}">
-                                                                            <h5>Plano de trabalho</h5>
-                                                                        </div>
-                                                                        <div class="col-12" id="plano-nome{{$i}}">
-                                                                            @component('componentes.input', ['label' => 'Título'])
-                                                                            <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ?? "" }}" name="nomePlanoTrabalho[{{$i}}]" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$i}}">
-                                                                            <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$i}}">
-                                                                            </span>
-                                                                            @error('nomePlanoTrabalho.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                            @enderror
-                                                                            @endcomponent
-                                                                        </div>
-                                                                        <div class="col-12" id="plano-anexo{{$i}}">
-                                                                            @component('componentes.input', ['label' => 'Anexo (.pdf)'])
-                                                                            <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
-                                                                            @error('anexoPlanoTrabalho.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                            @enderror
-                                                                            @error('anexoPlanoTrabalho')
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                            @enderror
-                                                                            @endcomponent
-                                                                        </div>
-                                                                    @endif
+                                                                    <div style="display: block" @if(old('funcaoParticipante') == null || !array_key_exists($i, old('funcaoParticipante')) || old('funcaoParticipante')[$i] == 'Bolsista') @else hidden @endif>
+                                                                        @if($edital->tipo != "CONTINUO")
+                                                                            <div class="col-md-12" id="plano-titulo{{$i}}">
+                                                                                <h5>Plano de trabalho</h5>
+                                                                            </div>
+                                                                            <div class="col-12" id="plano-nome{{$i}}">
+                                                                                @component('componentes.input', ['label' => 'Título'])
+                                                                                <input type="text" class="form-control" value="{{old('nomePlanoTrabalho')[$i] ?? "" }}" name="nomePlanoTrabalho[{{$i}}]" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$i}}">
+                                                                                <span style="color: red; font-size: 12px" id="caracsRestantesnomePlanoTrabalho{{$i}}">
+                                                                                </span>
+                                                                                @error('nomePlanoTrabalho.'.$i)
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                                @enderror
+                                                                                @endcomponent
+                                                                            </div>
+                                                                            <div class="col-12" id="plano-anexo{{$i}}">
+                                                                                @component('componentes.input', ['label' => 'Anexo (.pdf)'])
+                                                                                <input type="file" class="input-group-text" value="{{old('anexoPlanoTrabalho')[$i] ?? "" }}" name="anexoPlanoTrabalho[{{$i}}]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
+                                                                                @error('anexoPlanoTrabalho.'.$i)
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                                @enderror
+                                                                                @error('anexoPlanoTrabalho')
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                                @enderror
+                                                                                @endcomponent
+                                                                            </div>
+                                                                        @endif
+                                                                    </div>
 
                                                                     {{-- <div class="col-6">
                                                                         <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger" style="font-size: 16px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Cancelar</button>
