@@ -52,8 +52,22 @@ class UserController extends Controller
         $cursoPart = null;
         if ($user->participantes()->exists() && $user->participantes()->first()->curso_id)
             $cursoPart = Curso::find($user->participantes()->first()->curso_id);
+        $view = 'user.perfilUser';
+        if ($user->tipo == 'participante')
+            $view = 'user.perfilParticipante';
 
-        return view('user.perfilUser', ['user' => $user, 'cursoPart' => $cursoPart]);
+        $naturezas = Natureza::orderBy('nome')->get();
+        $cursos = Curso::orderBy('nome')->get();
+        $areaTematica = AreaTematica::orderBy('nome')->get();
+
+        return view($view)
+            ->with([
+                'user' => $user,
+                'cursos' => $cursos,
+                'naturezas' => $naturezas,
+                'cursoPart' => $cursoPart,
+                'areaTematica' => $areaTematica
+            ]);
     }
 
     function editarPerfil(Request $request)
@@ -242,7 +256,7 @@ class UserController extends Controller
         $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
         $avaliador = Avaliador::where('user_id', '=', $id)->first();
         $proponente = Proponente::where('user_id', '=', $id)->first();
-        $participante = Participante::where('user_id', '=', $id)->first();
+        $participante = $user->participantes()->first();
 
         $naturezas = Natureza::orderBy('nome')->get();
         $cursos = Curso::orderBy('nome')->get();
@@ -252,14 +266,17 @@ class UserController extends Controller
         if ($user->tipo == 'participante')
             $view = 'user.perfilParticipante';
 
-        return view($view)->with(['user' => $user,
-                                              'adminResp' => $adminResp,
-                                              'avaliador' => $avaliador,
-                                              'proponente' => $proponente,
-                                              'participante' => $participante,
-                                              'cursos' => $cursos,
-                                              'naturezas' => $naturezas,
-                                              'cursoPart' => $cursoPart,
-                                              'areaTematica' => $areaTematica]);
-    }
+        return view($view)
+            ->with([
+                'user' => $user,
+                'adminResp' => $adminResp,
+                'avaliador' => $avaliador,
+                'proponente' => $proponente,
+                'participante' => $participante,
+                'cursos' => $cursos,
+                'naturezas' => $naturezas,
+                'cursoPart' => $cursoPart,
+                'areaTematica' => $areaTematica
+            ]);
+}
 }
