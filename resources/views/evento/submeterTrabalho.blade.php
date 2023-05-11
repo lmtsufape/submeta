@@ -214,19 +214,8 @@
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
 
       let cpf = document.getElementById("cpf"+id);
-      let funcao = document.getElementById("funcao_participante");
+      let funcao = document.getElementById("funcaoParticipante"+id);
       let email = document.getElementById("email"+id);
-
-      let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
-      let nome_funcao = get_funcao(funcao.value);
-
-      //pega o nome da função do participante
-      for (var i = 0; i < funcaoParticipantes.length; i++) {
-        if(funcaoParticipantes[i].id == funcao.value){
-          nome_funcao =  funcaoParticipantes[i].nome;
-          break;
-        }
-      }
 
       if(nome.value != ""){
           if(planoTrabalho != null && planoTrabalho.value != ""){
