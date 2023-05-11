@@ -358,7 +358,7 @@
                                                                         </div>
                                                                     @endif
                                                                     
-                                                                    @if($edital->tipo != "CONTINUO")
+                                                                    @if($edital->tipo != "CONTINUO" && (old('funcaoParticipante') == null || !array_key_exists($i, old('funcaoParticipante')) || old('funcaoParticipante')[$i] == 'Bolsista'))
                                                                         <div class="col-md-12" id="plano-titulo{{$i}}">
                                                                             <h5>Plano de trabalho</h5>
                                                                         </div>
