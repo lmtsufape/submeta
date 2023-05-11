@@ -89,7 +89,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne('App\AdministradorResponsavel');
     }
     public function participantes(){
-        return $this->hasMany('App\Participante');
+        return $this->hasMany('App\Participante')->orderBy('id', 'asc');
     }
     public function avaliadors(){
         return $this->hasOne('App\Avaliador');
