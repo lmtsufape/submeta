@@ -38,6 +38,7 @@ class StoreTrabalho extends FormRequest
      */
     public function rules()
     {
+        // dd($this->all());
         $evento = Evento::find($this->editalId);
         $rules = [];
         
@@ -51,42 +52,43 @@ class StoreTrabalho extends FormRequest
                     $rules['instituicao.'.$value] = ['required', 'string'];
                     $rules['cpf.'.$value] = ['required', 'string'];
                     $rules['celular.'.$value] = ['required', 'string'];
-                    //endereco
-                    $rules['rua.'.$value] = ['required', 'string'];
-                    $rules['numero.'.$value] = ['required', 'string'];
-                    $rules['bairro.'.$value] = ['required', 'string'];
-                    $rules['cidade.'.$value] = ['required', 'string'];
-                    $rules['uf.'.$value] = ['required', 'string'];
-                    $rules['cep.'.$value] = ['required', 'string'];
-                    //participante
-                    $rules['rg.'.$value] = ['required', 'string'];
-                    $rules['data_de_nascimento.'.$value] = ['required', 'string'];
-                    $rules['curso.'.$value] = ['required', 'string'];
                     
-                    //participantes da pesquisa
-                    if($evento->natureza_id != 3){
-                        $rules['turno.'.$value] = ['required', 'string'];
-                        $rules['ordem_prioridade.'.$value] = ['required', 'string'];
-                        $rules['periodo_atual.'.$value] = ['required', 'string'];
-                        $rules['total_periodos.'.$value] = ['required', 'string'];
-                        $rules['media_do_curso.' . $value] = ['required', 'string'];
+                    if($this->estudante[$value] === true){                        
+                        //endereco
+                        $rules['rua.'.$value] = ['required', 'string'];
+                        $rules['numero.'.$value] = ['required', 'string'];
+                        $rules['bairro.'.$value] = ['required', 'string'];
+                        $rules['cidade.'.$value] = ['required', 'string'];
+                        $rules['uf.'.$value] = ['required', 'string'];
+                        $rules['cep.'.$value] = ['required', 'string'];
+                        //participante
+                        $rules['rg.'.$value] = ['required', 'string'];
+                        $rules['data_de_nascimento.'.$value] = ['required', 'string'];
+                        $rules['curso.'.$value] = ['required', 'string'];
+                        
+                        //participantes da pesquisa
+                        if($evento->natureza_id != 3){
+                            $rules['turno.'.$value] = ['required', 'string'];
+                            $rules['ordem_prioridade.'.$value] = ['required', 'string'];
+                            $rules['periodo_atual.'.$value] = ['required', 'string'];
+                            $rules['total_periodos.'.$value] = ['required', 'string'];
+                            $rules['media_do_curso.' . $value] = ['required', 'string'];
+                        }
+                        
+                        if($evento->tipo != "CONTINUO" && ($this->funcaoParticipante[$value] == "Voluntário" || $this->funcaoParticipante[$value] == "Bolsista")){
+                            $rules['anexoPlanoTrabalho.'.$value] = ['required'];
+                            $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
+                        } 
                     }
 
-                    if($evento->tipo != "CONTINUO" && ($this->funcaoParticipante[$value] == "Voluntário" || $this->funcaoParticipante[$value] == "Bolsista")){
-                        $rules['anexoPlanoTrabalho.'.$value] = ['required'];
-                        $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
-                    } 
-
-                    
                     // if($evento->tipo != "PIBEX") {
                     //     $rules['media_do_curso.' . $value] = ['required', 'string'];
                     // }
                     
-    
                 }
             }
 
-        } else if($evento->tipo != "CONTINUO"){
+        } else if($evento->tipo != "CONTINUO" ){
 
             $rules['anexoPlanoTrabalho'] = ['required'];
             $rules['nomePlanoTrabalho'] = ['required', 'string'];
@@ -133,7 +135,7 @@ class StoreTrabalho extends FormRequest
             } else {
                 $rules['anexo_SIPAC'] = ['required', 'mimes:pdf'];
             }
-            //dd($rules, $evento);
+            // dd($rules, $evento);
             return $rules;
 
         }

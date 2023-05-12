@@ -207,18 +207,31 @@
     return nome_funcao;
   }
 
-  function marcar(id){
+  function marcar(id, data = null){
       let nome = document.getElementById("nome"+id);
       let linkNome = document.getElementById("nomePart"+(id+1));
       let nomePlano = document.getElementById("nomePlano"+(id+1));
       let linkTituloProj = document.getElementById("tituloProj"+(id+1));
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
-
+      let instituicao = document.getElementById('instituicao['+id+']');
+      let celular = document.getElementById('celular'+id);
+      let estudante = document.getElementById("estudante["+id+"]");
       let cpf = document.getElementById("cpf"+id);
-      let nome_funcao = document.getElementById("funcaoParticipante"+id).value;
+      let funcao = document.getElementById("funcao_participante");
       let email = document.getElementById("email"+id);
+      let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
+      let nome_funcao = get_funcao(funcao.value);
+
+      //pega o nome da função do participante
+      for (var i = 0; i < funcaoParticipantes.length; i++) {
+        if(funcaoParticipantes[i].id == funcao.value){
+          nome_funcao =  funcaoParticipantes[i].nome;
+          break;
+        }
+      }
 
       if(nome.value != ""){
+          estudante.value = true;
           if(planoTrabalho != null && planoTrabalho.value != ""){
               nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
@@ -231,8 +244,20 @@
                                         <strong>CPF: </strong>${cpf.value} <br>
                                         <strong>Função: </strong>${nome_funcao}`;
           }
-      }else{
-          nomePlano.innerText = `Discente `+(id+1);
+      }else if(data != null) {
+        estudante.value = false;
+        
+        nome.value = data[0].name;
+        email.value = data[0].email;
+        instituicao.value = data[0].instituicao;
+        cpf.value = data[0].cpf;
+        celular.value = data[0].celular;
+        console.log(estudante);
+        nomePlano.innerHTML  = `<p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${data[0].name}<br>
+                                <strong>E-mail: </strong>${data[0].email} <br>
+                                <strong>CPF: </strong>${data[0].cpf} <br>
+                                <strong>Função: </strong>${data[1].nome}</p>`;
+
       }
       if(id >=1){
           document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);

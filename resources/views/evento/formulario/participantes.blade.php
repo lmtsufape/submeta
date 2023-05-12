@@ -67,6 +67,7 @@
                                                     <div class="modal-body">
                                                         <div class="col-1" style="margin-top:9.3px" hidden>
                                                             {{-- <button type="button" class="btn btn-danger shadow-sm" id="buttonRemover" onclick="removerPart(this)" >X</button> --}}
+                                                            <input type="hidden" name="estudante[{{$i}}]" id="estudante[{{$i}}]">
                                                             <input type="checkbox" id="checkB{{$i}}" aria-label="Checkbox for following text input" @if(isset(old('marcado')[$i])) checked @endif name="marcado[]" value="{{ $i }}">
                                                         </div>
 
