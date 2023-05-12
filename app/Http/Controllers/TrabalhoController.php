@@ -895,16 +895,30 @@ class TrabalhoController extends Controller
     }
 
     public function baixarEventoTemp($nomeAnexo)
-    {
+    {   
         $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
             ->orderByDesc('updated_at')->first();
 
-        if (Storage::disk()->exists($eventoTemp->$nomeAnexo)) {
+        return response()->download($eventoTemp->$nomeAnexo);    
+        if (!is_null($eventoTemp) && Storage::disk()->exists($eventoTemp->$nomeAnexo)) {
             ob_end_clean();
             return Storage::download($eventoTemp->$nomeAnexo);
         }
         return abort(404);
     }
+
+    public function baixarModeloEventoTemp($nomeAnexo)
+    {   
+        $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
+            ->orderByDesc('updated_at')->first();
+
+        if (!is_null($eventoTemp)) {
+            ob_end_clean();
+            return response()->download($eventoTemp->$nomeAnexo); 
+        }
+        return abort(404);
+    }
+
 //xxfa
 
     public function update(UpdateTrabalho $request, $id)

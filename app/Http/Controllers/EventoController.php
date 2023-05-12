@@ -25,7 +25,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Endereco;
 use App\Mail\EventoCriado;
+use geekcom\ValidatorDocs\Rules\Ddd;
 use Illuminate\Support\Facades\Mail;
+use ZipArchive;
 use Illuminate\Validation\Rule;
 
 
@@ -82,20 +84,26 @@ class EventoController extends Controller
      */
     public function store(Request $request)
     {
-
         $mytime = Carbon::now('America/Recife');
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
         //$admResponsavel = AdministradorResponsavel::with('user')->where('user_id', Auth()->user()->id)->first();
         $user_id = Auth()->user()->id;
-
-        //dd($user_id);
-        if(isset($request->modeloDocumento)){
-            $request->validate([
-                'modeloDocumento' => ['file', 'max:2048', new ExcelRule($request->file('modeloDocumento'))],
-            ]);
-        }
         
+        if(isset($request->modeloDocumento)){
+            if(is_array($request->modeloDocumento)) {
+                foreach($request->modeloDocumento as $modelo){
+                    $request->validate([
+                        'modeloDocumento.*' => ['file', 'max:2048', new ExcelRule($modelo)],
+                    ]);
+                }
+            } else {
+                $request->validate([
+                    'modeloDocumento' => ['file', 'max:2048', new ExcelRule($request->modeloDocumento)],
+                ]);
+            }
+        }
+
         if(isset($request->docTutorial)){
             $request->validate([
                 'docTutorial' => ['file', 'max:2048', new ExcelRule($request->file('docTutorial'))],
@@ -217,14 +225,22 @@ class EventoController extends Controller
         }
 
         if(isset($request->modeloDocumento)){
-            $modeloDocumento = $request->modeloDocumento;
-            $extension = $modeloDocumento->extension();
-            $path = 'modeloDocumento/' . $evento->id . '/';
-            $nome = "modelo" . "." . $extension;
-            Storage::putFileAs($path, $modeloDocumento, $nome);
-            $evento->modeloDocumento = $path . $nome;
-        }
+            $count = count($request->modeloDocumento);
+            $zip = new ZipArchive;
+            $filename = "storage/app/modeloDocumento/$evento->id/modelo.zip";
 
+            // Crie o diretório se ele não existir
+            if (!file_exists("storage/app/modeloDocumento/$evento->id")) {
+                mkdir("storage/app/modeloDocumento/$evento->id", 0777, true);
+            }
+            $zip->open($filename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+            for ($i = 0; $i < $count; $i++) {
+                $zip->addFile($request->modeloDocumento[$i]->getRealPath(), $request->modeloDocumento[$i]->getClientOriginalName());
+            }
+            $zip->close();
+            $evento->modeloDocumento = $filename;
+            $evento->save();
+        }
 
         if(isset($request->pdfFormAvalExterno) && ($request->tipoAvaliacao == 'form')){
             $pdfFormAvalExterno = $request->pdfFormAvalExterno;
@@ -299,12 +315,24 @@ class EventoController extends Controller
             $pasta = 'pdfEdital/' . $eventoTemp->id;
             $eventoTemp->pdfEdital = Storage::putFileAs($pasta, $request->pdfEdital, 'edital.pdf');
         }
+        
         if (!(is_null($request->modeloDocumento))) {
-            $extension = $request->modeloDocumento->extension();
-            $path = 'modeloDocumento/' . $eventoTemp->id;
-            $nome = "modelo" . "." . $extension;
-            $eventoTemp->modeloDocumento = Storage::putFileAs($path, $request->modeloDocumento, $nome);
+                $count = count($request->modeloDocumento);
+                $zip = new ZipArchive;
+                $filename = "storage/app/modeloDocumento/$eventoTemp->id/modelo.zip";
+                // Crie o diretório se ele não existir
+                if (!file_exists("storage/app/modeloDocumento/$eventoTemp->id")) {
+                    mkdir("storage/app/modeloDocumento/$eventoTemp->id", 0777, true);
+                }
+                $zip->open($filename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+                for ($i = 0; $i < $count; $i++) {
+                    $zip->addFile($request->modeloDocumento[$i]->getRealPath(), $request->modeloDocumento[$i]->getClientOriginalName());
+                }
+                $zip->close();
+                $eventoTemp->modeloDocumento = $filename;
+                $eventoTemp->save();
         }
+
         if(!(is_null($request->pdfFormAvalExterno)) && ($request->tipoAvaliacao == 'form')) {
             $extension = $request->pdfFormAvalExterno->extension();
             $pasta = 'pdfFormAvalExterno/' . $eventoTemp->id;
@@ -531,15 +559,23 @@ class EventoController extends Controller
         }
 
         if($request->modeloDocumento != null){
-            foreach ($request->modeloDocumento as $key => $modeloDocumento) {
-                $extension = $modeloDocumento->extension();
-                $path = 'modeloDocumento/' . $evento->id . '/';
-                $nome = "modelo" . $key . "." . $extension;
-                Storage::putFileAs($path, $modeloDocumento, $nome);
-                $evento->modeloDocumento = $path . $nome;
-            }
-        }
+            $count = count($request->modeloDocumento);
+            $zip = new ZipArchive;
+            $filename = "storage/app/modeloDocumento/$evento->id/modelo.zip";
 
+            // Crie o diretório se ele não existir
+            if (!file_exists("storage/app/modeloDocumento/$evento->id")) {
+                mkdir("storage/app/modeloDocumento/$evento->id", 0777, true);
+            }
+            $zip->open($filename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+            for ($i = 0; $i < $count; $i++) {
+                $zip->addFile($request->modeloDocumento[$i]->getRealPath(), $request->modeloDocumento[$i]->getClientOriginalName());
+            }
+            $zip->close();
+            $evento->modeloDocumento = $filename;
+            $evento->save();
+        }
+        
         if(isset($request->pdfFormAvalExterno) && ($request->tipoAvaliacao == 'form')){
             $pdfFormAvalExterno = $request->pdfFormAvalExterno;
             $extension = $pdfFormAvalExterno->extension();
@@ -660,8 +696,15 @@ class EventoController extends Controller
             CampoAvaliacao::withTrashed()->where('evento_id', $id)->update(['evento_id' => null]);
         }
 
-        Storage::deleteDirectory('pdfEdital/' . $evento->id );
-        Storage::deleteDirectory('modeloDocumento/' . $evento->id);
+        $pdfEditalPath = 'pdfEdital/' . $evento->id;
+        if (Storage::disk()->exists($pdfEditalPath)) {
+            Storage::deleteDirectory($pdfEditalPath);
+        }
+
+        $modeloDocumentoPath = 'modeloDocumento/' . $evento->id;
+        if (Storage::disk()->exists($modeloDocumentoPath)) {
+            Storage::deleteDirectory($modeloDocumentoPath);
+        }
 
         $evento->delete();
 
@@ -812,14 +855,21 @@ class EventoController extends Controller
         return abort(404);
     }
 
-    public function baixarModelos($id) {
-        $evento = Evento::find($id);
-
-        if (Storage::disk()->exists($evento->modeloDocumento)) {
-            ob_end_clean();
-            return Storage::download($evento->modeloDocumento);
-        }
-
-        return abort(404);
+    public function baixarModelos($id)
+    {
+        $evento = Evento::findOrFail($id);
+        $path = $evento->modeloDocumento;
+        return response()->download($path);
     }
+
+    // public function baixarModelos($id) {
+    //     $evento = Evento::find($id);
+
+    //     if (Storage::disk()->exists($evento->modeloDocumento)) {
+    //         ob_end_clean();
+    //         return Storage::download($evento->modeloDocumento);
+    //     }
+
+    //     return abort(404);
+    // }
 }

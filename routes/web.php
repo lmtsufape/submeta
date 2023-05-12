@@ -220,6 +220,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/baixar/anexoGrupoPesquisa/{id}', 'TrabalhoController@baixarAnexoGrupoPesquisa')->name('baixar.anexoGrupoPesquisa');
     Route::get('/baixar/anexo-temp/{eventoId}/{nomeAnexo}', 'TrabalhoController@baixarAnexoTemp')->name('baixar.anexo.temp');
     Route::get('/baixar/evento-temp/{nomeAnexo}', 'TrabalhoController@baixarEventoTemp')->name('baixar.evento.temp');
+    Route::get('/baixar/modelo-evento-temp/{nomeAnexo}', 'TrabalhoController@baixarModeloEventoTemp')->name('baixar.modelo.evento.temp');
     Route::get('/baixar/documentosParticipante', 'ParticipanteController@baixarDocumento')->name('baixar.documentosParticipante');
     Route::get('/baixar/anexoDocExtra/{id}', 'TrabalhoController@baixarAnexoDocExtra')->name('baixar.anexo.docExtra');
     Route::get('/baixar/anexoSIPAC/{id}', 'TrabalhoController@baixarAnexoSIPAC')->name('baixar.anexo.SIPAC');
