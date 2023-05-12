@@ -165,29 +165,17 @@
             'funcao': $('#funcao_participante').val()
         }, 
 
-
         success: function (data) {
             if(data == 'inexistente' || $('#cpf_consulta').val() == ""){
                 exibirModalUsuarioInexistente();
             }else {
-                exibirUsuarioAdicionado(data);
-                $('#integrante').append(`
-                <div id="integrante${data[0]['id']}" class="col-md-6">
-                    <div class="row">
-                        <input name="integrantes[]" type="text" value="${data[0]['id']},${$('#funcao_participante').val()}" hidden>
-                        <div class="col-md-2" style="display: flex; align-items: center;">
-                            <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
-                        </div>
-                        <div class="col-md-4 mb-1">
-                            <strong>Nome:</strong> ${data[0]['name']}
-                            <strong>CPF:</strong> ${data[0]['cpf']}
-                            <strong>Função:</strong> ${data[1]['nome']}
-                            <button type="button" class="btn btn-danger" onclick="removerIntegrante(${data[0]['id']})">Remover</button>
-                            
-                        </div>
-                    </div>
-                </div>
-                `)
+                if(data[0].tipo == 'participante'){                    
+                    exibirUsuarioAdicionado(data);
+                } else {
+                    marcar(modal_id, data);
+                    exibirProfessorAdicionado();
+                    
+                }
             }
         }
         });
@@ -261,6 +249,11 @@
         }
         
         $(`#exampleModal${modal_id}`).modal('show');
+    }
+
+    function exibirProfessorAdicionado(){
+        $('#modalIntegrante').modal('hide'); 
+        $(`#aviso-modal-usuario-adicionado`).modal('show');
     }
 
 </script>

@@ -1178,6 +1178,10 @@ class TrabalhoController extends Controller
         
         if($usuario){
             $participante = $usuario->participantes()->first();
+
+            if(!$participante)
+                return json_encode([$usuario, $funcao]);
+
             if ($participante->curso == null && $participante->curso_id != null)
                 $participante->curso = Curso::find($participante->curso_id)->nome;
             return json_encode([$usuario, $funcao, $participante, $usuario->endereco()->first()]);
@@ -1226,52 +1230,56 @@ class TrabalhoController extends Controller
             }
 
             //adição dos participantes
-            if ($request->has('marcado')) {
+            if ($request->has('marcado')) {                
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
-
-                    // $passwordTemporario = Str::random(8);
+                    
                     $data['name'] = $request->name[$part];
                     $data['email'] = $request->email[$part];
-                    // $data['password'] = bcrypt($passwordTemporario);
-                    $data['data_de_nascimento'] = $request->data_de_nascimento[$part];
                     $data['cpf'] = $request->cpf[$part];
-                    $data['tipo'] = 'participante';
+                    //Quando o integrante é um estudante
+                    if($request->estudante[$part] === true){
+                        $data['data_de_nascimento'] = $request->data_de_nascimento[$part];
+                        $data['rg'] = $request->rg[$part];
+                        $data['celular'] = $request->celular[$part];
+                        $data['cep'] = $request->cep[$part];
+                        $data['uf'] = $request->uf[$part];
+                        $data['cidade'] = $request->cidade[$part];
+                        $data['rua'] = $request->rua[$part];
+                        $data['numero'] = $request->numero[$part];
+                        $data['bairro'] = $request->bairro[$part];
+                        $data['complemento'] = $request->complemento[$part];
+                        $data['total_periodos'] = $request->total_periodos[$part];
+                        $data['turno'] = $request->turno[$part];
+                        $data['periodo_atual'] = $request->periodo_atual[$part];
+                        $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
+
+                        if ($request->curso[$part] != "Outro") {
+                            $data['curso'] = $request->curso[$part];
+                        } else {
+                            $data['curso'] = $request->outrocurso[$part];
+                        }
+
+                        if($evento->tipo!="PIBEX") {
+                            $data['media_do_curso'] = $request->media_do_curso[$part];
+                        }
+                        $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
+                    }                   
+                    
+                    
+                    //função no projeto
                     if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
                         $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
-                    $data['rg'] = $request->rg[$part];
-                    $data['celular'] = $request->celular[$part];
-                    $data['cep'] = $request->cep[$part];
-                    $data['uf'] = $request->uf[$part];
-                    $data['cidade'] = $request->cidade[$part];
-                    $data['rua'] = $request->rua[$part];
-                    $data['numero'] = $request->numero[$part];
-                    $data['bairro'] = $request->bairro[$part];
-                    $data['complemento'] = $request->complemento[$part];
-
+                    
+                    //instituição do participante
                     if ($request->instituicao[$part] != "Outra") {
                         $data['instituicao'] = $request->instituicao[$part];
                     } else {
                         $data['instituicao'] = $request->outrainstituicao[$part];
                     }
-
-                    $data['total_periodos'] = $request->total_periodos[$part];
-
-                    if ($request->curso[$part] != "Outro") {
-                        $data['curso'] = $request->curso[$part];
-                    } else {
-                        $data['curso'] = $request->outrocurso[$part];
-                    }
-
-                    $data['turno'] = $request->turno[$part];
-                    $data['periodo_atual'] = $request->periodo_atual[$part];
-                    $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
-                    if($evento->tipo!="PIBEX") {
-                        $data['media_do_curso'] = $request->media_do_curso[$part];
-                    }
-                    $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
-
+                    
                     $user = User::where('email', $data['email'])->first();
+                    
                     if ($user == null) {
                         $data['usuarioTemp'] = true;
                         $user = User::create($data);
@@ -1285,11 +1293,11 @@ class TrabalhoController extends Controller
                     $participante = Participante::create($data);
                     $participante->data_entrada = $participante->created_at;
                     $user->participantes()->save($participante);
-
+                    
                     $participante->trabalho_id = $trabalho->id;
                     $participante->save();
-
-                    if ($request->has('anexoPlanoTrabalho')) {
+                    
+                    if ($request->estudante[$part] === true && $request->has('anexoPlanoTrabalho')) {
                         $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
                         $nome = $data['nomePlanoTrabalho'] . ".pdf";
                         $file = $request->anexoPlanoTrabalho[$part];
@@ -1302,9 +1310,9 @@ class TrabalhoController extends Controller
                         $arquivo->participanteId = $participante->id;
                         $arquivo->versaoFinal = true;
                         $arquivo->save();
-
+                        
                     }
-
+                    
                 }
             } else {
                 $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
@@ -1321,29 +1329,29 @@ class TrabalhoController extends Controller
                     $arquivo->proponenteId = $proponente->id;
                     $arquivo->versaoFinal = true;
                     $arquivo->save();
-
+                    
                 }
             }
-
+            
             $evento->trabalhos()->save($trabalho);
-
+            
             $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->modalidade = $request->modalidade;
             $trabalho->save();
-
-
-            if($evento->natureza_id == 3){
-                foreach($request->integrantes as $integrante){
-                    $integrante = explode(',', $integrante); 
+            
+            
+            // if($evento->natureza_id == 3){
+            //     foreach($request->integrantes as $integrante){
+            //         $integrante = explode(',', $integrante); 
                     
-                    $trabalho_user = new TrabalhoUser();
-                    $trabalho_user->user_id = $integrante[0];
-                    $trabalho_user->funcao_participante_id = $integrante[1];
-                    $trabalho_user->trabalho_id = $trabalho->id;
-                    $trabalho_user->save();
-                }
-            }
+            //         $trabalho_user = new TrabalhoUser();
+            //         $trabalho_user->user_id = $integrante[0];
+            //         $trabalho_user->funcao_participante_id = $integrante[1];
+            //         $trabalho_user->trabalho_id = $trabalho->id;
+            //         $trabalho_user->save();
+            //     }
+            // }
 
             $trabalho->ods()->sync($request->ods);
             DB::commit();
