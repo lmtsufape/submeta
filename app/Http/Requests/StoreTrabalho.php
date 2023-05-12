@@ -7,7 +7,6 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Support\Facades\Log;
 
 class StoreTrabalho extends FormRequest
 {
@@ -19,14 +18,6 @@ class StoreTrabalho extends FormRequest
     public function authorize()
     {
         return Auth::check();
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        Log::info(print_r($validator, true));
-        throw (new ValidationException($validator))
-                    ->errorBag($this->errorBag)
-                    ->redirectTo($this->getRedirectUrl());
     }
 
     protected function prepareForValidation()
