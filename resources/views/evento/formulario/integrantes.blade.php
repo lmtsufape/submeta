@@ -200,7 +200,9 @@
         document.getElementById(`email${modal_id}`).value = data[0]['email'];
         document.getElementById(`email${modal_id}`).setAttribute("readonly", "");
 
-        document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(data[2]['data_de_nascimento'])).toLocaleDateString();
+        let [y, m, d] = data[2]['data_de_nascimento'].split('-');
+
+        document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(y,m-1,d)).toLocaleDateString();
         document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
         
         document.getElementById(`cpf${modal_id}`).value = data[0]['cpf'];
