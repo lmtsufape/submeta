@@ -7,6 +7,7 @@
   <form method="POST" id="criarProjetoForm"  action="{{route('trabalho.store')}}" enctype="multipart/form-data" >
   @csrf
   <input type="hidden" name="editalId" value="{{$edital->id}}">
+  <input type="hidden" name="quantidadeModais" id="quantidadeModais" value="{{old('quantidadeModais', 0)}}" >
 
   <div class="container">
     
@@ -232,16 +233,16 @@
       if(nome.value != ""){
           estudante.value = true;
           if(planoTrabalho != null && planoTrabalho.value != ""){
-              nomePlano.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
+              nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
                                         <strong>Plano: </strong>${planoTrabalho.value}<br>
                                         <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${nome_funcao}</p>`;
+                                        <strong>Função: </strong>${nome_funcao}`;
           }else {
-              nomePlano.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
+              nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
                                         <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${nome_funcao}</p>`;
+                                        <strong>Função: </strong>${nome_funcao}`;
           }
       }else if(data != null) {
         estudante.value = false;
@@ -265,6 +266,7 @@
       document.getElementById("checkB"+id).checked = true;
       //$("#atribuir1").attr('data-target','#modalIntegrante'+(id+1));
       modal_id = id+1;
+      document.getElementById("quantidadeModais").value = modal_id;
       document.getElementById("part"+id).removeAttribute("hidden");
       //document.getElementById("exampleModal"+id).modal('hide');
 
@@ -279,6 +281,7 @@
       document.getElementById("part"+id).setAttribute("hidden",true);
       //$("#atribuir1").attr('data-target','#exampleModal'+(id));
       modal_id -= 1;
+      document.getElementById("quantidadeModais").value = modal_id;
       document.getElementById("exampleModal"+id).modal('hide');
   }
   @endif
