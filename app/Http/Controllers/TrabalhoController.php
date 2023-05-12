@@ -1244,7 +1244,7 @@ class TrabalhoController extends Controller
             }
 
             //adição dos participantes
-            if ($request->has('marcado')) {                
+            if ($request->has('marcado')) {             
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
                     
@@ -1252,7 +1252,7 @@ class TrabalhoController extends Controller
                     $data['email'] = $request->email[$part];
                     $data['cpf'] = $request->cpf[$part];
                     //Quando o integrante é um estudante
-                    if($request->estudante[$part] === true){
+                    if($request->estudante[$part] == true){
                         $data['data_de_nascimento'] = $request->data_de_nascimento[$part];
                         $data['rg'] = $request->rg[$part];
                         $data['celular'] = $request->celular[$part];
@@ -1262,12 +1262,11 @@ class TrabalhoController extends Controller
                         $data['rua'] = $request->rua[$part];
                         $data['numero'] = $request->numero[$part];
                         $data['bairro'] = $request->bairro[$part];
-                        $data['complemento'] = $request->complemento[$part];
-                        $data['total_periodos'] = $request->total_periodos[$part];
-                        $data['turno'] = $request->turno[$part];
-                        $data['periodo_atual'] = $request->periodo_atual[$part];
-                        $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
-
+                        if($request->complemento[$part] == null) {
+                            $data['complemento'] = "";
+                        }else {
+                            $data['complemento'] = $request->complemento[$part];
+                        }
                         if ($request->curso[$part] != "Outro") {
                             $data['curso'] = $request->curso[$part];
                         } else {
@@ -1278,7 +1277,7 @@ class TrabalhoController extends Controller
                             $data['media_do_curso'] = $request->media_do_curso[$part];
                         }
                         $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
-                    }                   
+                    }                  
                     
                     
                     //função no projeto
@@ -1310,14 +1309,14 @@ class TrabalhoController extends Controller
                     
                     $participante->trabalho_id = $trabalho->id;
                     $participante->save();
-                    
-                    if ($request->estudante[$part] === true && $request->has('anexoPlanoTrabalho')) {
+
+                    if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
                         $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
-                        $nome = $data['nomePlanoTrabalho'] . ".pdf";
+                        $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
                         $file = $request->anexoPlanoTrabalho[$part];
                         Storage::putFileAs($path, $file, $nome);
                         $arquivo = new Arquivo();
-                        $arquivo->titulo = $data['nomePlanoTrabalho'];
+                        $arquivo->titulo = $request['nomePlanoTrabalho'][$part];
                         $arquivo->nome = $path . $nome;
                         $arquivo->trabalhoId = $trabalho->id;
                         $arquivo->data = now();
