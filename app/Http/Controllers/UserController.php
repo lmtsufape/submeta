@@ -250,6 +250,18 @@ class UserController extends Controller
         $id = Auth::user()->id;
         $user = User::find($id);
         $cursoPart = null;
+
+        if($user->participantes()->first() == null){
+            $participante = Participante::create();
+            $user->participantes()->save($participante);
+        }
+
+        if($user->endereco()->first() == null){
+            $endereco = Endereco::create();
+            $endereco->user()->save($user);
+            
+        }
+
         if ($user->participantes()->exists() && $user->participantes()->first()->curso_id)
             $cursoPart = Curso::find($user->participantes()->first()->curso_id);
 
