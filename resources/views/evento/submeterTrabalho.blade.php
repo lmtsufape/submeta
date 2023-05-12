@@ -252,12 +252,11 @@
         instituicao.value = data[0].instituicao;
         cpf.value = data[0].cpf;
         celular.value = data[0].celular;
-        console.log(estudante);
-        nomePlano.innerHTML  = `<p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${data[0].name}<br>
-                                <strong>E-mail: </strong>${data[0].email} <br>
-                                <strong>CPF: </strong>${data[0].cpf} <br>
-                                <strong>Função: </strong>${data[1].nome}</p>`;
 
+        nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
+                                        <strong>E-mail: </strong>${email.value} <br>
+                                        <strong>CPF: </strong>${cpf.value} <br>
+                                        <strong>Função: </strong>${data[1].nome}`;
       }
       if(id >=1){
           document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
