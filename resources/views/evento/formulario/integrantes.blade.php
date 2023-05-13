@@ -169,7 +169,7 @@
             if(data == 'inexistente' || $('#cpf_consulta').val() == ""){
                 exibirModalUsuarioInexistente();
             }else {
-                if(data[0].tipo == 'participante'){                    
+                if($('#funcao_participante').val() != 4 || data[0].tipo == 'participante'){                   
                     exibirUsuarioAdicionado(data);
                 } else {
                     marcar(modal_id, data);
@@ -193,6 +193,7 @@
     let modal_id = Number(document.getElementById('quantidadeModais').value);
 
     function exibirUsuarioAdicionado(data) {
+        console.log(data[0])
         $('#modalIntegrante').modal('hide'); 
         document.getElementById(`nome${modal_id}`).value = data[0]['name'];
         document.getElementById(`nome${modal_id}`).setAttribute("readonly", "");
@@ -200,10 +201,15 @@
         document.getElementById(`email${modal_id}`).value = data[0]['email'];
         document.getElementById(`email${modal_id}`).setAttribute("readonly", "");
 
-        let [y, m, d] = data[2]['data_de_nascimento'].split('-');
+        if(data[0]['tipo'] == "participante"){
+            let [y, m, d] = data[2]['data_de_nascimento'].split('-');
+            document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(y,m-1,d)).toLocaleDateString();
+            document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
+        }else {
 
-        document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(y,m-1,d)).toLocaleDateString();
-        document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
+            document.getElementById(`data_de_nascimento${modal_id}`).value = null;
+            document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
+        }
         
         document.getElementById(`cpf${modal_id}`).value = data[0]['cpf'];
         document.getElementById(`cpf${modal_id}`).setAttribute("readonly", "");
