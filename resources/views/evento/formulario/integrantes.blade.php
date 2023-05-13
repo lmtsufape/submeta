@@ -62,13 +62,16 @@
                                             <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
 
 
+
                                         @elseif($funcao->nome != "Consultor" && $funcao->nome != "Pesquisador" && $funcao->nome != "Voluntário")
                                             <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+
 
 
                                         @endif
                                     @else
                                         <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+
 
 
                                     @endif
