@@ -52,15 +52,30 @@
                             <label for="funcao_participante">Função do Integrante:</label>
                             <select name="" id="funcao_participante" class="form-control">
                                 @foreach($funcaoParticipantes as $funcao)
+                                    @if($funcao->nome == 'Bolsista')
+                                        <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                    @endif
+                                    <!--
+                                    Ajuste temporário para permitir apenas bolsistas
                                     @if($edital->natureza_id == 3)
                                         @if($edital->tipo == "CONTINUO" && $funcao->nome != 'Bolsista')
                                             <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+
+
+
                                         @elseif($funcao->nome != "Consultor" && $funcao->nome != "Pesquisador" && $funcao->nome != "Voluntário")
                                             <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+
+
+
                                         @endif
                                     @else
                                         <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+
+
+
                                     @endif
+                                    -->
                                 @endforeach
                             </select>
                         </div>
@@ -217,44 +232,70 @@
             document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
         }
 
+        //if (data?.[3]?.cpf) {
         document.getElementById(`cpf${modal_id}`).value = data[0]['cpf'];
         document.getElementById(`cpf${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.rg) {
         document.getElementById(`rg${modal_id}`).value = data[2]['rg'];
         document.getElementById(`rg${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.celular) {
         document.getElementById(`celular${modal_id}`).value = data[0]['celular'];
         document.getElementById(`celular${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.cep) {
         document.getElementById(`cep${modal_id}`).value = data[3].cep;
         document.getElementById(`cep${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.cep) {
         document.getElementById(`cep${modal_id}`).value = data[3].cep;
         document.getElementById(`cep${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.uf) {
         document.getElementById(`uf${modal_id}`).value = data[3].uf;
         document.getElementById(`uf${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.cidade) {
         document.getElementById(`cidade${modal_id}`).value = data[3].cidade;
         document.getElementById(`cidade${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.bairro) {
         document.getElementById(`bairro${modal_id}`).value = data[3].bairro;
         document.getElementById(`bairro${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.rua) {
         document.getElementById(`rua${modal_id}`).value = data[3].rua;
         document.getElementById(`rua${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.numero) {
         document.getElementById(`numero${modal_id}`).value = data[3].numero;
         document.getElementById(`numero${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[3]?.complemento) {
         document.getElementById(`complemento${modal_id}`).value = data[3].complemento;
         document.getElementById(`complemento${modal_id}`).setAttribute("readonly", "");
+        //}
 
+        //if (data?.[0]?.instituicao) {
         document.getElementById(`instituicao[${modal_id}]`).value = data[0].instituicao;
         document.getElementById(`instituicao[${modal_id}]`).setAttribute("readonly", "");
+        //
 
+        //if (data?.[2]?.curso) {
         document.getElementById(`curso[${modal_id}]`).value = data[2].curso;
         document.getElementById(`curso[${modal_id}]`).setAttribute("readonly", "");
+        //}
 
         console.log(document.getElementById(`funcaoParticipante${modal_id}`));
         document.getElementById(`funcaoParticipante${modal_id}`).value = data[1]['nome'];
