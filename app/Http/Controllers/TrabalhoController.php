@@ -1253,7 +1253,11 @@ class TrabalhoController extends Controller
                     $data['cpf'] = $request->cpf[$part];
                     //Quando o integrante é um estudante
                     if($request->estudante[$part] == true){
-                        $data_nascimento = Carbon::createFromFormat('d/m/Y', $request->data_de_nascimento[$part])->toDateString();
+                        if($request->data_de_nascimento[$part] == null){
+                            $data_nascimento = null;
+                        }else {
+                            $data_nascimento = Carbon::createFromFormat('d/m/Y', $request->data_de_nascimento[$part])->toDateString();
+                        }
                         $data['data_de_nascimento'] = $data_nascimento;
                         $data['rg'] = $request->rg[$part];
                         $data['celular'] = $request->celular[$part];
