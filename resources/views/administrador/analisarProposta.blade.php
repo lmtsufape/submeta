@@ -706,25 +706,27 @@
                                                         </select>
                                                     @else
                                                     @foreach($trabalho->participantes as $participante)
-                                                        <div class="col-md-6">
-                                                            <label style="font-weight: bold;font-size: 18px">Plano: {{$participante->planoTrabalho->titulo}}</label>
-                                                        </div>
-                                                        @php
-                                                            $avaliacoesId = \App\AvaliacaoRelatorio::where("arquivo_id",$participante->planoTrabalho->id)->where("tipo",$tipoTemp)->pluck('user_id');
-                                                            $avalProjeto = \Illuminate\Support\Facades\DB::table('users')->join('avaliadors','users.id','=','avaliadors.user_id')->whereNotIn('users.id', $avaliacoesId)->orderBy('users.name')->get();
-                                                        @endphp
+                                                        @if($participante->planoTrabalho != null)
+                                                            <div class="col-md-6">
+                                                                <label style="font-weight: bold;font-size: 18px">Plano: {{$participante->planoTrabalho->titulo}}</label>
+                                                            </div>
+                                                            @php
+                                                                $avaliacoesId = \App\AvaliacaoRelatorio::where("arquivo_id",$participante->planoTrabalho->id)->where("tipo",$tipoTemp)->pluck('user_id');
+                                                                $avalProjeto = \Illuminate\Support\Facades\DB::table('users')->join('avaliadors','users.id','=','avaliadors.user_id')->whereNotIn('users.id', $avaliacoesId)->orderBy('users.name')->get();
+                                                            @endphp
 
-                                                        <select name="avaliadores_{{$participante->planoTrabalho->id}}_id[]" multiple
-                                                                class="form-control" id="avaliacaoSelect"
-                                                                style="height: 200px;font-size:15px">
-                                                            @foreach ($avalProjeto as $avaliador)
-                                                                    <option value="{{ $avaliador->user_id }}"> {{ $avaliador->name }}
-                                                                        > {{$avaliador->instituicao ?? 'Instituição Indefinida'}}
-                                                                        > {{$avaliador->tipo}}
-                                                                        > {{$avaliador->email}}</option>
+                                                            <select name="avaliadores_{{$participante->planoTrabalho->id}}_id[]" multiple
+                                                                    class="form-control" id="avaliacaoSelect"
+                                                                    style="height: 200px;font-size:15px">
+                                                                @foreach ($avalProjeto as $avaliador)
+                                                                        <option value="{{ $avaliador->user_id }}"> {{ $avaliador->name }}
+                                                                            > {{$avaliador->instituicao ?? 'Instituição Indefinida'}}
+                                                                            > {{$avaliador->tipo}}
+                                                                            > {{$avaliador->email}}</option>
 
-                                                            @endforeach
-                                                        </select>
+                                                                @endforeach
+                                                            </select>
+                                                        @endif
                                                     @endforeach
                                                     @endif
                                                     <small id="emailHelp" class="form-text text-muted">Segure SHIFT do
