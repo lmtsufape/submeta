@@ -76,7 +76,6 @@ class UsuarioSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-
           'name'=>'Participante1',
           'email'=>'part1@ufrpe.br',
           'password'=>Hash::make('12345678'),

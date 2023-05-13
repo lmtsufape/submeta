@@ -224,72 +224,46 @@
 
             document.getElementById(`data_de_nascimento${modal_id}`).value = null;
             document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
-        }
+        }    
 
-        if (data?.[3]?.cpf) {
-            document.getElementById(`cpf${modal_id}`).value = data[0]['cpf'];
-            document.getElementById(`cpf${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`cpf${modal_id}`).value = data[0]['cpf'];
+        document.getElementById(`cpf${modal_id}`).setAttribute("readonly", "");      
 
-        if (data?.[3]?.rg) {
-            document.getElementById(`rg${modal_id}`).value = data[2]['rg'];
-            document.getElementById(`rg${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`rg${modal_id}`).value = data[2]['rg'];
+        document.getElementById(`rg${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.celular) {
-            document.getElementById(`celular${modal_id}`).value = data[0]['celular'];
-            document.getElementById(`celular${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`celular${modal_id}`).value = data[0]['celular'];
+        document.getElementById(`celular${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.cep) {
-            document.getElementById(`cep${modal_id}`).value = data[3].cep;
-            document.getElementById(`cep${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`cep${modal_id}`).value = data[3].cep;
+        document.getElementById(`cep${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.cep) {
-            document.getElementById(`cep${modal_id}`).value = data[3].cep;
-            document.getElementById(`cep${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`cep${modal_id}`).value = data[3].cep;
+        document.getElementById(`cep${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.uf) {
-            document.getElementById(`uf${modal_id}`).value = data[3].uf;
-            document.getElementById(`uf${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`uf${modal_id}`).value = data[3].uf;
+        document.getElementById(`uf${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.cidade) {
-            document.getElementById(`cidade${modal_id}`).value = data[3].cidade;
-            document.getElementById(`cidade${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`cidade${modal_id}`).value = data[3].cidade;
+        document.getElementById(`cidade${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.bairro) {
-            document.getElementById(`bairro${modal_id}`).value = data[3].bairro;
-            document.getElementById(`bairro${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`bairro${modal_id}`).value = data[3].bairro;
+        document.getElementById(`bairro${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.rua) {
-            document.getElementById(`rua${modal_id}`).value = data[3].rua;
-            document.getElementById(`rua${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`rua${modal_id}`).value = data[3].rua;
+        document.getElementById(`rua${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.numero) {
-            document.getElementById(`numero${modal_id}`).value = data[3].numero;
-            document.getElementById(`numero${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`numero${modal_id}`).value = data[3].numero;
+        document.getElementById(`numero${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[3]?.complemento) {
-            document.getElementById(`complemento${modal_id}`).value = data[3].complemento;
-            document.getElementById(`complemento${modal_id}`).setAttribute("readonly", "");
-        }
+        document.getElementById(`complemento${modal_id}`).value = data[3].complemento;
+        document.getElementById(`complemento${modal_id}`).setAttribute("readonly", "");
 
-        if (data?.[0]?.instituicao) {
-            document.getElementById(`instituicao[${modal_id}]`).value = data[0].instituicao;
-            document.getElementById(`instituicao[${modal_id}]`).setAttribute("readonly", "");
-        }
+        document.getElementById(`instituicao[${modal_id}]`).value = data[0].instituicao;
+        document.getElementById(`instituicao[${modal_id}]`).setAttribute("readonly", "");
 
-        if (data?.[2]?.curso) {
-            document.getElementById(`curso[${modal_id}]`).value = data[2].curso;
-            document.getElementById(`curso[${modal_id}]`).setAttribute("readonly", "");
-        }
+        document.getElementById(`curso[${modal_id}]`).value = data[2].curso;
+        document.getElementById(`curso[${modal_id}]`).setAttribute("readonly", "");
 
         console.log(document.getElementById(`funcaoParticipante${modal_id}`));
         document.getElementById(`funcaoParticipante${modal_id}`).value = data[1]['nome'];
