@@ -402,6 +402,11 @@ class TrabalhoController extends Controller
             $trabalho->anexo_SIPAC = Storage::putFileAs($pasta, $request->anexo_SIPAC, "Anexo_SIPAC." . $request->file('anexo_SIPAC')->extension());
         }
 
+        //Anexo Acao Afirmativa
+        if (isset($request->anexo_acao_afirmativa)) {
+            $trabalho->anexo_acao_afirmativa = Storage::putFileAs($pasta, $request->anexo_acao_afirmativa, "Anexo_Acao_Afirmativa." . $request->file('anexo_acao_afirmativa')->extension());
+        }
+
         return $trabalho;
     }
 
@@ -766,6 +771,17 @@ class TrabalhoController extends Controller
         if (Storage::disk()->exists($projeto->anexoProjeto)) {
             ob_end_clean();
             return Storage::download($projeto->anexoProjeto);
+        }
+        return abort(404);
+    }
+
+    public function baixarAcaoAfirmativa($id)
+    {
+        $projeto = Trabalho::find($id);
+        //dd($projeto);
+        if (Storage::disk()->exists($projeto->anexo_acao_afirmativa)) {
+            ob_end_clean();
+            return Storage::download($projeto->anexo_acao_afirmativa);
         }
         return abort(404);
     }
@@ -1207,7 +1223,7 @@ class TrabalhoController extends Controller
 
     public function salvar(StoreTrabalho $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         try {
             if (!$request->has('rascunho')) {
                 $request->merge([
@@ -1235,11 +1251,12 @@ class TrabalhoController extends Controller
                     'justificativaAutorizacaoEtica','modalidade','anexo_docExtra',
                 ]));
             } else {
+                //dd();
                 $trabalho = Auth::user()->proponentes->trabalhos()
                 ->create($request->except([
                     'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                     'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC'
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa' 
                 ]));
             }
 

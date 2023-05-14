@@ -510,6 +510,12 @@
                                         <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                     </div>
                                 @endif
+                                @if($evento->tipo == 'PIBIC' && $evento->natureza_id == 2)
+                                    <div class="col-sm-4">
+                                    <label title="Decisão da Câmara ou Conselho Pertinente" for="anexo_acao_afirmativa" class="col-form-label font-tam" style="font-weight: bold">{{ __('Ação Afirmativa: ') }}</label>
+                                    <a href="{{ route('baixar.anexo.acao.afirmativa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                    </div>
+                                @endif
                                 @if($evento->nome_docExtra != null)
                                     {{-- Documento Extra --}}
                                     <div class="col-sm-4">

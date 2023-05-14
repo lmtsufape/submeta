@@ -105,6 +105,7 @@ class StoreTrabalho extends FormRequest
 
 
             if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO"){
+                //dd($this->preenchimentoFormFlag);
                 $rules['anexoPlanilhaPontuacao']       = ['required'];
                 $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
@@ -112,6 +113,8 @@ class StoreTrabalho extends FormRequest
                 $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->autorizacaoFlag == 'nao')];
                 $rules['pontuacaoPlanilha']            = ['required', 'string'];
                 $rules['linkGrupoPesquisa']            = ['required', 'string'];
+                $rules['preenchimentoFormFlag']        = [Rule::in(['sim']), 'required'];
+                $rules['anexo_acao_afirmativa']          = [Rule::requiredIf($this->radioAcoesAfirmativas == 'sim')];
             }
 
             $rules['editalId']                     = ['required', 'string'];
