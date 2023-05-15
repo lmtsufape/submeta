@@ -1295,16 +1295,20 @@ class TrabalhoController extends Controller
                             $data['curso'] = $request->outrocurso[$part];
                         }
 
-                        if($evento->tipo!="PIBEX") {
-                            $data['media_do_curso'] = $request->media_do_curso[$part];
+                        if($evento->tipo != "CONTINUO"){
+                            if($evento->tipo != "PIBEX") {
+                                $data['media_do_curso'] = $request->media_do_curso[$part];
+                            }
+                            $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
                         }
-                        $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
                     }                  
                     
                     
                     //função no projeto
-                    if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
-                        $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
+                    if($evento->tipo != "CONTINUO"){
+                        if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
+                            $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
+                    }
                     
                     //instituição do participante
                     if ($request->instituicao[$part] != "Outra") {
@@ -1332,20 +1336,22 @@ class TrabalhoController extends Controller
                     $participante->trabalho_id = $trabalho->id;
                     $participante->save();
 
-                    if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
-                        $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
-                        $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
-                        $file = $request->anexoPlanoTrabalho[$part];
-                        Storage::putFileAs($path, $file, $nome);
-                        $arquivo = new Arquivo();
-                        $arquivo->titulo = $request['nomePlanoTrabalho'][$part];
-                        $arquivo->nome = $path . $nome;
-                        $arquivo->trabalhoId = $trabalho->id;
-                        $arquivo->data = now();
-                        $arquivo->participanteId = $participante->id;
-                        $arquivo->versaoFinal = true;
-                        $arquivo->save();
-                        
+                    if($evento->tipo != "CONTINUO"){
+                        if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
+                            $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                            $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
+                            $file = $request->anexoPlanoTrabalho[$part];
+                            Storage::putFileAs($path, $file, $nome);
+                            $arquivo = new Arquivo();
+                            $arquivo->titulo = $request['nomePlanoTrabalho'][$part];
+                            $arquivo->nome = $path . $nome;
+                            $arquivo->trabalhoId = $trabalho->id;
+                            $arquivo->data = now();
+                            $arquivo->participanteId = $participante->id;
+                            $arquivo->versaoFinal = true;
+                            $arquivo->save();
+                            
+                        }
                     }
                     
                 }
