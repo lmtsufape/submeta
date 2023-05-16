@@ -1026,7 +1026,8 @@
                                                         </div>
 
                                                     </div>
-
+                                                   
+                                                    @if($evento->natureza_id != 3)
                                                     <div class="col-md-6">
                                                         <label style="font-weight: bold;font-size: 18px">Internos</label>
                                                     </div>
@@ -1054,7 +1055,7 @@
                                                                 @endif
                                                         @endforeach
                                                     </select>
-
+                                                    @endif
 
                                                     <div class="col-md-6">
                                                         <label style="font-weight: bold;font-size: 18px"><i>Ad Hoc</i></label>
