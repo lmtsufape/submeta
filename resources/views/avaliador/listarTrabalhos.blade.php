@@ -31,7 +31,7 @@
   <div class="row justify-content-center" style="margin-top: 3rem;">
     <div class="col-md-11" style="margin-bottom: -3rem">
       <div class="card card_conteudo shadow bg-white" style="border-radius:12px; border-width:0px;">
-          @if($trabalhosIn != null)
+          @if($trabalhosIn != null && $evento->natureza_id != 3)
           <div class="card-header" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #fff">
           <div class="d-flex justify-content-between align-items-center" style="margin-top: 9px; margin-bottom:-1rem">
             <div class="bottomVoltar" style="margin-top: -20px">
@@ -53,8 +53,8 @@
         </div>
           @endif
 
-
-          @if($trabalhosIn != null)
+          
+          @if($trabalhosIn != null && $evento->natureza_id != 3)
         <div class="card-body" >
             <table class="table table-bordered table-hover" style="display: block; white-space: nowrap; border-radius:10px; margin-bottom:0px">
               <thead>
@@ -215,9 +215,9 @@
                                       @if ($planoTrabalho != null)
                                           <a href="{{route('download', ['file' => $planoTrabalho])}}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
                                               <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:15px">
-                                          </a>
+                                          </a> <br>
                                       @else
-                                          Não há planos de trabalho.
+                                          Não há planos de trabalho. <br>
                                       @endif
                                   @endforeach
                                 @endif 
