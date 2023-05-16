@@ -360,7 +360,7 @@
                                                                     @endif
                                                                     
                                                                     <div style="display: block" @if(old('funcaoParticipante') == null || !array_key_exists($i, old('funcaoParticipante')) || old('funcaoParticipante')[$i] == 'Bolsista') @else hidden @endif>
-                                                                        @if($edital->tipo != "CONTINUO")
+                                                                        
                                                                             <div class="col-md-12" id="plano-titulo{{$i}}">
                                                                                 <h5>Plano de trabalho</h5>
                                                                             </div>
@@ -391,7 +391,7 @@
                                                                                 @enderror
                                                                                 @endcomponent
                                                                             </div>
-                                                                        @endif
+                                                                        
                                                                     </div>
 
                                                                     {{-- <div class="col-6">

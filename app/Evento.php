@@ -130,7 +130,7 @@ class Evento extends Model
     'tipoAvaliacao'       => ['required'],
     'inicioSubmissao'     => ['required', 'date', 'after_or_equal:inicioSubmissao'],
     'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-    'pdfEdital'           => [('pdfEditalPreenchido'!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
+    'pdfEdital'           => ['sometimes', 'required', 'file', 'mimes:pdf', 'max:2048'],
   ];
 
   public function endereco(){

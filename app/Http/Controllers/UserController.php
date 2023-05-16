@@ -75,28 +75,12 @@ class UserController extends Controller
         $id = Auth()->user()->id;
         $user = User::find($id);
         if ($request->tipo != "proponente") {
-
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'celular' =>  ['required', 'string'],
                 'cpf' => ['required', 'cpf'],
-            ]);
-        } else if ($user->tipo == 'participante') {
-            $validated = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
-                'cpf' => ['required', 'cpf', 'unique:users'],
-                'rg' => ['required', 'unique:participantes'],
-                'celular' => ['required', 'string', 'telefone'],
-                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
-                'instituicaoSelect' => ['required_without:instituicao'],
-                'outroCursoEstudante' => ['required_if:cursoEstudante,Outro', 'max:255'],
-                'cursoEstudante' => ['required_without:outroCursoEstudante'],
-                'perfil' => ['required'],
-                'linkLattes' => ['required'],
             ]);
         } else {
             $validated = $request->validate([
@@ -126,6 +110,24 @@ class UserController extends Controller
             ]);
         }
 
+        if ($user->tipo == 'participante') {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required_if:alterarSenhaCheckBox,on', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+                'password' => ['required_if:alterarSenhaCheckBox,on', 'string', 'min:8', 'confirmed'],
+                'cpf' => ['required', 'cpf', Rule::unique('users')->ignore($user->id)],
+                'rg' => ['required', Rule::unique('participantes')->ignore($user->participantes->first()->id)],
+                'celular' => ['required', 'string', 'telefone'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'outroCursoEstudante' => ['required_if:cursoEstudante,Outro', 'max:255'],
+                'cursoEstudante' => ['required_without:outroCursoEstudante'],
+                'perfil' => ['required'],
+                'linkLattes' => ['required', 'url'],
+            ]);
+        }
+
+
         if ($request->alterarSenhaCheckBox != null) {
             if (!(Hash::check($request->senha_atual, $user->password))) {
                 return redirect()->back()->withErrors(['senha_atual' => 'Senha atual não correspondente']);
@@ -135,13 +137,13 @@ class UserController extends Controller
                 return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
             }
         }
-        
+
         if($user->avaliadors != null && $request->area != null && $user->tipo == "avaliador"){
-          $avaliador = Avaliador::where('user_id', '=', $id)->first();
-          $avaliador->user_id = $user->id;
-          //$avaliador->area_id = $request->area;
-          $avaliador->naturezas()->sync($request->natureza);
-          $avaliador->update();
+            $avaliador = Avaliador::where('user_id', '=', $id)->first();
+            $avaliador->user_id = $user->id;
+            //$avaliador->area_id = $request->area;
+            $avaliador->naturezas()->sync($request->natureza);
+            $avaliador->update();
 
         }
 
@@ -259,7 +261,7 @@ class UserController extends Controller
         if($user->endereco()->first() == null){
             $endereco = Endereco::create();
             $endereco->user()->save($user);
-            
+
         }
 
         if ($user->participantes()->exists() && $user->participantes()->first()->curso_id)
@@ -290,5 +292,5 @@ class UserController extends Controller
                 'cursoPart' => $cursoPart,
                 'areaTematica' => $areaTematica
             ]);
-}
+    }
 }

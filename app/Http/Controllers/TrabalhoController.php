@@ -402,6 +402,11 @@ class TrabalhoController extends Controller
             $trabalho->anexo_SIPAC = Storage::putFileAs($pasta, $request->anexo_SIPAC, "Anexo_SIPAC." . $request->file('anexo_SIPAC')->extension());
         }
 
+        //Anexo Acao Afirmativa
+        if (isset($request->anexo_acao_afirmativa)) {
+            $trabalho->anexo_acao_afirmativa = Storage::putFileAs($pasta, $request->anexo_acao_afirmativa, "Anexo_Acao_Afirmativa." . $request->file('anexo_acao_afirmativa')->extension());
+        }
+
         return $trabalho;
     }
 
@@ -766,6 +771,17 @@ class TrabalhoController extends Controller
         if (Storage::disk()->exists($projeto->anexoProjeto)) {
             ob_end_clean();
             return Storage::download($projeto->anexoProjeto);
+        }
+        return abort(404);
+    }
+
+    public function baixarAcaoAfirmativa($id)
+    {
+        $projeto = Trabalho::find($id);
+        //dd($projeto);
+        if (Storage::disk()->exists($projeto->anexo_acao_afirmativa)) {
+            ob_end_clean();
+            return Storage::download($projeto->anexo_acao_afirmativa);
         }
         return abort(404);
     }
@@ -1207,7 +1223,7 @@ class TrabalhoController extends Controller
 
     public function salvar(StoreTrabalho $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         try {
             if (!$request->has('rascunho')) {
                 $request->merge([
@@ -1235,11 +1251,12 @@ class TrabalhoController extends Controller
                     'justificativaAutorizacaoEtica','modalidade','anexo_docExtra',
                 ]));
             } else {
+                //dd();
                 $trabalho = Auth::user()->proponentes->trabalhos()
                 ->create($request->except([
                     'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                     'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC'
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa' 
                 ]));
             }
 
@@ -1253,7 +1270,11 @@ class TrabalhoController extends Controller
                     $data['cpf'] = $request->cpf[$part];
                     //Quando o integrante é um estudante
                     if($request->estudante[$part] == true){
-                        $data_nascimento = Carbon::createFromFormat('d/m/Y', $request->data_de_nascimento[$part])->toDateString();
+                        if($request->data_de_nascimento[$part] == null){
+                            $data_nascimento = null;
+                        }else {
+                            $data_nascimento = Carbon::createFromFormat('d/m/Y', $request->data_de_nascimento[$part])->toDateString();
+                        }
                         $data['data_de_nascimento'] = $data_nascimento;
                         $data['rg'] = $request->rg[$part];
                         $data['celular'] = $request->celular[$part];
@@ -1274,16 +1295,20 @@ class TrabalhoController extends Controller
                             $data['curso'] = $request->outrocurso[$part];
                         }
 
-                        if($evento->tipo!="PIBEX") {
-                            $data['media_do_curso'] = $request->media_do_curso[$part];
+                        if($evento->tipo != "CONTINUO"){
+                            if($evento->tipo != "PIBEX") {
+                                $data['media_do_curso'] = $request->media_do_curso[$part];
+                            }
+                            $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
                         }
-                        $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
                     }                  
                     
                     
                     //função no projeto
-                    if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
-                        $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
+                    if($evento->tipo != "CONTINUO"){
+                        if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
+                            $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
+                    }
                     
                     //instituição do participante
                     if ($request->instituicao[$part] != "Outra") {
@@ -1311,20 +1336,22 @@ class TrabalhoController extends Controller
                     $participante->trabalho_id = $trabalho->id;
                     $participante->save();
 
-                    if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
-                        $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
-                        $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
-                        $file = $request->anexoPlanoTrabalho[$part];
-                        Storage::putFileAs($path, $file, $nome);
-                        $arquivo = new Arquivo();
-                        $arquivo->titulo = $request['nomePlanoTrabalho'][$part];
-                        $arquivo->nome = $path . $nome;
-                        $arquivo->trabalhoId = $trabalho->id;
-                        $arquivo->data = now();
-                        $arquivo->participanteId = $participante->id;
-                        $arquivo->versaoFinal = true;
-                        $arquivo->save();
-                        
+                    if($evento->tipo != "CONTINUO"){
+                        if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
+                            $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                            $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
+                            $file = $request->anexoPlanoTrabalho[$part];
+                            Storage::putFileAs($path, $file, $nome);
+                            $arquivo = new Arquivo();
+                            $arquivo->titulo = $request['nomePlanoTrabalho'][$part];
+                            $arquivo->nome = $path . $nome;
+                            $arquivo->trabalhoId = $trabalho->id;
+                            $arquivo->data = now();
+                            $arquivo->participanteId = $participante->id;
+                            $arquivo->versaoFinal = true;
+                            $arquivo->save();
+                            
+                        }
                     }
                     
                 }
