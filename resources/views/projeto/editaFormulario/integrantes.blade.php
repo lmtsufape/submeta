@@ -272,6 +272,7 @@
         
         if(<?php echo json_encode($trabalho_user) ?>['funcao']){
             modal_id += 1;
+            document.getElementById("quantidadeModais").value = modal_id;
         }
 
         $('#integrante').append(`

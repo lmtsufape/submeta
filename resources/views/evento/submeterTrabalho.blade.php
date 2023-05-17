@@ -7,6 +7,7 @@
   <form method="POST" id="criarProjetoForm"  action="{{route('trabalho.store')}}" enctype="multipart/form-data" >
   @csrf
   <input type="hidden" name="editalId" value="{{$edital->id}}">
+  <input type="hidden" name="quantidadeModais" id="quantidadeModais" value="{{old('quantidadeModais', 0)}}" >
 
   <div class="container">
     
@@ -206,17 +207,18 @@
     return nome_funcao;
   }
 
-  function marcar(id){
+  function marcar(id, data = null){
       let nome = document.getElementById("nome"+id);
       let linkNome = document.getElementById("nomePart"+(id+1));
       let nomePlano = document.getElementById("nomePlano"+(id+1));
       let linkTituloProj = document.getElementById("tituloProj"+(id+1));
       let planoTrabalho = document.getElementById("nomePlanoTrabalho"+id);
-
+      let instituicao = document.getElementById('instituicao['+id+']');
+      let celular = document.getElementById('celular'+id);
+      let estudante = document.getElementById("estudante["+id+"]");
       let cpf = document.getElementById("cpf"+id);
       let funcao = document.getElementById("funcao_participante");
       let email = document.getElementById("email"+id);
-
       let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
       let nome_funcao = get_funcao(funcao.value);
 
@@ -229,20 +231,32 @@
       }
 
       if(nome.value != ""){
+          estudante.value = true;
           if(planoTrabalho != null && planoTrabalho.value != ""){
-              nomePlano.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
+              nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
                                         <strong>Plano: </strong>${planoTrabalho.value}<br>
                                         <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${nome_funcao}</p>`;
+                                        <strong>Função: </strong>${nome_funcao}`;
           }else {
-              nomePlano.innerHTML  = ` <p style='font-weight: normal; line-height: normal;'><strong>Nome: </strong>${nome.value}<br>
+              nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
                                         <strong>E-mail: </strong>${email.value} <br>
                                         <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${nome_funcao}</p>`;
+                                        <strong>Função: </strong>${nome_funcao}`;
           }
-      }else{
-          nomePlano.innerText = `Discente `+(id+1);
+      }else if(data != null) {
+        estudante.value = false;
+        
+        nome.value = data[0].name;
+        email.value = data[0].email;
+        instituicao.value = data[0].instituicao;
+        cpf.value = data[0].cpf;
+        celular.value = data[0].celular;
+
+        nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
+                                        <strong>E-mail: </strong>${email.value} <br>
+                                        <strong>CPF: </strong>${cpf.value} <br>
+                                        <strong>Função: </strong>${data[1].nome}`;
       }
       if(id >=1){
           document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
@@ -251,6 +265,7 @@
       document.getElementById("checkB"+id).checked = true;
       //$("#atribuir1").attr('data-target','#modalIntegrante'+(id+1));
       modal_id = id+1;
+      document.getElementById("quantidadeModais").value = modal_id;
       document.getElementById("part"+id).removeAttribute("hidden");
       //document.getElementById("exampleModal"+id).modal('hide');
 
@@ -265,6 +280,7 @@
       document.getElementById("part"+id).setAttribute("hidden",true);
       //$("#atribuir1").attr('data-target','#exampleModal'+(id));
       modal_id -= 1;
+      document.getElementById("quantidadeModais").value = modal_id;
       document.getElementById("exampleModal"+id).modal('hide');
   }
   @endif

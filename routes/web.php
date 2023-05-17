@@ -212,6 +212,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     //########## Rotas de download  de documentos ###########################
     Route::get('/baixar/anexo-projeto/{id}', 'TrabalhoController@baixarAnexoProjeto')->name('baixar.anexo.projeto');
     Route::get('/baixar/anexo-consu/{id}', 'TrabalhoController@baixarAnexoConsu')->name('baixar.anexo.consu');
+    Route::get('/baixar/anexo-acao-afirmativa/{id}', 'TrabalhoController@baixarAcaoAfirmativa')->name('baixar.anexo.acao.afirmativa');
     Route::get('/baixar/anexo-comite/{id}', 'TrabalhoController@baixarAnexoComite')->name('baixar.anexo.comite');
     Route::get('/baixar/anexo-justificativa/{id}', 'TrabalhoController@baixarAnexoJustificativa')->name('baixar.anexo.justificativa');
     Route::get('/baixar/anexo-lattes/{id}', 'TrabalhoController@baixarAnexoLattes')->name('baixar.anexo.lattes');
@@ -220,6 +221,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/baixar/anexoGrupoPesquisa/{id}', 'TrabalhoController@baixarAnexoGrupoPesquisa')->name('baixar.anexoGrupoPesquisa');
     Route::get('/baixar/anexo-temp/{eventoId}/{nomeAnexo}', 'TrabalhoController@baixarAnexoTemp')->name('baixar.anexo.temp');
     Route::get('/baixar/evento-temp/{nomeAnexo}', 'TrabalhoController@baixarEventoTemp')->name('baixar.evento.temp');
+    Route::get('/baixar/modelo-evento-temp/{nomeAnexo}', 'TrabalhoController@baixarModeloEventoTemp')->name('baixar.modelo.evento.temp');
     Route::get('/baixar/documentosParticipante', 'ParticipanteController@baixarDocumento')->name('baixar.documentosParticipante');
     Route::get('/baixar/anexoDocExtra/{id}', 'TrabalhoController@baixarAnexoDocExtra')->name('baixar.anexo.docExtra');
     Route::get('/baixar/anexoSIPAC/{id}', 'TrabalhoController@baixarAnexoSIPAC')->name('baixar.anexo.SIPAC');
@@ -323,7 +325,7 @@ Route::prefix('cursos')->name('cursos.')->group(function (){
 //############ Evento ##############################################
 Route::prefix('evento')->name('evento.')->group(function () {
     Route::get('/criar', 'EventoController@create')->name('criar')->middleware('checkRoles:coordenador,administrador');
-    Route::post('/criar', 'EventoController@store')->name('criar')->middleware('checkRoles:coordenador,checkAdministrador');
+    Route::post('/criar', 'EventoController@store')->name('criar')->middleware('checkRoles:coordenador,administrador');
     Route::get('/visualizar/{id}', 'EventoController@show')->name('visualizar')->middleware('auth');
     Route::get('/listar', 'EventoController@listar')->name('listar')->middleware('auth');
     Route::delete('/excluir/{id}', 'EventoController@destroy')->name('deletar')->middleware('checkRoles:coordenador,administrador');

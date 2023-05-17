@@ -695,7 +695,7 @@
                 <div class="form-group">
                     <label for="modeloDocumento">Arquivo com os modelos de documentos do edital:</label>
                     @if($evento->modeloDocumento != null)
-                        <a href="{{route('download', ['file' => $evento->modeloDocumento])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
+                        <a href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                             <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                         </a>
                     @else
@@ -703,9 +703,9 @@
                             <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
                         </a>
                     @endif
-                    <input type="file" class="form-control-file @error('modeloDocumento') is-invalid @enderror" name="modeloDocumento" value="{{ old('modeloDocumento') }}" id="modeloDocumento">
-                    <small>O arquivo selecionado deve ter até 2mb.</small>
-                    @error('modeloDocumento')
+                    <input type="file" class="form-control-file @error('modeloDocumento[]') is-invalid @enderror" name="modeloDocumento[]" multiple value="{{ old('modeloDocumento') }}" id="modeloDocumento" onchange="exibirAnexoTemp(this)" accept=".doc,.docx,.pdf">
+                    <small>Os arquivos selecionado deve ter até 2mb.</small>
+                    @error('modeloDocumento[]')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

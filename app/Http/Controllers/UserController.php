@@ -48,9 +48,26 @@ class UserController extends Controller
 
     function perfil()
     {
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
+        $cursoPart = null;
+        if ($user->participantes()->exists() && $user->participantes()->first()->curso_id)
+            $cursoPart = Curso::find($user->participantes()->first()->curso_id);
+        $view = 'user.perfilUser';
+        if ($user->tipo == 'participante')
+            $view = 'user.perfilParticipante';
 
-        return view('user.perfilUser', ['user' => $user]);
+        $naturezas = Natureza::orderBy('nome')->get();
+        $cursos = Curso::orderBy('nome')->get();
+        $areaTematica = AreaTematica::orderBy('nome')->get();
+
+        return view($view)
+            ->with([
+                'user' => $user,
+                'cursos' => $cursos,
+                'naturezas' => $naturezas,
+                'cursoPart' => $cursoPart,
+                'areaTematica' => $areaTematica
+            ]);
     }
 
     function editarPerfil(Request $request)
@@ -58,7 +75,6 @@ class UserController extends Controller
         $id = Auth()->user()->id;
         $user = User::find($id);
         if ($request->tipo != "proponente") {
-
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
@@ -94,6 +110,24 @@ class UserController extends Controller
             ]);
         }
 
+        if ($user->tipo == 'participante') {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required_if:alterarSenhaCheckBox,on', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+                'password' => ['required_if:alterarSenhaCheckBox,on', 'string', 'min:8', 'confirmed'],
+                'cpf' => ['required', 'cpf', Rule::unique('users')->ignore($user->id)],
+                'rg' => ['required', Rule::unique('participantes')->ignore($user->participantes->first()->id)],
+                'celular' => ['required', 'string', 'telefone'],
+                'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
+                'instituicaoSelect' => ['required_without:instituicao'],
+                'outroCursoEstudante' => ['required_if:cursoEstudante,Outro', 'max:255'],
+                'cursoEstudante' => ['required_without:outroCursoEstudante'],
+                'perfil' => ['required'],
+                'linkLattes' => ['required', 'url'],
+            ]);
+        }
+
+
         if ($request->alterarSenhaCheckBox != null) {
             if (!(Hash::check($request->senha_atual, $user->password))) {
                 return redirect()->back()->withErrors(['senha_atual' => 'Senha atual não correspondente']);
@@ -103,17 +137,17 @@ class UserController extends Controller
                 return redirect()->back()->withErrors(['nova_senha' => 'Senhas diferentes']);
             }
         }
-        
+
         if($user->avaliadors != null && $request->area != null && $user->tipo == "avaliador"){
-          $avaliador = Avaliador::where('user_id', '=', $id)->first();
-          $avaliador->user_id = $user->id;
-          //$avaliador->area_id = $request->area;
-          $avaliador->naturezas()->sync($request->natureza);
-          $avaliador->update();
+            $avaliador = Avaliador::where('user_id', '=', $id)->first();
+            $avaliador->user_id = $user->id;
+            //$avaliador->area_id = $request->area;
+            $avaliador->naturezas()->sync($request->natureza);
+            $avaliador->update();
 
         }
 
-        switch ($request->tipo) {
+        switch ($user->tipo) {
             case "administradorResponsavel":
                 $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
                 $adminResp->user_id = $user->id;
@@ -156,22 +190,30 @@ class UserController extends Controller
                 $proponente->update();
                 break;
             case "participante":
-                $participante = Participante::where('user_id', '=', $id)->first();
-                //$participante = $user->participantes->where('user_id', Auth::user()->id)->first();
-                $participante->user_id = $user->id;
-                //dd($participante);
-                if ($user->usuarioTemp == true) {
-                    $user->usuarioTemp = false;
+                $participante = $user->participantes()->first();
+                $participante->data_de_nascimento = $request->data_de_nascimento;
+                $participante->linkLattes = $request->linkLattes;
+                $participante->rg = $request->rg;
+                if ($request->outroCursoEstudante != null) {
+                    $participante->curso = $request->outroCursoEstudante;
+                } else if (isset($request->cursoEstudante) && $request->cursoEstudante != "Outro") {
+                    $participante->curso_id = $request->cursoEstudante;
                 }
-
+                $user->usuarioTemp = false;
+                $endereco = $user->endereco;
+                $endereco->cep = $request->cep;
+                $endereco->uf = $request->uf;
+                $endereco->cidade = $request->cidade;
+                $endereco->rua = $request->rua;
+                $endereco->numero = $request->numero;
+                $endereco->bairro = $request->bairro;
+                $endereco->complemento = $request->complemento;
+                $endereco->update();
                 $participante->update();
-
                 break;
         }
 
         $user->name = $request->name;
-        $user->tipo = $request->tipo;
-        // $user->email = $request->email;
         $user->cpf = $request->cpf;
         $user->celular = $request->celular;
         if ($request->instituicao != null) {
@@ -209,24 +251,46 @@ class UserController extends Controller
     {
         $id = Auth::user()->id;
         $user = User::find($id);
+        $cursoPart = null;
+
+        if($user->participantes()->first() == null){
+            $participante = Participante::create();
+            $user->participantes()->save($participante);
+        }
+
+        if($user->endereco()->first() == null){
+            $endereco = Endereco::create();
+            $endereco->user()->save($user);
+
+        }
+
+        if ($user->participantes()->exists() && $user->participantes()->first()->curso_id)
+            $cursoPart = Curso::find($user->participantes()->first()->curso_id);
 
         $adminResp = AdministradorResponsavel::where('user_id', '=', $id)->first();
         $avaliador = Avaliador::where('user_id', '=', $id)->first();
         $proponente = Proponente::where('user_id', '=', $id)->first();
-        $participante = Participante::where('user_id', '=', $id)->first();
+        $participante = $user->participantes()->first();
 
         $naturezas = Natureza::orderBy('nome')->get();
         $cursos = Curso::orderBy('nome')->get();
         $areaTematica = AreaTematica::orderBy('nome')->get();
 
+        $view = 'user.perfilUser';
+        if ($user->tipo == 'participante')
+            $view = 'user.perfilParticipante';
 
-        return view('user.perfilUser')->with(['user' => $user,
-                                              'adminResp' => $adminResp,
-                                              'avaliador' => $avaliador,
-                                              'proponente' => $proponente,
-                                              'participante' => $participante,
-                                              'cursos' => $cursos,
-                                              'naturezas' => $naturezas,
-                                              'areaTematica' => $areaTematica]);
+        return view($view)
+            ->with([
+                'user' => $user,
+                'adminResp' => $adminResp,
+                'avaliador' => $avaliador,
+                'proponente' => $proponente,
+                'participante' => $participante,
+                'cursos' => $cursos,
+                'naturezas' => $naturezas,
+                'cursoPart' => $cursoPart,
+                'areaTematica' => $areaTematica
+            ]);
     }
 }

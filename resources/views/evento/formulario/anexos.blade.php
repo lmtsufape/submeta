@@ -132,6 +132,44 @@
                 </div>
               </div>
             @endif
+
+            @if($edital->tipo == "PIBIC" && $edital->natureza_id == 2)
+              <div class="form-group col-md-6">
+
+                <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold;">
+                 O questionário de pesquisa de prospecção interna foi respondido?<span style="color: red; font-weight:bold"> *</span> 
+                </label>
+                <input type="radio" id="formSim" name="preenchimentoFormFlag" value="sim">
+                <label for="formSim" style="margin-right: 5px">Sim</label>
+                
+                <input type="radio" id="formNao" name="preenchimentoFormFlag" value="nao" checked>
+                <label for="formNao" style="margin-right: 5px;">Não</label><br>
+
+                <a href="https://forms.gle/cAND8Z3z1yVr9u6a6" target="_blank" style="margin: 0px;">(endereço eletrônico de acesso)</a>
+                
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold">{{ __('Possui estudante(s) de ações afirmativas?') }} </label>
+  
+                <input type="radio" id="radioAcoesAfirmativasSim" name="radioAcoesAfirmativas" onchange="displayAcoesAfirmativas('sim')" value="sim">
+                <label for="radioSim" style="margin-right: 5px">Sim</label>
+  
+                <input type="radio" id="radioAcoesAfirmativasNao" name="radioAcoesAfirmativas" onchange="displayAcoesAfirmativas('nao')" checked 
+                value="nao">
+                <label for="radioNao" style="margin-right: 5px" >Não</label><br>
+
+                <div class="form-group" id="displayAcoesAfirmativas" style="display: none; margin-top:-1rem">
+                  <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold;font-size: 13px">{{ __('Declaração de ação afirmativa') }}<span style="color: red; font-weight:bold"> *</span></label>
+                    <input type="file" class="input-group-text" name="anexo_acao_afirmativa" accept=".pdf" />
+                    @error('anexoAcaoAfirmativa')
+                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                </div>
+              </div>
+            @endif
             @if($edital->nome_docExtra != null)
               <div class="form-group col-md-6">
                 <label title="{{$edital->nome_docExtra}}" for="anexo_docExtra" class="col-form-label font-tam" style="font-weight: bold">{{$edital->nome_docExtra}}: @if($edital->obrigatoriedade_docExtra == true) <span style="color: red; font-weight:bold">*</span> @endif</label>
@@ -174,6 +212,14 @@
         document.getElementById("displayNao").style.display = "block";
         document.getElementById("idAvisoAutorizacaoEspecial").style.display = "none";
       }
+  }
+
+  function displayAcoesAfirmativas(valor) {
+    if(valor == "sim"){
+      document.getElementById("displayAcoesAfirmativas").style.display = "block";
+    }else {
+      document.getElementById("displayAcoesAfirmativas").style.display = "none";
+    }
   }
 
 </script>

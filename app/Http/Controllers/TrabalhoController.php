@@ -402,6 +402,11 @@ class TrabalhoController extends Controller
             $trabalho->anexo_SIPAC = Storage::putFileAs($pasta, $request->anexo_SIPAC, "Anexo_SIPAC." . $request->file('anexo_SIPAC')->extension());
         }
 
+        //Anexo Acao Afirmativa
+        if (isset($request->anexo_acao_afirmativa)) {
+            $trabalho->anexo_acao_afirmativa = Storage::putFileAs($pasta, $request->anexo_acao_afirmativa, "Anexo_Acao_Afirmativa." . $request->file('anexo_acao_afirmativa')->extension());
+        }
+
         return $trabalho;
     }
 
@@ -770,6 +775,17 @@ class TrabalhoController extends Controller
         return abort(404);
     }
 
+    public function baixarAcaoAfirmativa($id)
+    {
+        $projeto = Trabalho::find($id);
+        //dd($projeto);
+        if (Storage::disk()->exists($projeto->anexo_acao_afirmativa)) {
+            ob_end_clean();
+            return Storage::download($projeto->anexo_acao_afirmativa);
+        }
+        return abort(404);
+    }
+
     public function baixarAnexoGrupoPesquisa($id)
     {
         $projeto = Trabalho::find($id);
@@ -895,16 +911,30 @@ class TrabalhoController extends Controller
     }
 
     public function baixarEventoTemp($nomeAnexo)
-    {
+    {   
         $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
             ->orderByDesc('updated_at')->first();
 
-        if (Storage::disk()->exists($eventoTemp->$nomeAnexo)) {
+        return response()->download($eventoTemp->$nomeAnexo);    
+        if (!is_null($eventoTemp) && Storage::disk()->exists($eventoTemp->$nomeAnexo)) {
             ob_end_clean();
             return Storage::download($eventoTemp->$nomeAnexo);
         }
         return abort(404);
     }
+
+    public function baixarModeloEventoTemp($nomeAnexo)
+    {   
+        $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
+            ->orderByDesc('updated_at')->first();
+
+        if (!is_null($eventoTemp)) {
+            ob_end_clean();
+            return response()->download($eventoTemp->$nomeAnexo); 
+        }
+        return abort(404);
+    }
+
 //xxfa
 
     public function update(UpdateTrabalho $request, $id)
@@ -1178,6 +1208,10 @@ class TrabalhoController extends Controller
         
         if($usuario){
             $participante = $usuario->participantes()->first();
+
+            if(!$participante)
+                return json_encode([$usuario, $funcao]);
+
             if ($participante->curso == null && $participante->curso_id != null)
                 $participante->curso = Curso::find($participante->curso_id)->nome;
             return json_encode([$usuario, $funcao, $participante, $usuario->endereco()->first()]);
@@ -1189,7 +1223,7 @@ class TrabalhoController extends Controller
 
     public function salvar(StoreTrabalho $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         try {
             if (!$request->has('rascunho')) {
                 $request->merge([
@@ -1217,61 +1251,74 @@ class TrabalhoController extends Controller
                     'justificativaAutorizacaoEtica','modalidade','anexo_docExtra',
                 ]));
             } else {
+                //dd();
                 $trabalho = Auth::user()->proponentes->trabalhos()
                 ->create($request->except([
                     'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                     'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC'
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa' 
                 ]));
             }
 
             //adição dos participantes
-            if ($request->has('marcado')) {
+            if ($request->has('marcado')) {             
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
-
-                    // $passwordTemporario = Str::random(8);
+                    
                     $data['name'] = $request->name[$part];
                     $data['email'] = $request->email[$part];
-                    // $data['password'] = bcrypt($passwordTemporario);
-                    $data['data_de_nascimento'] = $request->data_de_nascimento[$part];
                     $data['cpf'] = $request->cpf[$part];
-                    $data['tipo'] = 'participante';
-                    if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
-                        $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
-                    $data['rg'] = $request->rg[$part];
-                    $data['celular'] = $request->celular[$part];
-                    $data['cep'] = $request->cep[$part];
-                    $data['uf'] = $request->uf[$part];
-                    $data['cidade'] = $request->cidade[$part];
-                    $data['rua'] = $request->rua[$part];
-                    $data['numero'] = $request->numero[$part];
-                    $data['bairro'] = $request->bairro[$part];
-                    $data['complemento'] = $request->complemento[$part];
+                    //Quando o integrante é um estudante
+                    if($request->estudante[$part] == true){
+                        if($request->data_de_nascimento[$part] == null){
+                            $data_nascimento = null;
+                        }else {
+                            $data_nascimento = Carbon::createFromFormat('d/m/Y', $request->data_de_nascimento[$part])->toDateString();
+                        }
+                        $data['data_de_nascimento'] = $data_nascimento;
+                        $data['rg'] = $request->rg[$part];
+                        $data['celular'] = $request->celular[$part];
+                        $data['cep'] = $request->cep[$part];
+                        $data['uf'] = $request->uf[$part];
+                        $data['cidade'] = $request->cidade[$part];
+                        $data['rua'] = $request->rua[$part];
+                        $data['numero'] = $request->numero[$part];
+                        $data['bairro'] = $request->bairro[$part];
+                        if($request->complemento[$part] == null) {
+                            $data['complemento'] = "";
+                        }else {
+                            $data['complemento'] = $request->complemento[$part];
+                        }
+                        if ($request->curso[$part] != "Outro") {
+                            $data['curso'] = $request->curso[$part];
+                        } else {
+                            $data['curso'] = $request->outrocurso[$part];
+                        }
 
+                        if($evento->tipo != "CONTINUO"){
+                            if($evento->tipo != "PIBEX") {
+                                $data['media_do_curso'] = $request->media_do_curso[$part];
+                            }
+                            $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
+                        }
+                    }                  
+                    
+                    
+                    //função no projeto
+                    if($evento->tipo != "CONTINUO"){
+                        if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
+                            $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
+                    }
+                    
+                    //instituição do participante
                     if ($request->instituicao[$part] != "Outra") {
                         $data['instituicao'] = $request->instituicao[$part];
                     } else {
                         $data['instituicao'] = $request->outrainstituicao[$part];
                     }
-
-                    $data['total_periodos'] = $request->total_periodos[$part];
-
-                    if ($request->curso[$part] != "Outro") {
-                        $data['curso'] = $request->curso[$part];
-                    } else {
-                        $data['curso'] = $request->outrocurso[$part];
-                    }
-
-                    $data['turno'] = $request->turno[$part];
-                    $data['periodo_atual'] = $request->periodo_atual[$part];
-                    $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
-                    if($evento->tipo!="PIBEX") {
-                        $data['media_do_curso'] = $request->media_do_curso[$part];
-                    }
-                    $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
-
+                    
                     $user = User::where('email', $data['email'])->first();
+                    
                     if ($user == null) {
                         $data['usuarioTemp'] = true;
                         $user = User::create($data);
@@ -1285,26 +1332,28 @@ class TrabalhoController extends Controller
                     $participante = Participante::create($data);
                     $participante->data_entrada = $participante->created_at;
                     $user->participantes()->save($participante);
-
+                    
                     $participante->trabalho_id = $trabalho->id;
                     $participante->save();
 
-                    if ($request->has('anexoPlanoTrabalho')) {
-                        $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
-                        $nome = $data['nomePlanoTrabalho'] . ".pdf";
-                        $file = $request->anexoPlanoTrabalho[$part];
-                        Storage::putFileAs($path, $file, $nome);
-                        $arquivo = new Arquivo();
-                        $arquivo->titulo = $data['nomePlanoTrabalho'];
-                        $arquivo->nome = $path . $nome;
-                        $arquivo->trabalhoId = $trabalho->id;
-                        $arquivo->data = now();
-                        $arquivo->participanteId = $participante->id;
-                        $arquivo->versaoFinal = true;
-                        $arquivo->save();
-
+                    if($evento->tipo != "CONTINUO"){
+                        if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
+                            $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                            $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
+                            $file = $request->anexoPlanoTrabalho[$part];
+                            Storage::putFileAs($path, $file, $nome);
+                            $arquivo = new Arquivo();
+                            $arquivo->titulo = $request['nomePlanoTrabalho'][$part];
+                            $arquivo->nome = $path . $nome;
+                            $arquivo->trabalhoId = $trabalho->id;
+                            $arquivo->data = now();
+                            $arquivo->participanteId = $participante->id;
+                            $arquivo->versaoFinal = true;
+                            $arquivo->save();
+                            
+                        }
                     }
-
+                    
                 }
             } else {
                 $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
@@ -1321,29 +1370,29 @@ class TrabalhoController extends Controller
                     $arquivo->proponenteId = $proponente->id;
                     $arquivo->versaoFinal = true;
                     $arquivo->save();
-
+                    
                 }
             }
-
+            
             $evento->trabalhos()->save($trabalho);
-
+            
             $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->modalidade = $request->modalidade;
             $trabalho->save();
-
-
-            if($evento->natureza_id == 3){
-                foreach($request->integrantes as $integrante){
-                    $integrante = explode(',', $integrante); 
+            
+            
+            // if($evento->natureza_id == 3){
+            //     foreach($request->integrantes as $integrante){
+            //         $integrante = explode(',', $integrante); 
                     
-                    $trabalho_user = new TrabalhoUser();
-                    $trabalho_user->user_id = $integrante[0];
-                    $trabalho_user->funcao_participante_id = $integrante[1];
-                    $trabalho_user->trabalho_id = $trabalho->id;
-                    $trabalho_user->save();
-                }
-            }
+            //         $trabalho_user = new TrabalhoUser();
+            //         $trabalho_user->user_id = $integrante[0];
+            //         $trabalho_user->funcao_participante_id = $integrante[1];
+            //         $trabalho_user->trabalho_id = $trabalho->id;
+            //         $trabalho_user->save();
+            //     }
+            // }
 
             $trabalho->ods()->sync($request->ods);
             DB::commit();

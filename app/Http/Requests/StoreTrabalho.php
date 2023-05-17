@@ -6,6 +6,7 @@ use App\Evento;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreTrabalho extends FormRequest
 {
@@ -19,6 +20,17 @@ class StoreTrabalho extends FormRequest
         return Auth::check();
     }
 
+    protected function prepareForValidation()
+    {
+        $func = function($value) {
+            return ['cpf' => $value];
+        };
+        $this->merge([
+            'cpfs' => array_map($func, $this->cpf),
+        ]);
+    }
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,10 +38,12 @@ class StoreTrabalho extends FormRequest
      */
     public function rules()
     {
+        // dd($this->all());
         $evento = Evento::find($this->editalId);
         $rules = [];
         
         if($this->has('marcado')){
+            $rules['cpfs.*.cpf'] = ['distinct', 'nullable'];
             foreach ($this->get('marcado') as $key => $value) {
                 if( intval($value)  == $key){
                     //user
@@ -38,42 +52,43 @@ class StoreTrabalho extends FormRequest
                     $rules['instituicao.'.$value] = ['required', 'string'];
                     $rules['cpf.'.$value] = ['required', 'string'];
                     $rules['celular.'.$value] = ['required', 'string'];
-                    //endereco
-                    $rules['rua.'.$value] = ['required', 'string'];
-                    $rules['numero.'.$value] = ['required', 'string'];
-                    $rules['bairro.'.$value] = ['required', 'string'];
-                    $rules['cidade.'.$value] = ['required', 'string'];
-                    $rules['uf.'.$value] = ['required', 'string'];
-                    $rules['cep.'.$value] = ['required', 'string'];
-                    //participante
-                    $rules['rg.'.$value] = ['required', 'string'];
-                    $rules['data_de_nascimento.'.$value] = ['required', 'string'];
-                    $rules['curso.'.$value] = ['required', 'string'];
                     
-                    //participantes da pesquisa
-                    if($evento->natureza_id != 3){
-                        $rules['turno.'.$value] = ['required', 'string'];
-                        $rules['ordem_prioridade.'.$value] = ['required', 'string'];
-                        $rules['periodo_atual.'.$value] = ['required', 'string'];
-                        $rules['total_periodos.'.$value] = ['required', 'string'];
-                        $rules['media_do_curso.' . $value] = ['required', 'string'];
+                    if($this->estudante[$value] === true){                        
+                        //endereco
+                        $rules['rua.'.$value] = ['required', 'string'];
+                        $rules['numero.'.$value] = ['required', 'string'];
+                        $rules['bairro.'.$value] = ['required', 'string'];
+                        $rules['cidade.'.$value] = ['required', 'string'];
+                        $rules['uf.'.$value] = ['required', 'string'];
+                        $rules['cep.'.$value] = ['required', 'string'];
+                        //participante
+                        $rules['rg.'.$value] = ['required', 'string'];
+                        $rules['data_de_nascimento.'.$value] = ['required', 'string'];
+                        $rules['curso.'.$value] = ['required', 'string'];
+                        
+                        //participantes da pesquisa
+                        if($evento->natureza_id != 3){
+                            $rules['turno.'.$value] = ['required', 'string'];
+                            $rules['ordem_prioridade.'.$value] = ['required', 'string'];
+                            $rules['periodo_atual.'.$value] = ['required', 'string'];
+                            $rules['total_periodos.'.$value] = ['required', 'string'];
+                            $rules['media_do_curso.' . $value] = ['required', 'string'];
+                        }
+                        
+                        if($evento->tipo != "CONTINUO" && ($this->funcaoParticipante[$value] == "Voluntário" || $this->funcaoParticipante[$value] == "Bolsista")){
+                            $rules['anexoPlanoTrabalho.'.$value] = ['required'];
+                            $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
+                        } 
                     }
 
-                    if($evento->tipo != "CONTINUO" && ($this->funcaoParticipante[$value] == "Voluntário" || $this->funcaoParticipante[$value] == "Bolsista")){
-                        $rules['anexoPlanoTrabalho.'.$value] = ['required'];
-                        $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
-                    } 
-
-                    
                     // if($evento->tipo != "PIBEX") {
                     //     $rules['media_do_curso.' . $value] = ['required', 'string'];
                     // }
                     
-    
                 }
             }
 
-        } else if($evento->tipo != "CONTINUO"){
+        } else if($evento->tipo != "CONTINUO" ){
 
             $rules['anexoPlanoTrabalho'] = ['required'];
             $rules['nomePlanoTrabalho'] = ['required', 'string'];
@@ -90,6 +105,7 @@ class StoreTrabalho extends FormRequest
 
 
             if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO"){
+                //dd($this->preenchimentoFormFlag);
                 $rules['anexoPlanilhaPontuacao']       = ['required'];
                 $rules['anexoLattesCoordenador']       = ['required', 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = ['required', 'mimes:pdf'];
@@ -97,6 +113,8 @@ class StoreTrabalho extends FormRequest
                 $rules['justificativaAutorizacaoEtica']= [Rule::requiredIf($this->autorizacaoFlag == 'nao')];
                 $rules['pontuacaoPlanilha']            = ['required', 'string'];
                 $rules['linkGrupoPesquisa']            = ['required', 'string'];
+                $rules['preenchimentoFormFlag']        = [Rule::in(['sim']), 'required'];
+                $rules['anexo_acao_afirmativa']          = [Rule::requiredIf($this->radioAcoesAfirmativas == 'sim')];
             }
 
             $rules['editalId']                     = ['required', 'string'];
@@ -120,7 +138,7 @@ class StoreTrabalho extends FormRequest
             } else {
                 $rules['anexo_SIPAC'] = ['required', 'mimes:pdf'];
             }
-            //dd($rules, $evento);
+            // dd($rules, $evento);
             return $rules;
 
         }
@@ -137,6 +155,7 @@ class StoreTrabalho extends FormRequest
             'anexoPlanoTrabalho.*.required' => 'O :attribute é obrigatório',
             'anexoProjeto.required' => 'O :attribute é obrigatório',
             'cpf.*.required'  => 'O cpf é obrigatório',
+            'cpfs.*.cpf.distinct'  => 'O integrante com CPF :input não pode ser adicionado mais de uma vez',
             'name.*.required'  => 'O :attribute é obrigatório',
             'email.*.required'  => 'O :attribute é obrigatório',
             'instituicao.*.required'  => 'O :attribute é obrigatório',

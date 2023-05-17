@@ -510,6 +510,12 @@
                                         <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                     </div>
                                 @endif
+                                @if($evento->tipo == 'PIBIC' && $evento->natureza_id == 2)
+                                    <div class="col-sm-4">
+                                    <label title="Decisão da Câmara ou Conselho Pertinente" for="anexo_acao_afirmativa" class="col-form-label font-tam" style="font-weight: bold">{{ __('Ação Afirmativa: ') }}</label>
+                                    <a href="{{ route('baixar.anexo.acao.afirmativa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                    </div>
+                                @endif
                                 @if($evento->nome_docExtra != null)
                                     {{-- Documento Extra --}}
                                     <div class="col-sm-4">
@@ -706,25 +712,27 @@
                                                         </select>
                                                     @else
                                                     @foreach($trabalho->participantes as $participante)
-                                                        <div class="col-md-6">
-                                                            <label style="font-weight: bold;font-size: 18px">Plano: {{$participante->planoTrabalho->titulo}}</label>
-                                                        </div>
-                                                        @php
-                                                            $avaliacoesId = \App\AvaliacaoRelatorio::where("arquivo_id",$participante->planoTrabalho->id)->where("tipo",$tipoTemp)->pluck('user_id');
-                                                            $avalProjeto = \Illuminate\Support\Facades\DB::table('users')->join('avaliadors','users.id','=','avaliadors.user_id')->whereNotIn('users.id', $avaliacoesId)->orderBy('users.name')->get();
-                                                        @endphp
+                                                        @if($participante->planoTrabalho != null)
+                                                            <div class="col-md-6">
+                                                                <label style="font-weight: bold;font-size: 18px">Plano: {{$participante->planoTrabalho->titulo}}</label>
+                                                            </div>
+                                                            @php
+                                                                $avaliacoesId = \App\AvaliacaoRelatorio::where("arquivo_id",$participante->planoTrabalho->id)->where("tipo",$tipoTemp)->pluck('user_id');
+                                                                $avalProjeto = \Illuminate\Support\Facades\DB::table('users')->join('avaliadors','users.id','=','avaliadors.user_id')->whereNotIn('users.id', $avaliacoesId)->orderBy('users.name')->get();
+                                                            @endphp
 
-                                                        <select name="avaliadores_{{$participante->planoTrabalho->id}}_id[]" multiple
-                                                                class="form-control" id="avaliacaoSelect"
-                                                                style="height: 200px;font-size:15px">
-                                                            @foreach ($avalProjeto as $avaliador)
-                                                                    <option value="{{ $avaliador->user_id }}"> {{ $avaliador->name }}
-                                                                        > {{$avaliador->instituicao ?? 'Instituição Indefinida'}}
-                                                                        > {{$avaliador->tipo}}
-                                                                        > {{$avaliador->email}}</option>
+                                                            <select name="avaliadores_{{$participante->planoTrabalho->id}}_id[]" multiple
+                                                                    class="form-control" id="avaliacaoSelect"
+                                                                    style="height: 200px;font-size:15px">
+                                                                @foreach ($avalProjeto as $avaliador)
+                                                                        <option value="{{ $avaliador->user_id }}"> {{ $avaliador->name }}
+                                                                            > {{$avaliador->instituicao ?? 'Instituição Indefinida'}}
+                                                                            > {{$avaliador->tipo}}
+                                                                            > {{$avaliador->email}}</option>
 
-                                                            @endforeach
-                                                        </select>
+                                                                @endforeach
+                                                            </select>
+                                                        @endif
                                                     @endforeach
                                                     @endif
                                                     <small id="emailHelp" class="form-text text-muted">Segure SHIFT do
@@ -1018,7 +1026,8 @@
                                                         </div>
 
                                                     </div>
-
+                                                   
+                                                    @if($evento->natureza_id != 3)
                                                     <div class="col-md-6">
                                                         <label style="font-weight: bold;font-size: 18px">Internos</label>
                                                     </div>
@@ -1046,7 +1055,7 @@
                                                                 @endif
                                                         @endforeach
                                                     </select>
-
+                                                    @endif
 
                                                     <div class="col-md-6">
                                                         <label style="font-weight: bold;font-size: 18px"><i>Ad Hoc</i></label>
@@ -2266,21 +2275,23 @@
         //console.log(seletor[0].children[0].text)=
 
         function buscar(input) {
-            let seletor1 = document.getElementById('exampleFormControlSelect2').children;
-            let seletor2 = document.getElementById('exampleFormControlSelect3').children;
+            if(document.getElementById('exampleFormControlSelect2') != null){
+                let seletor1 = document.getElementById('exampleFormControlSelect2').children;
+
+                for(let i = 0; i < seletor1.length; i++){
+                    let nomeAval1 = seletor1[i].textContent
 
 
-            for(let i = 0; i < seletor1.length; i++){
-                let nomeAval1 = seletor1[i].textContent
-
-
-                if(nomeAval1.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0){
-                    seletor1[i].style.display = "";
-                }else {
-                    seletor1[i].style.display = "none";
+                    if(nomeAval1.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0){
+                        seletor1[i].style.display = "";
+                    }else {
+                        seletor1[i].style.display = "none";
+                    }
                 }
-
+                
             }
+            
+            let seletor2 = document.getElementById('exampleFormControlSelect3').children;
 
             for(let j = 0; j < seletor2.length; j++){
                 let nomeAval1 = seletor2[j].textContent

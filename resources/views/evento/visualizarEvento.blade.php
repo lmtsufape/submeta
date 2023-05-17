@@ -143,7 +143,13 @@
                                   </div>
                                 </div>
                               @else
-                                <a class="btn btn-success " href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%; height:50px; padding-top:7px; font-size:20px"><img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
+                                  {{-- @if(empty($evento->trabalho->arquivo->relatorioFinal))
+                                    <a class="btn btn-success" style="width:100%; height:50px; padding-top:7px; font-size:20px" onclick="modalSubmeterProposta()">
+                                      <img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
+                                  @else --}}
+                                  <a class="btn btn-success" href="{{route('trabalho.index',['id'=>$evento->id])}}" style="width:100%; height:50px; padding-top:7px; font-size:20px">
+                                    <img src="{{asset('img/icons/icon_enviar_proposta.png')}}" class="card-img-top" alt="..." style="width:30px; margin-right:5px"> Submeter proposta</a>
+                                  {{-- @endif --}}
                               @endif
                             </div>
                             @endif
@@ -259,26 +265,25 @@
 
                         <div class="col-md-12">
                           @if($evento->modeloDocumento != null)
-                          <div class="d-flex justify-content-left align-items-center" style="margin-bottom: -15px">
-                            <div style="margin-right:10px; margin-top:-15px">
-                              <img class="" src="{{asset('img/icons/icon_modelo.png')}}" alt="" width="40px">
-                            </div>
-                            <div class="form-group" style="width: 100%">
-                              <div class="d-flex justify-content-between" style="width: 100%">
-                                <div><h5 style=" font-size:17px; margin-top:9px">Outros<br>documentos</h5></div>
-                                <div>
-                                    <a class="btn btn-light" href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="" >
-                                    <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px"><br>
-                                    Baixar</a>
-                                </div>
+                              <div class="d-flex justify-content-left align-items-center" style="margin-bottom: -15px">
+                                  <div style="margin-right:10px; margin-top:-15px">
+                                      <img class="" src="{{asset('img/icons/icon_modelo.png')}}" alt="" width="40px">
+                                  </div>
+                                  <div class="form-group" style="width: 100%">
+                                      <div class="d-flex justify-content-between" style="width: 100%">
+                                          <div><h5 style=" font-size:17px; margin-top:9px">Outros<br>documentos</h5></div>
+                                          <div>
+                                               <a class="btn btn-light" href="{{route('baixar.modelos', ['id' => $evento->id])}}" target="_new" style="" >
+                                                <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px"><br>
+                                                Baixar</a>
+                                          </div>
+                                      </div>
+                                  </div>
                               </div>
-                            </div>
-                          </div>
                           @else
-                          <h6 style="color: #909090">O criador do edital não disponibilizou modelos</h6>
-                        @endif
-                        </div>
-
+                              <h6 style="color: #909090">O criador do edital não disponibilizou modelos</h6>
+                          @endif
+                      </div>
                       </div>
                     </div>
                 </div>
@@ -325,5 +330,10 @@
   function changeTrabalho(x){
     document.getElementById('trabalhoNovaVersaoId').value = x;
   }
+
+  // function modalSubmeterProposta(){
+  //   return alert("Usuário impossibilitado de submeter proposta à não inadimplência com um edital anterior!");
+  // }
+
 </script>
 @endsection

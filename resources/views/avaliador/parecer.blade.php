@@ -50,9 +50,10 @@
                                 }
 							@endphp
 							<div class="col-sm-12">
-								<label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold"
-								title="{{$participante->planoTrabalho->titulo}}">{{ __('Projeto: ') }}{{$participante->planoTrabalho->titulo}}</label>
-
+								@if($participante->planoTrabalho != null)
+									<label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold"
+									title="{{$participante->planoTrabalho->titulo}}">{{ __('Projeto: ') }}{{$participante->planoTrabalho->titulo}}</label>
+								@endif
 								@if($planoTrabalhoTemp != null)
 									<a href="{{route('download', ['file' => $planoTrabalhoTemp])}}"><img src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 								@endif
