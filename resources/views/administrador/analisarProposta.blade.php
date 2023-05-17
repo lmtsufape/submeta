@@ -2275,21 +2275,23 @@
         //console.log(seletor[0].children[0].text)=
 
         function buscar(input) {
-            let seletor1 = document.getElementById('exampleFormControlSelect2').children;
-            let seletor2 = document.getElementById('exampleFormControlSelect3').children;
+            if(document.getElementById('exampleFormControlSelect2') != null){
+                let seletor1 = document.getElementById('exampleFormControlSelect2').children;
+
+                for(let i = 0; i < seletor1.length; i++){
+                    let nomeAval1 = seletor1[i].textContent
 
 
-            for(let i = 0; i < seletor1.length; i++){
-                let nomeAval1 = seletor1[i].textContent
-
-
-                if(nomeAval1.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0){
-                    seletor1[i].style.display = "";
-                }else {
-                    seletor1[i].style.display = "none";
+                    if(nomeAval1.toLowerCase().substr(0).indexOf(input.value.toLowerCase()) >= 0){
+                        seletor1[i].style.display = "";
+                    }else {
+                        seletor1[i].style.display = "none";
+                    }
                 }
-
+                
             }
+            
+            let seletor2 = document.getElementById('exampleFormControlSelect3').children;
 
             for(let j = 0; j < seletor2.length; j++){
                 let nomeAval1 = seletor2[j].textContent
