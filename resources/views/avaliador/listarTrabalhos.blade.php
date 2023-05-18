@@ -175,7 +175,7 @@
                   <thead>
                   <tr>
                       <th scope="col" style="width:100%">Nome do Projeto</th>
-                      <th scope="col">Data de Criação</th>
+                      <th scope="col">Data Limite da Avaliação</th>
                       <th scope="col">Projeto</th>
                       <th scope="col">Plano de Trabalho</th>
                       <th scope="col" style="text-align: center">Status</th>
@@ -188,7 +188,7 @@
                 
                       <tr>
                           <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
-                          <td style="text-align: center">{{ $trabalho->created_at->format('d/m/Y') }}</td>
+                          <td style="text-align: center">{{ date('d/m/Y', strtotime($trabalho->evento->fimRevisao)) }}</td>
                               <td style="text-align: center">
                                   {{--  --}}
                                   <a href="{{route('download', ['file' => $trabalho->anexoProjeto])}}" target="_new" style="font-size: 20px; color: #114048ff;" class="btn btn-light">
