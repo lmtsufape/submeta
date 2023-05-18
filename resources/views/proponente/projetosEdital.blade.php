@@ -160,7 +160,7 @@
                                 @endif
 
                                 <!-- Button trigger modal -->
-                                  @if(($projeto->status ==  "rascunho") || ($projeto->evento->fimSubmissao > $hoje))
+                                  @if(($projeto->status ==  "rascunho") || ($projeto->evento->fimSubmissao >= $hoje))
                                     <div class="container">
                                         <div class="row">
                                             <div class="col text-center" style="margin-left: 20px">
