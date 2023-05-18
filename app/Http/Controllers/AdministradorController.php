@@ -99,7 +99,6 @@ class AdministradorController extends Controller
             ->whereIn('status', $status)
             ->pluck('area_id');
 
-        //$trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho')->sortBy('titulo')->paginate(1);
         $trabalhos = Trabalho::where('evento_id', $evento->id)
             ->where('status', '!=', 'rascunho')
             ->orderBy('titulo');
@@ -115,7 +114,7 @@ class AdministradorController extends Controller
         // $participantes = User::whereIn('id', $participantesUsersIds)->get();
 
         return view('administrador.analisar')->with([
-            'trabalhos' => $trabalhos->paginate(1),
+            'trabalhos' => $trabalhos->paginate(20),
             'evento' => $evento,
             'funcaoParticipantes' => $funcaoParticipantes,
             'column' => $request->column,
