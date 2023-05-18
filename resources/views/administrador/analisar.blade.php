@@ -37,6 +37,7 @@
                                         
                                                            
                                     </select>
+                                    <p style="color: #234B8B; font-size: 20px;font-weight: bold; margin-top: 30px;">Quatidade de projetos: {{$contador_trabalhos}}</p>
                                 </div>
                             </div>
                         </div>
@@ -64,66 +65,73 @@
             </div>
         </div>
     </div>
-                        <div id="projetos">
-                            @foreach( $trabalhos as $trabalho )
-                           
-                            <!--Informações Proponente-->
-                                
-                                    <div class="row justify-content-center allTrab apareceu" style="margin-top: 20px;" >
-                                        <br>
-                                        <div class="col-md-11" onclick="myFunc({{$trabalho->id}})">
-                                            <a href="{{route('admin.analisarProposta',['id'=>$trabalho->id])}}" id="vizuProposta{{$trabalho->id}}" hidden></a>
 
-                                            <div class="card" style="border-radius: 5px;margin-left: 25px;margin-right: 25 px; 
-                                            @if($trabalho->arquivado == true)background-color: #e7e7e7;@endif">
-                                                <div class="card-body" style="padding-top: 0.2rem; padding-left: 25px;padding-right: 25px;">
+    <div id="projetos">
+        @foreach( $trabalhos as $trabalho )
+        
+        <!--Informações Proponente-->
+            
+                <div class="row justify-content-center allTrab apareceu" style="margin-top: 20px;" >
+                    <br>
+                    <div class="col-md-11" onclick="myFunc({{$trabalho->id}})">
+                        <a href="{{route('admin.analisarProposta',['id'=>$trabalho->id])}}" id="vizuProposta{{$trabalho->id}}" hidden></a>
 
-                                                        <div class="form-row mt-3">
-                                                            <div class="col-md-10 tituloProj"><h5 style="color: #234B8B; font-weight: bold; margin-top: 15px;">Título: {{ $trabalho->titulo }}</h5></div>
-                                                            <div class="col-md-2">
-                                                                @if($trabalho->arquivado == true)
-                                                                    <div title="Proposta Arquivada">
-                                                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                                                    style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;"><g><path fill="none" d="M0 0h24v24H0z"/><path d="M3 10H2V4.003C2 3.449 2.455 3 2.992 3h18.016A.99.99 0 0 1 22 4.003V10h-1v10.001a.996.996 0 0 1-.993.999H3.993A.996.996 0 0 1 3 20.001V10zm16 0H5v9h14v-9zM4 5v3h16V5H4zm5 7h6v2H9v-2z"/></g></svg></div>
-                                                                @else
+                        <div class="card" style="border-radius: 5px;margin-left: 25px;margin-right: 25 px; 
+                        @if($trabalho->arquivado == true)background-color: #e7e7e7;@endif">
+                            <div class="card-body" style="padding-top: 0.2rem; padding-left: 25px;padding-right: 25px;">
 
-                                                                    @if($trabalho->status == "aprovado")
-                                                                        <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
-                                                                    @elseif($trabalho->status == "reprovado")
-                                                                        <img src="{{asset('img/icons/negado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
-                                                                    
-                                                                    @else
-                                                                        <img src="{{asset('img/icons/pendente.png')}}" style="width: 20%;margin: auto;display: flex;justify-content: center;align-items: center;" alt="">
-                                                                    @endif
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <hr style="border-top: 1px solid#1492E6">
-                                                        <div class="form-row mt-3">
-                                                            <div class="col-md-12">
-                                                                <p class="proponenteProj" style="color: #4D4D4D; padding: 0px"><b>Proponente:</b> {{ App\Proponente::find($trabalho->proponente_id)->user->name }}</p>
-                                                            </div>
-                                                            @if ($evento->numParticipantes != 0)
-                                                            <div class="col-md-12"> <p style="color: #4D4D4D; padding: 0px"><b>Discentes:</b>
-                                                                @foreach($trabalho->participantes as $participante)
-                                                                    {{$participante->user->name}};
-                                                                @endforeach
-                                                            </div>
-                                                            @endif
-                                                            @if($trabalho->grande_area_id != null && $trabalho->area_id != null && $trabalho->sub_area_id != null)
-                                                                <div class="col-md-12">
-                                                                    <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">{{$trabalho->grandeArea->nome}} > {{$trabalho->area->nome}} > {{$trabalho->subArea->nome}}</h6>
-                                                                </div>
-                                                            @endif
+                                    <div class="form-row mt-3">
+                                        <div class="col-md-10 tituloProj"><h5 style="color: #234B8B; font-weight: bold; margin-top: 15px;">Título: {{ $trabalho->titulo }}</h5></div>
+                                        <div class="col-md-2">
+                                            @if($trabalho->arquivado == true)
+                                                <div title="Proposta Arquivada">
+                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                                style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;"><g><path fill="none" d="M0 0h24v24H0z"/><path d="M3 10H2V4.003C2 3.449 2.455 3 2.992 3h18.016A.99.99 0 0 1 22 4.003V10h-1v10.001a.996.996 0 0 1-.993.999H3.993A.996.996 0 0 1 3 20.001V10zm16 0H5v9h14v-9zM4 5v3h16V5H4zm5 7h6v2H9v-2z"/></g></svg></div>
+                                            @else
 
-
-                                                        </div>
-                                                </div>
-                                            </div>
+                                                @if($trabalho->status == "aprovado")
+                                                    <img src="{{asset('img/icons/aprovado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
+                                                @elseif($trabalho->status == "reprovado")
+                                                    <img src="{{asset('img/icons/negado.png')}}" style="width: 23%;margin: auto;display: flex;margin-top: 0px;justify-content: center;align-items: center;" alt="">
+                                                
+                                                @else
+                                                    <img src="{{asset('img/icons/pendente.png')}}" style="width: 20%;margin: auto;display: flex;justify-content: center;align-items: center;" alt="">
+                                                @endif
+                                            @endif
                                         </div>
                                     </div>
-                            @endforeach
+                                    <hr style="border-top: 1px solid#1492E6">
+                                    <div class="form-row mt-3">
+                                        <div class="col-md-12">
+                                            <p class="proponenteProj" style="color: #4D4D4D; padding: 0px"><b>Proponente:</b> {{ App\Proponente::find($trabalho->proponente_id)->user->name }}</p>
+                                        </div>
+                                        @if ($evento->numParticipantes != 0)
+                                        <div class="col-md-12"> <p style="color: #4D4D4D; padding: 0px"><b>Discentes:</b>
+                                            @foreach($trabalho->participantes as $participante)
+                                                {{$participante->user->name}};
+                                            @endforeach
+                                        </div>
+                                        @endif
+                                        @if($trabalho->grande_area_id != null && $trabalho->area_id != null && $trabalho->sub_area_id != null)
+                                            <div class="col-md-12">
+                                                <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">{{$trabalho->grandeArea->nome}} > {{$trabalho->area->nome}} > {{$trabalho->subArea->nome}}</h6>
+                                            </div>
+                                        @endif
+
+
+                                    </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+        @endforeach
+
+        <div class="py-4" style="margin-left: 80px">
+            {{ $trabalhos->appends([
+                'evento_id' => request()->get('evento_id', '')
+            ])->links() }}
+        </div>
+    </div>
 
 @endsection
 
