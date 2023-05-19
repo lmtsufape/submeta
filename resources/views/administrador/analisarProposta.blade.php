@@ -62,11 +62,11 @@
                                     @endif
                                 </h5>
                             </div>
-
+                            @if($evento->natureza == 3)
                             <div class="col-md-12">
                                 <p><b>Área temática: </b>{{$trabalho->areaTematica->nome}}</p>
                             </div>
-
+                            @endif
                             <div class="col-md-12"><h6
                                         style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold">{{$evento->nome}}</h6>
                             </div>
