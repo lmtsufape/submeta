@@ -63,6 +63,10 @@
                                 </h5>
                             </div>
 
+                            <div class="col-md-12">
+                                <p><b>Área temática: </b>{{$trabalho->areaTematica->nome}}</p>
+                            </div>
+
                             <div class="col-md-12"><h6
                                         style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold">{{$evento->nome}}</h6>
                             </div>
