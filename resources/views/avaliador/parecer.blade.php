@@ -4,11 +4,13 @@
 
 <div class="row justify-content-center">
 	<!--Proponente Dados-->
-	<div class="col-md-10" style="margin-top:4rem;padding: 0px">
-		@component('projeto.formularioVisualizar.proponente2', ['edital' => $trabalho->evento, 'projeto' => $trabalho])
-		@endcomponent
-	</div>
-
+	@if($evento->tipo != "PIBEX" && $evento->natureza_id != 3)
+		<div class="col-md-10" style="margin-top:4rem;padding: 0px">
+			@component('projeto.formularioVisualizar.proponente2', ['edital' => $trabalho->evento, 'projeto' => $trabalho])
+			@endcomponent
+		</div>
+	@endif
+	
 	<!--Anexos do Projeto-->
 	<div class="col-md-10"  style="margin-top:20px">
 		<div class="card" style="border-radius: 5px">
@@ -23,7 +25,8 @@
 					<div class="row justify-content-left">
 						{{-- Arquivo  --}}
 						<div class="col-sm-12">
-							<label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold">{{ __('Projeto: ') }}</label>
+							<label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold">{{ __('Título do projeto com arquivo digital:  ') }}</label>
+							{{ $trabalho->titulo }}
 							<a href="{{ route('baixar.anexo.projeto', ['id' => $trabalho->id])}}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
 
 						</div>
@@ -52,7 +55,8 @@
 							<div class="col-sm-12">
 								@if($participante->planoTrabalho != null)
 									<label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold"
-									title="{{$participante->planoTrabalho->titulo}}">{{ __('Projeto: ') }}{{$participante->planoTrabalho->titulo}}</label>
+									title="{{$participante->planoTrabalho->titulo}}">{{ __('Título do plano de trabalho com arquivo digital: ') }}</label>
+									{{$participante->planoTrabalho->titulo}}
 								@endif
 								@if($planoTrabalhoTemp != null)
 									<a href="{{route('download', ['file' => $planoTrabalhoTemp])}}"><img src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
