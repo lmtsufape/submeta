@@ -31,6 +31,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
         $this->avaliacao = $avaliacao;
         $this->tipoEvento = $evento->tipo;
         $this->naturezaEventoId = $evento->natureza_id;
+        $this->dataFinalaval = date('d/m/Y', strtotime($evento->fimRevisao));
     }
 
     /**
@@ -72,7 +73,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
                 ->greeting('Prezado/a avaliador/a,')
                 ->line('Saudações!')
                 ->line("O/A senhor/a foi convidado/a a avaliar a proposta de projeto de Extensão da UFAPE intitulada \"{$this->titulo}\".")
-                ->line('Caso o/a senhor/a tenha disponibilidade de tempo para realizar a avaliação, solicitamos por gentileza que o seu parecer seja enviado até o prazo do dia 24/05 (quarta-feira), para que possamos dar continuidade com os trâmites previstos no edital PIBEX 2023.')
+                ->line("Caso o/a senhor/a tenha disponibilidade de tempo para realizar a avaliação, solicitamos por gentileza que o seu parecer seja enviado até o prazo do dia {$this->dataFinalaval}, para que possamos dar continuidade com os trâmites previstos no edital PIBEX 2023.")
                 ->line('Aproveitamos esse e-mail para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta da UFAPE com o seu parecer.')
                 ->line('Novamente agradecemos a vossa disponibilidade em participar do banco de avaliadores/as dos projetos de Extensão da UFAPE.')
                 ->line('')
@@ -81,10 +82,9 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
                 ->line('')
                 ->line('Em casos de dúvidas, por favor entrar em contato pelo e-mail editais.prec@ufape.edu.br.')
                 ->line('')
-                ->line('Atenciosamente,')
                 ->line('Seção de Editais e Apoio à Projetos e Programas')
                 ->line('Pró-reitoria de Extensão e Cultura - PREC')
-                ->line('Universidade Federal do Agreste de Pernambuco - UFAPE')
+                ->attach(storage_path('app').'/'.$this->arquivo)
                 ->markdown('vendor.notifications.email');
         }
 
