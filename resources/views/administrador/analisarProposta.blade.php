@@ -54,22 +54,38 @@
                             </div>
 
                             <div class="col-md-12">
-                                <h5 style="color: #1492E6;">{{$trabalho->titulo}}
                                     @if(Auth::user()->tipo == 'administrador')
                                     <a class="ml-2 mb-5" href="{{ route('trabalho.editar', ['id' => $trabalho->id]) }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#234B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
                                     </a>
                                     @endif
-                                </h5>
                             </div>
-                            @if($evento->natureza == 3)
+                            
+                            <div class="col-md-12">
+                                <p><b>Edital: </b>{{$evento->nome}}</p>
+                            </div>
+
+                            <div class="col-md-12">
+                                <p><b>Título: </b>{{$trabalho->titulo}}</p>
+                            </div>
+
+                            @if($evento->natureza_id == 3)
+                            <div class="col-md-12">
+                                <p style="color: #4D4D4D; padding: 0px">
+                                    <b>Proponente:</b> {{ App\Proponente::find($trabalho->proponente_id)->user->name }}</p>
+                            </div>
+
+
                             <div class="col-md-12">
                                 <p><b>Área temática: </b>{{$trabalho->areaTematica->nome}}</p>
                             </div>
-                            @endif
-                            <div class="col-md-12"><h6
-                                        style="color: #234B8B; margin-bottom:-0.4rem; font-weight: bold">{{$evento->nome}}</h6>
+
+                            <div class="col-md-12">
+                                <p><b>ODS: </b></p>
+                                @foreach($trabalho->ods as $ods)<p>- {{$ods->nome}}</p> @endforeach
                             </div>
+                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -100,6 +116,7 @@
         </div>
     </div>
     <!--Informações Proponente-->
+    @if($evento->natureza_id != 3)
     <div class="row justify-content-center" style="margin-top: 20px;">
         <br>
         <div class="col-md-12">
@@ -179,6 +196,7 @@
             </div>
         </div>
     </div>
+    @endif
     <!--Discentes-->
     @if ($evento->numParticipantes != 0)
     <div class="row justify-content-center" style="margin-top: 20px;">
