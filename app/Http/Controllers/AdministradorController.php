@@ -1075,36 +1075,49 @@ class AdministradorController extends Controller
         }
 
         $trabalho = Trabalho::where('id', $request->trabalho_id)->first();
-
-        if ($user->avaliadors == null) {
-            $avaliador = new Avaliador();
-            $avaliador->tipo = $externoInterno;
-            $avaliador->save();
-            $avaliador->area()->associate($area);
-            $avaliador->user()->associate($user);
-            $avaliador->eventos()->attach($evento);
-            $user->save();
-            $avaliador->save();
-        } else {
-            $avaliador = $user->avaliadors;
-            $avaliador->eventos()->attach($evento);
-            $user->save();
-            $avaliador->save();
+        
+        $exist = false;
+        foreach ($trabalho->avaliadors as $aval)
+        {
+            if($aval->user->email == $emailAvaliador){
+                $exist = true;
+                $avaliador = $aval;
+                break;
+            }
         }
+        
+        if(!$exist){
 
-        if ($evento->natureza_id == 3) {
-            $avaliador->areaTematicas()->sync($areaTematica);
+            if ($user->avaliadors == null) {
+                $avaliador = new Avaliador();
+                $avaliador->tipo = $externoInterno;
+                $avaliador->save();
+                $avaliador->area()->associate($area);
+                $avaliador->user()->associate($user);
+                $avaliador->eventos()->attach($evento);
+                $user->save();
+                $avaliador->save();
+            } else {
+                $avaliador = $user->avaliadors;
+                $avaliador->eventos()->attach($evento);
+                $user->save();
+                $avaliador->save();
+            }
+
+            if ($evento->natureza_id == 3) {
+                $avaliador->areaTematicas()->sync($areaTematica);
+            }
+
+            if ($request->instituicao == 'ufape') {
+                $trabalho->avaliadors()->attach($avaliador, ['acesso' => 2]);
+                $evento->avaliadors()->syncWithoutDetaching($avaliador);
+            } else {
+                $trabalho->avaliadors()->attach($avaliador, ['acesso' => 1]);
+                $evento->avaliadors()->syncWithoutDetaching($avaliador);
+            }
+
+            $trabalho->save();
         }
-
-        if ($request->instituicao == 'ufape') {
-            $trabalho->avaliadors()->attach($avaliador, ['acesso' => 2]);
-            $evento->avaliadors()->syncWithoutDetaching($avaliador);
-        } else {
-            $trabalho->avaliadors()->attach($avaliador, ['acesso' => 1]);
-            $evento->avaliadors()->syncWithoutDetaching($avaliador);
-        }
-
-        $trabalho->save();
 
         $notificacao = Notificacao::create([
             'remetente_id' => Auth::user()->id,
