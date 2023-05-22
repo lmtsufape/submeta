@@ -49,7 +49,7 @@
             <div class="row col-md-12">
                     <div class="form-group col-md-12">
                     <br>
-                    <b style="color: #4D4D4D;">Objetivo de Densenvolvimento Sustentável:</b>
+                    <b style="color: #4D4D4D;">Objetivo de Desenvolvimento Sustentável:</b>
                     <br>
                     <div class="row col-md-12">
                       @foreach($projeto->ods as $ods)
