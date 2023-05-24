@@ -6,7 +6,6 @@ use App\Notifications\recuperacaoSenha;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -43,6 +42,16 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getEmailAttribute($value)
+    {
+        return strtolower($value);
+    }
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
 
     public function trabalho(){
         return $this->hasMany('App\Trabalho', 'autorId');
