@@ -48,7 +48,7 @@
                                                         <a href="" style="" class="justify-content-center" data-toggle="modal" data-target="#exampleModal{{$i}}" id="nomePart{{$i+1}}">Mais Informações</a>
                                                     </h6>
                                                     <div class="col-sm-5 pl-0" style="margin-top: 10px; text-align: left;">
-                                                        <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger btn-sm" style="font-size: 12px" onclick="desmarcar({{$i}})" @if(isset(old('marcado')[$i+1])) disabled @endif>Remover</button>
+                                                        <button data-dismiss="modal" type="button" id="cancelar{{$i}}" class=" btn btn-danger btn-sm" style="font-size: 12px" onclick="desmarcar({{$i}})">Remover</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -68,7 +68,7 @@
                                                         <div class="col-1" style="margin-top:9.3px" hidden>
                                                             {{-- <button type="button" class="btn btn-danger shadow-sm" id="buttonRemover" onclick="removerPart(this)" >X</button> --}}
                                                             <input type="hidden" name="estudante[{{$i}}]" id="estudante[{{$i}}]">
-                                                            <input type="checkbox" id="checkB{{$i}}" aria-label="Checkbox for following text input" @if(isset(old('marcado')[$i])) checked @endif name="marcado[]" value="{{ $i }}">
+                                                            <input class="checkB" type="checkbox" id="checkB{{$i}}" aria-label="Checkbox for following text input" @if(isset(old('marcado')[$i])) checked @endif name="marcado[]" value="{{ $i }}">
                                                         </div>
 
 

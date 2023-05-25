@@ -258,9 +258,9 @@
                                         <strong>CPF: </strong>${cpf.value} <br>
                                         <strong>Função: </strong>${data[1].nome}`;
       }
-      if(id >=1){
-          document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
-      }
+      //if(id >=1){
+      //    document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
+      //}
 
       document.getElementById("checkB"+id).checked = true;
       //$("#atribuir1").attr('data-target','#modalIntegrante'+(id+1));
@@ -269,19 +269,17 @@
       document.getElementById("part"+id).removeAttribute("hidden");
       //document.getElementById("exampleModal"+id).modal('hide');
 
-
-
   }
   function desmarcar(id){
-      if(id >= 1){;
-          document.getElementById("cancelar"+(id-1)).removeAttribute("disabled");
-      }
+      //if(id >= 1){;
+      //    document.getElementById("cancelar"+(id-1)).removeAttribute("disabled");
+      //}
       document.getElementById("checkB"+id).checked = false;
       document.getElementById("part"+id).setAttribute("hidden",true);
       //$("#atribuir1").attr('data-target','#exampleModal'+(id));
       modal_id -= 1;
       document.getElementById("quantidadeModais").value = modal_id;
-      document.getElementById("exampleModal"+id).modal('hide');
+      //document.getElementById("exampleModal"+id).modal('hide');
   }
   @endif
 </script>
