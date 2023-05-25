@@ -221,29 +221,14 @@
       let email = document.getElementById("email"+id);
       let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
       let nome_funcao = get_funcao(funcao.value);
-
-      //pega o nome da função do participante
-      for (var i = 0; i < funcaoParticipantes.length; i++) {
-        if(funcaoParticipantes[i].id == funcao.value){
-          nome_funcao =  funcaoParticipantes[i].nome;
-          break;
-        }
-      }
+      let curso = document.getElementById("curso"+id);
 
       if(nome.value != ""){
-          estudante.value = true;
-          if(planoTrabalho != null && planoTrabalho.value != ""){
-              nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
-                                        <strong>E-mail: </strong>${email.value} <br>
-                                        <strong>Plano: </strong>${planoTrabalho.value}<br>
-                                        <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${nome_funcao}`;
-          }else {
-              nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
-                                        <strong>E-mail: </strong>${email.value} <br>
-                                        <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${nome_funcao}`;
-          }
+        estudante.value = true;
+        nomePlano.innerHTML = exibirInformacoesGeraisDoIntegrante(nome.value, email.value, celular.value, curso, nome_funcao);
+        if (nome_funcao == "Bolsista") {
+          nomePlano.innerHTML += `<br><strong>Plano: </strong>${planoTrabalho.value !== null ? planoTrabalho.value : ''}`;
+        }
       }else if(data != null) {
         estudante.value = false;
         
@@ -252,11 +237,9 @@
         instituicao.value = data[0].instituicao;
         cpf.value = data[0].cpf;
         celular.value = data[0].celular;
-
-        nomePlano.innerHTML  = ` <strong>Nome: </strong>${nome.value}<br>
-                                        <strong>E-mail: </strong>${email.value} <br>
-                                        <strong>CPF: </strong>${cpf.value} <br>
-                                        <strong>Função: </strong>${data[1].nome}`;
+        nome_funcao = data[1].nome;
+        curso = data[2].curso;
+        nomePlano.innerHTML = exibirInformacoesGeraisDoIntegrante(nome.value, email.value, celular.value, curso, nome_funcao);
       }
       if(id >=1){
           document.getElementById("cancelar"+(id-1)).setAttribute("disabled", true);
@@ -268,10 +251,16 @@
       document.getElementById("quantidadeModais").value = modal_id;
       document.getElementById("part"+id).removeAttribute("hidden");
       //document.getElementById("exampleModal"+id).modal('hide');
-
-
-
   }
+
+  function exibirInformacoesGeraisDoIntegrante(nome, email, celular, curso, nomeFuncao) {
+    return `<strong>Nome: </strong>${nome}<br>
+                  <strong>E-mail: </strong>${email}<br>
+                  <strong>Telefone: </strong>${celular !== null ? celular : ''}<br>
+                  <strong>Curso: </strong>${curso !== null ? curso : ''}<br>
+                  <strong>Função: </strong>${nomeFuncao}`;
+  }
+  
   function desmarcar(id){
       if(id >= 1){;
           document.getElementById("cancelar"+(id-1)).removeAttribute("disabled");
