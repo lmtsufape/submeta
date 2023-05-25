@@ -221,7 +221,7 @@
       let email = document.getElementById("email"+id);
       let funcaoParticipantes = <?php echo json_encode($funcaoParticipantes); ?>;
       let nome_funcao = get_funcao(funcao.value);
-      let curso = document.getElementById("curso"+id);
+      let curso = document.getElementById('curso['+id+']').value;
 
       if(nome.value != ""){
         estudante.value = true;
