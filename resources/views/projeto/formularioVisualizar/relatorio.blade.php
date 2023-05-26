@@ -72,7 +72,7 @@
                 </td>
                 <td>Parcial</td>
                 <td>@if($aval->nota == null) Pendente @else {{$aval->nota}} @endif</td>
-                <td>@if($aval->nota_apresentacao == null) Pendente @else {{$aval->nota}} @endif</td>
+                <td>@if($aval->nota_apresentacao == null) Pendente @else {{$aval->nota_apresentacao}} @endif</td>
                 <td><a href="" data-toggle="modal" data-target="#modalVizuRelatParcial{{$aval->id}}" class="button">Visualizar</a></td>
               </tr>
 
@@ -105,7 +105,7 @@
                 </td>
                 <td>Final</td>
                 <td>@if($aval->nota == null) Pendente @else {{$aval->nota}} @endif</td>
-                <td>@if($aval->nota_apresentacao == null) Pendente @else {{$aval->nota}} @endif</td>
+                <td>@if($aval->nota_apresentacao == null) Pendente @else {{$aval->nota_apresentacao}} @endif</td>
                 <td><a href="" data-toggle="modal" data-target="#modalVizuRelatFinal{{$aval->id}}" class="button">Visualizar</a></td>
               </tr>
               <!-- Modal visualizar informações participante -->
