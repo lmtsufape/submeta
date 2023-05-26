@@ -188,4 +188,13 @@ class AvaliacaoRelatorioController extends Controller
         return redirect()->back();
     }
 
+    public function atualizarNota($id, Request $request){
+        $aval = AvaliacaoRelatorio::find($id);
+        $aval->nota = $request->nota;
+        $aval->nota_apresentacao = $request->nota_apresentacao;
+        $aval->save();            
+
+        return redirect()->back()->with(['sucesso' => "Notas avaliadas por ".$aval->user->name." atualizadas!"]);
+    }
+
 }
