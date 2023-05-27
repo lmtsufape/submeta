@@ -114,7 +114,7 @@ class AdministradorController extends Controller
         // $participantes = User::whereIn('id', $participantesUsersIds)->get();
 
         return view('administrador.analisar')->with([
-            'trabalhos' => $trabalhos->paginate(20),
+            'trabalhos' => $trabalhos->paginate(9999),
             'evento' => $evento,
             'funcaoParticipantes' => $funcaoParticipantes,
             'column' => $request->column,

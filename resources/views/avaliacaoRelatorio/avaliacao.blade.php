@@ -14,53 +14,66 @@
         <h5><b>Plano:</b> {{$arquivo->titulo}}</h5>
     </div>
 
-    <div class="row">
+    <form action="{{route('coordenador.atualizar.avaliacao', ['id' => $aval->id])}}" method="POST">
+        <div class="row">
+            @csrf
+            <div class="col-sm-1 padEsquerda">
+                <label for="lattes" class="col-form-label font-tam"
+                    style="font-weight: bold">{{ __('Nota: ') }}</label>
+            </div>
+            <div class="col-sm-5 text-center padEsquerda">
+                <input class="form-control" name="nota" type="number"
+                    style="width: 60px" @if(isset($aval)) value="{{$aval->nota}}" @endif>
+            </div>
 
-        <div class="col-sm-1 padEsquerda">
-            <label for="lattes" class="col-form-label font-tam"
-                   style="font-weight: bold">{{ __('Nota: ') }}</label>
+            <div class="col-sm-2 padEsquerda">
+                <label for="lattes" class="col-form-label font-tam"
+                    style="font-weight: bold">{{ __('Apresentação: ') }}</label>
+            </div>
+            <div class="col-sm-4 text-center padEsquerda">
+                <input class="form-control" name="nota_apresentacao" type="number"
+                    style="width: 60px" @if(isset($aval)) value="{{$aval->nota_apresentacao}}" @endif>
+            </div>
         </div>
-        <div class="col-sm-5 text-center padEsquerda">
-            <input class="form-control" name="nota" type="number"
-                   style="width: 60px" @if(isset($aval)) value="{{$aval->nota}}" @endif disabled>
-        </div>
+        <div class="row">
+            <div class="col-sm-12 padEsquerda">
+                <label for="lattes" class="col-form-label font-tam"
+                    style="font-weight: bold">{{ __('Comentário: ') }}</label>
+            </div>
 
-        <div class="col-sm-2 padEsquerda">
-            <label for="lattes" class="col-form-label font-tam"
-                   style="font-weight: bold">{{ __('Apresentação: ') }}</label>
         </div>
-        <div class="col-sm-4 text-center padEsquerda">
-            <input class="form-control" name="nota" type="number"
-                   style="width: 60px" @if(isset($aval)) value="{{$aval->nota_apresentacao}}" @endif disabled>
+        <div class="row">
+            <div class="col-sm-12 padEsquerda">
+                <textarea class="col-md-12" minlength="20" id="comentario"
+                        name="comentario"
+                        style="border-radius:5px 5px 0 0;height: 71px;"
+                        disabled>@if(isset($aval)){{$aval->comentario}}</textarea>@else
+                </textarea>@endif
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 padEsquerda">
-            <label for="lattes" class="col-form-label font-tam"
-                   style="font-weight: bold">{{ __('Comentário: ') }}</label>
-        </div>
+        <div class="row">
+            <div class="col-10">
 
-    </div>
-    <div class="row">
-        <div class="col-sm-12 padEsquerda">
-            <textarea class="col-md-12" minlength="20" id="comentario"
-                      name="comentario"
-                      style="border-radius:5px 5px 0 0;height: 71px;"
-                      disabled>@if(isset($aval)){{$aval->comentario}}</textarea>@else
-            </textarea>@endif
-        </div>
-    </div>
-    <div class="row">
-        <label for="lattes" class="col-form-label font-tam"
-               style="font-weight: bold;margin-right: 5px;">{{ __('Arquivo: ') }}</label>
-        @if(isset($aval))
-            @if($aval->arquivoAvaliacao != null)
+                <label for="lattes" class="col-form-label font-tam"
+                style="font-weight: bold;margin-right: 5px;">{{ __('Arquivo: ') }}</label>
+                @if(isset($aval))
+                @if($aval->arquivoAvaliacao != null)
                 <a href="{{route('download', ['file' => $aval->arquivoAvaliacao])}}" target="_new"  >
                     <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px">
                 </a>
-            @endif
-        @endif
+                @endif
+                @endif
+            </div>
+
+
+        
+            <div class='col-2' style='margin-top:1%; padding-left:8%;'>
+                <button type='submit' class='btn btn-info btn-sm'>Editar</button>
+            </div>
+        </form>
     </div>
+    
+
 </div>
 <style>
     .padEsquerda {

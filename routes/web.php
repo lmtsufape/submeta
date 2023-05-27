@@ -361,4 +361,6 @@ Route::prefix('coordenador')->name('coordenador.')->group(function () {
     Route::post('/atribuir', 'TrabalhoController@atribuir')->name('atribuir');
     Route::post('/atribuir', 'TrabalhoController@atribuir')->name('atribuir');
     Route::post('/resposta-solicitacao-desligamento/{desligamento_id}', 'CoordenadorComissaoController@respostaDesligamento')->name('resposta.desligamento');
+    Route::post('/analisarProposta/{id}/atualizar', 'AvaliacaoRelatorioController@atualizarNota')->name('atualizar.avaliacao');
+
 });
