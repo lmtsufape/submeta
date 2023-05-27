@@ -74,7 +74,7 @@ class StoreTrabalho extends FormRequest
                             $rules['media_do_curso.' . $value] = ['required', 'string'];
                         }
 
-                        if ($this->funcaoParticipante[$value] == "Voluntário" || $this->funcaoParticipante[$value] == "Bolsista") {
+                        if($evento->tipo != "CONTINUO" && ($this->funcaoParticipante[$value] == "Voluntário" || $this->funcaoParticipante[$value] == "Bolsista")){
                             $rules['anexoPlanoTrabalho.' . $value] = ['required'];
                             $rules['nomePlanoTrabalho.' . $value] = ['required', 'string'];
                         }
