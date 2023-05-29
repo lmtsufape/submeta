@@ -1232,7 +1232,31 @@
                                     $acesso = $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso;
                                     $instituicao_avaliador = $avaliador->user->instituicao;
                                 @endphp
-                                @if(true)
+                                @if(
+                                        ($acesso == null && $avaliador->tipo == "Externo")
+                                        ||
+                                        $acesso == 1
+                                        ||
+                                        $acesso == 3
+                                        ||
+                                        (
+                                            (
+                                                $instituicao_avaliador != "UFAPE"
+                                                &&
+                                                $instituicao_avaliador != "Universidade Federal do Agreste de Pernambuco"
+                                            )
+                                            &&
+                                            $avaliador->tipo == null
+                                            &&
+                                            (
+                                                $acesso == null
+                                                ||
+                                                $acesso == 1
+                                                ||
+                                                $acesso == 3
+                                            )
+                                        )
+                                    )
                                     @if ($evento->tipoAvaliacao == 'form')
                                         <div class="col-sm-1">
                                             <img src="{{asset('img/icons/usuario.svg')}}" style="width:60px" alt="">
