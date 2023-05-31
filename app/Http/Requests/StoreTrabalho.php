@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use App\User;
 
 class StoreTrabalho extends FormRequest
 {
@@ -52,7 +53,7 @@ class StoreTrabalho extends FormRequest
                     $rules['instituicao.' . $value] = ['required', 'string'];
                     $rules['cpf.' . $value] = ['required', 'string'];
                     $rules['celular.' . $value] = ['required', 'string'];
-                    if ($this->estudante[$value] == true) {
+                    if (User::where('cpf', $this->cpf[$value])->first()->tipo == "participante") {
                         //endereco
                         $rules['rua.' . $value] = ['required', 'string'];
                         $rules['numero.' . $value] = ['required', 'string'];
