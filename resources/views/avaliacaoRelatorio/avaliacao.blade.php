@@ -66,10 +66,11 @@
             </div>
 
 
-        
+            @if(Auth::user()->tipo == 'coordenador')
             <div class='col-2' style='margin-top:1%; padding-left:8%;'>
                 <button type='submit' class='btn btn-info btn-sm'>Editar</button>
             </div>
+            @endif
         </form>
     </div>
     
