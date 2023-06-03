@@ -4,10 +4,13 @@
             <div class="card-body" style="padding-top: 0.2rem;">
                 <div class="container">
                     <div class="form-row mt-3">
-                        <div class="col-sm-8"><h5 style="color: #234B8B; font-weight: bold">Integrantes</h5></div>
-                        <div class="col-sm-4 text-sm-right" >
+                        <div class="col-sm-5"><h5 style="color: #234B8B; font-weight: bold">Integrantes</h5></div>
+                        <div class="col-sm-4 text-sm" >
                             <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}"
                                class="button">Solicitar Substituições/Desligamentos</a>
+                        </div>
+                        <div class="col-sm-3 text-sm-right" >
+                            <a href="" data-toggle="modal" data-target="#modalAdicionarParticipante" class="button">Adicionar Participante</a>
                         </div>
                     </div>
                     <hr style="border-top: 1px solid#1492E6">

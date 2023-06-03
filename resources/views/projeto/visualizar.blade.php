@@ -38,7 +38,7 @@
       @endif
 
       @if($edital->natureza_id == 3)
-        @component('projeto.formularioVisualizar.integrantes', ['projeto' => $projeto, 'edital' => $edital, 'trabalhos_user' => $trabalhos_user])
+        @component('projeto.formularioVisualizar.integrantes', ['projeto' => $projeto, 'edital' => $edital, 'trabalhos_user' => $trabalhos_user,'funcaoParticipantes' =>$funcaoParticipantes])
         @endcomponent
       @endif
 
@@ -149,6 +149,64 @@
   </div>
 </div>
 </div>
+
+<div class="modal fade" id="modalAdicionarParticipante" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Adicionar Integrante</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="container">
+              <div class="row justify-content-center" style="padding-left:35px; padding-right:45px">
+                  
+                  <div class="form-controll"
+                      style="margin-left:10px; margin-top:10px; margin-bottom:15px; font-weight:bold;">
+                      <form action="{{route('trabalho.adicionarParticipante', ['id' => $projeto->id])}}" method="POST">
+                          @csrf
+                          <div class="form-row d-flex">
+                              <label for="cpf_consulta">CPF:</label>
+                              <input type="text" id="cpf_consulta" name="cpf_consulta" class="form-control" pattern="\d{3}.\d{3}.\d{3}-\d{2}" title="Digite um CPF válido no formato XXX.XXX.XXX-XX" required>
+                          </div>
+
+                          <div class="form-row d-flex" style="margin-top:10px">
+                              <label for="funcao_participante">Função do Integrante:</label>
+                              <select name="funcao_participante" id="funcao_participante" class="form-control">
+                                  @foreach($funcaoParticipantes as $funcao)
+                                      <!-- EXTENSÃO -->
+                                      @if($edital->natureza_id == 3 && $edital->tipo == "CONTINUO") 
+                                          @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador")
+                                              <option value="{{$funcao->id}}" checked>{{ $funcao->nome }}</option>
+                                          @endif
+                                      @elseif($edital->natureza_id == 3 && $edital->tipo == "PIBEX")
+                                          @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador")
+                                              <option value="{{$funcao->id}}" checked>{{ $funcao->nome }}</option>
+                                          @endif
+                                      <!-- PESQUISA -->
+                                      @else
+                                          @if($funcao->nome == "Bolsista" || $funcao->nome == "Voluntário")
+                                              <option value="{{$funcao->id}}" checked>{{ $funcao->nome }}</option>
+                                          @endif
+                                      @endif
+                                  @endforeach
+                              </select>
+                          </div>
+                          <div class="form-row justify-content-center" style="margin-top:20px;">
+                              <button type="submit" class="btn btn-primary">
+                                  Adicionar
+                              </button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+  </div>
+</div>
 @endsection
 
 @section('javascript')
@@ -181,6 +239,7 @@
     </style>
 
 <script>
+    $("#cpf_consulta").mask("000.000.000-00")
 
     if(document.getElementById("radioSim").checked){
       document.getElementById("radioSim").checked = true;
