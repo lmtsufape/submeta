@@ -39,6 +39,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreTrabalho;
+use App\Http\Requests\AdicionarIntegranteRequest;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\UpdateTrabalho;
 use Illuminate\Support\Facades\Storage;
@@ -57,6 +58,7 @@ use App\Desligamento;
 use App\ObjetivoDeDesenvolvimentoSustentavel;
 use App\AvaliacaoRelatorio;
 use App\Curso;
+use Illuminate\Support\Facades\Date;
 
 class TrabalhoController extends Controller
 {
@@ -1200,6 +1202,77 @@ class TrabalhoController extends Controller
             return redirect(route('proponente.projetos'))->with(['mensagem' => $th->getMessage()]);
         }
 
+    }
+
+    public function adicionarParticipante(AdicionarIntegranteRequest $request, $id){
+        $usuario = User::where('cpf', $request->cpf_consulta)->first();
+        
+        if(!$this->validarQtdParticipantesEdital($id)){
+            return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Número máximo de integrantes do Edital alcançado, não é possivel inserir."]);
+        }
+
+        if(!$this->validarParticipanteRepetido($usuario->id, $id)) {
+            return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Já existe um Integrante com esse CPF."]);
+        }
+
+
+        $atributos = ['user_id' => $usuario->id,
+                      'funcao_participante_id' => $request->funcao_participante,
+                      'trabalho_id' => $id,
+                      'data_entrada' => Date::now()->format('Y-m-d H:i:s')
+                    ];
+        $rg = Participante::where('user_id', $atributos['user_id'])
+                    ->where('rg', '!=', null)
+                    ->latest()
+                    ->first();
+       
+        $data_de_nascimento = Participante::where('user_id', $atributos['user_id'])
+                ->where('data_de_nascimento', '!=', null)
+                ->latest()
+                ->first();
+
+        $curso = Participante::where('user_id', $atributos['user_id'])
+                ->where('curso', '!=', null)
+                ->latest()
+                ->first();
+       
+        $linkLattes = Participante::where('user_id', $atributos['user_id'])
+                ->where('linkLattes', '!=', null)
+                ->latest()
+                ->first();
+
+        $curso_id = Participante::where('user_id', $atributos['user_id'])
+                ->where('curso_id', '!=', null)
+                ->latest()
+                ->first();
+        
+        $atributo['rg'] = $rg ? $rg->rg : null;
+        $atributo['data_de_nascimento'] = $data_de_nascimento ? $data_de_nascimento->data_de_nascimento : null;
+        $atributo['curso'] = $curso ? $curso->curso : null;
+        $atributo['linkLattes'] = $linkLattes ? $linkLattes->linkLattes : null;
+        $atributo['curso_id'] = $curso_id ? $curso_id->curso_id : null;
+        
+        Participante::create($atributos);
+
+        return redirect(route('trabalho.show', ['id' => $id]));
+    }
+
+    private function validarQtdParticipantesEdital($id) {
+        $num_participantes_edital = Trabalho::where('id', $id)->first()->evento->numParticipantes;
+        $num_participantes_projeto = count(Participante::where('trabalho_id', $id)->get());
+        if($num_participantes_projeto >= $num_participantes_edital){
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validarParticipanteRepetido($usuario_id, $trabalho_id){
+        if(Participante::where('user_id', $usuario_id)->where('trabalho_id', $trabalho_id)->first()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function buscarUsuario(Request $request) {

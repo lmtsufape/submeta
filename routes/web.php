@@ -165,6 +165,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
 
     Route::post('/projeto/buscarUsuario', 'TrabalhoController@buscarUsuario')->name('trabalho.buscarUsuario');
 
+    Route::post('/projeto/{id}/adicionarParticipante', 'TrabalhoController@adicionarParticipante')->name('trabalho.adicionarParticipante');
     Route::post('/projeto/{id}/atualizar', 'TrabalhoController@update')->name('trabalho.update');
     Route::get('/projeto/{id}/excluir', 'TrabalhoController@destroy')->name('trabalho.destroy');
     Route::get('/projeto/{id}/excluirParticipante', 'TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
