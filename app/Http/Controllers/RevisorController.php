@@ -50,7 +50,7 @@ class RevisorController extends Controller
           'areaRevisor'  => ['required', 'integer'],
         ]);
 
-        $usuario = User::where('email', $request->emailRevisor)->first();
+        $usuario = User::where('email', 'ilike', $request->emailRevisor)->first();
         $evento = Evento::find($request->eventoId);
 
         if($usuario == null){

@@ -1069,9 +1069,9 @@ class TrabalhoController extends Controller
 
                     if($request->participante_id[$part] != null){
                         $participante = Participante::find($request->participante_id[$part]);
-                        $user = User::where('email', $participante->user->email)->first();
+                        $user = User::where('email', 'ilike', $participante->user->email)->first();
                     }else{
-                        $user = User::where('email', $data['email'])->first();
+                        $user = User::where('email', 'ilike', $data['email'])->first();
                     }
                     
                     
@@ -1317,7 +1317,7 @@ class TrabalhoController extends Controller
                         $data['instituicao'] = $request->outrainstituicao[$part];
                     }
                     
-                    $user = User::where('email', $data['email'])->first();
+                    $user = User::where('email', 'ilike', $data['email'])->first();
                     
                     if ($user == null) {
                         $data['usuarioTemp'] = true;
@@ -1478,7 +1478,7 @@ class TrabalhoController extends Controller
             foreach ($request->participante_id as $key => $id) {
                 // Novo participante
                 if ($id == 0 || $id == null) {
-                    $userParticipante = User::where('email', $request->emailParticipante[$key])->first();
+                    $userParticipante = User::where('email', 'ilike', $request->emailParticipante[$key])->first();
 
                     $participante = new Participante();
 
@@ -1553,7 +1553,7 @@ class TrabalhoController extends Controller
                     }
 
                     if ($request->nomePlanoTrabalho[$key] != null) {
-                        $usuario = User::where('email', $request->emailParticipante[$key])->first();
+                        $usuario = User::where('email', 'ilike', $request->emailParticipante[$key])->first();
                         $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $projeto->id]])->first();
 
                         $path = 'trabalhos/' . $edital->id . '/' . $projeto->id . '/';
@@ -1648,7 +1648,7 @@ class TrabalhoController extends Controller
         }
         if ($request->emailParticipante != null) {
             foreach ($request->emailParticipante as $key => $email) {
-                $userParticipante = User::where('email', $email)->first();
+                $userParticipante = User::where('email', 'ilike', $email)->first();
 
                 $participante = new Participante();
 
@@ -1695,7 +1695,7 @@ class TrabalhoController extends Controller
                     }
                     $participante->save();
 
-                    $usuario = User::where('email', $email)->first();
+                    $usuario = User::where('email', 'ilike', $email)->first();
                     $participante = Participante::where([['user_id', '=', $usuario->id], ['trabalho_id', '=', $projeto->id]])->first();
 
                     $path = 'trabalhos/' . $edital->id . '/' . $projeto->id . '/';
@@ -1917,7 +1917,7 @@ class TrabalhoController extends Controller
                 $participanteSubstituido->data_saida = $request->data_entrada;
 
                 \App\Validator\CpfValidator::validate($request->all());
-                $user = User::where('email', $data['email'])->first();
+                $user = User::where('email', 'ilike', $data['email'])->first();
                 if (!$user) {
                     $data['usuarioTemp'] = true;
                     $user = User::create($data);

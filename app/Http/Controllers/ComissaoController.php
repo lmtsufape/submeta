@@ -49,7 +49,7 @@ class ComissaoController extends Controller
             // 'especProfissional'=>'required|string',
             ]);
 
-        $user = User::where('email',$request->input('emailMembroComissao'))->first();
+        $user = User::where('email', 'ilike', $request->input('emailMembroComissao'))->first();
         $evento = Evento::find($request->eventoId);
         if($user == null){
           $passwordTemporario = Str::random(8);
