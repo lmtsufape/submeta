@@ -113,8 +113,8 @@ class UserController extends Controller
         if ($user->tipo == 'participante') {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
-                'email' => ['required_if:alterarSenhaCheckBox,on', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-                'password' => ['required_if:alterarSenhaCheckBox,on', 'string', 'min:8', 'confirmed'],
+                // 'email' => ['required_if:alterarSenhaCheckBox,on', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+                // 'password' => ['required_if:alterarSenhaCheckBox,on', 'string', 'min:8', 'confirmed'],
                 'cpf' => ['required', 'cpf', Rule::unique('users')->ignore($user->id)],
                 'rg' => ['required', Rule::unique('participantes')->ignore($user->participantes->first()->id)],
                 'celular' => ['required', 'string', 'telefone'],

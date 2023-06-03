@@ -183,7 +183,7 @@
                                 </div>
                             </div>
                           </div>
-
+                          @if($evento->tipo != "CONTINUO")
                           <div class="col-md-12">
                             <div class="d-flex justify-content-left align-items-center">
                               <div style="margin-right:10px; margin-top:-20px">
@@ -231,6 +231,7 @@
                                 </div>
                             </div>
                           </div>
+                          @endif
 
                         </div>
                       </div>
