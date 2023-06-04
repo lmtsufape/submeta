@@ -38,7 +38,7 @@ use Illuminate\Validation\Rule;
 use PDF;
 use DB;
 use App\AreaTematica;
-
+use App\Rules\UniqueEmail;
 
 class AdministradorController extends Controller
 {
@@ -531,7 +531,7 @@ class AdministradorController extends Controller
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255', new UniqueEmail($request->email)],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'senha' => ['required', 'min:8'],
@@ -543,20 +543,20 @@ class AdministradorController extends Controller
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'tipo' => ['required'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255', new UniqueEmail($request->email)],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
                 'celular' => ['required', 'string', 'telefone'],
                 'senha' => ['required', 'min:8'],
                 'confirmar_senha' => ['required', 'min:8'],
-                'cpf' => ['required', 'cpf', 'unique:users'],
+                'cpf' => ['required', 'cpf', new UniqueEmail($request->email)],
             ]);
         } else {
             $validated = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255', new UniqueEmail($request->email)],
                 'tipo' => ['required'],
-                'cpf' => ['required', 'cpf', 'unique:users'],
+                'cpf' => ['required', 'cpf', new UniqueEmail($request->email)],
                 'celular' => ['required', 'string', 'telefone'],
                 'senha' => ['required', 'min:8'],
                 'confirmar_senha' => ['required', 'min:8'],
@@ -1042,7 +1042,7 @@ class AdministradorController extends Controller
         $nomeAvaliador = $request->nomeAvaliador;
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
-        $user = User::where('email', $emailAvaliador)->first();
+        $user = User::where('email', 'ilike', $emailAvaliador)->first();
         $areaTematica = AreaTematica::find($request->areasTemeticas);
 
         if ($request->instituicao == 'ufape') {
@@ -1162,7 +1162,7 @@ class AdministradorController extends Controller
         $nomeAvaliador = $request->nomeAvaliador;
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
-        $user = User::where('email', $emailAvaliador)->first();
+        $user = User::where('email', 'ilike', $emailAvaliador)->first();
         $areaTematica = AreaTematica::find($request->areasTemeticas);
 
         if ($request->instituicao == 'ufape') {

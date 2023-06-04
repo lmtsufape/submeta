@@ -15,6 +15,7 @@ use App\Proponente;
 use App\Endereco;
 use App\Rules\UrlValidacao;
 use App\Curso;
+use App\Rules\UniqueEmail;
 
 class RegisterController extends Controller
 {
@@ -60,7 +61,7 @@ class RegisterController extends Controller
         {
             return Validator::make($data, [
                 'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'email', 'max:255', new UniqueEmail($data['email'])],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'cpf' => ['required', 'cpf', 'unique:users'],
                 'rg' => ['required', 'unique:participantes'],
@@ -76,7 +77,7 @@ class RegisterController extends Controller
 
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', new UniqueEmail($data['email'])],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'cpf' => ['required', 'cpf', 'unique:users'],
             'rg' => ['required', 'unique:participantes'],
