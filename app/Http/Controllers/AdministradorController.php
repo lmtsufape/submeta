@@ -109,6 +109,19 @@ class AdministradorController extends Controller
         $areas = Area::whereIn('id', $idArea)->get();
 
         $funcaoParticipantes = FuncaoParticipantes::all();
+        
+        $trabalhosRelatorioFinal = [];
+        
+        if($evento->tipo == "PIBEX"){ 
+            foreach($trabalhos->get() as $trabalho) {
+                $arquivos_id = Arquivo::where("trabalhoId", $trabalho->id)->get()->pluck('id');
+                $avaliacaoRelatorio = AvaliacaoRelatorio::whereIn("arquivo_id", $arquivos_id)->where("arquivoAvaliacao", "!=", null)->first(); 
+                if(!empty($avaliacaoRelatorio)){
+                    array_push($trabalhosRelatorioFinal, $trabalho->id);
+                }
+            }
+        }
+
         // $participantes = Participante::where('trabalho_id', $id)->get();
         // $participantesUsersIds = Participante::where('trabalho_id', $id)->select('user_id')->get();
         // $participantes = User::whereIn('id', $participantesUsersIds)->get();
@@ -120,7 +133,8 @@ class AdministradorController extends Controller
             'column' => $request->column,
             'grandesAreas' => $grandesAreas,
             'areas' => $areas,
-            'contador_trabalhos' => $contador_trabalhos
+            'contador_trabalhos' => $contador_trabalhos,
+            'trabalhosRelatorioFinal' => $trabalhosRelatorioFinal
         ]);
     }
 

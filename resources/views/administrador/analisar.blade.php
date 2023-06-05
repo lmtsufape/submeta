@@ -81,7 +81,13 @@
                             <div class="card-body" style="padding-top: 0.2rem; padding-left: 25px;padding-right: 25px;">
 
                                     <div class="form-row mt-3">
-                                        <div class="col-md-10 tituloProj"><h5 style="color: #234B8B; font-weight: bold; margin-top: 15px;">Título: {{ $trabalho->titulo }}</h5></div>
+                                        <div class="col-md-10 tituloProj"><h5 style="color: #234B8B; font-weight: bold; margin-top: 15px;">Título: {{ $trabalho->titulo }}</h5>
+                                        
+                                        @if(!empty($trabalhosRelatorioFinal) && in_array($trabalho->id, $trabalhosRelatorioFinal)) 
+                                            <span style="color: green; font-weight: bold">O relatório final foi enviado</span>
+                                        @endif
+
+                                    </div>
                                         <div class="col-md-2">
                                             @if($trabalho->arquivado == true)
                                                 <div title="Proposta Arquivada">
