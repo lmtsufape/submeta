@@ -38,7 +38,7 @@
       @endif
 
       @if($edital->natureza_id == 3)
-        @component('projeto.formularioVisualizar.integrantes', ['projeto' => $projeto, 'edital' => $edital, 'trabalhos_user' => $trabalhos_user,'funcaoParticipantes' =>$funcaoParticipantes])
+        @component('projeto.formularioVisualizar.integrantes', ['projeto' => $projeto, 'edital' => $edital, 'trabalhos_user' => $trabalhos_user,'funcaoParticipantes' =>$funcaoParticipantes, 'hoje' => $hoje])
         @endcomponent
       @endif
 
