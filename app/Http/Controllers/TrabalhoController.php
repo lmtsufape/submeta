@@ -459,6 +459,9 @@ class TrabalhoController extends Controller
             }   
         }
 
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+
 
 
         return view('projeto.visualizar')->with(['projeto' => $projeto,
@@ -478,7 +481,8 @@ class TrabalhoController extends Controller
             'trabalhos_user' => $trabalhos_user,
             'AvalRelatParcial' => $AvalRelatParcial,
             'AvalRelatFinal' => $AvalRelatFinal,
-            'proponente' => $proponente
+            'proponente' => $proponente,
+            'hoje' => $hoje
         ]);
     }
 
@@ -1215,6 +1219,10 @@ class TrabalhoController extends Controller
             return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Já existe um Integrante com esse CPF."]);
         }
 
+        if(!$this->validarDataResultadoFinalPibex($id)) {
+            return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Só é possivel adicionar integrantes após a data do Resultado final"]);
+        }
+
 
         $atributos = ['user_id' => $usuario->id,
                       'funcao_participante_id' => $request->funcao_participante,
@@ -1273,6 +1281,19 @@ class TrabalhoController extends Controller
         }
 
         return true;
+    }
+
+    private function validarDataResultadoFinalPibex($id) {
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+        $edital = Trabalho::where('id', $id)->first()->evento;
+        
+        if($edital->tipo == "PIBEX" && $hoje <= $edital->resultado_final){
+            return false;
+        }
+
+        return true;
+
     }
 
     public function buscarUsuario(Request $request) {

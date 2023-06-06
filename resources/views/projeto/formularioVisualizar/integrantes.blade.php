@@ -9,9 +9,11 @@
                             <a href="{{route('trabalho.trocaParticipante', ['evento_id' => $projeto->evento->id, 'projeto_id' => $projeto->id])}}"
                                class="button">Solicitar Substituições/Desligamentos</a>
                         </div>
-                        <div class="col-sm-3 text-sm-right" >
-                            <a href="" data-toggle="modal" data-target="#modalAdicionarParticipante" class="button">Adicionar Participante</a>
-                        </div>
+                        @if(($projeto->evento->tipo == "PIBEX" && $hoje > $projeto->evento->resultado_final) || $projeto->evento->tipo == "CONTINUO")
+                            <div class="col-sm-3 text-sm-right" >
+                                <a href="" data-toggle="modal" data-target="#modalAdicionarParticipante" class="button">Adicionar Participante</a>
+                            </div>
+                        @endif
                     </div>
                     <hr style="border-top: 1px solid#1492E6">
 
