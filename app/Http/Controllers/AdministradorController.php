@@ -111,13 +111,13 @@ class AdministradorController extends Controller
         $funcaoParticipantes = FuncaoParticipantes::all();
         
         $trabalhosRelatorioFinal = [];
-        
-        if($evento->tipo == "PIBEX"){ 
+
+        if($evento->tipo == "PIBEX") {
             foreach($trabalhos->get() as $trabalho) {
-                $arquivos_id = Arquivo::where("trabalhoId", $trabalho->id)->get()->pluck('id');
-                $avaliacaoRelatorio = AvaliacaoRelatorio::whereIn("arquivo_id", $arquivos_id)->where("arquivoAvaliacao", "!=", null)->first(); 
-                if(!empty($avaliacaoRelatorio)){
-                    array_push($trabalhosRelatorioFinal, $trabalho->id);
+                foreach($trabalho->participantes as $participante) {
+                    if(isset($participante->planoTrabalho) && $participante->planoTrabalho->relatorioFinal != null) {
+                        array_push($trabalhosRelatorioFinal, $trabalho->id);
+                    }
                 }
             }
         }
