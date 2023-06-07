@@ -123,5 +123,13 @@ class UsuarioSeeder extends Seeder
       'tipo' => 'coordenador',
       'email_verified_at' => '2023-05-17'
     ]);
+
+    DB::table('users')->insert([
+      'name' => 'Coordenador NITE',
+      'email' => 'nite@ufape.edu.br',
+      'password' => Hash::make('12345678'),
+      'tipo' => 'coordenador',
+      'email_verified_at' => '2023-06-06'
+    ]);
   }
 }
