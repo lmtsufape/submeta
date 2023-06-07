@@ -31,6 +31,7 @@
                     </tr>
 				</thead>
 					@foreach($arquivos as $arquivo)
+					@if(isset($arquivo))
                         <tbody>
 						<td style="text-align: center;" title="{{$arquivo->trabalho->titulo}}">{{$arquivo->trabalho->titulo}}</td>
 						<td style="text-align: center;" title="{{$arquivo->trabalho->proponente->user->name}}">{{$arquivo->trabalho->proponente->user->name}}</td>
@@ -221,6 +222,7 @@
 							</div>
 						</div>
                         </tbody>
+					@endif
 					@endforeach
 
 			</table>
