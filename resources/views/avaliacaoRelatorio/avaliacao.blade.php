@@ -3,7 +3,12 @@
     <div class="row">
         @if ($arquivo->trabalho->evento->numParticipantes != 0)
         <h5><b>Discente:</b>
-            {{\App\Participante::find($arquivo->participanteId)->user->name}}</h5>
+            @if(\App\Participante::find($arquivo->participanteId))
+                {{\App\Participante::find($arquivo->participanteId)->user->name}}
+            @else
+                {{\App\Participante::withTrashed()->find($arquivo->participanteId)->user->name}}
+            @endif
+        </h5>
         @else
         <h5><b>Proponente:</b>
             {{$arquivo->trabalho->proponente->user->name}}</h5>
