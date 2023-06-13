@@ -1902,6 +1902,7 @@ class TrabalhoController extends Controller
 
     public function telaTrocaPart(Request $request)
     {
+        $funcaoParticipantes = FuncaoParticipantes::orderBy('nome')->get();
         $projeto = Trabalho::find($request->projeto_id);
         $edital = Evento::find($projeto->evento_id);
 
@@ -1920,37 +1921,44 @@ class TrabalhoController extends Controller
             'estados' => $this->estados,
             'enum_turno' => Participante::ENUM_TURNO,
             'desligamentosProjeto' => $desligamentosProjeto,
+            'funcaoParticipantes'=> $funcaoParticipantes
         ]);
     }
 
     public function trocaParticipante(Request $request)
     {
+        //dd($request->all());
         try {
             DB::beginTransaction();
             $trabalho = Trabalho::find($request->projetoId);
             $evento = Evento::find($request->editalId);
             $participanteSubstituido = Participante::where('id', $request->participanteId)->first();
+            $usuarioNovo = User::where('id', $request->novoParticianteId)->first();
+            $enderecoUsuarioNovo = $usuarioNovo->endereco;
+            $participanteNovo = $usuarioNovo->participantes->first();
             $planoAntigo = Arquivo::where('id', $participanteSubstituido->planoTrabalho->id)->first();
-
+            //dd($enderecoUsuarioNovo);
+            //dd($usuarioNovo);
             $passwordTemporario = Str::random(8);
-            $data['name'] = $request->name;
-            $data['email'] = $request->email;
-            $data['password'] = bcrypt($passwordTemporario);
-            $data['data_de_nascimento'] = $request->data_de_nascimento;
+            $data['name'] = $usuarioNovo->name; //$request->name; 
+            $data['email'] = $usuarioNovo->email; //$request->email;
+            $data['password'] = $usuarioNovo->password; //bcrypt($passwordTemporario);
+            $data['data_de_nascimento'] = $participanteNovo->data_de_nascimento; //$request->data_de_nascimento;
             $data['data_entrada'] = $request->data_entrada;
-            $data['cpf'] = $request->cpf;
+            $data['cpf'] = $usuarioNovo->cpf; //$request->cpf;
             $data['tipo'] = 'participante';
             $data['funcao_participante_id'] = 4;
-            $data['rg'] = $request->rg;
-            $data['celular'] = $request->celular;
-            $data['linkLattes'] = $request->linkLattes;
-            $data['cep'] = $request->cep;
-            $data['uf'] = $request->uf;
-            $data['cidade'] = $request->cidade;
-            $data['rua'] = $request->rua;
-            $data['numero'] = $request->numero;
-            $data['bairro'] = $request->bairro;
-            $data['complemento'] = $request->complemento;
+            $data['rg'] = $participanteNovo->rg; //$request->rg;
+            $data['celular'] = $usuarioNovo->celular; //$request->celular;
+            $data['linkLattes'] = $participanteNovo->linkLattes; //$request->linkLattes;
+            $data['cep'] = $enderecoUsuarioNovo->cep; //$request->cep;
+            $data['uf'] = $enderecoUsuarioNovo->uf; //$request->uf;
+            $data['cidade'] = $enderecoUsuarioNovo->cidade; //$request->cidade;
+            $data['rua'] = $enderecoUsuarioNovo->rua; //$request->rua;
+            $data['numero'] = $enderecoUsuarioNovo->numero; //$request->numero;
+            $data['bairro'] = $enderecoUsuarioNovo->bairro; //$request->bairro;
+            $data['complemento'] = $enderecoUsuarioNovo->complemento; //$request->complemento;
+            
 
             if ($request->instituicao != "Outra") {
                 $data['instituicao'] = $request->instituicao;
@@ -2009,8 +2017,8 @@ class TrabalhoController extends Controller
                 }
 
                 $participanteSubstituido->data_saida = $request->data_entrada;
-
-                \App\Validator\CpfValidator::validate($request->all());
+                //\App\Validator\CpfValidator::validate($request->all());
+                //dd($data);
                 $user = User::where('email', 'ilike', $data['email'])->first();
                 if (!$user) {
                     $data['usuarioTemp'] = true;
@@ -2024,16 +2032,16 @@ class TrabalhoController extends Controller
                     $participanteSubstituido->save();
                 }
 
-                $pasta = 'participantes/' . $participante->id;
-                $participante->anexoTermoCompromisso = Storage::putFileAs($pasta, $request->anexoTermoCompromisso, "Termo_de_Compromisso.pdf");
-                $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->anexoComprovanteMatricula, "Comprovante_de_Matricula.pdf");
-                $participante->anexoLattes = Storage::putFileAs($pasta, $request->anexoCurriculoLattes, "Curriculo_Lattes.pdf");
-                if ($request->anexoAutorizacaoPais != null) {
-                    $participante->anexoAutorizacaoPais = Storage::putFileAs($pasta, $request->anexoAutorizacaoPais, "Autorização_dos_Pais.pdf");
-                }
-                if ($request->anexoComprovanteBancario != null) {
-                    $participante->anexoComprovanteBancario = Storage::putFileAs($pasta, $request->anexoComprovanteBancario, "Comprovante_Bancario." . $request->file('anexoComprovanteBancario')->getClientOriginalExtension());
-                }
+                // $pasta = 'participantes/' . $participante->id;
+                // $participante->anexoTermoCompromisso = Storage::putFileAs($pasta, $request->anexoTermoCompromisso, "Termo_de_Compromisso.pdf");
+                // $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->anexoComprovanteMatricula, "Comprovante_de_Matricula.pdf");
+                // $participante->anexoLattes = Storage::putFileAs($pasta, $request->anexoCurriculoLattes, "Curriculo_Lattes.pdf");
+                // if ($request->anexoAutorizacaoPais != null) {
+                //     $participante->anexoAutorizacaoPais = Storage::putFileAs($pasta, $request->anexoAutorizacaoPais, "Autorização_dos_Pais.pdf");
+                // }
+                // if ($request->anexoComprovanteBancario != null) {
+                //     $participante->anexoComprovanteBancario = Storage::putFileAs($pasta, $request->anexoComprovanteBancario, "Comprovante_Bancario." . $request->file('anexoComprovanteBancario')->getClientOriginalExtension());
+                // }
 
                 $user->participantes()->save($participante);
                 //$trabalho->participantes()->save($participante);
