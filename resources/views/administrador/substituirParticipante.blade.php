@@ -30,7 +30,7 @@
                                 </h5>
                             </div>
                             <div class="card-body">
-                            @foreach($participantes as $participante)
+                            @foreach($participantes as $i => $participante)
                                     <div class="row"style="margin-bottom: 20px;">
                                         <div class="col-10">
                                             <h4 style="font-size:20px">{{$participante->user->name}}</h4>
@@ -71,6 +71,19 @@
                                         </div>
 
                                                                                 
+                                    </div>
+
+                                    <div class="modal fade" id="exampleModal{{$i}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:auto;">
+                                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Dados do Integrante {{$i+1}}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Modal TESTE substituir participante -->
@@ -115,13 +128,383 @@
                                         </div>
                                     </div>
 
+
+                                    <!-- MODAL PARA PREENCHIMENTO DOS DADOS DO DISCENTE -->
+                                    <div class="modal fade" id="exampleModal{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow:auto;">
+                                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"
+                                                    id="exampleModalLabel">Dados do Integrante
+                                                </h5>
+                                                <button type="button"
+                                                    class="close"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <div class="col-md-12">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <input type="hidden"
+                                                                name="funcaoParticipante[]"
+                                                                value="4">
+                                                            <input type="hidden"
+                                                                name="participante_id[]"
+                                                                value="{{ $participante->id ?? '' }}">
+                                                            
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Nome completo'])
+                                                                    <input type="text"
+                                                                        disabled
+                                                                        class="form-control "
+                                                                        value=""
+                                                                        name="name"
+                                                                        placeholder="Nome Completo"
+                                                                        maxlength="150"
+                                                                        id="nome{{$participante->id}}" />
+                                                                    <span style="color: red; font-size: 12px"
+                                                                        id="caracsRestantesnome{{ $i }}">
+                                                                    </span>
+                                                                    @error('name.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'E-mail'])
+                                                                    <input type="email"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="email"
+                                                                        placeholder="E-mail"
+                                                                        maxlength="150"
+                                                                        id="email{{$participante->id}}" />
+                                                                    <span style="color: red; font-size: 12px"
+                                                                        id="caracsRestantesemail{{ $i }}">
+                                                                    </span>
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Data de nascimento'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="data_de_nascimento"
+                                                                        placeholder="E-mail"
+                                                                        maxlength="150"
+                                                                        id="data_de_nascimento{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'CPF'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="cpf"
+                                                                        maxlength="150"
+                                                                        id="cpf{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'RG'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="rg"
+                                                                        maxlength="150"
+                                                                        id="rg{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Celular'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="celular"
+                                                                        maxlength="150"
+                                                                        id="celular{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-md-12"><h5>Endereço</h5></div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'CEP'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="cep"
+                                                                        maxlength="150"
+                                                                        id="cep{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'UF'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="uf"
+                                                                        maxlength="150"
+                                                                        id="uf{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Cidade'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="cidade"
+                                                                        maxlength="150"
+                                                                        id="cidade{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Bairro'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="bairro"
+                                                                        maxlength="150"
+                                                                        id="bairro{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Rua'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="rua"
+                                                                        maxlength="150"
+                                                                        id="rua{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Numero'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="numero"
+                                                                        maxlength="150"
+                                                                        id="numero{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-12">
+                                                                @component('componentes.input', ['label' => 'Complemento'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="complemento"
+                                                                        maxlength="150"
+                                                                        id="complemento{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-md-12"><h5>Dados do curso</h5></div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Instituição de Ensino'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="instituicao"
+                                                                        maxlength="150"
+                                                                        id="instituicao{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Curso'])
+                                                                    <input type="input"
+                                                                        disabled
+                                                                        class="form-control"
+                                                                        value=""
+                                                                        name="curso"
+                                                                        maxlength="150"
+                                                                        id="curso{{$participante->id}}" />
+                                                                    @error('email.' . $i)
+                                                                        <span class="invalid-feedback"
+                                                                            role="alert"
+                                                                            style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                    @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <form method="POST" id="SubParticForm" action="{{route('trabalho.infoTrocaParticipante')}}" enctype="multipart/form-data">
+                                                            @csrf
+                                                                <div class="col-6">
+                                                                    @component('componentes.input', ['label' => 'Data de Entrada'])
+                                                                        <input type="date" class="form-control" value="" name="data_entrada" placeholder="Data de Entrada" id="dt_entradaManter{{$participante->id}}"  />
+                                                                        @error('data_entrada')
+                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                        <strong>{{ $message }}</strong>
+                                                                    </span>
+                                                                        @enderror
+                                                                    @endcomponent
+                                                                </div>
+                                                                <div style="display: block">
+                                                                                                            
+                                                                    <div class="col-md-12" id="plano-titulo{{$participante->id}}">
+                                                                        <h5>Plano de trabalho</h5>
+                                                                    </div>
+                                                                    <div class="col-12" id="plano-nome{{$participante->id}}">
+                                                                        @component('componentes.input', ['label' => 'Título'])
+                                                                        <input type="text" class="form-control" value="" name="nomePlanoTrabalho" placeholder="Digite o título do plano de trabalho" maxlength="255" id="nomePlanoTrabalho{{$participante->id}}">
+                                                                        @error('nomePlanoTrabalho')
+                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                        @enderror
+                                                                        @endcomponent
+                                                                    </div>
+                                                                    <div class="col-12" id="plano-anexo{{$participante->id}}">
+                                                                        @component('componentes.input', ['label' => 'Anexo (.pdf)'])
+                                                                        <input type="file" class="input-group-text" value="" name="anexoPlanoTrabalho" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
+                                                                        @error('anexoPlanoTrabalho')
+                                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                            <strong>{{ $message }}</strong>
+                                                                        </span>
+                                                                        @enderror
+                                                                        @endcomponent
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    
+                                                                        <input type="hidden" name="editalId" value="{{$edital->id}}">
+                                                                        <input type="hidden" name="participanteId" value="{{$participante->id}}">
+                                                                        <input type="hidden" name="projetoId" value="{{$projeto->id}}">
+                                                                        <input type="hidden" id="novoParticianteId{{$participante->id}}" name="novoParticianteId" value="">
+                                                                        <button type="submit" class="btn btn-success">Salvar</button>
+                                                                </div>
+                                                            </form>
+
+                                                            
+                                                        </div>
+                                                        
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <!-- Modal substituir participante Completo -->
                                     <div class="modal fade" id="modalSubParticipanteCompleto{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
                                             <div class="modal-content">
 
                                                 <div class="modal-header" style="overflow-x:auto">
-                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Novo Participante</h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Novo Integrante</h5>
 
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
                                                         <span aria-hidden="true">&times;</span>
@@ -129,7 +512,49 @@
                                                 </div>
 
                                                 <div class="modal-body px-1">
-                                                    @include('administrador.substituirParticipanteCompletoForm')
+                                                <div class="container">
+                                                    <div class="row justify-content-center" style="padding-left:35px; padding-right:45px">
+
+                                                        <div class="form-controll"
+                                                            style="margin-left:10px; margin-top:10px; margin-bottom:15px; font-weight:bold;">
+
+                                                            <div class="form-row d-flex">
+                                                                <label for="cpf_consulta{{$participante->id}}">CPF:</label>
+                                                                <input type="text" id="cpf_consulta{{$participante->id}}" name="cpf_consulta" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-row d-flex" style="margin-top:10px">
+                                                                <label for="funcao_participante">Função do Integrante:</label>
+                                                                <select name="" id="funcao_participante{{$participante->id}}" class="form-control">
+                                                                    @foreach($funcaoParticipantes as $funcao)
+                                                                        <!-- EXTENSÃO -->
+                                                                        @if($edital->natureza_id == 3 && $edital->tipo == "CONTINUO") 
+                                                                            @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador")
+                                                                                <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                                                            @endif
+                                                                        @elseif($edital->natureza_id == 3 && $edital->tipo == "PIBEX")
+                                                                            @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador" || $funcao->nome == "Bolsista")
+                                                                                <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                                                            @endif
+                                                                        <!-- PESQUISA -->
+                                                                        @else
+                                                                            @if($funcao->nome == "Bolsista" || $funcao->nome == "Voluntário")
+                                                                                <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                                                            @endif
+                                                                        @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            
+                                                            <div class="form-row justify-content-center" style="margin-top:20px;">
+                                                                <button type="button" class="btn btn-primary" onclick="preencherUsuarioExistente({{$participante->id}})">
+                                                                    Adicionar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -409,6 +834,27 @@
             </div>
         </div>
     </div>
+
+<!-- MODAL DE ERRO -->
+<div class="modal fade" id="aviso-modal-usuario-nao-existe" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #dc3545;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: white;">Aviso</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body" >
+                <span id="texto-erro">CPF não consta no sistema!</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-color-dafault" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('javascript')
@@ -610,5 +1056,129 @@
         $("#modalTestSubParticipante"+discenteId).modal('hide');
         setTimeout(() => {  $("#modalSubParticipantePlano"+discenteId).modal(); }, 500);
     }
+
+
+    function preencherUsuarioExistente(integranteAntigoId) {
+        if (!document.getElementById(`exampleModal${integranteAntigoId}`)) {
+            exibirModalNumeroMaximoDeIntegrantes();
+            return;
+        }
+
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: '{{ route('trabalho.buscarUsuario') }}',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'cpf_consulta': $(`#cpf_consulta${integranteAntigoId}`).val(),
+                'funcao': $(`#funcao_participante${integranteAntigoId}`).val()
+            },
+
+            success: function (data) {
+                if (data == 'inexistente' || $(`#cpf_consulta${integranteAntigoId}`).val() == "") {
+                    exibirModalUsuarioInexistente();
+                } else {
+                    if ($(`#funcao_participante${integranteAntigoId}`).val() != 4 || data[0].tipo == 'participante') {
+                        exibirUsuarioAdicionado(data, integranteAntigoId);
+                    }
+                }
+            }
+        });
+
+    }
+
+    function exibirModalUsuarioInexistente() {
+        $('#aviso-modal-usuario-nao-existe').modal('show');
+    }
+
+    $(document).ready(function () {
+        $("#cpf_consulta").mask("999.999.999-99");
+    });
+
+    function exibirUsuarioAdicionado(data, integranteAntigoId) {
+        console.log(data)
+        $('#modalIntegrante').modal('hide');
+        document.getElementById(`nome${integranteAntigoId}`).value = data[0]['name'];
+        document.getElementById(`nome${integranteAntigoId}`).setAttribute("readonly", "");
+
+        document.getElementById(`email${integranteAntigoId}`).value = data[0]['email'];
+        document.getElementById(`email${integranteAntigoId}`).setAttribute("readonly", "");
+
+        if (data[0]['tipo'] == "participante") {
+            let [y, m, d] = data[2]['data_de_nascimento'].split('-');
+            document.getElementById(`data_de_nascimento${integranteAntigoId}`).value = (new Date(y, m - 1, d)).toLocaleDateString();
+            document.getElementById(`data_de_nascimento${integranteAntigoId}`).setAttribute("readonly", "");
+        } else {
+
+            document.getElementById(`data_de_nascimento${integranteAntigoId}`).value = null;
+            document.getElementById(`data_de_nascimento${integranteAntigoId}`).setAttribute("readonly", "");
+        }
+
+        document.getElementById(`cpf${integranteAntigoId}`).value = data[0]['cpf'];
+        document.getElementById(`cpf${integranteAntigoId}`).setAttribute("readonly", "");
+
+        if (data?.[2]?.rg) {
+            document.getElementById(`rg${integranteAntigoId}`).value = data[2]['rg'];
+            document.getElementById(`rg${integranteAntigoId}`).setAttribute("readonly", "");
+        }
+
+        if (data?.[0]?.celular) {
+            document.getElementById(`celular${integranteAntigoId}`).value = data[0]['celular'];
+            document.getElementById(`celular${integranteAntigoId}`).setAttribute("readonly", "");
+        }
+
+        if (data[3] != null) {
+            document.getElementById(`cep${integranteAntigoId}`).value = data[3].cep;
+            document.getElementById(`cep${integranteAntigoId}`).setAttribute("readonly", "");
+
+            document.getElementById(`uf${integranteAntigoId}`).value = data[3].uf;
+            document.getElementById(`uf${integranteAntigoId}`).setAttribute("readonly", "");
+
+            document.getElementById(`cidade${integranteAntigoId}`).value = data[3].cidade;
+            document.getElementById(`cidade${integranteAntigoId}`).setAttribute("readonly", "");
+
+            document.getElementById(`bairro${integranteAntigoId}`).value = data[3].bairro;
+            document.getElementById(`bairro${integranteAntigoId}`).setAttribute("readonly", "");
+
+            document.getElementById(`rua${integranteAntigoId}`).value = data[3].rua;
+            document.getElementById(`rua${integranteAntigoId}`).setAttribute("readonly", "");
+
+            document.getElementById(`numero${integranteAntigoId}`).value = data[3].numero;
+            document.getElementById(`numero${integranteAntigoId}`).setAttribute("readonly", "");
+
+            document.getElementById(`complemento${integranteAntigoId}`).value = data[3].complemento;
+            document.getElementById(`complemento${integranteAntigoId}`).setAttribute("readonly", "");    
+        }
+
+        document.getElementById(`instituicao${integranteAntigoId}`).value = data[0].instituicao;
+        document.getElementById(`instituicao${integranteAntigoId}`).setAttribute("readonly", "");
+
+        document.getElementById(`curso${integranteAntigoId}`).value = data[2].curso;
+        document.getElementById(`curso${integranteAntigoId}`).setAttribute("readonly", "");
+
+
+        //document.getElementById(`funcaoParticipante${modal_id}`).value = data[1]['nome'];
+
+        if (data[1].nome != "Bolsista" && data[1].nome != "Voluntário") {
+            document.getElementById(`plano-titulo${integranteAntigoId}`).setAttribute('hidden', "");
+            document.getElementById(`plano-nome${integranteAntigoId}`).setAttribute('hidden', "");
+            document.getElementById(`plano-anexo${integranteAntigoId}`).setAttribute('hidden', "");
+        } else {
+            document.getElementById(`plano-titulo${integranteAntigoId}`).removeAttribute('hidden');
+            document.getElementById(`plano-nome${integranteAntigoId}`).removeAttribute('hidden');
+            document.getElementById(`plano-anexo${integranteAntigoId}`).removeAttribute('hidden');
+        }
+        
+        document.getElementById(`novoParticianteId${integranteAntigoId}`).value = data[0].id;
+
+        $(`#exampleModal${integranteAntigoId}`).modal('show');
+    }
+
 </script>
 @endsection
