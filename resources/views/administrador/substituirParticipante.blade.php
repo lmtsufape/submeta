@@ -439,13 +439,13 @@
                                                             </div>
                                                             <form method="POST" id="SubParticForm" action="{{route('trabalho.infoTrocaParticipante')}}" enctype="multipart/form-data">
                                                             @csrf
-                                                                <div class="col-6">
+                                                                <div class="col-12">
                                                                     @component('componentes.input', ['label' => 'Data de Entrada'])
                                                                         <input type="date" class="form-control" value="" name="data_entrada" placeholder="Data de Entrada" id="dt_entradaManter{{$participante->id}}"  />
                                                                         @error('data_entrada')
                                                                         <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                         <strong>{{ $message }}</strong>
-                                                                    </span>
+                                                                        </span>
                                                                         @enderror
                                                                     @endcomponent
                                                                 </div>
@@ -1104,6 +1104,7 @@
     function exibirUsuarioAdicionado(data, integranteAntigoId) {
         console.log(data)
         $('#modalIntegrante').modal('hide');
+        $(`#modalSubParticipanteCompleto${integranteAntigoId}`).modal('hide');
         document.getElementById(`nome${integranteAntigoId}`).value = data[0]['name'];
         document.getElementById(`nome${integranteAntigoId}`).setAttribute("readonly", "");
 
