@@ -27,7 +27,7 @@
                     style="font-weight: bold">{{ __('Nota: ') }}</label>
             </div>
             <div class="col-sm-5 text-center padEsquerda">
-                <input class="form-control" name="nota" type="number"
+                <input class="form-control" name="nota" type="number" step="0.01"
                     style="width: 60px" @if(isset($aval)) value="{{$aval->nota}}" @endif>
             </div>
 
@@ -36,7 +36,7 @@
                     style="font-weight: bold">{{ __('Apresentação: ') }}</label>
             </div>
             <div class="col-sm-4 text-center padEsquerda">
-                <input class="form-control" name="nota_apresentacao" type="number"
+                <input class="form-control" name="nota_apresentacao" type="number"  step="0.01"
                     style="width: 60px" @if(isset($aval)) value="{{$aval->nota_apresentacao}}" @endif>
             </div>
         </div>
