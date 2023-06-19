@@ -570,7 +570,7 @@
                     <a id="modeloDocumentoTemp" href="{{ route('baixar.modelo.evento.temp', ['nomeAnexo' => 'modeloDocumento' ])}}">Arquivo atual</a>
                     @endif
                     <input type="hidden" id="modeloDocumentoPreenchido" name="modeloDocumentoPreenchido" value="{{ old('modeloDocumentoPreenchido') }}">
-                    <input type="file" class="form-control-file @error('modeloDocumento[]') is-invalid @enderror" name="modeloDocumento[]" multiple value="{{ old('modeloDocumento') }}" id="modeloDocumento" onchange="exibirAnexoTemp(this)" accept=".doc,.docx,.pdf">
+                    <input type="file" class="form-control-file @error('modeloDocumento[]') is-invalid @enderror" name="modeloDocumento[]" multiple value="{{ old('modeloDocumento') }}" id="modeloDocumento" onchange="exibirAnexoTemp(this)" accept=".doc,.docx,.pdf, .zip">
                     <small>Os arquivos selecionado deve ter até 2mb.</small>
                     @error('modeloDocumento[]')
                     <span class="invalid-feedback" role="alert">
