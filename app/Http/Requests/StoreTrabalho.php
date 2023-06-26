@@ -112,7 +112,7 @@ class StoreTrabalho extends FormRequest
                 $rules['justificativaAutorizacaoEtica'] = [Rule::requiredIf($this->autorizacaoFlag == 'nao')];
                 $rules['pontuacaoPlanilha'] = ['required', 'string'];
                 $rules['linkGrupoPesquisa'] = ['required', 'string'];
-                if($evento->tipo == "PIBIC"){
+                if($evento->tipo == "PIBIC" || $evento->tipo == "PIBITI"){
                     $rules['preenchimentoFormFlag'] = [Rule::in(['sim']), 'required'];
                 }
                 $rules['anexo_acao_afirmativa'] = [Rule::requiredIf($this->radioAcoesAfirmativas == 'sim')];
@@ -184,7 +184,9 @@ class StoreTrabalho extends FormRequest
             'ods.*' => 'Deve ser selecionada pelo menos uma ODS',
             'linkLattesEstudante.*' => "O link do currículo lattes do estudante é obrigatório",
             'anexoDecisaoCONSU.*' => 'anexoDecisaoCONSU',
-            'anexo_SIPAC.*' => 'anexo_SIPAC'
+            'anexo_SIPAC.*' => 'anexo_SIPAC',
+            'preenchimentoFormFlag.*' => 'Preencha o questionário de pesquisa de prospecção interna.',
+            'anexo_acao_afirmativa.*' => 'O anexo de ação afirmativa deve ser anexado'
         ];
     }
 }

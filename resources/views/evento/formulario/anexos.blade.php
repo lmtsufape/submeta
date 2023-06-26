@@ -133,7 +133,7 @@
               </div>
             @endif
 
-            @if($edital->tipo == "PIBIC" && $edital->natureza_id == 2)
+            @if(($edital->tipo == "PIBIC" || $edital->tipo == "PIBITI") && $edital->natureza_id == 2)
               <div class="form-group col-md-6">
 
                 <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold;">
