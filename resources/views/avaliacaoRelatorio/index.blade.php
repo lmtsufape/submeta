@@ -56,6 +56,7 @@
                             </thead>
                             <tbody>
                             @foreach ($avaliacoes as $avaliacao)
+                                @if($avaliacao->plano->participante)
                                 <tr class="text-center">
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->trabalho->evento->nome }}</td>
                                     <td style="max-width:100px; overflow-x:hidden; text-overflow:ellipsis">{{ $avaliacao->plano->trabalho->titulo }}</td>
@@ -82,6 +83,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         </table>
