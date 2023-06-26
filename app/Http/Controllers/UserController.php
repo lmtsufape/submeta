@@ -116,7 +116,7 @@ class UserController extends Controller
                 // 'email' => ['required_if:alterarSenhaCheckBox,on', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
                 // 'password' => ['required_if:alterarSenhaCheckBox,on', 'string', 'min:8', 'confirmed'],
                 'cpf' => ['required', 'cpf', Rule::unique('users')->ignore($user->id)],
-                'rg' => ['required', Rule::unique('participantes')->ignore($user->participantes->first()->id)],
+                //'rg' => ['required', Rule::unique('participantes')->ignore($user->participantes->first()->id)],
                 'celular' => ['required', 'string', 'telefone'],
                 'instituicao' => ['required_if:instituicaoSelect,Outra', 'max:255'],
                 'instituicaoSelect' => ['required_without:instituicao'],
