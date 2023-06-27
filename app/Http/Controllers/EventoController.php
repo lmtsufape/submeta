@@ -463,7 +463,8 @@ class EventoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //dd($request);
+        // AKII
+        // dd($request);
         $tipo_usuario = Auth()->user()->tipo;
         //dd($tipo_usuario);
         $evento = Evento::find($id);
@@ -648,7 +649,7 @@ class EventoController extends Controller
         $evento->update();
 
         $eventos = Evento::orderBy('nome')->get();
-        
+        //dd('FINAL');
         if($tipo_usuario == 'coordenador'){
             return redirect( route('coordenador.editais') )->with(['mensagem' => 'Edital salvo com sucesso!', 'eventos'=>$eventos]);
         }
