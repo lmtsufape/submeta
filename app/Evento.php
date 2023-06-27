@@ -110,7 +110,7 @@ class Evento extends Model
     'dt_fimRelatorioParcial'     => ['exclude_if:tipo,PIBEX', 'required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
     'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
     'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
-    'modeloDocumento'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
+    'modeloDocumento.*'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],
     'pdfFormAvalExterno'           => ['file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
     'inicioProjeto'       => ['required', 'date', 'after:resultado_final'],
     'fimProjeto'          => ['required', 'date', 'after:inicioProjeto'],

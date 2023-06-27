@@ -703,7 +703,7 @@
                             <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
                         </a>
                     @endif
-                    <input type="file" class="form-control-file @error('modeloDocumento[]') is-invalid @enderror" name="modeloDocumento[]" multiple value="{{ old('modeloDocumento') }}" id="modeloDocumento" onchange="exibirAnexoTemp(this)" accept=".doc,.docx,.pdf">
+                    <input type="file" class="form-control-file @error('modeloDocumento[]') is-invalid @enderror" name="modeloDocumento[]" multiple value="{{ old('modeloDocumento') }}" id="modeloDocumento" accept=".doc,.docx,.pdf,.zip">
                     <small>Os arquivos selecionado deve ter até 2mb.</small>
                     @error('modeloDocumento[]')
                         <span class="invalid-feedback" role="alert">
