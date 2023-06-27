@@ -24,7 +24,7 @@
                             </div>
                             <div class="col-sm-5 mt-4">
                                 <h5 class="mb-0">Nome: {{$participante->user->name}}</h5>
-                                <h5 class="mb-0">Plano: @if(isset($participante->planoTrabalho)) {{$participante->planoTrabalho->titulo}} @else Plano Em Substituição @endif </h5>
+                                <h5 class="mb-0">Plano: @if(isset($participante->planoTrabalho)) {{$participante->planoTrabalho->titulo}} @else Não há @endif </h5>
                                 <h6>
                                     <a href="" data-toggle="modal" data-target="#modalVizuParticipante{{$participante->id}}" class="button">Informações</a>
                                 </h6>
