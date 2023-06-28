@@ -859,8 +859,13 @@ class AdministradorController extends Controller
         $avalSelecionados = $evento->avaliadors;
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
-        $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)->get();
-
+        $avaliadores = Avaliador::whereNotIn('id', $avalNaoSelecionadosId)
+                                ->with('user')
+                                ->get()
+                                ->sortBy(function($aval){
+                                    return $aval->user->name;
+                                });
+        
         //$avaliadores =  Avaliador::join('naturezas_avaliadors', 'avaliadors.id', '=' ,'naturezas_avaliadors.avaliador_id')->whereNotIn('avaliadors.id', $avalNaoSelecionadosId)
         //            ->where('naturezas_avaliadors.natureza_id', $evento->natureza_id)
         //            ->get();

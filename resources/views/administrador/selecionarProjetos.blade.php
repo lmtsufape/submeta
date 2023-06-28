@@ -238,7 +238,7 @@
                                     class="form-control" id="exampleFormControlSelect2"
                                     style="height: 200px;font-size: 15px">
 
-                              @foreach ($trabalho->avaliadors as $avaliador)
+                              @foreach ($trabalho->avaliadors->sortBy(function($aval){ return $aval->user->name;}) as $avaliador)
                                 @if(($avaliador->tipo == "Interno" && $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1) ||
                                     (($avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco") && ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null || $avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 1) ))
                                   <option value="{{ $avaliador->id }}">{{ $avaliador->user->name }}
@@ -247,7 +247,7 @@
                                     > {{$avaliador->user->email}}</option>
                                 @endif
                               @endforeach
-                              @foreach ($trabalho->aval as $avaliador)
+                              @foreach ($trabalho->aval->sortBy(function($aval){ return $aval->user->name;}) as $avaliador)
                                 @if($avaliador->tipo == "Interno" || $avaliador->user->instituicao == "UFAPE" || $avaliador->user->instituicao == "Universidade Federal do Agreste de Pernambuco")
                                   <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
                                     > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
@@ -268,7 +268,7 @@
                             <select name="avaliadores_externos_id[]" multiple
                                     class="form-control" id="exampleFormControlSelect3"
                                     style="height: 200px;font-size:15px">
-                              @foreach ($trabalho->avaliadors as $avaliador)
+                              @foreach ($trabalho->avaliadors->sortBy(function($aval){ return $aval->user->name;}) as $avaliador)
                                 @if($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == 2 || ($avaliador->trabalhos()->where("trabalho_id",$trabalho->id)->first()->pivot->acesso == null && $avaliador->tipo == "Interno"))
                                   <option value="{{ $avaliador->id }}">{{ $avaliador->user->name }}
                                     > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
@@ -276,7 +276,7 @@
                                     > {{$avaliador->user->email}}</option>
                                 @endif
                               @endforeach
-                              @foreach ($trabalho->aval as $avaliador)
+                              @foreach ($trabalho->aval->sortBy(function($aval){ return $aval->user->name;}) as $avaliador)
                                 <option value="{{ $avaliador->id }}"> {{ $avaliador->user->name }}
                                   > {{$avaliador->user->instituicao ?? 'Instituição Indefinida'}}
                                   > {{$avaliador->area->nome ?? 'Indefinida'}}
