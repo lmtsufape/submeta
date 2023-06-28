@@ -76,6 +76,13 @@
                 </div>
               @endif
 
+              @if($edital->tipo == 'PIBITI' && $edital->natureza_id == 2)
+                <div class="col-sm-4">
+                  <label title="Decisão da Câmara ou Conselho Pertinente" for="anexo_carta_anuencia" class="col-form-label font-tam" style="font-weight: bold">{{ __('Carta de Anuência: ') }}</label>
+                  <a href="{{ route('baixar.anexo.carta.anuencia', ['id' => $projeto->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                </div>
+              @endif
+
               @if($edital->nome_docExtra != null)
                 {{-- Documento Extra --}}
                 <div class="col-sm-4">

@@ -148,7 +148,8 @@
                 <a href="https://forms.gle/cAND8Z3z1yVr9u6a6" target="_blank" style="margin: 0px;">(endereço eletrônico de acesso)</a>
                 
               </div>
-
+            @endif
+            @if($edital->tipo == "PIBIC" && $edital->natureza_id == 2)
               <div class="form-group col-md-6">
                 <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold">{{ __('Possui estudante(s) de ações afirmativas?') }} </label>
   
@@ -168,6 +169,17 @@
                       </span>
                     @enderror
                 </div>
+              </div>
+            @endif
+            @if($edital->tipo == "PIBITI" && $edital->natureza_id == 2)
+              <div class="form-group col-md-6">
+                <label title="Carta de Anuência" for="anexo_carta_anuencia" class="col-form-label font-tam" style="font-weight: bold">{{ __('Carta de Anuência: ') }}</label>
+                <input type="file" class="input-group-text" name="anexo_carta_anuencia"  accept=".pdf" />
+                @error('anexo_carta_anuencia')
+                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
             @endif
             @if($edital->nome_docExtra != null)

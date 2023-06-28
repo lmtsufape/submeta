@@ -538,6 +538,12 @@
                                     <a href="{{ route('baixar.anexo.acao.afirmativa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                     </div>
                                 @endif
+                                @if($evento->tipo == 'PIBITI' && $evento->natureza_id == 2)
+                                    <div class="col-sm-4">
+                                    <label title="Decisão da Câmara ou Conselho Pertinente" for="anexo_carta_anuencia" class="col-form-label font-tam" style="font-weight: bold">{{ __('Carta de Anuência: ') }}</label>
+                                    <a href="{{ route('baixar.anexo.carta.anuencia', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
+                                    </div>
+                                @endif
                                 @if($evento->nome_docExtra != null)
                                     {{-- Documento Extra --}}
                                     <div class="col-sm-4">

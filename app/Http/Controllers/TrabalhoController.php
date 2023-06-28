@@ -409,6 +409,11 @@ class TrabalhoController extends Controller
             $trabalho->anexo_acao_afirmativa = Storage::putFileAs($pasta, $request->anexo_acao_afirmativa, "Anexo_Acao_Afirmativa." . $request->file('anexo_acao_afirmativa')->extension());
         }
 
+        //Anexo Carta de Anuência 
+        if (isset($request->anexo_carta_anuencia)) {
+            $trabalho->anexo_carta_anuencia = Storage::putFileAs($pasta, $request->anexo_carta_anuencia, "anexo_carta_anuencia." . $request->file('anexo_carta_anuencia')->extension());
+        }
+
         return $trabalho;
     }
 
@@ -788,6 +793,16 @@ class TrabalhoController extends Controller
         if (Storage::disk()->exists($projeto->anexo_acao_afirmativa)) {
             ob_end_clean();
             return Storage::download($projeto->anexo_acao_afirmativa);
+        }
+        return abort(404);
+    }
+
+    public function baixarCartaAnuencia($id)
+    {
+        $projeto = Trabalho::find($id);
+        if (Storage::disk()->exists($projeto->anexo_carta_anuencia)) {
+            ob_end_clean();
+            return Storage::download($projeto->anexo_carta_anuencia);
         }
         return abort(404);
     }
@@ -1350,7 +1365,7 @@ class TrabalhoController extends Controller
                 ->create($request->except([
                     'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                     'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa' 
+                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
                 ]));
             }
 
