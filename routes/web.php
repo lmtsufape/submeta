@@ -214,6 +214,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/baixar/anexo-projeto/{id}', 'TrabalhoController@baixarAnexoProjeto')->name('baixar.anexo.projeto');
     Route::get('/baixar/anexo-consu/{id}', 'TrabalhoController@baixarAnexoConsu')->name('baixar.anexo.consu');
     Route::get('/baixar/anexo-acao-afirmativa/{id}', 'TrabalhoController@baixarAcaoAfirmativa')->name('baixar.anexo.acao.afirmativa');
+    Route::get('/baixar/anexo-carta-anuencia/{id}', 'TrabalhoController@baixarCartaAnuencia')->name('baixar.anexo.carta.anuencia');
     Route::get('/baixar/anexo-comite/{id}', 'TrabalhoController@baixarAnexoComite')->name('baixar.anexo.comite');
     Route::get('/baixar/anexo-justificativa/{id}', 'TrabalhoController@baixarAnexoJustificativa')->name('baixar.anexo.justificativa');
     Route::get('/baixar/anexo-lattes/{id}', 'TrabalhoController@baixarAnexoLattes')->name('baixar.anexo.lattes');
