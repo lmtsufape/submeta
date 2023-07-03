@@ -206,7 +206,9 @@ class AdministradorController extends Controller
         $substituicoesPendentes = Substituicao::where('trabalho_id', $trabalho->id)->where('status', 'Em Aguardo')->orderBy('created_at', 'DESC')->get();
 
         $avalSelecionadosId = $trabalho->avaliadors->pluck('id');
-        $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->get();
+        $avalProjeto = Avaliador::whereNotIn('id', $avalSelecionadosId)->with('user')->get()->sortBy(function($aval){
+                                                                                                        return $aval->user->name;
+                                                                                                    });;
         $trabalho->aval = $avalProjeto;
         // Usuarios que possuem avaliações de relatório
         //$avaliacoesRelatorio = [];->join('users','users.id','=','candidatos.user_id')
