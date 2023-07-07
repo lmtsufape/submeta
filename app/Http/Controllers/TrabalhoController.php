@@ -1398,6 +1398,14 @@ class TrabalhoController extends Controller
                         }else {
                             $data['complemento'] = $request->complemento[$part];
                         }
+
+                        if($request->total_periodos){
+                            $data['total_periodos'] = $request->total_periodos[$part];
+                            $data['turno'] = $request->turno[$part];
+                            $data['periodo_atual'] = $request->periodo_atual[$part];
+                            $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
+                        }
+
                         if ($request->curso[$part] != "Outro") {
                             $data['curso'] = $request->curso[$part];
                         } else {
