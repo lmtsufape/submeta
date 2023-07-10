@@ -77,13 +77,18 @@
                                                             <strong>CPF: </strong>{{ $participante->user->cpf }}
                                                         @endif
                                                         <br>
-
+                                                        
                                                         @if (isset(old('funcao')[$i]))
                                                             <strong>Função: </strong> {{ old('funcao')[$i] }}/
                                                         @else
-                                                            <strong>Função: </strong> {{ $trabalhos_user[$i]->funcao->nome }}
+                                                        @php
+                                                            
+                                                        @endphp
+                                                            {{-- dd($participante) --}}
+                                                            <strong>Função: </strong> {{ $participante->funcao_participante_id }}
                                                         @endif
                                                         </p>
+                                                        
                                                     @endif
                                                     <h6>
                                                         <a id="nomePart{{ $i + 1 }}"></a>
@@ -154,7 +159,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Nome completo'])
                                                                             <input type="text"
-                                                                                disabled
+                                                                                readonly
                                                                                 class="form-control "
                                                                                 value="{{ old('name')[$i] ?? ($participante->user->name ?? '') }}"
                                                                                 name="name[{{ $i }}]"
@@ -176,7 +181,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'E-mail'])
                                                                             <input type="email"
-                                                                                disabled
+                                                                                readonly
                                                                                 class="form-control"
                                                                                 value="{{ old('email')[$i] ?? ($participante->user->email ?? '') }}"
                                                                                 name="email[{{ $i }}]"
@@ -198,7 +203,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Data de nascimento'])
                                                                             <input type="text"
-                                                                                disabled
+                                                                                readonly
                                                                                 class="form-control"
                                                                                 value="{{ old('data_de_nascimento')[$i] ?? ($participante->data_de_nascimento ?? '') }}"
                                                                                 name="data_de_nascimento[{{ $i }}]"
@@ -216,7 +221,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CPF'])
                                                                             <input type="text"
-                                                                                disabled
+                                                                                readonly
                                                                                 class="form-control cpf"
                                                                                 value="{{ old('cpf')[$i] ?? ($participante->user->cpf ?? '') }}"
                                                                                 name="cpf[{{ $i }}]"
@@ -235,7 +240,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'RG'])
                                                                             <input type="text"
-                                                                                disabled
+                                                                                readonly
                                                                                 class="form-control rg"
                                                                                 min="9"
                                                                                 maxlength="9"
@@ -255,7 +260,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Celular'])
                                                                             <input type="tel"
-                                                                                disabled
+                                                                                readonly
                                                                                 class="form-control celular"
                                                                                 value="{{ old('celular')[$i] ?? ($participante->user->celular ?? '') }}"
                                                                                 name="celular[{{ $i }}]"
@@ -279,7 +284,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'CEP'])
                                                                             <input name="cep[{{ $i }}]"
-                                                                                disabled
+                                                                                readonly
                                                                                 type="text"
                                                                                 id="cep{{ $i }}"
                                                                                 value="{{ old('cep')[$i] ?? ($participante->user->endereco->cep ?? '') }}"
@@ -296,7 +301,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Estado'])
                                                                             <input name="uf[{{ $i }}]"
-                                                                                disabled
+                                                                                readonly
                                                                                 type="text"
                                                                                 class="form-control"
                                                                                 value="{{ old('uf')[$i] ?? ($participante->user->endereco->uf ?? '') }}"
@@ -312,7 +317,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Cidade'])
                                                                             <input name="cidade[{{ $i }}]"
-                                                                                disabled
+                                                                                readonly
                                                                                 type="text"
                                                                                 id="cidade{{ $i }}"
                                                                                 class="form-control"
@@ -328,7 +333,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Bairro'])
                                                                             <input name="bairro[{{ $i }}]"
-                                                                                disabled
+                                                                                readonly
                                                                                 type="text"
                                                                                 id="bairro{{ $i }}"
                                                                                 class="form-control"
@@ -344,7 +349,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Rua'])
                                                                             <input name="rua[{{ $i }}]"
-                                                                                disabled
+                                                                                readonly
                                                                                 type="text"
                                                                                 id="rua{{ $i }}"
                                                                                 class="form-control"
@@ -360,7 +365,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Número'])
                                                                             <input name="numero[{{ $i }}]"
-                                                                                disabled    
+                                                                                readonly    
                                                                                 type="text"
                                                                                 class="form-control"
                                                                                 value="{{ old('numero')[$i] ?? ($participante->user->endereco->numero ?? '') }}"
@@ -380,7 +385,7 @@
                                                                                 for="firstname">Complemento</label>
                                                                             <input type="text"
                                                                                 class="form-control"
-                                                                                disabled
+                                                                                readonly
                                                                                 value="{{ old('complemento')[$i] ?? ($participante->user->endereco->complemento ?? '') }}"
                                                                                 name="complemento[{{ $i }}]"
                                                                                 placeholder="Complemento"
@@ -404,7 +409,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Instituição de Ensino'])
                                                                             <select style="display: inline"
-                                                                                disabled
+                                                                                readonly
                                                                                 onchange="showInstituicao(this)"
                                                                                 class="form-control"
                                                                                 name="instituicao[{{ $i }}]"
@@ -455,7 +460,7 @@
                                                                     <div class="col-6">
                                                                         @component('componentes.input', ['label' => 'Curso'])
                                                                             <select style="display: inline"
-                                                                                disabled
+                                                                                readonly
                                                                                 class="form-control"
                                                                                 name="curso[{{ $i }}]"
                                                                                 onchange="showCurso(this)"
