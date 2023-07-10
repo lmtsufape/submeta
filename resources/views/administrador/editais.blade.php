@@ -58,7 +58,7 @@
               </td>
               <td>{{ date('d/m/Y \à\s H:i\h', strtotime($evento->created_at)) }}</td>
               <td>
-                @if(auth()->user()->id == $evento->criador_id)
+                @if(auth()->user()->id == $evento->criador_id || auth()->user()->tipo == "administrador")
                 <div class="btn-group dropright dropdown-options">
                     <a id="options" class="dropdown-toggle " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <img src="{{asset('img/icons/ellipsis-v-solid.svg')}}" style="width:8px">
