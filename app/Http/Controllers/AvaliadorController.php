@@ -93,14 +93,14 @@ class AvaliadorController extends Controller
 
         } else {
             foreach ($aval->trabalhos->where('evento_id',$evento->id) as $trab){
-                if($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 2
-                    || $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 3 ||
-                    ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == null && $aval->tipo == "Interno")){
+                if($aval->trabalhos()->where("trabalho_id",$trab->id)->wherePivot('avaliador_id', $aval->id)->orderBy('created_at','DESC')->first()->acesso == 2
+                    || $aval->trabalhos()->where("trabalho_id",$trab->id)->wherePivot('avaliador_id', $aval->id)->orderBy('created_at','DESC')->first()->acesso == 3 ||
+                    ($aval->trabalhos()->where("trabalho_id",$trab->id)->wherePivot('avaliador_id', $aval->id)->orderBy('created_at','DESC')->first()->acesso == null && $aval->tipo == "Interno")){
                     array_push($trabalhosIn,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
                 }
-                if ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 1 ||
-                    $aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == 3 ||
-                    ($aval->trabalhos()->where("trabalho_id",$trab->id)->first()->pivot->orderBy('created_at','DESC')->first()->acesso == null && $aval->tipo == "Externo")){
+                if ($aval->trabalhos()->where("trabalho_id",$trab->id)->wherePivot('avaliador_id', $aval->id)->orderBy('created_at','DESC')->first()->acesso == 1 ||
+                $aval->trabalhos()->where("trabalho_id",$trab->id)->wherePivot('avaliador_id', $aval->id)->orderBy('created_at','DESC')->first()->acesso == 3 ||
+                    ($aval->trabalhos()->where("trabalho_id",$trab->id)->wherePivot('avaliador_id', $aval->id)->orderBy('created_at','DESC')->first()->acesso == null && $aval->tipo == "Externo")){
                     array_push($trabalhosEx,$aval->trabalhos()->where("trabalho_id",$trab->id)->first());
                 }
             }
