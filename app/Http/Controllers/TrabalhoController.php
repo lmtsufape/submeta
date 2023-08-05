@@ -1347,7 +1347,7 @@ class TrabalhoController extends Controller
 
             DB::beginTransaction();
 
-            if($evento->tipo=="PIBEX"){
+            if($evento->tipo=="PIBEX" || $evento->tipo=="PIACEX"){
                 $trabalho = Auth::user()->proponentes->trabalhos()
                     ->create($request->except([
                         'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC'
@@ -1413,7 +1413,7 @@ class TrabalhoController extends Controller
                         }
 
                         if($evento->tipo != "CONTINUO"){
-                            if($evento->tipo != "PIBEX") {
+                            if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX") {
                                 $data['media_do_curso'] = $request->media_do_curso[$part];
                             }
                             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
@@ -1547,7 +1547,7 @@ class TrabalhoController extends Controller
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            return redirect(route('proponente.projetos'))->with(['mensagem' => $th->getMessage()]);
+            return redirect(route('proponente.projetos'))->withErrors(['mensagem' => 'Não foi possível realizar a submissão do Projeto!']);
         }
 
 

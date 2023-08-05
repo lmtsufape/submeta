@@ -103,7 +103,7 @@ class StoreTrabalho extends FormRequest
             }
 
 
-            if ($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO") {
+            if ($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO"  && $evento->tipo != "PIACEX") {
                 //dd($this->preenchimentoFormFlag);
                 $rules['anexoPlanilhaPontuacao'] = ['required'];
                 $rules['anexoLattesCoordenador'] = ['required', 'mimes:pdf'];

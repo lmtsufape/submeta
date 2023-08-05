@@ -92,6 +92,8 @@ class AvaliadorController extends Controller
             $trabalhos = $aval->trabalhos->where('evento_id', $request->evento_id);
 
         } else {
+            // aki
+            dd($aval->trabalhos()->where("trabalho_id",$trab->id)->first());
             foreach ($aval->trabalhos->where('evento_id',$evento->id) as $trab){
                 if($aval->trabalhos()->where("trabalho_id",$trab->id)->wherePivot('avaliador_id', $aval->id)->wherePivot('acesso', 2)->orderBy('created_at','DESC')->first()
                     || $aval->trabalhos()->where("trabalho_id",$trab->id)->wherePivot('avaliador_id', $aval->id)->wherePivot('acesso', 3)->orderBy('created_at','DESC')->first() ||
