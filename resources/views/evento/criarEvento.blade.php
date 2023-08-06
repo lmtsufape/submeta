@@ -34,6 +34,7 @@
                     <option @if(old('tipo')=='PIBIC-AF' ) selected @endif value="PIBIC-AF">PIBIC-AF</option>
                     <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
                     <option @if(old('tipo')=='PIBEX' ) selected @endif value="PIBEX">PIBEX</option>
+                    <option @if(old('tipo')=='PIACEX' ) selected @endif value="PIACEX">PIACEX</option>
                     <option @if(old('tipo')=='CONTINUO' ) selected @endif value="CONTINUO">Fluxo Contínuo</option>
                 </select>
 
@@ -896,8 +897,8 @@
         }
 
         
-        //retirada das datas dos relatórios parciais para o PIBEX
-        if(tipo.value === 'PIBEX'){
+        //retirada das datas dos relatórios parciais para o PIBEX e PIACEX
+        if(tipo.value === 'PIBEX' || tipo.value === 'PIACEX'){
             document.getElementById('div-inicio-relat-parcial').style.display = "none";
             document.getElementById('div-fim-relat-parcial').style.display = "none";
         

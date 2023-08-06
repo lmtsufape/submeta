@@ -47,6 +47,7 @@
                     <option value="PIBIC-AF" {{ $evento->tipo == "PIBIC-AF" ?  'selected' :'' }}>PIBIC-AF</option>
                     <option value="PIBITI" {{ $evento->tipo == "PIBITI" ?  'selected' :'' }}>PIBITI</option>
                     <option value="PIBEX" {{ $evento->tipo == "PIBEX" ?  'selected' :'' }}>PIBEX</option>
+                    <option value="PIACEX" {{ $evento->tipo == "PIACEX" ?  'selected' :'' }}>PIACEX</option>
                     <option value="CONTINUO" {{ $evento->tipo == "CONTINUO" ?  'selected' :'' }}>Fluxo Contínuo</option>
                 </select>
                 @error('tipo')
@@ -1016,8 +1017,8 @@
             })
         }
 
-        //retirada das datas dos relatórios parciais para o PIBEX
-        if(tipo.value === 'PIBEX'){
+        //retirada das datas dos relatórios parciais para o PIBEX e PIACEX
+        if(tipo.value === 'PIBEX' || tipo.value === 'PIACEX'){
             document.getElementById('div-inicio-relat-parcial').style.display = "none";
             document.getElementById('div-fim-relat-parcial').style.display = "none";
         
