@@ -60,15 +60,17 @@ class UpdateTrabalho extends FormRequest
                     $rules['curso.'.$value] = ['required', 'string'];
 
                     
-                    if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO") {
+                    if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX") {
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
 
                     if($evento->tipo != "CONTINUO"){
-                        $rules['turno.'.$value] = ['required', 'string'];
-                        $rules['ordem_prioridade.'.$value] = ['required', 'string'];
-                        $rules['periodo_atual.'.$value] = ['required', 'string'];
-                        $rules['total_periodos.'.$value] = ['required', 'string'];
+                        if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX"){
+                            $rules['turno.'.$value] = ['required', 'string'];
+                            $rules['ordem_prioridade.'.$value] = ['required', 'string'];
+                            $rules['periodo_atual.'.$value] = ['required', 'string'];
+                            $rules['total_periodos.'.$value] = ['required', 'string'];
+                        }
                         $rules['anexoPlanoTrabalho.'.$value] = [Rule::requiredIf($participante->planoTrabalho == null)];
                         $rules['nomePlanoTrabalho.'.$value] = ['required', 'string'];
                     }
@@ -88,7 +90,7 @@ class UpdateTrabalho extends FormRequest
         }else{
 
             //$rules = [];
-            if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO"){
+            if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO" && $evento->tipo != "PIACEX"){
                 $rules['anexoPlanilhaPontuacao']       = [Rule::requiredIf($projeto->anexoPlanilhaPontuacao == null)];
                 $rules['anexoLattesCoordenador']       = [Rule::requiredIf($projeto->anexoLattesCoordenador == null), 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = [Rule::requiredIf($projeto->anexoGrupoPesquisa == null), 'mimes:pdf'];
