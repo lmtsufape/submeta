@@ -64,11 +64,14 @@
             </thead>
             <tbody>
             @foreach($AvalRelatParcial as $aval)
-              @php $arquivo = \App\Arquivo::find($aval->arquivo_id);@endphp
+              @php 
+                  $arquivo = \App\Arquivo::find($aval->arquivo_id);
+                  $participante = \App\Participante::find($arquivo->participanteId);
+              @endphp
               <tr>
                 <th style="color: black;">{{$cont += 1}}</th>
                 <td>
-                  @if($arquivo->participanteId != null) {{\App\Participante::find($arquivo->participanteId)->user->name}}@endif
+                  @if($arquivo->participanteId != null && !is_null($participante)) {{$participante->user->name}} @endif
                 </td>
                 <td>Parcial</td>
                 <td>@if($aval->nota == null) Pendente @else {{$aval->nota}} @endif</td>
