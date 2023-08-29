@@ -146,6 +146,8 @@
                                             </div>
 
                                             <div class="modal-body">
+                                            <form method="POST" id="SubParticForm" action="{{route('trabalho.infoTrocaParticipante')}}" enctype="multipart/form-data">
+                                            @csrf
                                                 <div class="col-md-12">
                                                     <div class="container">
                                                         <div class="row">
@@ -404,7 +406,7 @@
                                                             <div class="col-6">
                                                                 @component('componentes.input', ['label' => 'Instituição de Ensino'])
                                                                     <input type="input"
-                                                                        disabled
+                                                                        readonly
                                                                         class="form-control"
                                                                         value=""
                                                                         name="instituicao"
@@ -422,7 +424,7 @@
                                                             <div class="col-6">
                                                                 @component('componentes.input', ['label' => 'Curso'])
                                                                     <input type="input"
-                                                                        disabled
+                                                                        readonly
                                                                         class="form-control"
                                                                         value=""
                                                                         name="curso"
@@ -437,8 +439,83 @@
                                                                     @enderror
                                                                 @endcomponent
                                                             </div>
-                                                            <form method="POST" id="SubParticForm" action="{{route('trabalho.infoTrocaParticipante')}}" enctype="multipart/form-data">
-                                                            @csrf
+
+                                                            <div class="col-6">
+                                                                @component('componentes.select', ['label' => 'Turno'])
+                                                                <select name="turno" class="form-control" id="turno{{$participante->id}}" required>
+                                                                    <option value="" selected>-- Selecione uma opção --</option>
+                                                                    @foreach ($enum_turno as $key => $value)
+                                                                    <option value="{{ $value }}">{{ $value }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('turno')
+                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            @php
+                                                                $options = array('3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7,'8' => 8,'9' => 9,'10' => 10,'11' => 11,'12' => 12);
+                                                            @endphp
+                                                            <div class="col-6">
+                                                                @component('componentes.select', ['label' => 'Total de períodos/anos do curso'])
+                                                                <select name="total_periodos" class="form-control" onchange="gerarPeriodo(this)" id="periodosTotal{{$participante->id}}" required>
+                                                                    <option value="" selected>-- Selecione uma opção --</option>
+                                                                    @foreach ($options as $key => $value)
+                                                                    <option value="{{ $key }}">{{ $value }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('total_periodos')
+                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                                @endcomponent
+                                                            </div>
+
+                                                            <div class="col-6">
+                                                                @component('componentes.select', ['label' => 'Período/Ano atual'])
+                                                                <select name="periodo_atual" class="form-control" id="periodo{{$participante->id}}" required>
+                                                                    <option value="" selected>-- Selecione uma opção --</option>
+
+                                                                </select>
+                                                                @error('periodo_atual')
+                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                                @endcomponent
+                                                            </div>
+
+                                                            <div class="col-6">
+                                                                @component('componentes.select', ['label' => 'Ordem de prioridade'])
+                                                                <select name="ordem_prioridade" class="form-control" id="ordem{{$participante->id}}" required>
+                                                                    <option value="" selected>-- ORDEM --</option>
+                                                                    @for($j = 1; $j <= $edital->numParticipantes; $j++) <option value="{{ $j }}">{{ $j }}</option>
+                                                                        @endfor
+
+                                                                </select>
+                                                                @error('ordem_prioridade')
+                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6">
+                                                                @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
+                                                                <input type="number" class="form-control media" value="" name="media_do_curso" min="0" max="10" step="0.01" id="media{{$participante->id}}" required>
+                                                                @error('media_do_curso')
+                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                                @enderror
+                                                                @endcomponent
+                                                            </div>
+                                                            <div class="col-6"></div>
+
+
                                                                 <div class="col-12">
                                                                     @component('componentes.input', ['label' => 'Data de Entrada'])
                                                                         <input type="date" class="form-control" value="" name="data_entrada" placeholder="Data de Entrada" id="dt_entradaManter{{$participante->id}}"  />
@@ -484,7 +561,7 @@
                                                                         <input type="hidden" id="novoParticianteId{{$participante->id}}" name="novoParticianteId" value="">
                                                                         <button type="submit" class="btn btn-success">Salvar</button>
                                                                 </div>
-                                                            </form>
+                                                            
 
                                                             
                                                         </div>
@@ -495,6 +572,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        </form>
                                     </div>
 
 
