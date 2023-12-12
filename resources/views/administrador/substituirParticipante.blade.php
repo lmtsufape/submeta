@@ -106,11 +106,11 @@
                                                                 Substituir Participante
                                                             </button>
                                                         </div> -->
-                                                        <!-- <div class="col-4" style="text-align: center">
+                                                        <div class="col-4" style="text-align: center; margin-left: 45px;">
                                                             <button style=" width:220px;" type="button" id="btnSubmitManter" class="btn btn-info" onclick="subsDiscentePlano({{$participante->id}})">
                                                                 Substituir Plano de Trabalho
                                                             </button>
-                                                        </div> -->
+                                                        </div>
                                                         <div class="col-4" style="margin:auto">
                                                             <button style="float: left; width:220px;" type="button" id="btnSubmitCompleto" class="btn btn-info" onclick="subsDiscenteCompleto({{$participante->id}})">
                                                                 Substituir Ambos

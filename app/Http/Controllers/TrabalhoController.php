@@ -1957,32 +1957,30 @@ class TrabalhoController extends Controller
             $evento = Evento::find($request->editalId);
             $participanteSubstituido = Participante::where('id', $request->participanteId)->first();
             $usuarioNovo = User::where('id', $request->novoParticianteId)->first();
-            $enderecoUsuarioNovo = $usuarioNovo->endereco;
-            $participanteNovo = $usuarioNovo->participantes->first();
+            $enderecoUsuarioNovo = $usuarioNovo ? $usuarioNovo->endereco : null;
+            $participanteNovo = $usuarioNovo? $usuarioNovo->participantes->first() : null;
             $planoAntigo = Arquivo::where('id', $participanteSubstituido->planoTrabalho->id)->first();
-            //dd($enderecoUsuarioNovo);
-            //dd($usuarioNovo);
+
             $passwordTemporario = Str::random(8);
-            $data['name'] = $usuarioNovo->name; //$request->name; 
-            $data['email'] = $usuarioNovo->email; //$request->email;
-            $data['password'] = $usuarioNovo->password; //bcrypt($passwordTemporario);
-            $data['data_de_nascimento'] = $participanteNovo->data_de_nascimento; //$request->data_de_nascimento;
+            $data['name'] = $usuarioNovo ? $usuarioNovo->name : null;
+            $data['email'] = $usuarioNovo ? $usuarioNovo->email : null;
+            $data['password'] = $usuarioNovo ? $usuarioNovo->password :null;
+            $data['data_de_nascimento'] = $participanteNovo ? $participanteNovo->data_de_nascimento : null;
             $data['data_entrada'] = $request->data_entrada;
-            $data['cpf'] = $usuarioNovo->cpf; //$request->cpf;
+            $data['cpf'] = $usuarioNovo ? $usuarioNovo->cpf : null; //$request->cpf;
             $data['tipo'] = 'participante';
             $data['funcao_participante_id'] = 4;
-            $data['rg'] = $participanteNovo->rg; //$request->rg;
-            $data['celular'] = $usuarioNovo->celular; //$request->celular;
-            $data['linkLattes'] = $participanteNovo->linkLattes; //$request->linkLattes;
-            $data['cep'] = $enderecoUsuarioNovo->cep; //$request->cep;
-            $data['uf'] = $enderecoUsuarioNovo->uf; //$request->uf;
-            $data['cidade'] = $enderecoUsuarioNovo->cidade; //$request->cidade;
-            $data['rua'] = $enderecoUsuarioNovo->rua; //$request->rua;
-            $data['numero'] = $enderecoUsuarioNovo->numero; //$request->numero;
-            $data['bairro'] = $enderecoUsuarioNovo->bairro; //$request->bairro;
-            $data['complemento'] = $enderecoUsuarioNovo->complemento; //$request->complemento;
-            
-
+            $data['rg'] = $participanteNovo ? $participanteNovo->rg : null; //$request->rg;
+            $data['celular'] = $usuarioNovo ? $usuarioNovo->celular : null; //$request->celular;
+            $data['linkLattes'] = $participanteNovo ? $participanteNovo->linkLattes : null; //$request->linkLattes;
+            $data['cep'] = $enderecoUsuarioNovo ? $enderecoUsuarioNovo->cep : null; //$request->cep;
+            $data['uf'] = $enderecoUsuarioNovo ? $enderecoUsuarioNovo->uf : null; //$request->uf;
+            $data['cidade'] = $enderecoUsuarioNovo ? $enderecoUsuarioNovo->cidade : null; //$request->cidade;
+            $data['rua'] = $enderecoUsuarioNovo ? $enderecoUsuarioNovo->rua : null; //$request->rua;
+            $data['numero'] = $enderecoUsuarioNovo ? $enderecoUsuarioNovo->numero : null; //$request->numero;
+            $data['bairro'] = $enderecoUsuarioNovo ? $enderecoUsuarioNovo->bairro : null; //$request->bairro;
+            $data['complemento'] = $enderecoUsuarioNovo ? $enderecoUsuarioNovo->complemento : null; //$request->complemento;
+            //dd($request->all());
             if ($request->instituicao != "Outra") {
                 $data['instituicao'] = $request->instituicao;
             } else {
