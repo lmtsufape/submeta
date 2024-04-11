@@ -133,7 +133,7 @@
               </div>
             @endif
 
-            @if(($edital->tipo == "PIBIC" || $edital->tipo == "PIBITI") && $edital->natureza_id == 2)
+            <!--@if(($edital->tipo == "PIBIC" || $edital->tipo == "PIBITI") && $edital->natureza_id == 2)
               <div class="form-group col-md-6">
 
                 <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold;">
@@ -148,7 +148,7 @@
                 <a href="https://forms.gle/cAND8Z3z1yVr9u6a6" target="_blank" style="margin: 0px;">(endereço eletrônico de acesso)</a>
                 
               </div>
-            @endif
+            @endif-->
             @if($edital->tipo == "PIBIC" && $edital->natureza_id == 2)
               <div class="form-group col-md-6">
                 <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold">{{ __('Possui estudante(s) de ações afirmativas?') }} </label>
