@@ -109,6 +109,51 @@ class RelatorioController extends Controller
         return view('relatorio.relatorioFinalPibex', compact('trabalho', 'ods', 'areas_tematicas'));
     }
 
+    public function analisarRelatorioFinalPibex($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+
+        $trabalho = Trabalho::findOrFail($relatorio->trabalho_id);
+        $coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Coordenador/a')->first();
+        $vice_coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Vice-Coordenador/a')->first();
+        $internos = RelatorioIntegranteInterno::where('relatorio_id', $relatorio->id)->get();
+        $externos = RelatorioIntegranteExterno::where('relatorio_id', $relatorio->id)->get();
+        $produtos_extensao_gerados = ProdutosExtensaoGerados::where('relatorio_id', $relatorio->id)->first();
+        $participantes = RelatorioParticipante::where('relatorio_id', $relatorio->id)->get();
+
+        $ods = [];
+        foreach(json_decode($relatorio->ods) as $ods_id)
+        {
+            $ods[] = ObjetivoDeDesenvolvimentoSustentavel::findOrFail($ods_id);
+        }
+
+        $areas_tematicas = [];
+        foreach(json_decode($relatorio->area_tematica_principal) as $area_tematica_id)
+        {
+            $areas_tematicas[] = AreaTematica::findOrFail($area_tematica_id);
+        }
+
+
+
+        return view('relatorio.visualizarRelatorioPibex', compact('relatorio', 'coordenador', 'vice_coordenador', 'trabalho',
+            'areas_tematicas', 'ods', 'internos', 'externos', 'produtos_extensao_gerados', 'participantes'));
+    }
+
+    public function parecerRelatorioFinalPibex(Request $request)
+    {
+        $relatorio = Relatorio::findOrFail($request->relatorio_id);
+
+        if($request->parecer == 'aprovar')
+        {
+            $relatorio->status = 'aprovado';
+        } elseif($request->parecer == 'devolver')
+        {
+            $relatorio->status = 'devolvido para correções';
+        }
+
+        $relatorio->update();
+    }
+
     public function salvarRelatorioFinalPibex(Request $request)
     {
         DB::beginTransaction();
