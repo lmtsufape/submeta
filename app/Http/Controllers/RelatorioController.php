@@ -96,6 +96,13 @@ class RelatorioController extends Controller
     {
         $trabalho = Trabalho::findOrFail($trabalho_id);
 
+        $relatorio = Relatorio::where('trabalho_id', $trabalho->id)->get();
+
+        if($relatorio->isNotEmpty())
+        {
+            return redirect()->route('planos.listar', [$trabalho->id])->with(['erro' => 'O relatório já foi enviado']);
+        }
+
         $ods = ObjetivoDeDesenvolvimentoSustentavel::all()->sortBy('id');
         $areas_tematicas = AreaTematica::all()->sortBy('id');
 

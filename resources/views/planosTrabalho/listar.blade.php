@@ -8,6 +8,10 @@
 		<div class="alert alert-success" role="alert">
 			{{ session('sucesso') }}
 		</div>
+	@elseif(session('erro'))
+		<div class="alert alert-danger" role="alert">
+			{{ session('erro') }}
+		</div>
 	@endif
 
     <div class="row justify-content-center titulo-menu mb-0">
