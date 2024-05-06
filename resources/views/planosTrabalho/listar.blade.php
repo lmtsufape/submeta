@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-	
+
 	@if (session('sucesso'))
 		<div class="alert alert-success" role="alert">
 			{{ session('sucesso') }}
@@ -188,25 +188,34 @@
 										<input type="hidden" value="{{ $arquivo->trabalhoId }}" name="projId">
 										<div class="col-12">
 											<div class="row">
-												@if($arquivo->relatorioFinal)
-													<div class="col-sm-2">Arquivo: </div>
-													<div class="col-sm-1">
-														<a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $arquivo->relatorioFinal]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
-													</div>
+												@if ($evento->tipo == 'PIBEX')
+													<label class="control-label col-6">
+														<a class="btn btn-primary" href="{{ route('relatorioFinalPibex.form', ['trabalho_id' => $trabalho->id]) }}" target="_blank">Formulário Relatório Final</a>
+													</label>
 												@else
-													<label class="control-label col-6">Nenhum arquivo carregado</label>
+													@if($arquivo->relatorioFinal)
+														<div class="col-sm-2">Arquivo: </div>
+														<div class="col-sm-1">
+															<a href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $arquivo->relatorioFinal]) }}"><i class="fas fa-file-pdf fa-2x"></i></a>
+														</div>
+													@else
+														<label class="control-label col-6">Nenhum arquivo carregado</label>
+													@endif
+
+													@if((Auth::user()->proponentes != null) && ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
+														<input type="file" class="input-group-text" value="" name="relatorioFinal" accept=".pdf" placeholder="Relatorio Final" id="relatorioFinal{{$arquivo->id}}" required @if($arquivo->arquivado) disabled @endif/>
+														@error('relatorioFinal')
+															<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+																<strong>{{ $message }}</strong>
+															</span>
+														@enderror
+													@endif
 												@endif
 											</div>
+
 											<br>
-                                            @if((Auth::user()->proponentes != null) &&
-                                                ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
-												<input type="file" class="input-group-text" value="" name="relatorioFinal" accept=".pdf" placeholder="Relatorio Final" id="relatorioFinal{{$arquivo->id}}" required @if($arquivo->arquivado) disabled @endif/>
-												@error('relatorioFinal')
-												<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-														<strong>{{ $message }}</strong>
-													</span>
-												@enderror
-											@endif
+
+
 										</div>
 
 										<div class="modal-footer">
@@ -228,7 +237,7 @@
 			</table>
 
 			<div id="btn-cancelar">
-				<a class="btn btn-primary" href="{{ url()->previous() }}">Cancelar</a> 
+				<a class="btn btn-primary" href="{{ url()->previous() }}">Cancelar</a>
 			</div>
 	</div>
 
