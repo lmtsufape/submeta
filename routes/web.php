@@ -194,6 +194,9 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/projeto/planosTrabalho/{id}', 'ArquivoController@listar')->name('planos.listar');
     Route::post('/projeto/planosTrabalho/anexarRelatorio', 'ArquivoController@anexarRelatorio')->name('planos.anexar.relatorio');
 
+    Route::get('/relatorioFinalPibex/formulario/{trabalho_id}', 'RelatorioController@formRelatorioFinalPibex')->name('relatorioFinalPibex.form');
+    Route::post('/relatorioFinalPibex/formulario/salvar', 'RelatorioController@salvarRelatorioFinalPibex')->name('relatorioFinalPibex.salvar');
+
     //########## Documentação Complementar
     Route::get('/documentacaoComplementar', 'ParticipanteController@listarParticipanteProjeto')->name('docComplementar.listar');
     Route::post('/documentacaoComplementar/enviar', 'ParticipanteController@atualizarDocComplementar')->name('docComplementar.enviar');
