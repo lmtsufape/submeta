@@ -16,7 +16,7 @@ class CreateRelatoriosTable extends Migration
         Schema::create('relatorios', function (Blueprint $table)
         {
             $table->bigIncrements('id');
-            $table->enum('status', ['rascunho', 'enviado', 'analisado']);
+            $table->enum('status', ['em análise', 'aprovado', 'devolvido para correções']);
             $table->date('inicio_projeto');
             $table->date('conclusao_projeto');
             $table->string('titulo_projeto');
