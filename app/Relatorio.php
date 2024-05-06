@@ -34,7 +34,7 @@ class Relatorio extends Model
 
     public function setAttributes($request)
     {
-        $this->status = 'enviado';
+        $this->status = 'em análise';
         $this->inicio_projeto = $request['inicio_projeto'];
         $this->conclusao_projeto = $request['conclusao_projeto'];
         $this->titulo_projeto = $request['titulo_projeto'];
