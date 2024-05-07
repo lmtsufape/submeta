@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container card shadow bg-white" style="margin-top: 2%">
         @if (session('sucesso'))
             <div class="alert alert-success" role="alert">
                 {{ session('sucesso') }}
@@ -14,7 +14,7 @@
 
         <div class="titulo-menu d-flex justify-content-between align-items-center">
             <div class="text-center">
-                <h4 class="mb-0">Relatório Final PIBEX</h4>
+                <h4 class="mb-0">Relatório Final PIBEX - {{ $trabalho->titulo }}</h4>
             </div>
             <div class="text-right">
                 <h6 class="card-title mb-0" style="color:red">* Campos obrigatórios</h6>
@@ -114,7 +114,7 @@
                            autocomplete="telefone_coordenador" autofocus>
                 </div>
                 <div class="col-6">
-                    <label for="ch_coordenador" class="col-form-label"> <strong>{{ __('Carga Horária:') }}</strong>
+                    <label for="ch_coordenador" class="col-form-label"> <strong>{{ __('Carga horaria total de atuação na proposta:') }}</strong>
                         <span
                                 style="color: red; font-weight:bold;">*</span> </label>
                     <input id="ch_coordenador" type="number" class="form-control" name="ch_coordenador"
@@ -146,7 +146,7 @@
                 </div>
                 <div class="col-6">
                     <label for="email_institucional_vice_coord"
-                           class="col-form-label"> <strong>{{ __('E-mail:') }}</strong> </label>
+                           class="col-form-label"> <strong>{{ __('E-mail institucional:') }}</strong> </label>
                     <input id="email_institucional_vice_coord" type="email"
                            class="form-control vice-coordenador" name="email_institucional_vice_coord"
                            value="{{ old('email_institucional_vice_coord') }}"
@@ -181,7 +181,7 @@
                            autocomplete="telefone_vice_coord" autofocus disabled>
                 </div>
                 <div class="col-6">
-                    <label for="ch_vice_coord" class="col-form-label"> <strong>{{ __('Carga Horária:') }}</strong>
+                    <label for="ch_vice_coord" class="col-form-label"> <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong>
                     </label>
                     <input id="ch_vice_coord" type="number" class="form-control vice-coordenador"
                            name="ch_vice_coord" value="{{ old('ch_vice_coord') }}" autocomplete="ch_vice_coord"
@@ -317,7 +317,7 @@
                     </div>
 
                     <div class="col-12 mt-3 text-right">
-                        <button type="button" class="btn btn-danger btnRemoverIntegrante">Remover</button>
+                        <button type="button" class="btn btn-danger btnRemoverIntegrante">Remover integrante interno</button>
                     </div>
                 </div>
             </div>
@@ -375,7 +375,7 @@
                                autocomplete="data_conclusao_externo" autofocus>
                     </div>
                     <div class="col-12 mt-3 text-right">
-                        <button type="button" class="btn btn-danger btnRemoverExterno">Remover</button>
+                        <button type="button" class="btn btn-danger btnRemoverExterno">Remover integrante externo</button>
                     </div>
                 </div>
             </div>
@@ -386,7 +386,6 @@
 
             <hr>
 
-            <!-- Campos Comuns do Formulário -->
             <div class="row">
                 <div class="col-12">
                     <label for="captacao_recursos"
@@ -420,15 +419,13 @@
             <div class="row">
                 <!-- Campo 1) Resumo -->
                 <div class="col-12">
-                    <label for="resumo" class="col-form-label"> <strong>{{ __('1) Resumo:') }}</strong> <span
-                                style="color: red; font-weight:bold;">*</span></label>
-                    <textarea id="resumo" class="form-control" name="resumo" rows="4" maxlength="2000" required
+                    <label for="resumo" class="col-form-label"> <strong>{{ __('1) Resumo:') }} </strong> <span style="color: red; font-weight:bold;">* (máximo 3000 caracteres)</span></label>
+                    <textarea id="resumo" class="form-control" name="resumo" rows="4" maxlength="3000" required
                               autocomplete="resumo"></textarea>
                 </div>
             </div>
 
             <div class="row">
-                <!-- Campo 2) Proporção de Objetivos Alcançados -->
                 <div class="col-12">
                     <label for="objetivos_alcancados"
                            class="col-form-label">
@@ -509,7 +506,6 @@
             </div>
 
             <div class="row">
-                <!-- Campo 3) Pessoas Beneficiadas -->
                 <div class="col-12">
                     <label for="pessoas_beneficiadas"
                            class="col-form-label">
@@ -521,7 +517,6 @@
             </div>
 
             <div class="row">
-                <!-- Campo 4) Proporção de Alcance do Público Estimado -->
                 <div class="col-12">
                     <label for="alcance_publico_estimado"
                            class="col-form-label">
@@ -602,7 +597,6 @@
             </div>
 
             <div class="row">
-                <!-- Campo 5) Benefícios para o Público Atendido -->
                 <div class="col-12">
                     <label for="beneficios_publico_atendido"
                            class="col-form-label">
@@ -615,7 +609,6 @@
             </div>
 
             <div class="row">
-                <!-- Campo 6) Impactos Tecnológicos e/ou Científicos -->
                 <div class="col-12">
                     <label for="impactos_tecnologicos_cientificos"
                            class="col-form-label">
@@ -628,7 +621,6 @@
             </div>
 
             <div class="row">
-                <!-- Campo 7) Dificuldades e Desafios -->
                 <div class="col-12">
                     <label for="desafios_encontrados"
                            class="col-form-label">
@@ -640,7 +632,6 @@
             </div>
 
             <div class="row">
-                <!-- Campo 8) Avaliação do Projeto e Expectativas -->
                 <div class="col-12">
                     <label for="avaliacao_projeto_executado"
                            class="col-form-label">
@@ -655,7 +646,6 @@
             <br>
 
             <div class="row">
-                <!-- Campo 9) Produtos de extensão gerados de acordo com a Política de Extensão da UFAPE -->
                 <div class="col-12">
                     <label for="produtos_extensao_gerados"
                            class="col-form-label">
@@ -671,7 +661,7 @@
                         <thead>
                         <tr>
                             <th scope="col" class="col-6">Modalidade</th>
-                            <th scope="col" class="col-3">Especificar</th>
+                            <th scope="col" class="col-3">Especificar o tipo</th>
                             <th scope="col" class="col-3">Quantidade</th>
                         </tr>
                         </thead>
@@ -846,7 +836,7 @@
                                autocomplete="carga_horaria_participante" autofocus>
                     </div>
                     <div class="col-12 mt-3 text-right">
-                        <button type="button" class="btn btn-danger btnRemoverParticipante">Remover</button>
+                        <button type="button" class="btn btn-danger btnRemoverParticipante">Remover participante</button>
                     </div>
                 </div>
             </div>
@@ -855,11 +845,10 @@
                 participante
             </button>
 
-            <br>
+            <br><br>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-success">Salvar</button>
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-success btn-lg">Enviar relatório</button>
             </div>
         </form>
     </div>
@@ -881,21 +870,39 @@
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('btnAddIntegranteInterno').addEventListener('click', function () {
                 var integranteInternoClone = document.querySelector('.integranteInterno').cloneNode(true);
+
+                var camposClone = integranteInternoClone.querySelectorAll('input, select, textarea');
+                camposClone.forEach(function (campo) {
+                    campo.value = '';
+                });
                 var integrantesInternosDiv = document.getElementById('integrantesInternos');
                 integrantesInternosDiv.appendChild(integranteInternoClone);
             });
 
+
             document.getElementById('btnAddIntegranteExterno').addEventListener('click', function () {
                 var integranteExternoClone = document.querySelector('.integranteExterno').cloneNode(true);
+
+                var camposClone = integranteExternoClone.querySelectorAll('input, select, textarea');
+                camposClone.forEach(function (campo) {
+                    campo.value = '';
+                });
                 var integrantesExternosDiv = document.getElementById('integrantesExternos');
                 integrantesExternosDiv.appendChild(integranteExternoClone);
             });
 
+
             document.getElementById('btnAddParticipante').addEventListener('click', function () {
                 var participanteClone = document.querySelector('.participante').cloneNode(true);
+
+                var camposClone = participanteClone.querySelectorAll('input, select, textarea');
+                camposClone.forEach(function (campo) {
+                    campo.value = '';
+                });
                 var participantesDiv = document.getElementById('participantes');
                 participantesDiv.appendChild(participanteClone);
             });
+
 
             $(document).on('click', '.btnRemoverIntegrante', function () {
                 var integrantes = $('.integranteInterno');
@@ -910,11 +917,11 @@
             });
 
             $(document).on('click', '.btnRemoverExterno', function () {
-                var externos = $('.externo');
+                var externos = $('.integranteExterno');
                 if (externos.length > 1) {
                     var confirmacao = confirm('Tem certeza que deseja remover este integrante externo?');
                     if (confirmacao) {
-                        $(this).closest('.externo').remove();
+                        $(this).closest('.integranteExterno').remove();
                     }
                 } else {
                     alert('O primeiro integrante externo não pode ser removido.');
