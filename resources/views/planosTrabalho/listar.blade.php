@@ -194,7 +194,7 @@
 											<div class="row">
 												@if ($evento->tipo == 'PIBEX')
 													<label class="control-label col-6">
-														<a class="btn btn-primary" href="{{ route('relatorioFinalPibex.form', ['trabalho_id' => $trabalho->id]) }}" target="_blank">Formulário Relatório Final</a>
+														<a class="btn btn-primary" href="{{ route('relatorioFinalPibex.form', ['trabalho_id' => $trabalho->id]) }}">Formulário Relatório Final</a>
 													</label>
 												@else
 													@if($arquivo->relatorioFinal)
