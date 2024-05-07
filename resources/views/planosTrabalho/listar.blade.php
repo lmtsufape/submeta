@@ -193,9 +193,24 @@
 										<div class="col-12">
 											<div class="row">
 												@if ($evento->tipo == 'PIBEX')
-													<label class="control-label col-6">
-														<a class="btn btn-primary" href="{{ route('relatorioFinalPibex.form', ['trabalho_id' => $trabalho->id]) }}">Formulário Relatório Final</a>
-													</label>
+													@if($trabalho->relatorio)
+														<div class="col-6">
+															<label for="status_relatorio_final" class="col-form-label">{{ __('Status') }}</label>
+															<input id="status_relatorio_final" type="text" class="form-control" name="status_relatorio_final" value="{{$trabalho->relatorio->status}}" required autocomplete="dt_inicioRelatorioFinal" disabled autofocus>
+														</div>
+													@else
+														<div class="col-6">
+															<label for="status_relatorio_final" class="col-form-label">{{ __('Status') }}</label>
+															<input id="status_relatorio_final" type="text" class="form-control" name="status_relatorio_final" value="Não enviado" required autocomplete="dt_inicioRelatorioFinal" disabled autofocus>
+														</div>
+
+														@if($trabalho->evento->dt_inicioRelatorioFinal <= $hoje && $hoje <= $trabalho->evento->dt_fimRelatorioFinal)
+															<div class="col-6">
+																<label for="botao_relatorio_final" class="col-form-label" style="color: white">Relatório Final</label>
+																<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.form', ['trabalho_id' => $trabalho->id]) }}">Formulário Relatório Final</a>
+															</div>
+														@endif
+													@endif
 												@else
 													@if($arquivo->relatorioFinal)
 														<div class="col-sm-2">Arquivo: </div>
@@ -209,7 +224,7 @@
 													@if((Auth::user()->proponentes != null) && ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
 														<input type="file" class="input-group-text" value="" name="relatorioFinal" accept=".pdf" placeholder="Relatorio Final" id="relatorioFinal{{$arquivo->id}}" required @if($arquivo->arquivado) disabled @endif/>
 														@error('relatorioFinal')
-															<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+														<span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
 																<strong>{{ $message }}</strong>
 															</span>
 														@enderror
@@ -224,9 +239,11 @@
 
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                            @if((Auth::user()->proponentes != null) &&
+											@if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
-												<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
+												@if($evento->tipo != 'PIBEX')
+													<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
+												@endif
 											@endif
 										</div>
 

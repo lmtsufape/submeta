@@ -138,4 +138,8 @@ class Trabalho extends Model
   public function avaliacaoTrabalho(){
     return $this->hasMany('App\AvaliacaoTrabalho');
   }
+
+    public function relatorio(){
+        return $this->hasOne('App\Relatorio');
+    }
 }
