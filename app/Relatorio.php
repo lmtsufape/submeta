@@ -55,4 +55,8 @@ class Relatorio extends Model
         $this->certificacao_adicinonal = $request['certificacao_adicinonal'];
         $this->trabalho_id = $request['trabalho_id'];
     }
+
+    public function trabalho(){
+        return $this->belongsTo('App\Trabalho');
+    }
 }

@@ -13,7 +13,8 @@ use App\RelatorioParticipante;
 use App\Trabalho;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 class RelatorioController extends Controller
 {
     /**
@@ -129,7 +130,14 @@ class RelatorioController extends Controller
             $vice_coordenador = new RelatorioCoordenadorViceCoordenador();
             $produtos_extensao_gerados = new ProdutosExtensaoGerados();
 
+            if ($request->hasFile('anexo_relatorio'))
+            {
+                $arquivo = $request->file('anexo_relatorio');
+                $path = $arquivo->store('anexoRelatorio', 'public');
+            }
+
             $relatorio->setAttributes($request);
+            $relatorio->anexo = $path;
             $relatorio->save();
 
             $coordenador->setAttributesCoordenador($request, $relatorio->id);
@@ -144,7 +152,7 @@ class RelatorioController extends Controller
             $produtos_extensao_gerados->setAttributes($request, $relatorio->id);
             $produtos_extensao_gerados->save();
 
-            if($request['nome_participante'] == null)
+            if($request['nome_participante'])
             {
                 $participantes = $this->participantesParaObjeto($request, $relatorio->id);
 
@@ -161,7 +169,7 @@ class RelatorioController extends Controller
                 $integrante_interno->save();
             }
 
-            if($request['nome_externo'] == null)
+            if($request['nome_externo'])
             {
                 $integrantes_externos = $this->integrantesExternosParaObjeto($request, $relatorio->id);
 
@@ -311,5 +319,52 @@ class RelatorioController extends Controller
         }
 
         return $integrantes_externos;
+    }
+
+    public function gerarPDF($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+
+        $trabalho = Trabalho::findOrFail($relatorio->trabalho_id);
+        $coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Coordenador/a')->first();
+        $vice_coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Vice-Coordenador/a')->first();
+        $internos = RelatorioIntegranteInterno::where('relatorio_id', $relatorio->id)->get();
+        $externos = RelatorioIntegranteExterno::where('relatorio_id', $relatorio->id)->get();
+        $produtos_extensao_gerados = ProdutosExtensaoGerados::where('relatorio_id', $relatorio->id)->first();
+        $participantes = RelatorioParticipante::where('relatorio_id', $relatorio->id)->get();
+
+        $ods = [];
+        foreach(json_decode($relatorio->ods) as $ods_id)
+        {
+            $ods[] = ObjetivoDeDesenvolvimentoSustentavel::findOrFail($ods_id);
+        }
+
+        $areas_tematicas = [];
+        foreach(json_decode($relatorio->area_tematica_principal) as $area_tematica_id)
+        {
+            $areas_tematicas[] = AreaTematica::findOrFail($area_tematica_id);
+        }
+
+
+        $pdf = PDF::loadView('relatorio.relatorioPDF', compact('relatorio', 'coordenador', 'vice_coordenador', 'trabalho',
+            'areas_tematicas', 'ods', 'internos', 'externos', 'produtos_extensao_gerados', 'participantes'));
+
+        $pdf->setPaper('a4');
+
+        $nomePdf = 'RelatórioTeste.pdf';
+
+        return $pdf->stream($nomePdf);
+    }
+
+    public function downloadAnexo($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+
+        if ($relatorio && Storage::disk('public')->exists($relatorio->anexo))
+        {
+            return Storage::disk('public')->download($relatorio->anexo);
+        }
+
+        return redirect()->back()->with('error', 'Arquivo não encontrado.');
     }
 }
