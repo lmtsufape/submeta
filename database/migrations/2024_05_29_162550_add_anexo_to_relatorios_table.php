@@ -15,7 +15,7 @@ class AddColumnAnexoToRelatoriosTable extends Migration
     {
         Schema::table('relatorios', function (Blueprint $table)
         {
-            $table->string('anexo');
+            $table->string('anexo')->nullable();
         });
     }
 
@@ -26,7 +26,8 @@ class AddColumnAnexoToRelatoriosTable extends Migration
      */
     public function down()
     {
-        Schema::table('relatorios', function (Blueprint $table) {
+        Schema::table('relatorios', function (Blueprint $table)
+        {
             //
         });
     }
