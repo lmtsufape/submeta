@@ -71,7 +71,14 @@
 						</td>
 						@endif
 						<td style="text-align: center;">
-							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioFinal == null) &&
+							@if($evento->tipo == 'PIBEX')
+								@if($trabalho->relatorio)
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">{{ $trabalho->relatorio->status }}</button>
+								@else
+									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">Não enviado</button>
+								@endif
+								
+							@elseif((Auth::user()->proponentes != null) && ($arquivo->relatorioFinal == null) &&
 								 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
 								<!-- Button trigger modal -->
 								@if($arquivo->arquivado)
@@ -194,9 +201,16 @@
 											<div class="row">
 												@if ($evento->tipo == 'PIBEX')
 													@if($trabalho->relatorio)
-														<div class="col-6">
-															<label for="status_relatorio_final" class="col-form-label">{{ __('Status') }}</label>
-															<input id="status_relatorio_final" type="text" class="form-control" name="status_relatorio_final" value="{{$trabalho->relatorio->status}}" required autocomplete="dt_inicioRelatorioFinal" disabled autofocus>
+														<div class="col-5">
+															<label for="pdf_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
+															<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.gerarPDF', ['relatorio_id' => $trabalho->relatorio->id]) }}" target="_blank"> {{ __('Baixar / Visualizar') }} </a>
+														</div>
+
+														<div class="col-1"></div>
+
+														<div class="col-4">
+															<label for="anexo_relatorio_final" class="col-form-label">{{ __('Anexo') }}</label>
+															<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.downloadAnexo', ['relatorio_id' => $trabalho->relatorio->id]) }}" target="_blank">Baixar</a>
 														</div>
 													@else
 														<div class="col-6">

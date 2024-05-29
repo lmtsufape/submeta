@@ -198,6 +198,8 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::post('/relatorioFinalPibex/formulario/salvar', 'RelatorioController@salvarRelatorioFinalPibex')->name('relatorioFinalPibex.salvar');
     Route::get('/relatorioFinalPibex/analisar/{relatorio_id}', 'RelatorioController@analisarRelatorioFinalPibex')->name('relatorioFinalPibex.analisar');
     Route::post('/relatorioFinalPibex/parecer/', 'RelatorioController@parecerRelatorioFinalPibex')->name('relatorioFinalPibex.parecer');
+    Route::get('/relatorioFinalPibex/PDF/{relatorio_id}', 'RelatorioController@gerarPDF')->name('relatorioFinalPibex.gerarPDF');
+    Route::get('/relatorios/download/{relatorio_id}', 'RelatorioController@downloadAnexo')->name('relatorioFinalPibex.downloadAnexo');
 
     //########## Documentação Complementar
     Route::get('/documentacaoComplementar', 'ParticipanteController@listarParticipanteProjeto')->name('docComplementar.listar');
