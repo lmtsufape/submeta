@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        <hr>
+        <br>
 
         <div>
             <h6>Coordenador/a do projeto:</h6>
@@ -103,7 +103,7 @@
             </div>
         </div>
 
-        <hr>
+        <br>
 
         @if($vice_coordenador)
             <div class="col-md-12">
@@ -170,7 +170,7 @@
             </div>
         </div>
 
-        <hr>
+        <br>
 
         <div class="row">
             <div class="col-md-12">
@@ -237,12 +237,12 @@
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label"> <strong>{{ __('Data de ingresso na proposta:') }}</strong>
-                            {{ $interno->ingresso_proposta }}
+                            {{ \Carbon\Carbon::createFromFormat('Y-m-d', $interno->ingresso_proposta)->format('d/m/Y') }}
                         </label>
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label"> <strong>{{ __('Data de conclusão na proposta:') }}</strong>
-                            {{ $interno->conclusao_proposta }}
+                            {{ \Carbon\Carbon::createFromFormat('Y-m-d', $interno->conclusao_proposta)->format('d/m/Y') }}
                         </label>
                     </div>
                     <div class="col-md-6">
@@ -251,13 +251,12 @@
                         </label>
                     </div>
                 </div>
-
-                <br>
             </div>
+
+            <br>
         @endforeach
 
-
-        <hr>
+        <br>
 
         @if($externos->isNotEmpty())
             <div class="row">
@@ -291,16 +290,17 @@
                 </div>
                 <div class="col-md-6">
                     <label class="col-form-label"> <strong>{{ __('Data de ingresso na proposta:') }}</strong>
-                        {{ $externo->ingresso_proposta }}
+                        {{ \Carbon\Carbon::createFromFormat('Y-m-d', $externo->ingresso_proposta)->format('d/m/Y') }}
                     </label>
                 </div>
                 <div class="col-md-6">
                     <label class="col-form-label"> <strong>{{ __('Data de conclusão na proposta:') }}</strong>
-                        {{ $externo->conclusao_proposta }}
+                        {{ \Carbon\Carbon::createFromFormat('Y-m-d', $externo->conclusao_proposta)->format('d/m/Y') }}
                     </label>
                 </div>
             </div>
-            <hr>
+
+            <br>
         @endforeach
 
         <div class="row">
@@ -358,15 +358,9 @@
 
             <div class="col-md-6">
                 <label class="col-form-label"><strong>{{ __('2) Em que proporção (%) os objetivos da proposta foram alcançados?') }}</strong></label>
-                <div>
-                    <br>
-                    @for ($i = 0; $i <= 100; $i += 10)
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="alcance_objetivos_{{ $i }}"
-                                   value="{{ $i }}" {{ $relatorio->objetivos_alcancados == $i ? 'checked' : '' }} disabled>
-                            <label class="form-check-label" for="alcance_objetivos_{{ $i }}">{{ $i }}</label>
-                        </div>
-                    @endfor
+
+                <div style="border: 1px solid #ccc; padding: 2px; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; text-align: justify">
+                    {{ $relatorio->objetivos_alcancados }}%
                 </div>
             </div>
 
@@ -383,22 +377,18 @@
 
             <div class="col-md-6">
                 <label class="col-form-label"><strong>{{ __('3) Quantas pessoas foram diretamente beneficiadas pela atividade?') }}</strong></label>
-                <textarea> {{ $relatorio->pessoas_beneficiadas }} </textarea>
+                <div style="border: 1px solid #ccc; padding: 2px; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; text-align: justify">
+                    {{ $relatorio->pessoas_beneficiadas }}
+                </div>
             </div>
 
             <br>
 
             <div class="col-md-6">
                 <label class="col-form-label"><strong>{{ __('4) Em que proporção (%) o projeto alcançou o público estimado?') }}</strong></label>
-                <div>
-                    <br>
-                    @for ($i = 0; $i <= 100; $i += 10)
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="alcance_publico_{{ $i }}"
-                                   value="{{ $i }}" {{ $relatorio->alcance_publico_estimado == $i ? 'checked' : '' }} disabled>
-                            <label class="form-check-label" for="alcance_publico_{{ $i }}">{{ $i }}</label>
-                        </div>
-                    @endfor
+
+                <div style="border: 1px solid #ccc; padding: 2px; margin-bottom: 10px; margin-left: 0px; margin-right: 0px; text-align: justify">
+                    {{ $relatorio->alcance_publico_estimado }}%
                 </div>
             </div>
 
@@ -564,7 +554,7 @@
             </div>
 
             <div class="col-md-12">
-                <label class="col-form-label" for="formulario_indicadores">Confirmo que preenchi o formulário de indicadores <span style="color: red; font-weight:bold;">*</span> </label>
+                <label class="col-form-label" for="formulario_indicadores">Confirmo que preenchi o formulário de indicadores</label>
             </div>
 
             @if($relatorio->formulario_indicadores == true)
@@ -602,7 +592,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <label class="col-form-label"><strong>{{ __('O projeto desenvolvido contou com alguma atividade passível de certificação envolvendo o público beneficiado?') }}</strong><span style="color: red; font-weight:bold;">*</span></label>
+                <label class="col-form-label"><strong>{{ __('O projeto desenvolvido contou com alguma atividade passível de certificação envolvendo o público beneficiado?') }}</strong></label>
             </div>
 
             @if($relatorio->certificacao_adicinonal == true)
@@ -630,6 +620,8 @@
             @endif
         </div>
 
+        <br>
+
         @if($participantes->isNotEmpty())
             <div class="row">
                 <div class="col-12">
@@ -656,7 +648,10 @@
                     </label>
                 </div>
             </div>
-            <hr>
+
+            <br>
         @endforeach
+
+        <hr>
     </body>
 </html>
