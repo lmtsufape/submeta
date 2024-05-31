@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AreaTematica;
+use App\Http\Requests\StoreRelatorioRequest;
 use App\ObjetivoDeDesenvolvimentoSustentavel;
 use App\ProdutosExtensaoGerados;
 use App\Relatorio;
@@ -110,7 +111,7 @@ class RelatorioController extends Controller
         return view('relatorio.relatorioFinalPibex', compact('trabalho', 'ods', 'areas_tematicas'));
     }
 
-    public function salvarRelatorioFinalPibex(Request $request)
+    public function salvarRelatorioFinalPibex(StoreRelatorioRequest $request)
     {
         DB::beginTransaction();
 
