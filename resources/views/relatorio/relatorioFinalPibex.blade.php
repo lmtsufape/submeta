@@ -2,13 +2,13 @@
 
 @section('content')
     <div class="container" style="margin-top: 2%">
-        @if (session('sucesso'))
-            <div class="alert alert-success" role="alert">
-                {{ session('sucesso') }}
-            </div>
-        @elseif(session('erro'))
-            <div class="alert alert-danger" role="alert">
-                {{ session('erro') }}
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -38,6 +38,11 @@
                                     style="color: red; font-weight:bold;">*</span> </label>
                         <input id="inicio_projeto" type="date" class="form-control" name="inicio_projeto"
                             value="{{ old('inicio_projeto') }}" required autocomplete="data_inicio" autofocus>
+                        <!-- @error('inicio_projeto')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror -->
                     </div>
 
                     <div class="col-6">
@@ -47,6 +52,11 @@
                         <input id="conclusao_projeto" type="date" class="form-control" name="conclusao_projeto"
                             value="{{ old('conclusao_projeto') }}" required autocomplete="data_conclusao"
                             autofocus>
+                        <!--@error('conclusao_projeto')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror -->
                     </div>
 
                     <div class="col-12">
