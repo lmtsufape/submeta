@@ -769,7 +769,7 @@
                         <label for="formulario_indicadores"
                             class="col-form-label">
                             <strong>{{ __('Prezado/a Coordenador/a, favor preencher o formulário eletrônico com os indicadores do projeto, através do link: ') }}</strong>
-                            <a href="https://forms.gle/5gkCNidnNZ1tNgtV9" target="_blank">https://forms.gle/5gkCNidnNZ1tNgtV9</a>
+                            <a href="https://forms.gle/Qfa8YEAjBdmC2aW2A" target="_blank">https://forms.gle/Qfa8YEAjBdmC2aW2A</a>
                         </label>
 
                         <div class="row">
