@@ -184,6 +184,8 @@ class RelatorioController extends Controller
         {
             DB::rollback();
 
+            dd($e);
+
             return redirect()->back()->with(['erro' => 'Ocorreu um erro ao enviar o relatório.']);
         }
 
