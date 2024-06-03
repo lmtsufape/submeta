@@ -153,7 +153,25 @@ class RelatorioController extends Controller
             $produtos_extensao_gerados->setAttributes($request, $relatorio->id);
             $produtos_extensao_gerados->save();
 
-            if($request['nome_participante'])
+            $integrantes_internos = $this->integrantesInternosParaObjeto($request, $relatorio->id);
+
+            foreach($integrantes_internos as $integrante_interno)
+            {
+                $integrante_interno->save();
+            }
+
+
+            if($request->nome_externo[0] != null)
+            {
+                $integrantes_externos = $this->integrantesExternosParaObjeto($request, $relatorio->id);
+
+                foreach ($integrantes_externos as $integrante_externo)
+                {
+                    $integrante_externo->save();
+                }
+            }
+
+            if($request->nome_participante[0] != null)
             {
                 $participantes = $this->participantesParaObjeto($request, $relatorio->id);
 
@@ -163,28 +181,10 @@ class RelatorioController extends Controller
                 }
             }
 
-            $integrantes_internos = $this->integrantesInternosParaObjeto($request, $relatorio->id);
-
-            foreach($integrantes_internos as $integrante_interno)
-            {
-                $integrante_interno->save();
-            }
-
-            if($request['nome_externo'])
-            {
-                $integrantes_externos = $this->integrantesExternosParaObjeto($request, $relatorio->id);
-
-                foreach ($integrantes_externos as $integrante_externo) {
-                    $integrante_externo->save();
-                }
-            }
-
             DB::commit();
         } catch (\Exception $e)
         {
             DB::rollback();
-
-            dd($e);
 
             return redirect()->back()->with(['erro' => 'Ocorreu um erro ao enviar o relatório.']);
         }
