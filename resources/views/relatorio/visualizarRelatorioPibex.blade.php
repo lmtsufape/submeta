@@ -289,7 +289,7 @@
                             <div class="col-6">
                                 <label for="carga_horaria_interno"
                                     class="col-form-label">
-                                    <strong>{{ __('Carga corária total de atuação na proposta:') }}</strong> <span
+                                    <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong> <span
                                             style="color: red; font-weight:bold;">*</span></label>
                                 <input type="number" class="form-control" name="carga_horaria_interno[]"
                                     value="{{ $interno->ch_total_atuacao }}" disabled>
@@ -332,7 +332,7 @@
                             <div class="col-6">
                                 <label for="carga_horaria_externo"
                                     class="col-form-label">
-                                    <strong>{{ __('Carga corária total de atuação na proposta:') }}</strong> </label>
+                                    <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong> </label>
                                 <input type="number" class="form-control" name="carga_horaria_externo[]"
                                     value="{{ $externo->ch_total_atuacao }}" disabled>
                             </div>
@@ -661,8 +661,8 @@
                         <label for="formulario_indicadores"
                             class="col-form-label">
                             <strong>{{ __('Prezado/a Coordenador/a, favor preencher o formulário eletrônico com os indicadores do projeto, através do link: ') }}</strong>
-                            <a href="https://forms.gle/5gkCNidnNZ1tNgtV9"
-                            target="_blank">https://forms.gle/5gkCNidnNZ1tNgtV9</a>
+                            <a href="https://forms.gle/Qfa8YEAjBdmC2aW2A"
+                            target="_blank">https://forms.gle/Qfa8YEAjBdmC2aW2A</a>
                         </label>
 
                         <div class="row">
