@@ -123,7 +123,7 @@
                             autocomplete="telefone_coordenador" autofocus>
                     </div>
                     <div class="col-6">
-                        <label for="ch_coordenador" class="col-form-label"> <strong>{{ __('Carga horaria total de atuação na proposta:') }}</strong>
+                        <label for="ch_coordenador" class="col-form-label"> <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong>
                             <span
                                     style="color: red; font-weight:bold;">*</span> </label>
                         <input id="ch_coordenador" type="number" class="form-control" name="ch_coordenador"
@@ -324,7 +324,7 @@
                         <div class="col-6">
                             <label for="carga_horaria_interno"
                                 class="col-form-label">
-                                <strong>{{ __('Carga corária total de atuação na proposta:') }}</strong> <span
+                                <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong> <span
                                         style="color: red; font-weight:bold;">*</span></label>
                             <input type="number" class="form-control" name="carga_horaria_interno[]" required
                                 autocomplete="carga_horaria_interno" autofocus>
@@ -374,7 +374,7 @@
                         <div class="col-6">
                             <label for="carga_horaria_externo"
                                 class="col-form-label">
-                                <strong>{{ __('Carga corária total de atuação na proposta:') }}</strong> </label>
+                                <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong> </label>
                             <input type="number" class="form-control" name="carga_horaria_externo[]"
                                 autocomplete="carga_horaria_externo" autofocus>
                         </div>
@@ -857,7 +857,7 @@
                         </div>
                         <div class="col-6">
                             <label for="carga_horaria_participante"
-                                class="col-form-label"> <strong>{{ __('Carga Horária do Participante:') }}</strong>
+                                class="col-form-label"> <strong>{{ __('Carga horária do participante:') }}</strong>
                             </label>
                             <input type="number" class="form-control" name="carga_horaria_participante[]"
                                 autocomplete="carga_horaria_participante" autofocus>
