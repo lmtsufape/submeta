@@ -71,7 +71,7 @@
 						</td>
 						@endif
 						<td style="text-align: center;">
-							@if($evento->tipo == 'PIBEX')
+							@if($evento->tipo == 'PIBEX' && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
 								@if($trabalho->relatorio)
 									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">{{ $trabalho->relatorio->status }}</button>
 								@else
@@ -199,7 +199,7 @@
 										<input type="hidden" value="{{ $arquivo->trabalhoId }}" name="projId">
 										<div class="col-12">
 											<div class="row">
-												@if ($evento->tipo == 'PIBEX')
+												@if($evento->tipo == 'PIBEX' && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
 													@if($trabalho->relatorio)
 														<div class="col-5">
 															<label for="pdf_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
@@ -221,7 +221,7 @@
 														@if($trabalho->evento->dt_inicioRelatorioFinal <= $hoje && $hoje <= $trabalho->evento->dt_fimRelatorioFinal)
 															<div class="col-6">
 																<label for="botao_relatorio_final" class="col-form-label" style="color: white">Relatório Final</label>
-																<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.form', ['trabalho_id' => $trabalho->id]) }}">Formulário Relatório Final</a>
+																<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.form', ['trabalho_id' => $trabalho->id]) }}">Relatório Final</a>
 															</div>
 														@endif
 													@endif
@@ -256,6 +256,8 @@
 											@if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
 												@if($evento->tipo != 'PIBEX')
+													<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
+												@elseif($evento->tipo == 'PIBEX' && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year < 2023)
 													<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
 												@endif
 											@endif
