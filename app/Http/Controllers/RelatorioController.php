@@ -113,8 +113,6 @@ class RelatorioController extends Controller
 
     public function salvarRelatorioFinalPibex(StoreRelatorioRequest $request)
     {
-        DB::beginTransaction();
-
         if($request['select_area_tematica'] == null)
         {
             return redirect()->back()->with(['erro' => 'Selecione pelo menos uma área temática']);
@@ -181,11 +179,8 @@ class RelatorioController extends Controller
                 }
             }
 
-            DB::commit();
         } catch (\Exception $e)
         {
-            DB::rollback();
-
             return redirect()->back()->with(['erro' => 'Ocorreu um erro ao enviar o relatório.']);
         }
 
