@@ -182,7 +182,7 @@ class EventoController extends Controller
             $evento['resultado_preliminar']= $request->resultado_preliminar;
             $evento['resultado_final']     = $request->resultado_final;
 
-            if($request->tipo != "PIBEX" || $request->tipo != "PIACEX"){
+            if($request->tipo != "PIBEX" || $request->tipo != "PIACEX" || $request->tipo != "PIBAC"){
                 $evento['dt_inicioRelatorioParcial']  = $request->dt_inicioRelatorioParcial;
                 $evento['dt_fimRelatorioParcial']     = $request->dt_fimRelatorioParcial;
             }
