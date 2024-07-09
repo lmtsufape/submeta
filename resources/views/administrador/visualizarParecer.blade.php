@@ -15,7 +15,7 @@
 									    <label for="exampleFormControlTextarea1">Parecer</label>
 									    <textarea class="form-control" id="exampleFormControlTextarea1" disabled="disabled" rows="3"> {{ $parecer->parecer }} </textarea>
 									  </div>
-                                        @if($trabalho->evento->tipo == "PIBEX")
+                                        @if($trabalho->evento->tipo == "PIBEX" || $trabalho->evento->tipo == "PIBAC")
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1">Pontuação: <strong>{{ $parecer->pontuacao }}</strong> </label>
                                         </div>

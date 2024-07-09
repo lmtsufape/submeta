@@ -118,7 +118,7 @@ class ParticipanteController extends Controller
         $participante->anexoComprovanteMatricula = Storage::putFileAs($pasta, $request->comprovanteMatricula, "Comprovante_de_Matricula.pdf");
         $participante->anexo_cpf_rg = Storage::putFileAs($pasta, $request->anexo_cpf_rg, "Anexo_CPF_RG." . $request->file('anexo_cpf_rg')->getClientOriginalExtension());
 
-        if($request->eventoTipo != "PIBEX"){
+        if($request->eventoTipo != "PIBEX" || $request->eventoTipo != "PIBAC"){
             $participante->anexoLattes = Storage::putFileAs($pasta, $request->pdfLattes, "Curriculo_Lattes.pdf");
             $participante->linkLattes = $request->linkLattes;
         }

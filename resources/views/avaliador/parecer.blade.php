@@ -4,7 +4,7 @@
 
 <div class="row justify-content-center">
 	<!--Proponente Dados-->
-	@if($evento->tipo != "PIBEX" && $evento->natureza_id != 3)
+	@if(($evento->tipo != "PIBEX" || $evento->tipo != "PIBAC") && $evento->natureza_id != 3)
 		<div class="col-md-10" style="margin-top:4rem;padding: 0px">
 			@component('projeto.formularioVisualizar.proponente2', ['edital' => $trabalho->evento, 'projeto' => $trabalho])
 			@endcomponent
@@ -95,7 +95,7 @@
 							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="textParecer" placeholder="Digite aqui o seu parecer" >{{ $trabalho->pivot->parecer }}</textarea>
 					</div>
 					
-					@if($evento->tipo == "PIBEX")
+					@if($evento->tipo == "PIBEX" || $evento->tipo == "PIBAC")
 					<div class="form-group">
 						<div class="row justify-content-start">
 							<div class="col-sm-3">

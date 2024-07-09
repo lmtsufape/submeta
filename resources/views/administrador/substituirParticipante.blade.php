@@ -610,7 +610,7 @@
                                                                             @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador")
                                                                                 <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
                                                                             @endif
-                                                                        @elseif($edital->natureza_id == 3 && $edital->tipo == "PIBEX")
+                                                                        @elseif($edital->natureza_id == 3 && ($edital->tipo == "PIBEX" || $edital->tipo == "PIBAC"))
                                                                             @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador" || $funcao->nome == "Bolsista")
                                                                                 <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
                                                                             @endif

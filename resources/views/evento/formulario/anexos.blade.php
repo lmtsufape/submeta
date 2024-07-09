@@ -35,7 +35,7 @@
 
             </div>
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
               <div class="form-group col-md-6" style="margin-top: 10px">
                 <label for="anexoLatterCoordenador" class="col-form-label font-tam" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}<span style="color: red; font-weight:bold">*</span></label>
                   <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" accept=".pdf" />
@@ -47,7 +47,7 @@
               </div>
             @endif
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
               <div class="form-group col-md-6">
                 <label for="anexoPlanilhaPontuacao" class="col-form-label font-tam" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}<span style="color: red; font-weight:bold">*</span></label>
                   <input type="file" class="input-group-text" name="anexoPlanilhaPontuacao" placeholder="anexoPlanilhaPontuacao" accept=".xlsx, .xls, .ods" />
@@ -82,7 +82,7 @@
               </div>
             @endif
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
               <div class="form-group col-md-6" style="margin-top: 10px">
                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}<span style="color: red; font-weight:bold">*</span></label>
                 <input type="file" class="input-group-text" name="anexoGrupoPesquisa" placeholder="Anexo do Grupo de Pesquisa" accept="application/pdf" />
@@ -94,7 +94,7 @@
               </div>
             @endif
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
               <div class="form-group col-md-6">
 
                 <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>

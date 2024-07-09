@@ -103,7 +103,7 @@ class StoreTrabalho extends FormRequest
             }
 
 
-            if ($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO"  && $evento->tipo != "PIACEX") {
+            if ($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO"  && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
                 //dd($this->preenchimentoFormFlag);
                 $rules['anexoPlanilhaPontuacao'] = ['required'];
                 $rules['anexoLattesCoordenador'] = ['required', 'mimes:pdf'];
@@ -125,9 +125,16 @@ class StoreTrabalho extends FormRequest
             $rules['area_id'] = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
 
             if ($evento->natureza_id == 3) {
-                $rules['area_tematica_id'] = ['required', 'string'];
-                $rules['ods'] = ['required'];
-
+                if($evento->tipo == "PIBAC")
+                {
+                    $rules['area_tematica_id'] = ['required'];
+                    $rules['ods'] = ['required'];
+                }
+                else
+                {
+                    $rules['area_tematica_id'] = ['required', 'string'];
+                    $rules['ods'] = ['required'];  
+                }     
             }
 
             $rules['linkLattesEstudante'] = ['required', 'string'];

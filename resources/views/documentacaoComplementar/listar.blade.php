@@ -108,7 +108,7 @@
 												<br>
 											</div>
 
-											@if($trabalho->evento->tipo != "PIBEX")
+											@if($trabalho->evento->tipo != "PIBEX" || $trabalho->evento->tipo != "PIBAC")
 												<div class="col-md-6" style="margin-top: 15px">
 													<label class="control-label ">PDF Lattes <span style="color: red">*</span>@if($participante->anexoLattes) 
 														<a id="modeloDocumentoTemp" href="{{ route('baixar.documentosParticipante', ['pathDocumento' => $participante->anexoLattes]) }}">Arquivo atual</a>

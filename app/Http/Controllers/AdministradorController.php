@@ -112,7 +112,7 @@ class AdministradorController extends Controller
         
         $trabalhosRelatorioFinal = [];
 
-        if($evento->tipo == "PIBEX") {
+        if($evento->tipo == "PIBEX" || $evento->tipo == "PIBAC") {
             foreach($trabalhos->get() as $trabalho) {
                 foreach($trabalho->participantes as $participante) {
                     if(isset($participante->planoTrabalho) && $participante->planoTrabalho->relatorioFinal != null) {
@@ -287,7 +287,7 @@ class AdministradorController extends Controller
                 $cont = 0;
                 if ($evento->tipoAvaliacao == "form") {
                     // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-                    if ($evento->tipo == 'PIBEX') {
+                    if ($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') {
                         foreach ($trabalho->avaliadors as $avaliador) {
                             if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
                                     $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
@@ -355,7 +355,7 @@ class AdministradorController extends Controller
                 $cont = 0;
                 if ($evento->tipoAvaliacao == "form") {
                     // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-                    if ($evento->tipo == 'PIBEX') {
+                    if ($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') {
                         foreach ($trabalho->avaliadors as $avaliador) {
                             if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
                                     $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
@@ -426,7 +426,7 @@ class AdministradorController extends Controller
                 $trabalho->pontuacao = 0;
                 $cont = 0;
                 // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-                if ($evento->tipo == 'PIBEX') {
+                if ($evento->tipo == 'PIBEX'|| $evento->tipo == 'PIBAC') {
                     foreach ($trabalho->avaliadors as $avaliador) {
                         if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
                                 $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
@@ -1285,7 +1285,7 @@ class AdministradorController extends Controller
             $trabalho->pontuacao = 0;
             $cont = 0;
             // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-            if ($evento->tipo == 'PIBEX') {
+            if ($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') {
                 foreach ($trabalho->avaliadors as $avaliador) {
                     if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
                             $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&
@@ -1321,7 +1321,7 @@ class AdministradorController extends Controller
             $trabalho->pontuacao = 0;
             $cont = 0;
             // Caso especial do PIBEX onde a pontuação fica no Ad Hoc
-            if ($evento->tipo == 'PIBEX') {
+            if ($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') {
                 foreach ($trabalho->avaliadors as $avaliador) {
                     if (($avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 1 ||
                             $avaliador->trabalhos()->where('trabalho_id', $trabalho->id)->first()->pivot->acesso == 3) &&

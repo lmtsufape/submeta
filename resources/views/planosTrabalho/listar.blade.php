@@ -28,7 +28,7 @@
 						@if ($evento->numParticipantes != 0)
 						<th scope="col" style="width:200px; text-align: center;">Discente</th>
 						@endif
-						@if ($evento->tipo != 'PIBEX')
+						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC')
 						<th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
 						@endif
 						<th scope="col" style="width:200px; text-align: center;">Relatório Final</th>
@@ -43,7 +43,7 @@
 						@if ($evento->numParticipantes != 0)
 						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}" id="td-nomeAluno">{{$arquivo->participante->user->name}}</td>
 						@endif
-						@if ($evento->tipo != 'PIBEX')
+						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC')
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
@@ -71,7 +71,7 @@
 						</td>
 						@endif
 						<td style="text-align: center;">
-							@if($evento->tipo == 'PIBEX' && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
+							@if(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
 								@if($trabalho->relatorio)
 									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">{{ $trabalho->relatorio->status }}</button>
 								@else
@@ -199,7 +199,7 @@
 										<input type="hidden" value="{{ $arquivo->trabalhoId }}" name="projId">
 										<div class="col-12">
 											<div class="row">
-												@if($evento->tipo == 'PIBEX' && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
+												@if(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
 													@if($trabalho->relatorio)
 														<div class="col-5">
 															<label for="pdf_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
@@ -255,9 +255,9 @@
 											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 											@if((Auth::user()->proponentes != null) &&
                                                 ($arquivo->trabalho->evento->dt_inicioRelatorioFinal <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioFinal))
-												@if($evento->tipo != 'PIBEX')
+												@if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC')
 													<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
-												@elseif($evento->tipo == 'PIBEX' && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year < 2023)
+												@elseif(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year < 2023)
 													<button type="submit" class="btn btn-success" @if($arquivo->arquivado) disabled @endif >Salvar</button>
 												@endif
 											@endif
