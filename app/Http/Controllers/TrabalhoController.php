@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AreaTematicaPibac;
 use PDF;
 use App;
 use App\Administrador;
@@ -97,9 +98,10 @@ class TrabalhoController extends Controller
         $edital = Evento::find($id);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
         $areaTematicas = AreaTematica::orderBy('nome')->get();
-        $ODS = ObjetivoDeDesenvolvimentoSustentavel::orderBy('nome')->get();
+        $ODS = ObjetivoDeDesenvolvimentoSustentavel::orderBy('id')->get();
         $funcaoParticipantes = FuncaoParticipantes::orderBy('nome')->get();
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
+        $areaTematicasPibac = AreaTematicaPibac::orderBy('id')->get();
 
         if($proponente == null){
           return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
@@ -120,6 +122,7 @@ class TrabalhoController extends Controller
                                             'estados'            => $this->estados,
                                             'areaTematicas'        => $areaTematicas,
                                             'ods'                   =>$ODS,
+                                            'areasTematicasPibac' => $areaTematicasPibac
                                             ]);
     }
 
@@ -983,7 +986,7 @@ class TrabalhoController extends Controller
                 return back()->withErrors(['Proposta não encontrada']);
             }
 
-            if($evento->tipo=="PIBEX"){
+            if($evento->tipo=="PIBEX" || $evento->tipo=="PIBAC"){
                 $trabalho->update($request->except([
                         'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra'
                     ]));
@@ -1078,7 +1081,7 @@ class TrabalhoController extends Controller
                         $data['curso'] = $request->outrocurso[$part];
                     }
                     
-                    if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX") {
+                    if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
                         $data['turno'] = $request->turno[$part];
                         $data['periodo_atual'] = $request->periodo_atual[$part];
                         $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
@@ -1238,6 +1241,10 @@ class TrabalhoController extends Controller
             return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Só é possivel adicionar integrantes após a data do Resultado final"]);
         }
 
+        if(!$this->validarDataResultadoFinalPibac($id)) {
+            return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Só é possivel adicionar integrantes após a data do Resultado final"]);
+        }
+
 
         $atributos = ['user_id' => $usuario->id,
                       'funcao_participante_id' => $request->funcao_participante,
@@ -1311,6 +1318,19 @@ class TrabalhoController extends Controller
 
     }
 
+    private function validarDataResultadoFinalPibac($id) {
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+        $edital = Trabalho::where('id', $id)->first()->evento;
+
+        if($edital->tipo == "PIBAC" && $hoje <= $edital->resultado_final){
+            return false;
+        }
+
+        return true;
+
+    }
+
     public function buscarUsuario(Request $request) {
         $usuario = User::where('cpf', $request->cpf_consulta)->first();
         $funcao = FuncaoParticipantes::where('id', $request->funcao)->first();
@@ -1345,13 +1365,24 @@ class TrabalhoController extends Controller
                 'coordenador_id' => $evento->coordenadorComissao->id
             ]);
 
+
             DB::beginTransaction();
 
-            if($evento->tipo=="PIBEX" || $evento->tipo=="PIACEX"){
-                $trabalho = Auth::user()->proponentes->trabalhos()
-                    ->create($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC'
-                    ]));
+            if($evento->tipo=="PIBEX" || $evento->tipo=="PIACEX" || $evento->tipo=="PIBAC"){
+                if($evento->tipo == "PIBAC")
+                {
+                    $trabalho = Auth::user()->proponentes->trabalhos()
+                        ->create($request->except([
+                            'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC', 'area_tematica_id'
+                        ]));
+                }
+                else
+                {
+                    $trabalho = Auth::user()->proponentes->trabalhos()
+                        ->create($request->except([
+                            'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC'
+                        ]));
+                }
             }else if($evento->tipo=="CONTINUO"){
                 $trabalho = Auth::user()->proponentes->trabalhos()
                     ->create($request->except([
@@ -1413,7 +1444,7 @@ class TrabalhoController extends Controller
                         }
 
                         if($evento->tipo != "CONTINUO"){
-                            if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX") {
+                            if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
                                 $data['media_do_curso'] = $request->media_do_curso[$part];
                             }
                             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
@@ -1512,6 +1543,11 @@ class TrabalhoController extends Controller
             // }
 
             $trabalho->ods()->sync($request->ods);
+            if($evento->tipo == "PIBAC")
+            {
+                $trabalho->area_tematica_pibac()->sync($request->area_tematica_id);
+            }
+
             DB::commit();
             if (!$request->has('rascunho')) {
                 //Notificações
@@ -1547,6 +1583,7 @@ class TrabalhoController extends Controller
             }
         } catch (\Throwable $th) {
             DB::rollback();
+            dd($th);
             return redirect(route('proponente.projetos'))->withErrors(['mensagem' => 'Não foi possível realizar a submissão do Projeto!']);
         }
 
@@ -1637,7 +1674,7 @@ class TrabalhoController extends Controller
                         $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                         $participante->periodo_atual = $request->periodo_atual[$key];
                         $participante->total_periodos = $request->total_periodos[$key];
-                        if($edital->tipo != "PIBEX"){
+                        if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
                             $participante->media_do_curso = $request->media_geral_curso[$key];
                         }
                         $participante->save();
@@ -1658,7 +1695,7 @@ class TrabalhoController extends Controller
                         $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                         $participante->periodo_atual = $request->periodo_atual[$key];
                         $participante->total_periodos = $request->total_periodos[$key];
-                        if($edital->tipo != "PIBEX"){
+                        if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
                             $participante->media_do_curso = $request->media_geral_curso[$key];
                         }
                         $participante->save();
@@ -1722,7 +1759,7 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    if($edital->tipo != "PIBEX"){
+                    if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
                         $participante->media_do_curso = $request->media_geral_curso[$key];
                     }
                     $participante->update();
@@ -1807,7 +1844,7 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    if($edital->tipo != "PIBEX"){
+                    if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
                         $participante->media_do_curso = $request->media_geral_curso[$key];
                     }
                     $participante->save();
@@ -1844,7 +1881,7 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    if($edital->tipo != "PIBEX"){
+                    if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
                         $participante->media_do_curso = $request->media_geral_curso[$key];
                     }
                     $participante->save();
@@ -1998,7 +2035,7 @@ class TrabalhoController extends Controller
             $data['turno'] = $request->turno;
             $data['periodo_atual'] = $request->periodo_atual;
             $data['ordem_prioridade'] = $request->ordem_prioridade;
-            if($evento->tipo!="PIBEX") {
+            if($evento->tipo!="PIBEX" && $evento->tipo!="PIBAC") {
                 $data['media_do_curso'] = $request->media_do_curso;
             }
             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;

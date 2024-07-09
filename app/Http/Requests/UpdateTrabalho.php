@@ -60,12 +60,12 @@ class UpdateTrabalho extends FormRequest
                     $rules['curso.'.$value] = ['required', 'string'];
 
                     
-                    if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX") {
+                    if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
 
                     if($evento->tipo != "CONTINUO"){
-                        if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX"){
+                        if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC"){
                             $rules['turno.'.$value] = ['required', 'string'];
                             $rules['ordem_prioridade.'.$value] = ['required', 'string'];
                             $rules['periodo_atual.'.$value] = ['required', 'string'];
@@ -90,7 +90,7 @@ class UpdateTrabalho extends FormRequest
         }else{
 
             //$rules = [];
-            if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO" && $evento->tipo != "PIACEX"){
+            if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo!="PIBAC"){
                 $rules['anexoPlanilhaPontuacao']       = [Rule::requiredIf($projeto->anexoPlanilhaPontuacao == null)];
                 $rules['anexoLattesCoordenador']       = [Rule::requiredIf($projeto->anexoLattesCoordenador == null), 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = [Rule::requiredIf($projeto->anexoGrupoPesquisa == null), 'mimes:pdf'];
@@ -111,8 +111,17 @@ class UpdateTrabalho extends FormRequest
             $rules['area_id']                      = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
             
             if($evento->natureza_id == 3){
-                $rules['area_tematica_id']          = ['required', 'string'];
-                $rules['ods']                    = ['required'];
+                if($evento->tipo == "PIBAC")
+                {
+                    $rules['area_tematica_id']          = ['required'];
+                    $rules['ods']                    = ['required'];
+                }
+                else
+                {
+                    $rules['area_tematica_id']          = ['required', 'string'];
+                    $rules['ods']                    = ['required'];
+                }
+                
             }
             $rules['linkLattesEstudante']          = ['required', 'string'];
 

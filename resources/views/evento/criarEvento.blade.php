@@ -29,13 +29,14 @@
             <div class="col-sm-5">
                 <label for="tipo" class="col-form-label">{{ __('Tipo:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required onchange="selectTipo()">
-                    <option @if(old('tipo')=='PIBIC' ) selected @endif value="PIBIC">PIBIC</option>
-                    <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
-                    <option @if(old('tipo')=='PIBIC-AF' ) selected @endif value="PIBIC-AF">PIBIC-AF</option>
-                    <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
-                    <option @if(old('tipo')=='PIBEX' ) selected @endif value="PIBEX">PIBEX</option>
-                    <option @if(old('tipo')=='PIACEX' ) selected @endif value="PIACEX">PIACEX</option>
                     <option @if(old('tipo')=='CONTINUO' ) selected @endif value="CONTINUO">Fluxo Contínuo</option>
+                    <option @if(old('tipo')=='PIACEX' ) selected @endif value="PIACEX">PIACEX</option>
+                    <option @if(old('tipo')=='PIBAC' ) selected @endif value="PIBAC">PIBAC</option>
+                    <option @if(old('tipo')=='PIBEX' ) selected @endif value="PIBEX">PIBEX</option>
+                    <option @if(old('tipo')=='PIBIC' ) selected @endif value="PIBIC">PIBIC</option>
+                    <option @if(old('tipo')=='PIBIC-AF' ) selected @endif value="PIBIC-AF">PIBIC-AF</option>
+                    <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
+                    <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
                 </select>
 
                 @error('tipo')
@@ -897,8 +898,8 @@
         }
 
         
-        //retirada das datas dos relatórios parciais para o PIBEX e PIACEX
-        if(tipo.value === 'PIBEX' || tipo.value === 'PIACEX'){
+        //retirada das datas dos relatórios parciais para o PIBEX, PIACEX e PIBAC
+        if(tipo.value === 'PIBEX' || tipo.value === 'PIACEX' || tipo.value === 'PIBAC'){
             document.getElementById('div-inicio-relat-parcial').style.display = "none";
             document.getElementById('div-fim-relat-parcial').style.display = "none";
         

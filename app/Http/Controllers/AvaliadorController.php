@@ -350,7 +350,7 @@ class AvaliadorController extends Controller
       	$trabalho = $avaliador->trabalhos->find($request->trabalho_id);
         $data = Carbon::now('America/Recife');
     	if($request->anexoParecer == ''){  
-    	    if($evento->tipo == "PIBEX"){
+    	    if($evento->tipo == "PIBEX" || $evento->tipo == "PIBAC"){
                 $avaliador->trabalhos()
                     ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data, 'pontuacao' => $request->pontuacao]);
             }else{
@@ -364,7 +364,7 @@ class AvaliadorController extends Controller
           Storage::putFileAs($path, $anexoParecer, $nome);
           $anexoParecer = $path . $nome;
 
-          if($evento->tipo == "PIBEX"){
+          if($evento->tipo == "PIBEX" || $evento->tipo == "PIBAC"){
               $avaliador->trabalhos()
                   ->updateExistingPivot($trabalho->id,['status'=> 1,'parecer'=>$request->textParecer,'AnexoParecer'=> $anexoParecer, 'recomendacao'=>$request->recomendacao, 'created_at' => $data, 'pontuacao' => $request->pontuacao]);
           }else{

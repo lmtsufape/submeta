@@ -143,7 +143,7 @@
                                 @endif
                             </div>
 
-                            @if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX")
+                            @if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
                                 <div class="col-md-12">
                                     <br>
                                     <b style="color: #4D4D4D;">Grupo de Pesquisa: </b>
@@ -471,7 +471,7 @@
 
                                 </div>
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
                                     <div class="col-sm-4">
                                         <label for="anexoLatterCoordenador" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
@@ -483,7 +483,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
                                     <div class="col-sm-4">
                                         @if($trabalho->anexoAutorizacaoComiteEtica != null)
                                             <label title="Declaração da autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>
@@ -499,7 +499,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
                                     <div class="col-sm-4">
                                         <label for="anexoPlanilha" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
@@ -510,7 +510,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
                                     <div class="col-sm-4">
                                         <label for="nomeTrabalho" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
@@ -524,7 +524,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX")
+                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC")
                                     {{-- Decisão do CONSU --}}
                                     <div class="col-sm-4">
                                         <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
@@ -598,7 +598,7 @@
 
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
-                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX')
+                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC')
                                 <div class="col-sm-3">
                                     <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam"
                                         style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
@@ -695,7 +695,7 @@
                                                 @csrf
                                                 <input type="hidden" name="trabalho_id" value="{{ $trabalho->id }}">
                                                 <input type="hidden" name="evento_id" value="{{ $evento->id }}">
-                                                @if(($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX") && $evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
+                                                @if(($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") && $evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
                                                     <input type="hidden" name="tipo_relatorio" value="Parcial">
                                                     @php $tipoTemp = "Parcial"; @endphp
                                                 @else
@@ -705,7 +705,7 @@
                                                 <div class="form-group">
                                                     <div class="row" style="margin-left: 2px;margin-bottom: 1px">
                                                         <div class="col-md-6">
-                                                            @if(($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX") && $evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
+                                                            @if(($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") && $evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
                                                                 <label for="exampleFormControlSelect2"
                                                                        style="font-size: 16px;">Selecione o(s) avaliador(es)
                                                                     para a(s) avaliacões de relatorio parcial</label>
@@ -788,7 +788,7 @@
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
 
-                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX"))
+                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC"))
                             <div class="row justify-content-start" style="alignment: center">
                                 <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
                             </div>

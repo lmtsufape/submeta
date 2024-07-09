@@ -142,4 +142,8 @@ class Trabalho extends Model
     public function relatorio(){
         return $this->hasOne('App\Relatorio');
     }
+
+    public function area_tematica_pibac(){
+        return $this->belongsToMany('App\AreaTematicaPibac', 'area_tematica_pibac_trabalhos', 'trabalho_id');
+    }
 }

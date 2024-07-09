@@ -66,7 +66,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
         }
 
         //NaturezaEventoId == 3 é Extensão
-        if($this->tipoEvento == 'PIBEX' && $this->naturezaEventoId == 3)
+        if(($this->tipoEvento == 'PIBEX' || $this->tipoEvento == 'PIBAC') && $this->naturezaEventoId == 3)
         {
             return (new MailMessage())
                 ->subject('Convite para avaliar proposta de projeto - Sistema Submeta')

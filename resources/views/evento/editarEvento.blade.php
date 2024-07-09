@@ -42,13 +42,14 @@
                 <label for="tipo" class="col-form-label">{{ __('Tipo:') }}<span style="color: red; font-weight: bold;">*</span></label>
                 <!-- <input value="{{$evento->tipo}}" id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required autocomplete="tipo" autofocus> -->
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" required onchange="selectTipo()">
-                    <option value="PIBIC" {{ $evento->tipo == "PIBIC" ? 'selected' :'' }}>PIBIC</option>
-                    <option value="PIBIC-EM" {{ $evento->tipo == "PIBIC-EM" ?  'selected' :'' }}>PIBIC-EM</option>
-                    <option value="PIBIC-AF" {{ $evento->tipo == "PIBIC-AF" ?  'selected' :'' }}>PIBIC-AF</option>
-                    <option value="PIBITI" {{ $evento->tipo == "PIBITI" ?  'selected' :'' }}>PIBITI</option>
-                    <option value="PIBEX" {{ $evento->tipo == "PIBEX" ?  'selected' :'' }}>PIBEX</option>
-                    <option value="PIACEX" {{ $evento->tipo == "PIACEX" ?  'selected' :'' }}>PIACEX</option>
                     <option value="CONTINUO" {{ $evento->tipo == "CONTINUO" ?  'selected' :'' }}>Fluxo Contínuo</option>
+                    <option value="PIACEX" {{ $evento->tipo == "PIACEX" ?  'selected' :'' }}>PIACEX</option>
+                    <option value="PIBAC" {{ $evento->tipo == "PIBAC" ?  'selected' :'' }}>PIBAC</option>
+                    <option value="PIBEX" {{ $evento->tipo == "PIBEX" ?  'selected' :'' }}>PIBEX</option>
+                    <option value="PIBIC" {{ $evento->tipo == "PIBIC" ? 'selected' :'' }}>PIBIC</option>
+                    <option value="PIBIC-AF" {{ $evento->tipo == "PIBIC-AF" ?  'selected' :'' }}>PIBIC-AF</option>
+                    <option value="PIBIC-EM" {{ $evento->tipo == "PIBIC-EM" ?  'selected' :'' }}>PIBIC-EM</option>
+                    <option value="PIBITI" {{ $evento->tipo == "PIBITI" ?  'selected' :'' }}>PIBITI</option>
                 </select>
                 @error('tipo')
                 <span class="invalid-feedback" role="alert">
@@ -1018,7 +1019,7 @@
         }
 
         //retirada das datas dos relatórios parciais para o PIBEX e PIACEX
-        if(tipo.value === 'PIBEX' || tipo.value === 'PIACEX'){
+        if(tipo.value === 'PIBEX' || tipo.value === 'PIACEX'|| tipo.value === 'PIBAC'){
             document.getElementById('div-inicio-relat-parcial').style.display = "none";
             document.getElementById('div-fim-relat-parcial').style.display = "none";
         

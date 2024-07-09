@@ -40,7 +40,7 @@
             @enderror
           </div>
 
-          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO' && $edital->tipo != "PIACEX")
+          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO' && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
             <div class="col-md-2">
               <br>
               <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
@@ -57,7 +57,7 @@
             </div>
           @endif
 
-          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO' && $edital->tipo != "PIACEX")
+          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO' && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
             <div class="col-md-3">
               <br>
               <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Valor da Planilha de Pontuação: ') }}</label>
@@ -139,7 +139,7 @@
             </div>
           @endif
 
-          @if($edital->tipo !='CONTINUO' && $edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+          @if($edital->tipo !='CONTINUO' && $edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
           <div class="col-md-2">
             <br>
             <label for="conflitosInteresse" class="col-form-label font-tam"

@@ -47,7 +47,7 @@
 
             </div>
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
               <div class="form-group col-md-6" style="margin-top: 10px">
                 <label for="anexoLatterCoordenador" class="col-form-label font-tam" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
                 @if($projeto->anexoLattesCoordenador)
@@ -65,7 +65,7 @@
             @endif
 
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
               <div class="form-group col-md-6">
                 <label for="anexoPlanilhaPontuacao" class="col-form-label font-tam" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
                 @if($projeto->anexoPlanilhaPontuacao)
@@ -115,7 +115,7 @@
               </div>
             @endif
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
               <div class="form-group col-md-6" style="margin-top: 10px">
                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
                 @if($projeto->anexoGrupoPesquisa)
@@ -133,7 +133,7 @@
             @endif
 
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
               <div class="form-group col-md-6">
 
                 <label for="botao" class="col-form-label font-tam @error('botao') is-invalid @enderror" data-toggle="tooltip" data-placement="bottom" title="Se possuir, coloque todas em único arquivo pdf." style="font-weight: bold">{{ __('Possui autorizações especiais?') }} <span style="color: red; font-weight:bold">*</span></label>
