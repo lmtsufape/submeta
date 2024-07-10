@@ -77,7 +77,12 @@
 
 
                             <div class="col-md-12">
-                                <p><b>Área temática: </b>{{$trabalho->areaTematica->nome}}</p>
+                                @if($evento->tipo == "PIBAC")
+                                    <p><b>Área Temática: </b></p>
+                                    @foreach($trabalho->area_tematica_pibac as $area_tematica)<p>- {{$area_tematica->nome}}</p> @endforeach
+                                @else
+                                    <p><b>Área temática: </b>{{$trabalho->areaTematica->nome}}</p>
+                                @endif
                             </div>
 
                             <div class="col-md-12">
