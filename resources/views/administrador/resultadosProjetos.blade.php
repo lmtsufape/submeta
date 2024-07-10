@@ -82,7 +82,11 @@
                                 @if($evento->natureza_id != 3)
                                     {{$trabalho->area->nome}}
                                 @else
-                                    {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                    @if($evento->tipo == "PIBAC")
+                                        @foreach($trabalho->area_tematica_pibac as $area_tematica) {{ $area_tematica->nome }} <br> @endforeach
+                                    @else
+                                        {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                    @endif
                                 @endif
                             </td>
                             <td>
@@ -195,7 +199,11 @@
                                 @if($evento->natureza_id != 3)
                                     {{$trabalho->area->nome}}
                                 @else
-                                    {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                    @if($evento->tipo == "PIBAC")
+                                        @foreach($trabalho->area_tematica_pibac as $area_tematica) {{ $area_tematica->nome }} <br> @endforeach
+                                    @else
+                                        {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                    @endif
                                 @endif
                             </td>
                             <td>
@@ -309,7 +317,11 @@
                                 @if($evento->natureza_id != 3)
                                     {{$trabalho->area->nome}}
                                 @else
-                                    {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                    @if($evento->tipo == "PIBAC")
+                                        @foreach($trabalho->area_tematica_pibac as $area_tematica) {{ $area_tematica->nome }} <br> @endforeach
+                                    @else
+                                        {{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}
+                                    @endif
                                 @endif
                             </td>
                             <td>
