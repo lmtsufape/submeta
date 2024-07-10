@@ -44,7 +44,20 @@
             <div class="col-md-12">
               <br>
               <b style="color: #4D4D4D;">Área Temática:</b>
-              <a style="color: #4D4D4D;">{{App\AreaTematica::where('id', $projeto->area_tematica_id)->first()->nome}}</a>
+              @if($edital->tipo == "PIBAC")
+                <br>
+                <div class="row col-md-12">
+                  @foreach($projeto->area_tematica_pibac as $area_tematica)
+                    <div class="col-md-6">
+                      <a style="color: #4D4D4D;">
+                        {{ $area_tematica->nome }}
+                      </a>
+                    </div>
+                  @endforeach
+                </div>
+              @else
+                <a style="color: #4D4D4D;">{{App\AreaTematica::where('id', $projeto->area_tematica_id)->first()->nome}}</a>
+              @endif
             </div>
             <div class="row col-md-12">
                     <div class="form-group col-md-12">
