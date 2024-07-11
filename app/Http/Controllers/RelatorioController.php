@@ -158,7 +158,6 @@ class RelatorioController extends Controller
                 $integrante_interno->save();
             }
 
-
             if($request->nome_externo[0] != null)
             {
                 $integrantes_externos = $this->integrantesExternosParaObjeto($request, $relatorio->id);
@@ -181,7 +180,7 @@ class RelatorioController extends Controller
 
         } catch (\Exception $e)
         {
-            return redirect()->back()->with(['erro' => 'Ocorreu um erro ao enviar o relatório.']);
+            return redirect()->route('planos.listar', [$request['trabalho_id']])->with(['erro' => 'Ocorreu um erro ao enviar o relatório.']);
         }
 
         return redirect()->route('planos.listar', [$request['trabalho_id']])->with(['sucesso' => 'Relatório enviado com sucesso']);
@@ -364,5 +363,220 @@ class RelatorioController extends Controller
         }
 
         return redirect()->back()->with('error', 'Arquivo não encontrado.');
+    }
+
+    public function editRelatorioParte1($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+
+        $trabalho = Trabalho::findOrFail($relatorio->trabalho_id);
+        $coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Coordenador/a')->first();
+        $vice_coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Vice-Coordenador/a')->first();
+
+        $ods_selecionadas = [];
+        foreach(json_decode($relatorio->ods) as $ods_id)
+        {
+            $ods_selecionadas[] = ObjetivoDeDesenvolvimentoSustentavel::findOrFail($ods_id);
+        }
+
+        $id_ods = collect($ods_selecionadas)->pluck('id')->toArray();
+        $ods = ObjetivoDeDesenvolvimentoSustentavel::whereNotIn('id', $id_ods)->get();
+
+        $areas_selecionadas = [];
+        foreach(json_decode($relatorio->area_tematica_principal) as $area_tematica_id)
+        {
+            $areas_selecionadas[] = AreaTematica::findOrFail($area_tematica_id);
+        }
+
+        $id_areas = collect($areas_selecionadas)->pluck('id')->toArray();
+        $areas_tematicas = AreaTematica::whereNotIn('id', $id_areas)->get();
+
+        return view('relatorio.editar.identificacaoProjeto', compact('relatorio', 'coordenador', 'vice_coordenador', 'trabalho',
+            'areas_selecionadas', 'areas_tematicas', 'ods_selecionadas', 'ods'));
+    }
+
+    public function updateRelatorioParte1(Request $request)
+    {
+        if($request['select_area_tematica'] == null)
+        {
+            return redirect()->back()->with(['erro' => 'Selecione pelo menos uma área temática']);
+        }
+        elseif($request['select_ods'] == null)
+        {
+            return redirect()->back()->with(['erro' => 'Selecione pelo menos uma ODS']);
+        }
+
+        $relatorio = Relatorio::findOrFail($request['relatorio_id']);
+        $coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Coordenador/a')->first();
+        $vice_coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Vice-Coordenador/a')->first();
+
+        $relatorio->fill([
+            'inicio_projeto' => $request->input('inicio_projeto'),
+            'conclusao_projeto' => $request->input('conclusao_projeto'),
+            'titulo_projeto' => $request->input('titulo_projeto'),
+            'area_tematica_principal' => json_encode($request->input('select_area_tematica')),
+            'ods' => json_encode($request->input('select_ods')),
+        ])->update();
+
+        $coordenador->setAttributesCoordenador($request, $relatorio->id);
+        $coordenador->update();
+
+        if($request['nome_vice_coord'])
+        {
+            if(!$vice_coordenador)
+            {
+                $vice_coordenador = new RelatorioCoordenadorViceCoordenador();
+
+                $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
+                $vice_coordenador->save();
+            }
+            else
+            {
+                $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
+                $vice_coordenador->update();
+            }
+        }
+
+        return redirect(route('relatorioFinalPibex.editarParte2', ['relatorio_id' => $relatorio->id]))->with(['sucesso' => 'Parte 1 atualizada!']);
+    }
+
+    public function editRelatorioParte2($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+        $trabalho = Trabalho::findOrFail($relatorio->trabalho_id);
+        $internos = RelatorioIntegranteInterno::where('relatorio_id', $relatorio->id)->get();
+        $externos = RelatorioIntegranteExterno::where('relatorio_id', $relatorio->id)->get();
+
+
+        return view('relatorio.editar.identificacaoEquipe', compact('relatorio', 'trabalho', 'internos', 'externos'));
+    }
+
+    public function updateRelatorioParte2(Request $request)
+    {
+        $relatorio = Relatorio::findOrFail($request['relatorio_id']);
+        $integrantes_internos = $this->integrantesInternosParaObjeto($request, $relatorio->id);
+
+        $internos = RelatorioIntegranteInterno::where('relatorio_id', $relatorio->id)->get();
+        $externos = RelatorioIntegranteExterno::where('relatorio_id', $relatorio->id)->get();
+
+        foreach ($internos as $interno)
+        {
+            $interno->delete();
+        }
+
+        foreach ($externos as $externo)
+        {
+            $externo->delete();
+        }
+
+        foreach($integrantes_internos as $integrante_interno)
+        {
+            $integrante_interno->save();
+        }
+
+        if($request->nome_externo[0] != null)
+        {
+            $integrantes_externos = $this->integrantesExternosParaObjeto($request, $relatorio->id);
+
+            foreach ($integrantes_externos as $integrante_externo)
+            {
+                $integrante_externo->save();
+            }
+        }
+
+        $relatorio->fill([
+            'captacao_recursos' => $request->input('captacao_recursos'),
+        ])->update();
+
+        return redirect(route('relatorioFinalPibex.editarParte3', ['relatorio_id' => $relatorio->id]))->with(['sucesso' => 'Parte 2 atualizada!']);
+    }
+
+    public function editRelatorioParte3($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+        $trabalho = Trabalho::findOrFail($relatorio->trabalho_id);
+        $produtos_extensao_gerados = ProdutosExtensaoGerados::where('relatorio_id', $relatorio->id)->first();
+
+
+        return view('relatorio.editar.resultadosAlcancados', compact('relatorio', 'trabalho', 'produtos_extensao_gerados'));
+    }
+
+    public function updateRelatorioParte3(Request $request)
+    {
+        $relatorio = Relatorio::findOrFail($request['relatorio_id']);
+
+        $produtos_extensao_gerados = ProdutosExtensaoGerados::where('relatorio_id', $relatorio->id)->first();
+
+        $relatorio->fill([
+            'resumo' => $request['resumo'],
+            'objetivos_alcancados' => $request['objetivos_alcancados'],
+            'justificativa_objetivos_alcancados' => $request['justificativa_objetivos_alcancados'],
+            'pessoas_beneficiadas' => $request['pessoas_beneficiadas'],
+            'alcance_publico_estimado' => $request['alcance_publico_estimado'],
+            'justificativa_publico_estimado' => $request['justificativa_publico_estimado'],
+            'beneficios_publico_atendido' => $request['beneficios_publico_atendido'],
+            'impactos_tecnologicos_cientificos' => $request['impactos_tecnologicos_cientificos'],
+            'desafios_encontrados' => $request['desafios_encontrados'],
+            'avaliacao_projeto_executado' => $request['avaliacao_projeto_executado'],
+        ])->update();
+
+        $produtos_extensao_gerados->setAttributes($request, $relatorio->id);
+        $produtos_extensao_gerados->update();
+
+        return redirect(route('relatorioFinalPibex.editarParte4', ['relatorio_id' => $relatorio->id]))->with(['sucesso' => 'Parte 3 atualizada!']);
+    }
+
+    public function editRelatorioParte4($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+        $trabalho = Trabalho::findOrFail($relatorio->trabalho_id);
+        $participantes = RelatorioParticipante::where('relatorio_id', $relatorio->id)->get();
+
+
+        return view('relatorio.editar.estatisticasAcaoEParticipantesBeneficiados', compact('relatorio', 'trabalho', 'participantes'));
+    }
+
+    public function updateRelatorioParte4(Request $request)
+    {
+        $relatorio = Relatorio::findOrFail($request['relatorio_id']);
+
+        $relatorio->fill([
+            'formulario_indicadores' => $request['formulario_indicadores'],
+            'certificacao_adicinonal' => $request['certificacao_adicinonal'],
+        ])->update();
+
+        $participantes = RelatorioParticipante::where('relatorio_id', $relatorio->id)->get();
+
+        foreach ($participantes as $participante)
+        {
+            $participante->delete();
+        }
+
+        if($request->nome_participante[0] != null)
+        {
+            $participantes = $this->participantesParaObjeto($request, $relatorio->id);
+
+            foreach($participantes as $participante)
+            {
+                $participante->save();
+            }
+        }
+
+        if ($request->hasFile('anexo'))
+        {
+            if ($relatorio->anexo)
+            {
+                Storage::disk('public')->delete($relatorio->anexo);
+            }
+
+            $arquivo = $request->file('anexo');
+            $path = $arquivo->store('anexoRelatorio', 'public');
+
+            $relatorio->anexo = $path;
+
+            $relatorio->update();
+        }
+
+        return redirect()->route('planos.listar', [$relatorio->trabalho_id])->with(['sucesso' => 'Relatório atualizado com sucesso']);
     }
 }

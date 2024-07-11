@@ -173,7 +173,12 @@
 							<div class="modal-dialog modal-dialog-centered">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">Relatório Final (.pdf)</h5>
+										@if($evento->tipo == "PIBEX" || $evento->tipo == "PIBAC")
+											<h5 class="modal-title" id="exampleModalLabel">Relatório Final</h5>
+										@else
+											<h5 class="modal-title" id="exampleModalLabel">Relatório Final (.pdf)</h5>
+										@endif
+
 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 											<span aria-hidden="true">&times;</span>
 										</button>
@@ -201,12 +206,15 @@
 											<div class="row">
 												@if(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
 													@if($trabalho->relatorio)
-														<div class="col-5">
-															<label for="pdf_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
-															<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.gerarPDF', ['relatorio_id' => $trabalho->relatorio->id]) }}" target="_blank"> {{ __('Baixar / Visualizar') }} </a>
+														<div class="col-4">
+															<label for="editar_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
+															<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.editarParte1', ['relatorio_id' => $trabalho->relatorio->id]) }}"> {{ __('Editar') }} </a>
 														</div>
 
-														<div class="col-1"></div>
+														<div class="col-4">
+															<label for="pdf_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
+															<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.gerarPDF', ['relatorio_id' => $trabalho->relatorio->id]) }}" target="_blank"> {{ __('Visualizar') }} </a>
+														</div>
 
 														<div class="col-4">
 															<label for="anexo_relatorio_final" class="col-form-label">{{ __('Anexo') }}</label>
