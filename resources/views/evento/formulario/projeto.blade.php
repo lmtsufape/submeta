@@ -120,7 +120,7 @@
 
                             {{ __('e/ou dos ODS nacionais propostos pela UNB e UNESP') }}
 
-                            <a href="https://www.guiaagenda2030.org/" rel='external' target='_blank' style="font-size: smaller"> (para maiores esclarecimentos sobre ODS nacionais acesse o link) </a>
+                            D<a href="https://www.guiaagenda2030.org/" rel='external' target='_blank' style="font-size: smaller"> (para maiores esclarecimentos sobre ODS nacionais acesse o link) </a>
 
                             {{ __('estão presentes na proposta') }}
                           <span style="color: red; font-weight:bold">*</span>
@@ -131,7 +131,7 @@
                         <div class="col-md-6">
                           <input type="checkbox" name="ods[]" id="ods{{$od->id}}" class="@error('ods_id') is-invalid @enderror" value="{{$od->id}}" @if(!empty(old('ods')) && in_array($od->id, old('ods'))) checked @endif>
                           <label class="form-check-label" for="ods{{$od->id}}">
-                            {{ $od->id . '. ' . $od->nome }}
+                            {{ $od->nome }}
                           </label>
                         </div>
                         @endforeach
