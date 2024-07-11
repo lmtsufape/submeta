@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Administrador;
 use App\AdministradorResponsavel;
 use App\Area;
+use App\AreaTematicaPibac;
 use App\Arquivo;
 use App\AvaliacaoRelatorio;
 use App\Avaliador;
@@ -858,6 +859,7 @@ class AdministradorController extends Controller
         $coordenador_id = CoordenadorComissao::find($coordenador_id_evento);
         $grandeAreas = GrandeArea::orderBy('nome')->get();
         $areasTematicas = AreaTematica::orderBy('nome')->get();
+        $areasTematicasPibac = AreaTematicaPibac::orderBy('nome')->get();
         $avalSelecionados = $evento->avaliadors;
         $avalNaoSelecionadosId = $evento->avaliadors->pluck('id');
         $trabalhos = $evento->trabalhos->whereNotIn('status', 'rascunho');
@@ -901,6 +903,7 @@ class AdministradorController extends Controller
             'grandeAreas' => $grandeAreas,
             'trabalhos' => $trabalhos,
             'areasTematicas' => $areasTematicas,
+            'areasTematicasPibac' => $areasTematicasPibac,
         ]);
     }
 
@@ -1064,7 +1067,15 @@ class AdministradorController extends Controller
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', 'ilike', $emailAvaliador)->first();
-        $areaTematica = AreaTematica::find($request->areasTemeticas);
+
+        if($evento->tipo == "PIBAC")
+        {
+            $areaTematica = AreaTematicaPibac::find($request->areasTemeticas);
+        }
+        else
+        {
+            $areaTematica = AreaTematica::find($request->areasTemeticas);
+        }
 
         if ($request->instituicao == 'ufape') {
             $nomeInstituicao = 'Universidade Federal do Agreste de Pernambuco';
@@ -1126,7 +1137,14 @@ class AdministradorController extends Controller
             }
 
             if ($evento->natureza_id == 3) {
-                $avaliador->areaTematicas()->sync($areaTematica);
+                if($evento->tipo == "PIBAC")
+                {
+                    $avaliador->areaTematicaPibac()->sync($areaTematica);
+                }
+                else
+                {
+                    $avaliador->areaTematicas()->sync($areaTematica);
+                }
             }
 
             if ($request->instituicao == 'ufape') {
@@ -1184,7 +1202,16 @@ class AdministradorController extends Controller
         $emailAvaliador = $request->emailAvaliador;
         $area = Area::where('id', $request->area_id)->first();
         $user = User::where('email', 'ilike', $emailAvaliador)->first();
-        $areaTematica = AreaTematica::find($request->areasTemeticas);
+
+        if($evento->tipo == "PIBAC")
+        {
+            $areaTematica = AreaTematicaPibac::find($request->areasTemeticas);
+        }
+        else
+        {
+            $areaTematica = AreaTematica::find($request->areasTemeticas);
+        }
+
 
         if ($request->instituicao == 'ufape') {
             $nomeInstituicao = 'Universidade Federal do Agreste de Pernambuco';
@@ -1230,7 +1257,15 @@ class AdministradorController extends Controller
             $avaliador->eventos()->attach($evento);
             if ($evento->natureza_id == 3) {
                 $avaliador->naturezas()->sync($evento->natureza_id);
-                $avaliador->areaTematicas()->sync($areaTematica);
+
+                if($evento->tipo == "PIBAC")
+                {
+                    $avaliador->areaTematicaPibac()->sync($areaTematica);
+                }
+                else
+                {
+                    $avaliador->areaTematicas()->sync($areaTematica);
+                }
             }
             $user->save();
             $avaliador->save();
@@ -1239,7 +1274,15 @@ class AdministradorController extends Controller
             $avaliador->eventos()->attach($evento);
             if ($evento->natureza_id == 3) {
                 $avaliador->naturezas()->sync($evento->natureza_id);
-                $avaliador->areaTematicas()->sync($areaTematica);
+
+                if($evento->tipo == "PIBAC")
+                {
+                    $avaliador->areaTematicaPibac()->sync($areaTematica);
+                }
+                else
+                {
+                    $avaliador->areaTematicas()->sync($areaTematica);
+                }
             }
             $user->save();
             $avaliador->save();

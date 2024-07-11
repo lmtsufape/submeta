@@ -67,8 +67,12 @@
           <td>{{ $avaliador->user->email }}</td>
           <td>
             @if(is_null($avaliador->area))
-              @if($avaliador->areaTematicas()->get()->first() != null)
-                {{ $avaliador->areaTematicas()->get()->first()->nome }}
+              @if($avaliador->areaTematicas()->get()->first() != null || $avaliador->areaTematicaPibac()->get()->first() != null)
+                @if($evento->tipo == "PIBAC")
+                    @foreach($avaliador->areaTematicaPibac as $area_tematica) {{ $area_tematica->nome }} <br> @endforeach
+                @else
+                    {{ $avaliador->areaTematicas()->get()->first()->nome }}
+                @endif
               @else
                 Indefinida
               @endif
@@ -297,15 +301,26 @@
               <option value="avaliador" >Avaliador</option>
             </select>
           </div>
-        @else       
-          <div class="form-group">
-            <label for="areasTemeticas" class="col-form-label">{{ __('Áreas Temáticas') }}<span style="color: red; font-weight:bold">*</span></label>
-            <select class="form-control" id="areaTematicaConvite" style="width: 425px" name="areasTemeticas[]" multiple="multiple" required>
-                @foreach($areasTematicas as $areaTematica)
+        @else
+          @if($evento->tipo == "PIBAC")
+              <div class="form-group">
+                <label for="areasTemeticas" class="col-form-label">{{ __('Áreas Temáticas') }}<span style="color: red; font-weight:bold">*</span></label>
+                <select class="form-control" id="areaTematicaConvite" style="width: 425px" name="areasTemeticas[]" multiple="multiple" required>
+                  @foreach($areasTematicasPibac as $areaTematica)
                     <option value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
-                @endforeach
-            </select>
-          </div>                       
+                  @endforeach
+                </select>
+              </div>
+          @else
+              <div class="form-group">
+                <label for="areasTemeticas" class="col-form-label">{{ __('Áreas Temáticas') }}<span style="color: red; font-weight:bold">*</span></label>
+                <select class="form-control" id="areaTematicaConvite" style="width: 425px" name="areasTemeticas[]" multiple="multiple" required>
+                  @foreach($areasTematicas as $areaTematica)
+                    <option value="{{$areaTematica->id}}">{{$areaTematica->nome}}</option>
+                  @endforeach
+                </select>
+              </div>
+          @endif
         @endif
   
           @if($evento->natureza_id != 3)
