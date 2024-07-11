@@ -44,6 +44,77 @@
                 </div>
 
                 <div id="integrantesInternos">
+                    @if($internos->isEmpty())
+                        <div class="row integranteInterno">
+                            <input type="hidden" name="id_integrante[]" value="">
+                            <div class="col-6">
+                                <label for="nome_interno" class="col-form-label"> <strong>{{ __('Nome:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">*</span> </label>
+                                <input type="text" class="form-control" name="nome_interno[]" value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="cpf_interno" class="col-form-label"> <strong>{{ __('CPF:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">*</span> </label>
+                                <input type="text" class="form-control" id="cpf_interno" name="cpf_interno[]" value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="tipo" class="col-form-label"> <strong>{{ __('Tipo:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">*</span> </label>
+                                <select name="tipo[]" class="form-control" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Discente">Discente</option>
+                                    <option value="Servidor">Servidor</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="tipo_vinculo"
+                                       class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">(caso seja um servidor)</span> </label>
+                                <input name="tipo_vinculo[]" class="form-control" value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="curso_interno"
+                                       class="col-form-label"> <strong>{{ __('Curso de graduação:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">(caso seja um discente)</span> </label>
+                                <input type="text" class="form-control" name="curso_interno[]"
+                                       value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="curso_setor"
+                                       class="col-form-label"> <strong>{{ __('Curso/Setor de Atuação:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">(caso seja um servidor)</span> </label>
+                                <input type="text" class="form-control" name="curso_setor[]" value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="data_ingresso_interno"
+                                       class="col-form-label"> <strong>{{ __('Data de ingresso na proposta:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">*</span></label>
+                                <input type="date" class="form-control" name="data_ingresso_interno[]"
+                                       value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="data_conclusao_interno"
+                                       class="col-form-label"> <strong>{{ __('Data de conclusão na proposta:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">*</span></label>
+                                <input type="date" class="form-control" name="data_conclusao_interno[]"
+                                       value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="carga_horaria_interno"
+                                       class="col-form-label">
+                                    <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong> <span
+                                            style="color: red; font-weight:bold;">*</span></label>
+                                <input type="number" class="form-control" name="carga_horaria_interno[]"
+                                       value="">
+                            </div>
+
+                            <div class="col-12 mt-3 text-right">
+                                <button type="button" class="btn btn-danger btnRemoverIntegrante">Remover integrante interno</button>
+                            </div>
+                        </div>
+                        <br>
+                    @endif
+
                     @foreach($internos as $interno)
                         <div class="row integranteInterno">
                             <input type="hidden" name="id_integrante[]" value="{{ $interno->id }}">
@@ -60,7 +131,11 @@
                             <div class="col-6">
                                 <label for="tipo" class="col-form-label"> <strong>{{ __('Tipo:') }}</strong> <span
                                             style="color: red; font-weight:bold;">*</span> </label>
-                                <input name="tipo[]" class="form-control" value="{{ $interno->tipo }}">
+                                <select name="tipo[]" class="form-control" required>
+                                    <option value="{{ $interno->tipo }}" selected hidden>{{ $interno->tipo }}</option>
+                                    <option value="Discente">Discente</option>
+                                    <option value="Servidor">Servidor</option>
+                                </select>
                             </div>
                             <div class="col-6">
                                 <label for="tipo_vinculo"
@@ -129,6 +204,54 @@
                 </div>
 
                 <div id="integrantesExternos">
+                    @if($externos->isEmpty())
+                        <div class="row integranteExterno">
+                            <input type="hidden" name="id_externo[]" value="">
+                            <div class="col-6">
+                                <label for="nome_externo"
+                                       class="col-form-label"> <strong>{{ __('Nome:') }}</strong> </label>
+                                <input type="text" class="form-control" name="nome_externo[]" value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="cpf_externo"
+                                       class="col-form-label"> <strong>{{ __('CPF:') }}</strong> </label>
+                                <input type="text" class="form-control" id="cpf_externo" name="cpf_externo[]" value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="intituicao_vinculo"
+                                       class="col-form-label"> <strong>{{ __('Instituição de vínculo:') }}</strong> </label>
+                                <input type="text" class="form-control" name="instituicao_vinculo[]"
+                                       value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="carga_horaria_externo"
+                                       class="col-form-label">
+                                    <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong> </label>
+                                <input type="number" class="form-control" name="carga_horaria_externo[]"
+                                       value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="data_ingresso_externo"
+                                       class="col-form-label"> <strong>{{ __('Data de ingresso na proposta:') }}</strong>
+                                </label>
+                                <input type="date" class="form-control" name="data_ingresso_externo[]"
+                                       value="">
+                            </div>
+                            <div class="col-6">
+                                <label for="data_conclusao_externo"
+                                       class="col-form-label"> <strong>{{ __('Data de conclusão na proposta:') }}</strong>
+                                </label>
+                                <input type="date" class="form-control" name="data_conclusao_externo[]"
+                                       value="">
+                            </div>
+
+                            <div class="col-12 mt-3 text-right">
+                                <button type="button" class="btn btn-danger btnRemoverExterno">Remover integrante externo</button>
+                            </div>
+                        </div>
+                        <hr>
+                    @endif
+
                     @foreach($externos as $externo)
                         <div class="row integranteExterno">
                             <input type="hidden" name="id_externo[]" value="{{ $externo->id }}">

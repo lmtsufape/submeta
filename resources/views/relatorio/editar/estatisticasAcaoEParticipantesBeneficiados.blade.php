@@ -143,6 +143,26 @@
                 <br>
 
                 <div id="participantes">
+                    @if($participantes->isEmpty())
+                        <div class="row participante">
+                            <div class="col-6">
+                                <label for="nome_participante" class="col-form-label"> <strong>{{ __('Nome do Participante:') }}</strong> </label>
+                                <input type="text" class="form-control" name="nome_participante[]" value="" autocomplete="nome_participante" autofocus>
+                            </div>
+                            <div class="col-6">
+                                <label for="cpf_participante" class="col-form-label"> <strong>{{ __('CPF do Participante:') }}</strong> </label>
+                                <input type="text" class="form-control" id="cpf_participante" name="cpf_participante[]" value="" autocomplete="cpf_participante" placeholder="000.000.000-00" autofocus>
+                            </div>
+                            <div class="col-6">
+                                <label for="carga_horaria_participante" class="col-form-label"> <strong>{{ __('Carga horária do participante:') }}</strong> </label>
+                                <input type="number" class="form-control" name="carga_horaria_participante[]" value="" autocomplete="carga_horaria_participante" autofocus>
+                            </div>
+                            <div class="col-12 mt-3 text-right">
+                                <button type="button" class="btn btn-danger btnRemoverParticipante">Remover participante</button>
+                            </div>
+                        </div>
+                    @endif
+
                     @foreach($participantes as $index => $participante)
                         <div class="row participante">
                             <div class="col-6">

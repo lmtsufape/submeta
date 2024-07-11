@@ -423,8 +423,18 @@ class RelatorioController extends Controller
 
         if($request['nome_vice_coord'])
         {
-            $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
-            $vice_coordenador->update();
+            if(!$vice_coordenador)
+            {
+                $vice_coordenador = new RelatorioCoordenadorViceCoordenador();
+
+                $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
+                $vice_coordenador->save();
+            }
+            else
+            {
+                $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
+                $vice_coordenador->update();
+            }
         }
 
         return redirect(route('relatorioFinalPibex.editarParte2', ['relatorio_id' => $relatorio->id]))->with(['sucesso' => 'Parte 1 atualizada!']);

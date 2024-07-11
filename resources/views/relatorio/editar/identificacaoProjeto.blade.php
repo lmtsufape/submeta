@@ -155,7 +155,7 @@
                     <div class="col-6">
                         <label for="nome_vice_coord" class="col-form-label"> <strong>{{ __('Nome:') }}</strong> </label>
                         <input id="nome_vice_coord" type="text" class="form-control vice-coordenador"
-                               name="nome_vice_coord" value="{{ $vice_coordenador->nome }}"
+                               name="nome_vice_coord" value="{{ $vice_coordenador->nome ?? ''}}"
                                autocomplete="nome_vice_coord" autofocus disabled>
                     </div>
                     <div class="col-6">
@@ -163,14 +163,14 @@
                                class="col-form-label"> <strong>{{ __('E-mail institucional:') }}</strong> </label>
                         <input id="email_institucional_vice_coord" type="email"
                                class="form-control vice-coordenador" name="email_institucional_vice_coord"
-                               value="{{ $vice_coordenador->email_institucional }}"
+                               value="{{ $vice_coordenador->email_institucional ?? ''}}"
                                autocomplete="email_institucional_vice_coord" autofocus disabled>
                     </div>
                     <div class="col-6">
                         <label for="cargo_vice_coord" class="col-form-label"> <strong>{{ __('Cargo:') }}</strong> </label>
                         <select id="cargo_vice_coord" class="form-control vice-coordenador"
                                 name="cargo_vice_coord" autocomplete="cargo_vice_coord" autofocus disabled>
-                            <option value="{{ $vice_coordenador->cargo }}">{{ $vice_coordenador->cargo }}</option>
+                            <option value="{{ $vice_coordenador->cargo  ?? '' }}">{{ $vice_coordenador->cargo ?? '' }}</option>
                             <option value="Docente">Docente</option>
                             <option value="Técnico/a administrativo/a">Técnico/a administrativo/a</option>
                         </select>
@@ -178,27 +178,27 @@
                     <div class="col-6">
                         <label for="curso_vice_coord" class="col-form-label"> <strong>{{ __('Curso:') }}</strong> </label>
                         <input id="curso_vice_coord" type="text" class="form-control vice-coordenador"
-                               name="curso_vice_coord" value="{{ $vice_coordenador->curso_setor }}"
+                               name="curso_vice_coord" value="{{ $vice_coordenador->curso_setor ?? '' }}"
                                autocomplete="curso_vice_coord" autofocus disabled>
                     </div>
                     <div class="col-6">
                         <label for="cpf_vice_coord" class="col-form-label"> <strong>{{ __('CPF:') }}</strong> </label>
                         <input id="cpf_vice_coord" type="text" class="form-control vice-coordenador"
-                               name="cpf_vice_coord" value="{{ $vice_coordenador->cpf }}"
+                               name="cpf_vice_coord" value="{{ $vice_coordenador->cpf ?? '' }}"
                                autocomplete="cpf_vice_coord" autofocus disabled>
                     </div>
                     <div class="col-6">
                         <label for="telefone_vice_coord" class="col-form-label"> <strong>{{ __('Telefone:') }}</strong>
                         </label>
                         <input id="celular" type="text" class="form-control vice-coordenador"
-                               name="telefone_vice_coord" value="{{ $vice_coordenador->telefone }}"
+                               name="telefone_vice_coord" value="{{ $vice_coordenador->telefone ?? '' }}"
                                autocomplete="telefone_vice_coord" autofocus disabled>
                     </div>
                     <div class="col-6">
                         <label for="ch_vice_coord" class="col-form-label"> <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong>
                         </label>
                         <input id="ch_vice_coord" type="number" class="form-control vice-coordenador"
-                               name="ch_vice_coord" value="{{ $vice_coordenador->ch_total_atuacao }}" autocomplete="ch_vice_coord"
+                               name="ch_vice_coord" value="{{ $vice_coordenador->ch_total_atuacao ?? '' }}" autocomplete="ch_vice_coord"
                                autofocus disabled>
                     </div>
                 </div>
