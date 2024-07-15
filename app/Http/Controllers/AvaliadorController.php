@@ -180,13 +180,28 @@ class AvaliadorController extends Controller
         $trabalho = $avaliador->trabalhos->find($request->trabalho_id);
         $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
         $statusParecer = "NAO-RECOMENDADO";
-        if(
-            $request->anexoLinkLattes=='aceito' && $request->anexoGrupoPesquisa=='aceito' && $request->anexoProjeto=='aceito' &&
-            $request->anexoConsu=='aceito' && $request->anexoLattesCoordenador=='aceito' && $request->anexoPlano=='aceito' &&
-            $request->anexoGrupoPesquisa=='aceito' && $request->anexoComiteEtica=='aceito' && $request->anexoJustificativa=='aceito'
+
+        if($evento->tipo == "PIBITI")
+        {
+            if(
+                $request->anexoLinkLattes=='aceito' && $request->anexoGrupoPesquisa=='aceito' && $request->anexoProjeto=='aceito' &&
+                $request->anexoLattesCoordenador=='aceito' && $request->anexoPlano=='aceito' && $request->anexoGrupoPesquisa=='aceito' &&
+                $request->anexoComiteEtica=='aceito' && $request->anexoJustificativa=='aceito'
             ){
                 $statusParecer = "RECOMENDADO";
+            }
         }
+        else
+        {
+            if(
+                $request->anexoLinkLattes=='aceito' && $request->anexoGrupoPesquisa=='aceito' && $request->anexoProjeto=='aceito' &&
+                $request->anexoConsu=='aceito' && $request->anexoLattesCoordenador=='aceito' && $request->anexoPlano=='aceito' &&
+                $request->anexoGrupoPesquisa=='aceito' && $request->anexoComiteEtica=='aceito' && $request->anexoJustificativa=='aceito'
+            ){
+                $statusParecer = "RECOMENDADO";
+            }
+        }
+
         if($parecerInterno == null) {
 
             $parecerInterno = ParecerInterno::create([
