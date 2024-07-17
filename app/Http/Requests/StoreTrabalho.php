@@ -99,7 +99,7 @@ class StoreTrabalho extends FormRequest
         } else {
             //anexos
             if ($evento->nome_docExtra != null) {
-                $rules['anexo_docExtra'] = [Rule::requiredIf($evento->obrigatoriedade_docExtra == true), 'file', 'mimes:zip,doc,docx,pdf', 'max:2048'];
+                $rules['anexo_docExtra'] = [Rule::requiredIf($evento->obrigatoriedade_docExtra == true), 'file', 'mimes:zip,doc,docx,pdf', 'max:6144'];
             }
 
 

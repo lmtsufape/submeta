@@ -312,9 +312,9 @@
     $('.sus').mask('000 0000 0000 0000');
 
     $("input[type='file']").on("change", function () {
-     if(this.files[0].size > 2000000) {
+     if(this.files[0].size > 6000000) {
       //  console.log($(this).parents( ".col-sm-5" ))
-       alert("O tamanho do arquivo deve ser menor que 2MB!");
+       alert("O tamanho do arquivo deve ser menor que 6MB!");
        $(this).val('');
        
      }
