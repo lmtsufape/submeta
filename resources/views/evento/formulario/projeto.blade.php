@@ -120,7 +120,7 @@
 
                             {{ __('e/ou dos ODS nacionais propostos pela UNB e UNESP') }}
 
-                            D<a href="https://www.guiaagenda2030.org/" rel='external' target='_blank' style="font-size: smaller"> (para maiores esclarecimentos sobre ODS nacionais acesse o link) </a>
+                            <a href="https://www.guiaagenda2030.org/" rel='external' target='_blank' style="font-size: smaller"> (para maiores esclarecimentos sobre ODS nacionais acesse o link) </a>
 
                             {{ __('estão presentes na proposta') }}
                           <span style="color: red; font-weight:bold">*</span>
