@@ -58,10 +58,10 @@
                 <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}" >
                 <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="sub_area_id" >
                   <option value="" disabled selected hidden>-- Subárea --</option>
-                  @foreach($subAreas as $subArea)
+                  {{-- @foreach($subAreas as $subArea)
                     <option @if(old('subArea') !== null ? old('subArea') : (isset($rascunho) ? $rascunho->sub_area_id : '')
                             ==$subArea->id ) selected @endif value="{{$subArea->id}}">{{$subArea->nome}}</option>
-                  @endforeach
+                  @endforeach --}}
                 </select>
 
                 @error('sub_area_id')
