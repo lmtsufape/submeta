@@ -150,7 +150,7 @@
         </div>
     </div>
     
-    @if($edital->tipo != "PIBEX" || $edital->tipo != "PIBAC")
+    @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC")
     <div class="row">
         <div class="col-6">
             @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
@@ -208,7 +208,7 @@
                     @endif
                 </label>
             </div>
-            @if($trabalho->evento->tipo != "PIBEX" || $trabalho->evento->tipo != "PIBAC")
+            @if($trabalho->evento->tipo != "PIBEX" && $trabalho->evento->tipo != "PIBAC")
                 <div class="col-md-6 pl-0" style="margin-top: 15px">
                     <label class="control-label ">PDF Lattes <span style="color: red">*</span>
                         @if($participante->anexoLattes)
