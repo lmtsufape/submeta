@@ -204,6 +204,14 @@
 
     let modal_id = Number(document.getElementById('quantidadeModais').value);
 
+    function formatarData(data) {
+        if (!data) {
+            return '';
+        }
+        let partes = data.split('-');
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+
     function exibirUsuarioAdicionado(data) {
 
         $('#modalIntegrante').modal('hide');
@@ -214,8 +222,9 @@
         document.getElementById(`email${modal_id}`).setAttribute("readonly", "");
 
         if (data[0]['tipo'] == "participante") {
-            let [y, m, d] = data[2]['data_de_nascimento'].split('-');
-            document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(y, m - 1, d)).toLocaleDateString();
+            //let [y, m, d] = data[2]['data_de_nascimento'].split('-');
+            //document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(y, m - 1, d)).toLocaleDateString();
+            document.getElementById(`data_de_nascimento${modal_id}`).value = formatarData(data[2]['data_de_nascimento']);
             document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
         } else {
 
