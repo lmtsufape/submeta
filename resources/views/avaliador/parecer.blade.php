@@ -4,7 +4,7 @@
 
 <div class="row justify-content-center">
 	<!--Proponente Dados-->
-	@if(($evento->tipo != "PIBEX" || $evento->tipo != "PIBAC") && $evento->natureza_id != 3)
+	@if(($evento->tipo != "PIBEX" && $evento->tipo != "PIBAC") && $evento->natureza_id != 3)
 		<div class="col-md-10" style="margin-top:4rem;padding: 0px">
 			@component('projeto.formularioVisualizar.proponente2', ['edital' => $trabalho->evento, 'projeto' => $trabalho])
 			@endcomponent
