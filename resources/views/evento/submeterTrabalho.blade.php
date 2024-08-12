@@ -39,7 +39,7 @@
   </form>
   @if ($edital->numParticipantes != 0)
   <div id="participanteFirst" >
-    @component('componentes.participante', ['enum_turno' => $enum_turno,'estados' => $estados, ])
+    @component('componentes.participante', ['enum_turno' => $enum_turno,'estados' => $estados, 'edital' => $edital])
       
     @endcomponent
   </div>
