@@ -94,8 +94,18 @@ class ParticipanteController extends Controller
 
     public function listarParticipanteProjeto(Request $request){
         $trabalho = Trabalho::find($request->projeto_id);
-        $participantes = $trabalho->participantes;
+        if($trabalho->evento->tipo == "PIBEX"){
+            $participantes = $trabalho->participantes;
 
+            $participantes = $participantes->reject(function ($participante) {
+                return $participante->funcao_participante_id != 4;
+            });
+        }
+        else{
+            $participantes = $trabalho->participantes;
+
+        }
+            
         if(Auth::user()->id != $trabalho->proponente->user->id){
             return redirect()->back();
         }

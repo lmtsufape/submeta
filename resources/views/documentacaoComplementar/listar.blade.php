@@ -25,15 +25,14 @@
                     </tr>
 				</thead>
 
-					@foreach($trabalho->participantes as $participante)
+					@foreach($participantes as $participante)
 						<tbody>
-
 							<td style="text-align: center;" title="{{$trabalho->evento->nome}}">{{$trabalho->evento->nome}}</td>
 							<td style="text-align: center;" title="{{$trabalho->titulo}}">{{$trabalho->titulo}}</td>
 							<td style="text-align: center; text-transform: capitalize;" >{{$trabalho->status}}</td>
 							<td style="text-align: center;" title="{{$participante->user->name}}">{{$participante->user->name}}</td>
 							<td style="text-align: center;">
-								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirm{{$participante->id}}" >
+								<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalConfirm{{$participante->id}}" >						
 									@if($participante->anexoComprovanteMatricula==null || $participante->anexoTermoCompromisso==null
 									 )
 
