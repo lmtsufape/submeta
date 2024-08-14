@@ -965,39 +965,15 @@
     function selectTipo(){
         var tipo = document.getElementById('tipo');
 
-        names = ['div-inicio-avaliacao',
-                 'div-fim-avaliacao',
-                 'div-result-pre',
-                 'div-ini-rec',
-                 'div-fim-rec',
-                 'div-result-fim',
-                 'div-ini-proj',
-                 'div-fim-proj',
-                 'div-adhoc',
-                 'div-doc-aux',
-                 'div-cot-doutor',
-                 'div-inicio-relat-parcial',
-                 'div-fim-relat-parcial',
-                 'div-ini-relat-final',
-                 'div-fim-relat-final',
-                 'div-relat-titulo',
-                 'div-avaliacao',
-                 'div-tipo-aval',
-                 'div-text-aval']
+        names = [
+            'div-inicio-relat-parcial',
+            'div-fim-relat-parcial',
+        ]
 
-        inputs = ['inicioRevisao',
-                  'fimRevisao',
-                  'resultado_preliminar',
-                  'inicio_recurso',
-                  'fim_recurso',
-                  'resultado_final',
-                  'inicioProjeto',
-                  'fimProjeto',
-                  'dt_inicioRelatorioParcial',
-                  'dt_fimRelatorioParcial',
-                  'dt_inicioRelatorioFinal',
-                  'dt_fimRelatorioFinal'
-                ]
+        inputs = [
+            'dt_inicioRelatorioParcial',
+            'dt_fimRelatorioParcial',
+        ]
 
         if(tipo.value === 'CONTINUO'){
             names.forEach(function(nome, i){

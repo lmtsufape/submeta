@@ -1501,6 +1501,18 @@ class TrabalhoController extends Controller
                             
                         }
                     }
+
+                    if($evento->tipo == "CONTINUO")
+                    {
+                        $arquivo = new Arquivo();
+                        $arquivo->titulo = $request['titulo'];
+                        $arquivo->nome = $request['titulo'];
+                        $arquivo->trabalhoId = $trabalho->id;
+                        $arquivo->data = now();
+                        $arquivo->participanteId = $participante->id;
+                        $arquivo->versaoFinal = true;
+                        $arquivo->save();
+                    }
                     
                 }
             } else {

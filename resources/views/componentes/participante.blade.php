@@ -248,32 +248,33 @@
                   @enderror
                   @endcomponent
             </div>
+            
             <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
-            <div class="col-12">
-                  @component('componentes.input', ['label' => 'Título'])
-                    <input type="text" class="form-control" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" >
-                    @error('nomePlanoTrabalho.*')
-                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                  @endcomponent
-            </div>                              
-            <div class="col-6">
-                  @component('componentes.input', ['label' => 'Anexo(.pdf)'])
-                    <input type="file" class="input-group-text" name="anexoPlanoTrabalho[]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
-                    @error('anexoPlanoTrabalho.*')
-                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                    @error('anexoPlanoTrabalho')
-                      <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                  @endcomponent
-            </div>                              
+              <div class="col-12">
+                    @component('componentes.input', ['label' => 'Título'])
+                      <input type="text" class="form-control" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" >
+                      @error('nomePlanoTrabalho.*')
+                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    @endcomponent
+              </div>                              
+              <div class="col-6">
+                    @component('componentes.input', ['label' => 'Anexo(.pdf)'])
+                      <input type="file" class="input-group-text" name="anexoPlanoTrabalho[]" accept=".pdf" placeholder="Anexo do Plano de Trabalho" />
+                      @error('anexoPlanoTrabalho.*')
+                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                      @error('anexoPlanoTrabalho')
+                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    @endcomponent
+              </div>                         
           </div>
       </div>
     </div>

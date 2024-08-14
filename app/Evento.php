@@ -34,19 +34,13 @@ class Evento extends Model
     'fim_recurso'               => ['required', 'date'],
     'resultado_final'           => ['required', 'date'],
     'resultado_preliminar'      => ['required', 'date'],
-    'dt_inicioRelatorioParcial' => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC', 'required', 'date'],
-    'dt_fimRelatorioParcial'    => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC', 'required', 'date'],
+    'dt_inicioRelatorioParcial' => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC,CONTINUO', 'required', 'date'],
+    'dt_fimRelatorioParcial'    => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC,CONTINUO', 'required', 'date'],
     'dt_inicioRelatorioFinal'   => ['required', 'date'],
     'dt_fimRelatorioFinal'      => ['required', 'date'],
     'inicioProjeto'             => ['required', 'date'],
     'fimProjeto'                => ['required', 'date'],
     //'modeloDocumento'     => [],
-  ];
-
-  #validação para as datas dos editais de fluxo continuo
-  public static $continuos_dates_rules = [
-    'inicioSubmissao'           => ['required', 'date'],
-    'fimSubmissao'              => ['required', 'date'],
   ];
 
   #validação completa dos dados de editais padrão
@@ -67,28 +61,13 @@ class Evento extends Model
     'inicio_recurso'            => ['required', 'date', 'after_or_equal:resultado_preliminar'],
     'fim_recurso'               => ['required', 'date', 'after:inicio_recurso'],
     'resultado_final'           => ['required', 'date', 'after:fim_recurso'],
-    'dt_inicioRelatorioParcial' => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC', 'required', 'date', 'after:resultado_final'],
-    'dt_fimRelatorioParcial'    => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC', 'required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
+    'dt_inicioRelatorioParcial' => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC,CONTINUO', 'required', 'date', 'after:resultado_final'],
+    'dt_fimRelatorioParcial'    => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC,CONTINUO', 'required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
     'dt_inicioRelatorioFinal'   => ['required', 'date', 'after:dt_fimRelatorioParcial'],
     'dt_fimRelatorioFinal'      => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
     'pdfEdital'                 => [('pdfEditalPreenchido'!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
     'inicioProjeto'             => ['required', 'date', 'after:yesterday'],
     'fimProjeto'                => ['required', 'date', 'after_or_equal:fimSubmissao'],
-  ];
-
-  #validação completa dos dados de editais de fluxo continuo
-  public static $continuos_rules = [
-    'nome'                => ['required', 'string'],
-    'descricao'           => ['required', 'string','max:1500'],
-    'tipo'                => ['required', 'string'],
-    'natureza'            => ['required'],
-    'coordenador_id'      => ['required'],
-    'numParticipantes'    => ['required'],
-    'nome_docExtra'       => ['required_with:check_docExtra','max:255'],
-    'tipoAvaliacao'       => ['required'],
-    'inicioSubmissao'     => ['required', 'date', 'after:yesterday'],
-    'fimSubmissao'        => ['required', 'date', 'after_or_equal:inicioSubmissao'],
-    'pdfEdital'           => [('pdfEditalPreenchido'!=='sim'?'required':''), 'file', 'mimes:pdf', 'max:2048'],
   ];
 
   public static $edit_rules = [
@@ -106,8 +85,8 @@ class Evento extends Model
     'inicio_recurso'      => ['required', 'date', 'after_or_equal:resultado_preliminar'],
     'fim_recurso'         => ['required', 'date', 'after:inicio_recurso'],
     'resultado_final'     => ['required', 'date', 'after:fim_recurso'],
-    'dt_inicioRelatorioParcial'  => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC', 'required', 'date', 'after:resultado_final'],
-    'dt_fimRelatorioParcial'     => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC', 'required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
+    'dt_inicioRelatorioParcial'  => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC,CONTINUO', 'required', 'date', 'after:resultado_final'],
+    'dt_fimRelatorioParcial'     => ['exclude_if:tipo,PIBEX,PIACEX,PIBAC,CONTINUO', 'required', 'date', 'after_or_equal:dt_inicioRelatorioParcial'],
     'dt_inicioRelatorioFinal'  => ['required', 'date', 'after:dt_fimRelatorioParcial'],
     'dt_fimRelatorioFinal'     => ['required', 'date', 'after_or_equal:dt_inicioRelatorioFinal'],
     'modeloDocumento.*'     => ['file', 'mimes:zip,doc,docx,odt,pdf', 'max:2048'],

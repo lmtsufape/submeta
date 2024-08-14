@@ -123,22 +123,12 @@ class EventoController extends Controller
             $request->inicioProjeto == null   ||
             $request->fimProjeto == null
 
-        ){
-            if($request->tipo == 'CONTINUO'){
-                $validatedData = $request->validate(Evento::$continuos_dates_rules);
-            } else {
-                $validatedData = $request->validate(Evento::$dates_rules);
-            }
-
+        ) {
+            $validatedData = $request->validate(Evento::$dates_rules);
         }
         
         // validacao normal
-        if($request->tipo == 'CONTINUO'){
-            $validatedData = $request->validate(Evento::$continuos_rules);
-        } else {
-            $validatedData = $request->validate(Evento::$rules);
-        }
-
+        $validatedData = $request->validate(Evento::$rules);
                
         // Validação quando avaliação for por Barema
         if($request->tipo != 'CONTINUO'){
@@ -174,23 +164,22 @@ class EventoController extends Controller
         $evento['inicioSubmissao']     = $request->inicioSubmissao;
         $evento['fimSubmissao']        = $request->fimSubmissao;
 
-        if ($request->tipo != "CONTINUO"){   
-            $evento['inicioRevisao']       = $request->inicioRevisao;
-            $evento['fimRevisao']          = $request->fimRevisao;
-            $evento['inicio_recurso']      = $request->inicio_recurso;
-            $evento['fim_recurso']         = $request->fim_recurso;
-            $evento['resultado_preliminar']= $request->resultado_preliminar;
-            $evento['resultado_final']     = $request->resultado_final;
+        $evento['inicioRevisao']       = $request->inicioRevisao;
+        $evento['fimRevisao']          = $request->fimRevisao;
+        $evento['inicio_recurso']      = $request->inicio_recurso;
+        $evento['fim_recurso']         = $request->fim_recurso;
+        $evento['resultado_preliminar']= $request->resultado_preliminar;
+        $evento['resultado_final']     = $request->resultado_final;
 
-            if($request->tipo != "PIBEX" && $request->tipo != "PIACEX" && $request->tipo != "PIBAC"){
-                $evento['dt_inicioRelatorioParcial']  = $request->dt_inicioRelatorioParcial;
-                $evento['dt_fimRelatorioParcial']     = $request->dt_fimRelatorioParcial;
-            }
-            $evento['dt_inicioRelatorioFinal']  = $request->dt_inicioRelatorioFinal;
-            $evento['dt_fimRelatorioFinal']     = $request->dt_fimRelatorioFinal;
-            $evento['inicioProjeto']       = $request->inicioProjeto;
-            $evento['fimProjeto']          = $request->fimProjeto;
+        if($request->tipo != "PIBEX" && $request->tipo != "PIACEX" && $request->tipo != "PIBAC" && $request->tipo != "CONTINUO"){
+            $evento['dt_inicioRelatorioParcial']  = $request->dt_inicioRelatorioParcial;
+            $evento['dt_fimRelatorioParcial']     = $request->dt_fimRelatorioParcial;
         }
+        $evento['dt_inicioRelatorioFinal']  = $request->dt_inicioRelatorioFinal;
+        $evento['dt_fimRelatorioFinal']     = $request->dt_fimRelatorioFinal;
+        $evento['inicioProjeto']       = $request->inicioProjeto;
+        $evento['fimProjeto']          = $request->fimProjeto;
+
         $evento['coordenadorId']       = $request->coordenador_id;
         $evento['criador_id']          = $user_id;
         $evento['numParticipantes']    = $request->numParticipantes;
@@ -481,19 +470,11 @@ class EventoController extends Controller
             $request->inicioProjeto == null   ||
             $request->fimProjeto == null
 
-        ){
-            if($request->tipo == 'CONTINUO'){
-                $validatedData = $request->validate(Evento::$continuos_dates_rules);
-            } else {
-                $validatedData = $request->validate(Evento::$dates_rules);
-            }
+        ) {
+            $validatedData = $request->validate(Evento::$dates_rules);
         }
 
-        if($request->tipo == 'CONTINUO'){
-            $validatedData = $request->validate(Evento::$continuos_edit_rules);
-        } else {
-            $validatedData = $request->validate(Evento::$edit_rules);
-        }
+        $validatedData = $request->validate(Evento::$edit_rules);
 
         if($request->tipo != 'CONTINUO'){
             if ($request->tipoAvaliacao == 'form') {
@@ -515,23 +496,23 @@ class EventoController extends Controller
                     'link'    => ['required', 'url'],
                 ]);
             }
-
-            $evento->inicioRevisao        = $request->inicioRevisao;
-            $evento->fimRevisao           = $request->fimRevisao;
-            $evento->inicio_recurso       = $request->inicio_recurso;
-            $evento->fim_recurso          = $request->fim_recurso;
-            $evento->resultado_preliminar = $request->resultado_preliminar;
-            $evento->resultado_final      = $request->resultado_final;
+            
             $evento->dt_inicioRelatorioParcial   = $request->dt_inicioRelatorioParcial;
             $evento->dt_fimRelatorioParcial      = $request->dt_fimRelatorioParcial;
-            $evento->dt_inicioRelatorioFinal   = $request->dt_inicioRelatorioFinal;
-            $evento->dt_fimRelatorioFinal      = $request->dt_fimRelatorioFinal;
             $evento->cotaDoutor                = $request->has('cotaDoutor');
-            $evento->inicioProjeto       = $request->inicioProjeto;
-            $evento->fimProjeto          = $request->fimProjeto;
             $evento->tipoAvaliacao       = $request->tipoAvaliacao;
         }
-
+        
+        $evento->inicioProjeto       = $request->inicioProjeto;
+        $evento->fimProjeto          = $request->fimProjeto;
+        $evento->inicioRevisao        = $request->inicioRevisao;
+        $evento->fimRevisao           = $request->fimRevisao;
+        $evento->inicio_recurso       = $request->inicio_recurso;
+        $evento->fim_recurso          = $request->fim_recurso;
+        $evento->resultado_preliminar = $request->resultado_preliminar;
+        $evento->resultado_final      = $request->resultado_final;
+        $evento->dt_inicioRelatorioFinal   = $request->dt_inicioRelatorioFinal;
+        $evento->dt_fimRelatorioFinal      = $request->dt_fimRelatorioFinal;
         $evento->nome                 = $request->nome;
         $evento->descricao            = $request->descricao;
         $evento->tipo                 = $request->tipo;
