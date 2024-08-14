@@ -248,8 +248,8 @@
                   @enderror
                   @endcomponent
             </div>
-            @if($edital->tipo != "CONTINUO")
-              <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
+            
+            <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
               <div class="col-12">
                     @component('componentes.input', ['label' => 'Título'])
                       <input type="text" class="form-control" name="nomePlanoTrabalho[]" placeholder="Digite o título do plano de trabalho" >
@@ -274,8 +274,7 @@
                         </span>
                       @enderror
                     @endcomponent
-              </div>   
-            @endif                          
+              </div>                         
           </div>
       </div>
     </div>

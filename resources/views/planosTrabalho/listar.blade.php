@@ -24,11 +24,13 @@
                     <tr>
 						<th scope="col" style="width:400px; text-align: center;">Projeto</th>
 						<th scope="col" style="width:400px; text-align: center;">Proponente</th>
+						@if ($evento->tipo != "CONTINUO")
 						<th scope="col" style="width:400px; text-align: center;">Título do Plano</th>
+						@endif
 						@if ($evento->numParticipantes != 0)
 						<th scope="col" style="width:200px; text-align: center;">Discente</th>
 						@endif
-						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC')
+						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != "CONTINUO")
 						<th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
 						@endif
 						<th scope="col" style="width:200px; text-align: center;">Relatório Final</th>
@@ -39,11 +41,13 @@
                         <tbody>
 						<td style="text-align: center;" title="{{$arquivo->trabalho->titulo}}">{{$arquivo->trabalho->titulo}}</td>
 						<td style="text-align: center;" title="{{$arquivo->trabalho->proponente->user->name}}">{{$arquivo->trabalho->proponente->user->name}}</td>
+						@if ($evento->tipo != "CONTINUO")
 						<td style="text-align: center;" title="{{$arquivo->titulo}}">{{$arquivo->titulo}}</td>
+						@endif
 						@if ($evento->numParticipantes != 0)
 						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}" id="td-nomeAluno">{{$arquivo->participante->user->name}}</td>
 						@endif
-						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC')
+						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != "CONTINUO")
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))
