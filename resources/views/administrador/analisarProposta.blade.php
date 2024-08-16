@@ -230,7 +230,7 @@
                                 </div>
                                 <div class="col-sm-5">
                                     <h5>{{$participante->user->name}}</h5>
-                                    <h6>Função: {{ $participante->funcao->nome }} </h6>
+                                    <!-- <h6>Função: {{ $participante->funcao->nome }} </h6> -->
                                     <h6>
                                         <a href="" data-toggle="modal"
                                            data-target="#modalVizuParticipante{{$participante->id}}" class="button">Informações</a>
