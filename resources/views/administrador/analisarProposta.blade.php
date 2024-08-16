@@ -580,7 +580,7 @@
         </div>
     </div>
 
-    @if($evento->tipo != "CONTINUO")
+    
     <!--Relatórios-->
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
@@ -603,7 +603,7 @@
 
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
-                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC')
+                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO')
                                 <div class="col-sm-3">
                                     <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam"
                                         style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
@@ -645,8 +645,11 @@
                         </div>
 
                         <div class="form-row mt-3">
+                            @if($evento->tipo != 'CONTINUO' && $evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC')
                             <div class="col-sm-11"><h5 style="color: #234B8B; font-weight: bold">Avaliações de
                                     Relatórios</h5></div>
+                            @endif
+
                             @if((($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
                                 || ($hoje>$evento->dt_fimRelatorioFinal)) && ($substituicoesPendentes->count() == 0 || $evento->numParticipantes == 0) )
                                 <div class="col-md-1 text-sm-right">
@@ -656,11 +659,13 @@
                                     </a>
                                 </div>
                             @else
-                                <div class="col-md-1 text-sm-right">
-                                    <a type="button" value="{{ $trabalho->id }}" id="atribuir1">
-                                        <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
-                                    </a>
-                                </div>
+                                @if($evento->tipo != 'CONTINUO' && $evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC')
+                                    <div class="col-md-1 text-sm-right">
+                                        <a type="button" value="{{ $trabalho->id }}" id="atribuir1">
+                                            <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
+                                        </a>
+                                    </div>
+                                @endif
                             @endif
                             <!-- Modal -->
                             @if($substituicoesPendentes->count() == 0 || $evento->numParticipantes == 0)
@@ -793,7 +798,7 @@
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
 
-                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC"))
+                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != 'CONTINUO'))
                             <div class="row justify-content-start" style="alignment: center">
                                 <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
                             </div>
@@ -1361,7 +1366,6 @@
             </div>
         </div>
     </div>
-    @endif
     <!--Aprovar ou Negar Proposta-->
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
