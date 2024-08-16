@@ -41,4 +41,8 @@ class Participante extends Model
     public function desligamentos() {
         return $this->hasMany('App\Desligamento', 'participante_id')->orderBy('created_at', 'DESC');
     }
+
+    public function funcao() {
+        return $this->belongsTo('App\FuncaoParticipantes', 'funcao_participante_id');
+    }
 }
