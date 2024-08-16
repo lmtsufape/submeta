@@ -42,7 +42,7 @@
         @endcomponent
       @endif
 
-      @if($edital->tipo != "CONTINUO")
+      @if($edital->tipo != "CONTINUO" && $edital->tipo != "CONTINUO-AC")
       @component('projeto.formularioVisualizar.relatorio',['edital' => $edital,'projeto' => $projeto,'flagSubstituicao' =>$flagSubstituicao,
                                                            'AvalRelatParcial' => $AvalRelatParcial, 'AvalRelatFinal' => $AvalRelatFinal, 'cont' => 0])
       @endcomponent
@@ -177,7 +177,7 @@ aria-hidden="true">
                               <select name="funcao_participante" id="funcao_participante" class="form-control">
                                   @foreach($funcaoParticipantes as $funcao)
                                       <!-- EXTENSÃO -->
-                                      @if($edital->natureza_id == 3 && $edital->tipo == "CONTINUO") 
+                                      @if($edital->natureza_id == 3 && ($edital->tipo == "CONTINUO" || $edital->tipo == "CONTINUO-AC")) 
                                           @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador")
                                               <option value="{{$funcao->id}}" checked>{{ $funcao->nome }}</option>
                                           @endif
