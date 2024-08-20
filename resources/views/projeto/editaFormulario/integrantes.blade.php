@@ -47,7 +47,7 @@
                             <select name="" id="funcao_participante" class="form-control">
                                 @foreach($funcaoParticipantes as $funcao)
                                     @if($edital->natureza_id == 3)
-                                        @if($edital->tipo == "CONTINUO" && $funcao->nome != 'Bolsista')
+                                        @if(($edital->tipo == "CONTINUO" || edital->tipo == "CONTINUO-AC") && $funcao->nome != 'Bolsista')
                                             <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
                                         @elseif($funcao->nome != "Consultor" && $funcao->nome != "Pesquisador" && $funcao->nome != "Voluntário")
                                             <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>

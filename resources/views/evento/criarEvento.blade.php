@@ -30,6 +30,7 @@
                 <label for="tipo" class="col-form-label">{{ __('Tipo:') }}<span style="color:red; font-weight:bold;">*</span></label>
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required onchange="selectTipo()">
                     <option @if(old('tipo')=='CONTINUO' ) selected @endif value="CONTINUO">Fluxo Contínuo</option>
+                    <option @if(old('tipo')=='CONTINUO-AC' ) selected @endif value="CONTINUO-AC">Fluxo Contínuo - AC</option>
                     <option @if(old('tipo')=='PIACEX' ) selected @endif value="PIACEX">PIACEX</option>
                     <option @if(old('tipo')=='PIBAC' ) selected @endif value="PIBAC">PIBAC</option>
                     <option @if(old('tipo')=='PIBEX' ) selected @endif value="PIBEX">PIBEX</option>
@@ -873,7 +874,7 @@
                   'dt_fimRelatorioParcial',
                 ]
 
-        if(tipo.value === 'CONTINUO'){
+        if(tipo.value === 'CONTINUO' || tipo.value === 'CONTINUO-AC'){
             names.forEach(function(nome, i){
                 document.getElementById(nome).style.display = "none";
             }) 

@@ -155,7 +155,7 @@
           <tr>
             <td style="max-width:100px; overflow-x:auto; text-overflow:ellipsis">{{ $trabalho->titulo }}</td>
             @if($evento->natureza_id == 3)
-                  @if($evento->tipo == "PIBAC")
+                  @if($evento->tipo == "PIBAC" || $evento->tipo == "CONTINUO-AC")
                       <td>@foreach($trabalho->area_tematica_pibac as $area_tematica) {{ $area_tematica->nome }} <br> @endforeach</td>
                   @else
                       <td>{{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}</td>

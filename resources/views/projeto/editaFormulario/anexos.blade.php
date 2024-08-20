@@ -12,7 +12,7 @@
         <div class="row justify-content-start">
           {{-- Arquivo  --}}
 
-          @if($edital->tipo == "CONTINUO")
+          @if($edital->tipo == "CONTINUO" || edital->tipo == "CONTINUO-AC")
             <div class="form-group col-md-8" style="margin-top: 10px">
               <label for="anexo_SIPAC" class="col-form-label font-tam" style="font-weight: bold">{{ __('Processo SIPAC: ') }}<span style="color: red; font-weight:bold">*</span></label>
               @if($projeto->anexo_SIPAC)

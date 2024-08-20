@@ -10,7 +10,7 @@
 
           {{-- Anexo do Projeto --}}
           <div class="row justify-content-start">
-            @if($edital->tipo != "CONTINUO")
+            @if($edital->tipo != "CONTINUO" && $edital->tipo != "CONTINUO-AC")
               {{-- Arquivo  --}}
               <div class="col-sm-4" style="float: left">
                 <label for="anexoProjeto" class="col-form-label font-tam" style="font-weight: bold">{{ __('Projeto: ') }}</label>

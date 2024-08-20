@@ -43,6 +43,7 @@
                 <!-- <input value="{{$evento->tipo}}" id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" value="{{ old('tipo') }}" required autocomplete="tipo" autofocus> -->
                 <select id="tipo" type="text" class="form-control @error('tipo') is-invalid @enderror" name="tipo" required onchange="selectTipo()">
                     <option value="CONTINUO" {{ $evento->tipo == "CONTINUO" ?  'selected' :'' }}>Fluxo Contínuo</option>
+                    <option value="CONTINUO-AC" {{ $evento->tipo == "CONTINUO-AC" ?  'selected' :'' }}>Fluxo Contínuo - AC</option>
                     <option value="PIACEX" {{ $evento->tipo == "PIACEX" ?  'selected' :'' }}>PIACEX</option>
                     <option value="PIBAC" {{ $evento->tipo == "PIBAC" ?  'selected' :'' }}>PIBAC</option>
                     <option value="PIBEX" {{ $evento->tipo == "PIBEX" ?  'selected' :'' }}>PIBEX</option>
@@ -994,7 +995,7 @@
                   'dt_fimRelatorioParcial',
                 ]
 
-        if(tipo.value === 'CONTINUO'){
+        if(tipo.value === 'CONTINUO' || tipo.value === 'CONTINUO-AC'){
             names.forEach(function(nome, i){
                 document.getElementById(nome).style.display = "none";
             }) 

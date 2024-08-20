@@ -93,6 +93,8 @@
                           @endphp
                           @if($hoje->greaterThan($fimProjeto))
                             <td style="color: rgb(6, 85, 6); text-align: center;text-transform: capitalize;">Finalizado</td>
+                          @elseif(($projeto->evento->tipo == "CONTINUO" || $projeto->evento->tipo == "CONTINUO-AC") && $hoje->greaterThan($projeto->evento->fimSubmissao))
+                            <td style="color: rgb(6, 85, 6); text-align: center;text-transform: capitalize;">Finalizado</td>
                           @else
                             <td style="color: rgb(6, 85, 6); text-align: center;text-transform: capitalize;">Em Execução</td>
                           @endif
