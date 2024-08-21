@@ -579,4 +579,243 @@ class RelatorioController extends Controller
 
         return redirect()->route('planos.listar', [$relatorio->trabalho_id])->with(['sucesso' => 'Relatório atualizado com sucesso']);
     }
+
+    public function createRelatorioParte1($trabalho_id)
+    {
+        $trabalho = Trabalho::findOrFail($trabalho_id);
+        $relatorio = Relatorio::where('trabalho_id', $trabalho->id)->first();
+        
+        if($relatorio)
+        {
+            if($relatorio->progresso == 'finalizado')
+            {
+                return redirect()->route('planos.listar', [$trabalho->id])->with(['erro' => 'O relatório já foi enviado']);
+            }
+            else
+            {
+                $caminho = $this->etapaRelatorio($relatorio);
+
+                return redirect()->route($caminho, ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Continue o preenchimento do relatório']);
+            }
+        }
+
+        $ods = ObjetivoDeDesenvolvimentoSustentavel::all()->sortBy('id');
+        $areas_tematicas = AreaTematica::all()->sortBy('id');
+        
+
+        return view('relatorio.criar.1-identificacaoProjeto', compact('trabalho', 'ods', 'areas_tematicas', 'relatorio'));
+    }
+
+
+    public function storeRelatorioParte1(StoreRelatorioRequest $request)
+    {
+        if($request['select_area_tematica'] == null)
+        {
+            return redirect()->back()->with(['erro' => 'Selecione pelo menos uma área temática']);
+        }
+        elseif($request['select_ods'] == null)
+        {
+            return redirect()->back()->with(['erro' => 'Selecione pelo menos uma ODS']);
+        }
+
+        try
+        {
+            $relatorio = new Relatorio();
+            $coordenador = new RelatorioCoordenadorViceCoordenador();
+            $vice_coordenador = new RelatorioCoordenadorViceCoordenador();
+
+            $relatorio->setAttributes($request);
+            $relatorio->save();
+
+            $coordenador->setAttributesCoordenador($request, $relatorio->id);
+            $coordenador->save();
+
+            if($request['nome_vice_coord'])
+            {
+                $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
+                $vice_coordenador->save();
+            }
+
+        } catch (\Exception $e)
+        {
+            return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao salvar a parte 1']);
+        }
+
+        return redirect()->route('relatorioFinalPibex.criarParte2', ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Parte 1 salva com sucesso!']);
+    }
+
+    public function createRelatorioParte2($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+        
+        if($relatorio->progresso != 'parte 1')
+        {
+            if($relatorio->progresso == 'finalizado')
+            {
+                return redirect()->route('planos.listar', [$relatorio->trabalho->id])->with(['erro' => 'O relatório já foi enviado']);
+            }
+            else
+            {
+                $caminho = $this->etapaRelatorio($relatorio);
+
+                return redirect()->route($caminho, ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Continue o preenchimento do relatório']);
+            }
+        }
+
+        return view('relatorio.criar.2-identificacaoEquipe', compact('relatorio'));
+    }
+
+    public function storeRelatorioParte2(StoreRelatorioRequest $request)
+    {
+        $relatorio = Relatorio::findOrFail($request->relatorio_id);
+
+        try
+        {
+            $integrantes_internos = $this->integrantesInternosParaObjeto($request, $relatorio->id);
+
+            foreach($integrantes_internos as $integrante_interno)
+            {
+                $integrante_interno->save();
+            }
+
+            if($request->nome_externo[0] != null)
+            {
+                $integrantes_externos = $this->integrantesExternosParaObjeto($request, $relatorio->id);
+
+                foreach ($integrantes_externos as $integrante_externo)
+                {
+                    $integrante_externo->save();
+                }
+            }
+
+            $relatorio->captacao_recursos = $request['captacao_recursos'];
+            $relatorio->progresso = 'parte 2';
+
+            $relatorio->update();
+
+        } catch (\Exception $e)
+        {
+            return redirect()->back()->with(['erro' => 'Ocorreu um erro ao salvar a parte 2']);
+        }
+
+        return redirect()->route('relatorioFinalPibex.criarParte3', ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Parte 2 salva com sucesso!']);
+    }
+
+    public function createRelatorioParte3($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+
+        if($relatorio->progresso != 'parte 2')
+        {
+            if($relatorio->progresso == 'finalizado')
+            {
+                return redirect()->route('planos.listar', [$relatorio->trabalho->id])->with(['erro' => 'O relatório já foi enviado']);
+            }
+            else
+            {
+                $caminho = $this->etapaRelatorio($relatorio);
+
+                return redirect()->route($caminho, ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Continue o preenchimento do relatório']);
+            }
+        }
+
+        return view('relatorio.criar.3-resultadosAlcancados', compact('relatorio'));
+    }
+
+    public function storeRelatorioParte3(StoreRelatorioRequest $request)
+    {
+        $relatorio = Relatorio::findOrFail($request->relatorio_id);
+
+        try
+        {
+            $produtos_extensao_gerados = new ProdutosExtensaoGerados();
+
+            $produtos_extensao_gerados->setAttributes($request, $relatorio->id);
+            $produtos_extensao_gerados->save();
+
+            $relatorio->setAttributesParte3($request);
+            $relatorio->progresso = 'parte 3';
+
+            $relatorio->update();
+        } catch (\Exception $e)
+        {
+            return redirect()->back()->with(['erro' => 'Ocorreu um erro ao salvar a parte 3']);
+        }
+
+        return redirect()->route('relatorioFinalPibex.criarParte4', ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Parte 3 salva com sucesso!']);
+    }
+
+    public function createRelatorioParte4($relatorio_id)
+    {
+        $relatorio = Relatorio::findOrFail($relatorio_id);
+
+        if($relatorio->progresso != 'parte 3')
+        {
+            if($relatorio->progresso == 'finalizado')
+            {
+                return redirect()->route('planos.listar', [$relatorio->trabalho->id])->with(['erro' => 'O relatório já foi enviado']);
+            }
+            else
+            {
+                $caminho = $this->etapaRelatorio($relatorio);
+
+                return redirect()->route($caminho, ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Continue o preenchimento do relatório']);
+            }
+        }
+
+        return view('relatorio.criar.estatisticasAcaoEParticipantesBeneficiados', compact('relatorio'));
+    }
+
+    public function storeRelatorioParte4(StoreRelatorioRequest $request)
+    {
+        $relatorio = Relatorio::findOrFail($request->relatorio_id);
+
+        try
+        {
+            if($request->nome_participante[0] != null)
+            {
+                $participantes = $this->participantesParaObjeto($request, $relatorio->id);
+
+                foreach($participantes as $participante)
+                {
+                    $participante->save();
+                }
+            }
+
+            if ($request->hasFile('anexo_relatorio'))
+            {
+                $arquivo = $request->file('anexo_relatorio');
+                $path = $arquivo->store('anexoRelatorio', 'public');
+            }
+
+            $relatorio->formulario_indicadores = $request->formulario_indicadores;
+            $relatorio->certificacao_adicinonal = $request->certificacao_adicinonal;
+            $relatorio->anexo = $path;
+            $relatorio->progresso = 'finalizado';
+
+            $relatorio->update();
+
+        } catch (\Exception $e)
+        {
+            return redirect()->back()->with(['erro' => 'Ocorreu um erro ao salvar a parte 4']);
+        }
+
+        return redirect()->route('planos.listar', [$relatorio->trabalho->id])->with(['erro' => 'Relatório enviado com sucesso!']);
+    }
+
+    public function etapaRelatorio($relatorio)
+    {
+        if($relatorio->progresso == 'parte 1')
+        {
+            return 'relatorioFinalPibex.criarParte2';
+        }
+        elseif($relatorio->progresso == 'parte 2')
+        {
+            return 'relatorioFinalPibex.criarParte3';
+        }
+        elseif($relatorio->progresso == 'parte 3')
+        {
+            return 'relatorioFinalPibex.criarParte4';
+        }
+    }
 }

@@ -23,47 +23,69 @@ class StoreRelatorioRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'inicio_projeto' => 'required|date|before:conclusao_projeto',
-            'conclusao_projeto' => 'required|date|after:inicio_projeto',
-            'titulo_projeto' => 'required|string|min:5|max:255',
-            'nome_coordenador' => 'required|string|max:255',
-            'email_institucional_coordenador' => 'required|email|max:255',
-            'cargo_coordenador' => 'required|string|max:255',
-            'curso_coordenador' => 'required|string|max:255',
-            'cpf_coordenador' => 'required',
-            'telefone_coordenador' => 'required',
-            'ch_coordenador' => 'required|min:1',
-            'select_area_tematica' => 'required',
-            'select_ods' => 'required',
-            'nome_interno.*' => 'required|string|max:255',
-            'cpf_interno.*' => 'required',
-            'tipo.*' => 'required',
-            'resumo' => 'required|string|max:3000',
-            'objetivos_alcancados' => 'required|string|max:3000',
-            'justificativa_objetivos_alcancados' => 'required|string|max:3000',
-            'pessoas_beneficiadas' => 'required|integer|min:1',
-            'alcance_publico_estimado' => 'required|integer|min:1',
-            'justificativa_publico_estimado' => 'required|string|max:3000',
-            'beneficios_publico_atendido' => 'required|string|max:3000',
-            'impactos_tecnologicos_cientificos' => 'required|string|max:3000',
-            'desafios_encontrados' => 'required|string|max:3000',
-            'avaliacao_projeto_executado' => 'required|string|max:3000',
-            'tecnico_cientifico' => 'required|string',
-            'qtd_tecnico_cientifico' => 'required|min:1',
-            'divulgacao' => 'required|string',
-            'qtd_divulgacao' => 'required|min:1',
-            'didatico_instrucional' => 'required|string',
-            'qtd_didatico_instrucional' => 'required|min:1',
-            'multimidia' => 'required|string',
-            'qtd_multimidia' => 'required|min:1',
-            'artistico_cultural' => 'required|string',
-            'qtd_artistico_cultural' => 'required|min:1',
-            'formulario_indicadores' => 'required',
-            'certificacao_adicinonal' => 'required',
-           // 'nome_participante.*' => 'string|max:255',
-           // 'carga_horaria_participante.*' => 'min:1',
-        ];
+        $rules = [];
+
+        switch ($this->input('etapa')) 
+        {
+            case 'etapa1':
+                $rules = [
+                    'inicio_projeto' => 'required|date|before:conclusao_projeto',
+                    'conclusao_projeto' => 'required|date|after:inicio_projeto',
+                    'titulo_projeto' => 'required|string|min:5|max:255',
+                    'nome_coordenador' => 'required|string|max:255',
+                    'email_institucional_coordenador' => 'required|email|max:255',
+                    'cargo_coordenador' => 'required|string|max:255',
+                    'curso_coordenador' => 'required|string|max:255',
+                    'cpf_coordenador' => 'required',
+                    'telefone_coordenador' => 'required',
+                    'ch_coordenador' => 'required|min:1',
+                    'select_area_tematica' => 'required',
+                    'select_ods' => 'required',
+                ];
+                break;
+
+            case 'etapa2':
+                $rules = [
+                    'nome_interno.*' => 'required|string|max:255',
+                    'cpf_interno.*' => 'required',
+                    'tipo.*' => 'required',
+                ];
+                break;
+
+            case 'etapa3':
+                $rules = [
+                    'resumo' => 'required|string|max:3000',
+                    'objetivos_alcancados' => 'required|string|max:3000',
+                    'justificativa_objetivos_alcancados' => 'required|string|max:3000',
+                    'pessoas_beneficiadas' => 'required|integer|min:1',
+                    'alcance_publico_estimado' => 'required|integer|min:1',
+                    'justificativa_publico_estimado' => 'required|string|max:3000',
+                    'beneficios_publico_atendido' => 'required|string|max:3000',
+                    'impactos_tecnologicos_cientificos' => 'required|string|max:3000',
+                    'desafios_encontrados' => 'required|string|max:3000',
+                    'avaliacao_projeto_executado' => 'required|string|max:3000',
+                    'tecnico_cientifico' => 'required|string',
+                    'qtd_tecnico_cientifico' => 'required|min:1',
+                    'divulgacao' => 'required|string',
+                    'qtd_divulgacao' => 'required|min:1',
+                    'didatico_instrucional' => 'required|string',
+                    'qtd_didatico_instrucional' => 'required|min:1',
+                    'multimidia' => 'required|string',
+                    'qtd_multimidia' => 'required|min:1',
+                    'artistico_cultural' => 'required|string',
+                    'qtd_artistico_cultural' => 'required|min:1',
+                ];
+                break;
+
+            case 'etapa4':
+                $rules = [
+                    'formulario_indicadores' => 'required',
+                    'certificacao_adicinonal' => 'required',
+                ];
+                break;
+        }
+
+        return $rules;
     }
 
     public function messages()

@@ -213,6 +213,21 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/relatorioFinalPibex/edit/parte4/{relatorio_id}', 'RelatorioController@editRelatorioParte4')->name('relatorioFinalPibex.editarParte4');
     Route::post('/relatorioFinalPibex/update/parte4', 'RelatorioController@updateRelatorioParte4')->name('relatorioFinalPibex.updateParte4');
 
+    
+
+
+    Route::get('/relatorioFinalPibex/create/parte1/{relatorio_id}', 'RelatorioController@createRelatorioParte1')->name('relatorioFinalPibex.criarParte1');
+    Route::post('/relatorioFinalPibex/store/parte1', 'RelatorioController@storeRelatorioParte1')->name('relatorioFinalPibex.storeParte1');
+
+    Route::get('/relatorioFinalPibex/create/parte2/{relatorio_id}', 'RelatorioController@createRelatorioParte2')->name('relatorioFinalPibex.criarParte2');
+    Route::post('/relatorioFinalPibex/store/parte2', 'RelatorioController@storeRelatorioParte2')->name('relatorioFinalPibex.storeParte2');
+
+    Route::get('/relatorioFinalPibex/create/parte3/{relatorio_id}', 'RelatorioController@createRelatorioParte3')->name('relatorioFinalPibex.criarParte3');
+    Route::post('/relatorioFinalPibex/store/parte3', 'RelatorioController@storeRelatorioParte3')->name('relatorioFinalPibex.storeParte3');
+
+    Route::get('/relatorioFinalPibex/create/parte4/{relatorio_id}', 'RelatorioController@createRelatorioParte4')->name('relatorioFinalPibex.criarParte4');
+    Route::post('/relatorioFinalPibex/store/parte4', 'RelatorioController@storeRelatorioParte4')->name('relatorioFinalPibex.storeParte4');
+
 
     //########## Documentação Complementar
     Route::get('/documentacaoComplementar', 'ParticipanteController@listarParticipanteProjeto')->name('docComplementar.listar');
