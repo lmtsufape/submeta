@@ -216,7 +216,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     
 
 
-    Route::get('/relatorioFinalPibex/create/parte1/{relatorio_id}', 'RelatorioController@createRelatorioParte1')->name('relatorioFinalPibex.criarParte1');
+    Route::get('/relatorioFinalPibex/create/parte1/{trabalho_id}', 'RelatorioController@createRelatorioParte1')->name('relatorioFinalPibex.criarParte1');
     Route::post('/relatorioFinalPibex/store/parte1', 'RelatorioController@storeRelatorioParte1')->name('relatorioFinalPibex.storeParte1');
 
     Route::get('/relatorioFinalPibex/create/parte2/{relatorio_id}', 'RelatorioController@createRelatorioParte2')->name('relatorioFinalPibex.criarParte2');

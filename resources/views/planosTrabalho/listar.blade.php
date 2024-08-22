@@ -77,7 +77,12 @@
 						<td style="text-align: center;">
 							@if(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
 								@if($trabalho->relatorio)
-									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">{{ $trabalho->relatorio->status }}</button>
+									@if($trabalho->relatorio->progresso == 'finalizado')
+										<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">{{ $trabalho->relatorio->status }}</button>
+									@else
+										<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">envio em progresso</button>
+									@endif
+									
 								@else
 									<button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#modalRelatorioFinal{{ $arquivo->id }}">Não enviado</button>
 								@endif
@@ -209,7 +214,7 @@
 										<div class="col-12">
 											<div class="row">
 												@if(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
-													@if($trabalho->relatorio)
+													@if($trabalho->relatorio && $trabalho->relatorio->progresso == 'finalizado')
 														<div class="col-4">
 															<label for="editar_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
 															<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.editarParte1', ['relatorio_id' => $trabalho->relatorio->id]) }}"> {{ __('Editar') }} </a>
@@ -227,13 +232,17 @@
 													@else
 														<div class="col-6">
 															<label for="status_relatorio_final" class="col-form-label">{{ __('Status') }}</label>
+															@if($trabalho->relatorio)
+																<input id="status_relatorio_final" type="text" class="form-control" name="status_relatorio_final" value="Envio em progresso" required autocomplete="dt_inicioRelatorioFinal" disabled autofocus>
+															@else
 															<input id="status_relatorio_final" type="text" class="form-control" name="status_relatorio_final" value="Não enviado" required autocomplete="dt_inicioRelatorioFinal" disabled autofocus>
+															@endif
 														</div>
 
 														@if($trabalho->evento->dt_inicioRelatorioFinal <= $hoje && $hoje <= $trabalho->evento->dt_fimRelatorioFinal)
 															<div class="col-6">
 																<label for="botao_relatorio_final" class="col-form-label" style="color: white">Relatório Final</label>
-																<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.form', ['trabalho_id' => $trabalho->id]) }}">Relatório Final</a>
+																<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.criarParte1', ['trabalho_id' => $trabalho->id]) }}">Relatório Final</a>
 															</div>
 														@endif
 													@endif

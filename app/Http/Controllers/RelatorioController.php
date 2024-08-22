@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 class RelatorioController extends Controller
 {
     /**
@@ -695,7 +696,7 @@ class RelatorioController extends Controller
 
         } catch (\Exception $e)
         {
-            return redirect()->back()->with(['erro' => 'Ocorreu um erro ao salvar a parte 2']);
+            return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao salvar a parte 2']);
         }
 
         return redirect()->route('relatorioFinalPibex.criarParte3', ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Parte 2 salva com sucesso!']);
@@ -739,7 +740,7 @@ class RelatorioController extends Controller
             $relatorio->update();
         } catch (\Exception $e)
         {
-            return redirect()->back()->with(['erro' => 'Ocorreu um erro ao salvar a parte 3']);
+            return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao salvar a parte 3']);
         }
 
         return redirect()->route('relatorioFinalPibex.criarParte4', ['relatorio_id' => $relatorio->id])->with(['sucesso' => 'Parte 3 salva com sucesso!']);
@@ -763,7 +764,7 @@ class RelatorioController extends Controller
             }
         }
 
-        return view('relatorio.criar.estatisticasAcaoEParticipantesBeneficiados', compact('relatorio'));
+        return view('relatorio.criar.4-estatisticasAcaoEParticipantesBeneficiados', compact('relatorio'));
     }
 
     public function storeRelatorioParte4(StoreRelatorioRequest $request)
@@ -782,10 +783,17 @@ class RelatorioController extends Controller
                 }
             }
 
-            if ($request->hasFile('anexo_relatorio'))
+            if ($request->hasFile('anexo')) 
             {
-                $arquivo = $request->file('anexo_relatorio');
-                $path = $arquivo->store('anexoRelatorio', 'public');
+                $arquivo = $request->file('anexo');
+        
+                $nomeArquivo = 'AnexoRelatorioFinal_' . Str::slug($relatorio->titulo_projeto) . '.' . $arquivo->getClientOriginalExtension();
+        
+                $path = $arquivo->storeAs('anexoRelatorio', $nomeArquivo, 'public');
+            } 
+            else 
+            {
+                $path = null;
             }
 
             $relatorio->formulario_indicadores = $request->formulario_indicadores;
@@ -797,10 +805,10 @@ class RelatorioController extends Controller
 
         } catch (\Exception $e)
         {
-            return redirect()->back()->with(['erro' => 'Ocorreu um erro ao salvar a parte 4']);
+            return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao salvar a parte 4']);
         }
 
-        return redirect()->route('planos.listar', [$relatorio->trabalho->id])->with(['erro' => 'Relatório enviado com sucesso!']);
+        return redirect()->route('planos.listar', [$relatorio->trabalho->id])->with(['sucesso' => 'Relatório enviado com sucesso!']);
     }
 
     public function etapaRelatorio($relatorio)
