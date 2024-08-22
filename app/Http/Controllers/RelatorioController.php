@@ -619,6 +619,8 @@ class RelatorioController extends Controller
             return redirect()->back()->with(['erro' => 'Selecione pelo menos uma ODS']);
         }
 
+        DB::beginTransaction();
+
         try
         {
             $relatorio = new Relatorio();
@@ -637,8 +639,11 @@ class RelatorioController extends Controller
                 $vice_coordenador->save();
             }
 
+            DB::commit();
+
         } catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao salvar a parte 1']);
         }
 
@@ -670,6 +675,8 @@ class RelatorioController extends Controller
     {
         $relatorio = Relatorio::findOrFail($request->relatorio_id);
 
+        DB::beginTransaction();
+
         try
         {
             $integrantes_internos = $this->integrantesInternosParaObjeto($request, $relatorio->id);
@@ -694,8 +701,11 @@ class RelatorioController extends Controller
 
             $relatorio->update();
 
+            DB::commit();
+
         } catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao salvar a parte 2']);
         }
 
@@ -727,6 +737,8 @@ class RelatorioController extends Controller
     {
         $relatorio = Relatorio::findOrFail($request->relatorio_id);
 
+        DB::beginTransaction();
+
         try
         {
             $produtos_extensao_gerados = new ProdutosExtensaoGerados();
@@ -738,8 +750,11 @@ class RelatorioController extends Controller
             $relatorio->progresso = 'parte 3';
 
             $relatorio->update();
+
+            DB::commit();
         } catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao salvar a parte 3']);
         }
 
@@ -770,6 +785,8 @@ class RelatorioController extends Controller
     public function storeRelatorioParte4(StoreRelatorioRequest $request)
     {
         $relatorio = Relatorio::findOrFail($request->relatorio_id);
+
+        DB::beginTransaction();
 
         try
         {
@@ -803,8 +820,11 @@ class RelatorioController extends Controller
 
             $relatorio->update();
 
+            DB::commit();
+
         } catch (\Exception $e)
         {
+            DB::rollBack();
             return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao salvar a parte 4']);
         }
 
