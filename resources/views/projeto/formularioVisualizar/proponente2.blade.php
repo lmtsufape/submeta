@@ -44,7 +44,7 @@
             <div class="col-md-12">
               <br>
               <b style="color: #4D4D4D;">Área Temática:</b>
-              @if($edital->tipo == "PIBAC")
+              @if($edital->tipo == "PIBAC" || $edital->tipo == "CONTINUO-AC")
                 <br>
                 <div class="row col-md-12">
                   @foreach($projeto->area_tematica_pibac as $area_tematica)

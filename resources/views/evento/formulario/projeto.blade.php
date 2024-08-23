@@ -5,13 +5,13 @@
       <div class="container">
         <div class="form-row mt-3">
 
-          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">@if($edital->tipo == 'CONTINUO')Informações da Atividade de Extensão: @else Informações do Projeto @endif</h5></div>
+          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">@if($edital->tipo == 'CONTINUO' || $edital->tipo == "CONTINUO-AC")Informações da Atividade de Extensão: @else Informações do Projeto @endif</h5></div>
         </div>
         <hr style="border-top: 1px solid#1492E6">
 
       <div class="row">
           <div class="form-group col-md-12" style="margin-top: 10px">
-              <label for="titulo" class="col-form-label" style="font-weight: bold">@if($edital->tipo == 'CONTINUO'){{__('Nome da Atividade de Extensão')}}
+              <label for="titulo" class="col-form-label" style="font-weight: bold">@if($edital->tipo == 'CONTINUO' || $edital->tipo == "CONTINUO-AC"){{__('Nome da Atividade de Extensão')}}
                 @else{{ __('Nome do Projeto') }}@endif <span style="color: red; font-weight:bold">*</span></label>
               <input id="titulo" type="text" class="form-control @error('titulo') is-invalid @enderror" name="titulo" placeholder="Digite o nome do projeto" value="{{old('titulo')}}" autocomplete="titulo" maxlength="255" >
 
@@ -73,7 +73,7 @@
           @endif
 
             @if($edital->natureza_id ==3 )
-                @if($edital->tipo == "PIBAC")
+                @if($edital->tipo == "PIBAC" || $edital->tipo == "CONTINUO-AC")
                     <div class="form-group col-md-12">
                         <label for="areaTematica" class="col-form-label" style="font-weight: bold">{{ __('Área(s) temática(s) principal(is) da atividade, de acordo com a Política de Arte e Cultura da UFAPE') }} <span style="color: red; font-weight:bold">*</span></label>
                         <span>(é possível selecionar uma ou mais áreas).</span>

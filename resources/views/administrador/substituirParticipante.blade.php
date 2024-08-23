@@ -606,7 +606,7 @@
                                                                 <select name="" id="funcao_participante{{$participante->id}}" class="form-control">
                                                                     @foreach($funcaoParticipantes as $funcao)
                                                                         <!-- EXTENSÃO -->
-                                                                        @if($edital->natureza_id == 3 && $edital->tipo == "CONTINUO") 
+                                                                        @if($edital->natureza_id == 3 && ($edital->tipo == "CONTINUO" || $edital->tipo == "CONTINUO-AC")) 
                                                                             @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador")
                                                                                 <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
                                                                             @endif
