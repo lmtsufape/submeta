@@ -305,12 +305,12 @@ class RelatorioController extends Controller
         {
             $integrante_externo = new RelatorioIntegranteExterno();
 
-            $integrante_externo->nome = $nome;
-            $integrante_externo->cpf = $cpfs[$indice];
-            $integrante_externo->instituicao_vinculo = $instituicoes[$indice];
-            $integrante_externo->ch_total_atuacao = $cargas_horarias[$indice];
-            $integrante_externo->ingresso_proposta = $datas_ingresso[$indice];
-            $integrante_externo->conclusao_proposta = $datas_conclusao[$indice];
+            $integrante_externo->nome = $nome ?? 'Nome não preenchido';
+            $integrante_externo->cpf = $cpfs[$indice] ?? 'CPF não informado';
+            $integrante_externo->instituicao_vinculo = $instituicoes[$indice] ?? 'Instituição não informada';
+            $integrante_externo->ch_total_atuacao = $cargas_horarias[$indice] ?? 0;
+            $integrante_externo->ingresso_proposta = $datas_ingresso[$indice] ?? date('Y-m-d');
+            $integrante_externo->conclusao_proposta = $datas_conclusao[$indice] ?? date('Y-m-d');
             $integrante_externo->relatorio_id = $relatorio_id;
 
             $integrantes_externos[] = $integrante_externo;

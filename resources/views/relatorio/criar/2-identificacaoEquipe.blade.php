@@ -56,11 +56,11 @@
                                 <input type="hidden" name="id_integrante[]" value="{{ old('id_integrante.'.$key) }}">
                                 <div class="col-6">
                                     <label for="nome_interno" class="col-form-label"> <strong>{{ __('Nome:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
-                                    <input type="text" class="form-control" name="nome_interno[]" value="{{ old('nome_interno.'.$key) }}">
+                                    <input type="text" class="form-control" name="nome_interno[]" value="{{ old('nome_interno.'.$key) }}" required>
                                 </div>
                                 <div class="col-6">
                                     <label for="cpf_interno" class="col-form-label"> <strong>{{ __('CPF:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
-                                    <input type="text" class="form-control" id="cpf_interno" name="cpf_interno[]" value="{{ old('cpf_interno.'.$key) }}">
+                                    <input type="text" class="form-control" id="cpf_interno" name="cpf_interno[]" value="{{ old('cpf_interno.'.$key) }}" required>
                                 </div>
                                 <div class="col-6">
                                     <label for="tipo" class="col-form-label"> <strong>{{ __('Tipo:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
@@ -84,16 +84,20 @@
                                 </div>
                                 <div class="col-6">
                                     <label for="data_ingresso_interno" class="col-form-label"> <strong>{{ __('Data de ingresso na proposta:') }}</strong> <span style="color: red; font-weight:bold;">*</span></label>
-                                    <input type="date" class="form-control" name="data_ingresso_interno[]" value="{{ old('data_ingresso_interno.'.$key) }}">
+                                    <input type="date" class="form-control" name="data_ingresso_interno[]" value="{{ old('data_ingresso_interno.'.$key) }}"required>
                                 </div>
                                 <div class="col-6">
                                     <label for="data_conclusao_interno" class="col-form-label"> <strong>{{ __('Data de conclusão na proposta:') }}</strong> <span style="color: red; font-weight:bold;">*</span></label>
-                                    <input type="date" class="form-control" name="data_conclusao_interno[]" value="{{ old('data_conclusao_interno.'.$key) }}">
+                                    <input type="date" class="form-control" name="data_conclusao_interno[]" value="{{ old('data_conclusao_interno.'.$key) }}"required>
                                 </div>
                                 <div class="col-6">
-                                    <label for="carga_horaria_interno" class="col-form-label"> <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong> <span style="color: red; font-weight:bold;">*</span></label>
-                                    <input type="number" class="form-control" name="carga_horaria_interno[]" value="{{ old('carga_horaria_interno.'.$key) }}">
+                                    <label for="carga_horaria_interno" class="col-form-label">
+                                        <strong>{{ __('Carga horária total de atuação na proposta:') }}</strong>
+                                        <span style="color: red; font-weight:bold;">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" name="carga_horaria_interno[]" value="{{ old('carga_horaria_interno.'.$key) }}" required pattern="^\d+$" title="Insira apenas números">
                                 </div>
+
 
                                 <div class="col-12 mt-3 text-right">
                                     <button type="button" class="btn btn-danger btnRemoverIntegrante">Remover integrante interno</button>
@@ -261,11 +265,11 @@
 
                     <div class="col-12">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="captacao_recursos" id="captacao_recursos_sim" value="true" {{ old('captacao_recursos') == 'true' ? 'checked' : '' }} autocomplete="off">
+                            <input class="form-check-input" type="radio" name="captacao_recursos" id="captacao_recursos_sim" value="true" {{ old('captacao_recursos') == 'true' ? 'checked' : '' }} autocomplete="off" required>
                             <label class="form-check-label" for="captacao_recursos_sim">Sim</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="captacao_recursos" id="captacao_recursos_nao" value="false" {{ old('captacao_recursos') == 'false' ? 'checked' : '' }} autocomplete="off">
+                            <input class="form-check-input" type="radio" name="captacao_recursos" id="captacao_recursos_nao" value="false" {{ old('captacao_recursos') == 'false' ? 'checked' : '' }} autocomplete="off" required>
                             <label class="form-check-label" for="captacao_recursos_nao">Não</label>
                         </div>
                     </div>
