@@ -398,6 +398,7 @@ class RelatorioController extends Controller
 
     public function updateRelatorioParte1(Request $request)
     {
+        
         if($request['select_area_tematica'] == null)
         {
             return redirect()->back()->with(['erro' => 'Selecione pelo menos uma área temática']);
@@ -407,35 +408,48 @@ class RelatorioController extends Controller
             return redirect()->back()->with(['erro' => 'Selecione pelo menos uma ODS']);
         }
 
-        $relatorio = Relatorio::findOrFail($request['relatorio_id']);
-        $coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Coordenador/a')->first();
-        $vice_coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Vice-Coordenador/a')->first();
+        DB::beginTransaction();
 
-        $relatorio->fill([
-            'inicio_projeto' => $request->input('inicio_projeto'),
-            'conclusao_projeto' => $request->input('conclusao_projeto'),
-            'titulo_projeto' => $request->input('titulo_projeto'),
-            'area_tematica_principal' => json_encode($request->input('select_area_tematica')),
-            'ods' => json_encode($request->input('select_ods')),
-        ])->update();
-
-        $coordenador->setAttributesCoordenador($request, $relatorio->id);
-        $coordenador->update();
-
-        if($request['nome_vice_coord'])
+        try
         {
-            if(!$vice_coordenador)
-            {
-                $vice_coordenador = new RelatorioCoordenadorViceCoordenador();
+            $relatorio = Relatorio::findOrFail($request['relatorio_id']);
+            $coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Coordenador/a')->first();
+            $vice_coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Vice-Coordenador/a')->first();
 
-                $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
-                $vice_coordenador->save();
-            }
-            else
+            $relatorio->fill([
+                'inicio_projeto' => $request->input('inicio_projeto'),
+                'conclusao_projeto' => $request->input('conclusao_projeto'),
+                'titulo_projeto' => $request->input('titulo_projeto'),
+                'area_tematica_principal' => json_encode($request->input('select_area_tematica')),
+                'ods' => json_encode($request->input('select_ods')),
+            ])->update();
+
+            $coordenador->setAttributesCoordenador($request, $relatorio->id);
+            $coordenador->update();
+
+            if($request['nome_vice_coord'])
             {
-                $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
-                $vice_coordenador->update();
+                if(!$vice_coordenador)
+                {
+                    $vice_coordenador = new RelatorioCoordenadorViceCoordenador();
+
+                    $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
+                    $vice_coordenador->save();
+                }
+                else
+                {
+                    $vice_coordenador->setAttributesViceCoordenador($request, $relatorio->id);
+                    $vice_coordenador->update();
+                }
             }
+
+            DB::commit();
+        }
+
+        catch (\Exception $e)
+        {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao atualizar a parte 1']);
         }
 
         return redirect(route('relatorioFinalPibex.editarParte2', ['relatorio_id' => $relatorio->id]))->with(['sucesso' => 'Parte 1 atualizada!']);
@@ -460,34 +474,46 @@ class RelatorioController extends Controller
         $internos = RelatorioIntegranteInterno::where('relatorio_id', $relatorio->id)->get();
         $externos = RelatorioIntegranteExterno::where('relatorio_id', $relatorio->id)->get();
 
-        foreach ($internos as $interno)
+        try
         {
-            $interno->delete();
-        }
-
-        foreach ($externos as $externo)
-        {
-            $externo->delete();
-        }
-
-        foreach($integrantes_internos as $integrante_interno)
-        {
-            $integrante_interno->save();
-        }
-
-        if($request->nome_externo[0] != null)
-        {
-            $integrantes_externos = $this->integrantesExternosParaObjeto($request, $relatorio->id);
-
-            foreach ($integrantes_externos as $integrante_externo)
+            foreach ($internos as $interno)
             {
-                $integrante_externo->save();
+                $interno->delete();
             }
+
+            foreach ($externos as $externo)
+            {
+                $externo->delete();
+            }
+
+            foreach($integrantes_internos as $integrante_interno)
+            {
+                $integrante_interno->save();
+            }
+
+            if($request->nome_externo[0] != null)
+            {
+                $integrantes_externos = $this->integrantesExternosParaObjeto($request, $relatorio->id);
+
+                foreach ($integrantes_externos as $integrante_externo)
+                {
+                    $integrante_externo->save();
+                }
+            }
+
+            $relatorio->fill([
+                'captacao_recursos' => $request->input('captacao_recursos'),
+                ])->update();
+
+            DB::commit();
         }
 
-        $relatorio->fill([
-            'captacao_recursos' => $request->input('captacao_recursos'),
-        ])->update();
+        catch (\Exception $e)
+        {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao atualizar a parte 2']);
+        }
+
 
         return redirect(route('relatorioFinalPibex.editarParte3', ['relatorio_id' => $relatorio->id]))->with(['sucesso' => 'Parte 2 atualizada!']);
     }
@@ -508,21 +534,32 @@ class RelatorioController extends Controller
 
         $produtos_extensao_gerados = ProdutosExtensaoGerados::where('relatorio_id', $relatorio->id)->first();
 
-        $relatorio->fill([
-            'resumo' => $request['resumo'],
-            'objetivos_alcancados' => $request['objetivos_alcancados'],
-            'justificativa_objetivos_alcancados' => $request['justificativa_objetivos_alcancados'],
-            'pessoas_beneficiadas' => $request['pessoas_beneficiadas'],
-            'alcance_publico_estimado' => $request['alcance_publico_estimado'],
-            'justificativa_publico_estimado' => $request['justificativa_publico_estimado'],
-            'beneficios_publico_atendido' => $request['beneficios_publico_atendido'],
-            'impactos_tecnologicos_cientificos' => $request['impactos_tecnologicos_cientificos'],
-            'desafios_encontrados' => $request['desafios_encontrados'],
-            'avaliacao_projeto_executado' => $request['avaliacao_projeto_executado'],
-        ])->update();
+        try
+        {
+            $relatorio->fill([
+                'resumo' => $request['resumo'],
+                'objetivos_alcancados' => $request['objetivos_alcancados'],
+                'justificativa_objetivos_alcancados' => $request['justificativa_objetivos_alcancados'],
+                'pessoas_beneficiadas' => $request['pessoas_beneficiadas'],
+                'alcance_publico_estimado' => $request['alcance_publico_estimado'],
+                'justificativa_publico_estimado' => $request['justificativa_publico_estimado'],
+                'beneficios_publico_atendido' => $request['beneficios_publico_atendido'],
+                'impactos_tecnologicos_cientificos' => $request['impactos_tecnologicos_cientificos'],
+                'desafios_encontrados' => $request['desafios_encontrados'],
+                'avaliacao_projeto_executado' => $request['avaliacao_projeto_executado'],
+            ])->update();
+    
+            $produtos_extensao_gerados->setAttributes($request, $relatorio->id);
+            $produtos_extensao_gerados->update();
 
-        $produtos_extensao_gerados->setAttributes($request, $relatorio->id);
-        $produtos_extensao_gerados->update();
+            DB::commit();
+        }
+
+        catch (\Exception $e)
+        {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao atualizar a parte 3']);
+        }
 
         return redirect(route('relatorioFinalPibex.editarParte4', ['relatorio_id' => $relatorio->id]))->with(['sucesso' => 'Parte 3 atualizada!']);
     }
@@ -541,42 +578,54 @@ class RelatorioController extends Controller
     {
         $relatorio = Relatorio::findOrFail($request['relatorio_id']);
 
-        $relatorio->fill([
-            'formulario_indicadores' => $request['formulario_indicadores'],
-            'certificacao_adicinonal' => $request['certificacao_adicinonal'],
-        ])->update();
-
-        $participantes = RelatorioParticipante::where('relatorio_id', $relatorio->id)->get();
-
-        foreach ($participantes as $participante)
+        try
         {
-            $participante->delete();
-        }
-
-        if($request->nome_participante[0] != null)
-        {
-            $participantes = $this->participantesParaObjeto($request, $relatorio->id);
-
-            foreach($participantes as $participante)
+            $relatorio->fill([
+                'formulario_indicadores' => $request['formulario_indicadores'],
+                'certificacao_adicinonal' => $request['certificacao_adicinonal'],
+            ])->update();
+    
+            $participantes = RelatorioParticipante::where('relatorio_id', $relatorio->id)->get();
+    
+            foreach ($participantes as $participante)
             {
-                $participante->save();
+                $participante->delete();
             }
-        }
-
-        if ($request->hasFile('anexo'))
-        {
-            if ($relatorio->anexo)
+    
+            if($request->nome_participante[0] != null)
             {
-                Storage::disk('public')->delete($relatorio->anexo);
+                $participantes = $this->participantesParaObjeto($request, $relatorio->id);
+    
+                foreach($participantes as $participante)
+                {
+                    $participante->save();
+                }
             }
-
-            $arquivo = $request->file('anexo');
-            $path = $arquivo->store('anexoRelatorio', 'public');
-
-            $relatorio->anexo = $path;
-
-            $relatorio->update();
+    
+            if ($request->hasFile('anexo'))
+            {
+                if ($relatorio->anexo)
+                {
+                    Storage::disk('public')->delete($relatorio->anexo);
+                }
+    
+                $arquivo = $request->file('anexo');
+                $path = $arquivo->store('anexoRelatorio', 'public');
+    
+                $relatorio->anexo = $path;
+    
+                $relatorio->update();
+            }
+            
+            DB::commit();
         }
+
+        catch (\Exception $e)
+        {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with(['erro' => 'Ocorreu um erro ao atualizar a parte 1']);
+        }
+
 
         return redirect()->route('planos.listar', [$relatorio->trabalho_id])->with(['sucesso' => 'Relatório atualizado com sucesso']);
     }
