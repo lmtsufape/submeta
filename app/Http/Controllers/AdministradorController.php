@@ -152,6 +152,11 @@ class AdministradorController extends Controller
         $MediaAvalRelatFinal = 0;
         $MediaApresentacaoFinal = 0;
         $AvalRelatFinalPendentes = 0;
+        $MediaGeralRelatParcial = 0;
+        $MediaGeralRelatFinal = 0;
+        $MediaGeralAval = 0;
+        $MediaGeralApresentacao = 0;
+        $MediaGeralRelatorio = 0;
 
         foreach ($avals as $aval) {
             if ($aval->tipo == 'Parcial') {
@@ -183,15 +188,33 @@ class AdministradorController extends Controller
             $MediaApresentacaoFinal = $MediaApresentacaoFinal / count($AvalRelatFinal);
         }
 
+        $MediaGeralRelatParcial = ($MediaAvalRelatParcial + $MediaApresentacaoParcial) / 2;
+        $MediaGeralRelatFinal = ($MediaAvalRelatFinal + $MediaApresentacaoFinal ) / 2;
+        $MediaGeralAval = ($MediaAvalRelatParcial + $MediaAvalRelatFinal) / 2;
+        $MediaGeralApresentacao = ($MediaApresentacaoParcial + $MediaApresentacaoFinal) / 2;
+        $MediaGeralRelatorio = ($MediaGeralRelatParcial + $MediaGeralRelatFinal) / 2;
+
+        $MediaGeralRelatParcial = floor($MediaGeralRelatParcial * 100) / 100;
+        $MediaGeralRelatFinal = floor($MediaGeralRelatFinal * 100 ) / 100;
+        $MediaGeralAval = floor($MediaGeralAval * 100) / 100;
+        $MediaGeralApresentacao = floor($MediaGeralApresentacao * 100) / 100;
+        $MediaGeralRelatorio = floor($MediaGeralRelatorio * 100) / 100;
+        
+
         return [
             'relatorio_parcial' => number_format($MediaAvalRelatParcial, 2, '.', ''),
             'apresentacao_parcial' => number_format($MediaApresentacaoParcial, 2, '.', ''),
+            'media_geral_relat_parcial' => $MediaGeralRelatParcial,
             'pendentes_parcial' => $AvalRelatParcialPendentes,
             'relatorio_final' => number_format($MediaAvalRelatFinal, 2, '.', ''),
             'apresentacao_final' => number_format($MediaApresentacaoFinal, 2, '.', ''),
+            'media_geral_relat_final' => $MediaGeralRelatFinal,
             'pendentes_final' => $AvalRelatFinalPendentes,
             'avaliacoes_parciais' => $AvalRelatParcial,
-            'avaliacoes_finais' => $AvalRelatFinal
+            'avaliacoes_finais' => $AvalRelatFinal,
+            'media_geral_escrito' => $MediaGeralAval,
+            'media_geral_apresentacao' => $MediaGeralApresentacao,
+            'media_geral_relat' => $MediaGeralRelatorio
         ];
     }
 
