@@ -328,23 +328,25 @@
                                                                             @enderror
                                                                             @endcomponent
                                                                         </div>
-                                                                        <div class="col-6">
 
-                                                                            @component('componentes.select', ['label' => 'Ordem de prioridade'])
-                                                                            <select name="ordem_prioridade[]" class="form-control">
-                                                                                <option value="" selected>-- ORDEM --</option>
-                                                                                @for($j = 1; $j <= $edital->numParticipantes; $j++)
-                                                                                    <option @if((old('ordem_prioridade')[$i] ?? "" )==$j) selected @endif value="{{ $j }}">{{ $j }}</option>
-                                                                                    @endfor
+                                                                        @if($edital->tipo != "PICP")
+                                                                            <div class="col-6">
+                                                                                @component('componentes.select', ['label' => 'Ordem de prioridade'])
+                                                                                <select name="ordem_prioridade[]" class="form-control">
+                                                                                    <option value="" selected>-- ORDEM --</option>
+                                                                                    @for($j = 1; $j <= $edital->numParticipantes; $j++)
+                                                                                        <option @if((old('ordem_prioridade')[$i] ?? "" )==$j) selected @endif value="{{ $j }}">{{ $j }}</option>
+                                                                                        @endfor
 
-                                                                            </select>
-                                                                            @error('ordem_prioridade.'.$i)
-                                                                            <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                            @enderror
-                                                                            @endcomponent
-                                                                        </div>
+                                                                                </select>
+                                                                                @error('ordem_prioridade.'.$i)
+                                                                                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                                @enderror
+                                                                                @endcomponent
+                                                                            </div>
+                                                                        @endif
                                                                     
 
                                                                         <div class="col-6">
