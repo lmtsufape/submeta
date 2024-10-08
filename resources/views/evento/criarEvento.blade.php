@@ -38,6 +38,7 @@
                     <option @if(old('tipo')=='PIBIC-AF' ) selected @endif value="PIBIC-AF">PIBIC-AF</option>
                     <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
                     <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
+                    <option @if(old('tipo')=='PICP' ) selected @endif value="PICP">PICP</option>
                 </select>
 
                 @error('tipo')
@@ -874,6 +875,33 @@
                   'dt_fimRelatorioParcial',
                 ]
 
+        names_picp = ['div-inicio-avaliacao',
+                      'div-fim-avaliacao',
+                      'div-result-pre',
+                      'div-ini-rec',
+                      'div-fim-rec',
+                      'div-result-fim',
+                      'div-adhoc',
+                      'div-doc-aux',
+                      'div-inicio-relat-parcial',
+                      'div-fim-relat-parcial',
+                      'div-avaliacao',
+                      'div-tipo-aval',
+                      'div-text-aval'
+                    ]
+
+        inputs_picp = ['inicioRevisao',
+                       'fimRevisao',
+                       'resultado_preliminar',
+                       'inicio_recurso',
+                       'fim_recurso',
+                       'resultado_final',
+                       'inicioProjeto',
+                       'fimProjeto',
+                       'dt_inicioRelatorioParcial',
+                       'dt_fimRelatorioParcial',
+                    ]
+
         if(tipo.value === 'CONTINUO' || tipo.value === 'CONTINUO-AC'){
             names.forEach(function(nome, i){
                 document.getElementById(nome).style.display = "none";
@@ -892,10 +920,21 @@
                 document.getElementById(nome).setAttribute('required', '');
             })
         }
-
         
+        if(tipo.value === 'PICP'){
+            names_picp.forEach(function(nome, i){
+                document.getElementById(nome).style.display = "none";
+            }) 
+
+            inputs_picp.forEach(function(nome, i){
+                document.getElementById(nome).removeAttribute('required');
+            })
+            
+        }
+
+
         //retirada das datas dos relatórios parciais para o PIBEX, PIACEX e PIBAC
-        if(tipo.value === 'PIBEX' || tipo.value === 'PIACEX' || tipo.value === 'PIBAC'){
+        if(tipo.value === 'PIBEX' || tipo.value === 'PIACEX' || tipo.value === 'PIBAC' || tipo.value === 'PICP'){
             document.getElementById('div-inicio-relat-parcial').style.display = "none";
             document.getElementById('div-fim-relat-parcial').style.display = "none";
         
