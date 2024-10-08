@@ -115,10 +115,10 @@ class StoreTrabalho extends FormRequest
                     $rules['anexoLattesCoordenador'] = ['required', 'mimes:pdf'];
                     $rules['anexoGrupoPesquisa'] = ['required', 'mimes:pdf'];
                     $rules['pontuacaoPlanilha'] = ['required', 'string'];
-                    $rules['linkGrupoPesquisa'] = ['required', 'string'];
                     $rules['anexo_acao_afirmativa'] = [Rule::requiredIf($this->radioAcoesAfirmativas == 'sim')];
                 }
 
+                $rules['linkGrupoPesquisa'] = ['required', 'string'];
                 $rules['anexoAutorizacaoComiteEtica'] = [Rule::requiredIf($this->autorizacaoFlag == 'sim')];
                 $rules['justificativaAutorizacaoEtica'] = [Rule::requiredIf($this->autorizacaoFlag == 'nao')];
                 

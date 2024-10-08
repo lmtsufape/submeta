@@ -18,7 +18,8 @@
 
           <div class="row justify-content-center">
             {{-- Relatório Parcial  --}}
-            @if($edital->tipo != "PIBEX" || $edital->tipo != "PIBAC")
+
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP")
               <div class="col-sm-3">
                 <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam" style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
               </div>

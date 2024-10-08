@@ -34,7 +34,7 @@
             @enderror
           </div>
 
-          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO' && $edital->tipo != "PIACEX" && $edital->tipo != 'PIBAC' && $edital->tipo !='CONTINUO-AC' && $edital->tipo !='PICP')
+          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO' && $edital->tipo != "PIACEX" && $edital->tipo != 'PIBAC' && $edital->tipo !='CONTINUO-AC')
           <div class="col-md-2">
             <br>
             <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}<span style="color: red; font-weight:bold">*</span></label>
