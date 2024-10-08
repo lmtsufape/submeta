@@ -156,12 +156,13 @@
                                        target="_blank"
                                     >{{ $trabalho->linkGrupoPesquisa }}</a>
                                 </div>
-
-                                <div class="col-md-12">
-                                    <br>
-                                    <b style="color: #4D4D4D;">Valor da Planilha de Pontuação: </b>
-                                    <a style="color: #4D4D4D;">{{$trabalho->pontuacaoPlanilha}}</a>
-                                </div>
+                                @if($evento->tipo != "PICP")
+                                    <div class="col-md-12">
+                                        <br>
+                                        <b style="color: #4D4D4D;">Valor da Planilha de Pontuação: </b>
+                                        <a style="color: #4D4D4D;">{{$trabalho->pontuacaoPlanilha}}</a>
+                                    </div>
+                                @endif
                             @endif
                             @if($trabalho->modalidade != null)
                                 <div class="col-md-12">
@@ -477,7 +478,7 @@
 
                                 </div>
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP")
                                     <div class="col-sm-4">
                                         <label for="anexoLatterCoordenador" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
@@ -505,7 +506,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP")
                                     <div class="col-sm-4">
                                         <label for="anexoPlanilha" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
@@ -516,7 +517,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP")
                                     <div class="col-sm-4">
                                         <label for="nomeTrabalho" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
@@ -530,11 +531,11 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC")
+                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC" || $evento->tipo == "PICP")
                                     {{-- Decisão do CONSU --}}
                                     <div class="col-sm-4">
                                         <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
-                                            style="font-weight: bold">{{ __('Câmara ou Conselho Pertinente: ') }}</label>
+                                            style="font-weight: bold">{{ __('Decisão da Câmara: ') }}</label>
                                         <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                     </div>
                                 @endif
@@ -604,7 +605,7 @@
 
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
-                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC')
+                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC' && $evento->tipo != "PICP")
                                 <div class="col-sm-3">
                                     <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam"
                                         style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>

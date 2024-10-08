@@ -68,8 +68,11 @@ class StoreTrabalho extends FormRequest
 
                         //participantes da pesquisa
                         if ($evento->natureza_id != 3) {
+                            if($evento->tipo != "PICP")
+                            {
+                                $rules['ordem_prioridade.' . $value] = ['required', 'string'];
+                            }
                             $rules['turno.' . $value] = ['required', 'string'];
-                            $rules['ordem_prioridade.' . $value] = ['required', 'string'];
                             $rules['periodo_atual.' . $value] = ['required', 'string'];
                             $rules['total_periodos.' . $value] = ['required', 'string'];
                             $rules['media_do_curso.' . $value] = ['required', 'string'];
@@ -105,17 +108,23 @@ class StoreTrabalho extends FormRequest
 
             if ($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO"  && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO-AC") {
                 //dd($this->preenchimentoFormFlag);
-                $rules['anexoPlanilhaPontuacao'] = ['required'];
-                $rules['anexoLattesCoordenador'] = ['required', 'mimes:pdf'];
-                $rules['anexoGrupoPesquisa'] = ['required', 'mimes:pdf'];
+
+                if($evento->tipo != "PICP")
+                {
+                    $rules['anexoPlanilhaPontuacao'] = ['required'];
+                    $rules['anexoLattesCoordenador'] = ['required', 'mimes:pdf'];
+                    $rules['anexoGrupoPesquisa'] = ['required', 'mimes:pdf'];
+                    $rules['pontuacaoPlanilha'] = ['required', 'string'];
+                    $rules['anexo_acao_afirmativa'] = [Rule::requiredIf($this->radioAcoesAfirmativas == 'sim')];
+                }
+
+                $rules['linkGrupoPesquisa'] = ['required', 'string'];
                 $rules['anexoAutorizacaoComiteEtica'] = [Rule::requiredIf($this->autorizacaoFlag == 'sim')];
                 $rules['justificativaAutorizacaoEtica'] = [Rule::requiredIf($this->autorizacaoFlag == 'nao')];
-                $rules['pontuacaoPlanilha'] = ['required', 'string'];
-                $rules['linkGrupoPesquisa'] = ['required', 'string'];
+                
                 /*if($evento->tipo == "PIBIC" || $evento->tipo == "PIBITI"){
                     $rules['preenchimentoFormFlag'] = [Rule::in(['sim']), 'required'];
                 }*/
-                $rules['anexo_acao_afirmativa'] = [Rule::requiredIf($this->radioAcoesAfirmativas == 'sim')];
             }
 
             $rules['editalId'] = ['required', 'string'];

@@ -35,7 +35,7 @@
 
             </div>
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP")
               <div class="form-group col-md-6" style="margin-top: 10px">
                 <label for="anexoLatterCoordenador" class="col-form-label font-tam" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}<span style="color: red; font-weight:bold">*</span></label>
                   <input type="file" class="input-group-text" name="anexoLattesCoordenador" placeholder="anexoPlanoTrabalho" accept=".pdf" />
@@ -47,7 +47,7 @@
               </div>
             @endif
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP")
               <div class="form-group col-md-6">
                 <label for="anexoPlanilhaPontuacao" class="col-form-label font-tam" style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}<span style="color: red; font-weight:bold">*</span></label>
                   <input type="file" class="input-group-text" name="anexoPlanilhaPontuacao" placeholder="anexoPlanilhaPontuacao" accept=".xlsx, .xls, .ods" />
@@ -60,9 +60,9 @@
               </div>
             @endif
 
-            @if($edital->consu)
+            @if($edital->consu || $edital->tipo == "PICP")
               <div class="form-group col-md-6">
-                <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão da Câmara ou Conselho Pertinente: ') }}<span style="color: red; font-weight:bold">*</span></label>
+                <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão da Câmara: ') }}<span style="color: red; font-weight:bold">*</span></label>
                 <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
                 @error('anexoDecisaoCONSU')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -72,7 +72,7 @@
               </div>
             @else
               <div class="form-group col-md-6">
-                <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão da Câmara ou Conselho Pertinente:') }}</label>
+                <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão da Câmara:') }}</label>
                 <input type="file" class="input-group-text" name="anexoDecisaoCONSU"  accept=".pdf" />
                 @error('anexoDecisaoCONSU')
                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
@@ -82,7 +82,7 @@
               </div>
             @endif
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP")
               <div class="form-group col-md-6" style="margin-top: 10px">
                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}<span style="color: red; font-weight:bold">*</span></label>
                 <input type="file" class="input-group-text" name="anexoGrupoPesquisa" placeholder="Anexo do Grupo de Pesquisa" accept="application/pdf" />
