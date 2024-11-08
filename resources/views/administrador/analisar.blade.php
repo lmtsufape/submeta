@@ -1,14 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container" style="margin-top: 2%">
+    <div class="row justify-content-center" style="margin-top: 4rem;">
         @if (session('sucesso'))
-            <div class="alert alert-success" role="alert">
-                {{ session('sucesso') }}
+            <div class="alert alert-success">
+                <strong>{{ session('sucesso') }}</strong>
             </div>
-        @elseif(session('erro'))
-            <div class="alert alert-danger" role="alert">
-                {{ session('erro') }}
+        @endif
+        @if($errors->any())
+            <div class="alert alert-danger mt-1" >
+                {{$errors->first()}}
             </div>
         @endif
     </div>
@@ -103,7 +104,7 @@
                                                 @if($trabalho->relatorio->status == "em análise")
                                                     <span style="color: dodgerblue; font-weight: bold">O relatório final foi enviado</span>
                                                 @else
-                                                    <span style="color: green; font-weight: bold">O relatório já foi avaliado</span>
+                                                    <span style="color: green; font-weight: bold">O relatório final já foi avaliado</span>
                                                 @endif
                                             @else
                                                 <span style="color: red; font-weight: bold">O relatório final ainda não foi enviado</span>

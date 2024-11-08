@@ -806,8 +806,10 @@
                             <div class="col-sm-9"><h5 style="color: #234B8B; font-weight: bold"></h5></div>
 
                             <div class="col-sm-3 text-sm-right">
-                                @if($trabalho->evento->tipo == "PIBEX" && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022 && $trabalho->relatorio->status == "em análise")
-                                    <a href="{{route('relatorioFinalPibex.analisar', ['relatorio_id' => $trabalho->relatorio->id])}}" class="button" style="color: green"> Avaliar relatório </a>
+                                @if($trabalho->relatorio)
+                                    @if($trabalho->evento->tipo == "PIBEX" && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022 && $trabalho->relatorio->status == "em análise")
+                                        <a href="{{route('relatorioFinalPibex.analisar', ['relatorio_id' => $trabalho->relatorio->id])}}" class="button" style="color: green"> Avaliar Relatório </a>
+                                    @endif
                                 @endif
                             </div>
                         </div>
