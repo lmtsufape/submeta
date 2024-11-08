@@ -15,11 +15,11 @@
             <input class="form-control" type="text" id="nomeCompletoProponente1" name="nomeCoordenador" disabled="disabled" value="{{ Auth()->user()->name }}">
           </div>
 
-          <div class="col-md-1">
+          <div class="col-md-2">
             <br>
-            <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Lattes: ') }}</label>
+            <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Currículo Lattes: ') }}</label>
           </div>
-          <div class="col-md-11">
+          <div class="col-md-10">
             <br>
             <input class="form-control @error('linkLattesEstudante') is-invalid @enderror" type="text" name="linkLattesEstudante" readonly="readonly"
                    @if(Auth()->user()->proponentes != null && Auth()->user()->proponentes->linkLattes != null)
@@ -51,7 +51,7 @@
           </div>
           @endif
 
-          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO' && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo !='CONTINUO-AC')
+          @if($edital->tipo != "PIBEX" && $edital->tipo !='CONTINUO' && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo !='CONTINUO-AC' && $edital->tipo !='PICP')
           <div class="col-md-3">
             <br>
             <label for="lattes" class="col-form-label font-tam" style="font-weight: bold">{{ __('Valor da Planilha de Pontuação: ') }}<span style="color: red; font-weight:bold">*</span></label>
@@ -117,7 +117,7 @@
             </div>
           @endif
 
-          @if($edital->tipo != "CONTINUO" && $edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "CONTINUO-AC")
+          @if($edital->tipo != "CONTINUO" && $edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "CONTINUO-AC" && $edital->tipo !='PICP')
             <div class="col-md-2">
               <br>
               <label for="conflitosInteresse" class="col-form-label font-tam"

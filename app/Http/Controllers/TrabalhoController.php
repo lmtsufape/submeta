@@ -1404,16 +1404,27 @@ class TrabalhoController extends Controller
                 }
             } else {
                 //dd();
-                $trabalho = Auth::user()->proponentes->trabalhos()
-                ->create($request->except([
-                    'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                    'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                    'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
-                ]));
+                if($evento->tipo ==  "PICP")
+                {
+                    $trabalho = Auth::user()->proponentes->trabalhos()
+                        ->create($request->except([
+                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica'
+                        ]));
+                }
+                else
+                {
+                    $trabalho = Auth::user()->proponentes->trabalhos()
+                        ->create($request->except([
+                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
+                            'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
+                            'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
+                        ]));
+                }
+                
             }
-
+            
             //adição dos participantes
-            if ($request->has('marcado')) {             
+            if ($request->has('marcado')) {       
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
                     
@@ -1441,12 +1452,16 @@ class TrabalhoController extends Controller
                         }else {
                             $data['complemento'] = $request->complemento[$part];
                         }
-
+                          
                         if($request->total_periodos){
                             $data['total_periodos'] = $request->total_periodos[$part];
                             $data['turno'] = $request->turno[$part];
                             $data['periodo_atual'] = $request->periodo_atual[$part];
-                            $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
+
+                            if($evento->tipo != "PICP")
+                            {
+                                $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
+                            }
                         }
 
                         if ($request->curso[$part] != "Outro") {
@@ -1461,9 +1476,8 @@ class TrabalhoController extends Controller
                             }
                             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
                         }
-                    }                  
-                    
-                    
+                    }             
+
                     //função no projeto
                     if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"){
                         if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
@@ -1571,7 +1585,7 @@ class TrabalhoController extends Controller
             {
                 $trabalho->area_tematica_pibac()->sync($request->area_tematica_id);
             }
-
+            
             DB::commit();
             if (!$request->has('rascunho')) {
                 //Notificações
@@ -1607,7 +1621,7 @@ class TrabalhoController extends Controller
             }
         } catch (\Throwable $th) {
             DB::rollback();
-            dd($th);
+            //dd($th);
             return redirect(route('proponente.projetos'))->withErrors(['mensagem' => 'Não foi possível realizar a submissão do Projeto!']);
         }
 

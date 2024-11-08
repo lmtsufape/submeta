@@ -30,7 +30,7 @@
 						@if ($evento->numParticipantes != 0)
 						<th scope="col" style="width:200px; text-align: center;">Discente</th>
 						@endif
-						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC")
+						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PICP")
 						<th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
 						@endif
 						<th scope="col" style="width:200px; text-align: center;">Relatório Final</th>
@@ -47,7 +47,7 @@
 						@if ($evento->numParticipantes != 0)
 						<td style="text-align: center;" title="{{$arquivo->participante->user->name}}" id="td-nomeAluno">{{$arquivo->participante->user->name}}</td>
 						@endif
-						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC")
+						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PICP")
 						<td style="text-align: center;">
 							@if((Auth::user()->proponentes != null) && ($arquivo->relatorioParcial == null) &&
  								($arquivo->trabalho->evento->dt_inicioRelatorioParcial <= $hoje) && ($hoje <= $arquivo->trabalho->evento->dt_fimRelatorioParcial))

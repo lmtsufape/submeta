@@ -156,12 +156,13 @@
                                        target="_blank"
                                     >{{ $trabalho->linkGrupoPesquisa }}</a>
                                 </div>
-
-                                <div class="col-md-12">
-                                    <br>
-                                    <b style="color: #4D4D4D;">Valor da Planilha de Pontuação: </b>
-                                    <a style="color: #4D4D4D;">{{$trabalho->pontuacaoPlanilha}}</a>
-                                </div>
+                                @if($evento->tipo != "PICP")
+                                    <div class="col-md-12">
+                                        <br>
+                                        <b style="color: #4D4D4D;">Valor da Planilha de Pontuação: </b>
+                                        <a style="color: #4D4D4D;">{{$trabalho->pontuacaoPlanilha}}</a>
+                                    </div>
+                                @endif
                             @endif
                             @if($trabalho->modalidade != null)
                                 <div class="col-md-12">
@@ -477,7 +478,7 @@
 
                                 </div>
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP")
                                     <div class="col-sm-4">
                                         <label for="anexoLatterCoordenador" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
@@ -505,7 +506,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP")
                                     <div class="col-sm-4">
                                         <label for="anexoPlanilha" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}</label>
@@ -516,7 +517,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP")
                                     <div class="col-sm-4">
                                         <label for="nomeTrabalho" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
@@ -530,11 +531,11 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC")
+                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC" || $evento->tipo == "PICP")
                                     {{-- Decisão do CONSU --}}
                                     <div class="col-sm-4">
                                         <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
-                                            style="font-weight: bold">{{ __('Câmara ou Conselho Pertinente: ') }}</label>
+                                            style="font-weight: bold">{{ __('Decisão da Câmara: ') }}</label>
                                         <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                     </div>
                                 @endif
@@ -605,7 +606,7 @@
 
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
-                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC')
+                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC' && $evento->tipo != "PICP")
                                 <div class="col-sm-3">
                                     <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam"
                                         style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
@@ -816,11 +817,15 @@
                                 <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
                             </div>
                             @for ($i = 0; $i < count($arquivos); $i++)
-                                <div class='row justify-content-start' style='margin-top:40px;'>
-                                <h6 class='col-4' style="color: black; font-weight: bold">Título:<span style="font-weight: normal"> {{$arquivos[$i]->titulo}}</span><h6>
-                                    <h6 class='col-9' style="color: black; font-weight: bold">Média das avaliações:<span style="font-weight: normal"> {{$mediaAval[$i]['relatorio_parcial']}}</span><h6>
+                                <div class='row justify-content-start' style='margin-top:20px;'>
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Título:<span style="font-weight: normal"> {{$arquivos[$i]->titulo}}</span><h6>
+                                </div>
+
+                                <div class='row justify-content-start'>
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Média do relatório escrito:<span style="font-weight: normal"> {{$mediaAval[$i]['relatorio_parcial']}}</span><h6>
                                     <h6 class='col-4' style="color: black; font-weight: bold">Média da apresentação:<span style="font-weight: normal"> {{$mediaAval[$i]['apresentacao_parcial']}}</span><h6>
-                                    <h6 class='col-3' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$mediaAval[$i]['pendentes_parcial']}}</span><h6>   
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Média geral do relatório parcial:<span style="font-weight: normal"> {{$mediaAval[$i]['media_geral_relat_parcial']}}</span><h6>
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$mediaAval[$i]['pendentes_parcial']}}</span><h6>   
                                     <br><br>
                                 </div>
                                 <div class="row justify-content-start" style="alignment: center">
@@ -900,15 +905,17 @@
 
 
                                 @for ($i = 0; $i < count($arquivos); $i++)
-                                    <div class='row justify-content-start'  style='margin-top:40px;'>
+                                    <div class='row justify-content-start'  style='margin-top:20px;'>
                                         <h6 class='col-4' style="color: black; font-weight: bold">Título:<span style="font-weight: normal"> {{$arquivos[$i]->titulo}}</span><h6>
                                     </div>
                                     <div class='row justify-content-start'>
-                                        <h6 class='col-4' style="color: black; font-weight: bold">Média das avaliações:<span style="font-weight: normal"> {{$mediaAval[$i]['relatorio_final']}}</span><h6>
+                                        <h6 class='col-4' style="color: black; font-weight: bold">Média do relatório escrito:<span style="font-weight: normal"> {{$mediaAval[$i]['relatorio_final']}}</span><h6>
                                         <h6 class='col-4' style="color: black; font-weight: bold">Média da apresentação:<span style="font-weight: normal"> {{$mediaAval[$i]['apresentacao_final']}}</span><h6>
+                                        <h6 class='col-4' style="color: black; font-weight: bold">Média geral do relatório final:<span style="font-weight: normal"> {{ $mediaAval[$i]['media_geral_relat_final'] }}</span><h6>
                                         <h6 class='col-3' style="color: black; font-weight: bold">Avaliações pendentes: <span style="font-weight: normal"> {{$mediaAval[$i]['pendentes_final']}}</span><h6>   
                                         <br><br>
                                     </div>
+                                    
                                     <div class="row justify-content-start" style="alignment: center">
                                         @foreach($mediaAval[$i]['avaliacoes_finais'] as $aval)
                                             <div class="col-sm-1" style="margin-bottom: 7px">
@@ -976,6 +983,30 @@
                                 @break
                                 @endif
                             @endforeach
+                        @endif
+
+                        <br>
+
+                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"))
+                            <br>
+                            <hr style="border-top: 1px solid#1492E6">
+
+                            <div class="row justify-content-start" style="alignment: center" >
+                                <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Média Geral dos Relatórios</h6></div>
+                            </div>
+
+                            @for($i = 0; $i < count($arquivos); $i++)
+                                <div class='row justify-content-start'  style='margin-top:20px;'>
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Título:<span style="font-weight: normal"> {{$arquivos[$i]->titulo}}</span><h6>
+                                </div>
+
+                                <div class='row justify-content-start'>
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Média geral do relatório escrito:<span style="font-weight: normal"> {{ $mediaAval[$i]['media_geral_escrito'] }}</span><h6>
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Média geral da apresentação:<span style="font-weight: normal"> {{ $mediaAval[$i]['media_geral_apresentacao'] }}</span><h6>
+                                    <h6 class='col-4' style="color: black; font-weight: bold">Média geral do relatório:<span style="font-weight: normal"> {{ $mediaAval[$i]['media_geral_relat'] }}</span><h6>   
+                                    <br><br>
+                                </div>
+                            @endfor
                         @endif
 
                     </div>
