@@ -213,12 +213,15 @@
 										<input type="hidden" value="{{ $arquivo->trabalhoId }}" name="projId">
 										<div class="col-12">
 											<div class="row">
-												@if(($evento->tipo == 'PIBEX' || $evento->tipo == 'PIBAC') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
+												@if(($evento->tipo == 'PIBEX') && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
 													@if($trabalho->relatorio && $trabalho->relatorio->progresso == 'finalizado')
-														<div class="col-4">
-															<label for="editar_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
-															<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.editarParte1', ['relatorio_id' => $trabalho->relatorio->id]) }}"> {{ __('Editar') }} </a>
-														</div>
+
+														@if($trabalho->relatorio->status == "devolvido para correções")
+															<div class="col-4">
+																<label for="editar_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
+																<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.editarParte1', ['relatorio_id' => $trabalho->relatorio->id]) }}"> {{ __('Editar') }} </a>
+															</div>
+														@endif
 
 														<div class="col-4">
 															<label for="pdf_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>

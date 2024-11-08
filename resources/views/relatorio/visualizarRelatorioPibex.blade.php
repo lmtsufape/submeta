@@ -811,6 +811,7 @@
 
                         <div class="modal-footer">
                             <a class="btn btn-secondary" href="{{ route('relatorioFinalPibex.gerarPDF', ['relatorio_id' => $relatorio->id]) }}" target="_blank"> Imprimir Relatório </a>
+                            <button name="parecer" type="submit" class="btn btn-danger" value="devolver">Devolver</button>
                             <button name="parecer" type="submit" class="btn btn-success" value="aprovar">Aprovar</button>
                         </div>
                     </form>

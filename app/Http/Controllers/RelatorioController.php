@@ -230,6 +230,8 @@ class RelatorioController extends Controller
         }
 
         $relatorio->update();
+
+        return redirect(route('admin.analisar', ['evento_id' => $relatorio->trabalho->evento->id]))->with('sucesso', 'Relatório avaliado!');
     }
 
     public function participantesParaObjeto($request, $relatorio_id)

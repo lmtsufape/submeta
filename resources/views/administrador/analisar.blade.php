@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="container" style="margin-top: 2%">
+        @if (session('sucesso'))
+            <div class="alert alert-success" role="alert">
+                {{ session('sucesso') }}
+            </div>
+        @elseif(session('erro'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('erro') }}
+            </div>
+        @endif
+    </div>
 
     <div class="row justify-content-center" style="margin-top: 100px;">
         <div class="col-md-11">
@@ -83,8 +94,20 @@
                                     <div class="form-row mt-3">
                                         <div class="col-md-10 tituloProj"><h5 style="color: #234B8B; font-weight: bold; margin-top: 15px;">Título: {{ $trabalho->titulo }}</h5>
                                         
-                                        @if(!empty($trabalhosRelatorioFinal) && in_array($trabalho->id, $trabalhosRelatorioFinal)) 
+                                        @if(!empty($trabalhosRelatorioFinal) && in_array($trabalho->id, $trabalhosRelatorioFinal))
                                             <span style="color: green; font-weight: bold">O relatório final foi enviado</span>
+                                        @endif
+
+                                        @if($trabalho->evento->tipo == "PIBEX" && \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $evento->created_at)->year > 2022)
+                                            @if($trabalho->relatorio && $trabalho->relatorio->progresso == "finalizado")
+                                                @if($trabalho->relatorio->status == "em análise")
+                                                    <span style="color: dodgerblue; font-weight: bold">O relatório final foi enviado</span>
+                                                @else
+                                                    <span style="color: green; font-weight: bold">O relatório já foi avaliado</span>
+                                                @endif
+                                            @else
+                                                <span style="color: red; font-weight: bold">O relatório final ainda não foi enviado</span>
+                                            @endif
                                         @endif
 
                                     </div>
