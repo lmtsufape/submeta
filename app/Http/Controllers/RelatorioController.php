@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\AreaTematica;
 use App\Http\Requests\StoreRelatorioRequest;
+use App\Notificacao;
+use App\Notifications\RelatorioRecebimentoNotification;
+use App\Notifications\RelatorioRecebimentoNotificationPibex;
 use App\ObjetivoDeDesenvolvimentoSustentavel;
 use App\ProdutosExtensaoGerados;
 use App\Relatorio;
@@ -12,11 +15,14 @@ use App\RelatorioIntegranteExterno;
 use App\RelatorioIntegranteInterno;
 use App\RelatorioParticipante;
 use App\Trabalho;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 class RelatorioController extends Controller
 {
     /**
@@ -870,6 +876,20 @@ class RelatorioController extends Controller
             $relatorio->progresso = 'finalizado';
 
             $relatorio->update();
+
+            $userTemp = User::find($relatorio->trabalho->evento->coordenadorComissao->user_id);
+
+            $notificacao = Notificacao::create([
+                'remetente_id' => Auth::user()->id,
+                'destinatario_id' => $relatorio->trabalho->evento->coordenadorComissao->user_id,
+                'trabalho_id' => $relatorio->trabalho->id,
+                'lido' => false,
+                'tipo' => 4,
+            ]);
+            $notificacao->save();
+
+            Notification::send($userTemp, new RelatorioRecebimentoNotificationPibex($relatorio->id,$userTemp,
+                $relatorio->trabalho->evento->nome, $relatorio->trabalho->titulo,'Final'));
 
             DB::commit();
 
