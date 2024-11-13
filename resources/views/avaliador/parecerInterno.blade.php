@@ -172,7 +172,7 @@
 							    @endif @endif required>
 					</div>
 
-					@if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM')
+					@if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == 'PICP')
 						{{-- Decisão do CONSU --}}
 						<div class="col-sm-3">
 							<label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU: ') }}</label>
@@ -238,7 +238,7 @@
 				<div class="d-flex justify-content-end">
 					<div style="margin-right: 15px"><a href="{{ route('avaliador.visualizarTrabalho', ['evento_id' => $evento->id])}}"  class="btn btn-light" style="color: red;">Cancelar</a></div>
 					<div>
-						<button type="submit" class="btn btn-success" @if($evento->inicioRevisao > $hoje || $evento->fimRevisao < $hoje) disabled @endif>Enviar meu parecer</button></div>
+						<button type="submit" class="btn btn-success" @if(($evento->inicioRevisao > $hoje || $evento->fimRevisao < $hoje) && $evento->tipo != "PICP") disabled @endif>Enviar meu parecer</button></div>
 				</div>
 			</form>
 		  </div>

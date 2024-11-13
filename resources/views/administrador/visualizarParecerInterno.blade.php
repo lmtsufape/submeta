@@ -88,7 +88,7 @@
                                    @endif @endif disabled>
                         </div>
 
-                        @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM')
+                        @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == 'PICP')
                             {{-- Decisão do CONSU --}}
                             <div class="col-sm-3">
                                 <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU: ') }}</label>
