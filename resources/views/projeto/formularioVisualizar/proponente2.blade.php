@@ -30,7 +30,7 @@
             </div>
           @endif
           
-          @if( (Auth::user()->avaliadors != null) && (Auth::user()->avaliadors->tipo != 'Externo' || Auth::user()->avaliadors->tipo == null || $evento->tipo != "PICP")
+          @if( (Auth::user()->avaliadors != null) && (Auth::user()->avaliadors->tipo != 'Externo' || Auth::user()->avaliadors->tipo == null || $edital->tipo != "PICP")
           && ($edital->natureza_id != 3 || $projeto->status != "rascunho"))
           <!-- só pagar oq tem dps do || para funcionar para submetido e rascunho! EXTENSÃO(3)!!! -->
           <div class="col-md-12">

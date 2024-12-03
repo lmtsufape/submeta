@@ -654,7 +654,7 @@
                             @endif
 
                             @if((($evento->dt_fimRelatorioParcial < $hoje && $hoje<$evento->dt_inicioRelatorioFinal)
-                                || ($hoje>$evento->dt_fimRelatorioFinal)) && ($substituicoesPendentes->count() == 0 || $evento->numParticipantes == 0) )
+                                || ($hoje>$evento->dt_fimRelatorioFinal)) && ($substituicoesPendentes->count() == 0 || $evento->numParticipantes == 0) || $evento->tipo == "PICP")
                                 <div class="col-md-1 text-sm-right">
                                     <a type="button" value="{{ $trabalho->id }}" id="atribuir1" data-toggle="modal"
                                        data-target="#avaliacaoRelatorioModal">
@@ -814,7 +814,7 @@
                             </div>
                         </div>
 
-                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"))
+                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PICP"))
                             <div class="row justify-content-start" style="alignment: center">
                                 <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
                             </div>
