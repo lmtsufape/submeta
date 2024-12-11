@@ -49,6 +49,7 @@ class StoreRelatorioRequest extends FormRequest
                     'nome_interno.*' => 'required|string|max:255',
                     'cpf_interno.*' => 'required',
                     'tipo.*' => 'required',
+                    'tipo_vinculo.*' => 'required',
                 ];
                 break;
 

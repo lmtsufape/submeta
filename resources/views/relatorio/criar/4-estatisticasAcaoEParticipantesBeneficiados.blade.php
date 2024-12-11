@@ -60,12 +60,12 @@
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="formulario_indicadores"
-                                   id="formulario_indicadores_sim" value="true" {{ old('formulario_indicadores') === 'true' ? 'checked' : '' }}>
+                                   id="formulario_indicadores_sim" value="true" {{ old('formulario_indicadores') === 'true' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="formulario_indicadores_sim">Sim</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="formulario_indicadores"
-                                   id="formulario_indicadores_nao" value="false" {{ old('formulario_indicadores') === 'false' ? 'checked' : '' }}>
+                                   id="formulario_indicadores_nao" value="false" {{ old('formulario_indicadores') === 'false' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="formulario_indicadores_nao">Não</label>
                         </div>
                     </div>
@@ -98,12 +98,12 @@
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="certificacao_adicinonal"
-                                   id="certificacao_adicinonal_sim" value="true" {{ old('certificacao_adicinonal') === 'true' ? 'checked' : '' }}>
+                                   id="certificacao_adicinonal_sim" value="true" {{ old('certificacao_adicinonal') === 'true' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="certificacao_adicinonal_sim">Sim</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="certificacao_adicinonal"
-                                   id="certificacao_adicinonal_nao" value="false" {{ old('certificacao_adicinonal') === 'false' ? 'checked' : '' }}>
+                                   id="certificacao_adicinonal_nao" value="false" {{ old('certificacao_adicinonal') === 'false' ? 'checked' : '' }} required>
                             <label class="form-check-label" for="certificacao_adicinonal_nao">Não</label>
                         </div>
                     </div>
@@ -203,7 +203,7 @@
                             {{ __('III. Certificado/s de apresentação e/ou publicação dos resultados parciais e/ou finais em Eventos de Extensão.') }} <br>
                         </label>
 
-                        <input type="file" class="form-control-file" name="anexo" value="{{ old('anexo') }}" id="anexo">
+                        <input type="file" class="form-control-file" name="anexo" value="{{ old('anexo') }}" id="anexo" required>
                     </div>
                 </div>
             </div>
