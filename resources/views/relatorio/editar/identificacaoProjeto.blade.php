@@ -38,7 +38,21 @@
                 <br>
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
+                        <label for="processo_sipac"
+                               class="col-form-label"> <strong>{{ __('Número do processo SIPAC:') }}</strong> <span
+                                    style="color: red; font-weight:bold;">*</span> </label>
+                        <input id="processo_sipac" type="text" class="form-control" name="processo_sipac"
+                               value="{{ $relatorio->processo_sipac }}" required autocomplete="processo_sipac"
+                               autofocus>
+                        <!--@error('processo_sipac')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror -->
+                    </div>
+
+                    <div class="col-4">
                         <label for="inicio_projeto"
                                class="col-form-label"> <strong>{{ __('Data de início do projeto:') }}</strong><span
                                     style="color: red; font-weight:bold;">*</span> </label>
@@ -51,7 +65,7 @@
                         @enderror -->
                     </div>
 
-                    <div class="col-6">
+                    <div class="col-4">
                         <label for="conclusao_projeto"
                                class="col-form-label"> <strong>{{ __('Data de conclusão do projeto:') }}</strong> <span
                                     style="color: red; font-weight:bold;">*</span> </label>

@@ -29,6 +29,7 @@ class StoreRelatorioRequest extends FormRequest
         {
             case 'etapa1':
                 $rules = [
+                    'processo_sipac' => 'required|string|max:255',
                     'inicio_projeto' => 'required|date|before:conclusao_projeto',
                     'conclusao_projeto' => 'required|date|after:inicio_projeto',
                     'titulo_projeto' => 'required|string|min:5|max:255',
@@ -92,6 +93,10 @@ class StoreRelatorioRequest extends FormRequest
     public function messages()
     {
         return [
+            'processo_sipac.required' => 'O processo sipac é obrigatório.',
+            'processo_sipac.string' => 'O processo sipac deve ser um texto.',
+            'processo_sipac.max' => 'O processo sipac deve ter no máximo 255 caracteres.',
+
             'inicio_projeto.required' => 'A data de início do projeto é obrigatória.',
             'inicio_projeto.date' => 'A data de início do projeto deve ser uma data válida.',
             'inicio_projeto.before' => 'A data de início do projeto deve ser antes da data de conclusão do projeto.',
