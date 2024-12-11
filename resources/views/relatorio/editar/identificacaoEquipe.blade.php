@@ -61,17 +61,17 @@
                                 <label for="tipo" class="col-form-label"> <strong>{{ __('Tipo:') }}</strong> <span
                                             style="color: red; font-weight:bold;">*</span> </label>
                                 <select name="tipo[]" class="form-control" required>
-                                    <option value="">Selecione...</option>
+                                    <option value="" selected hidden></option>
                                     <option value="Discente">Discente</option>
                                     <option value="Servidor">Servidor</option>
                                 </select>
                             </div>
                             <div class="col-6">
                                 <label for="tipo_vinculo"
-                                       class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span
-                                            style="color: red; font-weight:bold;">(caso seja um servidor)</span> </label>
-                                <select name="tipo_vinculo[]" class="form-control">
-                                    <option value="" selected></option>
+                                       class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
+                                <select name="tipo_vinculo[]" class="form-control" required>
+                                    <option value="" selected hidden></option>
+                                    <option value="Bolsista">Bolsista</option>
                                     <option value="Docente">Docente</option>
                                     <option value="Substituto/a">Substituto/a</option>
                                     <option value="Técnico/a Administrativo/a">Técnico/a Administrativo/a</option>
@@ -144,14 +144,15 @@
                             </div>
                             <div class="col-6">
                                 <label for="tipo_vinculo"
-                                       class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span
-                                            style="color: red; font-weight:bold;">(caso seja um servidor)</span> </label>
-                                <select name="tipo_vinculo[]" class="form-control">
+                                       class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span style="color: red; font-weight:bold;">*</span> <span
+                                            style="color: red; font-weight:bold;"></span> </label>
+                                <select name="tipo_vinculo[]" class="form-control" required>
                                     @if($interno->tipo_vinculo)
                                         <option value="{{ $interno->tipo_vinculo}}" selected hidden>{{ $interno->tipo_vinculo }}</option>
                                     @else
                                         <option value="" selected></option>
                                     @endif
+                                    <option value="Bolsista">Bolsista</option>
                                     <option value="Docente">Docente</option>
                                     <option value="Substituto/a">Substituto/a</option>
                                     <option value="Técnico/a Administrativo/a">Técnico/a Administrativo/a</option>
