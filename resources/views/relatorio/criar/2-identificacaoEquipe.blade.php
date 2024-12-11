@@ -65,15 +65,16 @@
                                 <div class="col-6">
                                     <label for="tipo" class="col-form-label"> <strong>{{ __('Tipo:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
                                     <select name="tipo[]" class="form-control" required>
-                                        <option value="">Selecione...</option>
+                                        <option value="" selected hidden></option>
                                         <option value="Discente" {{ old('tipo.'.$key) == 'Discente' ? 'selected' : '' }}>Discente</option>
                                         <option value="Servidor" {{ old('tipo.'.$key) == 'Servidor' ? 'selected' : '' }}>Servidor</option>
                                     </select>
                                 </div>
                                 <div class="col-6">
-                                    <label for="tipo_vinculo" class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span style="color: red; font-weight:bold;">(caso seja um servidor)</span> </label>
-                                    <select name="tipo_vinculo[]" class="form-control">
-                                        <option value="" selected></option>
+                                    <label for="tipo_vinculo" class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
+                                    <select name="tipo_vinculo[]" class="form-control" required>
+                                        <option value="" selected hidden></option>
+                                        <option value="Bolsista" {{ old('tipo_vinculo.0') == 'Bolsista' ? 'selected' : '' }}>Bolsista</option>
                                         <option value="Docente" {{ old('tipo_vinculo.0') == 'Docente' ? 'selected' : '' }}>Docente</option>
                                         <option value="Substituto/a" {{ old('tipo_vinculo.0') == 'Substituto/a' ? 'selected' : '' }}>Substituto/a</option>
                                         <option value="Técnico/a Administrativo/a" {{ old('tipo_vinculo.0') == 'Técnico/a Administrativo/a' ? 'selected' : '' }}>Técnico/a Administrativo/a</option>
@@ -124,15 +125,16 @@
                             <div class="col-6">
                                 <label for="tipo" class="col-form-label"> <strong>{{ __('Tipo:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
                                 <select name="tipo[]" class="form-control" required>
-                                    <option value="">Selecione...</option>
+                                    <option value="" selected hidden></option>
                                     <option value="Discente" {{ old('tipo.0') == 'Discente' ? 'selected' : '' }}>Discente</option>
                                     <option value="Servidor" {{ old('tipo.0') == 'Servidor' ? 'selected' : '' }}>Servidor</option>
                                 </select>
                             </div>
                             <div class="col-6">
-                                <label for="tipo_vinculo" class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span style="color: red; font-weight:bold;">(caso seja um servidor)</span> </label>
-                                <select name="tipo_vinculo[]" class="form-control">
-                                    <option value="" selected></option>
+                                <label for="tipo_vinculo" class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
+                                <select name="tipo_vinculo[]" class="form-control" required>
+                                    <option value="" selected hidden></option>
+                                    <option value="Bolsista" {{ old('tipo_vinculo.0') == 'Bolsista' ? 'selected' : '' }}>Bolsista</option>
                                     <option value="Docente" {{ old('tipo_vinculo.0') == 'Docente' ? 'selected' : '' }}>Docente</option>
                                     <option value="Substituto/a" {{ old('tipo_vinculo.0') == 'Substituto/a' ? 'selected' : '' }}>Substituto/a</option>
                                     <option value="Técnico/a Administrativo/a" {{ old('tipo.0') == 'Técnico/a Administrativo/a' ? 'selected' : '' }}>Técnico/a Administrativo/a</option>

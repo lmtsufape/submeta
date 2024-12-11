@@ -57,23 +57,23 @@
                         @if($relatorio->formulario_indicadores == true)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="formulario_indicadores"
-                                       id="formulario_indicadores_sim" value="true" checked>
+                                       id="formulario_indicadores_sim" value="true" checked required>
                                 <label class="form-check-label" for="formulario_indicadores_sim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="formulario_indicadores"
-                                       id="formulario_indicadores_nao" value="false">
+                                       id="formulario_indicadores_nao" value="false" required>
                                 <label class="form-check-label" for="formulario_indicadores_nao">Não</label>
                             </div>
                         @else
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="formulario_indicadores"
-                                       id="formulario_indicadores_sim" value="true">
+                                       id="formulario_indicadores_sim" value="true" required>
                                 <label class="form-check-label" for="formulario_indicadores_sim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="formulario_indicadores"
-                                       id="formulario_indicadores_nao" value="false" checked>
+                                       id="formulario_indicadores_nao" value="false" checked required>
                                 <label class="form-check-label" for="formulario_indicadores_nao">Não</label>
                             </div>
                         @endif
@@ -109,23 +109,23 @@
                         @if($relatorio->certificacao_adicinonal == true)
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="certificacao_adicinonal"
-                                       id="certificacao_adicinonal_sim" value="true" checked>
+                                       id="certificacao_adicinonal_sim" value="true" checked required>
                                 <label class="form-check-label" for="certificacao_adicinonal_sim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="certificacao_adicinonal"
-                                       id="certificacao_adicinonal_nao" value="false">
+                                       id="certificacao_adicinonal_nao" value="false" required>
                                 <label class="form-check-label" for="certificacao_adicinonal_nao">Não</label>
                             </div>
                         @else
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="certificacao_adicinonal"
-                                       id="certificacao_adicinonal_sim" value="true">
+                                       id="certificacao_adicinonal_sim" value="true" required>
                                 <label class="form-check-label" for="fcertificacao_adicinonal_sim">Sim</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="certificacao_adicinonal"
-                                       id="certificacao_adicinonal_nao" value="false" checked>
+                                       id="certificacao_adicinonal_nao" value="false" checked required>
                                 <label class="form-check-label" for="certificacao_adicinonal_nao">Não</label>
                             </div>
                         @endif
@@ -214,19 +214,27 @@
                             <a href="{{route('relatorioFinalPibex.downloadAnexo', ['relatorio_id' => $relatorio->id])}}" target="_new" style="font-size: 20px; color: #114048ff;" >
                                 <img class="" src="{{asset('img/icons/file-download-solid.svg')}}" style="width:20px">
                             </a>
+
+                            <label for="anexoProjeto" class="col-form-label font-tam text-justify">
+                                {{ __('I. Atas de frequências mensais do/a bolsista;') }} <br>
+                                {{ __('II. Formulário de prestação de contas;') }} <br>
+                                {{ __('III. Certificado/s de apresentação e/ou publicação dos resultados parciais e/ou finais em Eventos de Extensão.') }} <br>
+                            </label>
+
+                            <input type="file" class="form-control-file" name="anexo" value="{{ old('anexo') }}" id="anexo">
                         @else
                             <a>
                                 <i class="fas fa-times-circle fa-2x" style="color:red; font-size:25px"></i>
                             </a>
+
+                            <label for="anexoProjeto" class="col-form-label font-tam text-justify">
+                                {{ __('I. Atas de frequências mensais do/a bolsista;') }} <br>
+                                {{ __('II. Formulário de prestação de contas;') }} <br>
+                                {{ __('III. Certificado/s de apresentação e/ou publicação dos resultados parciais e/ou finais em Eventos de Extensão.') }} <br>
+                            </label>
+
+                            <input type="file" class="form-control-file" name="anexo" value="{{ old('anexo') }}" id="anexo" required>
                         @endif
-
-                        <label for="anexoProjeto" class="col-form-label font-tam text-justify">
-                            {{ __('I. Atas de frequências mensais do/a bolsista;') }} <br>
-                            {{ __('II. Formulário de prestação de contas;') }} <br>
-                            {{ __('III. Certificado/s de apresentação e/ou publicação dos resultados parciais e/ou finais em Eventos de Extensão.') }} <br>
-                        </label>
-
-                        <input type="file" class="form-control-file" name="anexo" value="{{ old('anexo') }}" id="anexo">
                     </div>
                 </div>
             </div>

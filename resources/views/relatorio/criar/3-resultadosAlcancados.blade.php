@@ -79,11 +79,12 @@
                         <label for="justificativa_objetivos_alcancados"
                                class="col-form-label">
                             <strong>{{ __('Caso não tenha atingido integralmente (100%) os objetivos propostos, quais deles deixaram de ser alcançados? Justifique.') }}</strong>
+                            <span style="color: red; font-weight:bold;">*</span>
                         </label>
                         <input id="justificativa_objetivos_alcancados" type="text" class="form-control"
                                name="justificativa_objetivos_alcancados"
                                value="{{ old('justificativa_objetivos_alcancados')}}"
-                               autocomplete="justificativa_objetivos_alcancados" autofocus>
+                               autocomplete="justificativa_objetivos_alcancados" autofocus required>
                     </div>
                 </div>
 
@@ -123,11 +124,12 @@
                         <label for="justificativa_publico_estimado"
                                class="col-form-label">
                             <strong>{{ __('Caso não tenha atingido integralmente (100%) a estimativa de público, justifique.') }}</strong>
+                            <span style="color: red; font-weight:bold;">*</span>
                         </label>
                         <input id="justificativa_publico_estimado" type="text" class="form-control"
                                name="justificativa_publico_estimado"
                                value="{{ old('justificativa_publico_estimado') }}"
-                               autocomplete="justificativa_publico_estimado" autofocus>
+                               autocomplete="justificativa_publico_estimado" autofocus required>
                     </div>
                 </div>
 
