@@ -30,11 +30,15 @@ class Relatorio extends Model
         'formulario_indicadores',
         'certificacao_adicinonal',
         'trabalho_id',
+        'anexo',
+        'progresso',
+        'processo_sipac',
     ];
 
     public function setAttributes($request)
     {
         $this->status = 'em análise';
+        $this->processo_sipac = $request['processo_sipac'];
         $this->inicio_projeto = $request['inicio_projeto'];
         $this->conclusao_projeto = $request['conclusao_projeto'];
         $this->titulo_projeto = $request['titulo_projeto'];

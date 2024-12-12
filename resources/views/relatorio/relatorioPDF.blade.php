@@ -40,13 +40,20 @@
                     {{ $relatorio->trabalho->evento->nome }}
                 </label>
             </div>
-            <div class="col-md-6">
+
+            <div class="col-md-4">
+                <label class="col-form-label"> <strong>{{ __('N° do processo SIPAC (Projeto):') }}</strong>
+                    {{ $relatorio->processo_sipac }}
+                </label>
+            </div>
+
+            <div class="col-md-4">
                 <label class="col-form-label"> <strong>{{ __('Data de início do projeto:') }}</strong>
                     {{ \Carbon\Carbon::createFromFormat('Y-m-d', $relatorio->inicio_projeto)->format('d/m/Y') }}
                 </label>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="col-form-label"> <strong>{{ __('Data de conclusão do projeto:') }}</strong>
                     {{ \Carbon\Carbon::createFromFormat('Y-m-d', $relatorio->conclusao_projeto)->format('d/m/Y') }}
                 </label>

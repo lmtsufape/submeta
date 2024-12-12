@@ -425,6 +425,7 @@ class RelatorioController extends Controller
             $vice_coordenador = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->where('tipo', 'Vice-Coordenador/a')->first();
 
             $relatorio->fill([
+                'processo_sipac' => $request->input('processo_sipac'),
                 'inicio_projeto' => $request->input('inicio_projeto'),
                 'conclusao_projeto' => $request->input('conclusao_projeto'),
                 'titulo_projeto' => $request->input('titulo_projeto'),
