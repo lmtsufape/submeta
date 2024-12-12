@@ -47,7 +47,7 @@
                 <div class="row">
                     <div class="col-4">
                         <label for="processo_sipac"
-                               class="col-form-label"> <strong>{{ __('Número do processo SIPAC:') }}</strong> <span
+                               class="col-form-label"> <strong>{{ __('N° do processo SIPAC (Projeto):') }}</strong> <span
                                     style="color: red; font-weight:bold;">*</span> </label>
                         <input id="processo_sipac" type="text" class="form-control" name="processo_sipac"
                                value="{{ old('processo_sipac')}}" required autocomplete="processo_sipac"

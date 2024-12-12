@@ -42,7 +42,7 @@
             </div>
 
             <div class="col-md-4">
-                <label class="col-form-label"> <strong>{{ __('N° do processo SIPAC (projeto):') }}</strong>
+                <label class="col-form-label"> <strong>{{ __('N° do processo SIPAC (Projeto):') }}</strong>
                     {{ $relatorio->processo_sipac }}
                 </label>
             </div>
