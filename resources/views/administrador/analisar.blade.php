@@ -103,6 +103,8 @@
                                             @if($trabalho->relatorio && $trabalho->relatorio->progresso == "finalizado")
                                                 @if($trabalho->relatorio->status == "em análise")
                                                     <span style="color: dodgerblue; font-weight: bold">O relatório final foi enviado</span>
+                                                @elseif($trabalho->relatorio->status == "devolvido para correções")
+                                                    <span style="color: orange; font-weight: bold">O relatório final foi devolvido para correções</span>
                                                 @else
                                                     <span style="color: green; font-weight: bold">O relatório final já foi avaliado</span>
                                                 @endif

@@ -625,7 +625,26 @@ class RelatorioController extends Controller
     
                 $relatorio->update();
             }
+
+            $relatorio->status = "em análise";
+
+            $relatorio->update();
             
+            $userTemp = User::find($relatorio->trabalho->evento->coordenadorComissao->user_id);
+
+            $notificacao = Notificacao::create([
+                'remetente_id' => Auth::user()->id,
+                'destinatario_id' => $relatorio->trabalho->evento->coordenadorComissao->user_id,
+                'trabalho_id' => $relatorio->trabalho->id,
+                'lido' => false,
+                'tipo' => 4,
+            ]);
+
+            $notificacao->save();
+
+            Notification::send($userTemp, new RelatorioRecebimentoNotificationPibex($relatorio->id,$userTemp,
+                $relatorio->trabalho->evento->nome, $relatorio->trabalho->titulo,'Final'));
+
             DB::commit();
         }
 

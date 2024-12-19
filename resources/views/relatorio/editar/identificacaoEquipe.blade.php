@@ -72,9 +72,10 @@
                                 <select name="tipo_vinculo[]" class="form-control" required>
                                     <option value="" selected hidden></option>
                                     <option value="Bolsista">Bolsista</option>
-                                    <option value="Docente">Docente</option>
-                                    <option value="Substituto/a">Substituto/a</option>
-                                    <option value="Técnico/a Administrativo/a">Técnico/a Administrativo/a</option>
+                                    <option value="Discente - Colaborador">Discente - Colaborador</option>
+                                    <option value="Docente - Colaborador">Docente - Colaborador</option>
+                                    <option value="Técnico/a Administrativo/a - Colaborador">Técnico/a Administrativo/a - Colaborador</option>
+                                    <option value="Vice-coordenador">Vice-coordenador</option>
                                 </select>
                             </div>
                             <div class="col-6">
@@ -153,9 +154,10 @@
                                         <option value="" selected></option>
                                     @endif
                                     <option value="Bolsista">Bolsista</option>
-                                    <option value="Docente">Docente</option>
-                                    <option value="Substituto/a">Substituto/a</option>
-                                    <option value="Técnico/a Administrativo/a">Técnico/a Administrativo/a</option>
+                                    <option value="Discente - Colaborador">Discente - Colaborador</option>
+                                    <option value="Docente - Colaborador">Docente - Colaborador</option>
+                                    <option value="Técnico/a Administrativo/a - Colaborador">Técnico/a Administrativo/a - Colaborador</option>
+                                    <option value="Vice-coordenador">Vice-coordenador</option>
                                 </select>
                             </div>
                             <div class="col-6">
