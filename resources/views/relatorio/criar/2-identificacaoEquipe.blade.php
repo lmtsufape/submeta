@@ -74,11 +74,12 @@
                                     <label for="tipo_vinculo" class="col-form-label"> <strong>{{ __('Tipo de vínculo:') }}</strong> <span style="color: red; font-weight:bold;">*</span> </label>
                                     <select name="tipo_vinculo[]" class="form-control" required>
                                         <option value="" selected hidden></option>
-                                        <option value="Bolsista" {{ old('tipo_vinculo.0') == 'Bolsista' ? 'selected' : '' }}>Bolsista</option>
-                                        <option value="Discente - Colaborador" {{ old('tipo_vinculo.0') == 'Discente - Colaborador' ? 'selected' : '' }}>Discente - Colaborador</option>
-                                        <option value="Docente - Colaborador" {{ old('tipo_vinculo.0') == 'Docente - Colaborador' ? 'selected' : '' }}>Docente - Colaborador</option>
-                                        <option value="Técnico/a Administrativo/a - Colaborador" {{ old('tipo_vinculo.0') == 'Técnico/a Administrativo/a - Colaborador' ? 'selected' : '' }}>Técnico/a Administrativo/a - Colaborador</option>
-                                        <option value="Vice-coordenador" {{ old('tipo_vinculo.0') == 'Vice-coordenador' ? 'selected' : '' }}>Vice-coordenador</option>
+                                        <option value="Bolsista" {{ old('tipo_vinculo.0') == 'Bolsista' ? 'selected' : '' }}>Bolsista</option>                            
+                                        <option value="Discente - Colaborador/a" {{ old('tipo_vinculo.0') == 'Discente - Colaborador' ? 'selected' : '' }}>Discente - Colaborador/a</option>
+                                        <option value="Docente - Colaborador/a" {{ old('tipo_vinculo.0') == 'Docente - Colaborador' ? 'selected' : '' }}>Docente - Colaborador/a</option>
+                                        <option value="Técnico/a Administrativo/a - Colaborador/a" {{ old('tipo_vinculo.0') == 'Técnico/a Administrativo/a - Colaborador/a' ? 'selected' : '' }}>Técnico/a Administrativo/a - Colaborador/a</option>
+                                        <option value="Vice-coordenador/a" {{ old('tipo_vinculo.0') == 'Vice-coordenador/a' ? 'selected' : '' }}>Vice-coordenador/a</option>
+                                        <option value="Colaborador/a Externo/a" {{ old('tipo_vinculo.0') == 'Colaborador/a Externo/a' ? 'selected' : '' }}>Colaborador/a Externo/a</option>
                                     </select>
                                 </div>
                                 <div class="col-6">
@@ -136,10 +137,11 @@
                                 <select name="tipo_vinculo[]" class="form-control" required>
                                     <option value="" selected hidden></option>
                                     <option value="Bolsista" {{ old('tipo_vinculo.0') == 'Bolsista' ? 'selected' : '' }}>Bolsista</option>
-                                    <option value="Discente - Colaborador" {{ old('tipo_vinculo.0') == 'Discente - Colaborador' ? 'selected' : '' }}>Discente - Colaborador</option>
-                                    <option value="Docente - Colaborador" {{ old('tipo_vinculo.0') == 'Docente - Colaborador' ? 'selected' : '' }}>Docente - Colaborador</option>
-                                    <option value="Técnico/a Administrativo/a - Colaborador" {{ old('tipo.0') == 'Técnico/a Administrativo/a - Colaborador' ? 'selected' : '' }}>Técnico/a Administrativo/a - Colaborador</option>
-                                    <option value="Vice-coordenador" {{ old('tipo_vinculo.0') == 'Vice-coordenador' ? 'selected' : '' }}>Vice-coordenador</option>
+                                    <option value="Discente - Colaborador/a" {{ old('tipo_vinculo.0') == 'Discente - Colaborador/a' ? 'selected' : '' }}>Discente - Colaborador/a</option>
+                                    <option value="Docente - Colaborador/a" {{ old('tipo_vinculo.0') == 'Docente - Colaborador/a' ? 'selected' : '' }}>Docente - Colaborador/a</option>
+                                    <option value="Técnico/a Administrativo/a - Colaborador/a" {{ old('tipo.0') == 'Técnico/a Administrativo/a - Colaborador/a' ? 'selected' : '' }}>Técnico/a Administrativo/a - Colaborador/a</option>
+                                    <option value="Vice-coordenador/a" {{ old('tipo_vinculo.0') == 'Vice-coordenador/a' ? 'selected' : '' }}>Vice-coordenador/a</option>
+                                    <option value="Colaborador/a Externo/a" {{ old('tipo_vinculo.0') == 'Colaborador/a Externo/a' ? 'selected' : '' }}>Colaborador/a Externo/a</option>
                                 </select>
                             </div>
                             <div class="col-6">
