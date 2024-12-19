@@ -33,7 +33,7 @@
 						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PICP")
 						<th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
 						@endif
-						<th scope="col" style="width:200px; text-align: center;">Relatório Final</th>
+						<th scope="col" style="width:250px; text-align: center;">Relatório Final</th>
                     </tr>
 				</thead>
 					@foreach($arquivos as $arquivo)

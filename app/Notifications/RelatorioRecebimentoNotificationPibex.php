@@ -54,7 +54,7 @@ class RelatorioRecebimentoNotificationPibex extends Notification
         return (new MailMessage)
             ->subject($this->subject)
             ->greeting("Saudações!")
-            ->line("O(A) proponente / coordenador(a) do projeto {$this->trabalhoNome} vinculado ao edital {$this->editalNome} do Submeta submeteu Relatório {$this->tipo} para avaliação.")
+            ->line("O(A) proponente / coordenador(a) do projeto {$this->trabalhoNome}, vinculado ao edital {$this->editalNome} do Submeta, submeteu Relatório {$this->tipo} para avaliação.")
             ->line("Solicitamos gentilmente que acesse o sistema Submeta para avaliar o documento.")
             ->action('Acessar Relatório', $this->url )
             ->markdown('vendor.notifications.email');

@@ -72,9 +72,11 @@
                                 <select name="tipo_vinculo[]" class="form-control" required>
                                     <option value="" selected hidden></option>
                                     <option value="Bolsista">Bolsista</option>
-                                    <option value="Docente">Docente</option>
-                                    <option value="Substituto/a">Substituto/a</option>
-                                    <option value="Técnico/a Administrativo/a">Técnico/a Administrativo/a</option>
+                                    <option value="Discente - Colaborador/a">Discente - Colaborador/a</option>
+                                    <option value="Docente - Colaborador/a">Docente - Colaborador/a</option>
+                                    <option value="Técnico/a Administrativo/a - Colaborador/a">Técnico/a Administrativo/a - Colaborador/a</option>
+                                    <option value="Vice-coordenador/a">Vice-coordenador/a</option>
+                                    <option value="Colaborador/a Externo/a">Colaborador/a Externo/a</option>
                                 </select>
                             </div>
                             <div class="col-6">
@@ -153,9 +155,11 @@
                                         <option value="" selected></option>
                                     @endif
                                     <option value="Bolsista">Bolsista</option>
-                                    <option value="Docente">Docente</option>
-                                    <option value="Substituto/a">Substituto/a</option>
-                                    <option value="Técnico/a Administrativo/a">Técnico/a Administrativo/a</option>
+                                    <option value="Discente - Colaborador/a">Discente - Colaborador/a</option>
+                                    <option value="Docente - Colaborador/a">Docente - Colaborador/a</option>
+                                    <option value="Técnico/a Administrativo/a - Colaborador/a">Técnico/a Administrativo/a - Colaborador/a</option>
+                                    <option value="Vice-coordenador/a">Vice-coordenador/a</option>
+                                    <option value="Colaborador/a Externo/a">Colaborador/a Externo/a</option>
                                 </select>
                             </div>
                             <div class="col-6">
