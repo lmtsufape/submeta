@@ -161,7 +161,9 @@
                       <td>{{ App\AreaTematica::find($trabalho->area_tematica_id)->nome }}</td>
                   @endif
             @else
-              <td>{{ App\Area::find($trabalho->area_id)->nome }}</td>
+              @if($trabalho->area_tematica_id != null)
+                <td>{{ App\Area::find($trabalho->area_id)->nome }}</td>
+              @endif
             @endif
             <td>{{ $trabalho->proponente->user->name }}</td>
             <td style="text-align:center">

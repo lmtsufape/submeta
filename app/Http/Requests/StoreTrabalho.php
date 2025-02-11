@@ -131,7 +131,11 @@ class StoreTrabalho extends FormRequest
             $rules['marcado.*'] = ['required'];
             $rules['titulo'] = ['required', 'string'];
             $rules['grande_area_id'] = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
-            $rules['area_id'] = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
+            
+
+            if($evento->tipo != "PICP" && $evento->tipo != 'PIBIC' && $evento->tipo != 'PIBIC-EM' && $evento->tipo != 'PIBIC-AF') {
+                $rules['area_id'] = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
+            }
 
             if ($evento->natureza_id == 3) {
                 if($evento->tipo == "PIBAC" || $evento->tipo == "CONTINUO-AC")

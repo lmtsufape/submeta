@@ -41,35 +41,39 @@
                 </span>
                 @enderror
             </div>
-            <div class="form-group col-md-4">
-              <label for="area" class="col-form-label" style="font-weight: bold">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
-                <input type="hidden" id="oldArea" value="{{ old('area') }}" >
-                <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" onchange="subareas()" >
-                  <option value="" disabled selected hidden>-- Área --</option>
-                </select>
-                @error('area_id')
-                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-            <div class="form-group col-md-4">
-              <label for="subArea" class="col-form-label" style="font-weight: bold">{{ __('Subárea') }} </label>
-                <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}" >
-                <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="sub_area_id" >
-                  <option value="" disabled selected hidden>-- Subárea --</option>
-                  {{-- @foreach($subAreas as $subArea)
-                    <option @if(old('subArea') !== null ? old('subArea') : (isset($rascunho) ? $rascunho->sub_area_id : '')
-                            ==$subArea->id ) selected @endif value="{{$subArea->id}}">{{$subArea->nome}}</option>
-                  @endforeach --}}
-                </select>
 
-                @error('sub_area_id')
-                <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
+
+            @if($edital->tipo != 'PIBIC' && $edital->tipo != "PIBIC-AF" && $edital->tipo != "PIBIC-EM" && $edital->tipo != "PICP")
+                <div class="form-group col-md-4">
+                  <label for="area" class="col-form-label" style="font-weight: bold">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
+                    <input type="hidden" id="oldArea" value="{{ old('area') }}" >
+                    <select class="form-control @error('area') is-invalid @enderror" id="area" name="area_id" onchange="subareas()" >
+                      <option value="" disabled selected hidden>-- Área --</option>
+                    </select>
+                    @error('area_id')
+                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="subArea" class="col-form-label" style="font-weight: bold">{{ __('Subárea') }} </label>
+                    <input type="hidden" id="oldSubArea" value="{{ old('subArea') }}" >
+                    <select class="form-control @error('subArea') is-invalid @enderror" id="subArea" name="sub_area_id" >
+                      <option value="" disabled selected hidden>-- Subárea --</option>
+                      {{-- @foreach($subAreas as $subArea)
+                        <option @if(old('subArea') !== null ? old('subArea') : (isset($rascunho) ? $rascunho->sub_area_id : '')
+                                ==$subArea->id ) selected @endif value="{{$subArea->id}}">{{$subArea->nome}}</option>
+                      @endforeach --}}
+                    </select>
+
+                    @error('sub_area_id')
+                    <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+            @endif
           @endif
 
             @if($edital->natureza_id ==3 )
