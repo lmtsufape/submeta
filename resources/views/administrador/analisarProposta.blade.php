@@ -106,10 +106,16 @@
                             <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">Área de Ensino</h5>
                             </div>
                             <div class="col-md-12"><h6 style="color: #234B8B; margin-bottom:-0.4rem">
-                                    {{App\GrandeArea::where('id', $trabalho->grande_area_id)->first()->nome}} >
-                                    {{App\Area::where('id', $trabalho->area_id)->first()->nome}}
-                                    @if(App\SubArea::where('id', $trabalho->sub_area_id)->first() != null)
-                                        > {{App\SubArea::where('id', $trabalho->sub_area_id)->first()->nome}}@endif
+                                    {{App\GrandeArea::where('id', $trabalho->grande_area_id)->first()->nome}}
+
+                                    @if($trabalho->area_id != null)
+                                        > {{App\Area::where('id', $trabalho->area_id)->first()->nome}}
+                                    @endif
+
+                                    @if($trabalho->sub_area_id != null)
+                                        @if(App\SubArea::where('id', $trabalho->sub_area_id)->first() != null)
+                                            > {{App\SubArea::where('id', $trabalho->sub_area_id)->first()->nome}}@endif
+                                    @endif
 
                                 </h6>
                             </div>

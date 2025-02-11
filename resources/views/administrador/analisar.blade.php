@@ -149,6 +149,11 @@
                                                 <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">{{$trabalho->grandeArea->nome}} > {{$trabalho->area->nome}} > {{$trabalho->subArea->nome}}</h6>
                                             </div>
                                         @endif
+                                        @if($trabalho->grande_area_id != null && $trabalho->area_id == null && $trabalho->sub_area_id == null)
+                                        <div class="col-md-12">
+                                                <h6 style="color: #234B8B; font-weight: bold;font-size: 13px;">{{$trabalho->grandeArea->nome}}</h6>
+                                            </div>
+                                        @endif
 
 
                                     </div>
