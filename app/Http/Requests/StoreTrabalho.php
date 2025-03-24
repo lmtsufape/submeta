@@ -111,9 +111,13 @@ class StoreTrabalho extends FormRequest
 
                 if($evento->tipo != "PICP")
                 {
+                    if($evento->tipo != "PIBIC" && $evento->tipo != "PIBIC-EM" && $evento->tipo != "PIBIC-AF")
+                    {
+                        $rules['anexoGrupoPesquisa'] = ['required', 'mimes:pdf'];
+                    }
+                    
                     $rules['anexoPlanilhaPontuacao'] = ['required'];
                     $rules['anexoLattesCoordenador'] = ['required', 'mimes:pdf'];
-                    $rules['anexoGrupoPesquisa'] = ['required', 'mimes:pdf'];
                     $rules['pontuacaoPlanilha'] = ['required', 'string'];
                     $rules['anexo_acao_afirmativa'] = [Rule::requiredIf($this->radioAcoesAfirmativas == 'sim')];
                 }

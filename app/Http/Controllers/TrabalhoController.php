@@ -1413,12 +1413,25 @@ class TrabalhoController extends Controller
                 }
                 else
                 {
-                    $trabalho = Auth::user()->proponentes->trabalhos()
+                    if($evento->tipo == "PIBIC" || $evento->tipo == "PIBIC-AF" || $evento->tipo == "PIBIC-EM")
+                    {
+                        $trabalho = Auth::user()->proponentes->trabalhos()
+                        ->create($request->except([
+                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
+                            'anexoLattesCoordenador', 'anexoAutorizacaoComiteEtica',
+                            'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
+                        ]));
+                    }
+                    else
+                    {
+                        $trabalho = Auth::user()->proponentes->trabalhos()
                         ->create($request->except([
                             'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
                             'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
                             'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
                         ]));
+                    }
+                    
                 }
                 
             }

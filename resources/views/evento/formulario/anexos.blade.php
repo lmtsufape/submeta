@@ -82,7 +82,7 @@
               </div>
             @endif
 
-            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP")
+            @if($edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP" && $edital->tipo != "PIBIC" && $edital->tipo != "PIBIC-AF" && $edital->tipo != "PIBIC-EM")
               <div class="form-group col-md-6" style="margin-top: 10px">
                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}<span style="color: red; font-weight:bold">*</span></label>
                 <input type="file" class="input-group-text" name="anexoGrupoPesquisa" placeholder="Anexo do Grupo de Pesquisa" accept="application/pdf" />

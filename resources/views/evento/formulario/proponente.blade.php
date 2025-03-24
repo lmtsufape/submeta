@@ -117,7 +117,7 @@
             </div>
           @endif
 
-          @if($edital->tipo != "CONTINUO" && $edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "CONTINUO-AC" && $edital->tipo !='PICP')
+          @if($edital->tipo != "CONTINUO" && $edital->tipo != "PIBEX" && $edital->tipo != "PIACEX" && $edital->tipo != "PIBAC" && $edital->tipo != "CONTINUO-AC" && $edital->tipo !='PICP' && $edital->tipo != "PIBIC" && $edital->tipo != "PIBIC-AF" && $edital->tipo != "PIBIC-EM")
             <div class="col-md-2">
               <br>
               <label for="conflitosInteresse" class="col-form-label font-tam"
