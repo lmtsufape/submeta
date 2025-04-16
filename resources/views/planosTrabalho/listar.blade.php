@@ -229,6 +229,11 @@
 														</div>
 
 														<div class="col-4">
+															<label for="pdf_relatorio_final" class="col-form-label">{{ __('Relatório Final') }}</label>
+															<a class="form-control btn btn-primary" href="{{ route('relatorio.exportar', ['relatorio_id' => $trabalho->relatorio->id]) }}" target="_blank"> {{ __('Exportar') }} </a>
+														</div>
+
+														<div class="col-4">
 															<label for="anexo_relatorio_final" class="col-form-label">{{ __('Anexo') }}</label>
 															<a class="form-control btn btn-primary" href="{{ route('relatorioFinalPibex.downloadAnexo', ['relatorio_id' => $trabalho->relatorio->id]) }}" target="_blank">Baixar</a>
 														</div>

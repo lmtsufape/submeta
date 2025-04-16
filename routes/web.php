@@ -228,6 +228,8 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::get('/relatorioFinalPibex/create/parte4/{relatorio_id}', 'RelatorioController@createRelatorioParte4')->name('relatorioFinalPibex.criarParte4');
     Route::post('/relatorioFinalPibex/store/parte4', 'RelatorioController@storeRelatorioParte4')->name('relatorioFinalPibex.storeParte4');
 
+    Route::get('/relatorio/{relatorio}/exportar', 'RelatorioController@exportarRelatorio')->name('relatorio.exportar');
+
 
     //########## Documentação Complementar
     Route::get('/documentacaoComplementar', 'ParticipanteController@listarParticipanteProjeto')->name('docComplementar.listar');

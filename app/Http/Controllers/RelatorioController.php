@@ -937,4 +937,32 @@ class RelatorioController extends Controller
             return 'relatorioFinalPibex.criarParte4';
         }
     }
+
+    public function exportarRelatorio(Relatorio $relatorio)
+    {
+        // Dados de exemplo com caracteres especiais
+        $data = [
+            'name' => 'Exemplo de Exportação com Acentuação',
+            'description' => 'Olá, mundo! Ção, áéíóú, ñ, ü',
+            'date' => now()->toDateString(),
+            'items' => [
+                ['id' => 1, 'description' => 'Item com çã', 'price' => 10.99],
+                ['id' => 2, 'description' => 'Item áéíóú', 'price' => 20.49],
+                ['id' => 3, 'description' => 'Item com ñ e ü', 'price' => 15.00],
+            ],
+            'total' => 46.48
+        ];
+
+        // Nome do arquivo para o download
+        $fileName = 'exemplo_' . now()->format('Ymd_His') . '.json';
+
+        // Retorna o JSON como um download direto com codificação UTF-8
+        return response()->streamDownload(function () use ($data) {
+            // Garante que json_encode use UTF-8 e escape corretamente
+            echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        }, $fileName, [
+            'Content-Type' => 'application/json; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ]);
+    }
 }
