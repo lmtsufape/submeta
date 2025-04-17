@@ -940,17 +940,36 @@ class RelatorioController extends Controller
 
     public function exportarRelatorio(Relatorio $relatorio)
     {
-        // Dados de exemplo com caracteres especiais
+        $integrantesInternos = RelatorioIntegranteInterno::where('relatorio_id', $relatorio->id)->get();
+        $coordenadores = RelatorioCoordenadorViceCoordenador::where('relatorio_id', $relatorio->id)->get();
+
         $data = [
-            'name' => 'Exemplo de Exportação com Acentuação',
-            'description' => 'Olá, mundo! Ção, áéíóú, ñ, ü',
-            'date' => now()->toDateString(),
-            'items' => [
-                ['id' => 1, 'description' => 'Item com çã', 'price' => 10.99],
-                ['id' => 2, 'description' => 'Item áéíóú', 'price' => 20.49],
-                ['id' => 3, 'description' => 'Item com ñ e ü', 'price' => 15.00],
+            'acao' => [
+                'titulo' => $relatorio->titulo_projeto,
+                'data_inicio' => $relatorio->inicio_projeto,
+                'data_termino' => $relatorio->conclusao_projeto,
+                'tipo' => $relatorio->trabalho->evento->tipo,
             ],
-            'total' => 46.48
+
+            'integrantes' => $integrantesInternos->map(function ($integrante) {
+                return [
+                    'nome' => $integrante->nome,
+                    'cpf' => $integrante->cpf,
+                    'email' => User::where('cpf', $integrante->cpf)->first()->email ?? null,
+                    'tipo_vinculo' => $integrante->tipo_vinculo,
+                    'data_ingresso' => $integrante->ingresso_proposta,
+                    'data_conclusao' => $integrante->conclusao_proposta,
+                    'carga_horária' => $integrante->ch_total_atuacao,
+                ];
+            }),
+
+            'coordenadores' => $coordenadores->map(function ($coordenador) {
+                return [
+                    'nome' => $coordenador->nome,
+                    'cpf' => $coordenador->cpf,
+                    'tipo' => $coordenador->tipo,
+                ];
+            }),
         ];
 
         // Nome do arquivo para o download
