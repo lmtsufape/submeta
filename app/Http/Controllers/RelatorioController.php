@@ -953,21 +953,19 @@ class RelatorioController extends Controller
 
             'integrantes' => $integrantesInternos->map(function ($integrante) {
                 return [
-                    'nome' => $integrante->nome,
                     'cpf' => $integrante->cpf,
-                    'email' => User::where('cpf', $integrante->cpf)->first()->email ?? null,
                     'tipo_vinculo' => $integrante->tipo_vinculo,
                     'data_ingresso' => $integrante->ingresso_proposta,
                     'data_conclusao' => $integrante->conclusao_proposta,
-                    'carga_horária' => $integrante->ch_total_atuacao,
+                    'carga_horaria' => $integrante->ch_total_atuacao,
                 ];
             }),
 
             'coordenadores' => $coordenadores->map(function ($coordenador) {
                 return [
-                    'nome' => $coordenador->nome,
                     'cpf' => $coordenador->cpf,
                     'tipo' => $coordenador->tipo,
+                    'carga_horaria' => $coordenador->ch_total_atuacao,
                 ];
             }),
         ];
