@@ -523,7 +523,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP" && $evento->tipo != "PIBIC" && $evento->tipo != "PIBIC-AF" && $evento->tipo != "PIBIC-EM")
                                     <div class="col-sm-4">
                                         <label for="nomeTrabalho" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
@@ -537,7 +537,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC" || $evento->tipo == "PICP")
+                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC" || $evento->tipo == "PICP" || $evento->tipo == 'PIBIC-AF')
                                     {{-- Decisão do CONSU --}}
                                     <div class="col-sm-4">
                                         <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"
@@ -545,7 +545,7 @@
                                         <a href="{{ route('baixar.anexo.consu', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
                                     </div>
                                 @endif
-                                @if($evento->tipo == 'PIBIC' && $evento->natureza_id == 2)
+                                @if($evento->tipo == 'PIBIC-AF' && $evento->natureza_id == 2)
                                     <div class="col-sm-4">
                                     <label title="Decisão da Câmara ou Conselho Pertinente" for="anexo_acao_afirmativa" class="col-form-label font-tam" style="font-weight: bold">{{ __('Ação Afirmativa: ') }}</label>
                                     <a href="{{ route('baixar.anexo.acao.afirmativa', ['id' => $trabalho->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>

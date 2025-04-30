@@ -50,7 +50,7 @@
               </div>
               @endif
 
-              @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP")
+              @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP" && $edital->tipo != "PIBIC" && $edital->tipo != "PIBIC-AF" && $edital->tipo != "PIBIC-EM")
               <div class="col-sm-4">
                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
                 @if($projeto->anexoGrupoPesquisa != null)
@@ -61,7 +61,7 @@
               </div>
               @endif
 
-              @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM' || $edital->tipo == "PIBEX" || $edital->tipo == "PIBAC" || $edital->tipo == "PICP")
+              @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM' || $edital->tipo == "PIBEX" || $edital->tipo == "PIBAC" || $edital->tipo == "PICP" || $edital->tipo == "PIBIC-AF")
                 {{-- Decisão do CONSU --}}
                 <div class="col-sm-4">
                   <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão da Câmara: ') }}</label>
@@ -69,7 +69,7 @@
                 </div>
               @endif
 
-              @if($edital->tipo == 'PIBIC' && $edital->natureza_id == 2)
+              @if($edital->tipo == 'PIBIC-AF' && $edital->natureza_id == 2)
                 <div class="col-sm-4">
                   <label title="Decisão da Câmara ou Conselho Pertinente" for="anexo_acao_afirmativa" class="col-form-label font-tam" style="font-weight: bold">{{ __('Ação Afirmativa: ') }}</label>
                   <a href="{{ route('baixar.anexo.acao.afirmativa', ['id' => $projeto->id]) }}"><img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
