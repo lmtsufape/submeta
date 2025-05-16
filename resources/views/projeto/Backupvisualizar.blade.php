@@ -605,7 +605,7 @@
                             </div>
                             <div class="form-group col-md-6">
                               <label for="coeficienteDeRendimento1">Coeficiente de rendimento (média geral) <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="number" class="form-control" id="coeficienteDeRendimento1" min="0" max="10" step="0.01" name="media_geral_curso[]" disabled value="@if($resultado_participante_um){{$participantes[0]->media_do_curso}}@endif">
+                              <input type="number" class="form-control" id="coeficienteDeRendimento1" min="0" max="10" step="0.01" name="media_geral_curso[]" disabled value="@if($resultado_participante_um){{$participantes[0]->media_do_curso}}@endif" oninput="validarMedia(this)">
                               @error('coeficienteDeRendimento1')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -2058,6 +2058,14 @@ function validarPart3(){
   }
 }
 
+function validarMedia(input) {
+        let valor = parseFloat(input.value);
+        if (valor > 10) {
+            input.value = 10;
+        } else if (valor < 0) {
+            input.value = 0;
+        }
+    }
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">

@@ -607,7 +607,7 @@
                             </div>
                             <div class="form-group col-md-6">
                               <label for="coeficienteDeRendimento1">Coeficiente de rendimento (média geral) <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="number" class="form-control" id="coeficienteDeRendimento1" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_um){{$participantes[0]->media_do_curso}}@endif">
+                              <input type="number" class="form-control" id="coeficienteDeRendimento1" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_um){{$participantes[0]->media_do_curso}}@endif" oninput="validarMedia(this)">
                               @error('coeficienteDeRendimento1')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -867,7 +867,7 @@
                           </div>
                           <div class="form-group col-md-6">
                             <label for="coeficienteDeRendimento2">Coeficiente de rendimento (média geral) <span style="color: red; font-weight:bold">*</span></label>
-                            <input type="number" class="form-control media" id="coeficienteDeRendimento2" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_dois){{$participantes[1]->media_do_curso}}@endif">
+                            <input type="number" class="form-control media" id="coeficienteDeRendimento2" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_dois){{$participantes[1]->media_do_curso}}@endif" oninput="validarMedia(this)">
                             @error('coeficienteDeRendimento2')
                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                               <strong>{{ $message }}</strong>
@@ -1125,7 +1125,7 @@
                             </div>
                             <div class="form-group col-md-6">
                               <label for="coeficienteDeRendimento3">Coeficiente de rendimento (média geral) <span style="color: red; font-weight:bold">*</span></label>
-                              <input type="number" class="form-control media" id="coeficienteDeRendimento3" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_tres){{$participantes[2]->media_do_curso}}@endif">
+                              <input type="number" class="form-control media" id="coeficienteDeRendimento3" min="0" max="10" step="0.01" name="media_geral_curso[]" required value="@if($resultado_participante_tres){{$participantes[2]->media_do_curso}}@endif" oninput="validarMedia(this)">
                               @error('coeficienteDeRendimento3')
                               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                 <strong>{{ $message }}</strong>
@@ -2165,5 +2165,14 @@ function validarPart3(){
     }
     return false;
   }
+
+  function validarMedia(input) {
+        let valor = parseFloat(input.value);
+        if (valor > 10) {
+            input.value = 10;
+        } else if (valor < 0) {
+            input.value = 0;
+        }
+    }
 </script>
 @endsection

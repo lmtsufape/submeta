@@ -167,7 +167,7 @@
                         </div>                              
                         <div class="col-6">
                               @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
-                              <input type="number" class="form-control media" name="media_geral_curso[]" min="0" max="10" step="0.01"  required>
+                              <input type="number" class="form-control media" name="media_geral_curso[]" min="0" max="10" step="0.01"  required oninput="validarMedia(this)">
                               @endcomponent
                         </div>
                         <div class="col-md-12"><h5>Plano de trabalho</h5></div>                              
@@ -197,3 +197,13 @@
 </div>
 <!--X Participantes X-->
 
+<script>
+    function validarMedia(input) {
+        let valor = parseFloat(input.value);
+        if (valor > 10) {
+            input.value = 10;
+        } else if (valor < 0) {
+            input.value = 0;
+        }
+    }
+</script>

@@ -351,7 +351,7 @@
 
                                                                         <div class="col-6">
                                                                             @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
-                                                                            <input type="number" class="form-control media" value="{{old('media_do_curso')[$i] ?? "" }}" name="media_do_curso[{{$i}}]" min="0" max="10" step="0.01">
+                                                                            <input type="number" class="form-control media" value="{{old('media_do_curso')[$i] ?? "" }}" name="media_do_curso[{{$i}}]" min="0" max="10" step="0.01" oninput="validarMedia(this)">
                                                                             @error('media_do_curso.'.$i)
                                                                             <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                                 <strong>{{ $message }}</strong>
@@ -503,4 +503,14 @@
             limpa_formulário_cep(id);
         }
     };
+
+    function validarMedia(input) {
+        let valor = parseFloat(input.value);
+        if (valor > 10) {
+            input.value = 10;
+        } else if (valor < 0) {
+            input.value = 0;
+        }
+    }
+
 </script>

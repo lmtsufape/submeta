@@ -505,7 +505,7 @@
                                                             </div>
                                                             <div class="col-6">
                                                                 @component('componentes.input', ['label' => 'Coeficiente de rendimento (média geral)'])
-                                                                <input type="number" class="form-control media" value="" name="media_do_curso" min="0" max="10" step="0.01" id="media{{$participante->id}}" required>
+                                                                <input type="number" class="form-control media" value="" name="media_do_curso" min="0" max="10" step="0.01" id="media{{$participante->id}}" required oninput="validarMedia(this)">
                                                                 @error('media_do_curso')
                                                                 <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                                                                     <strong>{{ $message }}</strong>
@@ -1288,5 +1288,13 @@
         $(`#exampleModal${integranteAntigoId}`).modal('show');
     }
 
+    function validarMedia(input) {
+        let valor = parseFloat(input.value);
+        if (valor > 10) {
+            input.value = 10;
+        } else if (valor < 0) {
+            input.value = 0;
+        }
+    }
 </script>
 @endsection
