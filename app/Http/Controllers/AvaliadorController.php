@@ -181,7 +181,7 @@ class AvaliadorController extends Controller
         $parecerInterno = ParecerInterno::where([['avaliador_id',$avaliador->id],['trabalho_id',$trabalho->id]])->first();
         $statusParecer = "NAO-RECOMENDADO";
 
-        if($evento->tipo == "PIBITI")
+        if($evento->tipo == "PIBITI" || $evento->tipo == "PIBIC-AF")
         {
             if(
                 $request->anexoLinkLattes=='aceito' && $request->anexoGrupoPesquisa=='aceito' && $request->anexoProjeto=='aceito' &&
