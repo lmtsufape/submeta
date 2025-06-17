@@ -73,7 +73,7 @@ class AtribuicaoAvaliadorExternoNotification extends Notification
                 ->greeting('Prezado/a avaliador/a,')
                 ->line('Saudações!')
                 ->line("O/A senhor/a foi convidado/a a avaliar a proposta de projeto de Extensão da UFAPE intitulada \"{$this->titulo}\".")
-                ->line("Caso o/a senhor/a tenha disponibilidade de tempo para realizar a avaliação, solicitamos por gentileza que o seu parecer seja enviado até o prazo do dia {$this->dataFinalaval}, para que possamos dar continuidade com os trâmites previstos no edital PIBEX 2023.")
+                ->line("Caso o/a senhor/a tenha disponibilidade de tempo para realizar a avaliação, solicitamos por gentileza que o seu parecer seja enviado até o prazo do dia {$this->dataFinalaval}, para que possamos dar continuidade com os trâmites previstos no edital PIBEX.")
                 ->line('Aproveitamos esse e-mail para enviar, em anexo, o formulário de avaliação que deverá ser anexado ao sistema Submeta da UFAPE com o seu parecer.')
                 ->line('Novamente agradecemos a vossa disponibilidade em participar do banco de avaliadores/as dos projetos de Extensão da UFAPE.')
                 ->line('')
