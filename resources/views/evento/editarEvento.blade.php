@@ -60,6 +60,8 @@
                         <option value="PIBIC-EM" {{ $evento->tipo == 'PIBIC-EM' ? 'selected' : '' }}>PIBIC-EM</option>
                         <option value="PIBITI" {{ $evento->tipo == 'PIBITI' ? 'selected' : '' }}>PIBITI</option>
                         <option value="PICP" {{ $evento->tipo == 'PICP' ? 'selected' : '' }}>PICP</option>
+                        <option value="PROGRAMAS-EXTENSAO" {{ $evento->tipo == 'PROGRAMAS-EXTENSAO' ? 'selected' : '' }}>
+                            Programas de Extensão</option>
                     </select>
                     @error('tipo')
                         <span class="invalid-feedback" role="alert">
@@ -1205,7 +1207,7 @@
                 'dt_fimRelatorioParcial',
             ]
 
-            if (tipo.value === 'CONTINUO' || tipo.value === 'CONTINUO-AC') {
+            if (tipo.value === 'CONTINUO' || tipo.value === 'CONTINUO-AC' || tipo.value === 'PROGRAMAS-EXTENSAO') {
                 names.forEach(function(nome, i) {
                     document.getElementById(nome).style.display = "none";
                 })

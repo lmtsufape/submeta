@@ -43,6 +43,8 @@
                         <option @if (old('tipo') == 'PIBIC-EM') selected @endif value="PIBIC-EM">PIBIC-EM</option>
                         <option @if (old('tipo') == 'PIBITI') selected @endif value="PIBITI">PIBITI</option>
                         <option @if (old('tipo') == 'PICP') selected @endif value="PICP">PICP</option>
+                        <option @if (old('tipo') == 'PROGRAMAS-EXTENSAO') selected @endif value="PROGRAMAS-EXTENSAO">Programas de
+                            Extensão</option>
                     </select>
 
                     @error('tipo')
@@ -1042,7 +1044,7 @@
                 'dt_fimRelatorioParcial',
             ]
 
-            if (tipo.value === 'CONTINUO' || tipo.value === 'CONTINUO-AC') {
+            if (tipo.value === 'CONTINUO' || tipo.value === 'CONTINUO-AC' || tipo.value === 'PROGRAMAS-EXTENSAO') {
                 names.forEach(function(nome, i) {
                     document.getElementById(nome).style.display = "none";
                 })
