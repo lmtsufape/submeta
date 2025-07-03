@@ -35,20 +35,19 @@ class EventoController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->buscar == null){
+        if ($request->buscar == null) {
             $eventos = Evento::all()->sortBy('nome');
             // $comissaoEvento = ComissaoEvento::all();
             // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
             $hoje = Carbon::today('America/Recife');
             $hoje = $hoje->toDateString();
-            return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>'', 'flag'=>'false']);
-        }else{
-            $eventos = Evento::where('nome','ilike','%'.$request->buscar.'%')->get();
+            return view('coordenador.home', ['eventos' => $eventos, 'hoje' => $hoje, 'palavra' => '', 'flag' => 'false']);
+        } else {
+            $eventos = Evento::where('nome', 'ilike', '%' . $request->buscar . '%')->get();
             $hoje = Carbon::today('America/Recife');
             $hoje = $hoje->toDateString();
-            return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>$request->buscar, 'flag'=>'true']);
+            return view('coordenador.home', ['eventos' => $eventos, 'hoje' => $hoje, 'palavra' => $request->buscar, 'flag' => 'true']);
         }
-
     }
 
     public function listar()
@@ -58,8 +57,7 @@ class EventoController extends Controller
         // $comissaoEvento = ComissaoEvento::all();
         // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
 
-        return view('evento.listarEvento',['eventos'=>$eventos]);
-
+        return view('evento.listarEvento', ['eventos' => $eventos]);
     }
 
     /**
@@ -89,10 +87,10 @@ class EventoController extends Controller
         $yesterday = $yesterday->toDateString();
         //$admResponsavel = AdministradorResponsavel::with('user')->where('user_id', Auth()->user()->id)->first();
         $user_id = Auth()->user()->id;
-        
-        if(isset($request->modeloDocumento)){
-            if(is_array($request->modeloDocumento)) {
-                foreach($request->modeloDocumento as $modelo){
+
+        if (isset($request->modeloDocumento)) {
+            if (is_array($request->modeloDocumento)) {
+                foreach ($request->modeloDocumento as $modelo) {
                     $request->validate([
                         'modeloDocumento.*' => ['file', 'max:2048', new ExcelRule($modelo)],
                     ]);
@@ -104,7 +102,7 @@ class EventoController extends Controller
             }
         }
 
-        if(isset($request->docTutorial)){
+        if (isset($request->docTutorial)) {
             $request->validate([
                 'docTutorial' => ['file', 'max:2048', new ExcelRule($request->file('docTutorial'))],
             ]);
@@ -114,7 +112,7 @@ class EventoController extends Controller
         $evento = $this->armazenarAnexosTemp($request);
 
         // validar datas nulas antes, pois pode gerar um bug
-        if(
+        if (
             $request->inicioSubmissao == null ||
             $request->fimSubmissao == null    ||
             $request->inicioRevisao == null   ||
@@ -126,18 +124,18 @@ class EventoController extends Controller
         ) {
             $validatedData = $request->validate(Evento::$dates_rules);
         }
-        
+
         // validacao normal
         $validatedData = $request->validate(Evento::$rules);
-               
+
         // Validação quando avaliação for por Barema
-        if($request->tipo != 'CONTINUO' && $request->tipo != 'CONTINUO-AC' && $request->tipo != 'PICP'){
+        if ($request->tipo != 'CONTINUO' && $request->tipo != 'CONTINUO-AC' && $request->tipo != 'PICP') {
             if ($request->tipoAvaliacao == 'form') {
                 $validateAvaliacao = $request->validate([
-                    'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido!=='sim'?'required':''), 'file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
+                    'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido !== 'sim' ? 'required' : ''), 'file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
                 ]);
             } elseif ($request->tipoAvaliacao == 'campos') {
-                if($request->has('campos')){
+                if ($request->has('campos')) {
                     $validateCampo = $request->validate([
                         'inputField.*.nome'        => ['required', 'string'],
                         'inputField.*.nota_maxima' => ['required'],
@@ -152,13 +150,13 @@ class EventoController extends Controller
                 ]);
             }
         }
-        
+
         //$evento = Evento::create([
         $evento['nome']                = $request->nome;
         $evento['descricao']           = $request->descricao;
         $evento['tipo']                = $request->tipo;
         $evento['natureza_id']         = $request->natureza;
-        if($request->check_docExtra != null){
+        if ($request->check_docExtra != null) {
             $evento['nome_docExtra']   = $request->nome_docExtra;
         }
         $evento['inicioSubmissao']     = $request->inicioSubmissao;
@@ -168,10 +166,10 @@ class EventoController extends Controller
         $evento['fimRevisao']          = $request->fimRevisao;
         $evento['inicio_recurso']      = $request->inicio_recurso;
         $evento['fim_recurso']         = $request->fim_recurso;
-        $evento['resultado_preliminar']= $request->resultado_preliminar;
+        $evento['resultado_preliminar'] = $request->resultado_preliminar;
         $evento['resultado_final']     = $request->resultado_final;
 
-        if($request->tipo != "PIBEX" && $request->tipo != "PIACEX" && $request->tipo != "PIBAC" && $request->tipo != "CONTINUO" && $request->tipo != 'CONTINUO-AC' && $request->tipo != 'PICP'){
+        if ($request->tipo != "PIBEX" && $request->tipo != "PIACEX" && $request->tipo != "PIBAC" && $request->tipo != "CONTINUO" && $request->tipo != 'CONTINUO-AC' && $request->tipo != 'PICP') {
             $evento['dt_inicioRelatorioParcial']  = $request->dt_inicioRelatorioParcial;
             $evento['dt_fimRelatorioParcial']     = $request->dt_fimRelatorioParcial;
         }
@@ -188,9 +186,9 @@ class EventoController extends Controller
         $evento['obrigatoriedade_docExtra'] = $request->has('obrigatoriedade_docExtra');
         $evento['anexosStatus']        = 'final';
         $evento['tipoAvaliacao']       = $request->tipoAvaliacao;
-        if($request->tipoAvaliacao == "link") {
+        if ($request->tipoAvaliacao == "link") {
             $evento['formAvaliacaoExterno'] = $request->link;
-        } 
+        }
         //dd($evento);
         // $user = User::find($request->coordenador_id);
         // $user->coordenadorComissao()->editais()->save($evento);
@@ -206,7 +204,7 @@ class EventoController extends Controller
 
         //-- Salvando anexos finais
 
-        if(isset($request->pdfEdital)){
+        if (isset($request->pdfEdital)) {
             $pdfEdital = $request->pdfEdital;
             $path = 'pdfEdital/' . $evento->id . '/';
             $nome = "edital.pdf";
@@ -214,7 +212,7 @@ class EventoController extends Controller
             $evento->pdfEdital = $path . $nome;
         }
 
-        if(isset($request->modeloDocumento)){
+        if (isset($request->modeloDocumento)) {
             $count = count($request->modeloDocumento);
             $zip = new ZipArchive;
             $filename = "storage/app/modeloDocumento/$evento->id/modelo.zip";
@@ -232,7 +230,7 @@ class EventoController extends Controller
             $evento->save();
         }
 
-        if(isset($request->pdfFormAvalExterno) && ($request->tipoAvaliacao == 'form')){
+        if (isset($request->pdfFormAvalExterno) && ($request->tipoAvaliacao == 'form')) {
             $pdfFormAvalExterno = $request->pdfFormAvalExterno;
             $extension = $pdfFormAvalExterno->extension();
             $path = 'pdfFormAvalExterno/' . $evento->id . '/';
@@ -242,7 +240,7 @@ class EventoController extends Controller
             $evento->formAvaliacaoExterno = $path . $nome;
         }
 
-        if(isset($request->pdfFormAvalRelatorio)){
+        if (isset($request->pdfFormAvalRelatorio)) {
             $pdfFormAvalRelatorio = $request->pdfFormAvalRelatorio;
             $extension = $pdfFormAvalRelatorio->extension();
             $path = 'pdfFormAvalRelatorio/' . $evento->id . '/';
@@ -251,7 +249,7 @@ class EventoController extends Controller
 
             $evento->formAvaliacaoRelatorio = $path . $nome;
         }
-        if(isset($request->docTutorial) && ($request->tipoAvaliacao == 'form')){
+        if (isset($request->docTutorial) && ($request->tipoAvaliacao == 'form')) {
             $docTutorial = $request->docTutorial;
             $extension = $docTutorial->extension();
             $path = 'docTutorial/' . $evento->id . '/';
@@ -265,12 +263,12 @@ class EventoController extends Controller
 
         // Criando campos de avaliacao
         if ($request->tipoAvaliacao == 'campos') {
-            if($request->has('campos')){
+            if ($request->has('campos')) {
                 foreach ($request->get('campos') as $key => $value) {
                     $campoAval = new CampoAvaliacao();
                     $campoAval->nome = $request->inputField[$value]['nome'];
                     $campoAval->nota_maxima = $request->inputField[$value]['nota_maxima'];
-                    if ($request->inputField[$value]['descricao'] != null){
+                    if ($request->inputField[$value]['descricao'] != null) {
                         $campoAval->descricao = $request->inputField[$value]['descricao'];
                     }
                     $campoAval->prioridade = $request->inputField[$value]['prioridade'];
@@ -288,53 +286,54 @@ class EventoController extends Controller
         return redirect()->route('admin.editais')->with(['mensagem' => 'Edital criado com sucesso!']);
     }
 
-    public function armazenarAnexosTemp(Request $request){
+    public function armazenarAnexosTemp(Request $request)
+    {
 
         //---Anexos do Projeto
         $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
             ->orderByDesc('updated_at')->first();
 
-        if($eventoTemp == null){
+        if ($eventoTemp == null) {
             $eventoTemp = new Evento();
             $eventoTemp->criador_id = Auth::user()->id;
             $eventoTemp->anexosStatus = 'temporario';
             $eventoTemp->save();
         }
 
-        if(!(is_null($request->pdfEdital)) ) {
+        if (!(is_null($request->pdfEdital))) {
             $pasta = 'pdfEdital/' . $eventoTemp->id;
             $eventoTemp->pdfEdital = Storage::putFileAs($pasta, $request->pdfEdital, 'edital.pdf');
         }
-        
+
         if (!(is_null($request->modeloDocumento))) {
-                $count = count($request->modeloDocumento);
-                $zip = new ZipArchive;
-                $filename = "storage/app/modeloDocumento/$eventoTemp->id/modelo.zip";
-                // Crie o diretório se ele não existir
-                if (!file_exists("storage/app/modeloDocumento/$eventoTemp->id")) {
-                    mkdir("storage/app/modeloDocumento/$eventoTemp->id", 0777, true);
-                }
-                $zip->open($filename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-                for ($i = 0; $i < $count; $i++) {
-                    $zip->addFile($request->modeloDocumento[$i]->getRealPath(), $request->modeloDocumento[$i]->getClientOriginalName());
-                }
-                $zip->close();
-                $eventoTemp->modeloDocumento = $filename;
-                $eventoTemp->save();
+            $count = count($request->modeloDocumento);
+            $zip = new ZipArchive;
+            $filename = "storage/app/modeloDocumento/$eventoTemp->id/modelo.zip";
+            // Crie o diretório se ele não existir
+            if (!file_exists("storage/app/modeloDocumento/$eventoTemp->id")) {
+                mkdir("storage/app/modeloDocumento/$eventoTemp->id", 0777, true);
+            }
+            $zip->open($filename, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+            for ($i = 0; $i < $count; $i++) {
+                $zip->addFile($request->modeloDocumento[$i]->getRealPath(), $request->modeloDocumento[$i]->getClientOriginalName());
+            }
+            $zip->close();
+            $eventoTemp->modeloDocumento = $filename;
+            $eventoTemp->save();
         }
 
-        if(!(is_null($request->pdfFormAvalExterno)) && ($request->tipoAvaliacao == 'form')) {
+        if (!(is_null($request->pdfFormAvalExterno)) && ($request->tipoAvaliacao == 'form')) {
             $extension = $request->pdfFormAvalExterno->extension();
             $pasta = 'pdfFormAvalExterno/' . $eventoTemp->id;
             $nome = "formulario de avaliação externo" . "." . $extension;
             $eventoTemp->formAvaliacaoExterno = Storage::putFileAs($pasta, $request->pdfFormAvalExterno, $nome);
         }
-        if(!(is_null($request->pdfFormAvalRelatorio)) ) {
+        if (!(is_null($request->pdfFormAvalRelatorio))) {
             $pasta = 'pdfFormAvalRelatorio/' . $eventoTemp->id;
             $eventoTemp->formAvaliacaoRelatorio = Storage::putFileAs($pasta, $request->pdfFormAvalRelatorio, 'formulario de avaliação do relatorio.pdf');
         }
 
-        if(!(is_null($request->docTutorial)) && ($request->tipoAvaliacao == 'form')) {
+        if (!(is_null($request->docTutorial)) && ($request->tipoAvaliacao == 'form')) {
             $extension = $request->docTutorial->extension();
             $pasta = 'docTutorial/' . $eventoTemp->id;
             $nome = "documento tutorial" . "." . $extension;
@@ -356,17 +355,17 @@ class EventoController extends Controller
     {
         $evento = Evento::find($id);
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-        if($proponente != null){
+        if ($proponente != null) {
             $hasTrabalho = false;
             $hasFile = false;
-            $trabalhos = $proponente->trabalhos()->where('evento_id', $evento->id )->get();
-            $trabalhosCount = $proponente->trabalhos()->where('evento_id', $evento->id )->count();
+            $trabalhos = $proponente->trabalhos()->where('evento_id', $evento->id)->get();
+            $trabalhosCount = $proponente->trabalhos()->where('evento_id', $evento->id)->count();
 
-            if($trabalhosCount != 0){
+            if ($trabalhosCount != 0) {
                 $hasTrabalho = true;
                 $hasFile = true;
             }
-        }else{
+        } else {
             $hasTrabalho = false;
             $hasFile = false;
             $trabalhos = 0;
@@ -375,7 +374,7 @@ class EventoController extends Controller
 
         $trabalhosId = Trabalho::where('evento_id', $evento->id)->select('id')->get();
 
-        
+
         $hoje = Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
         // dd(false);
@@ -435,13 +434,15 @@ class EventoController extends Controller
             $pontuacao += $campo->nota_maxima;
         }
 
-        return view('evento.editarEvento',['evento'=>$evento,
-            'coordenadores'=>$coordenadors,
-            'naturezas'=>$naturezas,
-            'ontem'=>$yesterday,
-            'coordEvent'=>$coordEvent,
-            'camposAvaliacao'=>$camposAvaliacao,
-            'pontuacao'=>$pontuacao]);
+        return view('evento.editarEvento', [
+            'evento' => $evento,
+            'coordenadores' => $coordenadors,
+            'naturezas' => $naturezas,
+            'ontem' => $yesterday,
+            'coordEvent' => $coordEvent,
+            'camposAvaliacao' => $camposAvaliacao,
+            'pontuacao' => $pontuacao
+        ]);
     }
 
     /**
@@ -461,7 +462,7 @@ class EventoController extends Controller
         $yesterday = Carbon::yesterday('America/Recife');
         $yesterday = $yesterday->toDateString();
         $camposAvaliacao = CampoAvaliacao::where('evento_id', $id);
-        if(
+        if (
             $request->inicioSubmissao == null ||
             $request->fimSubmissao == null    ||
             $request->inicioRevisao == null   ||
@@ -476,13 +477,13 @@ class EventoController extends Controller
 
         $validatedData = $request->validate(Evento::$edit_rules);
 
-        if($request->tipo != 'CONTINUO' && $request->tipo != 'CONTINUO-AC'){
+        if ($request->tipo != 'CONTINUO' && $request->tipo != 'CONTINUO-AC') {
             if ($request->tipoAvaliacao == 'form') {
                 $validateAvaliacao = $request->validate([
-                    'pdfFormAvalExterno'    => ['file','mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
+                    'pdfFormAvalExterno'    => ['file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
                 ]);
             } elseif ($request->tipoAvaliacao == 'campos') {
-                if($request->has('campos')){
+                if ($request->has('campos')) {
                     $validateCampo = $request->validate([
                         'inputField.*.nome'        => ['required', 'string'],
                         'inputField.*.nota_maxima' => ['required'],
@@ -496,13 +497,13 @@ class EventoController extends Controller
                     'link'    => ['required', 'url'],
                 ]);
             }
-            
+
             $evento->dt_inicioRelatorioParcial   = $request->dt_inicioRelatorioParcial;
             $evento->dt_fimRelatorioParcial      = $request->dt_fimRelatorioParcial;
             $evento->cotaDoutor                = $request->has('cotaDoutor');
             $evento->tipoAvaliacao       = $request->tipoAvaliacao;
         }
-        
+
         $evento->inicioProjeto       = $request->inicioProjeto;
         $evento->fimProjeto          = $request->fimProjeto;
         $evento->inicioRevisao        = $request->inicioRevisao;
@@ -518,30 +519,30 @@ class EventoController extends Controller
         $evento->tipo                 = $request->tipo;
         $evento->natureza_id          = $request->natureza;
         $evento->numParticipantes     = $request->numParticipantes;
-        if($request->check_docExtra != null){
+        if ($request->check_docExtra != null) {
             $evento->nome_docExtra    = $request->nome_docExtra;
-        }else{
+        } else {
             $evento->nome_docExtra    = null;
         }
-        
+
         $evento->inicioSubmissao      = $request->inicioSubmissao;
-        $evento->fimSubmissao         = $request->fimSubmissao;        
+        $evento->fimSubmissao         = $request->fimSubmissao;
         $evento->coordenadorId        = $request->coordenador_id;
         $evento->consu                = $request->has('consu');
         $evento->obrigatoriedade_docExtra                = $request->has('obrigatoriedade_docExtra');
-        
-        if($request->tipoAvaliacao == "link") {
+
+        if ($request->tipoAvaliacao == "link") {
             $evento->formAvaliacaoExterno = $request->link;
         }
 
-        if($request->pdfEdital != null){
+        if ($request->pdfEdital != null) {
             $pdfEdital = $request->pdfEdital;
             $path = 'pdfEdital/' . $evento->id . '/';
             $nome = "edital.pdf";
             Storage::putFileAs($path, $pdfEdital, $nome);
         }
 
-        if($request->modeloDocumento != null){
+        if ($request->modeloDocumento != null) {
             $count = count($request->modeloDocumento);
             $zip = new ZipArchive;
             $filename = "storage/app/modeloDocumento/$evento->id/modelo.zip";
@@ -558,8 +559,8 @@ class EventoController extends Controller
             $evento->modeloDocumento = $filename;
             $evento->save();
         }
-        
-        if(isset($request->pdfFormAvalExterno) && ($request->tipoAvaliacao == 'form')){
+
+        if (isset($request->pdfFormAvalExterno) && ($request->tipoAvaliacao == 'form')) {
             $pdfFormAvalExterno = $request->pdfFormAvalExterno;
             $extension = $pdfFormAvalExterno->extension();
             $path = 'pdfFormAvalExterno/' . $evento->id . '/';
@@ -569,7 +570,7 @@ class EventoController extends Controller
             $evento->formAvaliacaoExterno = $path . $nome;
         }
 
-        if ($request->docTutorial != null && ($request->tipoAvaliacao == 'form')){
+        if ($request->docTutorial != null && ($request->tipoAvaliacao == 'form')) {
             $docTutorial = $request->docTutorial;
             $extension = $docTutorial->extension();
             $path = 'docTutorial/' . $evento->id . '/';
@@ -578,7 +579,7 @@ class EventoController extends Controller
             $evento->docTutorial = $path . $nome;
         }
 
-        if(isset($request->pdfFormAvalRelatorio)){
+        if (isset($request->pdfFormAvalRelatorio)) {
             $pdfFormAvalRelatorio = $request->pdfFormAvalRelatorio;
             $extension = $pdfFormAvalRelatorio->extension();
             $path = 'pdfFormAvalRelatorio/' . $evento->id . '/';
@@ -590,13 +591,13 @@ class EventoController extends Controller
 
         // Editando campos de avaliacao
         if ($request->tipoAvaliacao == 'campos') {
-            if($request->has('campos')){
+            if ($request->has('campos')) {
                 $camposAvaliacao->forceDelete();
                 foreach ($request->get('campos') as $key => $value) {
                     $campoAval = new CampoAvaliacao();
                     $campoAval->nome = $request->inputField[$value]['nome'];
                     $campoAval->nota_maxima = $request->inputField[$value]['nota_maxima'];
-                    if ($request->inputField[$value]['descricao'] != null){
+                    if ($request->inputField[$value]['descricao'] != null) {
                         $campoAval->descricao = $request->inputField[$value]['descricao'];
                     }
                     $campoAval->prioridade = $request->inputField[$value]['prioridade'];
@@ -611,12 +612,12 @@ class EventoController extends Controller
             //Apagar arquivos do formulário de avaliação
 
             //if (Storage::exists('pdfFormAvalExterno/' . $evento->id)) {
-            Storage::deleteDirectory('pdfFormAvalExterno/' . $evento->id );
+            Storage::deleteDirectory('pdfFormAvalExterno/' . $evento->id);
             //}
             //if (Storage::exists('docTutorial/' . $evento->id)) {
-            Storage::deleteDirectory('docTutorial/' . $evento->id );
+            Storage::deleteDirectory('docTutorial/' . $evento->id);
             //}
-            
+
             if ($request->tipoAvaliacao == 'campos') {
                 $evento->formAvaliacaoExterno = null;
             }
@@ -632,13 +633,12 @@ class EventoController extends Controller
 
         $eventos = Evento::orderBy('nome')->get();
         //dd('FINAL');
-        if($tipo_usuario == 'coordenador'){
-            return redirect( route('coordenador.editais') )->with(['mensagem' => 'Edital salvo com sucesso!', 'eventos'=>$eventos]);
+        if ($tipo_usuario == 'coordenador') {
+            return redirect(route('coordenador.editais'))->with(['mensagem' => 'Edital salvo com sucesso!', 'eventos' => $eventos]);
         }
 
 
-        return redirect( route('admin.editais') )->with(['mensagem' => 'Edital salvo com sucesso!', 'eventos'=>$eventos]);
-        
+        return redirect(route('admin.editais'))->with(['mensagem' => 'Edital salvo com sucesso!', 'eventos' => $eventos]);
     }
 
     /**
@@ -661,20 +661,20 @@ class EventoController extends Controller
         // if(isset($areas)){
         //     $areas->delete();
         // }
-        if(isset($atividades)){
+        if (isset($atividades)) {
             $atividades->delete();
         }
-        if(isset($comissao)){
+        if (isset($comissao)) {
             $comissao->delete();
         }
-        if(isset($revisores)){
+        if (isset($revisores)) {
             $revisores->delete();
         }
-        if(isset($trabalhos)){
+        if (isset($trabalhos)) {
             $trabalhos->delete();
             Trabalho::withTrashed()->where('evento_id', $id)->update(['evento_id' => null]);
         }
-        if(isset($camposAvaliacao)){
+        if (isset($camposAvaliacao)) {
             $camposAvaliacao->delete();
             CampoAvaliacao::withTrashed()->where('evento_id', $id)->update(['evento_id' => null]);
         }
@@ -694,15 +694,16 @@ class EventoController extends Controller
         return redirect()->back()->with(['mensagem' => 'Edital deletado com sucesso!']);
     }
 
-    public function detalhes(Request $request){
+    public function detalhes(Request $request)
+    {
         $evento = Evento::find($request->eventoId);
         $this->authorize('isCoordenador', $evento);
 
-        $ComissaoEvento = ComissaoEvento::where('eventosId',$evento->id)->get();
+        $ComissaoEvento = ComissaoEvento::where('eventosId', $evento->id)->get();
         // dd($ComissaoEventos);
         $ids = [];
-        foreach($ComissaoEvento as $ce){
-            array_push($ids,$ce->userId);
+        foreach ($ComissaoEvento as $ce) {
+            array_push($ids, $ce->userId);
         }
         $users = User::find($ids);
 
@@ -718,7 +719,7 @@ class EventoController extends Controller
         $trabalhosAvaliados = Atribuicao::whereIn('trabalhoId', $trabalhosId)->where('parecer', '!=', 'processando')->count();
 
         $numeroRevisores = Revisor::where('eventoId', $evento->id)->count();
-        $numeroComissao = ComissaoEvento::where('eventosId',$evento->id)->count();
+        $numeroComissao = ComissaoEvento::where('eventosId', $evento->id)->count();
         // $atribuicoesProcessando;
         // dd($trabalhosEnviados);
         $revs = Revisor::where('eventoId', $evento->id)->with('user')->get();
@@ -740,7 +741,8 @@ class EventoController extends Controller
         ]);
     }
 
-    public function numTrabalhos(Request $request){
+    public function numTrabalhos(Request $request)
+    {
         $evento = Evento::find($request->eventoId);
         $this->authorize('isCoordenador', $evento);
         $validatedData = $request->validate([
@@ -756,17 +758,17 @@ class EventoController extends Controller
         return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
     }
 
-    public function setResumo(Request $request){
+    public function setResumo(Request $request)
+    {
         $evento = Evento::find($request->eventoId);
         $this->authorize('isCoordenador', $evento);
         $validatedData = $request->validate([
             'eventoId'                => ['required', 'integer'],
             'hasResumo'               => ['required', 'string']
         ]);
-        if($request->hasResumo == 'true'){
+        if ($request->hasResumo == 'true') {
             $evento->hasResumo = true;
-        }
-        else{
+        } else {
             $evento->hasResumo = false;
         }
 
@@ -774,7 +776,8 @@ class EventoController extends Controller
         return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
     }
 
-    public function setFotoEvento(Request $request){
+    public function setFotoEvento(Request $request)
+    {
         $evento = Evento::find($request->eventoId);
         $this->authorize('isCoordenador', $evento);
         // dd($request);
@@ -792,15 +795,16 @@ class EventoController extends Controller
         return redirect()->route('coord.detalhesEvento', ['eventoId' => $request->eventoId]);
     }
 
-    public function areaParticipante() {
+    public function areaParticipante()
+    {
 
         $eventos = Evento::all();
 
-        return view('user.areaParticipante',['eventos'=>$eventos]);
-
+        return view('user.areaParticipante', ['eventos' => $eventos]);
     }
 
-    public function listComissao() {
+    public function listComissao()
+    {
 
         $comissaoEvento = ComissaoEvento::where('userId', Auth::user()->id)->get();
         $eventos = Evento::all();
@@ -808,17 +812,17 @@ class EventoController extends Controller
 
         foreach ($comissaoEvento as $comissao) {
             foreach ($eventos as $evento) {
-                if($comissao->eventosId == $evento->id){
-                    array_push($evnts,$evento);
+                if ($comissao->eventosId == $evento->id) {
+                    array_push($evnts, $evento);
                 }
             }
         }
 
-        return view('user.comissoes',['eventos'=>$evnts]);
-
+        return view('user.comissoes', ['eventos' => $evnts]);
     }
 
-    public function listComissaoTrabalhos(Request $request) {
+    public function listComissaoTrabalhos(Request $request)
+    {
 
         $evento = Evento::find($request->eventoId);
         $areasId = Area::where('eventoId', $evento->id)->select('id')->get();
@@ -827,7 +831,8 @@ class EventoController extends Controller
         return view('user.areaComissao', ['trabalhos' => $trabalhos]);
     }
 
-    public function baixarEdital($id) {
+    public function baixarEdital($id)
+    {
         $evento = Evento::find($id);
 
         if (Storage::disk()->exists($evento->pdfEdital)) {

@@ -64,35 +64,35 @@ use Illuminate\Support\Facades\Date;
 class TrabalhoController extends Controller
 {
     public $estados = array(
-      'AC' => 'Acre',
-      'AL' => 'Alagoas',
-      'AP' => 'Amapá',
-      'AM' => 'Amazonas',
-      'BA' => 'Bahia',
-      'CE' => 'Ceará',
-      'DF' => 'Distrito Federal',
-      'ES' => 'Espirito Santo',
-      'GO' => 'Goiás',
-      'MA' => 'Maranhão',
-      'MS' => 'Mato Grosso do Sul',
-      'MT' => 'Mato Grosso',
-      'MG' => 'Minas Gerais',
-      'PA' => 'Pará',
-      'PB' => 'Paraíba',
-      'PR' => 'Paraná',
-      'PE' => 'Pernambuco',
-      'PI' => 'Piauí',
-      'RJ' => 'Rio de Janeiro',
-      'RN' => 'Rio Grande do Norte',
-      'RS' => 'Rio Grande do Sul',
-      'RO' => 'Rondônia',
-      'RR' => 'Roraima',
-      'SC' => 'Santa Catarina',
-      'SP' => 'São Paulo',
-      'SE' => 'Sergipe',
-      'TO' => 'Tocantins',
+        'AC' => 'Acre',
+        'AL' => 'Alagoas',
+        'AP' => 'Amapá',
+        'AM' => 'Amazonas',
+        'BA' => 'Bahia',
+        'CE' => 'Ceará',
+        'DF' => 'Distrito Federal',
+        'ES' => 'Espirito Santo',
+        'GO' => 'Goiás',
+        'MA' => 'Maranhão',
+        'MS' => 'Mato Grosso do Sul',
+        'MT' => 'Mato Grosso',
+        'MG' => 'Minas Gerais',
+        'PA' => 'Pará',
+        'PB' => 'Paraíba',
+        'PR' => 'Paraná',
+        'PE' => 'Pernambuco',
+        'PI' => 'Piauí',
+        'RJ' => 'Rio de Janeiro',
+        'RN' => 'Rio Grande do Norte',
+        'RS' => 'Rio Grande do Sul',
+        'RO' => 'Rondônia',
+        'RR' => 'Roraima',
+        'SC' => 'Santa Catarina',
+        'SP' => 'São Paulo',
+        'SE' => 'Sergipe',
+        'TO' => 'Tocantins',
     );
-    
+
     public function index($id)
     {
         $edital = Evento::find($id);
@@ -103,34 +103,34 @@ class TrabalhoController extends Controller
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
         $areaTematicasPibac = AreaTematicaPibac::orderBy('id')->get();
 
-        if($proponente == null){
-          return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
+        if ($proponente == null) {
+            return view('proponente.cadastro')->with(['mensagem' => 'Você não possui perfil de Proponente, para submeter algum projeto preencha o formulário.']);;
         }
-        
-        $rascunho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$edital->id)->where('status', 'Rascunho')
-                                ->orderByDesc('updated_at')->first();
 
-      // dd($estados);
+        $rascunho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id', $edital->id)->where('status', 'Rascunho')
+            ->orderByDesc('updated_at')->first();
 
-        return view('evento.submeterTrabalho',[
-        // return view('evento.backupForm',[
-                                            'edital'             => $edital,
-                                            'grandeAreas'        => $grandeAreas,
-                                            'funcaoParticipantes'=> $funcaoParticipantes,
-                                            'rascunho'           => $rascunho,
-                                            'enum_turno'         => Participante::ENUM_TURNO,
-                                            'estados'            => $this->estados,
-                                            'areaTematicas'        => $areaTematicas,
-                                            'ods'                   =>$ODS,
-                                            'areasTematicasPibac' => $areaTematicasPibac
-                                            ]);
+        // dd($estados);
+
+        return view('evento.submeterTrabalho', [
+            // return view('evento.backupForm',[
+            'edital'             => $edital,
+            'grandeAreas'        => $grandeAreas,
+            'funcaoParticipantes' => $funcaoParticipantes,
+            'rascunho'           => $rascunho,
+            'enum_turno'         => Participante::ENUM_TURNO,
+            'estados'            => $this->estados,
+            'areaTematicas'        => $areaTematicas,
+            'ods'                   => $ODS,
+            'areasTematicasPibac' => $areaTematicasPibac
+        ]);
     }
 
     public function solicitarDeclaracao($id)
     {
         $trabalho = Trabalho::find($id);
         $userParticipante = $trabalho->proponente->user;
-        
+
 
         $solicitacao = new Notificacao();
         $solicitacao->remetente_id = Auth::user()->id;
@@ -145,34 +145,36 @@ class TrabalhoController extends Controller
         return redirect()->back()->with(['sucesso' => 'Solicitação de declaração enviada com sucesso.']);
     }
 
-    public function arquivar(Request $request){
+    public function arquivar(Request $request)
+    {
 
         $trabalho = Trabalho::find($request->trabalho_id);
-        $arquivos = Arquivo::where('trabalhoId',$trabalho->id)->get();
-        if($request->arquivar_tipo == 1 ){
+        $arquivos = Arquivo::where('trabalhoId', $trabalho->id)->get();
+        if ($request->arquivar_tipo == 1) {
             $trabalho->arquivado = true;
-            foreach ($arquivos as $arquivo){
+            foreach ($arquivos as $arquivo) {
                 $arquivo->arquivado = true;
                 $arquivo->update();
             }
-            $message = "Projeto ".$trabalho->titulo." arquivado";
-        }else{
+            $message = "Projeto " . $trabalho->titulo . " arquivado";
+        } else {
             $trabalho->arquivado = false;
-            foreach ($arquivos as $arquivo){
+            foreach ($arquivos as $arquivo) {
                 $arquivo->arquivado = false;
                 $arquivo->update();
             }
-            $message = "Projeto ".$trabalho->titulo." desarquivado";
+            $message = "Projeto " . $trabalho->titulo . " desarquivado";
         }
         $trabalho->update();
-        return redirect()->back()->with(['sucesso'=>$message ]);
+        return redirect()->back()->with(['sucesso' => $message]);
     }
 
-    public function storeParcial(Request $request){
-      $mytime = Carbon::now('America/Recife');
-      $mytime = $mytime->toDateString();
-      $evento = Evento::find($request->editalId);
-      $coordenador = CoordenadorComissao::find($evento->coordenadorId);
+    public function storeParcial(Request $request)
+    {
+        $mytime = Carbon::now('America/Recife');
+        $mytime = $mytime->toDateString();
+        $evento = Evento::find($request->editalId);
+        $coordenador = CoordenadorComissao::find($evento->coordenadorId);
 
         //Relaciona o projeto criado com o proponente que criou o projeto
         $proponente = Proponente::where('user_id', Auth::user()->id)->first();
@@ -194,70 +196,78 @@ class TrabalhoController extends Controller
     public function armazenarInfoTemp(Request $request, $proponente)
     {
 
-      //---Dados do Projeto
-      $trabalho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id',$request->editalId)->where('status', 'Rascunho')
-                                ->orderByDesc('updated_at')->first();
-      //dd($trabalho);
-      if($trabalho == null){
-        $trabalho = new Trabalho();
-        $trabalho->proponente_id = $proponente->id;
-        $trabalho->evento_id = $request->editalId;
-        $trabalho->status = 'Rascunho';
-
-        $stringKeys = ['titulo','linkGrupoPesquisa', 'linkLattesEstudante','pontuacaoPlanilha','anexoProjeto',
-                        'anexoPlanilhaPontuacao', 'anexoLattesCoordenador', 'conflitosInteresse'];
-        $intKeys = ['grande_area_id','area_id','sub_area_id','coordenador_id'];
-
-        $trabalho->fill(
-          array_fill_keys($stringKeys, "") + array_fill_keys($intKeys, 1)
-        )->save();
+        //---Dados do Projeto
+        $trabalho = Trabalho::where('proponente_id', $proponente->id)->where('evento_id', $request->editalId)->where('status', 'Rascunho')
+            ->orderByDesc('updated_at')->first();
         //dd($trabalho);
-      }
+        if ($trabalho == null) {
+            $trabalho = new Trabalho();
+            $trabalho->proponente_id = $proponente->id;
+            $trabalho->evento_id = $request->editalId;
+            $trabalho->status = 'Rascunho';
 
-      if(!(is_null($request->nomeProjeto)) ) {
-        $trabalho->titulo = $request->nomeProjeto;
-      }
-      if(!(is_null($request->grandeArea))){
-        $trabalho->grande_area_id = $request->grandeArea;
-      }
-      if(!(is_null($request->area))){
-        $trabalho->area_id = $request->area;
-      }
-      if(!(is_null($request->subArea))){
-        $trabalho->sub_area_id = $request->subArea;
-      }
-      if(!(is_null($request->pontuacaoPlanilha))){
-        $trabalho->pontuacaoPlanilha = $request->pontuacaoPlanilha;
-      }
-      if(!(is_null($request->linkGrupo))){
-        $trabalho->linkGrupoPesquisa = $request->linkGrupo;
-      }
-      if(!(is_null($request->conflitosInteresse))){
-        $trabalho->conflitosInteresse = $request->conflitosInteresse;
-      }
+            $stringKeys = [
+                'titulo',
+                'linkGrupoPesquisa',
+                'linkLattesEstudante',
+                'pontuacaoPlanilha',
+                'anexoProjeto',
+                'anexoPlanilhaPontuacao',
+                'anexoLattesCoordenador',
+                'conflitosInteresse'
+            ];
+            $intKeys = ['grande_area_id', 'area_id', 'sub_area_id', 'coordenador_id'];
+
+            $trabalho->fill(
+                array_fill_keys($stringKeys, "") + array_fill_keys($intKeys, 1)
+            )->save();
+            //dd($trabalho);
+        }
+
+        if (!(is_null($request->nomeProjeto))) {
+            $trabalho->titulo = $request->nomeProjeto;
+        }
+        if (!(is_null($request->grandeArea))) {
+            $trabalho->grande_area_id = $request->grandeArea;
+        }
+        if (!(is_null($request->area))) {
+            $trabalho->area_id = $request->area;
+        }
+        if (!(is_null($request->subArea))) {
+            $trabalho->sub_area_id = $request->subArea;
+        }
+        if (!(is_null($request->pontuacaoPlanilha))) {
+            $trabalho->pontuacaoPlanilha = $request->pontuacaoPlanilha;
+        }
+        if (!(is_null($request->linkGrupo))) {
+            $trabalho->linkGrupoPesquisa = $request->linkGrupo;
+        }
+        if (!(is_null($request->conflitosInteresse))) {
+            $trabalho->conflitosInteresse = $request->conflitosInteresse;
+        }
 
         //Anexos do projeto
 
         $pasta = 'trabalhos/' . $request->editalId . '/' . $trabalho->id;
 
-      if(!(is_null($request->anexoDecisaoCONSU)) ) {
-        $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU,  "CONSU.pdf");
-      }
-      if (!(is_null($request->anexoComiteEtica))) {
-        $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
-      }
-      if (!(is_null($request->justificativaAutorizacaoEtica))) {
-        $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica,  "Justificativa.pdf");
-      }
-      if (!(is_null($request->anexoProjeto))) {
-        $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");
-      }
-      if (!(is_null($request->anexoLattesCoordenador))) {
-        $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador,  "Lattes_Coordenador.pdf");
-      }
-      if (!(is_null($request->anexoPlanilhaPontuacao))) {
-        $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao,  "Planilha.". $request->file('anexoPlanilhaPontuacao')->getClientOriginalExtension());
-      }
+        if (!(is_null($request->anexoDecisaoCONSU))) {
+            $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU,  "CONSU.pdf");
+        }
+        if (!(is_null($request->anexoComiteEtica))) {
+            $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoComiteEtica,  "Comite_de_etica.pdf");
+        }
+        if (!(is_null($request->justificativaAutorizacaoEtica))) {
+            $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica,  "Justificativa.pdf");
+        }
+        if (!(is_null($request->anexoProjeto))) {
+            $trabalho->anexoProjeto = Storage::putFileAs($pasta, $request->anexoProjeto,  "Projeto.pdf");
+        }
+        if (!(is_null($request->anexoLattesCoordenador))) {
+            $trabalho->anexoLattesCoordenador = Storage::putFileAs($pasta, $request->anexoLattesCoordenador,  "Lattes_Coordenador.pdf");
+        }
+        if (!(is_null($request->anexoPlanilhaPontuacao))) {
+            $trabalho->anexoPlanilhaPontuacao = Storage::putFileAs($pasta, $request->anexoPlanilhaPontuacao,  "Planilha." . $request->file('anexoPlanilhaPontuacao')->getClientOriginalExtension());
+        }
 
         $trabalho->update();
 
@@ -268,19 +278,21 @@ class TrabalhoController extends Controller
         return $trabalho;
     }
 
-    public function validarAnexosRascunho(Request $request, $trabalho){
-      $validator = Validator::make($trabalho->getAttributes(),[
-         'anexoPlanilhaPontuacao'           => $request->anexoPlanilhaPontuacao==null?['planilha']:[],
-      ]);
+    public function validarAnexosRascunho(Request $request, $trabalho)
+    {
+        $validator = Validator::make($trabalho->getAttributes(), [
+            'anexoPlanilhaPontuacao'           => $request->anexoPlanilhaPontuacao == null ? ['planilha'] : [],
+        ]);
 
-      if ($validator->fails()) {
-        //dd('asdf');
-        return back()->withErrors($validator)->withInput();
-      }
-      return 1;
+        if ($validator->fails()) {
+            //dd('asdf');
+            return back()->withErrors($validator)->withInput();
+        }
+        return 1;
     }
 
-    public function armazenarAnexosFinais($request, $pasta, $trabalho, $evento){
+    public function armazenarAnexosFinais($request, $pasta, $trabalho, $evento)
+    {
 
         // Checando se é um novo trabalho ou uma edição
 
@@ -294,14 +306,14 @@ class TrabalhoController extends Controller
             }
 
             //Anexo Decisão CONSU
-           // if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
-                if (isset($request->anexoDecisaoCONSU)) {
-                    if (Storage::disk()->exists($trabalho->anexoDecisaoCONSU)) {
-                        Storage::delete($trabalho->anexoDecisaoCONSU);
-                    }
-                    $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'Decisão_da_Câmara_ou_Conselho_Pertinente.pdf');
+            // if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
+            if (isset($request->anexoDecisaoCONSU)) {
+                if (Storage::disk()->exists($trabalho->anexoDecisaoCONSU)) {
+                    Storage::delete($trabalho->anexoDecisaoCONSU);
                 }
-           // }
+                $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'Decisão_da_Câmara_ou_Conselho_Pertinente.pdf');
+            }
+            // }
 
             //Autorização ou Justificativa
             if (isset($request->anexoAutorizacaoComiteEtica)) {
@@ -310,7 +322,6 @@ class TrabalhoController extends Controller
                 }
                 $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoAutorizacaoComiteEtica, 'Comite_de_etica.pdf');
                 $trabalho->justificativaAutorizacaoEtica = null;
-
             } elseif (isset($request->justificativaAutorizacaoEtica)) {
                 if (Storage::disk()->exists($trabalho->justificativaAutorizacaoEtica)) {
                     Storage::delete($trabalho->justificativaAutorizacaoEtica);
@@ -363,20 +374,18 @@ class TrabalhoController extends Controller
 
         //Anexo Decisão CONSU
         //if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM') {
-            if (isset($request->anexoDecisaoCONSU)) {
-                $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'Decisão_da_Câmara_ou_Conselho_Pertinente.pdf');
-            }
+        if (isset($request->anexoDecisaoCONSU)) {
+            $trabalho->anexoDecisaoCONSU = Storage::putFileAs($pasta, $request->anexoDecisaoCONSU, 'Decisão_da_Câmara_ou_Conselho_Pertinente.pdf');
+        }
         //}
 
         //Autorização ou Justificativa
         if (isset($request->anexoAutorizacaoComiteEtica)) {
             $trabalho->anexoAutorizacaoComiteEtica = Storage::putFileAs($pasta, $request->anexoAutorizacaoComiteEtica, 'Comite_de_etica.pdf');
             $trabalho->justificativaAutorizacaoEtica = null;
-
         } elseif (isset($request->justificativaAutorizacaoEtica)) {
             $trabalho->justificativaAutorizacaoEtica = Storage::putFileAs($pasta, $request->justificativaAutorizacaoEtica, 'Justificativa.pdf');
             $trabalho->anexoAutorizacaoComiteEtica = null;
-
         }
 
         //Anexo Lattes
@@ -423,7 +432,7 @@ class TrabalhoController extends Controller
     public function show($id)
     {
         $projeto = Trabalho::find($id);
-        if(Auth::user()->id != $projeto->proponente->user->id){
+        if (Auth::user()->id != $projeto->proponente->user->id) {
             return redirect()->back();
         }
         $edital = Evento::find($projeto->evento_id);
@@ -439,9 +448,9 @@ class TrabalhoController extends Controller
         $proponente = Proponente::where('user_id', $projeto->proponente->user_id)->first();
 
         // Verficação de pendencia de substituição
-        $aux = count(Substituicao::where('status','Em Aguardo')->whereIn('participanteSubstituido_id',$projeto->participantes->pluck('id'))->get());
+        $aux = count(Substituicao::where('status', 'Em Aguardo')->whereIn('participanteSubstituido_id', $projeto->participantes->pluck('id'))->get());
         $flagSubstituicao = 1;
-        if($aux != 0){
+        if ($aux != 0) {
             $flagSubstituicao = -1;
         }
 
@@ -456,15 +465,15 @@ class TrabalhoController extends Controller
                 array_push($avals_projeto, AvaliacaoRelatorio::where('arquivo_id', $arquivo->id)->get());
             }
         }
-        
+
         foreach ($avals_projeto as $avals) {
-            foreach ($avals as $aval){
+            foreach ($avals as $aval) {
                 if ($aval->tipo == 'Parcial') {
                     array_push($AvalRelatParcial, $aval);
                 } else {
                     array_push($AvalRelatFinal, $aval);
                 }
-            }   
+            }
         }
 
         $hoje = Carbon::today('America/Recife');
@@ -472,7 +481,8 @@ class TrabalhoController extends Controller
 
 
 
-        return view('projeto.visualizar')->with(['projeto' => $projeto,
+        return view('projeto.visualizar')->with([
+            'projeto' => $projeto,
             'grandeAreas' => $grandeAreas,
             'areas' => $areas,
             'subAreas' => $subareas,
@@ -485,7 +495,7 @@ class TrabalhoController extends Controller
             'visualizar' => true,
             'enum_turno' => Participante::ENUM_TURNO,
             'areasTematicas' => $areasTematicas,
-            'flagSubstituicao' =>$flagSubstituicao,
+            'flagSubstituicao' => $flagSubstituicao,
             'trabalhos_user' => $trabalhos_user,
             'AvalRelatParcial' => $AvalRelatParcial,
             'AvalRelatFinal' => $AvalRelatFinal,
@@ -520,9 +530,9 @@ class TrabalhoController extends Controller
 
     public function edit($id)
     {
-        if(Auth::user()->tipo=='administrador'){
+        if (Auth::user()->tipo == 'administrador') {
             $projeto = Trabalho::find($id);
-        }else{
+        } else {
             $projeto = Auth::user()->proponentes->trabalhos()->where('id', $id)->first();
             if ($projeto->status != 'rascunho')
                 return redirect()->back()->with('mensagem', 'Não é possível alterar uma proposta já submetida');
@@ -549,7 +559,8 @@ class TrabalhoController extends Controller
 
         $trabalhos_user = TrabalhoUser::where('trabalho_id', $projeto->id)->get();
 
-        return view('projeto.editar')->with(['projeto' => $projeto,
+        return view('projeto.editar')->with([
+            'projeto' => $projeto,
             'grandeAreas' => $grandeAreas,
             'areas' => $areas,
             'subAreas' => $subareas,
@@ -628,7 +639,9 @@ class TrabalhoController extends Controller
                 'tipo' => 6,
             ]);
         }
-        $destinatarios = $admins->map(function($admin) {return $admin->user;})->push($coord->user);
+        $destinatarios = $admins->map(function ($admin) {
+            return $admin->user;
+        })->push($coord->user);
         Notification::send($destinatarios, new SolicitacaoCertificadoNotification($trabalho->proponente, $trabalho, $userTemp, $users));
         return redirect()->route('trabalho.show', ['id' => $trabalho->id])->with('sucesso', 'Solicitação de certificado/declaração efetuada com sucesso!');
     }
@@ -743,7 +756,6 @@ class TrabalhoController extends Controller
 
 
         return view('coordenadorComissao.gerenciarEdital.atribuirAvaliadorTrabalho', ['avaliadores' => $avaliadores, 'trabalho' => $trabalho, 'evento' => $trabalho->evento]);
-
     }
 
     public function atribuir(Request $request)
@@ -935,11 +947,11 @@ class TrabalhoController extends Controller
     }
 
     public function baixarEventoTemp($nomeAnexo)
-    {   
+    {
         $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
             ->orderByDesc('updated_at')->first();
 
-        return response()->download($eventoTemp->$nomeAnexo);    
+        return response()->download($eventoTemp->$nomeAnexo);
         if (!is_null($eventoTemp) && Storage::disk()->exists($eventoTemp->$nomeAnexo)) {
             ob_end_clean();
             return Storage::download($eventoTemp->$nomeAnexo);
@@ -948,18 +960,18 @@ class TrabalhoController extends Controller
     }
 
     public function baixarModeloEventoTemp($nomeAnexo)
-    {   
+    {
         $eventoTemp = Evento::where('criador_id', Auth::user()->id)->where('anexosStatus', 'temporario')
             ->orderByDesc('updated_at')->first();
 
         if (!is_null($eventoTemp)) {
             ob_end_clean();
-            return response()->download($eventoTemp->$nomeAnexo); 
+            return response()->download($eventoTemp->$nomeAnexo);
         }
         return abort(404);
     }
 
-//xxfa
+    //xxfa
 
     public function update(UpdateTrabalho $request, $id)
     {
@@ -986,16 +998,25 @@ class TrabalhoController extends Controller
                 return back()->withErrors(['Proposta não encontrada']);
             }
 
-            if($evento->tipo=="PIBEX" || $evento->tipo=="PIBAC"){
+            if ($evento->tipo == "PIBEX" || $evento->tipo == "PIBAC") {
                 $trabalho->update($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra'
-                    ]));
-            }else{
+                    'anexoProjeto',
+                    'anexoDecisaoCONSU',
+                    'modalidade',
+                    'anexo_docExtra'
+                ]));
+            } else {
                 $trabalho->update($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                        'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                        'justificativaAutorizacaoEtica','modalidade','anexo_docExtra'
-                    ]));
+                    'anexoProjeto',
+                    'anexoDecisaoCONSU',
+                    'anexoPlanilhaPontuacao',
+                    'anexoLattesCoordenador',
+                    'anexoGrupoPesquisa',
+                    'anexoAutorizacaoComiteEtica',
+                    'justificativaAutorizacaoEtica',
+                    'modalidade',
+                    'anexo_docExtra'
+                ]));
             }
 
             $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
@@ -1003,21 +1024,21 @@ class TrabalhoController extends Controller
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->save();
 
-            
-            if($request->integrantesExistentes == null){
+
+            if ($request->integrantesExistentes == null) {
                 $request->integrantesExistentes = [];
             }
             $usuariosRemovidos = TrabalhoUser::where('trabalho_id', $trabalho->id)->whereNotIn('user_id', $request->integrantesExistentes)->get();
 
-            if($usuariosRemovidos->first() != null) {
-                foreach($usuariosRemovidos as $usuarioRemovido){
+            if ($usuariosRemovidos->first() != null) {
+                foreach ($usuariosRemovidos as $usuarioRemovido) {
                     $usuarioRemovido->delete();
                 }
             }
 
-            if($evento->natureza_id == 3 && $request->integrantes != null){
-                foreach($request->integrantes as $integrante){
-                    $integrante = explode(',', $integrante); 
+            if ($evento->natureza_id == 3 && $request->integrantes != null) {
+                foreach ($request->integrantes as $integrante) {
+                    $integrante = explode(',', $integrante);
                     $trabalho_user = new TrabalhoUser();
                     $trabalho_user->user_id = $integrante[0];
                     $trabalho_user->funcao_participante_id = $integrante[1];
@@ -1025,23 +1046,22 @@ class TrabalhoController extends Controller
                     $trabalho_user->save();
                 }
             }
-            
+
             if ($evento->numParticipantes != 0) {
                 if ($request->marcado == null) {
                     $idExcluido = $trabalho->participantes->pluck('id');
-    
                 } else {
                     $idExcluido = [];
                 }
-    
+
                 foreach ($request->participante_id as $key => $value) {
                     if ($request->marcado != null && array_search($key, $request->marcado) === false) {
                         if ($value !== null)
                             array_push($idExcluido, $value);
                     }
                 }
-    
-    
+
+
                 foreach ($idExcluido as $key => $value) {
                     $trabalho->participantes()->find($value)->delete();
                 }
@@ -1080,8 +1100,8 @@ class TrabalhoController extends Controller
                     } else {
                         $data['curso'] = $request->outrocurso[$part];
                     }
-                    
-                    if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
+
+                    if ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
                         $data['turno'] = $request->turno[$part];
                         $data['periodo_atual'] = $request->periodo_atual[$part];
                         $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
@@ -1090,15 +1110,15 @@ class TrabalhoController extends Controller
                     }
                     $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
 
-                    if($request->participante_id[$part] != null){
+                    if ($request->participante_id[$part] != null) {
                         $participante = Participante::find($request->participante_id[$part]);
                         $user = User::where('email', 'ilike', $participante->user->email)->first();
-                    }else{
+                    } else {
                         $user = User::where('email', 'ilike', $data['email'])->first();
                     }
-                    
-                    
-                    
+
+
+
 
                     if ($user == null) {
                         $data['usuarioTemp'] = true;
@@ -1111,14 +1131,13 @@ class TrabalhoController extends Controller
                         $trabalho->participantes()->save($participante);
                         $participante->trabalho_id = $trabalho->id;
                         $participante->save();
-
                     } else {
                         // $user = $participante->user;
                         $user->update($data);
-                        if( $user->endereco == null){
+                        if ($user->endereco == null) {
                             $endereco = Endereco::create($data);
                             $endereco->user()->save($user);
-                        }else{
+                        } else {
                             $endereco = $user->endereco;
                             $endereco->update($data);
                         }
@@ -1133,7 +1152,6 @@ class TrabalhoController extends Controller
                             // dd('part update');
                             $participante->update($data);
                         }
-
                     }
 
                     if ($request->has('anexoPlanoTrabalho') && array_key_exists($part, $request->anexoPlanoTrabalho) && $request->nomePlanoTrabalho[$part] != null) {
@@ -1162,16 +1180,12 @@ class TrabalhoController extends Controller
                             $arquivo->participanteId = $participante->id;
                             $arquivo->versaoFinal = true;
                             $arquivo->save();
-
                         }
-
                     }
-
                 }
-
             } else {
                 $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
-                
+
                 if (Arquivo::where('proponenteId', $proponente->id)->where('trabalhoId', $trabalho->id)->count()) {
                     $arquivo = Arquivo::where('proponenteId', $proponente->id)->where('trabalhoId', $trabalho->id)->first();
                     $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
@@ -1181,8 +1195,8 @@ class TrabalhoController extends Controller
                         $file = $request->anexoPlanoTrabalho;
                         Storage::putFileAs($path, $file, $nome);
                     } else {
-                        if($arquivo->nome != $path.$nome) {
-                            Storage::rename( $arquivo->nome, $path.$nome );
+                        if ($arquivo->nome != $path . $nome) {
+                            Storage::rename($arquivo->nome, $path . $nome);
                         }
                     }
                     $arquivo->update([
@@ -1208,8 +1222,8 @@ class TrabalhoController extends Controller
 
             DB::commit();
 
-            if(Auth::user()->tipo == 'administrador'){
-                return redirect(route('admin.analisarProposta',['id'=>$trabalho->id]));
+            if (Auth::user()->tipo == 'administrador') {
+                return redirect(route('admin.analisarProposta', ['id' => $trabalho->id]));
             }
 
             if (!$request->has('rascunho')) {
@@ -1217,128 +1231,131 @@ class TrabalhoController extends Controller
             }
 
             return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta atualizada!']);
-
         } catch (\Throwable $th) {
             DB::rollback();
-            
+
             return redirect(route('proponente.projetos'))->with(['mensagem' => $th->getMessage()]);
         }
-
     }
 
-    public function adicionarParticipante(AdicionarIntegranteRequest $request, $id){
+    public function adicionarParticipante(AdicionarIntegranteRequest $request, $id)
+    {
         $usuario = User::where('cpf', $request->cpf_consulta)->first();
-        
-        if(!$this->validarQtdParticipantesEdital($id)){
+
+        if (!$this->validarQtdParticipantesEdital($id)) {
             return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Número máximo de integrantes do Edital alcançado, não é possivel inserir."]);
         }
 
-        if(!$this->validarParticipanteRepetido($usuario->id, $id)) {
+        if (!$this->validarParticipanteRepetido($usuario->id, $id)) {
             return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Já existe um Integrante com esse CPF."]);
         }
 
-        if(!$this->validarDataResultadoFinalPibex($id)) {
+        if (!$this->validarDataResultadoFinalPibex($id)) {
             return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Só é possivel adicionar integrantes após a data do Resultado final"]);
         }
 
-        if(!$this->validarDataResultadoFinalPibac($id)) {
+        if (!$this->validarDataResultadoFinalPibac($id)) {
             return redirect(route('trabalho.show', ['id' => $id]))->with(['mensagem' => "Só é possivel adicionar integrantes após a data do Resultado final"]);
         }
 
 
-        $atributos = ['user_id' => $usuario->id,
-                      'funcao_participante_id' => $request->funcao_participante,
-                      'trabalho_id' => $id,
-                      'data_entrada' => Date::now()->format('Y-m-d H:i:s')
-                    ];
+        $atributos = [
+            'user_id' => $usuario->id,
+            'funcao_participante_id' => $request->funcao_participante,
+            'trabalho_id' => $id,
+            'data_entrada' => Date::now()->format('Y-m-d H:i:s')
+        ];
         $rg = Participante::where('user_id', $atributos['user_id'])
-                    ->where('rg', '!=', null)
-                    ->latest()
-                    ->first();
-       
+            ->where('rg', '!=', null)
+            ->latest()
+            ->first();
+
         $data_de_nascimento = Participante::where('user_id', $atributos['user_id'])
-                ->where('data_de_nascimento', '!=', null)
-                ->latest()
-                ->first();
+            ->where('data_de_nascimento', '!=', null)
+            ->latest()
+            ->first();
 
         $curso = Participante::where('user_id', $atributos['user_id'])
-                ->where('curso', '!=', null)
-                ->latest()
-                ->first();
-       
+            ->where('curso', '!=', null)
+            ->latest()
+            ->first();
+
         $linkLattes = Participante::where('user_id', $atributos['user_id'])
-                ->where('linkLattes', '!=', null)
-                ->latest()
-                ->first();
+            ->where('linkLattes', '!=', null)
+            ->latest()
+            ->first();
 
         $curso_id = Participante::where('user_id', $atributos['user_id'])
-                ->where('curso_id', '!=', null)
-                ->latest()
-                ->first();
-        
+            ->where('curso_id', '!=', null)
+            ->latest()
+            ->first();
+
         $atributo['rg'] = $rg ? $rg->rg : null;
         $atributo['data_de_nascimento'] = $data_de_nascimento ? $data_de_nascimento->data_de_nascimento : null;
         $atributo['curso'] = $curso ? $curso->curso : null;
         $atributo['linkLattes'] = $linkLattes ? $linkLattes->linkLattes : null;
         $atributo['curso_id'] = $curso_id ? $curso_id->curso_id : null;
-        
+
         Participante::create($atributos);
 
         return redirect(route('trabalho.show', ['id' => $id]));
     }
 
-    private function validarQtdParticipantesEdital($id) {
+    private function validarQtdParticipantesEdital($id)
+    {
         $num_participantes_edital = Trabalho::where('id', $id)->first()->evento->numParticipantes;
         $num_participantes_projeto = count(Participante::where('trabalho_id', $id)->get());
-        if($num_participantes_projeto >= $num_participantes_edital){
+        if ($num_participantes_projeto >= $num_participantes_edital) {
             return false;
         }
 
         return true;
     }
 
-    private function validarParticipanteRepetido($usuario_id, $trabalho_id){
-        if(Participante::where('user_id', $usuario_id)->where('trabalho_id', $trabalho_id)->first()) {
+    private function validarParticipanteRepetido($usuario_id, $trabalho_id)
+    {
+        if (Participante::where('user_id', $usuario_id)->where('trabalho_id', $trabalho_id)->first()) {
             return false;
         }
 
         return true;
     }
 
-    private function validarDataResultadoFinalPibex($id) {
-        $hoje = Carbon::today('America/Recife');
-        $hoje = $hoje->toDateString();
-        $edital = Trabalho::where('id', $id)->first()->evento;
-        
-        if($edital->tipo == "PIBEX" && $hoje <= $edital->resultado_final){
-            return false;
-        }
-
-        return true;
-
-    }
-
-    private function validarDataResultadoFinalPibac($id) {
+    private function validarDataResultadoFinalPibex($id)
+    {
         $hoje = Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
         $edital = Trabalho::where('id', $id)->first()->evento;
 
-        if($edital->tipo == "PIBAC" && $hoje <= $edital->resultado_final){
+        if ($edital->tipo == "PIBEX" && $hoje <= $edital->resultado_final) {
             return false;
         }
 
         return true;
-
     }
 
-    public function buscarUsuario(Request $request) {
+    private function validarDataResultadoFinalPibac($id)
+    {
+        $hoje = Carbon::today('America/Recife');
+        $hoje = $hoje->toDateString();
+        $edital = Trabalho::where('id', $id)->first()->evento;
+
+        if ($edital->tipo == "PIBAC" && $hoje <= $edital->resultado_final) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function buscarUsuario(Request $request)
+    {
         $usuario = User::where('cpf', $request->cpf_consulta)->first();
         $funcao = FuncaoParticipantes::where('id', $request->funcao)->first();
-        
-        if($usuario){
+
+        if ($usuario) {
             $participante = $usuario->participantes()->first();
 
-            if(!$participante)
+            if (!$participante)
                 return json_encode([$usuario, $funcao]);
 
             if ($participante->curso == null && $participante->curso_id != null)
@@ -1368,87 +1385,115 @@ class TrabalhoController extends Controller
 
             DB::beginTransaction();
 
-            if($evento->tipo=="PIBEX" || $evento->tipo=="PIACEX" || $evento->tipo=="PIBAC"){
-                if($evento->tipo == "PIBAC")
-                {
+            if ($evento->tipo == "PIBEX" || $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC") {
+                if ($evento->tipo == "PIBAC") {
                     $trabalho = Auth::user()->proponentes->trabalhos()
                         ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC', 'area_tematica_id'
+                            'anexoProjeto',
+                            'anexoDecisaoCONSU',
+                            'modalidade',
+                            'anexo_docExtra',
+                            'anexo_SIPAC',
+                            'area_tematica_id'
+                        ]));
+                } else {
+                    $trabalho = Auth::user()->proponentes->trabalhos()
+                        ->create($request->except([
+                            'anexoProjeto',
+                            'anexoDecisaoCONSU',
+                            'modalidade',
+                            'anexo_docExtra',
+                            'anexo_SIPAC'
                         ]));
                 }
-                else
-                {
+            } else if ($evento->tipo == "CONTINUO" || $evento->tipo == "CONTINUO-AC") {
+                if ($evento->tipo == "CONTINUO-AC") {
                     $trabalho = Auth::user()->proponentes->trabalhos()
                         ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC'
+                            'anexoProjeto',
+                            'anexoDecisaoCONSU',
+                            'anexoPlanilhaPontuacao',
+                            'anexoLattesCoordenador',
+                            'anexoGrupoPesquisa',
+                            'anexoAutorizacaoComiteEtica',
+                            'justificativaAutorizacaoEtica',
+                            'modalidade',
+                            'anexo_docExtra',
+                            'area_tematica_id',
                         ]));
-                }
-            }else if($evento->tipo=="CONTINUO" || $evento->tipo=="CONTINUO-AC"){
-                if($evento->tipo == "CONTINUO-AC")
-                {
+                } else {
                     $trabalho = Auth::user()->proponentes->trabalhos()
                         ->create($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                        'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                        'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'area_tematica_id',
-                    ]));
-                }
-                else
-                {
-                    $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                        'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                        'justificativaAutorizacaoEtica','modalidade','anexo_docExtra',
-                    ]));
+                            'anexoProjeto',
+                            'anexoDecisaoCONSU',
+                            'anexoPlanilhaPontuacao',
+                            'anexoLattesCoordenador',
+                            'anexoGrupoPesquisa',
+                            'anexoAutorizacaoComiteEtica',
+                            'justificativaAutorizacaoEtica',
+                            'modalidade',
+                            'anexo_docExtra',
+                        ]));
                 }
             } else {
                 //dd();
-                if($evento->tipo ==  "PICP")
-                {
+                if ($evento->tipo ==  "PICP") {
                     $trabalho = Auth::user()->proponentes->trabalhos()
                         ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica'
+                            'anexoProjeto',
+                            'anexoDecisaoCONSU',
+                            'anexoAutorizacaoComiteEtica',
+                            'justificativaAutorizacaoEtica'
                         ]));
-                }
-                else
-                {
-                    if($evento->tipo == "PIBIC" || $evento->tipo == "PIBIC-AF" || $evento->tipo == "PIBIC-EM")
-                    {
+                } else {
+                    if ($evento->tipo == "PIBIC" || $evento->tipo == "PIBIC-AF" || $evento->tipo == "PIBIC-EM") {
                         $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                            'anexoLattesCoordenador', 'anexoAutorizacaoComiteEtica',
-                            'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
-                        ]));
-                    }
-                    else
-                    {
+                            ->create($request->except([
+                                'anexoProjeto',
+                                'anexoDecisaoCONSU',
+                                'anexoPlanilhaPontuacao',
+                                'anexoLattesCoordenador',
+                                'anexoAutorizacaoComiteEtica',
+                                'justificativaAutorizacaoEtica',
+                                'modalidade',
+                                'anexo_docExtra',
+                                'anexo_SIPAC',
+                                'anexo_acao_afirmativa',
+                                'anexo_carta_anuencia'
+                            ]));
+                    } else {
                         $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                            'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                            'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
-                        ]));
+                            ->create($request->except([
+                                'anexoProjeto',
+                                'anexoDecisaoCONSU',
+                                'anexoPlanilhaPontuacao',
+                                'anexoLattesCoordenador',
+                                'anexoGrupoPesquisa',
+                                'anexoAutorizacaoComiteEtica',
+                                'justificativaAutorizacaoEtica',
+                                'modalidade',
+                                'anexo_docExtra',
+                                'anexo_SIPAC',
+                                'anexo_acao_afirmativa',
+                                'anexo_carta_anuencia'
+                            ]));
                     }
-                    
                 }
-                
             }
-            
+
             //adição dos participantes
-            if ($request->has('marcado')) {       
+            if ($request->has('marcado')) {
                 foreach ($request->marcado as $key => $part) {
                     $part = intval($part);
-                    
+
                     $data['name'] = $request->name[$part];
                     $data['email'] = $request->email[$part];
                     $data['cpf'] = $request->cpf[$part];
                     //Quando o integrante é um estudante
-                    if($request->estudante[$part] == true){
-                        if($request->data_de_nascimento[$part] == null){
+                    if ($request->estudante[$part] == true) {
+                        if ($request->data_de_nascimento[$part] == null) {
                             $data_nascimento = null;
-                        }else {
+                        } else {
                             $data_nascimento = Carbon::createFromFormat('d/m/Y', $request->data_de_nascimento[$part])->toDateString();
                         }
                         $data['data_de_nascimento'] = $data_nascimento;
@@ -1460,19 +1505,18 @@ class TrabalhoController extends Controller
                         $data['rua'] = $request->rua[$part];
                         $data['numero'] = $request->numero[$part];
                         $data['bairro'] = $request->bairro[$part];
-                        if($request->complemento[$part] == null) {
+                        if ($request->complemento[$part] == null) {
                             $data['complemento'] = "";
-                        }else {
+                        } else {
                             $data['complemento'] = $request->complemento[$part];
                         }
-                          
-                        if($request->total_periodos){
+
+                        if ($request->total_periodos) {
                             $data['total_periodos'] = $request->total_periodos[$part];
                             $data['turno'] = $request->turno[$part];
                             $data['periodo_atual'] = $request->periodo_atual[$part];
 
-                            if($evento->tipo != "PICP")
-                            {
+                            if ($evento->tipo != "PICP") {
                                 $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
                             }
                         }
@@ -1483,29 +1527,29 @@ class TrabalhoController extends Controller
                             $data['curso'] = $request->outrocurso[$part];
                         }
 
-                        if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"){
-                            if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
+                        if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC") {
+                            if ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
                                 $data['media_do_curso'] = $request->media_do_curso[$part];
                             }
                             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
                         }
-                    }             
+                    }
 
                     //função no projeto
-                    if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"){
+                    if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC") {
                         if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
                             $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
                     }
-                    
+
                     //instituição do participante
                     if ($request->instituicao[$part] != "Outra") {
                         $data['instituicao'] = $request->instituicao[$part];
                     } else {
                         $data['instituicao'] = $request->outrainstituicao[$part];
                     }
-                    
+
                     $user = User::where('email', 'ilike', $data['email'])->first();
-                    
+
                     if ($user == null) {
                         $data['usuarioTemp'] = true;
                         $user = User::create($data);
@@ -1519,11 +1563,11 @@ class TrabalhoController extends Controller
                     $participante = Participante::create($data);
                     $participante->data_entrada = $participante->created_at;
                     $user->participantes()->save($participante);
-                    
+
                     $participante->trabalho_id = $trabalho->id;
                     $participante->save();
 
-                    if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"){
+                    if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC") {
                         if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
                             $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
                             $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
@@ -1537,12 +1581,10 @@ class TrabalhoController extends Controller
                             $arquivo->participanteId = $participante->id;
                             $arquivo->versaoFinal = true;
                             $arquivo->save();
-                            
                         }
                     }
 
-                    if($evento->tipo == "CONTINUO" || $evento->tipo == "CONTINUO-AC")
-                    {
+                    if ($evento->tipo == "CONTINUO" || $evento->tipo == "CONTINUO-AC") {
                         $arquivo = new Arquivo();
                         $arquivo->titulo = $request['titulo'];
                         $arquivo->nome = $request['titulo'];
@@ -1552,7 +1594,6 @@ class TrabalhoController extends Controller
                         $arquivo->versaoFinal = true;
                         $arquivo->save();
                     }
-                    
                 }
             } else {
                 $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
@@ -1569,22 +1610,21 @@ class TrabalhoController extends Controller
                     $arquivo->proponenteId = $proponente->id;
                     $arquivo->versaoFinal = true;
                     $arquivo->save();
-                    
                 }
             }
-            
+
             $evento->trabalhos()->save($trabalho);
-            
+
             $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
             $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
             $trabalho->modalidade = $request->modalidade;
             $trabalho->save();
-            
-            
+
+
             // if($evento->natureza_id == 3){
             //     foreach($request->integrantes as $integrante){
             //         $integrante = explode(',', $integrante); 
-                    
+
             //         $trabalho_user = new TrabalhoUser();
             //         $trabalho_user->user_id = $integrante[0];
             //         $trabalho_user->funcao_participante_id = $integrante[1];
@@ -1594,11 +1634,10 @@ class TrabalhoController extends Controller
             // }
 
             $trabalho->ods()->sync($request->ods);
-            if($evento->tipo == "PIBAC" || $evento->tipo == "CONTINUO-AC")
-            {
+            if ($evento->tipo == "PIBAC" || $evento->tipo == "CONTINUO-AC") {
                 $trabalho->area_tematica_pibac()->sync($request->area_tematica_id);
             }
-            
+
             DB::commit();
             if (!$request->has('rascunho')) {
                 //Notificações
@@ -1613,7 +1652,7 @@ class TrabalhoController extends Controller
                 ]);
                 $notificacao->save();
                 // SubmissaoRecebidaNotification.php
-                Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id,$trabalho->titulo,$userTemp));
+                Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id, $trabalho->titulo, $userTemp));
                 //Proponente
                 $notificacao = App\Notificacao::create([
                     'remetente_id' => Auth::user()->id,
@@ -1630,15 +1669,12 @@ class TrabalhoController extends Controller
                 return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta submetida!']);
             } else {
                 return redirect(route('proponente.projetos'))->with(['mensagem' => 'Rascunho salvo!']);
-
             }
         } catch (\Throwable $th) {
             DB::rollback();
             //dd($th);
             return redirect(route('proponente.projetos'))->withErrors(['mensagem' => 'Não foi possível realizar a submissão do Projeto!']);
         }
-
-
     }
 
     public function atribuirDados(Request $request, $edital, Trabalho $projeto = null)
@@ -1725,14 +1761,14 @@ class TrabalhoController extends Controller
                         $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                         $participante->periodo_atual = $request->periodo_atual[$key];
                         $participante->total_periodos = $request->total_periodos[$key];
-                        if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
+                        if ($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC") {
                             $participante->media_do_curso = $request->media_geral_curso[$key];
                         }
                         $participante->save();
 
 
                         $subject = "Participante de Projeto";
-                        Mail::to($request->emailParticipante[$key])->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject, $edital->tipo,$edital->natureza_id));
+                        Mail::to($request->emailParticipante[$key])->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject, $edital->tipo, $edital->natureza_id));
                     } else {
 
                         $participante->user_id = $userParticipante->id;
@@ -1746,7 +1782,7 @@ class TrabalhoController extends Controller
                         $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                         $participante->periodo_atual = $request->periodo_atual[$key];
                         $participante->total_periodos = $request->total_periodos[$key];
-                        if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
+                        if ($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC") {
                             $participante->media_do_curso = $request->media_geral_curso[$key];
                         }
                         $participante->save();
@@ -1754,7 +1790,6 @@ class TrabalhoController extends Controller
                         $subject = "Participante de Projeto";
                         Mail::to($request->emailParticipante[$key])
                             ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
-
                     }
 
                     if ($request->nomePlanoTrabalho[$key] != null) {
@@ -1810,7 +1845,7 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
+                    if ($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC") {
                         $participante->media_do_curso = $request->media_geral_curso[$key];
                     }
                     $participante->update();
@@ -1895,7 +1930,7 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
+                    if ($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC") {
                         $participante->media_do_curso = $request->media_geral_curso[$key];
                     }
                     $participante->save();
@@ -1918,7 +1953,7 @@ class TrabalhoController extends Controller
                     $arquivo->versaoFinal = true;
                     $arquivo->save();
                     $subject = "Participante de Projeto";
-                    Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject, $edital->tipo,$edital->natureza_id));
+                    Mail::to($email)->send(new EmailParaUsuarioNaoCadastrado(Auth()->user()->name, $projeto->titulo, 'Participante', $edital->nome, $passwordTemporario, $subject, $edital->tipo, $edital->natureza_id));
                 } else {
 
                     $participante->user_id = $userParticipante->id;
@@ -1932,7 +1967,7 @@ class TrabalhoController extends Controller
                     $participante->ordem_prioridade = $request->ordem_prioridade[$key];
                     $participante->periodo_atual = $request->periodo_atual[$key];
                     $participante->total_periodos = $request->total_periodos[$key];
-                    if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC"){
+                    if ($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC") {
                         $participante->media_do_curso = $request->media_geral_curso[$key];
                     }
                     $participante->save();
@@ -1953,7 +1988,6 @@ class TrabalhoController extends Controller
                         $arquivo->participanteId = $participante->id;
                         $arquivo->versaoFinal = true;
                         $arquivo->save();
-
                     }
 
                     $subject = "Participante de Projeto";
@@ -1961,7 +1995,6 @@ class TrabalhoController extends Controller
                     $time = $time->isoFormat('às H:mm, dddd, D/M/YYYY');
                     Mail::to($email)
                         ->send(new SubmissaoTrabalho($userParticipante, $subject, $edital, $projeto));
-
                 }
 
                 // if($request->nomePlanoTrabalho[$key] != null){
@@ -2017,7 +2050,7 @@ class TrabalhoController extends Controller
         $projeto = Trabalho::find($request->projeto_id);
         $edital = Evento::find($projeto->evento_id);
 
-        if(Auth::user()->id != $projeto->proponente->user->id){
+        if (Auth::user()->id != $projeto->proponente->user->id) {
             return redirect()->back();
         }
 
@@ -2025,14 +2058,15 @@ class TrabalhoController extends Controller
         $substituicoesProjeto = Substituicao::where('trabalho_id', $projeto->id)->orderBy('created_at', 'DESC')->get();
         $desligamentosProjeto = Desligamento::where('trabalho_id', $projeto->id)->orderBy('created_at', 'DESC')->get();
 
-        return view('administrador.substituirParticipante')->with(['projeto' => $projeto,
+        return view('administrador.substituirParticipante')->with([
+            'projeto' => $projeto,
             'edital' => $edital,
             'participantes' => $participantes,
             'substituicoesProjeto' => $substituicoesProjeto,
             'estados' => $this->estados,
             'enum_turno' => Participante::ENUM_TURNO,
             'desligamentosProjeto' => $desligamentosProjeto,
-            'funcaoParticipantes'=> $funcaoParticipantes
+            'funcaoParticipantes' => $funcaoParticipantes
         ]);
     }
 
@@ -2046,13 +2080,13 @@ class TrabalhoController extends Controller
             $participanteSubstituido = Participante::where('id', $request->participanteId)->first();
             $usuarioNovo = User::where('id', $request->novoParticianteId)->first();
             $enderecoUsuarioNovo = $usuarioNovo ? $usuarioNovo->endereco : null;
-            $participanteNovo = $usuarioNovo? $usuarioNovo->participantes->first() : null;
+            $participanteNovo = $usuarioNovo ? $usuarioNovo->participantes->first() : null;
             $planoAntigo = Arquivo::where('id', $participanteSubstituido->planoTrabalho->id)->first();
 
             $passwordTemporario = Str::random(8);
             $data['name'] = $usuarioNovo ? $usuarioNovo->name : null;
             $data['email'] = $usuarioNovo ? $usuarioNovo->email : null;
-            $data['password'] = $usuarioNovo ? $usuarioNovo->password :null;
+            $data['password'] = $usuarioNovo ? $usuarioNovo->password : null;
             $data['data_de_nascimento'] = $participanteNovo ? $participanteNovo->data_de_nascimento : null;
             $data['data_entrada'] = $request->data_entrada;
             $data['cpf'] = $usuarioNovo ? $usuarioNovo->cpf : null; //$request->cpf;
@@ -2086,7 +2120,7 @@ class TrabalhoController extends Controller
             $data['turno'] = $request->turno;
             $data['periodo_atual'] = $request->periodo_atual;
             $data['ordem_prioridade'] = $request->ordem_prioridade;
-            if($evento->tipo!="PIBEX" && $evento->tipo!="PIBAC") {
+            if ($evento->tipo != "PIBEX" && $evento->tipo != "PIBAC") {
                 $data['media_do_curso'] = $request->media_do_curso;
             }
             $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
@@ -2168,7 +2202,6 @@ class TrabalhoController extends Controller
 
                     $substituicao->save();
                     $planoAntigo->save();
-
                 } else {
 
                     if ($request->has('anexoPlanoTrabalho')) {
@@ -2194,7 +2227,6 @@ class TrabalhoController extends Controller
                         $substituicao->planoSubstituto_id = $arquivo->id;
                         $substituicao->save();
                     }
-
                 }
             }
 
@@ -2212,7 +2244,7 @@ class TrabalhoController extends Controller
 
             DB::commit();
 
-            Mail::to($evento->coordenadorComissao->user->email)->send(new SolicitacaoSubstituicao($evento, $trabalho,'',$substituicao->tipo,$substituicao->status));
+            Mail::to($evento->coordenadorComissao->user->email)->send(new SolicitacaoSubstituicao($evento, $trabalho, '', $substituicao->tipo, $substituicao->status));
             return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['sucesso' => 'Pedido de substituição enviado com sucesso!']);
         } catch (\App\Validator\ValidationException $th) {
             DB::rollback();
@@ -2221,7 +2253,6 @@ class TrabalhoController extends Controller
             DB::rollback();
             return redirect(route('trabalho.trocaParticipante', ['evento_id' => $evento->id, 'projeto_id' => $trabalho->id]))->with(['erro' => $th->getMessage()]);
         }
-
     }
 
 
@@ -2231,9 +2262,11 @@ class TrabalhoController extends Controller
         $substituicoesProjeto = Substituicao::where('trabalho_id', $trabalho->id)->orderBy('created_at', 'DESC')->get();
         $substituicoesPendentes = Substituicao::where('trabalho_id', $trabalho->id)->where('status', 'Em Aguardo')->orderBy('created_at', 'DESC')->get();
 
-        return view('administrador.analiseSubstituicoes')->with(['substituicoesPendentes' => $substituicoesPendentes,
+        return view('administrador.analiseSubstituicoes')->with([
+            'substituicoesPendentes' => $substituicoesPendentes,
             'substituicoesProjeto' => $substituicoesProjeto,
-            'trabalho' => $trabalho]);
+            'trabalho' => $trabalho
+        ]);
     }
 
     public function aprovarSubstituicao(Request $request)
@@ -2244,7 +2277,7 @@ class TrabalhoController extends Controller
         if ($request->aprovar == 'true') {
             try {
                 if ($substituicao->tipo == 'TrocarPlano') {
-                    if(!empty($substituicao->participanteSubstituido)){
+                    if (!empty($substituicao->participanteSubstituido)) {
                         $substituicao->participanteSubstituido->planoTrabalho()->where('id', '!=', $substituicao->planoSubstituto->id)->delete();
                     }
                     $substituicao->status = 'Finalizada';
@@ -2253,9 +2286,8 @@ class TrabalhoController extends Controller
 
                     $substituicao->concluida_em = now();
                     $substituicao->save();
-
                 } else {
-                    if(!empty($substituicao->participanteSubstituido)){
+                    if (!empty($substituicao->participanteSubstituido)) {
                         $substituicao->participanteSubstituido->delete();
                     }
 
@@ -2269,13 +2301,11 @@ class TrabalhoController extends Controller
                     $substituicao->save();
                 }
 
-                Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado',$substituicao->tipo,$substituicao->status));
+                Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado', $substituicao->tipo, $substituicao->status));
                 return redirect()->back()->with(['sucesso' => 'Substituição concluída!']);
             } catch (\Throwable $th) {
                 return redirect()->back()->with(['erro' => $th->getMessage()]);
             }
-
-
         } else {
 
 
@@ -2313,16 +2343,13 @@ class TrabalhoController extends Controller
                 }
 
                 $trabalho = Trabalho::find($substituicao->trabalho->id);
-                Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado',$substituicao->tipo,$substituicao->status));
+                Mail::to($trabalho->proponente->user->email)->send(new SolicitacaoSubstituicao($trabalho->evento, $trabalho, 'resultado', $substituicao->tipo, $substituicao->status));
                 return redirect()->back()->with(['sucesso' => 'Substituição cancelada com sucesso!']);
             } catch (\Throwable $th) {
 
                 return redirect()->back()->with(['erro' => $th->getMessage()]);
-
             }
         }
-
-
     }
 
     public function aprovarProposta(Request $request, $id)
@@ -2333,6 +2360,5 @@ class TrabalhoController extends Controller
         $trabalho->save();
 
         return redirect()->back()->with(['sucesso' => 'Proposta avaliada com sucesso']);
-
     }
 }
