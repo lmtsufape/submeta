@@ -60,11 +60,11 @@ class UpdateTrabalho extends FormRequest
                     $rules['curso.'.$value] = ['required', 'string'];
 
                     
-                    if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO-AC") {
+                    if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO") {
                         $rules['media_do_curso.' . $value] = ['required', 'string'];
                     }
 
-                    if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"){
+                    if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO"){
                         if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC"){
                             $rules['turno.'.$value] = ['required', 'string'];
                             $rules['ordem_prioridade.'.$value] = ['required', 'string'];
@@ -90,7 +90,7 @@ class UpdateTrabalho extends FormRequest
         }else{
 
             //$rules = [];
-            if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo!="PIBAC" && $evento->tipo!="CONTINUO-AC"){
+            if($evento->tipo!="PIBEX" && $evento->tipo!="CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo!="PIBAC" && $evento->tipo!="CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO"){
                 $rules['anexoPlanilhaPontuacao']       = [Rule::requiredIf($projeto->anexoPlanilhaPontuacao == null)];
                 $rules['anexoLattesCoordenador']       = [Rule::requiredIf($projeto->anexoLattesCoordenador == null), 'mimes:pdf'];
                 $rules['anexoGrupoPesquisa']           = [Rule::requiredIf($projeto->anexoGrupoPesquisa == null), 'mimes:pdf'];
@@ -125,7 +125,7 @@ class UpdateTrabalho extends FormRequest
             }
             $rules['linkLattesEstudante']          = ['required', 'string'];
 
-            if($evento->tipo!="CONTINUO" && $evento->tipo!="CONTINUO-AC"){
+            if($evento->tipo!="CONTINUO" && $evento->tipo!="CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO"){
                 $rules['anexoProjeto']                 = [Rule::requiredIf($projeto->anexoProjeto == null), 'mimes:pdf'];
                 $rules['anexoDecisaoCONSU']            = [Rule::requiredIf($evento->consu && $projeto->anexoDecisaoCONSU == null), 'mimes:pdf'];
             }

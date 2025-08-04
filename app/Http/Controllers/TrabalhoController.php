@@ -1406,7 +1406,7 @@ class TrabalhoController extends Controller
                             'anexo_SIPAC'
                         ]));
                 }
-            } else if ($evento->tipo == "CONTINUO" || $evento->tipo == "CONTINUO-AC") {
+            } else if ($evento->tipo == "CONTINUO" || $evento->tipo == "CONTINUO-AC" || $evento->tipo == "PROGRAMAS-EXTENSAO") {
                 if ($evento->tipo == "CONTINUO-AC") {
                     $trabalho = Auth::user()->proponentes->trabalhos()
                         ->create($request->except([
@@ -1527,7 +1527,7 @@ class TrabalhoController extends Controller
                             $data['curso'] = $request->outrocurso[$part];
                         }
 
-                        if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC") {
+                        if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO") {
                             if ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
                                 $data['media_do_curso'] = $request->media_do_curso[$part];
                             }
@@ -1536,7 +1536,7 @@ class TrabalhoController extends Controller
                     }
 
                     //função no projeto
-                    if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC") {
+                    if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO") {
                         if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
                             $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
                     }
@@ -1567,7 +1567,7 @@ class TrabalhoController extends Controller
                     $participante->trabalho_id = $trabalho->id;
                     $participante->save();
 
-                    if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC") {
+                    if ($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO") {
                         if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
                             $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
                             $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
@@ -1584,7 +1584,7 @@ class TrabalhoController extends Controller
                         }
                     }
 
-                    if ($evento->tipo == "CONTINUO" || $evento->tipo == "CONTINUO-AC") {
+                    if ($evento->tipo == "CONTINUO" || $evento->tipo == "CONTINUO-AC" || $evento->tipo == "PROGRAMAS-EXTENSAO") {
                         $arquivo = new Arquivo();
                         $arquivo->titulo = $request['titulo'];
                         $arquivo->nome = $request['titulo'];

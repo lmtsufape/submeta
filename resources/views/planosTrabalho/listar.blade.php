@@ -36,7 +36,8 @@
                                 $evento->tipo != 'PIBAC' &&
                                 $evento->tipo != 'CONTINUO' &&
                                 $evento->tipo != 'CONTINUO-AC' &&
-                                $evento->tipo != 'PICP')
+                                $evento->tipo != 'PICP' &&
+                                $evento->tipo != 'PROGRAMAS-EXTENSAO')
                             <th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
                         @endif
                         <th scope="col" style="width:250px; text-align: center;">Relatório Final</th>
@@ -61,7 +62,8 @@
                                     $evento->tipo != 'PIBAC' &&
                                     $evento->tipo != 'CONTINUO' &&
                                     $evento->tipo != 'CONTINUO-AC' &&
-                                    $evento->tipo != 'PICP')
+                                    $evento->tipo != 'PICP' &&
+                                    $evento->tipo != 'PROGRAMAS-EXTENSAO')
                                 <td style="text-align: center;">
                                     @if (Auth::user()->proponentes != null &&
                                             $arquivo->relatorioParcial == null &&

@@ -18,7 +18,7 @@
 
               </div>
 
-              @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP")
+              @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP" && $edital->tipo != "PROGRAMAS-EXTENSAO")
               <div class="col-sm-4">
                 <label for="anexoLatterCoordenador" class="col-form-label font-tam" style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}</label>
                 <a href="{{ route('baixar.anexo.lattes', ['id' => $projeto->id]) }}"> <img class="" src="{{asset('img/icons/pdf.ico')}}" style="width:40px" alt=""></a>
@@ -26,7 +26,7 @@
               </div>
               @endif
 
-              @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC")
+              @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PROGRAMAS-EXTENSAO")
               <div class="col-sm-4">
                 @if($projeto->anexoAutorizacaoComiteEtica != null)
                 <label title="Declaração da autorização especial" for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Autorização Especial: ') }}</label>

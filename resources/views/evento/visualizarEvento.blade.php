@@ -183,7 +183,7 @@
                                 </div>
                             </div>
                           </div>
-                          @if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC")
+                          @if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO")
                           <div class="col-md-12">
                             <div class="d-flex justify-content-left align-items-center">
                               <div style="margin-right:10px; margin-top:-20px">

@@ -129,7 +129,7 @@ class EventoController extends Controller
         $validatedData = $request->validate(Evento::$rules);
 
         // Validação quando avaliação for por Barema
-        if ($request->tipo != 'CONTINUO' && $request->tipo != 'CONTINUO-AC' && $request->tipo != 'PICP') {
+        if ($request->tipo != 'CONTINUO' && $request->tipo != 'CONTINUO-AC' && $request->tipo != 'PICP' && $request->tipo != 'PROGRAMAS-EXTENSAO') {
             if ($request->tipoAvaliacao == 'form') {
                 $validateAvaliacao = $request->validate([
                     'pdfFormAvalExterno'    => [($request->pdfFormAvalExternoPreenchido !== 'sim' ? 'required' : ''), 'file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],
@@ -169,7 +169,7 @@ class EventoController extends Controller
         $evento['resultado_preliminar'] = $request->resultado_preliminar;
         $evento['resultado_final']     = $request->resultado_final;
 
-        if ($request->tipo != "PIBEX" && $request->tipo != "PIACEX" && $request->tipo != "PIBAC" && $request->tipo != "CONTINUO" && $request->tipo != 'CONTINUO-AC' && $request->tipo != 'PICP') {
+        if ($request->tipo != "PIBEX" && $request->tipo != "PIACEX" && $request->tipo != "PIBAC" && $request->tipo != "CONTINUO" && $request->tipo != 'CONTINUO-AC' && $request->tipo != 'PICP' && $request->tipo != 'PROGRAMAS-EXTENSAO') {
             $evento['dt_inicioRelatorioParcial']  = $request->dt_inicioRelatorioParcial;
             $evento['dt_fimRelatorioParcial']     = $request->dt_fimRelatorioParcial;
         }
@@ -477,7 +477,7 @@ class EventoController extends Controller
 
         $validatedData = $request->validate(Evento::$edit_rules);
 
-        if ($request->tipo != 'CONTINUO' && $request->tipo != 'CONTINUO-AC') {
+        if ($request->tipo != 'CONTINUO' && $request->tipo != 'CONTINUO-AC' && $request->tipo != "PROGRAMAS-EXTENSAO") {
             if ($request->tipoAvaliacao == 'form') {
                 $validateAvaliacao = $request->validate([
                     'pdfFormAvalExterno'    => ['file', 'mimes:pdf,doc,docx,xlsx,xls,csv,zip', 'max:2048'],

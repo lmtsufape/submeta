@@ -7,7 +7,7 @@
 
                     <div class="col-md-12">
                         <h5 style="color: #234B8B; font-weight: bold">
-                            @if ($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC')
+                            @if ($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC' || $edital->tipo == "PROGRAMAS-EXTENSAO")
                                 Informações da Atividade de Extensão:
                             @else
                                 Informações do Projeto
@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="form-group col-md-12" style="margin-top: 10px">
                         <label for="titulo" class="col-form-label" style="font-weight: bold">
-                            @if ($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC')
+                            @if ($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC' || $edital->tipo == "PROGRAMAS-EXTENSAO")
                                 {{ __('Nome da Atividade de Extensão') }}
                                 @else{{ __('Nome do Projeto') }}
                             @endif

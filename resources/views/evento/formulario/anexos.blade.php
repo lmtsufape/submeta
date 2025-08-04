@@ -13,7 +13,7 @@
                 <div class="row justify-content-start">
                     {{-- Arquivo  --}}
 
-                    @if ($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC')
+                    @if ($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC' || $edital->tipo == "PROGRAMAS-EXTENSAO")
                         <div class="form-group col-md-8" style="margin-top: 10px">
                             <label for="anexo_SIPAC" class="col-form-label font-tam"
                                 style="font-weight: bold">{{ __('Processo SIPAC: ') }}<span
@@ -44,7 +44,7 @@
 
                         </div>
 
-                        @if ($edital->tipo != 'PIBEX' && $edital->tipo != 'PIACEX' && $edital->tipo != 'PIBAC' && $edital->tipo != 'PICP')
+                        @if ($edital->tipo != 'PIBEX' && $edital->tipo != 'PIACEX' && $edital->tipo != 'PIBAC' && $edital->tipo != 'PICP' && $edital->tipo != "PROGRAMAS-EXTENSAO")
                             <div class="form-group col-md-6" style="margin-top: 10px">
                                 <label for="anexoLatterCoordenador" class="col-form-label font-tam"
                                     style="font-weight: bold">{{ __('Lattes do Coordenador: ') }}<span
@@ -59,7 +59,7 @@
                             </div>
                         @endif
 
-                        @if ($edital->tipo != 'PIBEX' && $edital->tipo != 'PIACEX' && $edital->tipo != 'PIBAC' && $edital->tipo != 'PICP')
+                        @if ($edital->tipo != 'PIBEX' && $edital->tipo != 'PIACEX' && $edital->tipo != 'PIBAC' && $edital->tipo != 'PICP' && $edital->tipo != "PROGRAMAS-EXTENSAO")
                             <div class="form-group col-md-6">
                                 <label for="anexoPlanilhaPontuacao" class="col-form-label font-tam"
                                     style="font-weight: bold">{{ __('Planilha de Pontuação: ') }}<span
