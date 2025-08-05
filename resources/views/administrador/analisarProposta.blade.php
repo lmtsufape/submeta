@@ -154,7 +154,7 @@
                                 @endif
                             </div>
 
-                            @if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO-AC")
+                            @if($evento->tipo != "PIBEX" && $evento->tipo != "CONTINUO" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO")
                                 <div class="col-md-12">
                                     <br>
                                     <b style="color: #4D4D4D;">Grupo de Pesquisa: </b>
@@ -471,7 +471,7 @@
                         <hr style="border-top: 1px solid#1492E6">
 
                         <div class="row justify-content-start">
-                        @if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC")
+                        @if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO")
                             {{-- Anexo do Projeto --}}
                                 {{-- Arquivo  --}}
                                 <div class="col-sm-4">
@@ -612,7 +612,7 @@
 
                         <div class="row justify-content-center">
                             {{-- Relatório Parcial  --}}
-                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC' && $evento->tipo != "PICP")
+                            @if($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC' && $evento->tipo != "PICP" && $evento->tipo != "PROGRAMAS-EXTENSAO")
                                 <div class="col-sm-3">
                                     <label for="dt_inicioRelatorioParcial" class="col-form-label font-tam"
                                         style="font-weight: bold">{{ __('Início do Relatório Parcial: ') }}</label>
@@ -654,7 +654,7 @@
                         </div>
 
                         <div class="form-row mt-3">
-                            @if($evento->tipo != 'CONTINUO' && $evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO-AC')
+                            @if($evento->tipo != 'CONTINUO' && $evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO-AC' && $evento->tipo != "PROGRAMAS-EXTENSAO")
                             <div class="col-sm-11"><h5 style="color: #234B8B; font-weight: bold">Avaliações de
                                     Relatórios</h5></div>
                             @endif
@@ -668,7 +668,7 @@
                                     </a>
                                 </div>
                             @else
-                                @if($evento->tipo != 'CONTINUO' && $evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO-AC')
+                                @if($evento->tipo != 'CONTINUO' && $evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != 'CONTINUO-AC' && $evento->tipo != "PROGRAMAS-EXTENSAO")
                                     <div class="col-md-1 text-sm-right">
                                         <a type="button" value="{{ $trabalho->id }}" id="atribuir1">
                                             <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
@@ -820,7 +820,7 @@
                             </div>
                         </div>
 
-                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PICP"))
+                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PICP" && $evento->tipo != "PROGRAMAS-EXTENSAO"))
                             <div class="row justify-content-start" style="alignment: center">
                                 <div class="col-md-11"><h6 style="color: #234B8B; font-weight: bold">Avaliações de Relatórios Parciais</h6></div>
                             </div>
@@ -995,7 +995,7 @@
 
                         <br>
 
-                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"))
+                        @if(count($arquivos) > 0 && ($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PROGRAMAS-EXTENSAO"))
                             <br>
                             <hr style="border-top: 1px solid#1492E6">
 

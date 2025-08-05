@@ -4,13 +4,13 @@
     <div class="card-body" style="padding-top: 0.2rem;">
       <div class="container">
         <div class="form-row mt-3">
-          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">@if($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC')Informações da Atividade de Extensão: @else Informações do Projeto @endif</h5></div>
+          <div class="col-md-12"><h5 style="color: #234B8B; font-weight: bold">@if($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC' || $edital->tipo == "PROGRAMAS-EXTENSAO")Informações da Atividade de Extensão: @else Informações do Projeto @endif</h5></div>
         </div>
         <hr style="border-top: 1px solid#1492E6">
 
         <div class="row">
           <div class="form-group col-md-12" style="margin-top: 10px">
-            <label for="titulo" class="col-form-label" style="font-weight: bold">@if($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC'){{__('Nome da Atividade de Extensão')}} 
+            <label for="titulo" class="col-form-label" style="font-weight: bold">@if($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC' || $evento->tipo == "PROGRAMAS-EXTENSAO"){{__('Nome da Atividade de Extensão')}} 
                 @else{{ __('Nome do Projeto') }}@endif <span style="color: red; font-weight:bold">*</span></label>
             <input id="titulo" type="text" class="form-control @error('titulo') is-invalid @enderror" name="titulo" placeholder="Digite o nome do projeto" value="{{old('titulo') ?? $projeto->titulo}}" autocomplete="titulo" maxlength="255" >
             <span style="color: red; font-size: 12px" id="caracsRestantestitulo">

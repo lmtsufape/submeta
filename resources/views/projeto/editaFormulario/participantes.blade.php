@@ -651,7 +651,7 @@
                                                                         </div>
                                                                     @endif
 
-                                                                    @if($edital->tipo != 'CONTINUO' && $edital->tipo != 'CONTINUO-AC')
+                                                                    @if($edital->tipo != 'CONTINUO' && $edital->tipo != 'CONTINUO-AC' && $edital->tipo != "PROGRAMAS-EXTENSAO")
                                                                         <div class="col-md-12">
                                                                             <h5>Plano de trabalho</h5>
                                                                         </div>

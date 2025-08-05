@@ -9,8 +9,9 @@
 
                     <div class="col-md-1 text-sm-right">
                         <a type="button" value="{{ $edital->id }}" id="atribuir1" data-toggle="modal"
-                           data-target="#modalIntegrante">
-                            <img class="" src="{{asset('img/icons/add.ico')}}" style="width:30px" alt="">
+                            data-target="#modalIntegrante">
+                            <img class="" src="{{ asset('img/icons/add.ico') }}" style="width:30px"
+                                alt="">
                         </a>
                     </div>
                 </div>
@@ -28,7 +29,7 @@
 
 <!-- MODAL -->
 <div class="modal fade" id="modalIntegrante" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,7 +42,7 @@
                 <div class="row justify-content-center" style="padding-left:35px; padding-right:45px">
 
                     <div class="form-controll"
-                         style="margin-left:10px; margin-top:10px; margin-bottom:15px; font-weight:bold;">
+                        style="margin-left:10px; margin-top:10px; margin-bottom:15px; font-weight:bold;">
 
                         <div class="form-row d-flex">
                             <label for="cpf_consulta">CPF:</label>
@@ -51,20 +52,20 @@
                         <div class="form-row d-flex" style="margin-top:10px">
                             <label for="funcao_participante">Função do Integrante:</label>
                             <select name="" id="funcao_participante" class="form-control">
-                                @foreach($funcaoParticipantes as $funcao)
+                                @foreach ($funcaoParticipantes as $funcao)
                                     <!-- EXTENSÃO -->
-                                    @if($edital->natureza_id == 3 && ($edital->tipo == "CONTINUO" || $edital->tipo == "CONTINUO-AC")) 
-                                        @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador")
-                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                    @if ($edital->natureza_id == 3 && ($edital->tipo == 'CONTINUO' || $edital->tipo == 'CONTINUO-AC'))
+                                        @if ($funcao->nome == 'Vice-coordenador' || $funcao->nome == 'Colaborador')
+                                            <option value="{{ $funcao->id }}">{{ $funcao->nome }}</option>
                                         @endif
-                                    @elseif($edital->natureza_id == 3 && ($edital->tipo == "PIBEX" || $edital->tipo == "PIACEX" || $edital->tipo == "PIBAC"))
-                                        @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador" || $funcao->nome == "Bolsista")
-                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                    @elseif($edital->natureza_id == 3 && ($edital->tipo == 'PIBEX' || $edital->tipo == 'PIACEX' || $edital->tipo == 'PIBAC' || $edital->tipo == "PROGRAMAS-EXTENSAO"))
+                                        @if ($funcao->nome == 'Vice-coordenador' || $funcao->nome == 'Colaborador' || $funcao->nome == 'Bolsista')
+                                            <option value="{{ $funcao->id }}">{{ $funcao->nome }}</option>
                                         @endif
-                                    <!-- PESQUISA -->
+                                        <!-- PESQUISA -->
                                     @else
-                                        @if($funcao->nome == "Bolsista" || $funcao->nome == "Voluntário")
-                                            <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
+                                        @if ($funcao->nome == 'Bolsista' || $funcao->nome == 'Voluntário')
+                                            <option value="{{ $funcao->id }}">{{ $funcao->nome }}</option>
                                         @endif
                                     @endif
                                 @endforeach
@@ -86,7 +87,7 @@
 
 <!-- MODAL DE ERRO -->
 <div class="modal fade" id="aviso-modal-usuario-nao-existe" data-backdrop="static" tabindex="-1"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #dc3545;">
@@ -106,7 +107,7 @@
 </div>
 
 <div class="modal fade" id="aviso-modal-usuario-adicionado" data-backdrop="static" tabindex="-1"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #32CD32;">
@@ -126,7 +127,7 @@
 </div>
 
 <div class="modal fade" id="aviso-modal-limite-de-integrantes" data-backdrop="static" tabindex="-1"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #dc3545;">
@@ -147,7 +148,7 @@
 
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#cpf_consulta").mask("999.999.999-99");
     });
 
@@ -177,7 +178,7 @@
                 'funcao': $('#funcao_participante').val()
             },
 
-            success: function (data) {
+            success: function(data) {
                 if (data == 'inexistente' || $('#cpf_consulta').val() == "") {
                     exibirModalUsuarioInexistente();
                 } else {
@@ -224,7 +225,9 @@
         if (data[0]['tipo'] == "participante") {
             //let [y, m, d] = data[2]['data_de_nascimento'].split('-');
             //document.getElementById(`data_de_nascimento${modal_id}`).value = (new Date(y, m - 1, d)).toLocaleDateString();
-            document.getElementById(`data_de_nascimento${modal_id}`).value = formatarData(data[2]['data_de_nascimento']);
+            document.getElementById(`data_de_nascimento${modal_id}`).value = formatarData(data[2][
+                'data_de_nascimento'
+            ]);
             document.getElementById(`data_de_nascimento${modal_id}`).setAttribute("readonly", "");
         } else {
 
@@ -265,9 +268,9 @@
             document.getElementById(`numero${modal_id}`).setAttribute("readonly", "");
 
             document.getElementById(`complemento${modal_id}`).value = data[3].complemento;
-            document.getElementById(`complemento${modal_id}`).setAttribute("readonly", "");    
+            document.getElementById(`complemento${modal_id}`).setAttribute("readonly", "");
         }
-        
+
         document.getElementById(`instituicao[${modal_id}]`).value = data[0].instituicao;
         document.getElementById(`instituicao[${modal_id}]`).setAttribute("readonly", "");
 
@@ -289,5 +292,4 @@
         $('#modalIntegrante').modal('hide');
         $(`#aviso-modal-usuario-adicionado`).modal('show');
     }
-
 </script>
