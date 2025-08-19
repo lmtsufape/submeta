@@ -41,7 +41,7 @@ class AvaliacaoRelatorioController extends Controller
 
     public function index(Request $request){
 
-        $avaliacoes = AvaliacaoRelatorio::where('user_id',Auth::user()->id)->get();
+        $avaliacoes = AvaliacaoRelatorio::where('user_id',Auth::user()->id)->has('plano')->get();
         $hoje = \Carbon\Carbon::today('America/Recife');
         $hoje = $hoje->toDateString();
 
