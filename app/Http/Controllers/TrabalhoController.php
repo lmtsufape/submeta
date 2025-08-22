@@ -60,6 +60,8 @@ use App\ObjetivoDeDesenvolvimentoSustentavel;
 use App\AvaliacaoRelatorio;
 use App\Curso;
 use Illuminate\Support\Facades\Date;
+use App\Mail\EmailLembrete;
+use App\Mail\MudancaDeStatusDoProjeto;
 
 class TrabalhoController extends Controller
 {
@@ -2332,7 +2334,21 @@ class TrabalhoController extends Controller
         $trabalho->comentario = $request->comentario;
         $trabalho->save();
 
+        $this->enviarEmail($trabalho);
+
         return redirect()->back()->with(['sucesso' => 'Proposta avaliada com sucesso']);
 
     }
+
+    private function enviarEmail(Trabalho $trabalho)
+    {
+        $usuario = DB::table('proponentes')
+        ->join('users', 'proponentes.user_id', '=', 'users.id')
+        ->select('users.*')
+        ->where('proponentes.id', $trabalho->proponente_id)
+        ->first();
+
+        Mail::to($usuario->email)->send(new MudancaDeStatusDoProjeto($usuario, $trabalho));
+    }
+
 }
