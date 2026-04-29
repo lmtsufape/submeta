@@ -21,8 +21,13 @@
                 <p><i class="fas fa-times-circle fa-2x"></i></p>
               @endif
               <input type="file" class="input-group-text" name="anexo_SIPAC" placeholder="PDF do processo SIPAC" accept=".pdf" />
-              <span>Processo completo registrado no SIPAC com o parecer da Comissão de Extensão e Cultura, 
-                    a decisão de aprovação na Câmara de Extensão e Cultura e a proposta de Atividade de Extensão.</span>
+              <span>Anexar o Processo Completo do SIPAC com:<br>
+                  <ol class="ps-3 mb-0">
+                    <li>Proposta da Atividade Aprovada;</li>
+                    <li>Parecer da Comissão de Extensão e Cultura;</li>
+                    <li>Decisão de aprovação na Câmara de Extensão e Cultura.</li>
+                  </ol>
+                </span>
               @error('anexo_SIPAC')
               <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
                 <strong>{{ $message }}</strong>
