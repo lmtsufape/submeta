@@ -3,7 +3,6 @@ namespace App\Services;
 
 use App\AdministradorResponsavel;
 use App\Avaliador;
-use App\CoordenadorComissao;
 use App\Participante;
 use App\Proponente;
 use App\User;
@@ -51,8 +50,8 @@ class UserService
     private function updateBaseUser(User $user, array $data): void
     {
         $user->name = $data['name'];
-        $user->cpf = $data['cpf'];
-        $user->celular = $data['celular'];
+        $user->cpf = InputService::clearCpf($data['cpf']);
+        $user->celular = InputService::clearPhone($data['celular']);
 
         if (!empty($data['instituicao'])) {
             $user->instituicao = $data['instituicao'];
