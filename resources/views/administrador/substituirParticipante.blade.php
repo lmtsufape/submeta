@@ -744,46 +744,7 @@
         </div>
     </div>
 
-<!-- MODAL DE ERRO -->
-<div class="modal fade" id="aviso-modal-usuario-nao-existe" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #dc3545;">
-                <h5 class="modal-title" id="exampleModalLabel" style="color: white;">Aviso</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body" >
-                <span id="texto-erro">CPF não consta no sistema!</span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-color-dafault" data-dismiss="modal">Ok</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL DE PARTICIPANTE COM PERFIL INCOMPLETO -->
-<div class="modal fade" id="aviso-modal-perfil-participante-incompleto" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #dc3545;">
-                <h5 class="modal-title" id="exampleModalLabel" style="color: white;">Aviso</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body" >
-                <span id="texto-erro">Esse Discente não atualizou seu perfil no sistema!</span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-color-dafault" data-dismiss="modal">Ok</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+    @include('administrador.partials.modals.substituicao-global-errors')
 @endsection
 
 @section('javascript')
