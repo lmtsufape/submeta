@@ -38,12 +38,14 @@
                                         </div>
                                         <div class="col-2 align-self-center">
                                             <div class="row justify-content-around">
-                                                
-                                                <a title="Substituição" href="" data-toggle="modal" data-target="#modalTestSubParticipante{{$participante->id}}" class="button"
-                                                  @if((count($substituicoesProjeto->where('participanteSubstituido_id',$participante->id)->where('status', 'Em Aguardo')) > 0) 
-                                                  || (count($desligamentosProjeto->where('participante_id', $participante->id)->where('status', 1)) > 0)) 
-                                                  style="pointer-events: none; cursor: default; color:gray;" 
-                                                  @endif >
+
+                                                <a title="Substituição" href="" data-toggle="modal"
+                                                   data-target="#modal-tipo-substituicao-{{$participante->id}}"
+                                                   class="button"
+                                                   @if((count($substituicoesProjeto->where('participanteSubstituido_id',$participante->id)->where('status', 'Em Aguardo')) > 0)
+                                                   || (count($desligamentosProjeto->where('participante_id', $participante->id)->where('status', 1)) > 0))
+                                                       style="pointer-events: none; cursor: default; color:gray;"
+                                                        @endif >
                                                     <i class="fas fa-exchange-alt fa-2x"></i>
                                                 </a>
                                                 @if((count($substituicoesProjeto->where('participanteSubstituido_id',$participante->id)->where('status', 'Em Aguardo')) > 0) 
@@ -86,42 +88,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Modal TESTE substituir participante -->
-                                    <div class="modal fade" id="modalTestSubParticipante{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                                            <div class="modal-content">
-
-                                                <div class="modal-header" style="overflow-x:auto">
-                                                    <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Tipo de substituição</h5>
-
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-4" style="text-align: center; margin-left: 45px;">
-                                                            <button style=" width:220px;" type="button" id="btnSubmitManter" class="btn btn-info" onclick="subsDiscentePlano({{$participante->id}})">
-                                                                Substituir Plano de Trabalho
-                                                            </button>
-                                                        </div>
-                                                        <div class="col-4" style="margin:auto">
-                                                            <button style="float: left; width:220px;" type="button" id="btnSubmitCompleto" class="btn btn-info" onclick="subsDiscenteCompleto({{$participante->id}})">
-                                                                Substituir Ambos
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelar">
-                                                        Cancelar
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @include('administrador.partials.modals.tipo-substituicao', ['id' => $participante->id])
 
 
                                     <!-- MODAL PARA PREENCHIMENTO DOS DADOS DO DISCENTE -->
@@ -934,17 +901,9 @@
 
     }
 
-    function subsDiscenteCompleto(discenteId){
-        $("#modalTestSubParticipante"+discenteId).modal('hide');
-        setTimeout(() => {  $("#modalSubParticipanteCompleto"+discenteId).modal(); }, 500);
-    }
     function subsDiscenteDados(discenteId){
         $("#modalTestSubParticipante"+discenteId).modal('hide');
         setTimeout(() => {  $("#modalSubParticipanteDado"+discenteId).modal(); }, 500);
-    }
-    function subsDiscentePlano(discenteId){
-        $("#modalTestSubParticipante"+discenteId).modal('hide');
-        setTimeout(() => {  $("#modalSubParticipantePlano"+discenteId).modal(); }, 500);
     }
 
 
