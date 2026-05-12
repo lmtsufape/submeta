@@ -545,60 +545,27 @@
 
                                                 <div class="modal-header" style="overflow-x:auto">
                                                     <h5 class="modal-title" id="exampleModalLabel" style= "color:#1492E6">Novo Integrante</h5>
+                                                                               id="novoParticianteId{{$participante->id}}"
+                                                                               name="novoParticianteId"
+                                                                               value="">
+                                                                        <button type="submit"
+                                                                                class="btn btn-success">Salvar
+                                                                        </button>
+                                                                    </div>
 
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 8px; color:#1492E6">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
 
-                                                <div class="modal-body px-1">
-                                                <div class="container">
-                                                    <div class="row justify-content-center" style="padding-left:35px; padding-right:45px">
 
                                                         <div class="form-controll"
-                                                            style="margin-left:10px; margin-top:10px; margin-bottom:15px; font-weight:bold;">
+                                                                </div>
 
-                                                            <div class="form-row d-flex">
-                                                                <label for="cpf_consulta{{$participante->id}}">CPF:</label>
-                                                                <input type="text" id="cpf_consulta{{$participante->id}}" name="cpf_consulta" class="form-control">
-                                                            </div>
 
-                                                            <div class="form-row d-flex" style="margin-top:10px">
-                                                                <label for="funcao_participante">Função do Integrante:</label>
-                                                                <select name="" id="funcao_participante{{$participante->id}}" class="form-control">
-                                                                    @foreach($funcaoParticipantes as $funcao)
-                                                                        <!-- EXTENSÃO -->
-                                                                        @if($edital->natureza_id == 3 && ($edital->tipo == "CONTINUO" || $edital->tipo == "CONTINUO-AC")) 
-                                                                            @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador")
-                                                                                <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                                                                            @endif
-                                                                        @elseif($edital->natureza_id == 3 && ($edital->tipo == "PIBEX" || $edital->tipo == "PIBAC"))
-                                                                            @if($funcao->nome == "Vice-coordenador" || $funcao->nome == "Colaborador" || $funcao->nome == "Bolsista")
-                                                                                <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                                                                            @endif
-                                                                        <!-- PESQUISA -->
-                                                                        @else
-                                                                            @if($funcao->nome == "Bolsista" || $funcao->nome == "Voluntário")
-                                                                                <option value="{{$funcao->id}}">{{ $funcao->nome }}</option>
-                                                                            @endif
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            
-                                                            <div class="form-row justify-content-center" style="margin-top:20px;">
-                                                                <button type="button" class="btn btn-primary" onclick="preencherUsuarioExistente({{$participante->id}})">
-                                                                    Adicionar
-                                                                </button>
                                                             </div>
                                                         </div>
-                                                    </div>
-
-                                                </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    @include('administrador.partials.modals.substituicao-completa', ['participante' => $participante, 'edital' => $edital, 'funcaoParticipantes' => $funcaoParticipantes])
                                     <!-- Modal substituir participante Dados -->
                                     <div class="modal fade" id="modalSubParticipanteDado{{$participante->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -701,10 +668,10 @@
                                         Não há participantes ativos nesse projeto.
                                     </div>
                                 @endforelse
+                                @include('administrador.partials.substituicoes-lista', ['substituicoesProjeto' => $substituicoesProjeto])
+                                @include('administrador.partials.desligamentos-lista', ['desligamentos' => $desligamentosProjeto])
                             </div>
                         </div>
-                        @include('administrador.partials.substituicoes-lista', ['substituicoesProjeto' => $substituicoesProjeto])
-                        @include('administrador.partials.desligamentos-lista', ['desligamentos' => $projeto->$desligamentosProjeto])
                     </div>
                 </div>
             </div>
@@ -720,7 +687,6 @@
         $('input.cep:text').mask('00000-000');
         $('input.cpf:text').mask('000.000.000-00');
         $('input.celular').mask('(00) 00000-0000');
-        $('input.rg:text').mask('00.000.000-0');
 
         $('input').on("input", function(){
             var maxlength = $(this).attr("maxlength");
@@ -737,7 +703,7 @@
 
         $("input.pdf").on("change", function () {
             if(this.files[0].type.split('/')[1] == "pdf") {
-                if(this.files[0].size > 20000000){
+                if(this.files[0].size > 20000000){//isso esta errado mas deixarei para evitar bugs com arquivos grandes ja inseridos
                     alert("O arquivo possui o tamanho superior a 2MB!");
                     $(this).val('');
                 }
@@ -748,10 +714,10 @@
         });
 
         $("input[name='anexoComprovanteBancario']").on("change", function () {
-            if(this.files[0].type.split('/')[1] == "pdf"
-            || this.files[0].type.split('/')[1] == "jpeg"
-            || this.files[0].type.split('/')[1] == "jpg"
-            || this.files[0].type.split('/')[1] == "png") {
+            if(this.files[0].type.split('/')[1] === "pdf"
+            || this.files[0].type.split('/')[1] === "jpeg"
+            || this.files[0].type.split('/')[1] === "jpg"
+            || this.files[0].type.split('/')[1] === "png") {
                 if(this.files[0].size > 20000000){
                     alert("O arquivo possui o tamanho superior a 2MB!");
                     $(this).val('');
@@ -859,36 +825,6 @@
         }
     }
 
-    function showCurso(curso){
-        var cursoSelect = curso;
-        var idSelect = cursoSelect.id;
-        var curso = document.getElementById('outro'+idSelect);
-        var displayCurso = document.getElementById('display'+idSelect);
-
-        if(cursoSelect.value === "Outro"){
-            displayCurso.style.display = "block";
-            curso.parentElement.style.display = '';
-            curso.value="";
-        }else{
-            displayCurso.style.display = "none";
-        }
-    }
-
-    function showCurso2(curso){
-        var cursoSelect = curso;
-        var idSelect = cursoSelect.id;
-        var curso = document.getElementById('oto'+idSelect);
-        var displayCurso = document.getElementById('disprei'+idSelect);
-
-        if(cursoSelect.value === "Outro"){
-            displayCurso.style.display = "block";
-            curso.parentElement.style.display = '';
-            curso.value="";
-        }else{
-            displayCurso.style.display = "none";
-        }
-    }
-
     function gerarPeriodo(e){
         var select = e.parentElement.parentElement.nextElementSibling;
         selectPeriodos = select.children[0].children[1];
@@ -907,147 +843,28 @@
     }
 
 
-    function preencherUsuarioExistente(integranteAntigoId) {
-        if (!document.getElementById(`exampleModal${integranteAntigoId}`)) {
-            exibirModalNumeroMaximoDeIntegrantes();
-            return;
-        }
+        function showCurso(curso) {
+            var cursoSelect = curso;
+            var idSelect = cursoSelect.id;
+            var curso = document.getElementById('outro' + idSelect);
+            var displayCurso = document.getElementById('display' + idSelect);
 
-        
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            if (cursoSelect.value === "Outro") {
+                displayCurso.style.display = "block";
+                curso.parentElement.style.display = '';
+                curso.value = "";
+            } else {
+                displayCurso.style.display = "none";
             }
-        });
-        let cpf = $(`#cpf_consulta${integranteAntigoId}`).val();
-        cpf = cpf.replace(/\D/g, ''); // remove tudo que não é número
+        }
 
-        $.ajax({
-            url: '{{ route('trabalho.buscarUsuario') }}',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                'cpf_consulta': cpf,
-                'funcao': $(`#funcao_participante${integranteAntigoId}`).val()
-            },
-
-            success: function (data) {
-                if (data == 'inexistente' || $(`#cpf_consulta${integranteAntigoId}`).val() == "") {
-                    exibirModalUsuarioInexistente();
-                } else {
-                    if ($(`#funcao_participante${integranteAntigoId}`).val() != 4 || data[0].tipo == 'participante') {
-                        exibirUsuarioAdicionado(data, integranteAntigoId);
-                    }
-                }
+        function validarMedia(input) {
+            let valor = parseFloat(input.value);
+            if (valor > 10) {
+                input.value = 10;
+            } else if (valor < 0) {
+                input.value = 0;
             }
-        });
-
-    }
-
-    function exibirModalUsuarioInexistente() {
-        $('#aviso-modal-usuario-nao-existe').modal('show');
-    }
-
-    function exibirModalPerfilParticipanteIncompleto() {
-        $('#aviso-modal-perfil-participante-incompleto').modal('show');
-    }
-
-    $(document).ready(function () {
-        $("#cpf_consulta").mask("999.999.999-99");
-    });
-
-    function exibirUsuarioAdicionado(data, integranteAntigoId) {
-        console.log(data)
-        $('#modalIntegrante').modal('hide');
-        $(`#modalSubParticipanteCompleto${integranteAntigoId}`).modal('hide');
-        document.getElementById(`nome${integranteAntigoId}`).value = data[0]['name'];
-        document.getElementById(`nome${integranteAntigoId}`).setAttribute("readonly", "");
-
-        document.getElementById(`email${integranteAntigoId}`).value = data[0]['email'];
-        document.getElementById(`email${integranteAntigoId}`).setAttribute("readonly", "");
-
-        if (data[0]['tipo'] == "participante") {
-            
-            if(data[2] == null) {
-                exibirModalPerfilParticipanteIncompleto()
-            }
-
-            let [y, m, d] = data[2]['data_de_nascimento'].split('-');
-            document.getElementById(`data_de_nascimento${integranteAntigoId}`).value = (new Date(y, m - 1, d)).toLocaleDateString();
-            document.getElementById(`data_de_nascimento${integranteAntigoId}`).setAttribute("readonly", "");
-        } else {
-
-            document.getElementById(`data_de_nascimento${integranteAntigoId}`).value = null;
-            document.getElementById(`data_de_nascimento${integranteAntigoId}`).setAttribute("readonly", "");
         }
-
-        document.getElementById(`cpf${integranteAntigoId}`).value = data[0]['cpf'];
-        document.getElementById(`cpf${integranteAntigoId}`).setAttribute("readonly", "");
-
-        if (data?.[2]?.rg) {
-            document.getElementById(`rg${integranteAntigoId}`).value = data[2]['rg'];
-            document.getElementById(`rg${integranteAntigoId}`).setAttribute("readonly", "");
-        }
-
-        if (data?.[0]?.celular) {
-            document.getElementById(`celular${integranteAntigoId}`).value = data[0]['celular'];
-            document.getElementById(`celular${integranteAntigoId}`).setAttribute("readonly", "");
-        }
-
-        if (data[3] != null) {
-            document.getElementById(`cep${integranteAntigoId}`).value = data[3].cep;
-            document.getElementById(`cep${integranteAntigoId}`).setAttribute("readonly", "");
-
-            document.getElementById(`uf${integranteAntigoId}`).value = data[3].uf;
-            document.getElementById(`uf${integranteAntigoId}`).setAttribute("readonly", "");
-
-            document.getElementById(`cidade${integranteAntigoId}`).value = data[3].cidade;
-            document.getElementById(`cidade${integranteAntigoId}`).setAttribute("readonly", "");
-
-            document.getElementById(`bairro${integranteAntigoId}`).value = data[3].bairro;
-            document.getElementById(`bairro${integranteAntigoId}`).setAttribute("readonly", "");
-
-            document.getElementById(`rua${integranteAntigoId}`).value = data[3].rua;
-            document.getElementById(`rua${integranteAntigoId}`).setAttribute("readonly", "");
-
-            document.getElementById(`numero${integranteAntigoId}`).value = data[3].numero;
-            document.getElementById(`numero${integranteAntigoId}`).setAttribute("readonly", "");
-
-            document.getElementById(`complemento${integranteAntigoId}`).value = data[3].complemento;
-            document.getElementById(`complemento${integranteAntigoId}`).setAttribute("readonly", "");    
-        }
-
-        document.getElementById(`instituicao${integranteAntigoId}`).value = data[0].instituicao;
-        document.getElementById(`instituicao${integranteAntigoId}`).setAttribute("readonly", "");
-
-        document.getElementById(`curso${integranteAntigoId}`).value = data[2].curso;
-        document.getElementById(`curso${integranteAntigoId}`).setAttribute("readonly", "");
-
-
-        //document.getElementById(`funcaoParticipante${modal_id}`).value = data[1]['nome'];
-
-        if (data[1].nome != "Bolsista" && data[1].nome != "Voluntário") {
-            document.getElementById(`plano-titulo${integranteAntigoId}`).setAttribute('hidden', "");
-            document.getElementById(`plano-nome${integranteAntigoId}`).setAttribute('hidden', "");
-            document.getElementById(`plano-anexo${integranteAntigoId}`).setAttribute('hidden', "");
-        } else {
-            document.getElementById(`plano-titulo${integranteAntigoId}`).removeAttribute('hidden');
-            document.getElementById(`plano-nome${integranteAntigoId}`).removeAttribute('hidden');
-            document.getElementById(`plano-anexo${integranteAntigoId}`).removeAttribute('hidden');
-        }
-        
-        document.getElementById(`novoParticianteId${integranteAntigoId}`).value = data[0].id;
-
-        $(`#exampleModal${integranteAntigoId}`).modal('show');
-    }
-
-    function validarMedia(input) {
-        let valor = parseFloat(input.value);
-        if (valor > 10) {
-            input.value = 10;
-        } else if (valor < 0) {
-            input.value = 0;
-        }
-    }
-</script>
+    </script>
 @endsection

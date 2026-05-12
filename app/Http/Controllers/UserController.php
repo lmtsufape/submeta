@@ -140,4 +140,14 @@ class UserController extends Controller
                 'areaTematica' => $areaTematica
             ]);
     }
+
+    public function buscarCpf(Request $request, InputService $service)
+    {
+        $users = User::where('cpf', 'like', '%' . $request->cpf . '%')
+            ->orWhere('name', 'like', '%' . $service->clearCpf($request->cpf) . '%')
+            ->limit(3)
+            ->get();
+
+        return response()->json($users);
+    }
 }
