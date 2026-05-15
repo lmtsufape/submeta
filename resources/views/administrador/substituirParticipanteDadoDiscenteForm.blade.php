@@ -516,4 +516,19 @@ function showInstituicao2(instituicao){
             input.value = 0;
         }
     }
+
+function showCurso2(course) {
+    var cursoSelect = course;
+    var idSelect = cursoSelect.id;
+    var curso = document.getElementById('oto' + idSelect);
+    var displayCurso = document.getElementById('disprei' + idSelect);
+
+    if (cursoSelect.value === "Outro") {
+        displayCurso.style.display = "block";
+        curso.parentElement.style.display = '';
+        curso.value = "";
+    } else {
+        displayCurso.style.display = "none";
+    }
+}
 </script>

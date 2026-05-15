@@ -10,7 +10,6 @@ class InputService
 {
     public static function clearCpf($cpf): string
     {
-        if (!$cpf) throw new InvalidArgumentException('cpf vazio');
         return preg_replace('/\D/', '', $cpf);
     }
 
