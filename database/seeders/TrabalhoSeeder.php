@@ -23,8 +23,8 @@ class TrabalhoSeeder extends Seeder
                 'data' => Carbon::now()->subDays(5),
 
                 'evento_id' => 1,
-                'coordenador_id' =>  $this->pick($coordenadores, 0),
-                'proponente_id' => $this->pick($proponentes, 0),
+                'coordenador_id' =>  1,
+                'proponente_id' =>1,
 
                 'linkGrupoPesquisa' => 'link',
                 'linkLattesEstudante' => 'link',
@@ -53,8 +53,8 @@ class TrabalhoSeeder extends Seeder
                 'data' => Carbon::now()->subDays(4),
 
                 'evento_id' => 1,
-                'coordenador_id' =>   $this->pick($coordenadores, 1),
-                'proponente_id' => $this->pick($proponentes, 1),
+                'coordenador_id' =>   1,
+                'proponente_id' => 1,
 
                 'linkGrupoPesquisa' => 'link',
                 'linkLattesEstudante' => 'link',
@@ -83,8 +83,8 @@ class TrabalhoSeeder extends Seeder
                 'data' => Carbon::now()->subDays(2),
 
                 'evento_id' => 3,
-                'coordenador_id' =>  $this->pick($coordenadores, 2),
-                'proponente_id' => $this->pick($proponentes, 2),
+                'coordenador_id' =>  2,
+                'proponente_id' => 3,
 
                 'linkGrupoPesquisa' => 'link',
                 'linkLattesEstudante' => 'link',
@@ -112,8 +112,8 @@ class TrabalhoSeeder extends Seeder
                 'data' => Carbon::now()->subDays(5),
 
                 'evento_id' => 1,
-                'coordenador_id' =>  $this->pick($coordenadores, 0),
-                'proponente_id' => $this->pick($proponentes, 0),
+                'coordenador_id' =>  2,
+                'proponente_id' => 2,
 
                 'linkGrupoPesquisa' => 'link',
                 'linkLattesEstudante' => 'link',
@@ -134,9 +134,5 @@ class TrabalhoSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ]);
-    }
-    private function pick($coordenadores, $index)
-    {
-        return $coordenadores[$index % count($coordenadores)];
     }
 }

@@ -18,7 +18,7 @@ class EventoSeeder extends Seeder
                 'descricao' => 'Fluxo completo válido',
                 'tipo' => 'PIBIC',
                 'natureza_id' => 2,
-                'coordenadorId' => 2,
+                'coordenadorId' => 1,
                 'criador_id' => 1,
                 'numParticipantes' => 1,
                 'tipoAvaliacao' => 'form',
