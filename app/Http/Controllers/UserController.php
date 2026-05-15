@@ -3,23 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
+use App\Services\InputService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\AdministradorResponsavel;
 use App\Avaliador;
 use App\Proponente;
 use App\Participante;
 use App\Endereco;
-use App\Trabalho;
-use App\Coautor;
 use App\Evento;
 use App\Natureza;
 use Carbon\Carbon;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use App\Curso;
 use App\AreaTematica;
@@ -141,13 +137,17 @@ class UserController extends Controller
             ]);
     }
 
-    public function buscarCpf(Request $request, InputService $service)
+    public function buscarCpf(Request $request)//coisa de service mas fica pra depois
     {
-        $users = User::where('cpf', 'like', '%' . $request->cpf . '%')
-            ->orWhere('name', 'like', '%' . $service->clearCpf($request->cpf) . '%')
-            ->limit(3)
-            ->get();
+        $user = User::where('cpf', 'like', '%' . InputService::clearCpf($request->cpf) . '%')
+            ->limit(1)
+            ->first();
 
-        return response()->json($users);
+        $participante = Participante::find($request->excludeId);
+
+        if($user && $participante->user_id != $user->id) {//apenas para nao procurar o cpf do usuario atual na substituicao
+            return response()->json($user);
+        }
+        return response()->json(null);
     }
 }
