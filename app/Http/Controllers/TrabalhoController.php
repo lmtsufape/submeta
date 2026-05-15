@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AreaTematicaPibac;
+use App\Services\InputService;
 use PDF;
 use App;
 use App\Administrador;
@@ -1332,8 +1333,9 @@ class TrabalhoController extends Controller
     }
 
     public function buscarUsuario(Request $request) {
-        $usuario = User::where('cpf', $request->cpf_consulta)->first();
+        $usuario = User::where('cpf', InputService::clearCpf($request->cpf_consulta))->first();
         $funcao = FuncaoParticipantes::where('id', $request->funcao)->first();
+
         
         if($usuario){
             $participante = $usuario->participantes()->first();
