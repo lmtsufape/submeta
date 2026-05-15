@@ -210,7 +210,9 @@
     </div>
     @endif
     <!--Discentes-->
-    @if ($evento->numParticipantes != 0)
+    @php
+        $hasParticipantes = $trabalho->participantes != null && !$trabalho->participantes->isEmpty();
+    @endphp
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-12">
             <div class="card" style="border-radius: 5px">
@@ -229,7 +231,7 @@
                             </div>
                         </div>
                         <hr style="border-top: 1px solid#1492E6">
-
+                        @if ($hasParticipantes)
                         <div class="row justify-content-start" style="alignment: center">
                             @foreach($trabalho->participantes as $participante)
                                 <div class="col-sm-1">
@@ -348,12 +350,18 @@
                                 @endforeach
                             @endforeach
                         </div>
+                        @else
+                            <div class="alert alert-warning mt-3" role="alert">
+                                Não há discentes vinculados a esse projeto.
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @endif
+
+
 
     {{--Janelas para aprovação ou reprovação de substituição--}}
     <div class="modal fade" id="modalCancelarSubst" tabindex="-1" role="dialog"
@@ -1471,35 +1479,35 @@
     <!-- Modal visualizar substituição-->
     <div class="modal fade" id="modalVizuSubstituicao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
 
-                <div class="modal-header" style="overflow-x:auto">
+                <div class="modal-header position-relative d-flex justify-content-center align-items-center">
                     <h5 class="modal-title" id="exampleModalLabel" style="color: #234B8B; font-weight: bold">
-                        Substituição de Discentes</h5>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            style="padding-top: 8px; color:#1492E6">
+                        Substituição de Discentes
+                    </h5>
+                    <button type="button" class="close position-absolute" style="right: 1rem; color:#1492E6"
+                            data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="TabControl">
                         <div id="header" style="border: none">
-                            <ul class="abas" style="list-style-type:none;">
+                            <ul class="abas d-flex justify-content-center" style="list-style-type:none; padding:0; gap: 20px;">
                                 <li>
-                                    <div class="aba1 aba">
-                                        <span>Substituções </span>
+                                    <div class="aba1 aba" style="padding: 8px 20px; display: flex; align-items: center; justify-content: center;">
+                                        <span style="white-space: nowrap;">Substituições</span>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="aba2 aba">
-                                        <span> Histórico</span>
+                                    <div class="aba2 aba" style="padding: 8px 20px; display: flex; align-items: center; justify-content: center;">
+                                        <span style="white-space: nowrap;">Histórico</span>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="aba3 aba">
-                                        <span> Desligamentos</span>
+                                    <div class="aba3 aba" style="padding: 8px 20px; display: flex; align-items: center; justify-content: center;">
+                                        <span style="white-space: nowrap;">Desligamentos</span>
                                     </div>
                                 </li>
                             </ul>
@@ -1508,6 +1516,7 @@
                             <div class="justify-content-center conteudo" id="tela1"
                                  style="margin-top: 0px;border: none;overflow-x: auto;">
                                 <div class="col-md-12" id="tela1" style="padding: 0px">
+                                    @if($substituicoesPendentes != null && !$substituicoesPendentes->isEmpty())
                                     <div class="card" id="tela1" style="border-radius: 5px">
                                         <div class="card-body" id="tela1"
                                              style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
@@ -1563,80 +1572,25 @@
                                                                             Submeter
                                                                         </button>
                                                                     </form>
-                                                                    {{--fsasfafsasaffafsafas--}}
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     @endforeach
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                        <div class="alert alert-warning mt-3" role="alert">
+                                            Não há pedidos de substituições pendentes para esse projeto.
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
                             <div class="justify-content-center conteudo" id="tela2"
                                  style="margin-top: 0px;border: none;overflow-x: auto;">
-                                {{--<div class="col-md-12" id="tela2" style="padding: 0px">
-                                    <div class="card" id="tela2" style="border-radius: 5px">
-                                        <div class="card-body" id="tela2" style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
-                                            <div class="" id="tela2">
-                                                <div class="justify-content-start" id="tela2" style="alignment: center">
-                                                    @foreach($substituicoesProjeto as $subs)
-                                                        <div class="row">
-                                                            <div class="col-md-9">
-                                                                <h5 style="color: #234B8B; font-weight: bold" class="col-md-12">Substituição</h5>
-                                                                <div class="row">
-                                                                    <div class="col-md-1">
-                                                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
-                                                                    </div>
-                                                                    <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a onclick="vizuPartici({{$subs->participanteSubstituido()->withTrashed()->first()->id}})" class="button tiro">{{$subs->participanteSubstituido()->withTrashed()->first()->user->name}}</a>
-                                                                    </div>
-                                                                    <div class="col-md-1 text-left" style="padding-left: 0px;">
-                                                                        <img src="{{asset('img/seta.png')}}" style="width:40px;margin-left: 5px;margin-right: 10px;" alt="">
-                                                                    </div>
-                                                                    <div class="col-md-1">
-                                                                        <img src="{{asset('img/icons/usuario.svg')}}" style="width:50px" alt="">
-                                                                    </div>
-                                                                    <div class="col-md-4" style="padding-left: 20px;padding-right: 5px;">
-                                                                        <a onclick="vizuPartici({{$subs->participanteSubstituto()->withTrashed()->first()->id}})" class="button">{{$subs->participanteSubstituto()->withTrashed()->first()->user->name}}</a>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                @if($subs->tipo == 'ManterPlano')
-                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Tipo: Manter Plano</>
-                                                                @elseif($subs->tipo == 'TrocarPlano')
-                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Tipo: Alterar Plano</h5>
-                                                                @elseif($subs->tipo == 'Completa')
-                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Tipo: Completa</h5>
-                                                                @endif
-                                                                @if($subs->status == 'Finalizada')
-                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Status: Concluída</h5>
-                                                                @elseif($subs->status == 'Negada')
-                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Status: Negada</h5>
-                                                                @elseif($subs->status == 'Em Aguardo')
-                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Status: Pendente</h5>
-                                                                @endif
-                                                                @if($subs->status == 'Em Aguardo')
-                                                                    <h5 style="color: #234B8B; " class="col-md-12 text-center">Pendente</h5>
-                                                                @else
-                                                                    <a onclick="vizuJustificativa('{{$subs->justificativa}}')" class="button"><h5 style="color: #234B8B; " class="col-md-12 text-center">Visualizar</h5></a>
-                                                                @endif
-
-                                                            </div>
-                                                        </div>
-
-                                                        <hr>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>--}}
+                                @if($substituicoesProjeto != null && !$substituicoesProjeto->isEmpty())
                                 <div style="margin-top: 5px">
                                     <div class="card-header">
                                         <div class="row">
@@ -1720,82 +1674,93 @@
                                         @endforeach
                                     </div>
                                 </div>
+                                @else
+                                    <div class="alert alert-warning mt-3" role="alert">
+                                        Não há pedidos de substituições nesse projeto.
+                                    </div>
+                                @endif
                             </div>
                             <div class="justify-content-center conteudo" id="tela3"
                                  style="margin-top: 0px;border: none;overflow-x: auto;">
+                                @if($trabalho->desligamentos != null && !$trabalho->desligamentos->isEmpty())
+
                                 <div class="col-md-12" style="padding: 0px">
                                     <div class="card" style="border-radius: 5px">
                                         <div class="card-body"
                                              style="padding-top: 0.2rem;padding-right: 0px;padding-left: 5px;padding-bottom: 5px;">
                                             <div class="">
-                                                <div class="justify-content-start" style="alignment: center">
-                                                    @foreach($trabalho->desligamentos as $desligamento)
-                                                        <div class="row justify-content-between">
-                                                            <div class="col-md-9">
-                                                                <h5 style="color: #234B8B; font-weight: bold"
-                                                                    class="col-md-12">Desligamento</h5>
-                                                                <div class="d-flex justify-content-between">
-                                                                    <div class="col-md-2">
-                                                                        <img src="{{asset('img/icons/usuario.svg')}}"
-                                                                             style="width:50px" alt="" class="img-flex">
-                                                                    </div>
-                                                                    <div class="col-md-10">
-                                                                        <a onclick="vizuParticipante({{$desligamento->participante()->withTrashed()->first()->id}})"
-                                                                           class="button">{{$desligamento->participante()->withTrashed()->first()->user->name}}</a>
-                                                                        <br><label
-                                                                                for="justificativa">Justificativa: </label>
-                                                                        {{$desligamento->justificativa}}
+                                                    <div class="justify-content-start" style="alignment: center">
+                                                        @foreach($trabalho->desligamentos as $desligamento)
+                                                            <div class="row justify-content-between">
+                                                                <div class="col-md-9">
+                                                                    <h5 style="color: #234B8B; font-weight: bold"
+                                                                        class="col-md-12">Desligamento</h5>
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div class="col-md-2">
+                                                                            <img src="{{asset('img/icons/usuario.svg')}}"
+                                                                                 style="width:50px" alt="" class="img-flex">
+                                                                        </div>
+                                                                        <div class="col-md-10">
+                                                                            <a onclick="vizuParticipante({{$desligamento->participante()->withTrashed()->first()->id}})"
+                                                                               class="button">{{$desligamento->participante()->withTrashed()->first()->user->name}}</a>
+                                                                            <br><label
+                                                                                    for="justificativa">Justificativa: </label>
+                                                                            {{$desligamento->justificativa}}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="col-md-3">
+                                                                    @if($desligamento->status == \App\Desligamento::STATUS_ENUM['solicitado'])
+                                                                        <h5 style="color: #234B8B; font-weight: bold"
+                                                                            class="col-md-12 text-center"> Ações</h5>
+                                                                        <div class="col-md-12 text-center"
+                                                                             style="border: solid#1111; padding: 10px; ">
+                                                                            <form id="resposta-desligamento{{$desligamento->id}}"
+                                                                                  method="POST"
+                                                                                  action="{{route('coordenador.resposta.desligamento', ['desligamento_id' => $desligamento->id]) }}">
+                                                                                @csrf
+                                                                                <input type="hidden" id="desligamento"
+                                                                                       name="desligamento"
+                                                                                       value="{{$desligamento->id}}">
+                                                                                <input type="radio"
+                                                                                       id="aceitar{{$desligamento->id}}"
+                                                                                       name="opcao"
+                                                                                       value="{{\App\Desligamento::STATUS_ENUM['aceito']}}">
+                                                                                Aprovar
+                                                                                <input type="radio"
+                                                                                       id="negar{{$desligamento->id}}"
+                                                                                       name="opcao"
+                                                                                       value="{{\App\Desligamento::STATUS_ENUM['recusado']}}">
+                                                                                Negar
+                                                                                <br>
+                                                                                <button type="submit"
+                                                                                        class="btn btn-primary"
+                                                                                        form="resposta-desligamento{{$desligamento->id}}">
+                                                                                    Submeter
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    @else
+                                                                        <h5 style="color: #234B8B; font-weight: bold"
+                                                                            class="col-md-12 text-center"> Status</h5>
+                                                                        <div class="col-md-12 text-center"
+                                                                             style="border: solid#1111; padding: 10px; ">
+                                                                            {{$desligamento->getStatus()}}
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                @if($desligamento->status == \App\Desligamento::STATUS_ENUM['solicitado'])
-                                                                    <h5 style="color: #234B8B; font-weight: bold"
-                                                                        class="col-md-12 text-center"> Ações</h5>
-                                                                    <div class="col-md-12 text-center"
-                                                                         style="border: solid#1111; padding: 10px; ">
-                                                                        <form id="resposta-desligamento{{$desligamento->id}}"
-                                                                              method="POST"
-                                                                              action="{{route('coordenador.resposta.desligamento', ['desligamento_id' => $desligamento->id]) }}">
-                                                                            @csrf
-                                                                            <input type="hidden" id="desligamento"
-                                                                                   name="desligamento"
-                                                                                   value="{{$desligamento->id}}">
-                                                                            <input type="radio"
-                                                                                   id="aceitar{{$desligamento->id}}"
-                                                                                   name="opcao"
-                                                                                   value="{{\App\Desligamento::STATUS_ENUM['aceito']}}">
-                                                                            Aprovar
-                                                                            <input type="radio"
-                                                                                   id="negar{{$desligamento->id}}"
-                                                                                   name="opcao"
-                                                                                   value="{{\App\Desligamento::STATUS_ENUM['recusado']}}">
-                                                                            Negar
-                                                                            <br>
-                                                                            <button type="submit"
-                                                                                    class="btn btn-primary"
-                                                                                    form="resposta-desligamento{{$desligamento->id}}">
-                                                                                Submeter
-                                                                            </button>
-                                                                        </form>
-                                                                    </div>
-                                                                @else
-                                                                    <h5 style="color: #234B8B; font-weight: bold"
-                                                                        class="col-md-12 text-center"> Status</h5>
-                                                                    <div class="col-md-12 text-center"
-                                                                         style="border: solid#1111; padding: 10px; ">
-                                                                        {{$desligamento->getStatus()}}
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-
-                                                    @endforeach
-                                                </div>
+                                                        @endforeach
+                                                    </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                @else
+                                    <div class="alert alert-warning mt-3" role="alert">
+                                        Não há desligamentos registrados nesse projeto.
+                                    </div>
+                                @endif
                             </div>
 
 
