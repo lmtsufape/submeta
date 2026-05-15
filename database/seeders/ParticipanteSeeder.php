@@ -1,5 +1,6 @@
 <?php
 
+use App\Participante;
 use Illuminate\Database\Seeder;
 
 class ParticipanteSeeder extends Seeder
@@ -33,29 +34,19 @@ class ParticipanteSeeder extends Seeder
 
         foreach ($users as $userId) {
 
-            $alocado = false;
+            foreach ($trabalhos as $trab) { //percorre trabalhos
 
-            foreach ($trabalhos as $trab) {
-
-                $limite = $eventos[$trab->evento_id] ?? 1;
+                $limite = $eventos[$trab->evento_id] ?? 1; //da limite de partc.
 
                 if ($contador[$trab->id] < $limite) {
 
                     DB::table('participantes')->insert([
                         'user_id' => $userId,
                         'trabalho_id' => $trab->id,
-
                     ]);
-
                     $contador[$trab->id]++;
-                    $alocado = true;
                     break;
                 }
-            }
-
-            if (!$alocado) {
-                // participante fica sem trabalho
-                continue;
             }
         }
     }

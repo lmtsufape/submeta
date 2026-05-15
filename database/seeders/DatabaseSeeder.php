@@ -55,5 +55,24 @@ class DatabaseSeeder extends Seeder
         $this->call(AvaliacaoTrabalhosSeeder::class);
         $this->call(AvaliacaoRelatorioSeeder::class);
 
+        DB::statement("
+            DO $$
+            DECLARE
+                rec RECORD;
+            BEGIN
+                FOR rec IN
+                    SELECT sequence_name
+                    FROM information_schema.sequences
+                    WHERE sequence_schema = 'public'
+                LOOP
+                    EXECUTE format(
+                        'SELECT setval(%L, COALESCE((SELECT MAX(id) FROM %I), 1))',
+                        rec.sequence_name,
+                        replace(rec.sequence_name, '_id_seq', '')
+                    );
+                END LOOP;
+            END $$;
+        ");
+
     }
 }
