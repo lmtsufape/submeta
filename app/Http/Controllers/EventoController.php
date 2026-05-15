@@ -10,6 +10,7 @@ use App\Revisor;
 use App\Atribuicao;
 use App\Modalidade;
 use App\ComissaoEvento;
+use App\Services\EventoService;
 use App\User;
 use App\Proponente;
 use App\Trabalho;
@@ -33,21 +34,10 @@ use Illuminate\Validation\Rule;
 
 class EventoController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, EventoService $service)
     {
-        if($request->buscar == null){
-            $eventos = Evento::all()->sortBy('nome');
-            // $comissaoEvento = ComissaoEvento::all();
-            // $eventos = Evento::where('coordenadorId', Auth::user()->id)->get();
-            $hoje = Carbon::today('America/Recife');
-            $hoje = $hoje->toDateString();
-            return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>'', 'flag'=>'false']);
-        }else{
-            $eventos = Evento::where('nome','ilike','%'.$request->buscar.'%')->get();
-            $hoje = Carbon::today('America/Recife');
-            $hoje = $hoje->toDateString();
-            return view('coordenador.home',['eventos'=>$eventos, 'hoje'=>$hoje, 'palavra'=>$request->buscar, 'flag'=>'true']);
-        }
+        $data = $service->list($request);
+        return view('coordenador.home', $data);
 
     }
 
