@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('link_grupo', '\App\Utils\GrupoPesquisaValidation@validate', 'Link inválido');
         Validator::extend('planilha', '\App\Utils\ExtensaoValidation@validate', 'Extensão do arquivo é inválida');
         Validator::extend('telefone', '\App\Utils\TelefoneValidation@validate', 'Celular inválido');
+        URL::forceScheme('https');
     }
 }
