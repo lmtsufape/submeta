@@ -1352,293 +1352,247 @@ class TrabalhoController extends Controller
 
     public function salvar(StoreTrabalho $request)
     {
-        //dd($request->all());
         try {
             if (!$request->has('rascunho')) {
-                $request->merge([
-                    'status' => 'submetido'
-                ]);
+                $request->merge(['status' => 'submetido']);
             }
+
             $evento = Evento::find($request->editalId);
             $proponente = Proponente::where('user_id', Auth::user()->id)->first();
-            $request->merge([
-                'coordenador_id' => $evento->coordenadorComissao->id
-            ]);
-
+            $request->merge(['coordenador_id' => $evento->coordenadorComissao->id]);
 
             DB::beginTransaction();
 
-            if($evento->tipo=="PIBEX" || $evento->tipo=="PIACEX" || $evento->tipo=="PIBAC"){
-                if($evento->tipo == "PIBAC")
-                {
-                    $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC', 'area_tematica_id'
-                        ]));
-                }
-                else
-                {
-                    $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU','modalidade','anexo_docExtra', 'anexo_SIPAC'
-                        ]));
-                }
-            }else if($evento->tipo=="CONTINUO" || $evento->tipo=="CONTINUO-AC"){
-                if($evento->tipo == "CONTINUO-AC")
-                {
-                    $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                        'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                        'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'area_tematica_id',
-                    ]));
-                }
-                else
-                {
-                    $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                        'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                        'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                        'justificativaAutorizacaoEtica','modalidade','anexo_docExtra',
-                    ]));
-                }
-            } else {
-                //dd();
-                if($evento->tipo ==  "PICP")
-                {
-                    $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica'
-                        ]));
-                }
-                else
-                {
-                    if($evento->tipo == "PIBIC" || $evento->tipo == "PIBIC-AF" || $evento->tipo == "PIBIC-EM")
-                    {
+            // --- trabalho creation ---
+            try {
+                if ($evento->tipo == 'PIBEX' || $evento->tipo == 'PIACEX' || $evento->tipo == 'PIBAC') {
+                    if ($evento->tipo == 'PIBAC') {
                         $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                            'anexoLattesCoordenador', 'anexoAutorizacaoComiteEtica',
-                            'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
-                        ]));
-                    }
-                    else
-                    {
-                        $trabalho = Auth::user()->proponentes->trabalhos()
-                        ->create($request->except([
-                            'anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao',
-                            'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica',
-                            'justificativaAutorizacaoEtica','modalidade','anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia' 
-                        ]));
-                    }
-                    
-                }
-                
-            }
-            
-            //adição dos participantes
-            if ($request->has('marcado')) {       
-                foreach ($request->marcado as $key => $part) {
-                    $part = intval($part);
-                    
-                    $data['name'] = $request->name[$part];
-                    $data['email'] = $request->email[$part];
-                    $data['cpf'] = $request->cpf[$part];
-                    //Quando o integrante é um estudante
-                    if($request->estudante[$part] == true){
-                        if($request->data_de_nascimento[$part] == null){
-                            $data_nascimento = null;
-                        }else {
-                            $data_nascimento = Carbon::createFromFormat('d/m/Y', $request->data_de_nascimento[$part])->toDateString();
-                        }
-                        $data['data_de_nascimento'] = $data_nascimento;
-                        $data['rg'] = $request->rg[$part];
-                        $data['celular'] = $request->celular[$part];
-                        $data['cep'] = $request->cep[$part];
-                        $data['uf'] = $request->uf[$part];
-                        $data['cidade'] = $request->cidade[$part];
-                        $data['rua'] = $request->rua[$part];
-                        $data['numero'] = $request->numero[$part];
-                        $data['bairro'] = $request->bairro[$part];
-                        if($request->complemento[$part] == null) {
-                            $data['complemento'] = "";
-                        }else {
-                            $data['complemento'] = $request->complemento[$part];
-                        }
-                          
-                        if($request->total_periodos){
-                            $data['total_periodos'] = $request->total_periodos[$part];
-                            $data['turno'] = $request->turno[$part];
-                            $data['periodo_atual'] = $request->periodo_atual[$part];
-
-                            if($evento->tipo != "PICP")
-                            {
-                                $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
-                            }
-                        }
-
-                        if ($request->curso[$part] != "Outro") {
-                            $data['curso'] = $request->curso[$part];
-                        } else {
-                            $data['curso'] = $request->outrocurso[$part];
-                        }
-
-                        if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"){
-                            if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC") {
-                                $data['media_do_curso'] = $request->media_do_curso[$part];
-                            }
-                            $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
-                        }
-                    }             
-
-                    //função no projeto
-                    if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"){
-                        if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists())
-                            $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
-                    }
-                    
-                    //instituição do participante
-                    if ($request->instituicao[$part] != "Outra") {
-                        $data['instituicao'] = $request->instituicao[$part];
+                            ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'modalidade', 'anexo_docExtra', 'anexo_SIPAC', 'area_tematica_id']));
                     } else {
-                        $data['instituicao'] = $request->outrainstituicao[$part];
+                        $trabalho = Auth::user()->proponentes->trabalhos()
+                            ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'modalidade', 'anexo_docExtra', 'anexo_SIPAC']));
                     }
-                    
-                    $user = User::where('email', 'ilike', $data['email'])->first();
-                    
-                    if ($user == null) {
-                        $data['usuarioTemp'] = true;
-                        $user = User::create($data);
-                        $endereco = Endereco::create($data);
-                        $endereco->user()->save($user);
+                } else if ($evento->tipo == 'CONTINUO' || $evento->tipo == 'CONTINUO-AC') {
+                    if ($evento->tipo == 'CONTINUO-AC') {
+                        $trabalho = Auth::user()->proponentes->trabalhos()
+                            ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao', 'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica', 'modalidade', 'anexo_docExtra', 'area_tematica_id']));
+                    } else {
+                        $trabalho = Auth::user()->proponentes->trabalhos()
+                            ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao', 'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica', 'modalidade', 'anexo_docExtra']));
                     }
-                    // $participante = $user->participantes->where('trabalho_id', $trabalho->id)->first();
-                    // if ($participante == null){
-                    //   $participante = Participante::create($data);
-                    // }
-                    $participante = Participante::create($data);
-                    $participante->data_entrada = $participante->created_at;
-                    $user->participantes()->save($participante);
-                    
-                    $participante->trabalho_id = $trabalho->id;
-                    $participante->save();
+                } else {
+                    if ($evento->tipo == 'PICP') {
+                        $trabalho = Auth::user()->proponentes->trabalhos()
+                            ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica']));
+                    } else {
+                        if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-AF' || $evento->tipo == 'PIBIC-EM') {
+                            $trabalho = Auth::user()->proponentes->trabalhos()
+                                ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao', 'anexoLattesCoordenador', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica', 'modalidade', 'anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia']));
+                        } else {
+                            $trabalho = Auth::user()->proponentes->trabalhos()
+                                ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao', 'anexoLattesCoordenador', 'anexoGrupoPesquisa', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica', 'modalidade', 'anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia']));
+                        }
+                    }
+                }
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return redirect(route('proponente.projetos'))->withErrors(['mensagem' => '[Erro ao criar trabalho]: ' . $th->getMessage()]);
+            }
 
-                    if($evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC"){
-                        if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
-                            $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
-                            $nome = $request['nomePlanoTrabalho'][$part] . ".pdf";
-                            $file = $request->anexoPlanoTrabalho[$part];
-                            Storage::putFileAs($path, $file, $nome);
+            // --- participantes ---
+            if ($request->has('marcado')) {
+                foreach ($request->marcado as $key => $part) {
+                    try {
+                        $part = intval($part);
+
+                        $data['name'] = $request->name[$part];
+                        $data['email'] = $request->email[$part];
+                        $data['cpf'] = $request->cpf[$part];
+
+                        if ($request->estudante[$part] == true) {
+                            if ($request->data_de_nascimento[$part] == null) {
+                                $data_nascimento = null;
+                            } else {
+                                $data_nascimento = Carbon::createFromFormat('d/m/Y', $request->data_de_nascimento[$part])->toDateString();
+                            }
+                            $data['data_de_nascimento'] = $data_nascimento;
+                            $data['rg'] = $request->rg[$part];
+                            $data['celular'] = $request->celular[$part];
+                            $data['cep'] = $request->cep[$part];
+                            $data['uf'] = $request->uf[$part];
+                            $data['cidade'] = $request->cidade[$part];
+                            $data['rua'] = $request->rua[$part];
+                            $data['numero'] = $request->numero[$part];
+                            $data['bairro'] = $request->bairro[$part];
+                            $data['complemento'] = $request->complemento[$part] ?? '';
+
+                            if ($request->total_periodos) {
+                                $data['total_periodos'] = $request->total_periodos[$part];
+                                $data['turno'] = $request->turno[$part];
+                                $data['periodo_atual'] = $request->periodo_atual[$part];
+
+                                if ($evento->tipo != 'PICP') {
+                                    $data['ordem_prioridade'] = $request->ordem_prioridade[$part];
+                                }
+                            }
+
+                            $data['curso'] = $request->curso[$part] != 'Outro'
+                                ? $request->curso[$part]
+                                : $request->outrocurso[$part];
+
+                            if ($evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC') {
+                                if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIACEX' && $evento->tipo != 'PIBAC') {
+                                    $data['media_do_curso'] = $request->media_do_curso[$part];
+                                }
+                                $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho[$part];
+                            }
+                        }
+
+                        if ($evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC') {
+                            if (FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->exists()) {
+                                $data['funcao_participante_id'] = FuncaoParticipantes::where('nome', $request->funcaoParticipante[$part])->first()->id;
+                            }
+                        }
+
+                        $data['instituicao'] = $request->instituicao[$part] != 'Outra'
+                            ? $request->instituicao[$part]
+                            : $request->outrainstituicao[$part];
+
+                        $user = User::where('email', 'ilike', $data['email'])->first();
+
+                        if ($user == null) {
+                            $data['usuarioTemp'] = true;
+                            $user = User::create($data);
+                            $endereco = Endereco::create($data);
+                            $endereco->user()->save($user);
+                        }
+
+                        $participante = Participante::create($data);
+                        $participante->data_entrada = $participante->created_at;
+                        $user->participantes()->save($participante);
+                        $participante->trabalho_id = $trabalho->id;
+                        $participante->save();
+
+                    } catch (\Throwable $th) {
+                        DB::rollback();
+                        return redirect(route('proponente.projetos'))->withErrors(['mensagem' => '[Erro ao salvar participante ' . ($key + 1) . ']: ' . $th->getMessage()]);
+                    }
+
+                    // --- arquivos do participante ---
+                    try {
+                        if ($evento->tipo != 'CONTINUO' && $evento->tipo != 'CONTINUO-AC') {
+                            if ($request->estudante[$part] == true && $request['nomePlanoTrabalho'][$part] != null) {
+                                $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                                $nome = $request['nomePlanoTrabalho'][$part] . '.pdf';
+                                $file = $request->anexoPlanoTrabalho[$part];
+                                Storage::putFileAs($path, $file, $nome);
+                                $arquivo = new Arquivo();
+                                $arquivo->titulo = $request['nomePlanoTrabalho'][$part];
+                                $arquivo->nome = $path . $nome;
+                                $arquivo->trabalhoId = $trabalho->id;
+                                $arquivo->data = now();
+                                $arquivo->participanteId = $participante->id;
+                                $arquivo->versaoFinal = true;
+                                $arquivo->save();
+                            }
+                        }
+
+                        if ($evento->tipo == 'CONTINUO' || $evento->tipo == 'CONTINUO-AC') {
                             $arquivo = new Arquivo();
-                            $arquivo->titulo = $request['nomePlanoTrabalho'][$part];
-                            $arquivo->nome = $path . $nome;
+                            $arquivo->titulo = $request['titulo'];
+                            $arquivo->nome = $request['titulo'];
                             $arquivo->trabalhoId = $trabalho->id;
                             $arquivo->data = now();
                             $arquivo->participanteId = $participante->id;
                             $arquivo->versaoFinal = true;
                             $arquivo->save();
-                            
                         }
+                    } catch (\Throwable $th) {
+                        DB::rollback();
+                        return redirect(route('proponente.projetos'))->withErrors(['mensagem' => '[Erro ao salvar arquivo do participante ' . ($key + 1) . ']: ' . $th->getMessage()]);
                     }
-
-                    if($evento->tipo == "CONTINUO" || $evento->tipo == "CONTINUO-AC")
-                    {
+                }
+            } else {
+                // --- arquivo do proponente ---
+                try {
+                    $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
+                    if ($request->has('anexoPlanoTrabalho')) {
+                        $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
+                        $nome = $data['nomePlanoTrabalho'] . '.pdf';
+                        $file = $request->anexoPlanoTrabalho;
+                        Storage::putFileAs($path, $file, $nome);
                         $arquivo = new Arquivo();
-                        $arquivo->titulo = $request['titulo'];
-                        $arquivo->nome = $request['titulo'];
+                        $arquivo->titulo = $data['nomePlanoTrabalho'];
+                        $arquivo->nome = $path . $nome;
                         $arquivo->trabalhoId = $trabalho->id;
                         $arquivo->data = now();
-                        $arquivo->participanteId = $participante->id;
+                        $arquivo->proponenteId = $proponente->id;
                         $arquivo->versaoFinal = true;
                         $arquivo->save();
                     }
-                    
-                }
-            } else {
-                $data['nomePlanoTrabalho'] = $request->nomePlanoTrabalho;
-                if ($request->has('anexoPlanoTrabalho')) {
-                    $path = 'trabalhos/' . $evento->id . '/' . $trabalho->id . '/';
-                    $nome = $data['nomePlanoTrabalho'] . ".pdf";
-                    $file = $request->anexoPlanoTrabalho;
-                    Storage::putFileAs($path, $file, $nome);
-                    $arquivo = new Arquivo();
-                    $arquivo->titulo = $data['nomePlanoTrabalho'];
-                    $arquivo->nome = $path . $nome;
-                    $arquivo->trabalhoId = $trabalho->id;
-                    $arquivo->data = now();
-                    $arquivo->proponenteId = $proponente->id;
-                    $arquivo->versaoFinal = true;
-                    $arquivo->save();
-                    
+                } catch (\Throwable $th) {
+                    DB::rollback();
+                    return redirect(route('proponente.projetos'))->withErrors(['mensagem' => '[Erro ao salvar arquivo do proponente]: ' . $th->getMessage()]);
                 }
             }
-            
-            $evento->trabalhos()->save($trabalho);
-            
-            $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
-            $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
-            $trabalho->modalidade = $request->modalidade;
-            $trabalho->save();
-            
-            
-            // if($evento->natureza_id == 3){
-            //     foreach($request->integrantes as $integrante){
-            //         $integrante = explode(',', $integrante); 
-                    
-            //         $trabalho_user = new TrabalhoUser();
-            //         $trabalho_user->user_id = $integrante[0];
-            //         $trabalho_user->funcao_participante_id = $integrante[1];
-            //         $trabalho_user->trabalho_id = $trabalho->id;
-            //         $trabalho_user->save();
-            //     }
-            // }
 
-            $trabalho->ods()->sync($request->ods);
-            if($evento->tipo == "PIBAC" || $evento->tipo == "CONTINUO-AC")
-            {
-                $trabalho->area_tematica_pibac()->sync($request->area_tematica_id);
+            // --- finalização ---
+            try {
+                $evento->trabalhos()->save($trabalho);
+                $pasta = 'trabalhos/' . $evento->id . '/' . $trabalho->id;
+                $trabalho = $this->armazenarAnexosFinais($request, $pasta, $trabalho, $evento);
+                $trabalho->modalidade = $request->modalidade;
+                $trabalho->save();
+                $trabalho->ods()->sync($request->ods);
+
+                if ($evento->tipo == 'PIBAC' || $evento->tipo == 'CONTINUO-AC') {
+                    $trabalho->area_tematica_pibac()->sync($request->area_tematica_id);
+                }
+
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return redirect(route('proponente.projetos'))->withErrors(['mensagem' => '[Erro ao finalizar submissão]: ' . $th->getMessage()]);
             }
-            
-            DB::commit();
-            if (!$request->has('rascunho')) {
-                //Notificações
-                //Coordenador
-                $userTemp = User::find($evento->coordenadorComissao->user_id);
-                $notificacao = App\Notificacao::create([
-                    'remetente_id' => Auth::user()->id,
-                    'destinatario_id' => $evento->coordenadorComissao->user_id,
-                    'trabalho_id' => $trabalho->id,
-                    'lido' => false,
-                    'tipo' => 1,
-                ]);
-                $notificacao->save();
-                // SubmissaoRecebidaNotification.php
-                Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id,$trabalho->titulo,$userTemp));
-                //Proponente
-                $notificacao = App\Notificacao::create([
-                    'remetente_id' => Auth::user()->id,
-                    'destinatario_id' => Auth::user()->id,
-                    'trabalho_id' => $trabalho->id,
-                    'lido' => false,
-                    'tipo' => 1,
-                ]);
-                $notificacao->save();
-                // submissao e notificação.php  $trabalho->id,$trabalho->titulo
-                Notification::send(Auth::user(), new SubmissaoNotification($trabalho));
 
+            // --- notificações ---
+            try {
+                if (!$request->has('rascunho')) {
+                    $userTemp = User::find($evento->coordenadorComissao->user_id);
+                    $notificacao = App\Notificacao::create([
+                        'remetente_id' => Auth::user()->id,
+                        'destinatario_id' => $evento->coordenadorComissao->user_id,
+                        'trabalho_id' => $trabalho->id,
+                        'lido' => false,
+                        'tipo' => 1,
+                    ]);
+                    $notificacao->save();
+                    Notification::send($userTemp, new SubmissaoRecebidaNotification($trabalho->id, $trabalho->titulo, $userTemp));
 
-                return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta submetida!']);
-            } else {
-                return redirect(route('proponente.projetos'))->with(['mensagem' => 'Rascunho salvo!']);
+                    $notificacao = App\Notificacao::create([
+                        'remetente_id' => Auth::user()->id,
+                        'destinatario_id' => Auth::user()->id,
+                        'trabalho_id' => $trabalho->id,
+                        'lido' => false,
+                        'tipo' => 1,
+                    ]);
+                    $notificacao->save();
+                    Notification::send(Auth::user(), new SubmissaoNotification($trabalho));
 
+                    return redirect(route('proponente.projetos'))->with(['mensagem' => 'Proposta submetida!']);
+                } else {
+                    return redirect(route('proponente.projetos'))->with(['mensagem' => 'Rascunho salvo!']);
+                }
+            } catch (\Throwable $th) {
+                // commit already done, don't rollback
+                return redirect(route('proponente.projetos'))->with(['mensagem' => 'Submetido, mas houve um erro ao enviar notificações: ' . $th->getMessage()]);
             }
+
         } catch (\Throwable $th) {
             DB::rollback();
-            //dd($th);
-            return redirect(route('proponente.projetos'))->withErrors(['mensagem' => 'Não foi possível realizar a submissão do Projeto!']);
+            return redirect(route('proponente.projetos'))->withErrors(['mensagem' => '[Erro inesperado]: ' . $th->getMessage()]);
         }
-
-
     }
 
     public function atribuirDados(Request $request, $edital, Trabalho $projeto = null)
