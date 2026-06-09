@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         // ===== BASE =====
         $this->call(UsuarioSeeder::class);
+        $this->call(EnderecoSeeder::class);
 
         // ===== PAPÉIS ===== - passou
         $this->call(AdministradorSeeder::class);
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GrandeAreaSeeder::class);
         $this->call(AreaSeeder::class);
         $this->call(SubAreaSeeder::class);
+        $this->call(OdsSeeder::class);
         $this->call(CursoSeeder::class);
         $this->call(AreaTematicaSeeder::class);
 

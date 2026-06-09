@@ -56,7 +56,7 @@ class EventoSeeder extends Seeder
                 'nome' => '[EVENTO][CONTINUO]',
                 'descricao' => 'Fluxo contínuo',
                 'tipo' => 'CONTINUO',
-                'natureza_id' => 2,
+                'natureza_id' => 3,//extensao
                 'coordenadorId' => 3,
                 'criador_id' => 1,
                 'numParticipantes' => 3,

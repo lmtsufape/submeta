@@ -22,7 +22,7 @@ class TrabalhoSeeder extends Seeder
                 'aprovado' => 1,
                 'data' => Carbon::now()->subDays(5),
 
-                'evento_id' => 1,
+                'evento_id' => 2,
                 'coordenador_id' =>  1,
                 'proponente_id' =>1,
 
@@ -84,7 +84,7 @@ class TrabalhoSeeder extends Seeder
 
                 'evento_id' => 3,
                 'coordenador_id' =>  2,
-                'proponente_id' => 3,
+                'proponente_id' => 2,
 
                 'linkGrupoPesquisa' => 'link',
                 'linkLattesEstudante' => 'link',

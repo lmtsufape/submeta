@@ -35,7 +35,6 @@ class ArquivoSeeder extends Seeder
                 'data' => now(),
                 'participanteId' => $pick($participantes, $index),
                 'trabalhoId' => $trab->id,
-                // ✔️ aqui é o ponto importante
                 'proponenteId' => $trab->proponente_id,
                 'relatorioParcial' => 'relatorioParcial.pdf',
                 'created_at' => now(),
