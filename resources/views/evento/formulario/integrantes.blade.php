@@ -43,9 +43,12 @@
                     <div class="form-controll"
                          style="margin-left:10px; margin-top:10px; margin-bottom:15px; font-weight:bold;">
 
-                        <div class="form-row d-flex">
+                        <div class="form-row d-flex" style="margin-top:10px; position:relative;">
                             <label for="cpf_consulta">CPF:</label>
-                            <input type="text" id="cpf_consulta" name="cpf_consulta" class="form-control">
+                            <input type="text" id="cpf_consulta" name="cpf_consulta" class="form-control" onkeyup="buscarCpfNovo()">
+                            <div id="resultadoCpfNovo" class="list-group"
+                                 style="position:absolute; top:100%; z-index:1000; width:100%;"></div>
+
                         </div>
 
                         <div class="form-row d-flex" style="margin-top:10px">
@@ -148,7 +151,9 @@
 
 <script>
     $(document).ready(function () {
-        $("#cpf_consulta").mask("999.999.999-99");
+        $("#cpf_consulta").on("input", function () {
+            this.value = aplicarMascaraCpf(this.value);
+        });
     });
 
     function removerIntegrante(id) {
@@ -289,5 +294,49 @@
         $('#modalIntegrante').modal('hide');
         $(`#aviso-modal-usuario-adicionado`).modal('show');
     }
+
+    function buscarCpfNovo() {
+        let cpf = $("#cpf_consulta").val();
+
+        if (cpf.length < 1) {
+            $("#resultadoCpfNovo").html('');
+            return;
+        }
+
+        $.ajax({
+            url: "/buscar-cpf",
+            type: "GET",
+            data: { cpf: cpf, excludeId: null},
+            success: function (user) {
+                let html = '';
+                if (user !== null) {
+                    let name = user.name.length > 60 ? user.name.substring(0, 60) + '...' : user.name;
+                    html += `
+                    <button type="button" class="list-group-item list-group-item-action"
+                        onclick="selecionarCpfNovo('${user.cpf}')">
+                        ${name} - ${aplicarMascaraCpf(user.cpf)}
+                    </button>`;
+                }
+                $("#resultadoCpfNovo").html(html);
+            }
+        });
+    }
+
+    function aplicarMascaraCpf(valor) {
+
+        valor = valor.replace(/\D/g, '');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+        return valor;
+    }
+
+    function selecionarCpfNovo(cpf) {
+        $("#cpf_consulta").val(aplicarMascaraCpf(cpf));//definido no arquivo do modal de substituicao
+        $("#resultadoCpfNovo").html('');
+    }
+
+
 
 </script>

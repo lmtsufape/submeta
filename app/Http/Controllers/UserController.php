@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
-use App\Services\InputService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -137,17 +136,24 @@ class UserController extends Controller
             ]);
     }
 
+    //busca cpf para mostrar user na substituicao
     public function buscarCpf(Request $request)//coisa de service mas fica pra depois
     {
-        $user = User::where('cpf', 'like', '%' . InputService::clearCpf($request->cpf) . '%')
+        $user = User::where('cpf', 'like', '%' . $request->cpf . '%')
             ->limit(1)
             ->first();
 
-        $participante = Participante::find($request->excludeId);
-
-        if($user && $participante->user_id != $user->id) {//apenas para nao procurar o cpf do usuario atual na substituicao
-            return response()->json($user);
+        if($user){
+            if($request->excludeId){//usado para evitar sugerir o mesmo cpf do part. a ser substituido para o caso de substituicao
+                $participante = Participante::find($request->excludeId);
+                if($participante->user_id != $user->id) {//apenas para nao procurar o cpf do usuario atual na substituicao
+                    return response()->json($user);
+                }
+          } else {
+                return response()->json($user);
+            }
         }
-        return response()->json(null);
+
+        return response()->json(null); //para ter certeza
     }
 }
