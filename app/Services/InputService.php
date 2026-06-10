@@ -16,7 +16,7 @@ class InputService
 
     }
 
-    function formatarTelefone(string $telefone): string
+    public static function formatarTelefone(string $telefone): string
     {
         if (!$telefone) return $telefone;
 
