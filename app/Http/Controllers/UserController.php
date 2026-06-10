@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
+use App\Services\InputService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -139,7 +140,7 @@ class UserController extends Controller
     //busca cpf para mostrar user na substituicao
     public function buscarCpf(Request $request)//coisa de service mas fica pra depois
     {
-        $user = User::where('cpf', 'like', '%' . $request->cpf . '%')
+        $user = User::where('cpf', 'like', '%' . InputService::formatarCpf($request->cpf) . '%')
             ->limit(1)
             ->first();
 

@@ -50,8 +50,8 @@ class UserService
     private function updateBaseUser(User $user, array $data): void
     {
         $user->name = $data['name'];
-        $user->cpf = $data['cpf'];
-        $user->celular = $data['celular'];
+        $user->cpf = InputService::formatarCpf($data['cpf']);
+        $user->celular = InputService::formatarTelefone($data['celular']);
 
         if (!empty($data['instituicao'])) {
             $user->instituicao = $data['instituicao'];
