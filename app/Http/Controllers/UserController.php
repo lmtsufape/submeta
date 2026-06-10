@@ -6,20 +6,15 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\AdministradorResponsavel;
 use App\Avaliador;
 use App\Proponente;
 use App\Participante;
 use App\Endereco;
-use App\Trabalho;
-use App\Coautor;
 use App\Evento;
 use App\Natureza;
 use Carbon\Carbon;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use App\Curso;
 use App\AreaTematica;
@@ -139,5 +134,26 @@ class UserController extends Controller
                 'cursoPart' => $cursoPart,
                 'areaTematica' => $areaTematica
             ]);
+    }
+
+    //busca cpf para mostrar user na substituicao
+    public function buscarCpf(Request $request)//coisa de service mas fica pra depois
+    {
+        $user = User::where('cpf', 'like', '%' . $request->cpf . '%')
+            ->limit(1)
+            ->first();
+
+        if($user){
+            if($request->excludeId){//usado para evitar sugerir o mesmo cpf do part. a ser substituido para o caso de substituicao
+                $participante = Participante::find($request->excludeId);
+                if($participante->user_id != $user->id) {//apenas para nao procurar o cpf do usuario atual na substituicao
+                    return response()->json($user);
+                }
+          } else {
+                return response()->json($user);
+            }
+        }
+
+        return response()->json(null); //para ter certeza
     }
 }
