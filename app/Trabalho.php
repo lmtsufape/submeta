@@ -128,7 +128,7 @@ class Trabalho extends Model
   }
 
   public function ods(){
-    return $this->belongsToMany('App\ObjetivoDeDesenvolvimentoSustentavel', 'objetivo_de_desenvolvimento_sustentavel_trabalhos', 'trabalho_id');
+    return $this->belongsToMany('App\ObjetivoDeDesenvolvimentoSustentavel', 'objetivo_de_desenvolvimento_sustentavel_trabalhos', 'trabalho_id')->withTrashed();
   }
 
   public function integrantes() {
