@@ -67,11 +67,11 @@
           <td>{{ $avaliador->user->email }}</td>
           <td>
             @if(is_null($avaliador->area))
-              @if($avaliador->areaTematicas()->get()->first() != null || $avaliador->areaTematicaPibac()->get()->first() != null)
+              @if($avaliador->areaTematicas()->first() != null || $avaliador->areaTematicaPibac()->first() != null)
                 @if($evento->tipo == "PIBAC")
                     @foreach($avaliador->areaTematicaPibac as $area_tematica) {{ $area_tematica->nome }} <br> @endforeach
                 @else
-                    {{ $avaliador->areaTematicas()->get()->first()->nome }}
+                    {{ $avaliador->areaTematicas()->first()->nome ?? 'Indefinida'}}
                 @endif
               @else
                 Indefinida
