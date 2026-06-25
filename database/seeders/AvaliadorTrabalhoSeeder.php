@@ -24,7 +24,7 @@ class AvaliadorTrabalhoSeeder extends Seeder
                 'parecer' => 'bom',
             ],
             [
-                'avaliador_id' => 2,
+                'avaliador_id' => 1,
                 'trabalho_id' => 2,
                 'acesso' => 3,
                 'pontuacao' => 7,
