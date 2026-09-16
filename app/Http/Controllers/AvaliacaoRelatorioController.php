@@ -66,27 +66,31 @@ class AvaliacaoRelatorioController extends Controller
     }
 
 
-
-    public function criarRelatorio(Request  $request){
+    public function criarRelatorio(Request $request)
+    {
         $validatedData = $request->validate([
-            'nota'      => ['required'],
-            'comentario'     => ['required'],
+            'nota' => ['required'],
+            'comentario' => ['required'],
+            'avaliacao_id' => ['required', 'exists:avaliacao_relatorios,id'],
+            'plano_id' => ['required', 'exists:arquivos,id'],
+            'avaliacaoArq' => ['nullable', 'file'],
         ]);
-        
-        $avaliacao = AvaliacaoRelatorio::find($request->avaliacao_id);
 
-        if($request->avaliacaoArq !=null){
+        $avaliacao = AvaliacaoRelatorio::findOrFail($request->avaliacao_id);
+        $plano = Arquivo::findOrFail($request->plano_id);
+
+        if ($request->hasFile('avaliacaoArq')) {
             $pasta = 'planoTrabalho/' . $request->plano_id . 'avaliacao/' . $request->avaliacao_id;
-            $avaliacao->arquivoAvaliacao = Storage::putFileAs($pasta, $request->avaliacaoArq, "AvaliacaoRelatorio.pdf");
-
+            $avaliacao->arquivoAvaliacao = Storage::putFileAs($pasta, $request->file('avaliacaoArq'), 'AvaliacaoRelatorio.pdf');
         }
-        $plano = Arquivo::find($request->plano_id);
-        $avaliacao->nota = $request->nota;
-        // $avaliacao->nota_apresentacao = $request->nota_apresentacao;
-        $avaliacao->comentario = $request->comentario;
-        $avaliacao->update();
 
-        return redirect()->back()->with(['sucesso' => 'Avaliação do relatório '.$avaliacao->tipo." do plano ".$plano->titulo.' realizada com sucesso.']);
+        $avaliacao->nota = $request->nota;
+        $avaliacao->comentario = $request->comentario;
+        $avaliacao->save();
+
+        return redirect()->back()->with([
+            'sucesso' => 'Avaliação do relatório ' . $avaliacao->tipo . ' do plano ' . $plano->titulo . ' realizada com sucesso.'
+        ]);
     }
 
     public function criarApresentacao(Request  $request){
