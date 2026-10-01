@@ -28,7 +28,7 @@
 						<th scope="col" style="width:400px; text-align: center;">Título do Plano</th>
 						@endif
 						@if ($evento->numParticipantes != 0)
-						<th scope="col" style="width:200px; text-align: center;">Discente</th>
+						<th scope="col" style="width:200px; text-align: center;">Colaborador/a</th>
 						@endif
 						@if ($evento->tipo != 'PIBEX' && $evento->tipo != 'PIBAC' && $evento->tipo != "CONTINUO" && $evento->tipo != "CONTINUO-AC" && $evento->tipo != "PICP")
 						<th scope="col" style="width:200px; text-align: center;">Relatório Parcial</th>
