@@ -50,7 +50,7 @@
               </div>
               @endif
 
-              @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP" && $edital->tipo != "PIBIC" && $edital->tipo != "PIBIC-AF" && $edital->tipo != "PIBIC-EM")
+              @if($edital->tipo != "PIBEX" && $edital->tipo != "PIBAC" && $edital->tipo != "PICP" && $edital->tipo != "PIBIC" && $edital->tipo != "PIBIC-AF" && $edital->tipo != "PIBIC-EM" && $edital->tipo != "SDUMONT-UFAPE")
               <div class="col-sm-4">
                 <label for="nomeTrabalho" class="col-form-label font-tam" style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
                 @if($projeto->anexoGrupoPesquisa != null)
@@ -61,7 +61,7 @@
               </div>
               @endif
 
-              @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM' || $edital->tipo == "PIBEX" || $edital->tipo == "PIBAC" || $edital->tipo == "PICP" || $edital->tipo == "PIBIC-AF")
+              @if($edital->tipo == 'PIBIC' || $edital->tipo == 'PIBIC-EM' || $edital->tipo == "PIBEX" || $edital->tipo == "PIBAC" || $edital->tipo == "PICP" || $edital->tipo == "PIBIC-AF" || $edital->tipo == "SDUMONT-UFAPE")
                 {{-- Decisão do CONSU --}}
                 <div class="col-sm-4">
                   <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam" style="font-weight: bold">{{ __('Decisão da Câmara: ') }}</label>

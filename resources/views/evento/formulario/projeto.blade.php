@@ -43,7 +43,7 @@
             </div>
 
 
-            @if($edital->tipo != 'PIBIC' && $edital->tipo != "PIBIC-AF" && $edital->tipo != "PIBIC-EM" && $edital->tipo != "PICP")
+            @if($edital->tipo != 'PIBIC' && $edital->tipo != "PIBIC-AF" && $edital->tipo != "PIBIC-EM" && $edital->tipo != "PICP" && $edital->tipo != "SDUMONT-UFAPE")
                 <div class="form-group col-md-4">
                   <label for="area" class="col-form-label" style="font-weight: bold">{{ __('Área') }} <span style="color: red; font-weight:bold">*</span></label>
                     <input type="hidden" id="oldArea" value="{{ old('area') }}" >
