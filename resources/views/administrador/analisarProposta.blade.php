@@ -531,7 +531,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP" && $evento->tipo != "PIBIC" && $evento->tipo != "PIBIC-AF" && $evento->tipo != "PIBIC-EM")
+                                @if($evento->tipo != "PIBEX" && $evento->tipo != "PIACEX" && $evento->tipo != "PIBAC" && $evento->tipo != "PICP" && $evento->tipo != "PIBIC" && $evento->tipo != "PIBIC-AF" && $evento->tipo != "PIBIC-EM" && $evento->tipo != "SDUMONT-UFAPE")
                                     <div class="col-sm-4">
                                         <label for="nomeTrabalho" class="col-form-label font-tam"
                                             style="font-weight: bold">{{ __('Grupo de Pesquisa: ') }}</label>
@@ -545,7 +545,7 @@
                                     </div>
                                 @endif
 
-                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC" || $evento->tipo == "PICP" || $evento->tipo == 'PIBIC-AF')
+                                @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == "PIBEX" ||  $evento->tipo == "PIACEX" || $evento->tipo == "PIBAC" || $evento->tipo == "PICP" || $evento->tipo == 'PIBIC-AF' || $evento->tipo == 'SDUMONT-UFAPE')
                                     {{-- Decisão do CONSU --}}
                                     <div class="col-sm-4">
                                         <label title="Decisão da Câmara ou Conselho Pertinente" for="anexoCONSU" class="col-form-label font-tam"

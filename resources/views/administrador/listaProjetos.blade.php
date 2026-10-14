@@ -143,7 +143,7 @@
                       @endif
                     </div>
 
-                    @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == 'PICP')
+                    @if($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == 'PICP' || $evento->tipo == 'SDUMONT-UFAPE')
                       {{-- Decisão do CONSU --}}
                       <div class="col-sm-6">
                         <label for="anexoCONSU" class="col-form-label">{{ __('Decisão do CONSU: ') }}</label>

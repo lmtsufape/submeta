@@ -52,6 +52,7 @@
                     <option value="PIBIC-EM" {{ $evento->tipo == "PIBIC-EM" ?  'selected' :'' }}>PIBIC-EM</option>
                     <option value="PIBITI" {{ $evento->tipo == "PIBITI" ?  'selected' :'' }}>PIBITI</option>
                     <option value="PICP" {{ $evento->tipo == "PICP" ?  'selected' :'' }}>PICP</option>
+                    <option value="SDUMONT-UFAPE" {{ $evento->tipo == "SDUMONT-UFAPE" ?  'selected' :'' }}>SDUMONT-UFAPE</option>
                 </select>
                 @error('tipo')
                 <span class="invalid-feedback" role="alert">

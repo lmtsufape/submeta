@@ -1388,7 +1388,7 @@ class TrabalhoController extends Controller
                         $trabalho = Auth::user()->proponentes->trabalhos()
                             ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica']));
                     } else {
-                        if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-AF' || $evento->tipo == 'PIBIC-EM') {
+                        if ($evento->tipo == 'PIBIC' || $evento->tipo == 'PIBIC-AF' || $evento->tipo == 'PIBIC-EM' || $evento->tipo == 'SDUMONT-UFAPE') {
                             $trabalho = Auth::user()->proponentes->trabalhos()
                                 ->create($request->except(['anexoProjeto', 'anexoDecisaoCONSU', 'anexoPlanilhaPontuacao', 'anexoLattesCoordenador', 'anexoAutorizacaoComiteEtica', 'justificativaAutorizacaoEtica', 'modalidade', 'anexo_docExtra', 'anexo_SIPAC', 'anexo_acao_afirmativa', 'anexo_carta_anuencia']));
                         } else {

@@ -111,7 +111,7 @@ class StoreTrabalho extends FormRequest
 
                 if($evento->tipo != "PICP")
                 {
-                    if($evento->tipo != "PIBIC" && $evento->tipo != "PIBIC-EM" && $evento->tipo != "PIBIC-AF")
+                    if($evento->tipo != "PIBIC" && $evento->tipo != "PIBIC-EM" && $evento->tipo != "PIBIC-AF" && $evento->tipo != "SDUMONT-UFAPE")
                     {
                         $rules['anexoGrupoPesquisa'] = ['required', 'mimes:pdf'];
                     }
@@ -137,7 +137,7 @@ class StoreTrabalho extends FormRequest
             $rules['grande_area_id'] = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
             
 
-            if($evento->tipo != "PICP" && $evento->tipo != 'PIBIC' && $evento->tipo != 'PIBIC-EM' && $evento->tipo != 'PIBIC-AF') {
+            if($evento->tipo != "PICP" && $evento->tipo != 'PIBIC' && $evento->tipo != 'PIBIC-EM' && $evento->tipo != 'PIBIC-AF' && $evento->tipo != 'SDUMONT-UFAPE') {
                 $rules['area_id'] = [Rule::requiredIf($evento->natureza_id != 3), 'string'];
             }
 

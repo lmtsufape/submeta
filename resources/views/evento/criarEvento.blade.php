@@ -39,6 +39,7 @@
                     <option @if(old('tipo')=='PIBIC-EM' ) selected @endif value="PIBIC-EM">PIBIC-EM</option>
                     <option @if(old('tipo')=='PIBITI' ) selected @endif value="PIBITI">PIBITI</option>
                     <option @if(old('tipo')=='PICP' ) selected @endif value="PICP">PICP</option>
+                    <option @if(old('tipo')=='SDUMONT-UFAPE' ) selected @endif value="SDUMONT-UFAPE">SDUMONT-UFAPE</option>
                 </select>
 
                 @error('tipo')
