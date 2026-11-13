@@ -10,6 +10,22 @@
                     <strong>{{ session('sucesso') }}</strong>
                 </div>
             @endif
+
+            @if (session('erro'))
+                <div class="alert alert-danger">
+                    <strong>{{ session('erro') }}</strong>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             
             @component('projeto.formularioVisualizar.proponente2', ['projeto' => $trabalho, 'edital' => $trabalho->evento, 'mostrar_val_planilha' => false])
             @endcomponent
@@ -112,20 +128,11 @@
                                                             <label for="lattes" class="col-form-label font-tam"
                                                                    style="font-weight: bold;padding-right: 10px">{{ __('Nota do relatório escrito: ') }}</label>
 
-                                                            <input class="form-control" name="nota" type="number" step="0.01"
+                                                            <input class="form-control @error('nota') is-invalid @enderror"  name="nota" type="number" step="0.01"
                                                                    style="width: 70px;"
                                                                    required
                                                                    @if($avaliacao->nota != null) value="{{$avaliacao->nota}}" @endif>
                                                         </div>
-                                                        {{-- <div class="col row">
-                                                            <label for="lattes" class="col-form-label font-tam"
-                                                                   style="font-weight: bold;padding-right: 10px">{{ __('Nota da apresentação: ') }}</label>
-
-                                                            <input class="form-control" name="nota_apresentacao" type="number" step="0.01"
-                                                                   style="width: 70px;"
-                                                                   required
-                                                                   @if($avaliacao->nota != null) value="{{$avaliacao->nota_apresentacao}}" @endif>
-                                                        </div> --}}
                                                         <div class="col-5 row" style="margin-right: 40px;">
                                                             <label for="lattes" class="col-form-label font-tam"
                                                                 style="font-weight: bold;margin-right: 5px;">{{ __('Arquivo: ') }}</label>
@@ -149,11 +156,17 @@
                                                                style="font-weight: bold">{{ __('Comentário: ') }}</label>
                                                     </div>
                                                     <div class="row">
-                                                        <textarea class="col-md-12" minlength="20" id="comentario"
+                                                        <textarea class="col-md-12 @error('comentario') is-invalid @enderror" minlength="20" id="comentario"
                                                                 name="comentario"
                                                                 style="border-radius:5px 5px 0 0;height: 150px;"
                                                                 required>@if($avaliacao->comentario != null){{$avaliacao->comentario}}@endif</textarea>
+                                                        @error('comentario')
+                                                        <span class="invalid-feedback" role="alert" style="overflow: visible; display:block">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                        @enderror
                                                     </div>
+                                                    
                                                     <div class="row justify-content-end" style="margin-top: 10px">
                                                         <div class="col-1">
                                                             <button type="submit" class="btn btn-success" style="height: 40px">Salvar</button>

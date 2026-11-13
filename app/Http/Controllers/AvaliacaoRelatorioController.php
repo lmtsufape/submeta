@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use Illuminate\Support\Str;
 
 class AvaliacaoRelatorioController extends Controller
 {
@@ -66,29 +67,37 @@ class AvaliacaoRelatorioController extends Controller
     }
 
 
-
-    public function criarRelatorio(Request  $request){
+    //metodo que salva avaliacao de relatorio 
+    //NO MOMENTO NAO E OBRIGATORIO ANEXAR ARQUIVO
+    public function criarRelatorio(Request $request)
+    {
         $validatedData = $request->validate([
-            'nota'      => ['required'],
-            'comentario'     => ['required'],
+            'nota' => ['required'],
+            'comentario' => ['required'],
+            'avaliacao_id' => ['required', 'exists:avaliacao_relatorios,id'],
+            'plano_id' => ['required', 'exists:arquivos,id'],
+            'avaliacaoArq' => ['nullable', 'file'],
         ]);
-        
-        $avaliacao = AvaliacaoRelatorio::find($request->avaliacao_id);
 
-        if($request->avaliacaoArq !=null){
+        $avaliacao = AvaliacaoRelatorio::findOrFail($request->avaliacao_id);
+        $plano = Arquivo::findOrFail($request->plano_id);
+
+        if ($request->hasFile('avaliacaoArq')) {
             $pasta = 'planoTrabalho/' . $request->plano_id . 'avaliacao/' . $request->avaliacao_id;
-            $avaliacao->arquivoAvaliacao = Storage::putFileAs($pasta, $request->avaliacaoArq, "AvaliacaoRelatorio.pdf");
-
+            $avaliacao->arquivoAvaliacao = Storage::putFileAs($pasta, $request->file('avaliacaoArq'), 'AvaliacaoRelatorio.pdf');
         }
-        $plano = Arquivo::find($request->plano_id);
-        $avaliacao->nota = $request->nota;
-        // $avaliacao->nota_apresentacao = $request->nota_apresentacao;
-        $avaliacao->comentario = $request->comentario;
-        $avaliacao->update();
 
-        return redirect()->back()->with(['sucesso' => 'Avaliação do relatório '.$avaliacao->tipo." do plano ".$plano->titulo.' realizada com sucesso.']);
+        $avaliacao->nota = $request->nota;
+        $avaliacao->comentario = $request->comentario;
+        $avaliacao->save();
+
+        return redirect()->back()->with([
+            'sucesso' => 'Avaliação do relatório ' . Str::lower($avaliacao->tipo) . ' do plano ' . Str::upper($plano->titulo) . ' realizada com sucesso.'
+        ]);
     }
 
+    //esse metodo salva avaliacao de apresentacao
+    //arquivo nao e obrigatorio e o comentario ja vem da nota do relatorio aparentemente e acontece o mesmo com o outro caso
     public function criarApresentacao(Request  $request){
         $validatedData = $request->validate([
             'nota_apresentacao'      => ['required'],
@@ -108,7 +117,7 @@ class AvaliacaoRelatorioController extends Controller
         $avaliacao->comentario = $request->comentario;
         $avaliacao->update();
 
-        return redirect()->back()->with(['sucesso' => 'Avaliação do relatório '.$avaliacao->tipo." do plano ".$plano->titulo.' realizada com sucesso.']);
+        return redirect()->back()->with(['sucesso' => 'Avaliação do relatório '. Str::lower($avaliacao->tipo)." do plano ". Str::upper($plano->titulo) .' realizada com sucesso.']);
     }
 
 
