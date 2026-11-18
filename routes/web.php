@@ -270,6 +270,11 @@ Route::get('/baixar/edital/{id}', 'EventoController@baixarEdital')->name('baixar
 Route::get('/baixar/modelos/{id}', 'EventoController@baixarModelos')->name('baixar.modelos');
 
 Route::prefix('usuarios')->name('admin.')->group(function () {
+    Route::group(['middleware' => ['auth', 'verified', 'checkAdministrador']], function () {
+        Route::get('/propostas/{id}/bolsista', 'AtribuirBolsistaController@create')->name('bolsista.create');
+        Route::post('/propostas/{id}/bolsista/buscar', 'AtribuirBolsistaController@buscar')->name('bolsista.buscar');
+        Route::post('/propostas/{id}/bolsista', 'AtribuirBolsistaController@store')->name('bolsista.store');
+    });
     //######### Rotas da administração dos usuários ####################
     Route::get('/home-admin', 'AdministradorController@index')->name('index')->middleware('checkAdministrador');
     Route::get('/usuarios', 'AdministradorController@usuarios')->name('usuarios')->middleware('checkAdministrador');
