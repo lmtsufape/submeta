@@ -168,7 +168,7 @@ Route::group(['middleware' => ['isTemp', 'auth', 'verified']], function () {
     Route::post('/projeto/{id}/adicionarParticipante', 'TrabalhoController@adicionarParticipante')->name('trabalho.adicionarParticipante');
     Route::post('/projeto/{id}/atualizar', 'TrabalhoController@update')->name('trabalho.update');
     Route::get('/projeto/{id}/excluir', 'TrabalhoController@destroy')->name('trabalho.destroy');
-    Route::get('/projeto/{id}/excluirParticipante', 'TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante');
+    Route::get('/projeto/{id}/excluirParticipante', 'TrabalhoController@excluirParticipante')->name('trabalho.excluirParticipante')->middleware('checkAdministrador');
     Route::post('/projeto/{trabalho}/solicitarCertificado', 'TrabalhoController@solicitarCertificado')->name('trabalho.solicitarCertificado');
     Route::get('/projeto/exportar/{id}', 'TrabalhoController@exportProjeto')->name('exportar.projeto');
     Route::get('/projeto/substituirParticipante', 'TrabalhoController@telaTrocaPart')->name('trabalho.trocaParticipante');
@@ -272,6 +272,9 @@ Route::get('/baixar/modelos/{id}', 'EventoController@baixarModelos')->name('baix
 Route::prefix('usuarios')->name('admin.')->group(function () {
     Route::group(['middleware' => ['auth', 'verified', 'checkAdministrador']], function () {
         Route::get('/propostas/{id}/bolsista', 'AtribuirBolsistaController@create')->name('bolsista.create');
+        Route::get('/propostas/{id}/participantes', 'GerenciarParticipantesController@index')->name('participantes.index');
+        Route::patch('/propostas/{id}/participantes/{participanteId}', 'GerenciarParticipantesController@update')->name('participantes.update');
+        Route::delete('/propostas/{id}/participantes/{participanteId}', 'GerenciarParticipantesController@destroy')->name('participantes.destroy');
         Route::post('/propostas/{id}/bolsista/buscar', 'AtribuirBolsistaController@buscar')->name('bolsista.buscar');
         Route::post('/propostas/{id}/bolsista', 'AtribuirBolsistaController@store')->name('bolsista.store');
     });

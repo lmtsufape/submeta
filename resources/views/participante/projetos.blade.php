@@ -45,9 +45,9 @@
                         <a href="{{ route('trabalho.show', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center;">
                           Visualizar projeto
                         </a>                      
-                        @if($projeto->status == 'Submetido')
-                          <a href="{{ route('trabalho.excluirParticipante', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
-                            Sair do projeto
+                        @if(Auth::user()->tipo == 'administrador')
+                          <a href="{{ route('admin.participantes.index', ['id' => $projeto->id]) }}" class="dropdown-item" style="text-align: center">
+                            Gerenciar participantes
                           </a>
                         @endif                        
                     </div>

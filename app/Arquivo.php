@@ -27,7 +27,7 @@ class Arquivo extends Model
   }
   
   public function participante() {
-      return $this->belongsTo('App\Participante', 'participanteId');
+      return $this->belongsTo('App\Participante', 'participanteId')->withTrashed();
   }
 
   public function proponente() {
