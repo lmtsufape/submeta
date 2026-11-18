@@ -3,6 +3,13 @@
 @section('content')
 
 <div class="container">
+    @if(Auth::user()->tipo == 'administrador')
+        <a class="btn btn-primary mb-3" href="{{ route('admin.bolsista.create', ['id' => $trabalho->id]) }}">Atribuir bolsista</a>
+    @endif
+
+    @if(!collect($arquivos)->filter()->count())
+        <div class="alert alert-info">Nenhum plano de trabalho disponível para esta proposta.</div>
+    @endif
 
 	@if (session('sucesso'))
 		<div class="alert alert-success" role="alert">
