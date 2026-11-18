@@ -5,6 +5,7 @@
 <div class="container">
     @if(Auth::user()->tipo == 'administrador')
         <a class="btn btn-primary mb-3" href="{{ route('admin.bolsista.create', ['id' => $trabalho->id]) }}">Atribuir bolsista</a>
+        <a class="btn btn-primary mb-3" href="{{ route('admin.participantes.index', ['id' => $trabalho->id]) }}">Gerenciar participantes</a>
     @endif
 
     @if(!collect($arquivos)->filter()->count())

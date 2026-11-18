@@ -588,14 +588,9 @@ class TrabalhoController extends Controller
 
     public function excluirParticipante($id)
     {
-        $participante = Participante::where('id', $id)->first();
-        //$participante = Participante::where('user_id', Auth()->user()->id)
-        //                            ->where('trabalho_id', $id)->first();
-
-        //$participante->trabalhos()->detach($id);
-        $participante->delete();
-
-        return redirect()->back();
+        abort_unless(Auth::user() && Auth::user()->tipo === 'administrador', 403);
+        $participante = Participante::findOrFail($id);
+        return redirect()->route('admin.participantes.index', ['id' => $participante->trabalho_id]);
     }
 
     public function solicitarCertificado(Trabalho $trabalho, Request $request)
