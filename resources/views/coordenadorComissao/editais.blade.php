@@ -87,6 +87,35 @@
       @endforeach
     </tbody>
   </table>
+
+  @foreach ($eventos as $evento)
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal{{ $evento->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel{{ $evento->id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel{{ $evento->id }}">Deletar edital</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Você tem certeza que deseja deletar o edital: {{ $evento->nome }}?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <form method="POST" action="{{ route('evento.deletar', $evento->id) }}" class="text-center">
+              {{ csrf_field() }}
+              {{ method_field('DELETE') }}
+              <button type="submit" class="btn btn-primary">
+                Deletar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endforeach
 </div>
 
 @endsection

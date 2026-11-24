@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('link_grupo', '\App\Utils\GrupoPesquisaValidation@validate', 'Link inválido');
         Validator::extend('planilha', '\App\Utils\ExtensaoValidation@validate', 'Extensão do arquivo é inválida');
         Validator::extend('telefone', '\App\Utils\TelefoneValidation@validate', 'Celular inválido');
-        if ($this->app->environment('production', 'staging')) {
+        if (parse_url(config('app.url'), PHP_URL_SCHEME) === 'https') {
             URL::forceScheme('https');
         }
     }

@@ -404,7 +404,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @foreach($trabalho->participantes as $participante)
+                    @forelse($trabalho->participantes as $participante)
                         <div class="row modal-header-submeta">
                             <div class="col-sm-7" style="padding-left: 0px">
                                 <p style="font-size: 22px">Discente: {{$participante->user->name}}</p>
@@ -421,7 +421,11 @@
                             </div>
                         </div>
                         <br>
-                    @endforeach
+                    @empty
+                        <div class="alert alert-warning mb-0" role="alert">
+                            Este projeto não possui discentes (participantes) vinculados, portanto não há bolsas para definir.
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
