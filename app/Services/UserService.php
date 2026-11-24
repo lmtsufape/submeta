@@ -25,6 +25,10 @@ class UserService
     private function updateByType(User $user, array $data): void
     {
         switch ($user->tipo) {
+            case 'administrador':
+            case 'coordenador':
+                break;
+
             case 'administradorResponsavel':
                 $this->updateAdministradorResponsavel($user, $data);
                 break;

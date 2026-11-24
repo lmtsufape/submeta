@@ -529,6 +529,7 @@ class EventoController extends Controller
             $path = 'pdfEdital/' . $evento->id . '/';
             $nome = "edital.pdf";
             Storage::putFileAs($path, $pdfEdital, $nome);
+            $evento->pdfEdital = $path . $nome;
         }
 
         if($request->modeloDocumento != null){
@@ -820,8 +821,10 @@ class EventoController extends Controller
     public function baixarEdital($id) {
         $evento = Evento::find($id);
 
-        if (Storage::disk()->exists($evento->pdfEdital)) {
-            ob_end_clean();
+        if ($evento && $evento->pdfEdital && Storage::disk()->exists($evento->pdfEdital)) {
+            if (ob_get_level() > 0) {
+                ob_end_clean();
+            }
             return Storage::download($evento->pdfEdital);
         }
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class EventoSeeder extends Seeder
@@ -127,5 +128,43 @@ class EventoSeeder extends Seeder
             ],
 
         ]);
+
+        foreach (['edital1.pdf' => 'Edital 1 - [EVENTO][COMPLETO][ABERTO]', 'edital2.pdf' => 'Edital 2 - [EVENTO][CONTINUO]', 'edital3.pdf' => 'Edital 3 - [EVENTO][POS_REVISAO]'] as $arquivo => $titulo) {
+            if (!Storage::disk()->exists($arquivo)) {
+                Storage::disk()->put($arquivo, $this->gerarPdfExemplo($titulo));
+            }
+        }
+    }
+
+    private function gerarPdfExemplo(string $titulo): string
+    {
+        $texto = str_replace(['\\', '(', ')'], ['\\\\', '\\(', '\\)'], $titulo);
+        $stream = "BT /F1 14 Tf 50 750 Td ({$texto}) Tj ET";
+        $len = strlen($stream);
+
+        $objects = [
+            "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n",
+            "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n",
+            "3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>\nendobj\n",
+            "4 0 obj\n<< /Length {$len} >>\nstream\n{$stream}\nendstream\nendobj\n",
+            "5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n",
+        ];
+
+        $pdf = "%PDF-1.4\n";
+        $offsets = [0];
+        foreach ($objects as $obj) {
+            $offsets[] = strlen($pdf);
+            $pdf .= $obj;
+        }
+
+        $xrefOffset = strlen($pdf);
+        $count = count($offsets);
+        $pdf .= "xref\n0 {$count}\n0000000000 65535 f \n";
+        for ($i = 1; $i < $count; $i++) {
+            $pdf .= sprintf("%010d 00000 n \n", $offsets[$i]);
+        }
+        $pdf .= "trailer\n<< /Size {$count} /Root 1 0 R >>\nstartxref\n{$xrefOffset}\n%%EOF\n";
+
+        return $pdf;
     }
 }
